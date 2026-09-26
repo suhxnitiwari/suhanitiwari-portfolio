@@ -1818,6 +1818,11 @@
 
 <!-- ABOUT: my own words -->
 @{
+    // My age, worked out from my birthday (March 6, 2006) so it updates on its own every year
+    var birthday = new DateTime(2006, 3, 6);
+    var today = DateTime.Today;
+    var age = today.Year - birthday.Year - (today < birthday.AddYears(today.Year - birthday.Year) ? 1 : 0);
+
     // Alternating story rows: text and photo swap sides each time.
     // Photo = null shows a "photo coming soon" frame until a picture is added.
     var aboutPoints = new[]
@@ -1843,7 +1848,7 @@
     <div class="about-container">
         <div class="about-intro">
             <h2>Hi, I’m Suhani Tiwari.</h2>
-            <p>I’m a 20-year-old student at the McCombs School of Business at UT Austin studying Management Information Systems. My academic interests include psychology, marketing, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
+            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying Management Information Systems. My academic interests include psychology, marketing, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
         <h3 class="about-lead">The thing about me is...</h3>
