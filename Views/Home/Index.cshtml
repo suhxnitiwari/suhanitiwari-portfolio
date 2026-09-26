@@ -474,55 +474,136 @@
         color: #2A1810;
     }
 
-    .ocean-card-soon {
-        margin: 10px 0 0;
+    /* the trait in words: set like a magazine pull-quote, drifting on a second, looser wave */
+    .ocean-words {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 6px 26px;
+        margin: 22px auto 0;
+        padding: 0;
+        max-width: 620px;
+    }
+
+    .ocean-word {
+        color: #2A1810;
+        line-height: 1.2;
+        cursor: default;
+        transition: color 0.25s ease;
+        animation: wordIn 0.6s ease both;
+    }
+
+    .ocean-word:hover {
+        color: #8A4D57;
+    }
+
+    /* six voices, cycled: serif / sans, italic / roman, a few sizes, each sitting a little higher or lower */
+    .ocean-word.v0 { font-family: Georgia, serif; font-style: italic; font-size: 1.75em; translate: 0 -8px; animation-delay: 0.05s; }
+    .ocean-word.v1 { font-size: 0.82em; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase; color: #56634A; translate: 0 6px; animation-delay: 0.12s; }
+    .ocean-word.v2 { font-family: Georgia, serif; font-weight: 700; font-size: 2.05em; translate: 0 -2px; animation-delay: 0.19s; }
+    .ocean-word.v3 { font-family: Georgia, serif; font-style: italic; font-size: 1.35em; color: #8A4D57; translate: 0 10px; animation-delay: 0.26s; }
+    .ocean-word.v4 { font-size: 0.9em; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; translate: 0 -6px; animation-delay: 0.33s; }
+    .ocean-word.v5 { font-family: Georgia, serif; font-size: 1.6em; translate: 0 4px; animation-delay: 0.4s; }
+
+    .ocean-word.v1:hover,
+    .ocean-word.v3:hover {
+        color: #2A1810;
+    }
+
+    @@keyframes wordIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .ocean-quote {
+        margin: 26px 0 0;
         font-family: Georgia, serif;
+        font-size: 1.55em;
         font-style: italic;
+        color: #2A1810;
+    }
+
+    .ocean-aside {
+        max-width: 480px;
+        margin: 8px auto 0;
+        line-height: 1.6;
         color: #56634A;
     }
 
-    .ocean-facets {
-        width: 100%;
-        max-width: 560px;
-        margin-top: 6px;
-    }
-
-    .facet-spoke {
-        stroke: #8A4D57;
-        stroke-width: 1;
-        opacity: 0.25;
-    }
-
-    .facet-dot {
-        fill: #FFF8F6;
-        stroke: #9E5A63;
-        stroke-width: 2;
-    }
-
-    .facet-score {
-        font-size: 20px;
+    .ocean-under {
+        margin: 34px 0 12px;
+        font-size: 0.72em;
         font-weight: 700;
-        text-anchor: middle;
-        fill: #2A1810;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #9E5A63;
     }
 
-    .facet-name {
-        font-size: 15px;
-        font-weight: 600;
-        text-anchor: middle;
-        fill: #56634A;
+    /* the data, quieter than the words: two neat columns of facet / score */
+    .ocean-facet-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 28px;
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 0;
+        text-align: left;
     }
 
-    .facet-core {
-        fill: #8A4D57;
+    .ocean-facet {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: baseline;
+        gap: 2px 12px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        transition: background 0.25s ease;
     }
 
-    .facet-core-letter {
+    .facet-label {
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #2A1810;
+    }
+
+    .facet-value {
         font-family: Georgia, serif;
-        font-size: 40px;
+        font-size: 0.95em;
+        color: #56634A;
+    }
+
+    .facet-bar {
+        grid-column: 1 / -1;
+        height: 3px;
+        border-radius: 2px;
+        background: rgba(138, 77, 87, 0.12);
+        overflow: hidden;
+    }
+
+    .facet-bar span {
+        display: block;
+        height: 100%;
+        background: #C9969E;
+        transition: background 0.25s ease;
+    }
+
+    /* hovering a word lights up the facet(s) it came from */
+    .ocean-facet.lit {
+        background: rgba(158, 90, 99, 0.1);
+    }
+
+    .ocean-facet.lit .facet-bar span {
+        background: #8A4D57;
+    }
+
+    .ocean-facet.lit .facet-value {
+        color: #8A4D57;
         font-weight: 700;
-        text-anchor: middle;
-        fill: #FAF1EF;
     }
 
     /* phones: same swell, smaller circles, names only for the chosen letter */
@@ -549,6 +630,15 @@
         .ocean-name {
             display: none;
         }
+
+        .ocean-words {
+            gap: 4px 18px;
+            font-size: 0.85em;
+        }
+
+        .ocean-facet-list {
+            grid-template-columns: 1fr;
+        }
     }
 
     @@media (prefers-reduced-motion: reduce) {
@@ -562,6 +652,10 @@
 
         .ocean-bob {
             animation: none !important;
+        }
+
+        .ocean-word {
+            animation: none;
         }
     }
 
@@ -1540,16 +1634,44 @@
         </div>
 
         @{
-            // My Big Five (OCEAN) scores. The number is the real score; circle size only hints at it.
-            // Facets: add six (name, score) pairs per trait from my report and the facet view appears
-            // when that letter is clicked; until then it says the breakdown is coming.
+            // My Big Five (OCEAN) results. Score = the real domain score; circle size only hints at it.
+            // Words = my own translations of the pattern (not extra scores); each word lists the facet(s)
+            // it comes from, which light up on hover. Facets are scored out of 20: fill in each null from
+            // my report, and "What's underneath" appears for a trait once all six of its facets have a score.
+            // ShowFacets = false keeps a trait's facet scores off the page entirely.
             var ocean = new[]
             {
-                (Letter: "O", Name: "Openness", Score: 69, Facets: Array.Empty<(string Name, int Score)>()),
-                (Letter: "C", Name: "Conscientiousness", Score: 93, Facets: Array.Empty<(string Name, int Score)>()),
-                (Letter: "E", Name: "Extraversion", Score: 85, Facets: Array.Empty<(string Name, int Score)>()),
-                (Letter: "A", Name: "Agreeableness", Score: 93, Facets: Array.Empty<(string Name, int Score)>()),
-                (Letter: "N", Name: "Emotional Sensitivity", Score: 94, Facets: Array.Empty<(string Name, int Score)>())
+                (Letter: "O", Name: "Openness", Score: 69,
+                    Words: new[] { ("Selective", "Adventurousness"), ("Artistic", "Artistic Interests"), ("Emotional", "Emotionality"), ("Curious", "Intellect"), ("Reflective", "Imagination"), ("Grounded", "Liberalism") },
+                    Line: "Selective curiosity.",
+                    Aside: "Give me art, ideas and feelings. You can keep the unnecessary chaos.",
+                    Facets: new (string Name, int? Score)[] { ("Imagination", null), ("Artistic Interests", 17), ("Emotionality", 19), ("Adventurousness", null), ("Intellect", null), ("Liberalism", null) },
+                    ShowFacets: true),
+                (Letter: "C", Name: "Conscientiousness", Score: 93,
+                    Words: new[] { ("Organized", "Orderliness"), ("Disciplined", "Self-Discipline"), ("Reliable", "Dutifulness"), ("Determined", "Achievement-Striving"), ("Structured", "Self-Efficacy"), ("Fast-Moving", "Cautiousness") },
+                    Line: "I have a list for the list.",
+                    Aside: "Organized, determined, disciplined... occasionally faster than my own judgment.",
+                    Facets: new (string Name, int? Score)[] { ("Self-Efficacy", null), ("Orderliness", 19), ("Dutifulness", null), ("Achievement-Striving", null), ("Self-Discipline", 17), ("Cautiousness", null) },
+                    ShowFacets: true),
+                (Letter: "E", Name: "Extraversion", Score: 85,
+                    Words: new[] { ("Social", "Gregariousness"), ("Assertive", "Assertiveness"), ("Energetic", "Activity Level"), ("Expressive", "Cheerfulness"), ("Outgoing", "Friendliness"), ("Bold", "Assertiveness") },
+                    Line: "People person, not adrenaline person.",
+                    Aside: "I’ll talk to everyone at the party. I simply don’t need the party to involve skydiving.",
+                    Facets: new (string Name, int? Score)[] { ("Friendliness", null), ("Gregariousness", null), ("Assertiveness", 18), ("Activity Level", null), ("Excitement-Seeking", null), ("Cheerfulness", null) },
+                    ShowFacets: true),
+                (Letter: "A", Name: "Agreeableness", Score: 93,
+                    Words: new[] { ("Empathetic", "Sympathy"), ("Generous", "Altruism"), ("Principled", "Morality"), ("Caring", "Altruism|Sympathy"), ("Sincere", "Morality"), ("Strong-Willed", "Cooperation") },
+                    Line: "Soft heart. Strong opinions.",
+                    Aside: "I care about people. That does not mean I’m going to agree with you.",
+                    Facets: new (string Name, int? Score)[] { ("Trust", null), ("Morality", null), ("Altruism", 18), ("Cooperation", null), ("Modesty", null), ("Sympathy", 14) },
+                    ShowFacets: true),
+                // Shown as "Emotional Sensitivity"; its facet scores stay off the page on purpose
+                (Letter: "N", Name: "Emotional Sensitivity", Score: 94,
+                    Words: new[] { ("Sensitive", ""), ("Emotionally Aware", ""), ("Passionate", ""), ("Perceptive", ""), ("Expressive", ""), ("Deep-Feeling", "") },
+                    Line: "I feel things. A lot.",
+                    Aside: "",
+                    Facets: new (string Name, int? Score)[] { ("Anxiety", 19), ("Anger", 20), ("Depression", 13), ("Self-Consciousness", 12), ("Immoderation", 15), ("Vulnerability", 15) },
+                    ShowFacets: false)
             };
 
             // The wave is only a design motif: each letter sits on a gentle swell (up, down, up, down).
@@ -1608,32 +1730,38 @@
             <div class="ocean-detail" aria-live="polite">
                 @foreach (var t in ocean)
                 {
+                    var facetsReady = t.ShowFacets && t.Facets.All(f => f.Score.HasValue);
                     <article class="ocean-card" data-letter="@t.Letter" hidden>
                         <p class="ocean-card-kicker">@t.Letter · @t.Name</p>
                         <p class="ocean-card-score">@t.Score</p>
-                        @if (t.Facets.Length == 6)
+
+                        <ul class="ocean-words" aria-label="@t.Name in words">
+                            @for (var w = 0; w < t.Words.Length; w++)
+                            {
+                                var (word, facets) = t.Words[w];
+                                <li class="ocean-word v@(w % 6)" data-facets="@(facetsReady ? facets : "")">@word</li>
+                            }
+                        </ul>
+
+                        <p class="ocean-quote">“@t.Line”</p>
+                        @if (!string.IsNullOrEmpty(t.Aside))
                         {
-                            int fLow = t.Facets.Min(f => f.Score), fHigh = t.Facets.Max(f => f.Score);
-                            double FacetR(int sc) => fHigh == fLow ? 44 : 34 + (sc - fLow) * 18.0 / (fHigh - fLow);
-                            <svg class="ocean-facets" viewBox="0 0 640 560" role="img" aria-label="@t.Name facets">
-                                @for (var k = 0; k < 6; k++)
-                                {
-                                    var f = t.Facets[k];
-                                    var ang = (-90 + k * 60) * Math.PI / 180;
-                                    var fx = Math.Round(320 + 200 * Math.Cos(ang));
-                                    var fy = Math.Round(275 + 190 * Math.Sin(ang));
-                                    <line x1="320" y1="275" x2="@fx" y2="@fy" class="facet-spoke" />
-                                    <circle cx="@fx" cy="@fy" r="@Math.Round(FacetR(f.Score))" class="facet-dot" />
-                                    @:<text x="@fx" y="@(fy + 6)" class="facet-score">@f.Score</text>
-                                    @:<text x="@fx" y="@(fy + Math.Round(FacetR(f.Score)) + 22)" class="facet-name">@f.Name</text>
-                                }
-                                <circle cx="320" cy="275" r="62" class="facet-core" />
-                                <text x="320" y="288" class="facet-core-letter">@t.Letter</text>
-                            </svg>
+                            <p class="ocean-aside">@t.Aside</p>
                         }
-                        else
+
+                        @if (facetsReady)
                         {
-                            <p class="ocean-card-soon">Facet breakdown coming soon.</p>
+                            <p class="ocean-under">What’s underneath ↓</p>
+                            <ul class="ocean-facet-list">
+                                @foreach (var (fname, fscore) in t.Facets)
+                                {
+                                    <li class="ocean-facet" data-facet="@fname">
+                                        <span class="facet-label">@fname</span>
+                                        <span class="facet-value">@fscore/20</span>
+                                        <span class="facet-bar" aria-hidden="true"><span style="width: @(fscore * 5)%"></span></span>
+                                    </li>
+                                }
+                            </ul>
                         }
                     </article>
                 }
@@ -1946,6 +2074,19 @@
             } else {
                 start();
             }
+
+            // hovering (or tapping) a word lights up the facet(s) behind it
+            oceanCards.forEach(card => {
+                const facets = [...card.querySelectorAll('.ocean-facet')];
+                const lightFacets = names => facets.forEach(f => f.classList.toggle('lit', names.includes(f.dataset.facet)));
+                card.querySelectorAll('.ocean-word').forEach(word => {
+                    const names = word.dataset.facets ? word.dataset.facets.split('|') : [];
+                    if (!names.length) return;
+                    word.addEventListener('mouseenter', () => lightFacets(names));
+                    word.addEventListener('mouseleave', () => lightFacets([]));
+                    word.addEventListener('click', () => lightFacets(names));
+                });
+            });
 
             let selected = null;
             nodes.forEach(node => {
