@@ -201,6 +201,59 @@
         transition: all 0.3s ease;
     }
 
+    /* a group card (Family): click to open it and see who's in it */
+    .people-group {
+        border: none;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+    }
+
+    .people-group:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    .people-hint {
+        display: block;
+        font-size: 0.75em;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .people-members {
+        list-style: none;
+        display: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin: 6px 0 0;
+        padding: 0;
+    }
+
+    .people-members li {
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: #F5E5E1;
+        color: #2A1810;
+        font-family: Georgia, serif;
+        font-size: 1em;
+        animation: spotIn 0.35s ease both;
+    }
+
+    .people-members li:nth-child(2) { animation-delay: 0.06s; }
+    .people-members li:nth-child(3) { animation-delay: 0.12s; }
+
+    .people-group[aria-expanded="true"] .people-members {
+        display: flex;
+    }
+
+    .people-group[aria-expanded="true"] .people-hint {
+        display: none;
+    }
+
     .world-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 14px 30px rgba(158, 90, 99, 0.2);
@@ -874,16 +927,15 @@
 
         <!-- PEOPLE THAT SHAPED ME -->
         @{
-            // The people who shaped me: (name, who they are to me, how they shaped me).
-            // The last two are optional: leave them "" and that line just doesn't show.
+            // The people who shaped me: (name, who they are to me, how they shaped me, group members).
+            // Relation and story are optional: leave them "" and that line just doesn't show.
+            // A card with members (like Family) opens to show them when clicked.
             var people = new[]
             {
-                ("Papa", "", ""),
-                ("Mumma", "", ""),
-                ("Amaira", "", ""),
-                ("Hana", "", ""),
-                ("Reese", "", ""),
-                ("Avery", "", "")
+                ("Family", "", "", new[] { "Dad", "Mom", "Sister" }),
+                ("Hana", "", "", Array.Empty<string>()),
+                ("Reese", "", "", Array.Empty<string>()),
+                ("Avery", "", "", Array.Empty<string>())
             };
         }
         <h2 class="world-block-title">People That Shaped Me</h2>
@@ -891,8 +943,22 @@
         <div class="people-carousel">
             <button type="button" class="people-arrow prev" aria-label="Previous people">‹</button>
             <div class="people-rail" tabindex="0" aria-label="People that shaped me">
-            @foreach (var (name, relation, story) in people)
+            @foreach (var (name, relation, story, members) in people)
             {
+                if (members.Length > 0)
+                {
+                    <button type="button" class="world-card people-card people-group" aria-expanded="false">
+                        <h3>@name</h3>
+                        <span class="people-hint">See who</span>
+                        <ul class="people-members">
+                            @foreach (var m in members)
+                            {
+                                <li>@m</li>
+                            }
+                        </ul>
+                    </button>
+                    continue;
+                }
                 <div class="world-card people-card">
                     <h3>@name</h3>
                     @if (!string.IsNullOrEmpty(relation))
@@ -1201,6 +1267,12 @@
 </script>
 
 <script>
+    // Group cards (Family): click to show or hide who's in the group
+    document.querySelectorAll('.people-group').forEach(card => card.addEventListener('click', () => {
+        if (card.closest('.people-rail')?.classList.contains('dragging')) return;
+        card.setAttribute('aria-expanded', card.getAttribute('aria-expanded') !== 'true');
+    }));
+
     // People carousel: arrows, drag with the mouse, arrow keys; swipe/trackpad scroll natively
     (function () {
         const rail = document.querySelector('.people-rail');
