@@ -122,15 +122,15 @@
 
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
-                <h3 class="shelf-title">Art</h3>
+                <h3 class="shelf-title">Drawing</h3>
                 @if (artworks.Length > 4)
                 {
                     <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@artworks.Length">See all @artworks.Length →</button>
                 }
             </div>
             <div class="shelf-rail-wrap">
-                <button type="button" class="shelf-arrow prev" aria-label="Scroll Art left">‹</button>
-                <ul class="shelf-rail" tabindex="0" aria-label="Art">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll Drawing left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="Drawing">
                     @foreach (var art in artworks)
                     {
                         <li class="shelf-item">
@@ -145,7 +145,7 @@
                         </li>
                     }
                 </ul>
-                <button type="button" class="shelf-arrow next" aria-label="Scroll Art right">›</button>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll Drawing right">›</button>
             </div>
         </div>
         <hr class="shelf-divider">
@@ -250,7 +250,7 @@
     <button type="button" class="recipe-close" aria-label="Close artwork">×</button>
     <div class="art-frame"><img id="artImage" src="" alt=""></div>
     <div class="recipe-body">
-        <p class="recipe-kicker">Art</p>
+        <p class="recipe-kicker">Drawing</p>
         <h3 id="artTitle"></h3>
         <p class="recipe-line" id="artIdea"></p>
         <p class="recipe-meta">Holding onto the traditions we carried with us, while making a home in American culture.</p>
