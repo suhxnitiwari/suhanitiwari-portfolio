@@ -1,0 +1,1911 @@
+@{
+    ViewData["Title"] = "Favorites";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #FAF1EF;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        color: #2A1810;
+    }
+
+    /* ===== LISTEN SECTION ===== */
+    /* leave room for the sticky menu when jumping to #listen / #watch / #read */
+    #listen, #watch, #read {
+        scroll-margin-top: 72px;
+    }
+
+    .listen-section {
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        padding: 60px 40px;
+    }
+
+    .listen-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ===== HERO ===== */
+    .listen-hero {
+        text-align: center;
+        margin-bottom: 80px;
+        position: relative;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1em;
+        color: #2A1810;
+        margin-bottom: 40px;
+    }
+
+    /* a clear line where one section ends and the next begins */
+    #watch, #read {
+        border-top: 1px solid #E6CFC9;
+    }
+
+    /* ===== SPOTIFY BUTTON ===== */
+    .spotify-auth-btn {
+        background: #1DB954;
+        color: white;
+        padding: 14px 40px;
+        border: none;
+        border-radius: 25px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95em;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .spotify-auth-btn:hover {
+        background: #1ed760;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(29, 185, 84, 0.3);
+    }
+
+    /* ===== TOP 5 ARTISTS ===== */
+    .section-title {
+        font-size: 2.5em;
+        font-weight: 800;
+        color: #2A1810;
+        margin-bottom: 50px;
+        text-align: center;
+        font-family: Georgia, serif;
+    }
+
+    /* ===== SECTION SUBTITLES ===== */
+    .section-title.with-subtitle {
+        margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        color: #56634A;
+        margin-bottom: 35px;
+    }
+
+    /* ===== MY MUSIC UNIVERSE (pan / zoom artist bubbles) ===== */
+    .universe-title {
+        margin-bottom: 10px;
+    }
+
+    .universe-subtitle {
+        text-align: center;
+        color: #9E5A63;
+        font-style: italic;
+        font-size: 1.15em;
+        margin-bottom: 10px;
+    }
+
+
+    .universe {
+        position: relative;
+        width: min(100%, 680px);
+        aspect-ratio: 1 / 1;
+        margin: 0 auto 100px;
+        overflow: hidden;
+        border-radius: 28px;
+        border: 1px solid #EDD8D3;
+        background: radial-gradient(circle at 45% 40%, #FFFFFF 0%, #FCF4F2 55%, #F4E3DF 100%);
+        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.12);
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .universe:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    .universe.dragging,
+    .universe.dragging .ub {
+        cursor: grabbing;
+    }
+
+    .universe-world {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-origin: 0 0;
+        will-change: transform;
+        /* --px = one screen pixel in world units, so outlines stay crisp at any zoom */
+        --px: 1px;
+    }
+
+    .universe-status {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #56634A;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .ub {
+        position: absolute;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        cursor: pointer;
+        background-color: #9E5A63;
+        background-image: linear-gradient(135deg, #9E5A63 0%, #8A4D57 100%);
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 0 0 calc(3 * var(--px)) #FAF1EF, 0 calc(8 * var(--px)) calc(22 * var(--px)) rgba(42, 24, 16, 0.18);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease, filter 0.25s ease;
+        animation: ubIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        animation-delay: var(--delay);
+        z-index: 1;
+    }
+
+    /* Soft dark fade at the bottom so names read on any photo */
+    .ub::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(43, 22, 13, 0.75) 0%, rgba(43, 22, 13, 0.12) 42%, transparent 60%);
+        pointer-events: none;
+    }
+
+    /* Hover: brighten, thin burgundy outline, tiny lift. Small enough not to disturb the packing. */
+    .ub:hover,
+    .ub.hovered {
+        filter: brightness(1.07) saturate(1.08);
+        transform: scale(1.03);
+        box-shadow: 0 0 0 calc(2 * var(--px)) #8A4D57, 0 calc(10 * var(--px)) calc(26 * var(--px)) rgba(42, 24, 16, 0.25);
+        z-index: 5;
+    }
+
+    .ub:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 calc(3 * var(--px)) #8A4D57, 0 0 0 calc(7 * var(--px)) rgba(158, 90, 99, 0.5);
+        z-index: 5;
+    }
+
+    .ub.selected {
+        z-index: 6;
+        box-shadow: 0 0 0 calc(3 * var(--px)) #8A4D57, 0 0 0 calc(8 * var(--px)) rgba(158, 90, 99, 0.45), 0 calc(12 * var(--px)) calc(30 * var(--px)) rgba(42, 24, 16, 0.3);
+    }
+
+    .universe.has-selection .ub:not(.selected) {
+        opacity: 0.75;
+    }
+
+    .universe.has-selection .ub.near:not(.selected) {
+        opacity: 0.4;
+    }
+
+    .ub-label {
+        position: relative;
+        z-index: 1;
+        width: 80%;
+        padding-bottom: 15%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.15em;
+        color: #FAF1EF;
+        text-align: center;
+        line-height: 1.15;
+        pointer-events: none;
+    }
+
+    .ub-rank,
+    .ub-name,
+    .ub-detail {
+        display: none;
+    }
+
+    .ub-rank {
+        font-weight: 800;
+        font-size: 0.85em;
+        letter-spacing: 0.5px;
+        opacity: 0.92;
+    }
+
+    .ub-name {
+        font-family: Georgia, serif;
+        font-weight: 700;
+    }
+
+    .ub-detail {
+        font-size: 0.7em;
+        opacity: 0.92;
+    }
+
+    .ub.show-rank .ub-rank,
+    .ub.show-name .ub-name,
+    .ub.show-detail .ub-detail {
+        display: block;
+    }
+
+    @@keyframes ubIn {
+        from { opacity: 0; transform: scale(0.3); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Name tag that floats over a bubble on hover when its name isn't shown inside */
+    .universe-tag {
+        position: absolute;
+        z-index: 20;
+        transform: translate(-50%, calc(-100% - 8px));
+        background: #8A4D57;
+        color: #FAF1EF;
+        padding: 5px 12px;
+        border-radius: 14px;
+        font-size: 0.82em;
+        font-weight: 600;
+        white-space: nowrap;
+        pointer-events: none;
+        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.25);
+    }
+
+    .universe-tag.below {
+        transform: translate(-50%, 8px);
+    }
+
+    /* A rare, one-time remark (e.g. clicking my #1 artist) */
+    .snoop-remark {
+        position: absolute;
+        left: 50%;
+        bottom: 18px;
+        z-index: 26;
+        max-width: calc(100% - 140px);
+        margin: 0;
+        padding: 10px 18px;
+        border-radius: 22px;
+        background: #8A4D57;
+        color: #FAF1EF;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 0.95em;
+        text-align: center;
+        box-shadow: 0 10px 26px rgba(42, 24, 16, 0.28);
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, 10px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .snoop-remark.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+    @@media (max-width: 600px) {
+        .snoop-remark {
+            top: 60px;
+            bottom: auto;
+            max-width: calc(100% - 28px);
+            font-size: 0.85em;
+        }
+    }
+
+    /* Detail panel for the selected artist */
+    .universe-panel {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 30;
+        width: 270px;
+        background: #FAF1EF;
+        border: 1px solid #EDD8D3;
+        border-radius: 20px;
+        padding: 18px;
+        box-shadow: 0 14px 36px rgba(42, 24, 16, 0.2);
+        cursor: default;
+        animation: panelIn 0.25s ease;
+    }
+
+    @@keyframes panelIn {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .up-close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        border: none;
+        background: none;
+        font-size: 1.3em;
+        line-height: 1;
+        color: #56634A;
+        cursor: pointer;
+        padding: 4px 6px;
+    }
+
+    .up-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding-right: 20px;
+    }
+
+    .up-photo {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #F5E5E1;
+    }
+
+    .up-rank {
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .up-name {
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #2A1810;
+        line-height: 1.2;
+    }
+
+    .up-stats {
+        list-style: none;
+        margin: 0 0 16px;
+        padding: 0;
+        font-size: 0.9em;
+        color: #2A1810;
+    }
+
+    .up-stats li {
+        padding: 6px 0;
+        border-top: 1px solid #EDD8D3;
+    }
+
+    .up-stats strong {
+        color: #2A1810;
+    }
+
+    .up-open {
+        display: block;
+        text-align: center;
+        background: #8A4D57;
+        color: #FAF1EF;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9em;
+        padding: 10px 14px;
+        border-radius: 22px;
+        transition: background 0.2s ease;
+    }
+
+    .up-open:hover {
+        background: #9E5A63;
+        color: #FAF1EF;
+    }
+
+    .universe-controls {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        z-index: 25;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .universe-controls button {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid #EDD8D3;
+        background: #FAF1EF;
+        color: #2A1810;
+        font-size: 1.2em;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(42, 24, 16, 0.15);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .universe-controls button:hover {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .universe-controls button:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 2px;
+    }
+
+
+    @@media (max-width: 600px) {
+        .universe-panel {
+            top: auto;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            width: auto;
+        }
+
+        .universe-controls {
+            top: 12px;
+            right: 12px;
+            bottom: auto;
+        }
+
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .ub,
+        .universe-panel {
+            animation: none;
+            transition: none;
+        }
+    }
+
+    /* ===== TOP 5 SONGS ===== */
+    .top-songs-section {
+        background: #FFF8F6;
+        padding: 50px;
+        border-radius: 16px;
+        margin-bottom: 100px;
+        box-shadow: 0 8px 24px rgba(158, 90, 99, 0.1);
+    }
+
+    .songs-list {
+        list-style: none;
+    }
+
+    .song-item {
+        display: flex;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #EBD5D0;
+        transition: all 0.3s ease;
+    }
+
+    .song-item:last-child {
+        border-bottom: none;
+    }
+
+    .song-item:hover {
+        background: #F5E5E1;
+        padding-left: 10px;
+    }
+
+    .song-rank {
+        font-size: 1.5em;
+        font-weight: 900;
+        color: #9E5A63;
+        width: 40px;
+        margin-right: 20px;
+    }
+
+    .song-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
+        margin-right: 20px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5em;
+        overflow: hidden;
+        object-fit: cover;
+    }
+
+    .song-info {
+        flex: 1;
+    }
+
+    .song-name {
+        font-weight: 700;
+        font-size: 1em;
+        color: #2A1810;
+        margin-bottom: 5px;
+    }
+
+    .song-artist {
+        font-size: 0.9em;
+        color: #56634A;
+    }
+
+    /* ===== TOP 5 GENRES ===== */
+    /* ===== LISTENING DNA (genre share as an interactive donut) ===== */
+    .dna-section {
+        display: grid;
+        grid-template-columns: minmax(280px, 440px) minmax(240px, 380px);
+        justify-content: center;
+        align-items: center;
+        gap: 64px;
+        margin-bottom: 100px;
+    }
+
+    .dna-loading {
+        grid-column: 1 / -1;
+        text-align: center;
+        color: #56634A;
+        margin: 0;
+        padding: 60px 0;
+    }
+
+    .dna-chart {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+    }
+
+    .dna-chart svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .dna-slice {
+        cursor: pointer;
+        outline: none;
+        transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.25s ease;
+    }
+
+    /* When a genre is hovered or selected: it moves out a little, the others fade */
+    .dna-chart.focus .dna-slice.active {
+        transform: translate(var(--dx), var(--dy));
+    }
+
+    .dna-chart.focus .dna-slice:not(.active) {
+        opacity: 0.3;
+    }
+
+    .dna-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        text-align: center;
+    }
+
+    .dna-center-pct {
+        font-size: clamp(52px, 8vw, 84px);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -1px;
+        color: #2A1810;
+    }
+
+    .dna-center-name {
+        margin-top: 10px;
+        max-width: 55%;
+        font-size: 0.95em;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .dna-center.swap .dna-center-pct,
+    .dna-center.swap .dna-center-name {
+        animation: dnaSwap 0.3s ease;
+    }
+
+    @@keyframes dnaSwap {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dna-legend {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dna-key {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 14px 1fr auto;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 6px;
+        border: none;
+        border-bottom: 1px solid #EBD5D0;
+        background: none;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: opacity 0.25s ease, background 0.25s ease;
+    }
+
+    .dna-legend li:first-child .dna-key {
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .dna-key:hover,
+    .dna-key:focus-visible {
+        background: rgba(158, 90, 99, 0.08);
+        outline: none;
+    }
+
+    .dna-legend.focus .dna-key:not(.active) {
+        opacity: 0.4;
+    }
+
+    .dna-swatch {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .dna-key-name {
+        color: #2A1810;
+        font-size: 1em;
+    }
+
+    .dna-key.active .dna-key-name {
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .dna-key-pct {
+        font-size: 1.05em;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: #2A1810;
+    }
+
+    .dna-note {
+        margin: 16px 0 0;
+        font-size: 0.8em;
+        color: #56634A;
+    }
+
+    @@media (max-width: 800px) {
+        .dna-section {
+            grid-template-columns: minmax(0, 340px);
+            gap: 36px;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .dna-slice,
+        .dna-key {
+            transition: none;
+        }
+
+        .dna-center.swap .dna-center-pct,
+        .dna-center.swap .dna-center-name {
+            animation: none;
+        }
+    }
+
+    .album-commentary {
+        font-style: italic;
+        color: #2A1810;
+        margin-top: 10px;
+    }
+
+    /* ===== TOP ALBUM ===== */
+    .album-section {
+        background: #FFF8F6;
+        padding: 50px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(158, 90, 99, 0.1);
+    }
+
+    .album-header {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 40px;
+        align-items: start;
+        margin-bottom: 40px;
+    }
+
+    .album-art {
+        width: 250px;
+        height: 250px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 4em;
+        box-shadow: 0 20px 50px rgba(158, 90, 99, 0.2);
+        overflow: hidden;
+        object-fit: cover;
+    }
+
+    .album-info h3 {
+        font-size: 2em;
+        font-weight: 800;
+        color: #2A1810;
+        margin-bottom: 10px;
+        font-family: Georgia, serif;
+    }
+
+    .album-artist {
+        font-size: 1.1em;
+        color: #56634A;
+        margin-bottom: 20px;
+    }
+
+    .album-description {
+        font-size: 0.95em;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    /* ===== ALBUM SONGS CAROUSEL ===== */
+    .album-songs {
+        margin-top: 40px;
+    }
+
+    .album-songs-label {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #2A1810;
+        margin-bottom: 20px;
+    }
+
+    .songs-carousel {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        padding-bottom: 15px;
+    }
+
+    .carousel-song {
+        min-width: 200px;
+        background: linear-gradient(135deg, #F5E5E1 0%, #FAF1EF 100%);
+        padding: 15px;
+        border-radius: 12px;
+        border-left: 4px solid #9E5A63;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .carousel-song:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.15);
+        border-left-color: #56634A;
+    }
+
+    .carousel-song-title {
+        font-weight: 700;
+        font-size: 0.95em;
+        color: #2A1810;
+        margin-bottom: 5px;
+    }
+
+    .carousel-song-artist {
+        font-size: 0.8em;
+        color: #56634A;
+    }
+
+    @@media (max-width: 1024px) {
+        .album-header {
+            grid-template-columns: 1fr;
+        }
+
+        .album-art {
+            width: 100%;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .listen-hero {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+        }
+
+        .top-songs-section,
+        .album-section {
+            padding: 30px;
+        }
+
+    }
+</style>
+
+<div class="listen-section" id="listen">
+    <div class="listen-container">
+        <!-- WHO I LISTEN TO: artist universe -->
+        <h2 class="section-title universe-title">My Music Universe</h2>
+        <p class="universe-subtitle">the bigger the bubble, the more they've been living in my headphones</p>
+        <div class="universe" id="universe" tabindex="0"
+             aria-label="Interactive map of my top 20 Spotify artists. Bigger bubbles are artists I listen to more. Drag to explore, use the zoom buttons, and select an artist for details.">
+            <div class="universe-world" id="universeWorld"></div>
+            <p class="universe-status" id="universeStatus">Loading...</p>
+            <div class="universe-tag" id="universeTag" hidden></div>
+            <div class="universe-panel" id="universePanel" hidden></div>
+            <p class="snoop-remark" id="snoopRemark" role="status" aria-live="polite"></p>
+            <div class="universe-controls">
+                <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+                <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+                <button type="button" data-zoom="reset" aria-label="Reset view">↺</button>
+            </div>
+        </div>
+
+        <!-- WHAT I LISTEN TO -->
+        <h2 class="section-title with-subtitle">On Repeat</h2>
+        <p class="section-subtitle">the five songs I can't stop playing right now</p>
+        <div class="top-songs-section">
+            <ul class="songs-list" id="topSongsContainer">
+                <li style="text-align: center; padding: 40px; color: #56634A;">
+                    Loading...
+                </li>
+            </ul>
+        </div>
+
+        <!-- WHAT IT SOUNDS LIKE -->
+        <h2 class="section-title with-subtitle">Listening DNA</h2>
+        <p class="section-subtitle">what my headphones are apparently made of</p>
+        <div class="dna-section" id="dnaSection">
+            <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
+        </div>
+
+        @* Current Album Obsession: hidden for now while I rethink its layout. To bring it back, delete the
+           comment markers around this block and put fetch('/spotify/GetTopAlbum') back in loadSpotifyData.
+        <!-- WHAT I'M OBSESSED WITH -->
+        <h2 class="section-title with-subtitle">Current Album Obsession</h2>
+        <p class="section-subtitle">the album that keeps taking over my top songs</p>
+        <div class="album-section">
+            <div class="album-header">
+                <div class="album-art" id="albumArt"></div>
+                <div class="album-info">
+                    <h3 id="albumName">Loading...</h3>
+                    <p class="album-artist" id="albumArtist">Suhani's top album</p>
+                    <p class="album-description" id="albumDescription">
+                        My most-played album from my top tracks
+                    </p>
+                    <p class="album-commentary" id="albumCommentary" hidden></p>
+                </div>
+            </div>
+
+            <div class="album-songs">
+                <div class="album-songs-label">Songs from this album</div>
+                <div class="songs-carousel" id="albumSongsContainer">
+                    <div style="color: #56634A; padding: 20px;">
+                        Loading...
+                    </div>
+                </div>
+            </div>
+        </div>
+        *@
+    </div>
+</div>
+
+<script>
+    // Safe to put inside page text AND inside attributes (quotes are escaped too)
+    function escapeHtml(text) {
+        return String(text ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function showNotConnected() {
+        const connect = `Spotify isn't connected yet. <a href="/spotify/login" style="color: #9E5A63; font-weight: 700;">Connect Spotify →</a>`;
+        document.getElementById('universeStatus').innerHTML = connect;
+        document.getElementById('topSongsContainer').innerHTML = `<li style="text-align: center; padding: 40px; color: #56634A;">${connect}</li>`;
+        document.getElementById('dnaSection').innerHTML = `<p class="dna-loading">${connect}</p>`;
+    }
+
+    async function loadSpotifyData() {
+        try {
+            const [artistsResponse, songsResponse, genresResponse] = await Promise.all([
+                fetch('/spotify/GetTopArtists?limit=20'),
+                fetch('/spotify/GetTopTracks?limit=50'),
+                fetch('/spotify/GetTopGenres?limit=5')
+            ]);
+
+            if (artistsResponse.status === 401) {
+                showNotConnected();
+                return;
+            }
+
+            // Top 50 songs: the first 5 are "On Repeat", and all 50 feed the artist and album stats
+            const songs = songsResponse.ok ? await songsResponse.json() : [];
+            if (songs.length > 0) {
+                displayTopSongs(songs.slice(0, 5));
+            }
+
+            if (artistsResponse.ok) {
+                buildUniverse(await artistsResponse.json(), songs);
+            }
+
+            if (genresResponse.ok) {
+                displayListeningDna(await genresResponse.json());
+            }
+        } catch (error) {
+            console.log('Error loading Spotify data:', error);
+        }
+    }
+
+    // =====================================================================
+    // MY MUSIC UNIVERSE: pan/zoom map of my top 20 artists
+    // =====================================================================
+
+    // Bubble DIAMETER by rank (world pixels). Deliberately nonlinear so the
+    // top 5 can be ordered by size alone: #1 >>> #2 >> #3 > #4 > #5 >>> the rest.
+    const RANK_DIAMETERS = [
+        240, 190, 160, 140, 120,      // #1–5: each one clearly smaller than the last
+        105, 98, 92, 86, 80,          // #6–10
+        75, 72, 68, 64, 60,           // #11–15
+        58, 55, 52, 48, 45            // #16–20
+    ];
+    const GAP = 6;                    // space between bubbles (≈6–10px on screen at the default zoom)
+
+    const uv = {
+        artists: [], songs: [], nodes: [],
+        k: 1, tx: 0, ty: 0, homeK: 1, homeTx: 0, homeTy: 0, minK: 0.3, maxK: 3,
+        bounds: null, selected: -1, hovered: -1, width: 0, anim: 0, raf: 0
+    };
+
+    function tierLabel(index) {
+        return index < 5 ? 'Top 5' : index < 10 ? 'Top 10' : 'Top 20';
+    }
+
+    // Seeded random numbers, so the "organic" layout is the same on every visit
+    function seededRandom(seed) {
+        return () => {
+            seed = (seed * 16807) % 2147483647;
+            return (seed - 1) / 2147483646;
+        };
+    }
+
+    // Apple Watch-style packing. #1 sits at the center; #2–5 start around it from four
+    // different directions; #6–10 start in the gaps between them; #11–20 start further out.
+    // Then every bubble is pulled toward the center over and over while collisions push
+    // overlapping bubbles apart, so the cluster settles dense and roughly round, with the
+    // small bubbles falling into the gaps between the big ones.
+    function packUniverse(radii) {
+        const random = seededRandom(20060306);
+        const deg = d => d * Math.PI / 180;
+        // Screen directions (y points down): lower-right, lower-left, upper-right, upper-left
+        const topDirections = [deg(25), deg(155), deg(-45), deg(-135)];
+
+        const nodes = radii.map((r, i) => {
+            let angle, distance;
+            if (i === 0) {
+                return { x: 0, y: 0, r };
+            } else if (i < 5) {
+                angle = topDirections[i - 1];
+                distance = radii[0] + r + GAP;
+            } else if (i < 10) {
+                angle = deg(-90 + (i - 5) * 72 + 36);          // between the top-5 directions
+                distance = radii[0] + radii[1] + r;
+            } else {
+                angle = deg((i - 10) * 137.5);                  // golden angle: spread evenly all round
+                distance = radii[0] + radii[1] * 2 + r;
+            }
+            angle += (random() - 0.5) * deg(20);                // a little irregularity
+            return { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance, r };
+        });
+
+        const separate = () => {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const a = nodes[i], b = nodes[j];
+                    let dx = b.x - a.x, dy = b.y - a.y;
+                    let d = Math.hypot(dx, dy);
+                    const min = a.r + b.r + GAP;
+                    if (d >= min) continue;
+                    if (d < 0.001) { dx = random() - 0.5; dy = random() - 0.5; d = Math.hypot(dx, dy); }
+                    const push = (min - d) / d;
+                    // #1 stays put; otherwise the smaller bubble moves more
+                    const shareA = i === 0 ? 0 : (b.r * b.r) / (a.r * a.r + b.r * b.r);
+                    const shareB = i === 0 ? 1 : 1 - shareA;
+                    a.x -= dx * push * shareA; a.y -= dy * push * shareA;
+                    b.x += dx * push * shareB; b.y += dy * push * shareB;
+                }
+            }
+        };
+
+        for (let step = 0; step < 400; step++) {
+            const gravity = 0.06 * (1 - step / 400) + 0.01;
+            nodes.forEach((n, i) => {
+                if (i === 0) return;
+                n.x -= n.x * gravity;
+                n.y -= n.y * gravity;
+            });
+            for (let pass = 0; pass < 3; pass++) separate();
+        }
+        for (let pass = 0; pass < 50; pass++) separate();      // settle any last overlaps
+        return nodes;
+    }
+
+    function buildUniverse(artists, songs) {
+        uv.artists = artists.slice(0, RANK_DIAMETERS.length);
+        uv.songs = songs;
+        const status = document.getElementById('universeStatus');
+        if (uv.artists.length === 0) {
+            status.textContent = 'No artists found';
+            return;
+        }
+        status.hidden = true;
+
+        const view = document.getElementById('universe');
+        const width = view.clientWidth;
+        const height = view.clientHeight;
+        uv.width = width;
+
+        const circles = packUniverse(uv.artists.map((_, i) => RANK_DIAMETERS[i] / 2));
+        uv.bounds = {
+            minX: Math.min(...circles.map(c => c.x - c.r)), maxX: Math.max(...circles.map(c => c.x + c.r)),
+            minY: Math.min(...circles.map(c => c.y - c.r)), maxY: Math.max(...circles.map(c => c.y + c.r))
+        };
+
+        // Their highest song in my top 50, if they have one
+        uv.nodes = circles.map((c, i) => {
+            const artist = uv.artists[i];
+            const theirSongs = songs.filter(song => song.artist === artist.name);
+            return { ...c, index: i, artist, topSong: theirSongs[0] || null };
+        });
+
+        document.getElementById('universeWorld').innerHTML = uv.nodes.map(node => {
+            const a = node.artist;
+            const photo = a.image ? `background-image: url('${escapeHtml(a.image)}');` : '';
+            return `
+                <button type="button" class="ub" data-index="${node.index}"
+                        aria-label="#${a.position} ${escapeHtml(a.name)}"
+                        style="left: ${node.x - node.r}px; top: ${node.y - node.r}px; width: ${node.r * 2}px; height: ${node.r * 2}px; --delay: ${node.index * 45}ms; ${photo}">
+                    <span class="ub-label">
+                        <span class="ub-rank">#${a.position}</span>
+                        <span class="ub-name">${escapeHtml(a.name)}</span>
+                        <span class="ub-detail">${node.topSong ? `top song: ${escapeHtml(node.topSong.name)}` : ''}</span>
+                    </span>
+                </button>`;
+        }).join('');
+
+
+        computeHomeView(width, height);
+        uv.k = uv.homeK;
+        uv.tx = uv.homeTx;
+        uv.ty = uv.homeTy;
+        clearSelection();
+        applyView();
+    }
+
+    // Starting view: centered on the cluster, showing about 88% of it, but never so zoomed
+    // in that any of the top 5 gets cut off. Some of the smallest artists sit past the edges.
+    function computeHomeView(width, height) {
+        const b = uv.bounds;
+        const size = Math.min(width, height);
+        const span = Math.max(b.maxX - b.minX, b.maxY - b.minY);
+        const top = uv.nodes.slice(0, 5);
+        const t = {
+            minX: Math.min(...top.map(n => n.x - n.r)), maxX: Math.max(...top.map(n => n.x + n.r)),
+            minY: Math.min(...top.map(n => n.y - n.r)), maxY: Math.max(...top.map(n => n.y + n.r))
+        };
+        const margin = size * 0.02;
+        const fitTop5 = (size - margin * 2) / Math.max(t.maxX - t.minX, t.maxY - t.minY);
+
+        const k = Math.min(size / (span * 0.88), fitTop5);
+        uv.homeK = k;
+        uv.minK = (size / span) * 0.8;      // zoomed out: whole universe with room around it
+        uv.maxK = k * 3.2;
+
+        // Center on the whole cluster, then nudge just enough to keep the top 5 inside
+        let tx = width / 2 - ((b.minX + b.maxX) / 2) * k;
+        let ty = height / 2 - ((b.minY + b.maxY) / 2) * k;
+        tx = Math.min(Math.max(tx, width - margin - t.maxX * k), margin - t.minX * k);
+        ty = Math.min(Math.max(ty, height - margin - t.maxY * k), margin - t.minY * k);
+        uv.homeTx = tx;
+        uv.homeTy = ty;
+    }
+
+    // Keep at least part of the universe in the box, so it can't be lost
+    function clampPan() {
+        const view = document.getElementById('universe');
+        const w = view.clientWidth, h = view.clientHeight, b = uv.bounds;
+        const mx = w * 0.3, my = h * 0.3;
+        uv.tx = Math.min(Math.max(uv.tx, mx - b.maxX * uv.k), w - mx - b.minX * uv.k);
+        uv.ty = Math.min(Math.max(uv.ty, my - b.maxY * uv.k), h - my - b.minY * uv.k);
+    }
+
+    function requestView() {
+        if (!uv.raf) uv.raf = requestAnimationFrame(() => { uv.raf = 0; applyView(); });
+    }
+
+    // Semantic zoom: what each bubble shows depends on its size on screen and on the zoom level
+    function applyView() {
+        const world = document.getElementById('universeWorld');
+        world.style.transform = `translate(${uv.tx}px, ${uv.ty}px) scale(${uv.k})`;
+        world.style.setProperty('--px', `${1 / uv.k}px`);
+
+        const zoom = uv.k / uv.homeK;   // 1 = starting view
+        world.querySelectorAll('.ub').forEach(el => {
+            const node = uv.nodes[Number(el.dataset.index)];
+            const tier = node.index < 5 ? 1 : node.index < 10 ? 2 : 3;
+            const d = node.r * 2 * uv.k;   // diameter on screen
+
+            const showRank = d >= 30;
+            const showName = d >= 70 && (tier === 1 ? zoom >= 0.6 : tier === 2 ? d >= 105 : zoom >= 1.5 && d >= 105);
+            const showDetail = d >= 200 && zoom >= 2.2;
+
+            el.classList.toggle('show-rank', showRank);
+            el.classList.toggle('show-name', showName);
+            el.classList.toggle('show-detail', showDetail);
+
+            // Text size in screen pixels, converted to world units so it stays readable at any zoom
+            const fontPx = Math.min(22, Math.max(11, d * 0.085));
+            el.querySelector('.ub-label').style.fontSize = `${fontPx / uv.k}px`;
+        });
+        positionTag();
+    }
+
+    function positionTag() {
+        const tag = document.getElementById('universeTag');
+        const el = uv.hovered >= 0 ? document.querySelector(`.ub[data-index="${uv.hovered}"]`) : null;
+        // Only needed when the bubble isn't already showing its name
+        if (!el || el.classList.contains('show-name') || document.getElementById('universe').classList.contains('dragging')) {
+            tag.hidden = true;
+            return;
+        }
+        const node = uv.nodes[uv.hovered];
+        const top = (node.y - node.r) * uv.k + uv.ty;
+        tag.textContent = `#${node.artist.position} ${node.artist.name}`;
+        tag.style.left = `${node.x * uv.k + uv.tx}px`;
+        tag.classList.toggle('below', top < 40);
+        tag.style.top = `${top < 40 ? (node.y + node.r) * uv.k + uv.ty : top}px`;
+        tag.hidden = false;
+    }
+
+    function zoomAt(px, py, newK) {
+        newK = Math.min(uv.maxK, Math.max(uv.minK, newK));
+        uv.tx = px - (px - uv.tx) * (newK / uv.k);
+        uv.ty = py - (py - uv.ty) * (newK / uv.k);
+        uv.k = newK;
+        clampPan();
+        requestView();
+    }
+
+    // Smooth move to a view (buttons, reset, double-click)
+    function animateTo(k, tx, ty, duration = 450) {
+        cancelAnimationFrame(uv.anim);
+        const start = { k: uv.k, tx: uv.tx, ty: uv.ty };
+        const t0 = performance.now();
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const step = now => {
+            const t = reduce ? 1 : Math.min(1, (now - t0) / duration);
+            const e = 1 - Math.pow(1 - t, 3);
+            uv.k = start.k + (k - start.k) * e;
+            uv.tx = start.tx + (tx - start.tx) * e;
+            uv.ty = start.ty + (ty - start.ty) * e;
+            applyView();
+            if (t < 1) uv.anim = requestAnimationFrame(step);
+        };
+        uv.anim = requestAnimationFrame(step);
+    }
+
+    function zoomBy(factor) {
+        const view = document.getElementById('universe');
+        const px = view.clientWidth / 2, py = view.clientHeight / 2;
+        const k = Math.min(uv.maxK, Math.max(uv.minK, uv.k * factor));
+        const saved = { k: uv.k, tx: uv.tx, ty: uv.ty };
+        zoomAt(px, py, k);                      // work out the clamped target...
+        const target = { k: uv.k, tx: uv.tx, ty: uv.ty };
+        Object.assign(uv, saved);               // ...then animate to it
+        animateTo(target.k, target.tx, target.ty, 300);
+    }
+
+    // Double-click: zoom toward and center an artist
+    function focusArtist(index) {
+        const view = document.getElementById('universe');
+        const node = uv.nodes[index];
+        const k = Math.min(uv.maxK, Math.max(uv.k, (Math.min(view.clientWidth, view.clientHeight) * 0.55) / (node.r * 2)));
+        animateTo(k, view.clientWidth / 2 - node.x * k, view.clientHeight / 2 - node.y * k, 550);
+    }
+
+    // Rare "snoop" remarks: each shows once per visitor, then never again
+    function snoopOnce(id, text) {
+        try {
+            if (localStorage.getItem('snoop-' + id)) return;
+            localStorage.setItem('snoop-' + id, '1');
+        } catch { /* private browsing: just show it this time */ }
+        const remark = document.getElementById('snoopRemark');
+        remark.textContent = text;
+        remark.classList.add('show');
+        setTimeout(() => remark.classList.remove('show'), 3000);
+    }
+
+    function selectArtist(index) {
+        uv.selected = index;
+        // Ariana is my all-time favorite
+        if (uv.nodes[index].artist.name === 'Ariana Grande') {
+            snoopOnce('ariana', "you have excellent taste, apparently. or you're just trying to copy me.");
+        }
+        const view = document.getElementById('universe');
+        const sel = uv.nodes[index];
+        view.classList.add('has-selection');
+        document.querySelectorAll('.ub').forEach(el => {
+            const node = uv.nodes[Number(el.dataset.index)];
+            const gap = Math.hypot(node.x - sel.x, node.y - sel.y) - node.r - sel.r;
+            el.classList.toggle('selected', node.index === index);
+            el.classList.toggle('near', gap < sel.r * 0.8);
+        });
+
+        const a = sel.artist;
+        const panel = document.getElementById('universePanel');
+        panel.innerHTML = `
+            <button type="button" class="up-close" aria-label="Close details">×</button>
+            <div class="up-head">
+                ${a.image ? `<img class="up-photo" src="${escapeHtml(a.image)}" alt="">` : ''}
+                <div>
+                    <div class="up-rank">#${a.position} · ${tierLabel(index)}</div>
+                    <div class="up-name">${escapeHtml(a.name)}</div>
+                </div>
+            </div>
+            <ul class="up-stats">
+                ${sel.topSong ? `<li>Top song: <strong>${escapeHtml(sel.topSong.name)}</strong> (#${sel.topSong.position} in my top 50)</li>` : ''}
+            </ul>
+            <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open in Spotify ↗</a>`;
+        panel.hidden = false;
+        panel.querySelector('.up-close').addEventListener('click', clearSelection);
+    }
+
+    function clearSelection() {
+        uv.selected = -1;
+        document.getElementById('universe').classList.remove('has-selection');
+        document.querySelectorAll('.ub.selected, .ub.near').forEach(el => el.classList.remove('selected', 'near'));
+        document.getElementById('universePanel').hidden = true;
+    }
+
+    // ---- Mouse, trackpad and touch ----
+    (function setUpUniverseInput() {
+        const view = document.getElementById('universe');
+        const pointers = new Map();
+        let drag = null, pinch = null, lastTap = { index: -1, time: 0 };
+
+        const localPoint = e => {
+            const rect = view.getBoundingClientRect();
+            return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+        };
+        const isUi = target => target.closest('.universe-controls, .universe-panel');
+
+        view.addEventListener('pointerdown', e => {
+            if (isUi(e.target) || !uv.bounds) return;
+            cancelAnimationFrame(uv.anim);
+            pointers.set(e.pointerId, localPoint(e));
+            view.setPointerCapture(e.pointerId);
+
+            if (pointers.size === 2) {
+                const [p1, p2] = [...pointers.values()];
+                pinch = { dist: Math.hypot(p1.x - p2.x, p1.y - p2.y), k: uv.k };
+                drag = null;
+            } else {
+                const bubble = e.target.closest('.ub');
+                drag = { start: localPoint(e), tx: uv.tx, ty: uv.ty, moved: false, index: bubble ? Number(bubble.dataset.index) : -1 };
+            }
+        });
+
+        view.addEventListener('pointermove', e => {
+            if (!pointers.has(e.pointerId)) {
+                // Plain hover (mouse, not dragging)
+                const bubble = e.target.closest('.ub');
+                const index = bubble ? Number(bubble.dataset.index) : -1;
+                if (index !== uv.hovered) {
+                    uv.hovered = index;
+                    positionTag();
+                }
+                return;
+            }
+            pointers.set(e.pointerId, localPoint(e));
+
+            if (pinch && pointers.size === 2) {
+                const [p1, p2] = [...pointers.values()];
+                const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                zoomAt((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, pinch.k * dist / pinch.dist);
+            } else if (drag) {
+                const p = localPoint(e);
+                const dx = p.x - drag.start.x, dy = p.y - drag.start.y;
+                if (!drag.moved && Math.hypot(dx, dy) > 4) {
+                    drag.moved = true;
+                    view.classList.add('dragging');
+                }
+                if (drag.moved) {
+                    uv.tx = drag.tx + dx;
+                    uv.ty = drag.ty + dy;
+                    clampPan();
+                    requestView();
+                }
+            }
+        });
+
+        const endPointer = e => {
+            if (!pointers.has(e.pointerId)) return;
+            pointers.delete(e.pointerId);
+            if (pointers.size < 2) pinch = null;
+            view.classList.remove('dragging');
+
+            if (drag && !drag.moved && e.type === 'pointerup') {
+                const now = performance.now();
+                if (drag.index >= 0) {
+                    selectArtist(drag.index);
+                    // Double-click / double-tap on the same artist zooms to it
+                    if (lastTap.index === drag.index && now - lastTap.time < 350) {
+                        focusArtist(drag.index);
+                    }
+                    lastTap = { index: drag.index, time: now };
+                } else {
+                    clearSelection();   // clicking empty space clears the selection
+                }
+            }
+            drag = null;
+            positionTag();
+        };
+        view.addEventListener('pointerup', endPointer);
+        view.addEventListener('pointercancel', endPointer);
+        view.addEventListener('pointerleave', () => {
+            if (pointers.size === 0) {
+                uv.hovered = -1;
+                positionTag();
+            }
+        });
+
+        // Scroll/pinch on a trackpad zooms around the pointer. Only while the pointer is
+        // over the universe, so normal page scrolling everywhere else is untouched.
+        view.addEventListener('wheel', e => {
+            if (!uv.bounds || isUi(e.target)) return;
+            e.preventDefault();
+            cancelAnimationFrame(uv.anim);
+            const p = localPoint(e);
+            const delta = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+            zoomAt(p.x, p.y, uv.k * Math.exp(-delta * (e.ctrlKey ? 0.01 : 0.0015)));
+        }, { passive: false });
+
+        // Keyboard: Enter/Space on a bubble selects it
+        view.addEventListener('click', e => {
+            const bubble = e.target.closest('.ub');
+            if (bubble && e.detail === 0) selectArtist(Number(bubble.dataset.index));
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && uv.selected >= 0) clearSelection();
+        });
+
+        view.querySelector('.universe-controls').addEventListener('click', e => {
+            const button = e.target.closest('button');
+            if (!button || !uv.bounds) return;
+            if (button.dataset.zoom === 'in') zoomBy(1.4);
+            if (button.dataset.zoom === 'out') zoomBy(1 / 1.4);
+            if (button.dataset.zoom === 'reset') {
+                clearSelection();
+                animateTo(uv.homeK, uv.homeTx, uv.homeTy);
+            }
+        });
+
+        // Rebuild when the box changes width (rotating a phone, resizing the window)
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (uv.artists.length && Math.abs(view.clientWidth - uv.width) > 40) {
+                    buildUniverse(uv.artists, uv.songs);
+                }
+            }, 200);
+        });
+    })();
+
+    // =====================================================================
+    // LISTENING DNA: genre share as an interactive donut + legend
+    // =====================================================================
+
+    // Pinks and warm greens (deep rose, leaf, rose pink, forest, blush), checked with the colorblind
+    // validator in this ring order against the ivory page. "Everything else" is a pale pink, never grey.
+    const DNA_COLORS = ['#84394A', '#85B475', '#BD687D', '#3E7239', '#EB959F'];
+    const DNA_OTHER = '#EBCFCB';
+
+    // "dance-pop" → "Dance Pop", "r&b" → "R&B"
+    function genreLabel(name) {
+        return name.replace(/-/g, ' ')
+            .replace(/\b\w/g, c => c.toUpperCase())
+            .replace(/R&b/g, 'R&B');
+    }
+
+    function displayListeningDna(genres) {
+        const section = document.getElementById('dnaSection');
+        if (genres.length === 0) {
+            section.innerHTML = '<p class="dna-loading">No genres found</p>';
+            return;
+        }
+
+        // Real shares from the genre endpoint, biggest first; whatever's left is "everything else" (always last)
+        const sorted = [...genres].sort((a, b) => b.percent - a.percent);
+        const slices = sorted.map((g, i) => ({ name: genreLabel(g.name), percent: g.percent, color: DNA_COLORS[i % DNA_COLORS.length] }));
+        const rest = 100 - sorted.reduce((sum, g) => sum + g.percent, 0);
+        if (rest >= 0.5) {
+            slices.push({ name: 'Everything Else', percent: Math.round(rest * 10) / 10, color: DNA_OTHER });
+        }
+        const total = slices.reduce((sum, s) => sum + s.percent, 0);
+        const pct = value => `${Math.round(value)}%`;
+
+        // Donut geometry (SVG units). A small angle gap separates the slices.
+        const C = 200, R = 182, r = 120, pad = 0.012, push = 12;
+        const point = (radius, angle) => `${C + radius * Math.cos(angle)} ${C + radius * Math.sin(angle)}`;
+        let angle = -Math.PI / 2;
+        const paths = slices.map((s, i) => {
+            const sweep = (s.percent / total) * Math.PI * 2;
+            const a0 = angle + pad, a1 = angle + sweep - pad;
+            const mid = angle + sweep / 2;
+            angle += sweep;
+            const large = a1 - a0 > Math.PI ? 1 : 0;
+            const d = `M ${point(R, a0)} A ${R} ${R} 0 ${large} 1 ${point(R, a1)} L ${point(r, a1)} A ${r} ${r} 0 ${large} 0 ${point(r, a0)} Z`;
+            return `<path class="dna-slice" data-i="${i}" d="${d}" fill="${s.color}"
+                          style="--dx: ${(Math.cos(mid) * push).toFixed(2)}px; --dy: ${(Math.sin(mid) * push).toFixed(2)}px;">
+                        <title>${escapeHtml(s.name)}: ${s.percent}%</title>
+                    </path>`;
+        }).join('');
+
+        section.innerHTML = `
+            <div class="dna-chart">
+                <svg viewBox="0 0 400 400" role="img" aria-label="Genre share: ${slices.map(s => `${escapeHtml(s.name)} ${pct(s.percent)}`).join(', ')}">${paths}</svg>
+                <div class="dna-center" aria-live="polite">
+                    <span class="dna-center-pct"></span>
+                    <span class="dna-center-name"></span>
+                </div>
+            </div>
+            <div>
+                <ul class="dna-legend">
+                    ${slices.map((s, i) => `
+                        <li><button type="button" class="dna-key" data-i="${i}" aria-pressed="false">
+                            <span class="dna-swatch" style="background: ${s.color};"></span>
+                            <span class="dna-key-name">${escapeHtml(s.name)}</span>
+                            <span class="dna-key-pct">${pct(s.percent)}</span>
+                        </button></li>`).join('')}
+                </ul>
+                <p class="dna-note">Genre tags from MusicBrainz for my top 10 Spotify artists, weighted by how high each artist ranks.</p>
+            </div>`;
+
+        const chart = section.querySelector('.dna-chart');
+        const legend = section.querySelector('.dna-legend');
+        const center = section.querySelector('.dna-center');
+        let hovered = -1, selected = -1, shown = -1;
+
+        // Center shows the hovered genre, else the selected one, else my #1
+        const render = () => {
+            const active = hovered >= 0 ? hovered : selected;
+            const focus = active >= 0;
+            chart.classList.toggle('focus', focus);
+            legend.classList.toggle('focus', focus);
+            section.querySelectorAll('[data-i]').forEach(el => {
+                const i = Number(el.dataset.i);
+                el.classList.toggle('active', i === active);
+                if (el.classList.contains('dna-key')) el.setAttribute('aria-pressed', i === selected);
+            });
+
+            const i = focus ? active : 0;
+            if (i !== shown) {
+                shown = i;
+                center.querySelector('.dna-center-pct').textContent = pct(slices[i].percent);
+                center.querySelector('.dna-center-name').textContent = slices[i].name;
+                center.classList.remove('swap');
+                void center.offsetWidth;   // restart the fade
+                center.classList.add('swap');
+            }
+        };
+
+        section.querySelectorAll('.dna-slice, .dna-key').forEach(el => {
+            const i = Number(el.dataset.i);
+            el.addEventListener('mouseenter', () => { hovered = i; render(); });
+            el.addEventListener('mouseleave', () => { hovered = -1; render(); });
+            el.addEventListener('focus', () => { hovered = i; render(); });
+            el.addEventListener('blur', () => { hovered = -1; render(); });
+            el.addEventListener('click', event => {
+                event.stopPropagation();
+                selected = selected === i ? -1 : i;   // click again to let go
+                render();
+            });
+        });
+
+        // Clicking anywhere outside the chart and legend clears the selection
+        document.addEventListener('click', event => {
+            if (selected >= 0 && !event.target.closest('.dna-chart, .dna-legend')) {
+                selected = -1;
+                render();
+            }
+        });
+
+        render();
+    }
+
+    function displayTopSongs(songs) {
+        const container = document.getElementById('topSongsContainer');
+        container.innerHTML = songs.map(song => `
+            <li class="song-item" data-url="${escapeHtml(song.spotifyUrl)}" style="cursor: pointer;">
+                <div class="song-rank">#${song.position}</div>
+                <div class="song-image">
+                    ${song.albumArt
+                        ? `<img src="${escapeHtml(song.albumArt)}" alt="${escapeHtml(song.name)}" style="width: 100%; height: 100%; object-fit: cover;">`
+                        : ''}
+                </div>
+                <div class="song-info">
+                    <div class="song-name">${escapeHtml(song.name)}</div>
+                    <div class="song-artist">${escapeHtml(song.artist)}</div>
+                </div>
+            </li>
+        `).join('');
+        container.querySelectorAll('.song-item').forEach(item => {
+            item.addEventListener('click', () => { if (item.dataset.url) window.open(item.dataset.url, '_blank', 'noopener'); });
+        });
+    }
+
+    // Optional: my own words about an album, shown under the stats. Key = album name on Spotify.
+    const albumCommentary = {
+        // 'petal': 'Write what this album means to you here.'
+    };
+
+    function displayTopAlbum(album, topSongs) {
+        if (!album) return;
+
+        document.getElementById('albumName').textContent = album.name;
+        document.getElementById('albumArtist').textContent = album.artist;
+        document.getElementById('albumDescription').textContent = album.songsInMyTop > 1
+            ? `${album.songsInMyTop} of my top 50 songs are from this album. Obsessed? Me? Never.`
+            : 'The album I keep coming back to.';
+
+        const commentary = document.getElementById('albumCommentary');
+        if (albumCommentary[album.name]) {
+            commentary.textContent = albumCommentary[album.name];
+            commentary.hidden = false;
+        }
+
+        if (album.albumArt) {
+            document.getElementById('albumArt').innerHTML = `
+                <a href="${escapeHtml(album.spotifyUrl)}" target="_blank">
+                    <img src="${escapeHtml(album.albumArt)}" alt="${escapeHtml(album.name)} cover"
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+                </a>`;
+        }
+
+        // Note the album's songs that made my top 50
+        const favorites = new Set(topSongs.filter(song => song.artist === album.artist).map(song => song.name));
+        const carousel = document.getElementById('albumSongsContainer');
+        carousel.innerHTML = album.tracks.map((track, index) => `
+            <div class="carousel-song">
+                <div class="carousel-song-title">${escapeHtml(track)}</div>
+                <div class="carousel-song-artist">Track ${index + 1}${favorites.has(track) ? ' · in my top 50' : ''}</div>
+            </div>
+        `).join('') + `
+            <div class="carousel-song">
+                <div class="carousel-song-title">and more</div>
+                <div class="carousel-song-artist"><a href="${escapeHtml(album.spotifyUrl)}" target="_blank" style="color: inherit;">Listen on Spotify ↗</a></div>
+            </div>`;
+    }
+
+    // Load data on page load
+    loadSpotifyData();
+
+    // Menu links like Favorites > Watch jump to #watch. The Spotify sections above it fill in
+    // after the jump and grow, which would push Watch down out of view, so keep the chosen
+    // section lined up under the menu until the visitor scrolls on their own.
+    (function keepChosenSectionInView() {
+        let visitorScrolled = false;
+        const stop = () => { visitorScrolled = true; };
+        ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(type => window.addEventListener(type, stop, { passive: true, once: true }));
+
+        const realign = () => {
+            if (visitorScrolled || !location.hash) return;
+            const target = document.querySelector(location.hash);
+            if (target) target.scrollIntoView({ block: 'start' });
+        };
+        new ResizeObserver(realign).observe(document.getElementById('listen'));
+        window.addEventListener('hashchange', () => { visitorScrolled = false; });
+        setTimeout(stop, 20000);   // give up after 20 seconds no matter what
+    })();
+</script>
+
+<link rel="stylesheet" href="~/css/shelves.css" asp-append-version="true" />
+
+@functions {
+    // One cover on a shelf. ShowWhole = artwork that isn't 2:3, shown uncropped on a mat.
+    public record ShelfItem(string Title, string Meta, string Image, bool ShowWhole = false);
+
+    // One YouTube video in Watch > Inspiration. YouTubeId = the part after "v=" in the link.
+    public record Video(string Title, string Meta, string YouTubeId, string Image);
+}
+
+@{
+    void RenderShelf(string title, ShelfItem[] items, string? caption = null, bool wide = false)
+    {
+        <div class="shelf @(wide ? "wide" : "")">
+            <div class="shelf-head">
+                <h3 class="shelf-title">@title</h3>
+                @if (items.Length > 4)
+                {
+                    // only needed when the shelf holds more than fits on screen
+                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@items.Length">See all @items.Length →</button>
+                }
+            </div>
+            @if (!string.IsNullOrEmpty(caption))
+            {
+                <p class="shelf-caption">@caption</p>
+            }
+            <div class="shelf-rail-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="@title">
+                    @foreach (var item in items)
+                    {
+                        <li class="shelf-item">
+                            <div class="shelf-cover @(item.ShowWhole ? "show-whole" : "")">
+                                <img src="@item.Image" alt="@item.Title cover" loading="lazy" draggable="false"
+                                     onerror="this.remove()">
+                            </div>
+                            <p class="shelf-item-title">@item.Title</p>
+                            @if (!string.IsNullOrEmpty(item.Meta))
+                            {
+                                <p class="shelf-item-meta">@item.Meta</p>
+                            }
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll @title right">›</button>
+            </div>
+        </div>
+    }
+}
+
+@{
+    // Like RenderShelf, but each card is a video that plays in the pop-up player
+    void RenderVideoShelf(string title, Video[] videos, string? caption = null)
+    {
+        <div class="shelf wide video-shelf">
+            <div class="shelf-head">
+                <h3 class="shelf-title">@title</h3>
+                @if (videos.Length > 3)
+                {
+                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@videos.Length">See all @videos.Length →</button>
+                }
+            </div>
+            @if (!string.IsNullOrEmpty(caption))
+            {
+                <p class="shelf-caption">@caption</p>
+            }
+            <div class="shelf-rail-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="@title">
+                    @foreach (var video in videos)
+                    {
+                        <li class="shelf-item">
+                            <button type="button" class="video-open" data-video="@video.YouTubeId" data-title="@video.Title" data-meta="@video.Meta"
+                                    aria-label="Play @video.Title">
+                                <span class="shelf-cover">
+                                    <img src="@video.Image" alt="" loading="lazy" draggable="false">
+                                    <span class="video-play" aria-hidden="true"></span>
+                                </span>
+                                <span class="shelf-item-title">@video.Title</span>
+                                @if (!string.IsNullOrEmpty(video.Meta))
+                                {
+                                    <span class="shelf-item-meta">@video.Meta</span>
+                                }
+                            </button>
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll @title right">›</button>
+            </div>
+        </div>
+    }
+}
+
+<!-- WATCH SECTION -->
+<section id="watch" class="listen-section shelf-section" style="background: linear-gradient(135deg, #F7EAE6 0%, #FAF1EF 100%);">
+    <div class="listen-container shelf-container">
+        <div class="shelf-intro">
+            <h2 class="section-title">Watch</h2>
+        </div>
+        @{
+            // Edit these lists to change your favorites: (title, small line under the title, cover image).
+            // These are collections, not rankings: add or remove as many as you like, in any order.
+            // Posters: movies from Wikipedia, shows from TVmaze (saved in wwwroot/images/posters).
+            var romComs = new[]
+            {
+                new ShelfItem("Yeh Jawaani Hai Deewani", "2013", "/images/posters/yeh-jawaani-hai-deewani.jpg"),
+                new ShelfItem("How to Lose a Guy in 10 Days", "2003", "/images/posters/how-to-lose-a-guy-in-10-days.jpg"),
+                // upright version of the poster (from Bengali Wikipedia); the English one is nearly square
+                new ShelfItem("Jab We Met", "2007", "/images/posters/jab-we-met.jpg"),
+                new ShelfItem("Voicemails for Isabelle", "2026", "/images/posters/voicemails-for-isabelle.jpg"),
+                new ShelfItem("Tu Jhoothi Main Makkaar", "2023", "/images/posters/tu-jhoothi-main-makkaar.jpg")
+            };
+
+            var comfortShows = new[]
+            {
+                new ShelfItem("Gossip Girl", "2007–2012", "/images/posters/gossip-girl.jpg"),
+                new ShelfItem("Jane the Virgin", "2014–2019", "/images/posters/jane-the-virgin.jpg"),
+                new ShelfItem("Modern Family", "2009–2020", "/images/posters/modern-family.jpg"),
+                new ShelfItem("Friends", "1994–2004", "/images/posters/friends.jpg"),
+                new ShelfItem("Desperate Housewives", "2004–2012", "/images/posters/desperate-housewives.jpg")
+            };
+
+            RenderShelf("Romance Movies That I'm In Love With", romComs,
+                "For nights when I’m feeling a little delusional, hopelessly romantic, and in need of a reminder that things have a way of working out.");
+        }
+        <hr class="shelf-divider">
+        @{
+            RenderShelf("Shows I Rewatch on Repeat", comfortShows,
+                "For sad days, lazy days, and the days I feel like a hopeless couch-potato blob. These always make me a little happier.");
+
+            // Shows I liked, but not enough to rewatch forever
+            var otherShows = new[]
+            {
+                new ShelfItem("Gilmore Girls", "2000–2007", "/images/posters/gilmore-girls.jpg"),
+                new ShelfItem("Ginny & Georgia", "2021–", "/images/posters/ginny-and-georgia.jpg"),
+                new ShelfItem("Bridgerton", "2020–", "/images/posters/bridgerton.jpg"),
+                new ShelfItem("56 Days", "2026", "/images/posters/56-days.jpg"),
+                new ShelfItem("Off Campus", "2026–", "/images/posters/off-campus.jpg")
+            };
+
+            // The Desi Edit: Hindi shows. Posters from TVmaze, saved smaller in wwwroot/images/posters.
+            var desiEdit = new[]
+            {
+                new ShelfItem("Dil Dosti Dilemma", "2024", "/images/posters/dil-dosti-dilemma.jpg"),
+                new ShelfItem("Call Me Bae", "2024", "/images/posters/call-me-bae.jpg"),
+                new ShelfItem("Mind the Malhotras", "2019", "/images/posters/mind-the-malhotras.jpg"),
+                new ShelfItem("Mismatched", "2020–", "/images/posters/mismatched.jpg"),
+                new ShelfItem("Masaba Masaba", "2020–2022", "/images/posters/masaba-masaba.jpg")
+            };
+
+            // Comedy: stand-up specials and shows. Specials' posters from IMDb, the Netflix show's from TVmaze.
+            var comedy = new[]
+            {
+                new ShelfItem("Zakir Khan: Papa Yaar", "Stand-up special", "/images/posters/papa-yaar.jpg"),
+                new ShelfItem("Amit Tandon: Family Tandoncies", "Stand-up special", "/images/posters/family-tandoncies.jpg"),
+                new ShelfItem("Hasan Minhaj: Homecoming King", "Stand-up special", "/images/posters/homecoming-king.jpg"),
+                new ShelfItem("Ladies Up", "Stand-up series", "/images/posters/ladies-up.jpg"),
+                new ShelfItem("The Great Indian Kapil Show", "2024–", "/images/posters/great-indian-kapil-show.jpg")
+            };
+
+            // Shows I loved as a kid.
+            var kidShows = new[]
+            {
+                new ShelfItem("Sofia the First", "2013–2018", "/images/posters/sofia-the-first.jpg"),
+                new ShelfItem("Jessie", "2011–2015", "/images/posters/jessie.jpg"),
+                new ShelfItem("Good Luck Charlie", "2010–2014", "/images/posters/good-luck-charlie.jpg"),
+                new ShelfItem("Liv and Maddie", "2013–2017", "/images/posters/liv-and-maddie.jpg"),
+                new ShelfItem("Full House", "1987–1995", "/images/posters/full-house.jpg"),
+                new ShelfItem("Lab Rats", "2012–2016", "/images/posters/lab-rats.jpg")
+            };
+        }
+        <hr class="shelf-divider">
+        @{ RenderShelf("Watched It, Loved It, Moved On", otherShows); }
+        <hr class="shelf-divider">
+        @{ RenderShelf("The Desi Edit", desiEdit); }
+        <hr class="shelf-divider">
+        @{ RenderShelf("Comedy That Never Misses", comedy); }
+        <hr class="shelf-divider">
+        @{ RenderShelf("Shows I Loved as a Kid", kidShows); }
+        @{
+            // Inspiration: talks and videos. Thumbnails from YouTube (Dweck's photo from TED's talk page), saved in wwwroot/images/videos.
+            var inspiration = new[]
+            {
+                new Video("What Makes a Good Life?", "Robert Waldinger · TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg"),
+                new Video("The Power of Believing That You Can Improve", "Carol Dweck · TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg"),
+                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth · TED", "H14bBuluwB8", "/images/videos/grit.jpg"),
+                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut · TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg"),
+                new Video("Change Your Mindset, Change the Game", "Alia Crum · TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg"),
+                new Video("You Aren’t at the Mercy of Your Emotions — Your Brain Creates Them", "Lisa Feldman Barrett · TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg"),
+                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith · TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg"),
+                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn · TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg"),
+                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag · TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg"),
+                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh · TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg"),
+                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker · TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg"),
+                new Video("How Every Child Can Thrive by Five", "Molly Wright · TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg")
+            };
+        }
+        <hr class="shelf-divider">
+        @{ RenderVideoShelf("Inspiration", inspiration); }
+    </div>
+</section>
+
+<!-- READ SECTION -->
+<section id="read" class="listen-section shelf-section page-fill" style="background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);">
+    <div class="listen-container shelf-container">
+        <div class="shelf-intro">
+            <h2 class="section-title">What I'm Reading</h2>
+        </div>
+        @{
+            // Edit this list to change your favorite rom-com books: (title, author, cover image).
+            // A collection, not a ranking: any number of books works. Covers from Open Library (saved in wwwroot/images/covers).
+            var books = new[]
+            {
+                new ShelfItem("The Hating Game", "Sally Thorne", "/images/covers/the-hating-game.jpg"),
+                new ShelfItem("The Unhoneymooners", "Christina Lauren", "/images/covers/the-unhoneymooners.jpg"),
+                new ShelfItem("People We Meet on Vacation", "Emily Henry", "/images/covers/people-we-meet-on-vacation.jpg"),
+                new ShelfItem("You Deserve Each Other", "Sarah Hogle", "/images/covers/you-deserve-each-other.jpg"),
+                new ShelfItem("The Spanish Love Deception", "Elena Armas", "/images/covers/the-spanish-love-deception.jpg"),
+                new ShelfItem("By a Thread", "Lucy Score", "/images/covers/by-a-thread.jpg"),
+                // Open Library has no cover for this one, so it's from Amazon
+                new ShelfItem("The Devil You Know", "Elizabeth O'Roark", "/images/covers/the-devil-you-know.jpg"),
+                new ShelfItem("The Ex Talk", "Rachel Lynn Solomon", "/images/covers/the-ex-talk.jpg"),
+                new ShelfItem("Funny Story", "Emily Henry", "/images/covers/funny-story.jpg"),
+                new ShelfItem("The American Roommate Experiment", "Elena Armas", "/images/covers/the-american-roommate-experiment.jpg"),
+                // Open Library only has a tiny or square (audiobook) cover for this one, so it's from Amazon
+                new ShelfItem("The Worst Best Man", "Mia Sosa", "/images/covers/the-worst-best-man.jpg"),
+                new ShelfItem("The Deal", "Elle Kennedy", "/images/covers/the-deal.jpg"),
+                new ShelfItem("The Love Hypothesis", "Ali Hazelwood", "/images/covers/the-love-hypothesis.jpg")
+            };
+
+            RenderShelf("Books I'd Sell My Soul to Read Again", books);
+
+            // Self-help: same shelf, (title, author, cover image). Add more any time.
+            var selfHelp = new[]
+            {
+                new ShelfItem("Atomic Habits", "James Clear", "/images/covers/atomic-habits.jpg"),
+                new ShelfItem("The Let Them Theory", "Mel Robbins", "/images/covers/the-let-them-theory.jpg"),
+                new ShelfItem("How to Win Friends and Influence People", "Dale Carnegie", "/images/covers/how-to-win-friends-and-influence-people.jpg"),
+                new ShelfItem("Ikigai", "Héctor García & Francesc Miralles", "/images/covers/ikigai.jpg"),
+                new ShelfItem("The 48 Laws of Power", "Robert Greene", "/images/covers/the-48-laws-of-power.jpg")
+            };
+        }
+        <hr class="shelf-divider">
+        @{ RenderShelf("Books That Actually Changed How I Live", selfHelp); }
+        @{
+            // Business books. Cover from Open Library (English hardcover), saved in wwwroot/images/covers.
+            var business = new[]
+            {
+                new ShelfItem("Onward: How Starbucks Fought for Its Life Without Losing Its Soul", "Howard Schultz", "/images/covers/onward.jpg")
+            };
+        }
+        <hr class="shelf-divider">
+        @{ RenderShelf("Business for Boss Babes", business); }
+    </div>
+</section>
+
+<!-- Video player (one dialog; the video loads when a card is clicked and stops when it closes) -->
+<dialog class="recipe-card video-card" id="videoCard" aria-labelledby="videoTitle">
+    <button type="button" class="recipe-close" aria-label="Close video">×</button>
+    <div class="video-frame" id="videoFrame"></div>
+    <div class="recipe-body">
+        <p class="recipe-kicker">Inspiration</p>
+        <h3 id="videoTitle"></h3>
+        <p class="recipe-line" id="videoMeta"></p>
+    </div>
+</dialog>
+
+<script src="~/js/shelves.js" asp-append-version="true"></script>

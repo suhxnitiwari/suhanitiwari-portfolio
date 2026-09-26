@@ -1,0 +1,1312 @@
+@{
+    ViewData["Title"] = "Hello";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #FAF1EF;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        color: #2A1810;
+        line-height: 1.6;
+    }
+
+    /* ===== HERO: full-bleed photo with SUHANI | me | TIWARI =====
+       The photo is an <img> (not a background) so the slow camera push and focal point
+       are easy to control. Horizontal positions are % of the photo's width: I'm centered,
+       roughly 35-66% across, face ~43-53% across and ~32-48% down. */
+    .cover-hero {
+        --title: #FFFFFF;                         /* cream: reads on both the flowers and the dark olive tree */
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1672 / 941;                 /* the photo's own shape: no layout shift */
+        max-height: calc(100svh - 72px);          /* never taller than the screen under the navbar */
+        min-height: 420px;
+        overflow: hidden;
+        background: #F3E2DE;                      /* warm placeholder while the photo loads */
+        container-type: inline-size;              /* lets the type size itself to the hero's width */
+    }
+
+    /* Scroll interaction: the page sets --p from 0 (top) to 1 (hero scrolled away).
+       The photo drifts slower than the page and pushes in a little more; the name parts outward. */
+    .cover-media {
+        position: absolute;
+        inset: 0;
+        transform: translate3d(0, calc(var(--p, 0) * 22%), 0) scale(calc(1 + var(--p, 0) * 0.08));
+        transform-origin: 48% 40%;
+        will-change: transform;
+    }
+
+    .cover-photo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 48% 40%;
+        transform-origin: 48% 40%;               /* the camera moves toward my eyes */
+        animation: coverPush 6s cubic-bezier(0.22, 1, 0.36, 1) both;
+        will-change: transform;
+    }
+
+    /* one push in that settles, then it stays: no pulsing, no zooming back out */
+    @@keyframes coverPush {
+        from { transform: scale(1); }
+        to { transform: scale(1.1); }
+    }
+
+    /* Soft shade over the two outer thirds only, so the name reads everywhere.
+       Fully clear across the middle, so my face and the photo stay untouched. */
+    .cover-scrim {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+            linear-gradient(90deg,
+                rgba(30, 14, 12, 0.58) 0%,
+                rgba(30, 14, 12, 0.42) 28%,
+                rgba(30, 14, 12, 0) 41%,
+                rgba(30, 14, 12, 0) 59%,
+                rgba(30, 14, 12, 0.42) 72%,
+                rgba(30, 14, 12, 0.58) 100%),
+            linear-gradient(0deg, rgba(30, 14, 12, 0.35) 0%, rgba(30, 14, 12, 0) 18%);
+    }
+
+    .cover-name {
+        position: absolute;
+        top: 38%;
+        margin: 0;
+        font-family: 'Bodoni Moda', Didot, 'Bodoni 72', 'Playfair Display', Georgia, serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-size: 10cqw;
+        line-height: 0.82;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        color: var(--title);
+        text-shadow: 0 2px 24px rgba(20, 8, 6, 0.45), 0 1px 3px rgba(20, 8, 6, 0.3);
+        white-space: nowrap;
+        /* the letters rise from behind this bottom edge */
+        padding-bottom: 0.06em;
+        clip-path: inset(-60% -12% 0 -12%);
+        opacity: calc(1 - var(--p, 0) * 1.8);
+        filter: blur(calc(var(--p, 0) * 8px));
+        will-change: transform, opacity, filter;
+    }
+
+    /* as you scroll down, the name softens, sinks a little and eases apart
+       (at most 2cqw each way, so it never runs off the edge of the screen) */
+    .cover-name.left {
+        left: 2.2%;
+        transform: translate3d(calc(var(--p, 0) * -2cqw), calc(var(--p, 0) * 9cqw), 0);
+    }
+
+    .cover-name.right {
+        right: 2.2%;
+        transform: translate3d(calc(var(--p, 0) * 2cqw), calc(var(--p, 0) * 9cqw), 0);
+    }
+
+    /* Entrance: each letter rises into place from behind the line, sharpening as it arrives */
+    .cover-name .ch {
+        display: inline-block;
+        animation: coverLetterIn 1.25s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+        animation-delay: calc(var(--start) + var(--i) * 75ms);
+    }
+
+    .cover-name.left .ch {
+        --start: 0.3s;
+    }
+
+    .cover-name.right .ch {
+        --start: 0.75s;
+    }
+
+    @@keyframes coverLetterIn {
+        from { transform: translateY(105%); opacity: 0; filter: blur(8px); }
+        60% { opacity: 1; }
+        to { transform: translateY(0); opacity: 1; filter: blur(0); }
+    }
+
+
+    .cover-scroll {
+        position: absolute;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #FAF1EF;
+        text-decoration: none;
+        text-shadow: 0 1px 10px rgba(40, 20, 10, 0.45);
+        opacity: calc(1 - var(--p, 0) * 4);
+        animation: coverFade 1.4s ease 2s backwards;
+    }
+
+    .cover-scroll:hover {
+        color: #FAF1EF;
+    }
+
+    @@keyframes coverFade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Phones: recomposed, not shrunk. The photo fills a tall frame around me,
+       SUHANI sits above my head and TIWARI across the table, both huge. */
+    @@media (max-width: 700px) {
+        .cover-hero {
+            aspect-ratio: auto;
+            height: min(86svh, 760px);
+            max-height: none;
+        }
+
+        .cover-name {
+            font-size: 23cqw;
+            top: auto;
+        }
+
+        .cover-name.left {
+            top: 4%;
+            left: 4%;
+        }
+
+        .cover-name.right {
+            bottom: 9%;
+            right: 4%;
+        }
+
+        .cover-scrim {
+            background: linear-gradient(180deg,
+                rgba(30, 14, 12, 0.55) 0%,
+                rgba(30, 14, 12, 0) 24%,
+                rgba(30, 14, 12, 0) 66%,
+                rgba(30, 14, 12, 0.6) 100%);
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cover-photo {
+            animation: none;
+            transform: scale(1.06);
+        }
+
+        .cover-name .ch,
+        .cover-scroll {
+            animation: none;
+        }
+    }
+
+    /* ===== PERSONALITY SECTION ===== */
+    /* Personality now comes straight after the hero photo, so no gap above it */
+    #personality {
+        margin-top: 0;
+    }
+
+    /* ===== PERSONALITY: ESFJ-T ===== */
+    .type-section {
+        background: linear-gradient(135deg, rgba(158, 90, 99, 0.1) 0%, rgba(86, 99, 74, 0.1) 100%);
+        padding: 56px 40px;
+        margin: 60px 0;
+    }
+
+    /* Personality section: test tabs + one panel per test */
+    .personality-title {
+        font-family: Georgia, serif;
+        font-size: 1.1em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-align: center;
+        color: #56634A;
+        margin: 0 0 14px;
+    }
+
+    .test-tabs {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 34px;
+    }
+
+    .test-tab {
+        padding: 11px 24px;
+        border-radius: 30px;
+        border: 1.5px solid #8A4D57;
+        background: #FAF1EF;
+        color: #2A1810;
+        font: inherit;
+        font-size: 0.9em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .test-tab:hover {
+        background: #EFCFCD;
+        border-color: #9E5A63;
+    }
+
+    .test-tab[aria-selected="true"] {
+        background: #8A4D57;
+        border-color: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .test-tab:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+    }
+
+    .test-panel.show {
+        animation: testIn 0.4s ease both;
+    }
+
+    @@keyframes testIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CELESTIAL: placements listed by what they mean, with a detail card */
+    .sky-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 36px;
+        align-items: start;
+    }
+
+    .sky-group {
+        margin: 18px 0 8px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .sky-group:first-child {
+        margin-top: 0;
+    }
+
+    .sky-item {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 30px 1fr auto;
+        align-items: baseline;
+        gap: 12px;
+        padding: 12px 14px;
+        margin-bottom: 4px;
+        border: none;
+        border-radius: 12px;
+        background: transparent;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .sky-item:hover {
+        background: #F5E0DB;
+    }
+
+    .sky-item.active {
+        background: #8A4D57;
+    }
+
+    .sky-item:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 2px;
+    }
+
+    .sky-symbol {
+        font-size: 1.15em;
+        color: #8A4D57;
+        text-align: center;
+    }
+
+    .sky-meaning {
+        font-family: Georgia, serif;
+        font-size: 1.08em;
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .sky-title {
+        font-size: 0.85em;
+        color: #56634A;
+        white-space: nowrap;
+    }
+
+    .sky-item.active .sky-symbol,
+    .sky-item.active .sky-meaning,
+    .sky-item.active .sky-title {
+        color: #FAF1EF;
+    }
+
+    .sky-detail {
+        position: sticky;
+        top: 96px;
+    }
+
+    .sky-card {
+        padding: 30px 32px;
+        border-radius: 22px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.12);
+        animation: testIn 0.35s ease both;
+    }
+
+    .sky-card-meaning {
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .sky-card h3 {
+        margin: 6px 0 16px;
+        font-family: Georgia, serif;
+        font-size: 2em;
+        color: #2A1810;
+    }
+
+    .sky-card-symbol {
+        color: #8A4D57;
+    }
+
+    .sky-card-label {
+        margin: 16px 0 4px;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .sky-card-planet {
+        margin: 0;
+        color: #2A1810;
+        font-weight: 600;
+    }
+
+    .sky-card-text,
+    .sky-card-mine {
+        margin: 0;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
+    .sky-card-mine {
+        padding-left: 16px;
+        border-left: 3px solid #9E5A63;
+        font-family: Georgia, serif;
+    }
+
+    .stars-wrong {
+        margin-top: 40px;
+        padding: 30px 32px;
+        border-radius: 22px;
+        background: #F5E0DB;
+    }
+
+    .stars-wrong h3 {
+        margin: 0 0 14px;
+        font-family: Georgia, serif;
+        color: #2A1810;
+    }
+
+    .stars-wrong-item p {
+        margin: 6px 0;
+        color: #2A1810;
+    }
+
+    .stars-wrong-item span {
+        font-weight: 700;
+        color: #8A4D57;
+    }
+
+    .sky-note {
+        margin: 30px 0 0;
+        font-size: 0.85em;
+        font-style: italic;
+        text-align: center;
+        color: #56634A;
+    }
+
+    @@media (max-width: 800px) {
+        .sky-layout {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .sky-detail {
+            position: static;
+        }
+
+        .sky-card {
+            padding: 24px 22px;
+        }
+    }
+
+    /* VIA: circle diagram beside a detail card */
+    /* wider than the Myers-Briggs cards (up to 1240px), with most of it going to the circles */
+    .via-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        gap: 40px;
+        align-items: center;
+        width: min(1240px, calc(100vw - 48px));
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .via-diagram {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .via-circle {
+        cursor: pointer;
+        outline: none;
+    }
+
+    .via-circle circle {
+        opacity: 0.9;
+        transform-box: fill-box;
+        transform-origin: center;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .via-circle:hover circle,
+    .via-circle:focus-visible circle {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    .via-circle.active circle {
+        opacity: 1;
+        stroke: #FAF1EF;
+        stroke-width: 8;
+    }
+
+    .via-diagram.has-active .via-circle:not(.active) circle {
+        opacity: 0.55;
+    }
+
+    .via-circle text {
+        text-anchor: middle;
+        fill: #FAF1EF;
+        pointer-events: none;
+    }
+
+    .via-rank {
+        font-size: 30px;
+        font-weight: 700;
+        opacity: 0.85;
+    }
+
+    .via-name {
+        font-family: Georgia, serif;
+        font-size: 40px;
+        font-weight: 700;
+    }
+
+    .via-name.small {
+        font-size: 36px;
+    }
+
+    .via-virtue {
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        opacity: 0.85;
+    }
+
+    .via-core circle {
+        fill: #FAF1EF;
+        stroke: #8A4D57;
+        stroke-width: 4;
+    }
+
+    .via-core text {
+        fill: #8A4D57;
+    }
+
+    .via-core-name {
+        font-family: Georgia, serif;
+        font-size: 44px;
+        font-weight: 700;
+    }
+
+    .via-core-sub {
+        font-size: 22px;
+        font-style: italic;
+    }
+
+    .via-card {
+        padding: 30px 32px;
+        border-radius: 22px;
+        background: #FAF1EF;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.12);
+        animation: testIn 0.35s ease both;
+    }
+
+    .via-card-virtue {
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .via-card h3 {
+        margin: 6px 0 12px;
+        font-family: Georgia, serif;
+        font-size: 2em;
+        color: #2A1810;
+    }
+
+    .via-card-definition {
+        margin: 0 0 16px;
+        font-size: 0.92em;
+        line-height: 1.65;
+        color: #56634A;
+    }
+
+    .via-card-mine {
+        margin: 0;
+        padding-left: 16px;
+        border-left: 3px solid #9E5A63;
+        font-family: Georgia, serif;
+        font-size: 1.08em;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
+    @@media (max-width: 800px) {
+        .via-layout {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            margin-left: 0;
+            transform: none;
+        }
+
+        .via-diagram {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .via-card {
+            padding: 24px 22px;
+        }
+    }
+
+    .type-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .type-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .type-header h2 {
+        font-family: Georgia, serif;
+        font-size: 3.4em;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #2A1810;
+        margin: 0;
+    }
+
+    .type-header p {
+        margin: 6px 0 0;
+        font-size: 1.1em;
+        font-style: italic;
+        color: #56634A;
+    }
+
+    .letters-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        align-items: start;
+    }
+
+    .letter-card {
+        background: #FAF1EF;
+        border: 1px solid #EBD5D0;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .letter-card:hover {
+        transform: translateY(-2px);
+        border-color: #9E5A63;
+        box-shadow: 0 14px 30px rgba(42, 24, 16, 0.12);
+    }
+
+    .letter-toggle {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 22px;
+        border: none;
+        background: transparent;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .letter-toggle:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: -4px;
+        border-radius: 18px;
+    }
+
+    .letter-card.open .letter-toggle {
+        background: #8A4D57;
+    }
+
+    .letter-big {
+        font-family: Georgia, serif;
+        font-size: 2.6em;
+        font-weight: 700;
+        line-height: 1;
+        width: 42px;
+        color: #2A1810;
+        transition: color 0.3s ease;
+    }
+
+    .letter-meta {
+        display: block;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .letter-name {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+        font-size: 1.1em;
+        font-weight: 700;
+        color: #2A1810;
+        transition: color 0.3s ease;
+    }
+
+    .letter-percent {
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        color: #2A1810;
+        transition: color 0.3s ease;
+    }
+
+    /* how strong the preference is, out of 100% */
+    .letter-meter {
+        display: block;
+        height: 6px;
+        margin-top: 8px;
+        border-radius: 3px;
+        background: #EDD8D3;
+        overflow: hidden;
+        transition: background 0.3s ease;
+    }
+
+    .letter-meter span {
+        display: block;
+        height: 100%;
+        border-radius: 3px;
+        background: #9E5A63;
+        transition: background 0.3s ease;
+    }
+
+    .letter-chevron {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        fill: none;
+        stroke: #8A4D57;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.35s ease, stroke 0.3s ease;
+    }
+
+    .letter-card.open .letter-big,
+    .letter-card.open .letter-name,
+    .letter-card.open .letter-percent {
+        color: #FAF1EF;
+    }
+
+    .letter-card.open .letter-meter {
+        background: rgba(250, 241, 239, 0.25);
+    }
+
+    .letter-card.open .letter-meter span {
+        background: #EFCFCD;
+    }
+
+    .letter-card.open .letter-chevron {
+        stroke: #FAF1EF;
+        transform: rotate(180deg);
+    }
+
+    /* smooth open/close to the text's real height */
+    .letter-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s ease;
+    }
+
+    .letter-card.open .letter-content {
+        grid-template-rows: 1fr;
+    }
+
+    .letter-content > div {
+        overflow: hidden;
+    }
+
+    .letter-text {
+        padding: 14px 22px 18px;
+        color: #2A1810;
+        line-height: 1.75;
+        margin: 0;
+    }
+
+    .type-pill {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: #8A4D57;
+        color: #FAF1EF;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    /* the T gets its own moment */
+    .turbulent-card {
+        margin-top: 16px;
+        padding: 28px 40px;
+        border-radius: 22px;
+        border: 2px solid #8A4D57;
+        background: #FAF1EF;
+        text-align: center;
+        box-shadow: 0 14px 34px rgba(42, 24, 16, 0.12);
+    }
+
+    .turbulent-label {
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .turbulent-letter {
+        margin-top: 4px;
+        font-family: Georgia, serif;
+        font-size: 3.8em;
+        font-weight: 700;
+        line-height: 1;
+        color: #2A1810;
+    }
+
+    .turbulent-name {
+        margin-top: 2px;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        color: #2A1810;
+    }
+
+    .turbulent-text {
+        max-width: 620px;
+        margin: 12px auto 0;
+        color: #2A1810;
+        line-height: 1.8;
+    }
+
+    .turbulent-card .type-pill {
+        margin-top: 14px;
+        padding: 7px 16px;
+    }
+
+    .type-summary {
+        margin-top: 16px;
+        padding: 26px 34px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #56634A 0%, #34422F 100%);
+        color: #FAF1EF;
+    }
+
+    .type-summary h3 {
+        margin: 0 0 8px;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #EFCFCD;
+    }
+
+    .type-summary p {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        line-height: 1.6;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .letter-card,
+        .letter-toggle,
+        .letter-content,
+        .letter-chevron {
+            transition: none;
+        }
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+        background: #FAF1EF;
+        padding: 100px 60px;
+        text-align: center;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5em;
+        font-weight: 800;
+        color: #2A1810;
+        margin-bottom: 50px;
+        font-family: Georgia, serif;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .cta-btn {
+        padding: 16px 40px;
+        border: 2px solid #9E5A63;
+        background: transparent;
+        color: #2A1810;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95em;
+    }
+
+    .cta-btn:hover {
+        background: #9E5A63;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .cta-btn.primary {
+        background: #56634A;
+        color: white;
+        border-color: #56634A;
+    }
+
+    .cta-btn.primary:hover {
+        background: #9E5A63;
+        border-color: #9E5A63;
+    }
+
+    @@media (max-width: 768px) {
+        .type-section {
+            padding: 40px 16px;
+            margin: 40px 0;
+        }
+
+        .type-header h2 {
+            font-size: 2.6em;
+        }
+
+        .letters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .turbulent-card {
+            padding: 24px 20px;
+        }
+
+        .type-summary {
+            padding: 22px 20px;
+        }
+
+        .type-summary p {
+            font-size: 1.1em;
+        }
+
+        .cta-section {
+            padding: 60px 30px;
+        }
+    }
+</style>
+
+<!-- HERO: my name, split around me -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/images/hero-suhani.jpg" fetchpriority="high">
+
+<section class="cover-hero" aria-label="Suhani Tiwari">
+    <div class="cover-media">
+        <img class="cover-photo" src="/images/hero-suhani.jpg" width="1672" height="941"
+             alt="Suhani sitting at a café table among flowers and an olive tree" fetchpriority="high" decoding="async">
+        <div class="cover-scrim" aria-hidden="true"></div>
+    </div>
+    <h1 class="visually-hidden">Suhani Tiwari</h1>
+    <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
+    <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
+    <a class="cover-scroll" href="#personality">Scroll ↓</a>
+</section>
+
+<script>
+    // Hero scroll interaction: --p goes 0 → 1 as the hero scrolls away, and back as you scroll up.
+    // CSS uses it to part the name and drift the photo. Skipped for reduced motion.
+    (function () {
+        const hero = document.querySelector('.cover-hero');
+        if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const update = () => {
+            const progress = Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight));
+            hero.style.setProperty('--p', progress.toFixed(4));
+        };
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    })();
+</script>
+
+<!-- PERSONALITY: ESFJ-T -->
+@{
+    // My personality test results: (letter, name, percent, what it means for me)
+    var letters = new[]
+    {
+        ("E", "Extraverted", 73, "I recharge through people. I like conversation, shared experiences, and feeling connected. I process life out loud and want to feel known by the people I care about."),
+        ("S", "Observant", 57, "I notice the little things. I remember details people mention in passing, from a favorite coffee order to something they said months ago."),
+        ("F", "Feeling", 59, "I show people I care through thoughtfulness. I remember birthdays, plan gifts months ahead, and pay attention to what makes someone feel known. Consideration matters to me."),
+        ("J", "Judging", 82, "I like plans, deadlines, and knowing where I am going. I plan ahead because structure keeps me grounded. Once I commit to something, I follow through.")
+    };
+}
+<section class="type-section" id="personality">
+    <div class="type-container">
+        <h2 class="personality-title">Personality</h2>
+        <div class="test-tabs" role="tablist" aria-label="Personality tests">
+            <button type="button" class="test-tab" role="tab" id="tab-mbti" aria-controls="test-mbti" aria-selected="true">Myers-Briggs</button>
+            <button type="button" class="test-tab" role="tab" id="tab-via" aria-controls="test-via" aria-selected="false" tabindex="-1">VIA Character Strengths</button>
+            <button type="button" class="test-tab" role="tab" id="tab-celestial" aria-controls="test-celestial" aria-selected="false" tabindex="-1">Celestial</button>
+        </div>
+
+        <div class="test-panel" id="test-mbti" role="tabpanel" aria-labelledby="tab-mbti">
+        <div class="type-header">
+            <h2>ESFJ-T</h2>
+            <p>Myers-Briggs Type Indicator</p>
+        </div>
+
+        <div class="letters-grid">
+            @foreach (var (letter, name, percent, text) in letters)
+            {
+                <div class="letter-card">
+                    <button type="button" class="letter-toggle" aria-expanded="false" aria-controls="letter-@letter">
+                        <span class="letter-big" aria-hidden="true">@letter</span>
+                        <span class="letter-meta">
+                            <span class="letter-name">@name <span class="letter-percent">@percent%</span></span>
+                            <span class="letter-meter" role="img" aria-label="@percent percent @name"><span style="width: @percent%;"></span></span>
+                        </span>
+                        <svg class="letter-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="letter-content" id="letter-@letter">
+                        <div>
+                            <p class="letter-text">
+                                @text
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="turbulent-card">
+            <div class="turbulent-label">But here's the thing</div>
+            <div class="turbulent-letter">T</div>
+            <div class="turbulent-name">Turbulent</div>
+            <p class="turbulent-text">I overthink more than I'd like. I replay conversations, question my decisions, and notice things other people might brush off. When something matters to me, my mind can turn one thought into twenty. I put pressure on myself to get things right.</p>
+            <span class="type-pill">Chronic overthinker</span>
+        </div>
+
+        <div class="type-summary">
+            <h3>Putting this all together</h3>
+            <p>I seek connection. I remember the little things. I show love through thoughtfulness. I plan ahead and follow through. And somewhere between all of that, I probably overthink it.</p>
+        </div>
+        </div>
+
+        @{
+            // My VIA Character Strengths top 6 (full profile: all 24, taken 05/13/2026).
+            // (key, name, virtue, official VIA definition, what it looks like in me, circle color)
+            var strengths = new[]
+            {
+                ("love", "Love", "Humanity", "Valuing close relations with others, in particular those in which sharing and caring are reciprocated; being close to people.", "I put real effort into people I care about. I remember your coffee order. I buy gifts six months early when I see something that reminds me of you. I show people they matter through what I do, not just what I say.", "#9E5A63"),
+                ("honesty", "Honesty", "Courage", "Speaking the truth but more broadly presenting oneself in a genuine way and acting in a sincere way; being without pretense; taking responsibility for one's feelings and actions.", "I'd rather admit something uncomfortable than pretend everything is fine. I don't perform versions of myself for approval. I think through how I actually feel instead of defaulting to what others want to hear.", "#8A4D57"),
+                ("spirituality", "Spirituality", "Transcendence", "Having coherent beliefs about the higher purpose and meaning of the universe; knowing where one fits within the larger scheme; having beliefs about the meaning of life that shape conduct and provide comfort.", "I'm constantly asking what things mean in the bigger picture. Who am I becoming? What kind of life do I want to build? How do my beliefs shape how I live? I think about significance more than logistics.", "#56634A"),
+                ("kindness", "Kindness", "Humanity", "Doing favors and good deeds for others; helping them; taking care of them.", "It's not enough for me to care internally. I want to do things for people. Help them. Make them feel considered. Remember what matters to them. Kindness is the action version of love.", "#C27B8A"),
+                ("learning", "Love of Learning", "Wisdom", "Mastering new skills, topics, and bodies of knowledge, whether on one's own or formally; related to the strength of curiosity but goes beyond it to describe the tendency to add systematically to what one knows.", "I genuinely like learning things simply because they interest me. I don't just want the answer. I want to know why. Psychology, marketing, consumer behavior, creativity, culture. I follow whatever question has caught my attention that day.", "#7F9A6B"),
+                ("bravery", "Bravery", "Courage", "Not shrinking from threat, challenge, difficulty, or pain; speaking up for what's right even if there's opposition; acting on convictions even if unpopular.", "Caring deeply doesn't make me passive. I'll speak up, take initiative, organize people, pursue something even when it feels intimidating. I'm willing to act on convictions even if they're unpopular.", "#34422F")
+            };
+            var together = "Love drives me to invest in people. Honesty makes sure I show up as myself. Spirituality gives me a sense of purpose behind everything. Kindness translates that care into action. Love of Learning keeps me curious and growing. Bravery means I act on all of it, even when it's hard. Together, they create someone who is present, genuine, purposeful, helpful, curious, and courageous. Someone who doesn't just feel their values, but lives them.";
+        }
+        <div class="test-panel" id="test-via" role="tabpanel" aria-labelledby="tab-via" hidden>
+            <div class="type-header">
+                <h2>My Top 6 Strengths</h2>
+                <p>VIA Character Strengths · click a circle to explore</p>
+            </div>
+            <div class="via-layout">
+                <svg class="via-diagram" viewBox="50 50 900 900" role="group" aria-label="My top 6 character strengths">
+                    @for (var i = 0; i < strengths.Length; i++)
+                    {
+                        var (key, name, virtue, _, _, color) = strengths[i];
+                        var angle = (-90 + i * 60) * Math.PI / 180;
+                        var cx = Math.Round(500 + 290 * Math.Cos(angle));
+                        var cy = Math.Round(500 + 290 * Math.Sin(angle));
+                        var words = name.Split(' ');
+                        <g class="via-circle" role="button" tabindex="0" data-key="@key" aria-label="#@(i + 1) @name">
+                            <circle cx="@cx" cy="@cy" r="140" fill="@color" />
+                            <text x="@cx" y="@(cy - 34)" class="via-rank">#@(i + 1)</text>
+                            @if (words.Length > 2)
+                            {
+                                @:<text x="@cx" y="@(cy + 6)" class="via-name small">@(words[0] + " " + words[1])</text>
+                                @:<text x="@cx" y="@(cy + 40)" class="via-name small">@words[2]</text>
+                            }
+                            else
+                            {
+                                @:<text x="@cx" y="@(cy + 16)" class="via-name">@name</text>
+                            }
+                            <text x="@cx" y="@(cy + (words.Length > 2 ? 76 : 56))" class="via-virtue">@virtue</text>
+                        </g>
+                    }
+                    <g class="via-circle via-core" role="button" tabindex="0" data-key="together" aria-label="How they work together">
+                        <circle cx="500" cy="500" r="120" />
+                        <text x="500" y="494" class="via-core-name">Suhani</text>
+                        <text x="500" y="534" class="via-core-sub">all together</text>
+                    </g>
+                </svg>
+
+                <div class="via-detail" aria-live="polite">
+                    @foreach (var (key, name, virtue, definition, mine, _) in strengths)
+                    {
+                        <article class="via-card" data-key="@key" hidden>
+                            <span class="via-card-virtue">@virtue</span>
+                            <h3>@name</h3>
+                            <p class="via-card-definition">@definition</p>
+                            <p class="via-card-mine">@mine</p>
+                        </article>
+                    }
+                    <article class="via-card" data-key="together">
+                        <span class="via-card-virtue">Putting this all together</span>
+                        <h3>How they work together</h3>
+                        <p class="via-card-mine">@together</p>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+        @{
+            // My natal chart (Western / tropical): March 6, 2006, 8:45 AM IST, Lucknow.
+            // (key, human meaning, symbol, placement title, planet line, what the stars say, me in practice)
+            // "Me, in practice" must be my own real examples: leave it "" and that part stays hidden.
+            var sky = new[]
+            {
+                ("sun", "Who I Am", "☀︎", "Pisces Sun", "Sun in Pisces · 15°24′ · 11th house",
+                    "An imaginative, deeply empathetic core that comes alive through other people. With the Sun in the 11th house, identity grows through friendships, community and shared hopes: the self feels most itself when it belongs to something bigger.", ""),
+                ("moon", "How I Feel", "☾︎", "Gemini Moon", "Moon in Gemini · 6°56′ · 2nd house",
+                    "Feelings move through words and curiosity: emotions get processed by talking, reading and thinking them through, and boredom is its own kind of discomfort. In the 2nd house, emotional security is tied to what feels tangible and steady.", ""),
+                ("rising", "How I Show Up", "↑", "Taurus Rising", "Ascendant in Taurus · 1°49′ · 1st house",
+                    "First impressions read calm, grounded and composed: someone deliberate, warm and quietly steady, with an eye for beauty and comfort, who doesn't rush to be known.", ""),
+                ("mercury", "How I Think", "☿︎", "Pisces Mercury", "Mercury in Pisces · 26°06′ · 11th house",
+                    "Thinking is intuitive and associative rather than linear: reading between the lines, catching emotional subtext, connecting ideas that don't obviously belong together. In the 11th house, the mind lights up around people, groups and big-picture ideals.", ""),
+                ("venus", "How I Love", "♀︎", "Aquarius Venus", "Venus in Aquarius · 0°37′ · 10th house",
+                    "Love looks like friendship first: loyalty, respect and real mental connection over grand gestures. In the 10th house, affection shows up as support for someone's goals and showing up for what matters to them.", ""),
+                ("mars", "How I Act", "♂︎", "Gemini Mars", "Mars in Gemini · 8°19′ · 2nd house",
+                    "Energy runs on curiosity and variety: quick, verbal, and happiest juggling several things at once. In the 2nd house, that drive gets pointed toward building something tangible and secure.", ""),
+                ("jupiter", "How I Grow", "♃︎", "Scorpio Jupiter", "Jupiter in Scorpio · 18°51′ · 7th house",
+                    "Growth comes through depth rather than breadth: through intense, honest one-on-one relationships and getting beneath surface-level explanations. Close partnerships are where the biggest lessons happen.", ""),
+                ("saturn", "Where I Grow Up", "♄︎", "Leo Saturn", "Saturn in Leo · 5°11′ · 4th house",
+                    "Saturn in Leo asks for confidence that's earned rather than performed. In the 4th house, that lesson is rooted in foundations, and in learning to feel secure while being fully seen.", ""),
+                ("uranus", "How I Break the Rules", "♅︎", "Pisces Uranus", "Uranus in Pisces · 10°59′ · 11th house",
+                    "The rebel streak is dreamy rather than loud: questioning dated expectations about who belongs where, and reimagining what friendship and community can look like.", ""),
+                ("neptune", "How I Dream", "♆︎", "Aquarius Neptune", "Neptune in Aquarius · 18°19′ · 10th house",
+                    "Big, idealistic visions for career and impact: work that means something beyond the title, and a future built around ideas that help people.", ""),
+                ("pluto", "How I Transform", "♇︎", "Sagittarius Pluto", "Pluto in Sagittarius · 26°36′ · 9th house",
+                    "Transformation comes through learning, travel, faith and philosophy: beliefs that get questioned, deepened and rebuilt over time.", "")
+            };
+
+            // THE STARS GOT THIS ONE WRONG: (apparently…, me however…, real-life receipt). Shows only once it has entries.
+            var starsWrong = Array.Empty<(string Claim, string Reality, string Receipt)>();
+        }
+        <div class="test-panel" id="test-celestial" role="tabpanel" aria-labelledby="tab-celestial" hidden>
+            <div class="type-header">
+                <h2>Celestial</h2>
+                <p>a little less sciency</p>
+            </div>
+
+            <div class="sky-layout">
+                <div class="sky-index">
+                    <p class="sky-group">The Big Three</p>
+                    @for (var i = 0; i < sky.Length; i++)
+                    {
+                        var (key, meaning, symbol, title, _, _, _) = sky[i];
+                        if (i == 3)
+                        {
+                            <p class="sky-group">The Rest of the Sky</p>
+                        }
+                        <button type="button" class="sky-item @(i == 0 ? "active" : "")" data-key="@key" aria-pressed="@(i == 0 ? "true" : "false")">
+                            <span class="sky-symbol" aria-hidden="true">@symbol</span>
+                            <span class="sky-meaning">@meaning</span>
+                            <span class="sky-title">@title</span>
+                        </button>
+                    }
+                </div>
+
+                <div class="sky-detail" aria-live="polite">
+                    @for (var i = 0; i < sky.Length; i++)
+                    {
+                        var (key, meaning, symbol, title, planet, stars, mine) = sky[i];
+                        <article class="sky-card" data-key="@key" hidden="@(i != 0)">
+                            <span class="sky-card-meaning">@meaning</span>
+                            <h3><span class="sky-card-symbol" aria-hidden="true">@symbol</span> @title</h3>
+                            <p class="sky-card-label">Placement</p>
+                            <p class="sky-card-planet">@planet</p>
+                            <p class="sky-card-label">What the stars say</p>
+                            <p class="sky-card-text">@stars</p>
+                            @if (!string.IsNullOrEmpty(mine))
+                            {
+                                <p class="sky-card-label">Me, in practice</p>
+                                <p class="sky-card-mine">@mine</p>
+                            }
+                        </article>
+                    }
+                </div>
+            </div>
+
+            @if (starsWrong.Length > 0)
+            {
+                <div class="stars-wrong">
+                    <h3>The Stars Got This One Wrong</h3>
+                    @foreach (var (claim, reality, receipt) in starsWrong)
+                    {
+                        <div class="stars-wrong-item">
+                            <p><span>Apparently…</span> @claim</p>
+                            <p><span>Me, however…</span> @reality</p>
+                            @if (!string.IsNullOrEmpty(receipt))
+                            {
+                                <p><span>Real-life receipt…</span> @receipt</p>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+
+            <p class="sky-note">Not real science. Fun science. Think girl math, but make it cosmic.</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Personality tests: switch between Myers-Briggs and VIA (click, or arrow keys)
+    (function () {
+        const tabs = [...document.querySelectorAll('.test-tab')];
+        const show = tab => tabs.forEach(t => {
+            const on = t === tab;
+            t.setAttribute('aria-selected', on);
+            t.tabIndex = on ? 0 : -1;
+            const panel = document.getElementById(t.getAttribute('aria-controls'));
+            panel.hidden = !on;
+            panel.classList.toggle('show', on);
+        });
+        tabs.forEach((tab, i) => {
+            tab.addEventListener('click', () => show(tab));
+            tab.addEventListener('keydown', e => {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+                const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+                show(next);
+                next.focus();
+            });
+        });
+
+        // Celestial: clicking a placement shows its card
+        const skyItems = [...document.querySelectorAll('.sky-item')];
+        const skyCards = [...document.querySelectorAll('.sky-card')];
+        skyItems.forEach(item => item.addEventListener('click', () => {
+            skyItems.forEach(i => {
+                const on = i === item;
+                i.classList.toggle('active', on);
+                i.setAttribute('aria-pressed', on);
+            });
+            skyCards.forEach(card => card.hidden = card.dataset.key !== item.dataset.key);
+            // on phones the card sits below the list, so bring it into view
+            if (window.matchMedia('(max-width: 800px)').matches) {
+                document.querySelector('.sky-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }));
+
+        // VIA: clicking a circle shows that strength's card (the center shows how they fit together)
+        const diagram = document.querySelector('.via-diagram');
+        const circles = [...document.querySelectorAll('.via-circle')];
+        const cards = [...document.querySelectorAll('.via-card')];
+        const select = key => {
+            circles.forEach(c => c.classList.toggle('active', c.dataset.key === key && key !== 'together'));
+            diagram.classList.toggle('has-active', key !== 'together');
+            cards.forEach(c => c.hidden = c.dataset.key !== key);
+        };
+        circles.forEach(circle => {
+            circle.addEventListener('click', () => select(circle.dataset.key));
+            circle.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(circle.dataset.key); }
+            });
+        });
+    })();
+
+    // Letter cards: click to open or close (each on its own)
+    document.querySelectorAll('.letter-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const card = button.closest('.letter-card');
+            const open = card.classList.toggle('open');
+            button.setAttribute('aria-expanded', open);
+        });
+    });
+</script>
+
+<!-- CTA -->
+<section class="cta-section page-fill">
+    <h2>Where to go next</h2>
+    <div class="cta-buttons">
+        <a href="/home/world" class="cta-btn">Meet my people</a>
+        <a href="/home/favorites" class="cta-btn primary">Raid my favorites</a>
+        <a href="/home/coursework" class="cta-btn">See what I'm working on</a>
+    </div>
+</section>

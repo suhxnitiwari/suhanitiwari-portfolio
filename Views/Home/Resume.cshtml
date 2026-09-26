@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "On Paper";
+}
+
+<style>
+    .paper-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 24px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        text-align: center;
+    }
+
+    .paper-section h1 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 3.5em;
+        font-weight: 800;
+        color: #2A1810;
+    }
+
+    .paper-section p {
+        margin: 14px 0 0;
+        font-size: 1.1em;
+        color: #56634A;
+    }
+
+    @@media (max-width: 768px) {
+        .paper-section h1 {
+            font-size: 2.5em;
+        }
+    }
+</style>
+
+<!-- Shown until wwwroot/resume.pdf is added; after that, "On Paper" opens the PDF instead -->
+<div class="paper-section page-fill">
+    <div>
+        <h1>On Paper</h1>
+        <p>Résumé coming soon.</p>
+    </div>
+</div>

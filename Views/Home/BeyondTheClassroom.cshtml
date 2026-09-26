@@ -1,0 +1,329 @@
+@{
+    ViewData["Title"] = "Beyond the Classroom";
+}
+
+@functions {
+    // One project. Everything except the name is optional: anything left empty simply doesn't show.
+    // Tagline = the short line under the name; Tags = small labels.
+    // Every photo shows at the same upright 3:4 size, so use 3:4 photos (or crops) here.
+    public record Initiative(string Name, string Tagline = "", string[]? Tags = null,
+                             string Role = "", string Years = "", string Description = "",
+                             string Link = "", string LinkText = "Learn more",
+                             string Photo = "", string PhotoAlt = "", string PhotoCaption = "");
+
+    // One area of work outside class (like Early STEM Education): its number, title, intro line and projects
+    public record Area(string Number, string Title, string Intro, Initiative[] Initiatives);
+}
+
+<style>
+    .beyond-section {
+        padding: 80px 40px 100px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+    }
+
+    .beyond-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .beyond-hero h1 {
+        font-family: Georgia, serif;
+        font-size: 3.5em;
+        font-weight: 800;
+        color: #2A1810;
+        margin: 0;
+    }
+
+    /* ---- one area: a big intro line, then its projects ---- */
+    .beyond-area {
+        margin-top: 28px;
+    }
+
+    .beyond-area + .beyond-area {
+        margin-top: 110px;
+    }
+
+    .area-intro {
+        max-width: 720px;
+        margin: 26px 0 0;
+        font-family: Georgia, serif;
+        font-size: 2em;
+        line-height: 1.3;
+        color: #2A1810;
+    }
+
+    /* ---- one project: big photo on one side, text on the other; sides alternate ---- */
+    .project {
+        display: grid;
+        grid-template-columns: 1fr 1fr;   /* equal, so photos match whichever side they're on */
+        gap: 64px;
+        align-items: center;
+        padding: 70px 0;
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .area-intro + .project {
+        margin-top: 60px;
+    }
+
+    .project:nth-of-type(even) .project-photo {
+        order: 2;
+    }
+
+    /* Every photo is the same upright 3:4 size, so the three rows match */
+    .project-photo {
+        margin: 0;
+        justify-self: center;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .project-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        object-fit: cover;
+        border-radius: 14px;
+        border: 6px solid #FAF1EF;
+        box-shadow: 0 16px 40px rgba(42, 24, 16, 0.18);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .project-photo:hover img {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 50px rgba(42, 24, 16, 0.24);
+    }
+
+    .project-photo figcaption {
+        margin-top: 12px;
+        font-size: 0.85em;
+        font-style: italic;
+        color: #56634A;
+        text-align: center;
+    }
+
+    .project-num {
+        font-family: Georgia, serif;
+        font-size: 1.1em;
+        font-weight: 700;
+        color: #9E5A63;
+        letter-spacing: 1px;
+    }
+
+    .project h2 {
+        margin: 8px 0 0;
+        font-family: Georgia, serif;
+        font-size: 2.3em;
+        font-weight: 700;
+        line-height: 1.15;
+        color: #2A1810;
+    }
+
+    .project-tagline {
+        margin: 16px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        font-style: italic;
+        line-height: 1.4;
+        color: #2A1810;
+    }
+
+    .project-meta {
+        margin: 18px 0 0;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .project-description {
+        margin: 14px 0 0;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
+    .project-tags {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 22px 0 0;
+        padding: 0;
+    }
+
+    .project-tags li {
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: rgba(158, 90, 99, 0.14);
+        color: #2A1810;
+        font-size: 0.78em;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .project-link {
+        display: inline-block;
+        margin-top: 26px;
+        padding: 12px 24px;
+        border-radius: 26px;
+        background: #8A4D57;
+        color: #FAF1EF;
+        font-weight: 600;
+        font-size: 0.92em;
+        text-decoration: none;
+        transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .project-link:hover {
+        background: #9E5A63;
+        color: #FAF1EF;
+        transform: translateY(-2px);
+    }
+
+    @@media (max-width: 860px) {
+        .beyond-section {
+            padding: 50px 20px 70px;
+        }
+
+        .beyond-hero h1 {
+            font-size: 2.5em;
+        }
+
+        .area-intro {
+            font-size: 1.5em;
+        }
+
+        /* phones and small tablets: photo on top, text underneath, every time */
+        .project {
+            grid-template-columns: 1fr;
+            gap: 28px;
+            padding: 50px 0;
+        }
+
+        .project:nth-of-type(even) .project-photo {
+            order: 0;
+        }
+
+        .project-photo {
+            max-width: 340px;
+        }
+
+        .project h2 {
+            font-size: 1.9em;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .project-photo img,
+        .project-link {
+            transition: none;
+        }
+    }
+</style>
+
+@{
+    // Add areas or projects here. Everything but the name is optional; for example:
+    //   new Initiative("Girls Who Code", Role: "Club Lead", Years: "2022–2024",
+    //                  Description: "One or two sentences about what you did.")
+    var areas = new[]
+    {
+        new Area("01", "Early STEM Education",
+            "I wanted girls to see themselves as builders, coders, and inventors.",
+            new[]
+            {
+                new Initiative("Girls Who Code",
+                    Tagline: "Teaching girls to code before they could decide it wasn't for them.",
+                    Tags: new[] { "Coding", "Web Development", "Mentorship" },
+                    // cropped from girls-who-code.jpg to frame me teaching
+                    Photo: "/images/girls-who-code-teaching.jpg",
+                    PhotoAlt: "Me leading a Girls Who Code session",
+                    PhotoCaption: "Leading a Girls Who Code session"),
+
+                // My children's book (author + illustrator). Details from its Amazon listing.
+                new Initiative("Girls Can Be Engineers Too",
+                    Tagline: "Sometimes representation starts with a storybook.",
+                    Tags: new[] { "Engineering", "Representation", "Early STEM" },
+                    Role: "Author & Illustrator",
+                    Years: "2023",
+                    Description: "My children's book, written and illustrated by me. It introduces young readers to seven women engineers from different backgrounds and fields, from aerospace to biomedical to computer engineering.",
+                    Link: "https://www.amazon.com/dp/B0CKXVLJ23",
+                    LinkText: "Get the book on Amazon ↗",
+                    Photo: "/images/amaira-reading-book.jpg",
+                    PhotoAlt: "Amaira proudly showing the character named after her in Girls Can Be Engineers Too",
+                    PhotoCaption: "Amaira proudly flaunting the character in my book named after her"),
+
+                new Initiative("Camp Invention",
+                    Tagline: "Build it. Test it. Try again.",
+                    Tags: new[] { "Invention", "Design Thinking", "K–6 STEM" },
+                    Photo: "/images/camp-invention.jpg",
+                    PhotoAlt: "Me with Camp Invention campers testing boat prototypes in a small pool",
+                    PhotoCaption: "Teaching campers how to make a cool boat and testing our prototypes")
+            })
+    };
+}
+
+<div class="beyond-section page-fill">
+    <div class="beyond-container">
+        <div class="beyond-hero">
+            <h1>Beyond the Classroom</h1>
+        </div>
+
+        @foreach (var area in areas)
+        {
+            <section class="beyond-area">
+                @if (!string.IsNullOrEmpty(area.Intro))
+                {
+                    <p class="area-intro">@area.Intro</p>
+                }
+
+                @for (var i = 0; i < area.Initiatives.Length; i++)
+                {
+                    var project = area.Initiatives[i];
+                    var meta = string.Join(" · ", new[] { project.Role, project.Years }.Where(part => !string.IsNullOrEmpty(part)));
+                    <article class="project">
+                        @if (!string.IsNullOrEmpty(project.Photo))
+                        {
+                            <figure class="project-photo">
+                                <img src="@project.Photo" alt="@(string.IsNullOrEmpty(project.PhotoAlt) ? project.Name : project.PhotoAlt)" loading="lazy">
+                                @if (!string.IsNullOrEmpty(project.PhotoCaption))
+                                {
+                                    <figcaption>@project.PhotoCaption</figcaption>
+                                }
+                            </figure>
+                        }
+                        <div class="project-text">
+                            <span class="project-num">@((i + 1).ToString("00"))</span>
+                            <h2>@project.Name</h2>
+                            @if (!string.IsNullOrEmpty(project.Tagline))
+                            {
+                                <p class="project-tagline">@project.Tagline</p>
+                            }
+                            @if (!string.IsNullOrEmpty(meta))
+                            {
+                                <p class="project-meta">@meta</p>
+                            }
+                            @if (!string.IsNullOrEmpty(project.Description))
+                            {
+                                <p class="project-description">@project.Description</p>
+                            }
+                            @if (project.Tags is { Length: > 0 })
+                            {
+                                <ul class="project-tags">
+                                    @foreach (var tag in project.Tags)
+                                    {
+                                        <li>@tag</li>
+                                    }
+                                </ul>
+                            }
+                            @if (!string.IsNullOrEmpty(project.Link))
+                            {
+                                <a class="project-link" href="@project.Link" target="_blank" rel="noopener">@project.LinkText</a>
+                            }
+                        </div>
+                    </article>
+                }
+            </section>
+        }
+    </div>
+</div>

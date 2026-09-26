@@ -1,0 +1,255 @@
+@{
+    ViewData["Title"] = "Education";
+}
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #FAF1EF;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #2A1810;
+    }
+
+    .education-section {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+    }
+
+    .education-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .education-hero {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .education-hero h1 {
+        font-size: 3.5em;
+        font-weight: 800;
+        color: #2A1810;
+        margin-bottom: 15px;
+        font-family: Georgia, serif;
+    }
+
+    .education-hero .school-line {
+        font-size: 1.1em;
+        color: #56634A;
+    }
+
+    /* my degree: majors and minors as two cards */
+    .degree-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 64px;
+    }
+
+    .degree-card {
+        flex: 1 1 320px;
+        max-width: 520px;
+        padding: 32px 28px;
+        border-radius: 18px;
+        text-align: center;
+        color: white;
+        background: linear-gradient(135deg, #9A5F68 0%, #7A3F4A 100%);
+        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.15);
+    }
+
+    .degree-card.minors {
+        background: linear-gradient(135deg, #667856 0%, #4C5C3C 100%);
+    }
+
+    .degree-label {
+        display: block;
+        margin-bottom: 12px;
+        font-size: 0.85em;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        opacity: 0.9;
+    }
+
+    .degree-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .degree-card li {
+        font-family: Georgia, serif;
+        font-size: 1.5em;
+        font-weight: 700;
+        line-height: 1.25;
+    }
+
+    /* space between majors so a long one that wraps doesn't read as two */
+    .degree-card li + li {
+        margin-top: 12px;
+    }
+
+    /* McCombs rankings: stat tiles under the degree */
+    .rankings {
+        text-align: center;
+    }
+
+    .rankings h2 {
+        margin-bottom: 24px;
+        font-family: Georgia, serif;
+        font-size: 1.8em;
+        color: #2A1810;
+    }
+
+    /* tiles wrap and center, so any number of rankings lays out evenly */
+    .rankings-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .rankings-row .ranking {
+        flex: 1 1 190px;
+        max-width: 260px;
+    }
+
+    .ranking {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 26px 20px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+    }
+
+    .ranking-number {
+        font-size: 3.4em;
+        font-weight: 700;
+        line-height: 1;
+        color: #8A4D57;
+    }
+
+    .ranking-text {
+        max-width: 220px;
+        font-size: 0.95em;
+        line-height: 1.4;
+        color: #2A1810;
+    }
+
+    /* says whether it ranks the undergraduate or graduate program */
+    .ranking-school {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    @@media (max-width: 768px) {
+        .education-section {
+            padding: 50px 20px;
+        }
+
+        .education-hero h1 {
+            font-size: 2.5em;
+        }
+
+        .degree-row {
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .degree-card li {
+            font-size: 1.25em;
+        }
+
+        .rankings-row {
+            gap: 12px;
+        }
+
+        .rankings-row .ranking {
+            flex-basis: 100%;
+            max-width: none;
+        }
+
+        .ranking {
+            flex-direction: row;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px 18px;
+            text-align: left;
+        }
+
+        .ranking-number {
+            font-size: 2.4em;
+        }
+    }
+</style>
+
+<div class="education-section page-fill">
+    <div class="education-container">
+        <!-- HERO -->
+        <div class="education-hero">
+            <h1>Education</h1>
+            <p class="school-line">The University of Texas at Austin</p>
+        </div>
+
+        <!-- MAJORS & MINORS -->
+        <div class="degree-row">
+            <div class="degree-card majors">
+                <span class="degree-label">Majors</span>
+                <ul>
+                    <li>Management Information Systems</li>
+                    <li>Psychology</li>
+                </ul>
+            </div>
+            <div class="degree-card minors">
+                <span class="degree-label">Minors</span>
+                <ul>
+                    <li>Marketing</li>
+                    <li>Educational Psychology</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- McCOMBS RANKINGS (U.S. News) -->
+        <div class="rankings">
+            <h2>McCombs by the Numbers</h2>
+            <div class="rankings-row">
+                <div class="ranking">
+                    <span class="ranking-number">#1</span>
+                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>Business School in Texas</span>
+                </div>
+                <div class="ranking">
+                    <span class="ranking-number">#1</span>
+                    <span class="ranking-text"><span class="ranking-school">Graduate program</span>in Information Systems</span>
+                </div>
+                <div class="ranking">
+                    <span class="ranking-number">#4</span>
+                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>in Management Information Systems</span>
+                </div>
+                <div class="ranking">
+                    <span class="ranking-number">#5</span>
+                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>in Marketing</span>
+                </div>
+                <div class="ranking">
+                    <span class="ranking-number">#6</span>
+                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>Business School in the US</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

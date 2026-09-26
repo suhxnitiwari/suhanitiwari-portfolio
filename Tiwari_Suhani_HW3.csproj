@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>8e9a73ce-fa9a-479f-84e0-f7e199fd0739</UserSecretsId>
+  </PropertyGroup>
+
+  <!-- my saved Spotify login stays on my laptop; never copy it into a published build -->
+  <ItemGroup>
+    <Content Remove="spotify-token.json" />
+    <None Remove="spotify-token.json" />
+  </ItemGroup>
+
+</Project>

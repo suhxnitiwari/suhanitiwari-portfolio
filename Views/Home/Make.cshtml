@@ -1,0 +1,255 @@
+@{
+    ViewData["Title"] = "Make";
+}
+
+@functions {
+    // One bake in Make > Baking: shown on the shelf, full recipe in the recipe card
+    public record Recipe(string Title, string Line, string Photo, string Time, string Serves, string[] Ingredients, string[] Steps);
+
+    // One artwork in Make > Art. Idea = my own line about it (from my AP portfolio).
+    public record Artwork(string Title, string Idea, string Image);
+
+    // One piece of writing in Make > Writing. Opening = its first lines (\n starts a new line).
+    public record Writing(string Title, string Kind, string Year, string Dedication, string Opening);}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #FAF1EF;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        color: #2A1810;
+    }
+
+    .listen-section {
+        padding: 60px 40px;
+    }
+
+    .listen-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .make-page {
+        background: linear-gradient(135deg, #F7EAE6 0%, #FAF1EF 100%);
+    }
+
+    .section-title {
+        font-size: 2.5em;
+        font-weight: 800;
+        color: #2A1810;
+        font-family: Georgia, serif;
+    }
+
+    /* a little air between the big heading and the Make line, and before the first shelf */
+    .make-page .shelf-intro {
+        margin-bottom: 44px;
+    }
+
+    .make-page .make-caption {
+        margin-top: 14px;
+        font-size: 1.05em;
+    }
+
+    /* leave room for the sticky menu when jumping to #art / #writing / #baking */
+    #art, #writing, #baking {
+        scroll-margin-top: 90px;
+    }
+
+    @@media (max-width: 768px) {
+        .listen-section {
+            padding: 40px 20px;
+        }
+    }
+</style>
+<link rel="stylesheet" href="~/css/shelves.css" asp-append-version="true" />
+
+@{
+    // Art: selected works from my AP 2-D Art and Design portfolio (digital, drawn in Procreate).
+    // Images saved in wwwroot/images/art.
+    var artworks = new[]
+    {
+        new Artwork("Traditionalism Versus Modernism", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg"),
+        new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg"),
+        new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg"),
+        new Artwork("Between Two Worlds", "Show the IND and US flag in a child's hands to symbolize her navigating dual cultural identity", "/images/art/navigating-indian-american-identity.jpg"),
+        new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Kashmiri heritage", "/images/art/embracing-indian-heritage.jpg"),
+        // The diya thali piece (Image 7 in the portfolio); no idea line yet
+        new Artwork("Keeping the Light", "", "/images/art/diya-thali.jpg")
+    };
+
+    // Writing: five of my published pieces (opening lines copied from each piece)
+    var writing = new[]
+    {
+        new Writing("Sisterly Serenade", "Poem", "2024", "For Amaira",
+                    "Endless questions, she hurls my way,\nIn mimicry, she loves to play."),
+        new Writing("Beyond the Storm", "Poem", "2024", "",
+                    "In the shadows of despair, I sail,\nThrough a never-ending storm, I wail."),
+        new Writing("Reflections of Imperfection: A Journey to Self-Acceptance", "Poem", "2023", "",
+                    "In the realm of filters, I yearn to shine,\nPosting images that obscure what’s mine."),
+        new Writing("Founding Females of America", "Article", "2026", "",
+                    "Oh isn’t it just hilarious how we always remember the men of American history…"),
+        new Writing("8 Life-Changing Habits", "Article", "2023", "",
+                    "Creating daily habits is crucial to productivity…")
+    };
+
+    // Baking. Fill in each recipe when ready; until then its card says "recipe coming soon".
+    //   new Recipe("Walnut Banana Bread", "a line about it", "/images/bakes/walnut-banana-bread.jpg",
+    //              "1 hr 10 min", "Makes 1 loaf", new[] { "3 ripe bananas", ... }, new[] { "Mash the bananas...", ... })
+    // Photo is optional: without one, the card shows a soft blush cover with a whisk.
+    var bakes = new[]
+    {
+        new Recipe("Walnut Banana Bread", "", "", "", "", new string[0], new string[0]),
+        new Recipe("Chocolate Chip Cookies", "", "", "", "", new string[0], new string[0]),
+        new Recipe("Double Chocolate Muffins", "", "", "", "", new string[0], new string[0]),
+        new Recipe("Chocolate Chip Muffins", "", "", "", "", new string[0], new string[0]),
+        new Recipe("Brownies", "", "", "", "", new string[0], new string[0])
+    };
+}
+<section class="listen-section shelf-section make-page page-fill">
+    <div class="listen-container shelf-container">
+        <div class="shelf-intro">
+            <h1 class="section-title">Make</h1>
+            <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create.</p>
+        </div>
+
+        <div class="shelf art-shelf" id="art">
+            <div class="shelf-head">
+                <h3 class="shelf-title">Art</h3>
+                @if (artworks.Length > 4)
+                {
+                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@artworks.Length">See all @artworks.Length →</button>
+                }
+            </div>
+            <div class="shelf-rail-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll Art left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="Art">
+                    @foreach (var art in artworks)
+                    {
+                        <li class="shelf-item">
+                            <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
+                                    aria-label="View @art.Title larger">
+                                <span class="shelf-cover art-cover">
+                                    <img src="@art.Image" alt="@art.Title, digital illustration" loading="lazy" draggable="false">
+                                </span>
+                                <span class="shelf-item-title">@art.Title</span>
+                                <span class="shelf-item-meta">Digital illustration</span>
+                            </button>
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll Art right">›</button>
+            </div>
+        </div>
+        <hr class="shelf-divider">
+
+        <div class="shelf writing-shelf" id="writing">
+            <div class="shelf-head">
+                <h3 class="shelf-title">Writing</h3>
+                @if (writing.Length > 4)
+                {
+                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@writing.Length">See all @writing.Length →</button>
+                }
+            </div>
+            <div class="shelf-rail-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll Writing left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="Writing">
+                    @foreach (var piece in writing)
+                    {
+                        <li class="shelf-item">
+                            <div class="writing-card">
+                                <div class="shelf-cover writing-cover">
+                                    <span class="writing-kind">@piece.Kind</span>
+                                    @if (!string.IsNullOrEmpty(piece.Dedication))
+                                    {
+                                        <span class="writing-dedication">@piece.Dedication</span>
+                                    }
+                                    <span class="writing-opening">
+                                        @foreach (var line in piece.Opening.Split('\n'))
+                                        {
+                                            <span>@line</span>
+                                        }
+                                    </span>
+                                </div>
+                                <p class="shelf-item-title">@piece.Title</p>
+                                <p class="shelf-item-meta">@piece.Kind · @piece.Year</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll Writing right">›</button>
+            </div>
+        </div>
+        <hr class="shelf-divider">
+
+        <div class="shelf" id="baking">
+            <div class="shelf-head">
+                <h3 class="shelf-title">Baking</h3>
+            </div>
+            <div class="shelf-rail-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll Baking left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="Baking">
+                    @for (var i = 0; i < bakes.Length; i++)
+                    {
+                        var bake = bakes[i];
+                        <li class="shelf-item">
+                            <button type="button" class="bake-open" data-recipe="@i" aria-label="Open the @bake.Title recipe">
+                                <div class="shelf-cover bake-cover">
+                                    @if (!string.IsNullOrEmpty(bake.Photo))
+                                    {
+                                        <img src="@bake.Photo" alt="@bake.Title" loading="lazy" draggable="false">
+                                    }
+                                    else
+                                    {
+                                        <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13v8"/><path d="M12 13c-3-3-4-7-2-10 1.5 2 2 5 2 10z"/><path d="M12 13c3-3 4-7 2-10-1.5 2-2 5-2 10z"/><path d="M12 13c-1.5-4-1.5-8 0-10 1.5 2 1.5 6 0 10z"/></svg>
+                                    }
+                                </div>
+                            </button>
+                            <p class="shelf-item-title">@bake.Title</p>
+                            <p class="shelf-item-meta">@(bake.Steps.Length == 0 ? "recipe coming soon" : bake.Line)</p>
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll Baking right">›</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Recipe card (one dialog, filled in when a bake is clicked) -->
+<dialog class="recipe-card" id="recipeCard" aria-labelledby="recipeTitle">
+    <button type="button" class="recipe-close" aria-label="Close recipe">×</button>
+    <div class="recipe-photo" id="recipePhoto"></div>
+    <div class="recipe-body">
+        <p class="recipe-kicker">Baking</p>
+        <h3 id="recipeTitle"></h3>
+        <p class="recipe-line" id="recipeLine"></p>
+        <p class="recipe-meta" id="recipeMeta"></p>
+        <p class="recipe-soon" id="recipeSoon" hidden>Recipe coming soon. It's in my kitchen, just not on the internet yet.</p>
+        <div class="recipe-columns" id="recipeColumns">
+            <div>
+                <h4>Ingredients</h4>
+                <ul id="recipeIngredients"></ul>
+            </div>
+            <div>
+                <h4>Steps</h4>
+                <ol id="recipeSteps"></ol>
+            </div>
+        </div>
+    </div>
+</dialog><!-- Artwork viewer (one dialog, filled in when a piece is clicked) -->
+<dialog class="recipe-card art-card" id="artCard" aria-labelledby="artTitle">
+    <button type="button" class="recipe-close" aria-label="Close artwork">×</button>
+    <div class="art-frame"><img id="artImage" src="" alt=""></div>
+    <div class="recipe-body">
+        <p class="recipe-kicker">Art</p>
+        <h3 id="artTitle"></h3>
+        <p class="recipe-line" id="artIdea"></p>
+        <p class="recipe-meta">Digital illustration · Procreate · AP 2-D Art and Design portfolio</p>
+    </div>
+</dialog><script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes))</script>
+
+<script src="~/js/shelves.js" asp-append-version="true"></script>

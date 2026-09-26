@@ -1,0 +1,533 @@
+@{
+    ViewData["Title"] = "Coursework";
+}
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #FAF1EF;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #2A1810;
+    }
+
+    .coursework-section {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+    }
+
+    .coursework-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .coursework-hero {
+        text-align: center;
+        margin-bottom: 56px;
+    }
+
+    .coursework-hero h1 {
+        font-size: 3.5em;
+        font-weight: 800;
+        color: #2A1810;
+        margin-bottom: 15px;
+        font-family: Georgia, serif;
+    }
+
+    .coursework-hero p {
+        font-size: 1.1em;
+        color: #56634A;
+    }
+
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        margin-bottom: 80px;
+    }
+
+    /* The card itself is just a see-through frame; its color lives on the front and back
+       faces (--card-bg), so the whole colored card turns over, not just the text */
+    .course-card {
+        --card-bg: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 16px;
+        overflow: visible;
+        cursor: pointer;
+        color: white;
+        perspective: 1200px;
+        height: 100%;
+    }
+
+    .course-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transform-style: preserve-3d;
+    }
+
+    .course-card.flipped .course-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .course-front, .course-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: var(--card-bg);
+        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.15);
+        transition: box-shadow 0.3s ease;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 40px;
+        border-radius: 16px;
+    }
+
+    .course-card:hover .course-front,
+    .course-card:hover .course-back {
+        box-shadow: 0 20px 50px rgba(158, 90, 99, 0.25);
+    }
+
+    .course-back {
+        transform: rotateY(180deg);
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .course-back-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+        height: 100%;
+    }
+
+    .course-description {
+        font-size: 0.95em;
+        line-height: 1.6;
+        opacity: 0.95;
+        margin: 0;
+        padding: 0 20px;
+    }
+
+    .view-more-btn {
+        background: rgba(255, 248, 246, 0.25);
+        border: 2px solid white;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-size: 0.85em;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .view-more-btn:hover {
+        background: rgba(255, 248, 246, 0.35);
+        transform: scale(1.05);
+    }
+
+    .course-number {
+        font-size: 2.5em;
+        font-weight: 800;
+        opacity: 0.9;
+        font-family: Georgia, serif;
+    }
+
+    .course-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .course-title {
+        font-size: 1.8em;
+        font-weight: 700;
+        margin-bottom: 12px;
+        line-height: 1.3;
+        font-family: Georgia, serif;
+    }
+
+    .course-subtitle {
+        font-size: 0.9em;
+        font-weight: 600;
+        opacity: 0.95;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .course-arrow {
+        align-self: flex-end;
+        font-size: 1.8em;
+        font-weight: 300;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .course-card:hover .course-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Different gradient colors for each card */
+    .course-card:nth-child(1) {
+        --card-bg: linear-gradient(135deg, #9A5F68 0%, #7A3F4A 100%);
+    }
+
+    .course-card:nth-child(2) {
+        --card-bg: linear-gradient(135deg, #8E5E5B 0%, #5C3A33 100%);
+    }
+
+    .course-card:nth-child(3) {
+        --card-bg: linear-gradient(135deg, #98626C 0%, #7F4E59 100%);
+    }
+
+    .course-card:nth-child(4) {
+        --card-bg: linear-gradient(135deg, #667856 0%, #4C5C3C 100%);
+    }
+
+    .course-card:nth-child(5) {
+        --card-bg: linear-gradient(135deg, #5C3A2A 0%, #3C2212 100%);
+    }
+
+    .course-card:nth-child(6) {
+        --card-bg: linear-gradient(135deg, #8E5656 0%, #6E3E3D 100%);
+    }
+
+    .course-card:nth-child(7) {
+        --card-bg: linear-gradient(135deg, #56674A 0%, #3E4E36 100%);
+    }
+
+    .course-card:nth-child(8) {
+        --card-bg: linear-gradient(135deg, #946058 0%, #744742 100%);
+    }
+
+    .course-card:nth-child(9) {
+        --card-bg: linear-gradient(135deg, #A0606E 0%, #824656 100%);
+    }
+</style>
+
+<!-- phone/tablet styles load after the page styles so they win -->
+<link rel="stylesheet" href="/css/coursework-responsive.css">
+
+<div class="coursework-section page-fill">
+    <div class="coursework-container">
+        <!-- HERO -->
+        <div class="coursework-hero">
+            <h1>Coursework</h1>
+            <p>Nine themes that shape how I think and create</p>
+        </div>
+
+        <!-- COURSES GRID -->
+        <div class="courses-grid">
+            <!-- 01: MIS -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">01</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Management Information Systems</h2>
+                            <p class="course-subtitle">Technology & Systems</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Diving deep into technology, systems, and how to build the future. 8 courses across tech stack fundamentals.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Management Information Systems', ['Intro to IT Management', 'Problem Solving & Programming', 'Database Management', 'Web Application Development', 'Business System Development', 'Strategic IT Management', 'Full-Stack Web App Development', 'Independent Research in MIS'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02: Leadership -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">02</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Leadership & Communication</h2>
+                            <p class="course-subtitle">People & Organizations</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Understanding people, influence, and how to lead with intention. 4 courses on communication and organizational dynamics.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Leadership & Communication', ['Professional Development', 'Leadership Challenges', 'Organizational Behavior', 'Business Communication'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03: Marketing -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">03</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Marketing</h2>
+                            <p class="course-subtitle">Brand, Product & Consumer Strategy</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Brand strategy, consumer psychology, and the art of telling stories that sell. 8 courses on marketing excellence.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Marketing', ['Principles of Marketing', 'Strategic Product Management', 'Brand Management', 'Business to Business Marketing', 'Consumer Behavior', 'Sales-Driving B2B Strategy', 'Science of Influence', 'Creativity in Marketing'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04: Educational Psychology -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">04</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Educational Psychology</h2>
+                            <p class="course-subtitle">Learning & Human Development</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">How humans learn, grow, and develop. 5 courses on cognition, mindfulness, and human potential.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Educational Psychology', ['Strategic Learning for 21st Century', 'Cognition & Human Learning', 'Mindfulness & Compassion', 'Intro to Career Planning', 'Research in Educational Psychology'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05: Psychology -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">05</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Psychology</h2>
+                            <p class="course-subtitle">Mind, Behavior & Cognition</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">The science of mind and behavior, from neurons to social dynamics. 9 courses diving into psychology.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Psychology', ['Intro to Psychology', 'Personality', 'Cognitive Psychology', 'Social Psychology', 'Conditioning & Learning', 'Hormones & Behavior', 'Neuroscience of Motivation', 'Cognitive Neuroscience', 'Social Cognition'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06: Advertising -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">06</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Advertising</h2>
+                            <p class="course-subtitle">Storytelling & Influence</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Storytelling across mediums: podcasts, brands, film. 5 courses on influence and creative storytelling.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Advertising', ['Psychology of Advertising', 'Brand Podcasting', 'Brand Storytelling', 'Intro Media/Entertainment', 'Storytelling in Film & TV'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07: Analytics & Operations -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">07</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Analytics & Operations</h2>
+                            <p class="course-subtitle">Business Fundamentals</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Numbers, data, and strategic decisions. 8 courses on finance, analytics, and business operations.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Analytics & Operations', ['Strategy Beyond Markets', 'Fundamentals of Accounting', 'Financial Accounting II', 'Corporate Finance', 'Intro to Data Science', 'Statistics for Business', 'Intro to Decision Science', 'Operations Management'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08: Foundations of Thought -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">08</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Foundations of Thought</h2>
+                            <p class="course-subtitle">Humanities & Social Sciences</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Ideas, history, and how humans think. 9 courses on humanities, social sciences, and literature.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Foundations of Thought', ['News Literacy', 'Rhetoric & Writing', 'Masterworks of Literature', 'Classical Mythology', 'Federal Government', 'American & Texas Government', 'US History Since 1865', 'US History 1492-1865', 'Calculus for Business'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09: Creation & Analysis -->
+            <div class="course-card" onclick="toggleFlip(this)">
+                <div class="course-card-inner">
+                    <div class="course-front">
+                        <div><div class="course-number">09</div></div>
+                        <div class="course-content">
+                            <h2 class="course-title">Creation & Analysis</h2>
+                            <p class="course-subtitle">Science, Math & Arts</p>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                    <div class="course-back">
+                        <div class="course-back-content">
+                            <p class="course-description">Creating and analyzing: art, science, and economics. 9 courses on creative and analytical thinking.</p>
+                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Creation & Analysis', ['Macroeconomics', 'Microeconomics', 'Physical Geology', 'Sustaining a Planet', 'Studio Art Lab', 'Speech Communication', 'Intro Media/Entertainment', 'Fundamentals of Nutrition', 'Computer Fluency'])">VIEW MORE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Course Modal -->
+<div id="courseModal" class="course-modal">
+    <div class="course-modal-content">
+        <button class="modal-close" onclick="closeCourseModal()">&times;</button>
+        <h2 id="modalTitle"></h2>
+        <ul id="courseList"></ul>
+    </div>
+</div>
+
+<script>
+function toggleFlip(card) {
+    card.classList.toggle('flipped');
+}
+
+function openCourseModal(title, courses) {
+    document.getElementById('modalTitle').textContent = title;
+    const courseList = document.getElementById('courseList');
+    courseList.innerHTML = '';
+    courses.forEach(course => {
+        const li = document.createElement('li');
+        li.textContent = course;
+        courseList.appendChild(li);
+    });
+    document.getElementById('courseModal').style.display = 'flex';
+}
+
+function closeCourseModal() {
+    document.getElementById('courseModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('courseModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeCourseModal();
+    }
+});
+</script>
+
+<style>
+.course-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(42, 24, 16, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.course-modal-content {
+    background-color: #FAF1EF;
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(42, 24, 16, 0.3);
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #2A1810;
+    font-weight: 300;
+}
+
+.modal-close:hover {
+    color: #9E5A63;
+}
+
+#modalTitle {
+    color: #2A1810;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.8em;
+    font-family: Georgia, serif;
+}
+
+#courseList {
+    list-style: none;
+    padding: 0;
+}
+
+#courseList li {
+    padding: 12px 0;
+    border-bottom: 1px solid #EBD5D0;
+    color: #2A1810;
+    font-size: 0.95em;
+    line-height: 1.6;
+}
+
+#courseList li:last-child {
+    border-bottom: none;
+}
+</style>

@@ -1,0 +1,16 @@
+# build output
+bin/
+obj/
+
+# editor and system files
+.vs/
+.vscode/
+*.user
+.DS_Store
+
+# secrets: my saved Spotify login stays on my laptop (on Render it's a private setting)
+spotify-token.json
+*.local.json
+
+# temporary test page
+wwwroot/_t.html

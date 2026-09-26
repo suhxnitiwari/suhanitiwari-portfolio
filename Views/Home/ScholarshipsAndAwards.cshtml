@@ -1,0 +1,172 @@
+@{
+    ViewData["Title"] = "Scholarships & Awards";
+}
+
+@functions {
+    // One scholarship or award. Only the name is required: anything left empty simply doesn't show.
+    // From = who gave it (like UT Austin or McCombs); Note = a line about it in my words.
+    public record Honor(string Name, string From = "", string Year = "", string Note = "", string Amount = "");
+}
+
+@{
+    // Add entries here, for example:
+    //   new Honor("Name of the Scholarship", From: "McCombs School of Business", Year: "2025",
+    //             Note: "One line about what it's for.")
+    // Each list only shows up on the page once it has something in it.
+    // Notes on the scholarships are what each award recognizes, from its McCombs description
+    var scholarships = new Honor[]
+    {
+        new Honor("Gerald and Linda Ridgely Endowed Presidential Scholarship", From: "McCombs School of Business", Year: "2026–2027",
+                  Note: "For McCombs students who exemplify student leadership on campus."),
+        new Honor("Scott Hemsell Memorial Scholarship", From: "McCombs School of Business", Year: "2026–2027",
+                  Note: "For students who show both interest and aptitude in Management Information Systems, in the classroom and beyond it.")
+    };
+
+    var awards = new Honor[]
+    {
+        new Honor("President’s Volunteer Service Award", Year: "2023",
+                  Note: "Received PVSA Gold for 350+ hours of community service in a year."),
+        new Honor("University Honors", From: "The University of Texas at Austin", Year: "Spring 2025",
+                  Note: "Awarded for distinguished academic achievement during the semester. University Honors recognizes undergraduates who earn at least 45 grade points with a minimum 3.50 in-residence semester GPA and no incomplete grades.")
+    };
+}
+
+<style>
+    .honors-section {
+        padding: 80px 40px 100px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+    }
+
+    .honors-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .honors-hero h1 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 3.5em;
+        font-weight: 800;
+        color: #2A1810;
+    }
+
+    .honors-group {
+        margin-top: 48px;
+    }
+
+    .honors-group h2 {
+        margin: 0 0 20px;
+        font-family: Georgia, serif;
+        font-size: 1.8em;
+        color: #2A1810;
+    }
+
+    /* cards wrap into as many columns as fit, and stretch to fill the row */
+    .honors-grid {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .honor {
+        padding: 26px 26px 24px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        border-top: 4px solid #9E5A63;
+    }
+
+    .honor-name {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        line-height: 1.3;
+        color: #2A1810;
+    }
+
+    .honor-meta {
+        margin: 10px 0 0;
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .honor-note {
+        margin: 12px 0 0;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .honor-amount {
+        margin: 14px 0 0;
+        font-weight: 700;
+        color: #8A4D57;
+    }
+
+    @@media (max-width: 768px) {
+        .honors-section {
+            padding: 50px 20px 70px;
+        }
+
+        .honors-hero h1 {
+            font-size: 2.5em;
+        }
+
+        .honors-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+@{
+    void RenderGroup(string title, Honor[] honors)
+    {
+        if (honors.Length == 0)
+        {
+            return;
+        }
+        <section class="honors-group">
+            <h2>@title</h2>
+            <ul class="honors-grid">
+                @foreach (var honor in honors)
+                {
+                    var meta = string.Join(" · ", new[] { honor.From, honor.Year }.Where(part => !string.IsNullOrEmpty(part)));
+                    <li class="honor">
+                        <h3 class="honor-name">@honor.Name</h3>
+                        @if (!string.IsNullOrEmpty(meta))
+                        {
+                            <p class="honor-meta">@meta</p>
+                        }
+                        @if (!string.IsNullOrEmpty(honor.Note))
+                        {
+                            <p class="honor-note">@honor.Note</p>
+                        }
+                        @if (!string.IsNullOrEmpty(honor.Amount))
+                        {
+                            <p class="honor-amount">@honor.Amount</p>
+                        }
+                    </li>
+                }
+            </ul>
+        </section>
+    }
+}
+
+<div class="honors-section page-fill">
+    <div class="honors-container">
+        <div class="honors-hero">
+            <h1>Scholarships &amp; Awards</h1>
+        </div>
+
+        @{
+            RenderGroup("Scholarships", scholarships);
+            RenderGroup("Awards", awards);
+        }
+    </div>
+</div>

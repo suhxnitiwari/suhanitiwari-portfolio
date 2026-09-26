@@ -1,0 +1,1051 @@
+@{
+    ViewData["Title"] = "My World";
+}
+
+@functions {
+    // One favorite spot. Category = the small pill; Icon = a key from SpotIcons below;
+    // Span = how many of the grid's 6 columns the card covers (2 = small, 3 = half, 4 = featured-size);
+    // Featured = the one highlighted card per tab. Photo is optional: add a path to show one on the card.
+    public record Spot(string Name, string Category, string Line, string Icon, int Span = 2,
+                       bool Featured = false, string Photo = "");
+
+    // Small line-art icons (drawn with the text color, so they match any card)
+    static readonly Dictionary<string, string> SpotIcons = new()
+    {
+        ["book"] = "<path d='M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z'/><path d='M4 20V5'/><path d='M8 7h7'/>",
+        ["laptop"] = "<rect x='4' y='5' width='16' height='10.5' rx='1.5'/><path d='M2 19h20'/>",
+        ["cup"] = "<path d='M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z'/><path d='M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16'/><path d='M8 3.5c0 1.5 1 1.5 1 3M12 3.5c0 1.5 1 1.5 1 3'/>",
+        ["campus"] = "<path d='M3 9l9-5 9 5'/><path d='M5.5 9.5v8.5M10 9.5v8.5M14 9.5v8.5M18.5 9.5v8.5'/><path d='M3 20.5h18'/>",
+        ["chat"] = "<path d='M4 5h16v10.5H9.5L4 19.5z'/><path d='M8 9.5h8M8 12.5h5'/>",
+        ["dining"] = "<path d='M7 3v18M5 3v5a2 2 0 0 0 4 0V3'/><path d='M17 21V3c-2 0-3.5 3-3.5 6.5S15 13 17 13'/>",
+        ["flower"] = "<circle cx='12' cy='7.5' r='3'/><circle cx='16.5' cy='12' r='3'/><circle cx='12' cy='16.5' r='3'/><circle cx='7.5' cy='12' r='3'/><circle cx='12' cy='12' r='1.2'/>",
+        ["olive"] = "<path d='M4 20C9 15 14 10 20 4'/><ellipse cx='9' cy='10.5' rx='2.2' ry='3.4' transform='rotate(-45 9 10.5)'/><ellipse cx='15.5' cy='9.5' rx='2.2' ry='3.4' transform='rotate(45 15.5 9.5)'/>",
+        ["bag"] = "<path d='M5 8h14l-1.2 12.5H6.2z'/><path d='M9 8V6.5a3 3 0 0 1 6 0V8'/>",
+        ["pin"] = "<path d='M12 21s-6.5-5.8-6.5-11.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.2'/>"
+    };
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: #FAF1EF;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        color: #2A1810;
+    }
+
+    .world-section {
+        background: linear-gradient(135deg, #FAF1EF 0%, #FAF1EF 100%);
+        padding: 80px 40px;
+    }
+
+    .world-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .world-hero {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .world-hero h1 {
+        font-size: 4em;
+        font-weight: 900;
+        color: #2A1810;
+        margin-bottom: 15px;
+        font-family: Georgia, serif;
+    }
+
+    .world-hero p {
+        font-size: 1.3em;
+        color: #9E5A63;
+        margin-bottom: 10px;
+        font-style: italic;
+        font-weight: 500;
+    }
+
+    /* SECTION HEADINGS */
+    .world-block-title {
+        font-size: 2.2em;
+        color: #2A1810;
+        font-family: Georgia, serif;
+        text-align: center;
+        margin: 90px 0 10px;
+    }
+
+    .world-block-title:first-of-type {
+        margin-top: 0;
+    }
+
+    .world-block-subtitle {
+        text-align: center;
+        color: #56634A;
+        font-size: 1.05em;
+        margin-bottom: 35px;
+    }
+
+
+    /* PEOPLE + SPOTS CARDS */
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+        justify-content: center;
+        gap: 30px;
+    }
+
+    /* People That Shaped Me: one row that scrolls sideways, part of the next card peeking in */
+    .people-carousel {
+        position: relative;
+        max-width: 1080px;
+        margin: 0 auto;
+    }
+
+    .people-rail {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: clamp(170px, calc((100% - 3.4 * 22px) / 4.4), 240px);
+        gap: 22px;
+        padding: 10px 2px 22px;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        cursor: grab;
+    }
+
+    .people-rail::-webkit-scrollbar {
+        display: none;
+    }
+
+    .people-rail.dragging {
+        cursor: grabbing;
+        scroll-snap-type: none;
+    }
+
+    .people-rail:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 4px;
+        border-radius: 16px;
+    }
+
+    .people-card {
+        scroll-snap-align: start;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 150px;
+        user-select: none;
+    }
+
+    .people-arrow {
+        position: absolute;
+        top: calc(50% - 6px);
+        transform: translateY(-50%);
+        z-index: 2;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #EDD8D3;
+        background: rgba(250, 241, 239, 0.95);
+        color: #2A1810;
+        font-size: 1.4em;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.18);
+        transition: opacity 0.25s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .people-arrow.prev { left: -20px; }
+    .people-arrow.next { right: -20px; }
+
+    .people-arrow:hover {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .people-arrow[disabled] {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    @@media (hover: none), (max-width: 700px) {
+        .people-arrow {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .people-rail {
+            grid-auto-columns: calc((100% - 1.3 * 14px) / 2.3);
+            gap: 14px;
+        }
+    }
+
+    .world-card {
+        background: #FFF8F6;
+        border-radius: 16px;
+        padding: 35px 30px;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .world-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 14px 30px rgba(158, 90, 99, 0.2);
+    }
+
+    .world-card h3 {
+        font-size: 1.3em;
+        color: #2A1810;
+        font-family: Georgia, serif;
+        margin-bottom: 8px;
+    }
+
+    .world-card-tag {
+        display: inline-block;
+        background: #F5E5E1;
+        color: #9E5A63;
+        border-radius: 12px;
+        padding: 3px 12px;
+        font-size: 0.8em;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .world-card p {
+        color: #2A1810;
+        line-height: 1.6;
+        font-size: 0.95em;
+    }
+
+    /* MAP CONTAINER */
+    #map {
+        width: 100%;
+        height: 700px;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(158, 90, 99, 0.2);
+        margin-bottom: 60px;
+        z-index: 1;
+    }
+
+    /* LEAFLET OVERRIDES */
+    .leaflet-container {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .leaflet-popup-content-wrapper {
+        background: #FFF8F6;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.2);
+    }
+
+    .leaflet-popup-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .popup-content {
+        padding: 15px;
+    }
+
+    .popup-title {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #2A1810;
+        margin-bottom: 8px;
+        font-family: Georgia, serif;
+    }
+
+    .popup-when {
+        margin: -2px 0 2px;
+        font-size: 0.85em;
+        font-weight: 700;
+        color: #9E5A63;
+    }
+
+    .popup-dates {
+        margin-bottom: 8px;
+        font-size: 0.78em;
+        letter-spacing: 0.5px;
+        color: #56634A;
+    }
+
+    .popup-desc {
+        font-size: 0.9em;
+        color: #2A1810;
+        line-height: 1.5;
+    }
+
+    .popup-photo {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+        border-radius: 8px 8px 0 0;
+        background: #F5E5E1;
+    }
+
+    .popup-tag {
+        display: inline-block;
+        background: #9E5A63;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75em;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    /* CITY NAME LABELS ON THE MAP */
+    .leaflet-tooltip.place-label {
+        background: #FAF1EF;
+        border: 2px solid #9E5A63;
+        border-radius: 20px;
+        color: #2A1810;
+        font-weight: 700;
+        font-size: 0.85em;
+        padding: 3px 10px;
+        box-shadow: 0 2px 8px rgba(42, 24, 16, 0.15);
+        cursor: pointer;
+    }
+
+    .leaflet-tooltip.place-label::before {
+        display: none;
+    }
+
+    /* Map in the site's warm pinks: tiles tinted from blue/grey to rose-sepia, controls in palette colors */
+    #map .leaflet-tile-pane {
+        filter: grayscale(1) sepia(1) hue-rotate(-60deg) saturate(1.6) brightness(1.05);
+    }
+
+    #map .leaflet-container,
+    #map.leaflet-container {
+        background: #F5E0DB;
+    }
+
+    #map .leaflet-bar a {
+        background: #FAF1EF;
+        color: #2A1810;
+        border-bottom-color: #EBD5D0;
+    }
+
+    #map .leaflet-bar a:hover {
+        background: #EFCFCD;
+    }
+
+    #map .leaflet-control-attribution {
+        background: rgba(250, 241, 239, 0.85);
+        color: #56634A;
+    }
+
+    #map .leaflet-control-attribution a {
+        color: #8A4D57;
+    }
+
+    /* note that appears when you scroll over the map before clicking it */
+    .map-scroll-note {
+        position: absolute;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(138, 77, 87, 0.45);
+        color: #FAF1EF;
+        font-size: 1.05em;
+        font-weight: 600;
+        text-align: center;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .map-scroll-note.show {
+        opacity: 1;
+    }
+
+    .map-hint {
+        text-align: center;
+        color: #56634A;
+        font-size: 0.95em;
+        margin: -40px 0 60px;
+    }
+
+    /* ===== MY FAVORITE SPOTS: a little Austin city guide ===== */
+    .spots-tabs {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 34px;
+    }
+
+    .spots-tab {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 12px;
+        padding: 14px 28px;
+        border-radius: 32px;
+        border: 1.5px solid #8A4D57;
+        background: #FAF1EF;
+        color: #2A1810;
+        font-size: 0.95em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .spots-tab-count {
+        font-family: Georgia, serif;
+        font-size: 0.85em;
+        letter-spacing: 1px;
+        opacity: 0.75;
+    }
+
+    .spots-tab:hover {
+        background: #EFCFCD;
+        border-color: #9E5A63;
+        color: #2A1810;
+    }
+
+    .spots-tab[aria-selected="true"] {
+        background: #8A4D57;
+        border-color: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .spots-tab:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+    }
+
+    /* The "map": faint street grid + the river, like an illustrated city guide */
+    .spots-map {
+        position: relative;
+        padding: 46px 40px 40px;
+        border-radius: 28px;
+        border: 1px solid #EBD5D0;
+        background-color: #FAF1EF;
+        background-image:
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' preserveAspectRatio='none'%3E%3Cpath d='M-20 420 C 120 380 220 470 360 430 S 600 330 720 380 S 900 470 1020 410' fill='none' stroke='%239E5A63' stroke-opacity='0.22' stroke-width='26' stroke-linecap='round'/%3E%3Cpath d='M160 -10 L 250 610 M 620 -10 L 540 610 M -10 160 L 1010 110' fill='none' stroke='%238A4D57' stroke-opacity='0.07' stroke-width='6'/%3E%3C/svg%3E"),
+            linear-gradient(rgba(138, 77, 87, 0.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(138, 77, 87, 0.045) 1px, transparent 1px);
+        background-size: 100% 100%, 44px 44px, 44px 44px;
+        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.1);
+    }
+
+    .spots-map-label {
+        position: absolute;
+        top: 16px;
+        right: 22px;
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .spots-map-label b {
+        display: inline-block;
+        margin-right: 8px;
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        color: #2A1810;
+    }
+
+    .spots-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px;
+    }
+
+    .spots-grid[hidden] {
+        display: none;
+    }
+
+    .spots-grid.show .spot {
+        animation: spotIn 0.45s ease both;
+    }
+
+    .spots-grid.show .spot:nth-child(2) { animation-delay: 0.05s; }
+    .spots-grid.show .spot:nth-child(3) { animation-delay: 0.1s; }
+    .spots-grid.show .spot:nth-child(4) { animation-delay: 0.15s; }
+    .spots-grid.show .spot:nth-child(5) { animation-delay: 0.2s; }
+    .spots-grid.show .spot:nth-child(6) { animation-delay: 0.25s; }
+
+    @@keyframes spotIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .spot {
+        grid-column: span var(--span, 2);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 190px;
+        padding: 26px 26px 24px;
+        border-radius: 20px;
+        background: rgba(255, 248, 246, 0.92);
+        border: 1px solid #EDD8D3;
+        box-shadow: 0 8px 22px rgba(42, 24, 16, 0.07);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .spot:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 34px rgba(42, 24, 16, 0.13);
+    }
+
+    .spot-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .spot-icon {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #F5E0DB;
+        color: #2A1810;
+    }
+
+    .spot-icon svg {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .spot-pill {
+        padding: 5px 12px;
+        border-radius: 20px;
+        background: rgba(86, 99, 74, 0.12);
+        color: #56634A;
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .spot h3 {
+        margin: 8px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .spot p {
+        margin: 0;
+        color: #2A1810;
+        line-height: 1.55;
+        font-size: 0.95em;
+    }
+
+    .spot-photo {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* The one featured spot per tab: burgundy, bigger type */
+    .spot.featured {
+        justify-content: flex-end;
+        min-height: 250px;
+        background: linear-gradient(135deg, #8A4D57 0%, #34422F 100%);
+        border-color: transparent;
+        color: #FAF1EF;
+    }
+
+    .spot.featured .spot-top {
+        margin-bottom: auto;
+    }
+
+    .spot.featured .spot-icon {
+        background: rgba(250, 241, 239, 0.16);
+        color: #FAF1EF;
+    }
+
+    .spot.featured .spot-pill {
+        background: rgba(250, 241, 239, 0.16);
+        color: #FAF1EF;
+    }
+
+    .spot.featured h3 {
+        font-size: 2.1em;
+        color: #FAF1EF;
+    }
+
+    .spot.featured p {
+        color: #FAF1EF;
+        font-size: 1.05em;
+        max-width: 460px;
+    }
+
+    @@media (max-width: 760px) {
+        .spots-map {
+            padding: 44px 16px 18px;
+            border-radius: 20px;
+        }
+
+        .spots-tab {
+            padding: 12px 20px;
+            font-size: 0.85em;
+            letter-spacing: 1.5px;
+        }
+
+        .spots-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .spot {
+            grid-column: span 1;
+            min-height: 0;
+            padding: 20px 18px;
+        }
+
+        /* featured card, and a leftover last card, take the full width */
+        .spot.featured,
+        .spots-grid > .spot:last-child:nth-child(even) {
+            grid-column: span 2;
+        }
+
+        .spot.featured {
+            min-height: 200px;
+        }
+
+        .spot.featured h3 {
+            font-size: 1.7em;
+        }
+    }
+
+    @@media (max-width: 440px) {
+        .spots-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .spot,
+        .spot.featured,
+        .spots-grid > .spot:last-child:nth-child(even) {
+            grid-column: span 1;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .spots-grid.show .spot,
+        .spot {
+            animation: none;
+            transition: none;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .world-section {
+            padding: 40px 20px;
+        }
+
+        .world-hero h1 {
+            font-size: 2.5em;
+        }
+
+        #map {
+            height: 500px;
+            margin-bottom: 40px;
+        }
+
+        .map-hint {
+            margin: -20px 0 40px;
+        }
+    }
+</style>
+
+<div class="world-section page-fill">
+    <div class="world-container">
+        @{
+            // The places I've lived, in order. Edit the descriptions to tell each chapter.
+            // labelSide is where the city name sits next to its pin, so nearby cities don't overlap.
+            // wiki is the Wikipedia page the popup photo comes from.
+            // from / to = year-month I moved in and out ("to" empty = I live there now);
+            // the popup works out my ages and how long I stayed from these.
+            var places = new[]
+            {
+                new { name = "Lucknow", from = "2006-03", to = "2006-05", region = "India", coords = new[] { 26.8467, 80.9462 }, labelSide = "right", wiki = "Lucknow", description = "Where I was born, on March 6, 2006." },
+                new { name = "Delhi", from = "2006-05", to = "2011-03", region = "India", coords = new[] { 28.6139, 77.2090 }, labelSide = "top", wiki = "Delhi", description = "India's capital: loud, busy and full of the best street food." },
+                new { name = "Ahmedabad", from = "2011-04", to = "2012-04", region = "India", coords = new[] { 23.0225, 72.5714 }, labelSide = "left", wiki = "Ahmedabad", description = "A city on the Sabarmati river, famous for its kite festival." },
+                new { name = "Bangalore", from = "2012-04", to = "2012-06", region = "India", coords = new[] { 12.9716, 77.5946 }, labelSide = "left", wiki = "Bangalore", description = "India's tech hub, also known as the Garden City." },
+                new { name = "Singapore", from = "2012-07", to = "2015-06", region = "Singapore", coords = new[] { 1.3521, 103.8198 }, labelSide = "right", wiki = "Marina_Bay,_Singapore", description = "Tiny, spotless and full of hawker-centre food." },
+                new { name = "Cupertino", from = "2015-06", to = "2020-06", region = "California", coords = new[] { 37.3230, -122.0322 }, labelSide = "left", wiki = "Cupertino,_California", description = "Apple's hometown, in the middle of Silicon Valley." },
+                new { name = "Frisco", from = "2020-06", to = "2024-08", region = "Texas", coords = new[] { 33.1507, -96.8236 }, labelSide = "top", wiki = "Frisco,_Texas", description = "A fast-growing suburb just north of Dallas." },
+                new { name = "Austin", from = "2024-08", to = "", region = "Texas", coords = new[] { 30.2672, -97.7431 }, labelSide = "bottom", wiki = "Austin,_Texas", description = "UT Austin, where I'm studying now." }
+            };
+        }
+
+        <!-- PLACES THAT SHAPED ME -->
+        <h2 class="world-block-title">Places That Shaped Me</h2>
+        <p class="world-block-subtitle">a little map of how I became me</p>
+        <div id="map"></div>
+        <p class="map-hint">Click a place on the map to read about it</p>
+
+        <!-- PEOPLE THAT SHAPED ME -->
+        @{
+            // The people who shaped me: (name, who they are to me, how they shaped me).
+            // The last two are optional: leave them "" and that line just doesn't show.
+            var people = new[]
+            {
+                ("Papa", "", ""),
+                ("Mumma", "", ""),
+                ("Amaira", "", ""),
+                ("Hana", "", ""),
+                ("Reese", "", ""),
+                ("Avery", "", "")
+            };
+        }
+        <h2 class="world-block-title">People That Shaped Me</h2>
+        <p class="world-block-subtitle">The people behind who I am</p>
+        <div class="people-carousel">
+            <button type="button" class="people-arrow prev" aria-label="Previous people">‹</button>
+            <div class="people-rail" tabindex="0" aria-label="People that shaped me">
+            @foreach (var (name, relation, story) in people)
+            {
+                <div class="world-card people-card">
+                    <h3>@name</h3>
+                    @if (!string.IsNullOrEmpty(relation))
+                    {
+                        <div class="world-card-tag">@relation</div>
+                    }
+                    @if (!string.IsNullOrEmpty(story))
+                    {
+                        <p>@story</p>
+                    }
+                </div>
+            }
+            </div>
+            <button type="button" class="people-arrow next" aria-label="More people">›</button>
+        </div>
+
+        <!-- FAVORITE SPOTS IN AUSTIN -->
+        @{
+            // Add, remove or reorder spots freely; the tab counts update on their own.
+            var onCampus = new[]
+            {
+                new Spot("McCombs", "My Campus Home", "Where most of my college life happens.", "campus", Span: 4, Featured: true),
+                new Spot("Medici", "Coffee", "Coffee, studying, and an embarrassing amount of my time.", "cup"),
+                new Spot("Union Building", "New Study Spot", "My newest addition to the study rotation.", "laptop"),
+                new Spot("PCL", "Study Favorite", "A longtime favorite when I need to lock in.", "book"),
+                new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors.", "chat")
+            };
+
+            var aroundAustin = new[]
+            {
+                new Spot("Yamas", "Mediterranean", "Good food, gorgeous space, and one of my favorite Austin atmospheres.", "flower", Span: 4, Featured: true),
+                new Spot("Aba", "Mediterranean", "One of my favorite spots for a pretty lunch or dinner.", "dining"),
+                new Spot("Éma", "Mediterranean", "Mediterranean food will always have my heart.", "olive"),
+                new Spot("South Congress", "Shop + Wander", "One of my favorite places to spend an afternoon shopping.", "pin", Span: 4),
+                new Spot("The Domain", "Shop + Eat", "Shopping, food, and wandering around with no particular agenda.", "bag", Span: 3),
+                new Spot("Mozart's", "Coffee", "Coffee by the water. Enough said.", "cup", Span: 3)
+            };
+
+            var spotTabs = new[]
+            {
+                (Id: "campus", Label: "On Campus", Spots: onCampus),
+                (Id: "austin", Label: "Around Austin", Spots: aroundAustin)
+            };
+        }
+        <h2 class="world-block-title">My Favorite Spots</h2>
+        <p class="world-block-subtitle">Where you'll find me in Austin</p>
+
+        <div class="spots-tabs" role="tablist" aria-label="Favorite spots">
+            @for (var t = 0; t < spotTabs.Length; t++)
+            {
+                var tab = spotTabs[t];
+                <button type="button" class="spots-tab" role="tab" id="spots-tab-@tab.Id"
+                        aria-controls="spots-@tab.Id" aria-selected="@(t == 0 ? "true" : "false")" tabindex="@(t == 0 ? 0 : -1)">
+                    @tab.Label <span class="spots-tab-count">@tab.Spots.Length.ToString("00")</span>
+                </button>
+            }
+        </div>
+
+        <div class="spots-map">
+            <span class="spots-map-label" aria-hidden="true"><b>N</b>Austin, TX · 30.27° N</span>
+            @for (var t = 0; t < spotTabs.Length; t++)
+            {
+                var tab = spotTabs[t];
+                <div class="spots-grid" role="tabpanel" id="spots-@tab.Id" aria-labelledby="spots-tab-@tab.Id" hidden="@(t != 0)">
+                    @foreach (var spot in tab.Spots)
+                    {
+                        <article class="spot @(spot.Featured ? "featured" : "")" style="--span: @spot.Span;">
+                            <div class="spot-top">
+                                <span class="spot-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24">@Html.Raw(SpotIcons.GetValueOrDefault(spot.Icon, SpotIcons["pin"]))</svg>
+                                </span>
+                                <span class="spot-pill">@spot.Category</span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(spot.Photo))
+                            {
+                                <img class="spot-photo" src="@spot.Photo" alt="@spot.Name" loading="lazy">
+                            }
+                            <h3>@spot.Name</h3>
+                            <p>@spot.Line</p>
+                        </article>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    // Favorite spots: switch between On Campus and Around Austin (click, or arrow keys)
+    (function () {
+        const tabs = [...document.querySelectorAll('.spots-tab')];
+        const show = tab => {
+            tabs.forEach(t => {
+                const on = t === tab;
+                t.setAttribute('aria-selected', on);
+                t.tabIndex = on ? 0 : -1;
+                const panel = document.getElementById(t.getAttribute('aria-controls'));
+                panel.hidden = !on;
+                panel.classList.toggle('show', on);
+            });
+        };
+        tabs.forEach((tab, i) => {
+            tab.addEventListener('click', () => show(tab));
+            tab.addEventListener('keydown', e => {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+                const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+                show(next);
+                next.focus();
+            });
+        });
+    })();
+</script>
+
+<script>
+    // People carousel: arrows, drag with the mouse, arrow keys; swipe/trackpad scroll natively
+    (function () {
+        const rail = document.querySelector('.people-rail');
+        if (!rail) return;
+        const prev = document.querySelector('.people-arrow.prev');
+        const next = document.querySelector('.people-arrow.next');
+        const step = () => rail.firstElementChild.offsetWidth + parseFloat(getComputedStyle(rail).columnGap);
+        const update = () => {
+            prev.disabled = rail.scrollLeft <= 2;
+            next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2;
+        };
+        prev.addEventListener('click', () => rail.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
+        next.addEventListener('click', () => rail.scrollBy({ left: step() * 2, behavior: 'smooth' }));
+        rail.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+
+        let drag = null;
+        rail.addEventListener('pointerdown', e => {
+            if (e.pointerType === 'mouse' && e.button === 0) drag = { x: e.clientX, left: rail.scrollLeft, moved: false };
+        });
+        window.addEventListener('pointermove', e => {
+            if (!drag) return;
+            const dx = e.clientX - drag.x;
+            if (!drag.moved && Math.abs(dx) > 4) { drag.moved = true; rail.classList.add('dragging'); }
+            if (drag.moved) rail.scrollLeft = drag.left - dx;
+        });
+        window.addEventListener('pointerup', () => {
+            if (drag && drag.moved) {
+                const left = rail.scrollLeft;
+                rail.classList.remove('dragging');
+                rail.scrollLeft = left;
+                rail.scrollTo({ left: Math.round(left / step()) * step(), behavior: 'smooth' });
+            }
+            drag = null;
+        });
+        rail.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') { e.preventDefault(); rail.scrollBy({ left: step(), behavior: 'smooth' }); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); rail.scrollBy({ left: -step(), behavior: 'smooth' }); }
+        });
+    })();
+</script>
+
+<!-- LEAFLET MAP -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<script>
+    // Initialize map centered on middle of world
+    // One copy of the world only: no repeating, no dragging off the edge into grey
+    const worldBounds = L.latLngBounds([[-58, -180], [78, 180]]);
+    const map = L.map('map', {
+        maxBounds: worldBounds,
+        maxBoundsViscosity: 1.0,
+        zoomSnap: 0.25,
+        worldCopyJump: false,
+        // Don't steal the page's scrolling: the wheel only zooms after you click the map,
+        // and on phones one finger scrolls the page (two fingers move / pinch the map)
+        scrollWheelZoom: false,
+        dragging: !L.Browser.mobile
+    }).setView([20, 0], 3);
+    map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');   // no flag icon
+
+    (function mapScrollGuard() {
+        const box = map.getContainer();
+        const note = document.createElement('div');
+        note.className = 'map-scroll-note';
+        note.textContent = L.Browser.mobile ? 'Use two fingers to move the map' : 'Click the map to zoom · keep scrolling to move on';
+        box.appendChild(note);
+        let hideTimer;
+        const showNote = () => {
+            note.classList.add('show');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => note.classList.remove('show'), 1400);
+        };
+        map.on('click', () => { map.scrollWheelZoom.enable(); note.classList.remove('show'); });
+        map.on('mouseout', () => map.scrollWheelZoom.disable());
+        box.addEventListener('wheel', () => { if (!map.scrollWheelZoom.enabled()) showNote(); }, { passive: true });
+        box.addEventListener('touchstart', e => { if (L.Browser.mobile && e.touches.length === 1) showNote(); }, { passive: true });
+    })();
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19,
+        noWrap: true
+    }).addTo(map);
+
+    // The places from the list at the top of the page
+    const places = @(Html.Raw(Json.Serialize(places)));
+    const locations = places.map((place, index) => ({ ...place, number: index + 1 }));
+
+    // Numbered pin showing the order I lived there
+    const customIcon = (number) => L.divIcon({
+        html: `<div style="background: #9E5A63; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid #8A4D57; font-size: 13px;">${number}</div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        className: 'custom-marker'
+    });
+
+    // How far the city name sits from the pin on each side
+    const labelOffsets = {
+        right: [16, 0],
+        left: [-16, 0],
+        top: [0, -16],
+        bottom: [0, 16]
+    };
+
+    // Popup: photo (once loaded), numbered name and a short description
+    // My ages and how long I lived there, worked out from the move-in / move-out months
+    const BIRTH = { year: 2006, month: 3 };   // born March 6, 2006
+    const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    function timeThere(loc) {
+        const parse = text => { const [y, m] = text.split('-').map(Number); return { year: y, month: m }; };
+        const now = new Date();
+        const start = parse(loc.from);
+        const end = loc.to ? parse(loc.to) : { year: now.getFullYear(), month: now.getMonth() + 1 };
+        const ageAt = d => d.year - BIRTH.year - (d.month < BIRTH.month ? 1 : 0);
+        const a0 = ageAt(start), a1 = ageAt(end);
+        const bornHere = start.year === BIRTH.year && start.month === BIRTH.month;
+        const ages = a0 === a1 ? `age ${a0}` : `ages ${a0}–${a1}`;
+
+        const months = (end.year - start.year) * 12 + (end.month - start.month);
+        const y = Math.floor(months / 12), m = months % 12;
+        const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+        const length = [y ? plural(y, 'year') : '', m ? plural(m, 'month') : ''].filter(Boolean).join(', ') || 'under a month';
+
+        const label = d => `${MONTHS[d.month - 1]} ${d.year}`;
+        const when = `${label(start)} – ${loc.to ? label(end) : 'now'}`;
+        // Where I was born: "my first 2 months" reads better than an age
+        const summary = bornHere ? `my first ${length}`
+            : `${ages} · ${loc.to ? length : `${length} and counting`}`;
+        return { summary, when };
+    }
+
+    const popupHTML = (loc) => {
+        const t = timeThere(loc);
+        return `
+        ${loc.photo ? `<img class="popup-photo" src="${loc.photo}" alt="${loc.name}">` : ''}
+        <div class="popup-content">
+            <div class="popup-title">${loc.number}. ${loc.name}</div>
+            <div class="popup-when">${t.summary}</div>
+            <div class="popup-dates">${t.when}</div>
+            ${loc.description ? `<div class="popup-desc">${loc.description}</div>` : ''}
+        </div>
+    `;
+    };
+
+    // Add markers and draw journey line
+    const coordinates = [];
+    locations.forEach(loc => {
+        coordinates.push([loc.coords[0], loc.coords[1]]);
+
+        const marker = L.marker(loc.coords, { icon: customIcon(loc.number) }).addTo(map);
+
+        // Numbered city name always shown on the map next to its pin
+        marker.bindTooltip(`${loc.number}. ${loc.name}`, {
+            permanent: true,
+            direction: loc.labelSide,
+            offset: labelOffsets[loc.labelSide],
+            className: 'place-label',
+            interactive: true
+        });
+
+        marker.bindPopup(popupHTML(loc), { minWidth: 260, maxWidth: 260 });
+
+        // Load the city's photo from Wikipedia the first time its popup opens
+        marker.on('popupopen', async () => {
+            if (loc.photo !== undefined) return;
+            loc.photo = null;
+            try {
+                const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${loc.wiki}`);
+                const data = await response.json();
+                if (data.thumbnail) {
+                    loc.photo = data.thumbnail.source;
+                    marker.setPopupContent(popupHTML(loc));
+                    marker.getPopup().getElement()?.querySelector('.popup-photo')
+                        ?.addEventListener('load', () => marker.getPopup().update());
+                }
+            } catch {
+                // No photo is fine; the popup still shows the name and description
+            }
+        });
+
+        // Clicking the city name opens the same info as clicking the pin
+        marker.getTooltip().on('click', () => marker.openPopup());
+    });
+
+    // Draw journey line connecting all points
+    L.polyline(coordinates, {
+        color: '#9E5A63',
+        weight: 3,
+        opacity: 0.7,
+        dashArray: '5, 5'
+    }).addTo(map);
+
+    // Fit map to show all markers
+    const group = new L.featureGroup(locations.map(loc => L.marker(loc.coords)));
+    // Never zoom out further than the world filling the whole map box
+    function limitZoomOut() {
+        map.setMinZoom(map.getBoundsZoom(worldBounds, true));
+    }
+    limitZoomOut();
+    map.on('resize', limitZoomOut);
+    map.fitBounds(group.getBounds().pad(0.1));
+</script>

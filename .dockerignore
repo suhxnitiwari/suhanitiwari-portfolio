@@ -1,0 +1,9 @@
+bin/
+obj/
+.git/
+.vs/
+.vscode/
+*.user
+.DS_Store
+spotify-token.json
+wwwroot/_t.html

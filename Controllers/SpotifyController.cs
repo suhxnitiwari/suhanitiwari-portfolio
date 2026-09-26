@@ -1,0 +1,148 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Tiwari_Suhani_HW3.Services;
+
+namespace Tiwari_Suhani_HW3.Controllers
+{
+    public class SpotifyController : Controller
+    {
+        private readonly SpotifyService _spotifyService;
+        private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _cache;
+        private readonly IWebHostEnvironment _environment;
+        private readonly string _tokenFilePath = "spotify-token.json";
+
+        // My top artists/songs/genres change slowly, so each result is kept for 12 hours:
+        // every visitor in that window gets the saved copy, and only the first visit after it
+        // expires asks Spotify again. Change this number to refresh more or less often.
+        private static readonly TimeSpan SpotifyDataLifetime = TimeSpan.FromHours(12);
+
+        public SpotifyController(SpotifyService spotifyService, IConfiguration configuration, IMemoryCache cache, IWebHostEnvironment environment)
+        {
+            _spotifyService = spotifyService;
+            _configuration = configuration;
+            _cache = cache;
+            _environment = environment;
+        }
+
+        // Connecting a Spotify account replaces whose music the site shows, so on the live site it's
+        // switched off: only works on my laptop, or live if I set Spotify__AllowConnect=true for a moment.
+        private bool CanConnect() =>
+            _environment.IsDevelopment() || _configuration.GetValue<bool>("Spotify:AllowConnect");
+
+        // Return the saved copy if there is one; otherwise ask Spotify and save the answer.
+        // Empty or failed results aren't saved, so a hiccup doesn't stick around for 12 hours.
+        private async Task<IActionResult> CachedSpotifyJson<T>(string key, Func<string, Task<T?>> load)
+        {
+            if (_cache.TryGetValue(key, out T? saved) && saved != null)
+            {
+                return Json(saved);
+            }
+
+            var accessToken = await GetFreshAccessTokenAsync();
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                return Unauthorized();
+            }
+
+            var data = await load(accessToken);
+            if (data != null && !(data is System.Collections.ICollection { Count: 0 }))
+            {
+                _cache.Set(key, data, SpotifyDataLifetime);
+            }
+            return Json(data);
+        }
+
+        private async Task<string?> GetFreshAccessTokenAsync()
+        {
+            var refreshToken = _configuration["Spotify:RefreshToken"];
+
+            if (System.IO.File.Exists(_tokenFilePath))
+            {
+                var json = await System.IO.File.ReadAllTextAsync(_tokenFilePath);
+                var tokenData = JsonSerializer.Deserialize<JsonElement>(json);
+                if (tokenData.TryGetProperty("refresh_token", out var rt))
+                {
+                    refreshToken = rt.GetString();
+                }
+            }
+
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return null;
+            }
+
+            return await _spotifyService.GetValidAccessTokenAsync(refreshToken);
+        }
+
+        public IActionResult Login()
+        {
+            if (!CanConnect())
+            {
+                return NotFound();
+            }
+
+            var authUrl = _spotifyService.GetAuthorizationUrl();
+            return Redirect(authUrl);
+        }
+
+        // Must match the Redirect URI registered in the Spotify developer dashboard
+        [Route("home/spotify-callback")]
+        public async Task<IActionResult> Callback(string code, string error)
+        {
+            if (!CanConnect())
+            {
+                return NotFound();
+            }
+
+            if (error != null)
+            {
+                return BadRequest("Authorization failed");
+            }
+
+            var (accessToken, refreshToken) = await _spotifyService.GetAccessTokenAsync(code);
+            if (accessToken != null && refreshToken != null)
+            {
+                // Save refresh token to file for permanent storage
+                var tokenData = new { refresh_token = refreshToken, access_token = accessToken };
+                var json = JsonSerializer.Serialize(tokenData);
+                await System.IO.File.WriteAllTextAsync(_tokenFilePath, json);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return BadRequest("Failed to get access token");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTopTracks(int limit = 10, string timeRange = "medium_term")
+        {
+            return await CachedSpotifyJson($"top-tracks:{limit}:{timeRange}", async token => await _spotifyService.GetTopTracksAsync(token, limit, timeRange));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTopArtists(int limit = 10, string timeRange = "medium_term")
+        {
+            return await CachedSpotifyJson($"top-artists:{limit}:{timeRange}", async token => await _spotifyService.GetTopArtistsAsync(token, limit, timeRange));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTopGenres(int limit = 5, string timeRange = "medium_term")
+        {
+            return await CachedSpotifyJson($"top-genres:{limit}:{timeRange}", async token => await _spotifyService.GetTopGenresAsync(token, limit, timeRange));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTopAlbum(string timeRange = "medium_term")
+        {
+            return await CachedSpotifyJson($"top-album:{timeRange}", async token => await _spotifyService.GetTopAlbumAsync(token, timeRange));
+        }
+    }
+}

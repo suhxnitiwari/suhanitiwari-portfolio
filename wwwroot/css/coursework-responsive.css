@@ -1,0 +1,49 @@
+/* Responsive styles for Coursework page */
+
+@media (max-width: 1024px) {
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+
+    .course-card {
+        padding: 30px;
+    }
+
+    .course-title {
+        font-size: 1.5em;
+    }
+
+    .course-number {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 768px) {
+    .coursework-section {
+        padding: 50px 20px;
+    }
+
+    .coursework-hero h1 {
+        font-size: 2.5em;
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .course-card {
+        aspect-ratio: auto;
+        padding: 25px;
+        min-height: 300px;
+    }
+
+    .course-title {
+        font-size: 1.3em;
+    }
+
+    .course-number {
+        font-size: 1.5em;
+    }
+}
