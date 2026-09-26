@@ -1,0 +1,334 @@
+@{
+    ViewData["Title"] = "How I Work";
+}
+
+<style>
+    .work-tests {
+        padding: 60px 40px 90px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+    }
+
+    .work-tests-hero {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .work-tests-hero h1 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 3.5em;
+        font-weight: 800;
+        color: #2A1810;
+    }
+
+    /* ===== CLIFTONSTRENGTHS: my top five, ranked ===== */
+    .clifton-list {
+        list-style: none;
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .clifton-item {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        gap: 18px;
+        align-items: start;
+        padding: 22px 26px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+    }
+
+    .clifton-item + .clifton-item {
+        margin-top: 14px;
+    }
+
+    .clifton-rank {
+        font-family: Georgia, serif;
+        font-size: 2.8em;
+        font-weight: 700;
+        line-height: 1;
+        color: #8A4D57;
+    }
+
+    .clifton-domain {
+        margin: 0;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .clifton-domain.influencing {
+        color: #9E5A63;
+    }
+
+    .clifton-item h3 {
+        margin: 4px 0 6px;
+        font-family: Georgia, serif;
+        font-size: 1.6em;
+        color: #2A1810;
+    }
+
+    .clifton-item p.clifton-line {
+        margin: 0;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    /* four of five in one domain: shown as a single bar under the list */
+    .clifton-domains {
+        max-width: 760px;
+        margin: 26px auto 0;
+    }
+
+    .clifton-bar {
+        display: flex;
+        height: 10px;
+        border-radius: 6px;
+        overflow: hidden;
+        gap: 3px;
+    }
+
+    .clifton-bar span {
+        flex: 1;
+        background: #7F9A6B;
+    }
+
+    .clifton-bar span.influencing {
+        background: #9E5A63;
+    }
+
+    .clifton-key {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 22px;
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.85em;
+        color: #2A1810;
+    }
+
+    .clifton-key li::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 7px;
+        border-radius: 3px;
+        background: #7F9A6B;
+    }
+
+    .clifton-key li.influencing::before {
+        background: #9E5A63;
+    }
+
+    .test-credit {
+        max-width: 760px;
+        margin: 22px auto 0;
+        font-size: 0.75em;
+        line-height: 1.5;
+        text-align: center;
+        color: #56634A;
+    }
+
+    @@media (max-width: 768px) {
+        .work-tests {
+            padding: 44px 18px 70px;
+        }
+
+        .work-tests-hero h1 {
+            font-size: 2.5em;
+        }
+
+        .clifton-item {
+            grid-template-columns: 44px 1fr;
+            gap: 12px;
+            padding: 18px;
+        }
+
+        .clifton-rank {
+            font-size: 2.1em;
+        }
+    }
+</style>
+<link rel="stylesheet" href="~/css/tests.css" asp-append-version="true" />
+
+@{
+    // My CliftonStrengths top 5 (Gallup, taken 02/11/2025), in order.
+    // Lines are my short versions of Gallup's theme descriptions.
+    var clifton = new[]
+    {
+        ("Relator", "Relationship Building", "I build close, genuine relationships and love working hard alongside people toward a shared goal."),
+        ("Empathy", "Relationship Building", "I sense what people are feeling by putting myself in their shoes, often before they say a word."),
+        ("Individualization", "Relationship Building", "I notice what makes each person unique, and how different people can work together best."),
+        ("Developer", "Relationship Building", "I see the potential in people and get real satisfaction from helping them grow."),
+        ("Communication", "Influencing", "I put thoughts into words easily, whether it's a conversation or a presentation.")
+    };
+}
+
+<div class="work-tests page-fill">
+    <div class="type-container">
+        <div class="work-tests-hero">
+            <h1>How I Work</h1>
+        </div>
+
+        <div class="test-tabs" role="tablist" aria-label="Work style tests">
+            <button type="button" class="test-tab" role="tab" id="tab-disc" aria-controls="test-disc" aria-selected="true">DISC</button>
+            <button type="button" class="test-tab" role="tab" id="tab-clifton" aria-controls="test-clifton" aria-selected="false" tabindex="-1">CliftonStrengths</button>
+        </div>
+
+        @{
+            // My DISC profile (BlossomUp). Wording taken from my report.
+            var discType = "Dominance";
+            var discSummary = "Assertive, results-driven, and motivated by ownership and impact. I thrive in challenging situations and like to move things forward in both my personal and professional life.";
+            var discTraits = new[]
+            {
+                ("Assertive and Confident", "Rarely hesitates when confronted with challenges and is eager to take charge."),
+                ("Goal-Oriented", "Sets ambitious goals and works diligently toward achieving them."),
+                ("Competitive", "Views challenges as opportunities to prove myself."),
+                ("Decisive", "Analyzes situations rapidly, identifies the best course of action, and implements it with minimal hesitation."),
+                ("Self-Reliant", "Takes ownership of my work from start to finish.")
+            };
+            var discStrengths = new[]
+            {
+                ("Leadership and Vision", "Sees the big picture, sets long-term goals, and inspires others to follow."),
+                ("Resilience Under Pressure", "Thrives in high-stakes environments where quick thinking and determination are required."),
+                ("Strategic Thinking", "Focuses on what truly matters and eliminates distractions or obstacles."),
+                ("Problem Solving", "Identifies and fixes problems before others even notice them.")
+            };
+            var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
+            var discCareers = new[] { "Executive Leadership", "Entrepreneurship", "Sales and Business Development", "Project Management", "Law and Politics" };
+
+            // The DISC wheel: D top-left, I top-right, S bottom-right, C bottom-left; mine is filled in.
+            var discQuadrants = new[]
+            {
+                ("D", "Dominance", "M 120 120 L 10 120 A 110 110 0 0 1 120 10 Z", 72, 78),
+                ("I", "Influence", "M 120 120 L 120 10 A 110 110 0 0 1 230 120 Z", 168, 78),
+                ("S", "Steadiness", "M 120 120 L 230 120 A 110 110 0 0 1 120 230 Z", 168, 174),
+                ("C", "Conscientiousness", "M 120 120 L 120 230 A 110 110 0 0 1 10 120 Z", 72, 174)
+            };
+        }
+        <div class="test-panel" id="test-disc" role="tabpanel" aria-labelledby="tab-disc">
+            <div class="type-header">
+                <h2>DISC</h2>
+                <p>My primary style</p>
+            </div>
+
+            <div class="disc-top">
+                <svg class="disc-wheel" viewBox="0 0 240 240" role="img" aria-label="DISC wheel with Dominance highlighted">
+                    @foreach (var (letter, name, d, lx, ly) in discQuadrants)
+                    {
+                        var mine = name == discType;
+                        <path d="@d" class="disc-quad @(mine ? "mine" : "")" />
+                        @:<text x="@lx" y="@ly" class="disc-q-letter @(mine ? "mine" : "")">@letter</text>
+                    }
+                    <circle cx="120" cy="120" r="110" class="disc-ring" />
+                </svg>
+                <div class="disc-intro">
+                    <p class="disc-kicker">D · My DISC style</p>
+                    <h3>@discType</h3>
+                    <p>@discSummary</p>
+                </div>
+            </div>
+
+            <div class="disc-grid">
+                <div class="disc-block">
+                    <h4>Core Traits</h4>
+                    <ul class="disc-list">
+                        @foreach (var (name, text) in discTraits)
+                        {
+                            <li><strong>@name</strong><span>@text</span></li>
+                        }
+                    </ul>
+                </div>
+                <div class="disc-block">
+                    <h4>Strengths</h4>
+                    <ul class="disc-list">
+                        @foreach (var (name, text) in discStrengths)
+                        {
+                            <li><strong>@name</strong><span>@text</span></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="disc-grid two-one">
+                <div class="disc-block">
+                    <h4>Motivators</h4>
+                    <ul class="disc-pills">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
+                </div>
+                <div class="disc-block">
+                    <h4>Career Paths</h4>
+                    <ul class="disc-pills">@foreach (var c in discCareers) { <li>@c</li> }</ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-panel" id="test-clifton" role="tabpanel" aria-labelledby="tab-clifton" hidden>
+            <div class="type-header">
+                <h2>CliftonStrengths</h2>
+                <p>My top 5</p>
+            </div>
+
+            <ol class="clifton-list">
+                @for (var i = 0; i < clifton.Length; i++)
+                {
+                    var (name, domain, line) = clifton[i];
+                    var influencing = domain == "Influencing";
+                    <li class="clifton-item">
+                        <span class="clifton-rank">@(i + 1)</span>
+                        <div>
+                            <p class="clifton-domain @(influencing ? "influencing" : "")">@domain</p>
+                            <h3>@name</h3>
+                            <p class="clifton-line">@line</p>
+                        </div>
+                    </li>
+                }
+            </ol>
+
+            <div class="clifton-domains" aria-hidden="true">
+                <div class="clifton-bar">
+                    @foreach (var (_, domain, _) in clifton)
+                    {
+                        <span class="@(domain == "Influencing" ? "influencing" : "")"></span>
+                    }
+                </div>
+                <ul class="clifton-key">
+                    <li>Relationship Building · @clifton.Count(c => c.Item2 == "Relationship Building") of 5</li>
+                    <li class="influencing">Influencing · @clifton.Count(c => c.Item2 == "Influencing") of 5</li>
+                </ul>
+            </div>
+
+            <p class="test-credit">CliftonStrengths® and each theme name are trademarks of Gallup, Inc.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Switch between the tests (click, or arrow keys)
+    (function () {
+        const tabs = [...document.querySelectorAll('.test-tab')];
+        const show = tab => tabs.forEach(t => {
+            const on = t === tab;
+            t.setAttribute('aria-selected', on);
+            t.tabIndex = on ? 0 : -1;
+            const panel = document.getElementById(t.getAttribute('aria-controls'));
+            panel.hidden = !on;
+            panel.classList.toggle('show', on);
+        });
+        tabs.forEach((tab, i) => {
+            tab.addEventListener('click', () => show(tab));
+            tab.addEventListener('keydown', e => {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+                const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+                show(next);
+                next.focus();
+            });
+        });
+    })();
+</script>

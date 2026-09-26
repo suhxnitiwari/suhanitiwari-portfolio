@@ -26,6 +26,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult HowIWork()
+    {
+        return View();
+    }
+
     public IActionResult ScholarshipsAndAwards()
     {
         return View();

@@ -1,0 +1,251 @@
+/* Shared by the personality tests on Home and How I Work: the tab row, each test's header, and DISC */
+
+/* Personality section: test tabs + one panel per test */
+.personality-title {
+    font-family: Georgia, serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #56634A;
+    margin: 0 0 14px;
+}
+
+.test-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 34px;
+}
+
+.test-tab {
+    padding: 11px 24px;
+    border-radius: 30px;
+    border: 1.5px solid #8A4D57;
+    background: #FAF1EF;
+    color: #2A1810;
+    font: inherit;
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.test-tab:hover {
+    background: #EFCFCD;
+    border-color: #9E5A63;
+}
+
+.test-tab[aria-selected="true"] {
+    background: #8A4D57;
+    border-color: #8A4D57;
+    color: #FAF1EF;
+}
+
+.test-tab:focus-visible {
+    outline: 2px solid #9E5A63;
+    outline-offset: 3px;
+}
+
+.test-panel.show {
+    animation: testIn 0.4s ease both;
+}
+
+@keyframes testIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.type-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.type-header h2 {
+    font-family: Georgia, serif;
+    font-size: 3.4em;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #2A1810;
+    margin: 0;
+}
+
+.type-header p {
+    margin: 6px 0 0;
+    font-size: 1.1em;
+    font-style: italic;
+    color: #56634A;
+}
+
+/* ===== DISC: a small wheel with my quadrant filled, then the report in cards ===== */
+.disc-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 44px;
+    max-width: 820px;
+    margin: 0 auto 34px;
+}
+
+.disc-wheel {
+    flex-shrink: 0;
+    width: 220px;
+    height: 220px;
+}
+
+.disc-quad {
+    fill: #F3E2DF;
+    stroke: #FAF1EF;
+    stroke-width: 3;
+}
+
+.disc-quad.mine {
+    fill: #8A4D57;
+}
+
+.disc-ring {
+    fill: none;
+    stroke: #8A4D57;
+    stroke-width: 1;
+    opacity: 0.3;
+}
+
+.disc-q-letter {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #B98A91;
+}
+
+.disc-q-letter.mine {
+    font-size: 40px;
+    fill: #FAF1EF;
+}
+
+.disc-kicker {
+    margin: 0;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #9E5A63;
+}
+
+.disc-intro h3 {
+    margin: 4px 0 10px;
+    font-family: Georgia, serif;
+    font-size: 2.4em;
+    font-weight: 700;
+    color: #2A1810;
+}
+
+.disc-intro p:last-child {
+    margin: 0;
+    line-height: 1.7;
+    color: #2A1810;
+}
+
+.disc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto 20px;
+}
+
+.disc-grid.two-one {
+    grid-template-columns: 1fr 2fr;
+}
+
+.disc-block {
+    padding: 24px 26px;
+    border-radius: 18px;
+    background: #FFF8F6;
+    border: 1px solid #EBD5D0;
+}
+
+.disc-block h4 {
+    margin: 0 0 14px;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #56634A;
+}
+
+.disc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.disc-list li + li {
+    margin-top: 14px;
+}
+
+.disc-list strong {
+    display: block;
+    font-family: Georgia, serif;
+    font-size: 1.08em;
+    color: #2A1810;
+}
+
+.disc-list span {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.92em;
+    line-height: 1.55;
+    color: #2A1810;
+}
+
+.disc-pills {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+.disc-pills li {
+    padding: 6px 13px;
+    border-radius: 20px;
+    background: rgba(158, 90, 99, 0.14);
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #2A1810;
+}
+
+.disc-pills.soft li {
+    background: rgba(86, 99, 74, 0.13);
+}
+
+@media (max-width: 800px) {
+    .disc-top {
+        flex-direction: column;
+        gap: 22px;
+        text-align: center;
+    }
+
+    .disc-wheel {
+        width: 180px;
+        height: 180px;
+    }
+
+    .disc-grid,
+    .disc-grid.two-one {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .type-header h2 {
+        font-size: 2.6em;
+    }
+}

@@ -486,14 +486,15 @@
                         </div>
                     </li>
                     <li class="nav-item nav-dropdown" id="workNav">
-                        <a href="javascript:void(0)" class="nav-link @(currentPage is "Education" or "Coursework" or "BeyondTheClassroom" or "ScholarshipsAndAwards" ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="javascript:void(0)" class="nav-link @(currentPage is "Education" or "Coursework" or "BeyondTheClassroom" or "HowIWork" or "ScholarshipsAndAwards" ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
                             Work<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
                             <a href="/home/education" class="dropdown-item-custom @(currentPage == "Education" ? "current" : "")"><span class="dropdown-num">01</span>Education</a>
                             <a href="/home/coursework" class="dropdown-item-custom @(currentPage == "Coursework" ? "current" : "")"><span class="dropdown-num">02</span>Coursework</a>
                             <a href="/home/beyondtheclassroom" class="dropdown-item-custom @(currentPage == "BeyondTheClassroom" ? "current" : "")"><span class="dropdown-num">03</span>Beyond the Classroom</a>
-                            <a href="/home/scholarshipsandawards" class="dropdown-item-custom @(currentPage == "ScholarshipsAndAwards" ? "current" : "")"><span class="dropdown-num">04</span>Scholarships &amp; Awards</a>
+                            <a href="/home/howiwork" class="dropdown-item-custom @(currentPage == "HowIWork" ? "current" : "")"><span class="dropdown-num">04</span>How I Work</a>
+                            <a href="/home/scholarshipsandawards" class="dropdown-item-custom @(currentPage == "ScholarshipsAndAwards" ? "current" : "")"><span class="dropdown-num">05</span>Scholarships &amp; Awards</a>
                         </div>
                     </li>
                     <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")">On Paper</a></li>
