@@ -434,7 +434,56 @@
         text-align: center;
         color: #56634A;
         font-size: 0.95em;
-        margin: -40px 0 60px;
+        margin: -40px 0 8px;
+    }
+
+    /* Key under the map: numbered rose pins vs. small sage "visited" dots */
+    .map-legend {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 22px;
+        margin: 0 0 60px;
+        font-size: 0.85em;
+        color: #2A1810;
+    }
+
+    .legend-dot {
+        display: inline-block;
+        margin-right: 7px;
+        border-radius: 50%;
+        vertical-align: -1px;
+    }
+
+    .legend-dot.lived {
+        width: 12px;
+        height: 12px;
+        background: #9E5A63;
+        border: 2px solid #8A4D57;
+    }
+
+    .legend-dot.visited {
+        width: 10px;
+        height: 10px;
+        background: #7C8A6E;
+        border: 2px solid #FAF1EF;
+        box-shadow: 0 0 0 1.5px #56634A;
+    }
+
+    /* Visited places: a smaller, sage label to match their dot */
+    .leaflet-tooltip.visit-label {
+        background: #FAF1EF;
+        border: 1.5px solid #56634A;
+        border-radius: 20px;
+        color: #2A1810;
+        font-weight: 600;
+        font-size: 0.75em;
+        padding: 2px 8px;
+        box-shadow: 0 2px 6px rgba(42, 24, 16, 0.12);
+    }
+
+    .leaflet-tooltip.visit-label::before {
+        display: none;
     }
 
     /* ===== MY FAVORITE SPOTS: a little Austin city guide ===== */
@@ -919,11 +968,25 @@
             };
         }
 
+        @{
+            // Places I've visited (not lived): small sage dots with their name, not part of the journey line.
+            var visited = new[]
+            {
+                new { name = "Los Angeles", coords = new[] { 34.0522, -118.2437 }, labelSide = "bottom" },
+                new { name = "New York City", coords = new[] { 40.7128, -74.0060 }, labelSide = "right" },
+                new { name = "Chicago", coords = new[] { 41.8781, -87.6298 }, labelSide = "top" }
+            };
+        }
+
         <!-- PLACES THAT SHAPED ME -->
         <h2 class="world-block-title">Places That Shaped Me</h2>
         <p class="world-block-subtitle">a little map of how I became me</p>
         <div id="map"></div>
         <p class="map-hint">Click a place on the map to read about it</p>
+        <p class="map-legend">
+            <span><span class="legend-dot lived" aria-hidden="true"></span>Lived there, in order</span>
+            <span><span class="legend-dot visited" aria-hidden="true"></span>Visited</span>
+        </p>
 
         <!-- PEOPLE THAT SHAPED ME -->
         @{
@@ -1470,6 +1533,26 @@
         opacity: 0.7,
         dashArray: '5, 5'
     }).addTo(map);
+
+    // Places I've visited: small sage dots with a name, not connected to the journey line
+    const visited = @(Html.Raw(Json.Serialize(visited)));
+    const visitIcon = L.divIcon({
+        html: '<div style="width: 12px; height: 12px; border-radius: 50%; background: #7C8A6E; border: 2px solid #FAF1EF; box-shadow: 0 0 0 1.5px #56634A;"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
+        className: 'visit-marker'
+    });
+    const visitOffsets = { right: [10, 0], left: [-10, 0], top: [0, -10], bottom: [0, 10] };
+    visited.forEach(place => {
+        L.marker(place.coords, { icon: visitIcon, keyboard: false, title: `Visited: ${place.name}` })
+            .addTo(map)
+            .bindTooltip(place.name, {
+                permanent: true,
+                direction: place.labelSide,
+                offset: visitOffsets[place.labelSide],
+                className: 'visit-label'
+            });
+    });
 
     // Fit map to show all markers
     const group = new L.featureGroup(locations.map(loc => L.marker(loc.coords)));
