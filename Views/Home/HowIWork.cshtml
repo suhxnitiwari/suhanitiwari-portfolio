@@ -127,6 +127,86 @@
         background: #9E5A63;
     }
 
+    /* ===== RIASEC: my three Holland letters, each with its score ===== */
+    .riasec-letters {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        max-width: 900px;
+        margin: 0 auto 20px;
+    }
+
+    .riasec-card {
+        padding: 26px 24px 24px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        text-align: center;
+    }
+
+    .riasec-letter {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(150deg, #A4646E 0%, #7E4550 100%);
+        font-family: Georgia, serif;
+        font-size: 2em;
+        font-weight: 700;
+        color: #FAF1EF;
+    }
+
+    .riasec-card h3 {
+        margin: 12px 0 2px;
+        font-family: Georgia, serif;
+        font-size: 1.5em;
+        color: #2A1810;
+    }
+
+    .riasec-dimension {
+        margin: 0;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .riasec-score {
+        margin: 12px 0 6px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-weight: 700;
+        color: #8A4D57;
+    }
+
+    .riasec-bar {
+        display: block;
+        height: 5px;
+        border-radius: 3px;
+        background: rgba(138, 77, 87, 0.13);
+        overflow: hidden;
+    }
+
+    .riasec-bar span {
+        display: block;
+        height: 100%;
+        background: #8A4D57;
+    }
+
+    .riasec-line {
+        margin: 14px 0 0;
+        font-size: 0.92em;
+        line-height: 1.55;
+        color: #2A1810;
+    }
+
+    .disc-grid.riasec-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     .test-credit {
         max-width: 760px;
         margin: 22px auto 0;
@@ -154,11 +234,28 @@
         .clifton-rank {
             font-size: 2.1em;
         }
+
+        .riasec-letters,
+        .disc-grid.riasec-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 <link rel="stylesheet" href="~/css/tests.css" asp-append-version="true" />
 
 @{
+    // My RIASEC / Holland code (MyCareerTest.org career personality report, 09/26/2026): ASE.
+    // Each letter = its matching dimension from the report and that score; lines are my short versions.
+    var riasec = new[]
+    {
+        ("A", "Artistic", "Creative & Expressive", 91.7, "Driven by self-expression and originality. I do my best work with creative freedom and variety, and I bring a unique perspective to everything I touch."),
+        ("S", "Social", "People & Helping", 67.5, "I care about people and love helping wherever I can."),
+        ("E", "Enterprising", "Leadership & Influence", 66.7, "I step into leadership when it's needed and enjoy having real influence on the outcome.")
+    };
+    var riasecStrengths = new[] { "Original thinking", "Visual and verbal expression", "Brainstorming and ideation", "Adaptability to new approaches" };
+    var riasecRoles = new[] { "UX/UI Designer", "Product Designer", "Brand Strategist", "Creative Director", "Art Director", "Writer" };
+    var riasecPlaces = new[] { "Design studios", "Ad agencies", "Media companies", "Startups with creative freedom" };
+
     // My CliftonStrengths top 5 (Gallup, taken 02/11/2025), in order.
     // Lines are my short versions of Gallup's theme descriptions.
     var clifton = new[]
@@ -180,6 +277,7 @@
         <div class="test-tabs" role="tablist" aria-label="Work style tests">
             <button type="button" class="test-tab" role="tab" id="tab-disc" aria-controls="test-disc" aria-selected="true">DISC</button>
             <button type="button" class="test-tab" role="tab" id="tab-clifton" aria-controls="test-clifton" aria-selected="false" tabindex="-1">CliftonStrengths</button>
+            <button type="button" class="test-tab" role="tab" id="tab-riasec" aria-controls="test-riasec" aria-selected="false" tabindex="-1">RIASEC</button>
         </div>
 
         @{
@@ -305,6 +403,42 @@
             </div>
 
             <p class="test-credit">CliftonStrengths® and each theme name are trademarks of Gallup, Inc.</p>
+        </div>
+
+        <div class="test-panel" id="test-riasec" role="tabpanel" aria-labelledby="tab-riasec" hidden>
+            <div class="type-header">
+                <h2>ASE</h2>
+                <p>My Holland code · where I thrive</p>
+            </div>
+
+            <div class="riasec-letters">
+                @foreach (var (letter, name, dimension, score, line) in riasec)
+                {
+                    <div class="riasec-card">
+                        <span class="riasec-letter">@letter</span>
+                        <h3>@name</h3>
+                        <p class="riasec-dimension">@dimension</p>
+                        <p class="riasec-score">@score.ToString("0.#")%</p>
+                        <span class="riasec-bar" aria-hidden="true"><span style="width: @(score.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></span></span>
+                        <p class="riasec-line">@line</p>
+                    </div>
+                }
+            </div>
+
+            <div class="disc-grid riasec-grid">
+                <div class="disc-block">
+                    <h4>Key Strengths</h4>
+                    <ul class="disc-pills">@foreach (var x in riasecStrengths) { <li>@x</li> }</ul>
+                </div>
+                <div class="disc-block">
+                    <h4>Roles That Fit</h4>
+                    <ul class="disc-pills">@foreach (var x in riasecRoles) { <li>@x</li> }</ul>
+                </div>
+                <div class="disc-block">
+                    <h4>Where I Thrive</h4>
+                    <ul class="disc-pills soft">@foreach (var x in riasecPlaces) { <li>@x</li> }</ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
