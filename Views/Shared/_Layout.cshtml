@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Suhani Tiwari</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootswatch "Pulse" theme (Bootstrap 5.3.3), saved locally in wwwroot/css; site.css keeps my own colors on top -->
+    <link rel="stylesheet" href="~/css/bootswatch.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
         * {
@@ -536,7 +537,7 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Dropdowns (Favorites, Work): click to open, click anywhere else to close
         const dropdowns = document.querySelectorAll('.nav-dropdown');
