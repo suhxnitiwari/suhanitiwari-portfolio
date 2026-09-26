@@ -907,7 +907,7 @@
                 new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors.", "chat", Span: 3)
             };
 
-            // Grouped by filter (Mediterranean, Indian, Mexican, Café, Brunch, More). Card sizes are set
+            // Grouped by filter (Mediterranean, Indian, Mexican, Café, Brunch, Shopping, More). Card sizes are set
             // automatically so each group reads as a little mosaic, whatever filter is on.
             var aroundAustin = new[]
             {
@@ -928,18 +928,20 @@
                 new Spot("Café No Sé", "Brunch", "Brunch at South Congress Hotel, and always beautifully done.", "egg"),
                 new Spot("South Congress", "Shop", "One of my favorite places to spend an afternoon shopping. My stops: Kendra Scott, Yellow Rose and Tecovas.", "pin"),
                 new Spot("The Domain", "Shop", "Shopping, food, and wandering around with no particular agenda.", "bag"),
+                new Spot("Barton Creek Mall", "Shop", "Austin's classic mall, up on the hill off MoPac.", "bag"),
                 new Spot("Mosaic Workshop", "Make Something", "A DIY mosaic studio where you build your own piece, tile by tile.", "tiles")
             };
 
-            // Filters for Around Austin: coffee shops and cafés share "Café"; shopping and
-            // make-something spots go under "More". A filter only shows up once it has a spot.
+            // Filters for Around Austin: coffee shops and cafés share "Café", shops go under
+            // "Shopping", make-something spots under "More". A filter only shows up once it has a spot.
             string FilterOf(string category) => category switch
             {
                 "Coffee" or "Café" => "Café",
-                "Shop" or "Make Something" => "More",
+                "Shop" => "Shopping",
+                "Make Something" => "More",
                 _ => category
             };
-            var filterOrder = new[] { "Brunch", "Indian", "Mediterranean", "Mexican", "Café", "More" };
+            var filterOrder = new[] { "Brunch", "Indian", "Mediterranean", "Mexican", "Café", "Shopping", "More" };
             var austinFilters = filterOrder.Where(f => aroundAustin.Any(sp => FilterOf(sp.Category) == f)).ToArray();
 
             var spotTabs = new[]
