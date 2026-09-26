@@ -253,7 +253,8 @@
         ("E", "Enterprising", "Leadership & Influence", 66.7, "I step into leadership when it's needed and enjoy having real influence on the outcome.")
     };
     var riasecStrengths = new[] { "Original thinking", "Visual and verbal expression", "Brainstorming and ideation", "Adaptability to new approaches" };
-    var riasecRoles = new[] { "UX/UI Designer", "Product Designer", "Brand Strategist", "Creative Director", "Art Director", "Writer" };
+    // work style, from the report's other dimension descriptions (not job titles, so nothing is ruled out)
+    var riasecStyle = new[] { "Independent or on a team", "Hands-on and big-picture", "Balances research with action", "Adapts when plans change" };
     var riasecPlaces = new[] { "Design studios", "Ad agencies", "Media companies", "Startups with creative freedom" };
 
     // My CliftonStrengths top 5 (Gallup, taken 02/11/2025), in order.
@@ -431,8 +432,8 @@
                     <ul class="disc-pills">@foreach (var x in riasecStrengths) { <li>@x</li> }</ul>
                 </div>
                 <div class="disc-block">
-                    <h4>Roles That Fit</h4>
-                    <ul class="disc-pills">@foreach (var x in riasecRoles) { <li>@x</li> }</ul>
+                    <h4>How I Work Best</h4>
+                    <ul class="disc-pills">@foreach (var x in riasecStyle) { <li>@x</li> }</ul>
                 </div>
                 <div class="disc-block">
                     <h4>Where I Thrive</h4>
