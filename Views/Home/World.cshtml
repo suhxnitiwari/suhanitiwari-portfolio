@@ -902,19 +902,20 @@
         @{
             // The places I've lived, in order. Edit the descriptions to tell each chapter.
             // labelSide is where the city name sits next to its pin, so nearby cities don't overlap.
-            // wiki is the Wikipedia page the popup photo comes from.
+            // wiki is the Wikipedia page the popup photo comes from,
+            // unless myPhoto is set (one of my own photos, which is shown instead).
             // from / to = year-month I moved in and out ("to" empty = I live there now);
             // the popup works out my ages and how long I stayed from these.
             var places = new[]
             {
-                new { name = "Lucknow", from = "2006-03", to = "2006-05", region = "India", coords = new[] { 26.8467, 80.9462 }, labelSide = "right", wiki = "Lucknow", description = "If my name wasn’t a dead giveaway, I’ll say it: I’m North Indian. I was born on March 6, 2006 in Lucknow, Uttar Pradesh, and I speak Hindi fluently." },
-                new { name = "Delhi", from = "2006-05", to = "2011-03", region = "India", coords = new[] { 28.6139, 77.2090 }, labelSide = "top", wiki = "Delhi", description = "Living in Delhi, India’s capital, was probably a blast, and I probably had some awesome food, but I don’t remember it. I did my pre-KG here, as we say in India." },
-                new { name = "Ahmedabad", from = "2011-04", to = "2012-04", region = "India", coords = new[] { 23.0225, 72.5714 }, labelSide = "left", wiki = "Ahmedabad", description = "I watched my dad pursue his master’s here, and I went to a really fun kindergarten." },
-                new { name = "Bangalore", from = "2012-04", to = "2012-06", region = "India", coords = new[] { 12.9716, 77.5946 }, labelSide = "left", wiki = "Bangalore", description = "India's tech hub, also known as the Garden City." },
-                new { name = "Singapore", from = "2012-07", to = "2015-06", region = "Singapore", coords = new[] { 1.3521, 103.8198 }, labelSide = "right", wiki = "Marina_Bay,_Singapore", description = "I was genuinely in awe. It was my first time in such a developed country: so green, so clean, and strict. Very strict. No gum for you there." },
-                new { name = "Cupertino", from = "2015-06", to = "2020-06", region = "California", coords = new[] { 37.3230, -122.0322 }, labelSide = "left", wiki = "Cupertino,_California", description = "My first time in America! I loved going to California’s Great America, and I finished elementary and middle school here." },
-                new { name = "Frisco", from = "2020-06", to = "2024-08", region = "Texas", coords = new[] { 33.1507, -96.8236 }, labelSide = "top", wiki = "Frisco,_Texas", description = "Graduated from high school! Yas! I took art, choir and Spanish, plus way too many AP classes. Yikes." },
-                new { name = "Austin", from = "2024-08", to = "", region = "Texas", coords = new[] { 30.2672, -97.7431 }, labelSide = "bottom", wiki = "Austin,_Texas", description = "UT Austin, where I'm studying now." }
+                new { name = "Lucknow", from = "2006-03", to = "2006-05", region = "India", coords = new[] { 26.8467, 80.9462 }, labelSide = "right", wiki = "Lucknow", myPhoto = "", description = "If my name wasn’t a dead giveaway, I’ll say it: I’m North Indian. I was born on March 6, 2006 in Lucknow, Uttar Pradesh, and I speak Hindi fluently." },
+                new { name = "Delhi", from = "2006-05", to = "2011-03", region = "India", coords = new[] { 28.6139, 77.2090 }, labelSide = "top", wiki = "Delhi", myPhoto = "", description = "Living in Delhi, India’s capital, was probably a blast, and I probably had some awesome food, but I don’t remember it. I did my pre-KG here, as we say in India." },
+                new { name = "Ahmedabad", from = "2011-04", to = "2012-04", region = "India", coords = new[] { 23.0225, 72.5714 }, labelSide = "left", wiki = "Ahmedabad", myPhoto = "/images/places/ahmedabad.jpg", description = "I watched my dad pursue his master’s here, and I went to a really fun kindergarten." },
+                new { name = "Bangalore", from = "2012-04", to = "2012-06", region = "India", coords = new[] { 12.9716, 77.5946 }, labelSide = "left", wiki = "Bangalore", myPhoto = "", description = "India's tech hub, also known as the Garden City." },
+                new { name = "Singapore", from = "2012-07", to = "2015-06", region = "Singapore", coords = new[] { 1.3521, 103.8198 }, labelSide = "right", wiki = "Marina_Bay,_Singapore", myPhoto = "", description = "I was genuinely in awe. It was my first time in such a developed country: so green, so clean, and strict. Very strict. No gum for you there." },
+                new { name = "Cupertino", from = "2015-06", to = "2020-06", region = "California", coords = new[] { 37.3230, -122.0322 }, labelSide = "left", wiki = "Cupertino,_California", myPhoto = "", description = "My first time in America! I loved going to California’s Great America, and I finished elementary and middle school here." },
+                new { name = "Frisco", from = "2020-06", to = "2024-08", region = "Texas", coords = new[] { 33.1507, -96.8236 }, labelSide = "top", wiki = "Frisco,_Texas", myPhoto = "", description = "Graduated from high school! Yas! I took art, choir and Spanish, plus way too many AP classes. Yikes." },
+                new { name = "Austin", from = "2024-08", to = "", region = "Texas", coords = new[] { 30.2672, -97.7431 }, labelSide = "bottom", wiki = "Austin,_Texas", myPhoto = "", description = "UT Austin, where I'm studying now." }
             };
         }
 
@@ -988,7 +989,7 @@
                 new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors, because of the open layout!", "chat", Span: 3),
                 new Spot("Pizza Press", "Food", "A guilty pleasure, especially because they’re open till 12 a.m. I’m guilty of placing way too many last-minute orders there.", "dining", Mini: true),
                 new Spot("Sweetgreen", "Food", "Overpriced, and the portions underdeliver. BUT it’s healthy, it’s walking distance, I love their corn and spicy broccoli, and I’m obsessed with my custom guacamole greens bowl.", "dining", Mini: true),
-                new Spot("Kerbey Lane", "Food", "", "dining", Mini: true)
+                new Spot("Kerbey Lane", "Food", "Big menu, reasonable prices, and that cozy ’80s family-dinner feeling. There’s something for everyone—and more importantly, there are pancakes at 11 p.m.", "dining", Mini: true)
             };
 
             // Grouped by filter (Mediterranean, Indian, Mexican, Café, Brunch, Shopping, Art). Card sizes are set
@@ -1010,6 +1011,7 @@
                 new Spot("Hillside Farmacy", "Brunch", "Brunch inside a restored old-school pharmacy.", "egg"),
                 new Spot("Josephine House", "Brunch", "Brunch in a charming little cottage.", "egg"),
                 new Spot("Café No Sé", "Brunch", "Brunch at South Congress Hotel, and always beautifully done.", "egg"),
+                new Spot("Snooze, an A.M. Eatery", "Brunch", "I love the pancake flight: pineapple upside-down, cinnamon, and banana bliss.", "egg"),
                 new Spot("South Congress", "Shop", "One of my favorite places to spend an afternoon shopping. My stops: Kendra Scott, Yellow Rose and Tecovas.", "pin"),
                 new Spot("The Domain", "Shop", "Shopping, food, and wandering around with no particular agenda.", "bag"),
                 new Spot("Barton Creek Mall", "Shop", "Austin's classic mall, up on the hill off MoPac.", "bag"),
@@ -1362,7 +1364,8 @@
 
     // The places from the list at the top of the page
     const places = @(Html.Raw(Json.Serialize(places)));
-    const locations = places.map((place, index) => ({ ...place, number: index + 1 }));
+    // A place with my own photo starts with it, so the Wikipedia lookup is skipped
+    const locations = places.map((place, index) => ({ ...place, number: index + 1, photo: place.myPhoto || undefined }));
 
     // Numbered pin showing the order I lived there
     const customIcon = (number) => L.divIcon({

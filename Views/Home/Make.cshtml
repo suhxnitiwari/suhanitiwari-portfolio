@@ -11,6 +11,10 @@
 
     // One piece of writing in Make > Writing. Opening = its first lines (\n starts a new line); Link = where it's published.
     public record Writing(string Title, string Kind, string Year, string Dedication, string Opening, string Link);
+
+    // One trip on the Traveling shelf. Line and Photo are optional: without a photo the card shows
+    // a soft blush cover with a suitcase, and without a line it says "photos coming soon".
+    public record Trip(string City, string Line = "", string Photo = "");
 }
 
 <style>
@@ -106,6 +110,14 @@
     // Photo is optional: without one, the card shows a soft blush cover with a whisk.
     // Cooking: same format as Baking. Empty for now, so the shelf shows my note instead.
     var cooks = Array.Empty<Recipe>();
+
+    // Traveling: add a line and a photo (e.g. "/images/travel/miami.jpg") to each trip when ready.
+    var trips = new[]
+    {
+        new Trip("Miami"),
+        new Trip("New York City"),
+        new Trip("Chicago")
+    };
 
     var bakes = new[]
     {
@@ -245,6 +257,36 @@
         <hr class="shelf-divider">
         @{ RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length,
                "This will be my new hobby as soon as I learn to stop burning everything I cook... including toast."); }
+        <hr class="shelf-divider">
+
+        <div class="shelf" id="traveling">
+            <div class="shelf-head">
+                <h3 class="shelf-title">Traveling</h3>
+            </div>
+            <div class="shelf-rail-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll Traveling left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="Traveling">
+                    @foreach (var trip in trips)
+                    {
+                        <li class="shelf-item">
+                            <div class="shelf-cover bake-cover">
+                                @if (!string.IsNullOrEmpty(trip.Photo))
+                                {
+                                    <img src="@trip.Photo" alt="@trip.City" loading="lazy" draggable="false">
+                                }
+                                else
+                                {
+                                    <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M8 7v12M16 7v12"/></svg>
+                                }
+                            </div>
+                            <p class="shelf-item-title">@trip.City</p>
+                            <p class="shelf-item-meta">@(string.IsNullOrEmpty(trip.Line) ? "photos coming soon" : trip.Line)</p>
+                        </li>
+                    }
+                </ul>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll Traveling right">›</button>
+            </div>
+        </div>
     </div>
 </section>
 <!-- Recipe card (one dialog, filled in when a bake is clicked) -->
