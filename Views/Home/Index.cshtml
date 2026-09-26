@@ -643,8 +643,8 @@
         margin: 0 auto 20px;
     }
 
-    .disc-grid.three {
-        grid-template-columns: repeat(3, 1fr);
+    .disc-grid.two-one {
+        grid-template-columns: 1fr 2fr;
     }
 
     .disc-block {
@@ -723,7 +723,7 @@
         }
 
         .disc-grid,
-        .disc-grid.three {
+        .disc-grid.two-one {
             grid-template-columns: 1fr;
         }
     }
@@ -1526,16 +1526,16 @@
         </div>
 
         <div class="turbulent-card">
-            <div class="turbulent-label">But here's the thing</div>
+            <div class="turbulent-label">And one more letter</div>
             <div class="turbulent-letter">T</div>
             <div class="turbulent-name">Turbulent</div>
-            <p class="turbulent-text">I overthink more than I'd like. I replay conversations, question my decisions, and notice things other people might brush off. When something matters to me, my mind can turn one thought into twenty. I put pressure on myself to get things right.</p>
-            <span class="type-pill">Chronic overthinker</span>
+            <p class="turbulent-text">I hold myself to high standards. I reflect on my decisions, notice details other people might brush off, and keep refining until something is right. When something matters to me, I give it my full attention.</p>
+            <span class="type-pill">High standards</span>
         </div>
 
         <div class="type-summary">
             <h3>Putting this all together</h3>
-            <p>I seek connection. I remember the little things. I show love through thoughtfulness. I plan ahead and follow through. And somewhere between all of that, I probably overthink it.</p>
+            <p>I seek connection. I remember the little things. I show love through thoughtfulness. I plan ahead and follow through. And I hold myself to a high standard in all of it.</p>
         </div>
         </div>
 
@@ -1549,7 +1549,7 @@
                 (Letter: "C", Name: "Conscientiousness", Score: 93, Facets: Array.Empty<(string Name, int Score)>()),
                 (Letter: "E", Name: "Extraversion", Score: 85, Facets: Array.Empty<(string Name, int Score)>()),
                 (Letter: "A", Name: "Agreeableness", Score: 93, Facets: Array.Empty<(string Name, int Score)>()),
-                (Letter: "N", Name: "Neuroticism", Score: 94, Facets: Array.Empty<(string Name, int Score)>())
+                (Letter: "N", Name: "Emotional Sensitivity", Score: 94, Facets: Array.Empty<(string Name, int Score)>())
             };
 
             // The wave is only a design motif: each letter sits on a gentle swell (up, down, up, down).
@@ -1643,14 +1643,14 @@
         @{
             // My DISC profile (BlossomUp). Wording taken from my report.
             var discType = "Dominance";
-            var discSummary = "Assertive, results-driven, and motivated by control over my environment. I thrive in competitive situations and seek to influence outcomes in both my personal and professional life.";
+            var discSummary = "Assertive, results-driven, and motivated by ownership and impact. I thrive in challenging situations and like to move things forward in both my personal and professional life.";
             var discTraits = new[]
             {
                 ("Assertive and Confident", "Rarely hesitates when confronted with challenges and is eager to take charge."),
                 ("Goal-Oriented", "Sets ambitious goals and works diligently toward achieving them."),
                 ("Competitive", "Views challenges as opportunities to prove myself."),
                 ("Decisive", "Analyzes situations rapidly, identifies the best course of action, and implements it with minimal hesitation."),
-                ("Self-Reliant", "Values independence and prefers to have control over my work.")
+                ("Self-Reliant", "Takes ownership of my work from start to finish.")
             };
             var discStrengths = new[]
             {
@@ -1659,8 +1659,7 @@
                 ("Strategic Thinking", "Focuses on what truly matters and eliminates distractions or obstacles."),
                 ("Problem Solving", "Identifies and fixes problems before others even notice them.")
             };
-            var discMotivators = new[] { "Control and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
-            var discDemotivators = new[] { "Micromanagement", "Lack of Progress", "Inefficiency and Bureaucracy" };
+            var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
             var discCareers = new[] { "Executive Leadership", "Entrepreneurship", "Sales and Business Development", "Project Management", "Law and Politics" };
 
             // The DISC wheel: D top-left, I top-right, S bottom-right, C bottom-left; mine is filled in.
@@ -1716,14 +1715,10 @@
                 </div>
             </div>
 
-            <div class="disc-grid three">
+            <div class="disc-grid two-one">
                 <div class="disc-block">
                     <h4>Motivators</h4>
                     <ul class="disc-pills">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
-                </div>
-                <div class="disc-block">
-                    <h4>Demotivators</h4>
-                    <ul class="disc-pills soft">@foreach (var m in discDemotivators) { <li>@m</li> }</ul>
                 </div>
                 <div class="disc-block">
                     <h4>Career Paths</h4>
@@ -1810,7 +1805,7 @@
                 ("sun", "Who I Am", "☀︎", "Pisces Sun", "Sun in Pisces · 15°24′ · 11th house",
                     "An imaginative, deeply empathetic core that comes alive through other people. With the Sun in the 11th house, identity grows through friendships, community and shared hopes: the self feels most itself when it belongs to something bigger.", ""),
                 ("moon", "How I Feel", "☾︎", "Gemini Moon", "Moon in Gemini · 6°56′ · 2nd house",
-                    "Feelings move through words and curiosity: emotions get processed by talking, reading and thinking them through, and boredom is its own kind of discomfort. In the 2nd house, emotional security is tied to what feels tangible and steady.", ""),
+                    "Feelings move through words and curiosity: emotions get processed by talking, reading and thinking them through, and curiosity keeps life interesting. In the 2nd house, emotional security is tied to what feels tangible and steady.", ""),
                 ("rising", "How I Show Up", "↑", "Taurus Rising", "Ascendant in Taurus · 1°49′ · 1st house",
                     "First impressions read calm, grounded and composed: someone deliberate, warm and quietly steady, with an eye for beauty and comfort, who doesn't rush to be known.", ""),
                 ("mercury", "How I Think", "☿︎", "Pisces Mercury", "Mercury in Pisces · 26°06′ · 11th house",
@@ -1822,9 +1817,9 @@
                 ("jupiter", "How I Grow", "♃︎", "Scorpio Jupiter", "Jupiter in Scorpio · 18°51′ · 7th house",
                     "Growth comes through depth rather than breadth: through intense, honest one-on-one relationships and getting beneath surface-level explanations. Close partnerships are where the biggest lessons happen.", ""),
                 ("saturn", "Where I Grow Up", "♄︎", "Leo Saturn", "Saturn in Leo · 5°11′ · 4th house",
-                    "Saturn in Leo asks for confidence that's earned rather than performed. In the 4th house, that lesson is rooted in foundations, and in learning to feel secure while being fully seen.", ""),
-                ("uranus", "How I Break the Rules", "♅︎", "Pisces Uranus", "Uranus in Pisces · 10°59′ · 11th house",
-                    "The rebel streak is dreamy rather than loud: questioning dated expectations about who belongs where, and reimagining what friendship and community can look like.", ""),
+                    "Saturn in Leo builds confidence that's earned rather than performed. In the 4th house, it grows from strong foundations and a steady sense of home.", ""),
+                ("uranus", "How I Think Differently", "♅︎", "Pisces Uranus", "Uranus in Pisces · 10°59′ · 11th house",
+                    "An original streak that's imaginative rather than loud: rethinking dated expectations about who belongs where, and reimagining what friendship and community can look like.", ""),
                 ("neptune", "How I Dream", "♆︎", "Aquarius Neptune", "Neptune in Aquarius · 18°19′ · 10th house",
                     "Big, idealistic visions for career and impact: work that means something beyond the title, and a future built around ideas that help people.", ""),
                 ("pluto", "How I Transform", "♇︎", "Sagittarius Pluto", "Pluto in Sagittarius · 26°36′ · 9th house",
