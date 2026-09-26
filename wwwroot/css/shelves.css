@@ -320,6 +320,61 @@
 }
 
 /* Inspiration: YouTube talks as 16:9 thumbnails with a play button */
+/* topic buttons above the talks, and each card's topic */
+.video-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -4px 0 14px;
+}
+
+.video-topic-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #D9B8B3;
+    background: #FFF8F6;
+    color: #2A1810;
+    font: inherit;
+    font-size: 0.82em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.video-topic-btn:hover {
+    border-color: #9E5A63;
+}
+
+.video-topic-btn[aria-pressed="true"] {
+    background: #8A4D57;
+    border-color: #8A4D57;
+    color: #FAF1EF;
+}
+
+.video-topic-btn:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 3px;
+}
+
+.video-open .video-topic {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.7em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #9E5A63;
+}
+
+.video-open .video-topic + .shelf-item-title {
+    margin-top: 4px;
+}
+
+.shelf-item[hidden] {
+    display: none;
+}
+
 .shelf.video-shelf .shelf-cover {
     aspect-ratio: 16 / 9;
 }

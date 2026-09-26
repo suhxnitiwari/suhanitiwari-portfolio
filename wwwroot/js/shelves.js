@@ -85,6 +85,28 @@
     dialog.addEventListener('close', () => frame.replaceChildren());
 })();
 
+// ===== Watch > Inspiration: topic buttons show just that topic's talks =====
+document.querySelectorAll('.video-topics').forEach(group => {
+    const shelf = group.closest('.shelf');
+    const rail = shelf.querySelector('.shelf-rail');
+    const items = [...rail.querySelectorAll('.shelf-item')];
+    const seeAll = shelf.querySelector('.shelf-see-all');
+    group.querySelectorAll('.video-topic-btn').forEach(btn => btn.addEventListener('click', () => {
+        const topic = btn.dataset.topic;
+        group.querySelectorAll('.video-topic-btn').forEach(b => b.setAttribute('aria-pressed', b === btn));
+        items.forEach(item => item.hidden = topic !== '' && item.dataset.topic !== topic);
+        const shown = items.filter(item => !item.hidden).length;
+        if (seeAll) {
+            seeAll.dataset.count = shown;
+            seeAll.hidden = shown <= 3;
+            if (!shelf.classList.contains('expanded')) seeAll.textContent = `See all ${shown} →`;
+        }
+        rail.scrollLeft = 0;
+        // let the arrows re-check whether there's anything to scroll to
+        rail.dispatchEvent(new Event('scroll'));
+    }));
+});
+
 // ===== Shelves: drag to scroll, arrows, "See all" =====
 document.querySelectorAll('.shelf').forEach(shelf => {
     const rail = shelf.querySelector('.shelf-rail');

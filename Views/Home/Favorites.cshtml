@@ -1648,7 +1648,8 @@
     public record ShelfItem(string Title, string Meta, string Image, bool ShowWhole = false);
 
     // One YouTube video in Watch > Inspiration. YouTubeId = the part after "v=" in the link.
-    public record Video(string Title, string Meta, string YouTubeId, string Image);
+    // Topic = one of the shelf's topic buttons (Psychology, Education, Creativity, Growth, Meaning).
+    public record Video(string Title, string Meta, string YouTubeId, string Image, string Topic = "");
 }
 
 @{
@@ -1707,18 +1708,35 @@
             {
                 <p class="shelf-caption">@caption</p>
             }
+            @{
+                var topics = videos.Select(v => v.Topic).Where(t => t != "").Distinct().ToArray();
+            }
+            @if (topics.Length > 1)
+            {
+                <div class="video-topics" role="group" aria-label="Filter @title by topic">
+                    <button type="button" class="video-topic-btn" data-topic="" aria-pressed="true">All</button>
+                    @foreach (var topic in topics)
+                    {
+                        <button type="button" class="video-topic-btn" data-topic="@topic" aria-pressed="false">@topic</button>
+                    }
+                </div>
+            }
             <div class="shelf-rail-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
                 <ul class="shelf-rail" tabindex="0" aria-label="@title">
                     @foreach (var video in videos)
                     {
-                        <li class="shelf-item">
+                        <li class="shelf-item" data-topic="@video.Topic">
                             <button type="button" class="video-open" data-video="@video.YouTubeId" data-title="@video.Title" data-meta="@video.Meta"
                                     aria-label="Play @video.Title">
                                 <span class="shelf-cover">
                                     <img src="@video.Image" alt="" loading="lazy" draggable="false">
                                     <span class="video-play" aria-hidden="true"></span>
                                 </span>
+                                @if (!string.IsNullOrEmpty(video.Topic))
+                                {
+                                    <span class="video-topic">@video.Topic</span>
+                                }
                                 <span class="shelf-item-title">@video.Title</span>
                                 @if (!string.IsNullOrEmpty(video.Meta))
                                 {
@@ -1825,18 +1843,18 @@
             // Inspiration: talks and videos. Thumbnails from YouTube (Dweck's photo from TED's talk page), saved in wwwroot/images/videos.
             var inspiration = new[]
             {
-                new Video("What Makes a Good Life?", "Robert Waldinger, TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg"),
-                new Video("The Power of Believing That You Can Improve", "Carol Dweck, TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg"),
-                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth, TED", "H14bBuluwB8", "/images/videos/grit.jpg"),
-                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut, TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg"),
-                new Video("Change Your Mindset, Change the Game", "Alia Crum, TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg"),
-                new Video("You Aren’t at the Mercy of Your Emotions — Your Brain Creates Them", "Lisa Feldman Barrett, TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg"),
-                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith, TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg"),
-                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn, TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg"),
-                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag, TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg"),
-                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh, TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg"),
-                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker, TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg"),
-                new Video("How Every Child Can Thrive by Five", "Molly Wright, TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg")
+                new Video("Change Your Mindset, Change the Game", "Alia Crum, TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg", "Psychology"),
+                new Video("You Aren’t at the Mercy of Your Emotions — Your Brain Creates Them", "Lisa Feldman Barrett, TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg", "Psychology"),
+                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn, TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg", "Education"),
+                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag, TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg", "Education"),
+                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker, TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg", "Education"),
+                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh, TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg", "Creativity"),
+                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut, TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg", "Creativity"),
+                new Video("The Power of Believing That You Can Improve", "Carol Dweck, TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg", "Growth"),
+                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth, TED", "H14bBuluwB8", "/images/videos/grit.jpg", "Growth"),
+                new Video("How Every Child Can Thrive by Five", "Molly Wright, TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg", "Growth"),
+                new Video("What Makes a Good Life?", "Robert Waldinger, TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg", "Meaning"),
+                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith, TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg", "Meaning")
             };
         }
         <hr class="shelf-divider">
