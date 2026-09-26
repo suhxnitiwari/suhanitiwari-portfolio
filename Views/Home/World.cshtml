@@ -104,154 +104,161 @@
         gap: 30px;
     }
 
-    /* People That Shaped Me: one row that scrolls sideways, part of the next card peeking in */
-    .people-carousel {
-        position: relative;
+    /* ===== PIECES OF ME: a jigsaw with me in the middle ===== */
+    .pieces {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        gap: 40px;
+        align-items: center;
         max-width: 1080px;
         margin: 0 auto;
     }
 
-    .people-rail {
-        display: grid;
-        grid-auto-flow: column;
-        grid-auto-columns: clamp(170px, calc((100% - 3.4 * 22px) / 4.4), 240px);
-        gap: 22px;
-        padding: 10px 2px 22px;
-        overflow-x: auto;
-        overscroll-behavior-x: contain;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-        cursor: grab;
-    }
-
-    .people-rail::-webkit-scrollbar {
-        display: none;
-    }
-
-    .people-rail.dragging {
-        cursor: grabbing;
-        scroll-snap-type: none;
-    }
-
-    .people-rail:focus-visible {
-        outline: 2px solid #8A4D57;
-        outline-offset: 4px;
-        border-radius: 16px;
-    }
-
-    .people-card {
-        scroll-snap-align: start;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-height: 150px;
-        user-select: none;
-    }
-
-    .people-arrow {
-        position: absolute;
-        top: calc(50% - 6px);
-        transform: translateY(-50%);
-        z-index: 2;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1px solid #EDD8D3;
-        background: rgba(250, 241, 239, 0.95);
-        color: #2A1810;
-        font-size: 1.4em;
-        line-height: 1;
-        cursor: pointer;
-        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.18);
-        transition: opacity 0.25s ease, background 0.2s ease, color 0.2s ease;
-    }
-
-    .people-arrow.prev { left: -20px; }
-    .people-arrow.next { right: -20px; }
-
-    .people-arrow:hover {
-        background: #8A4D57;
-        color: #FAF1EF;
-    }
-
-    .people-arrow[disabled] {
-        opacity: 0;
-        pointer-events: none;
-    }
-
-    @@media (hover: none), (max-width: 700px) {
-        .people-arrow {
-            display: none;
-        }
-    }
-
-    @@media (max-width: 600px) {
-        .people-rail {
-            grid-auto-columns: calc((100% - 1.3 * 14px) / 2.3);
-            gap: 14px;
-        }
-    }
-
-    .world-card {
-        background: #FFF8F6;
-        border-radius: 16px;
-        padding: 35px 30px;
-        text-align: center;
-        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.1);
-        transition: all 0.3s ease;
-    }
-
-    /* a group card (Family): click to open it and see who's in it */
-    .people-group {
-        border: none;
-        font: inherit;
-        color: inherit;
-        cursor: pointer;
-    }
-
-    .people-group:focus-visible {
-        outline: 2px solid #8A4D57;
-        outline-offset: 3px;
-    }
-
-    .people-hint {
+    .pieces-board svg {
         display: block;
-        font-size: 0.75em;
-        font-weight: 600;
-        letter-spacing: 1.5px;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .piece {
+        cursor: pointer;
+        outline: none;
+    }
+
+    .piece path {
+        stroke: #FFF8F6;
+        stroke-width: 2.5;
+        transition: filter 0.25s ease;
+    }
+
+    .piece:hover path,
+    .piece:focus-visible path {
+        filter: brightness(0.94);
+    }
+
+    .piece.selected path {
+        stroke: #8A4D57;
+        stroke-width: 3.5;
+    }
+
+    .piece:focus-visible path {
+        stroke: #2A1810;
+        stroke-width: 3;
+    }
+
+    .piece-label text {
+        pointer-events: none;
+        text-anchor: middle;
+        dominant-baseline: middle;
+        fill: #2A1810;
+    }
+
+    .piece-theme {
+        font-family: Georgia, serif;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .piece-source {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        fill: #8A4D57 !important;
+    }
+
+    .piece-label.me text {
+        fill: #FFF8F6 !important;
+    }
+
+    .piece-label.me .piece-theme {
+        font-size: 22px;
+    }
+
+    .pieces-detail {
+        padding: 30px 28px;
+        border-radius: 20px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 12px 28px rgba(158, 90, 99, 0.12);
+    }
+
+    .pieces-source {
+        margin: 0;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 2px;
         text-transform: uppercase;
         color: #9E5A63;
     }
 
-    .people-members {
+    .pieces-theme {
+        margin: 6px 0 18px;
+        font-family: Georgia, serif;
+        font-size: 2.2em;
+        font-weight: 800;
+        color: #2A1810;
+    }
+
+    .pieces-traits {
         list-style: none;
-        display: none;
+        display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         gap: 8px;
-        margin: 6px 0 0;
+        margin: 0;
         padding: 0;
     }
 
-    .people-members li {
-        padding: 6px 14px;
-        border-radius: 20px;
-        background: #F5E5E1;
+    .pieces-traits li {
+        padding: 6px 13px;
+        border-radius: 999px;
+        background: #F6E4E1;
+        font-size: 0.9em;
         color: #2A1810;
+    }
+
+    .pieces-detail.world .pieces-traits li {
+        background: #EEF1E8;
+    }
+
+    .pieces-hint {
+        text-align: center;
+        color: #56634A;
+        font-size: 0.95em;
+        margin: 22px 0 0;
+    }
+
+    .pieces-closing {
+        max-width: 680px;
+        margin: 26px auto 0;
+        font-size: 1.05em;
+        line-height: 1.8;
+        text-align: center;
+        color: #2A1810;
+    }
+
+    .pieces-closing strong {
         font-family: Georgia, serif;
-        font-size: 1em;
-        animation: spotIn 0.35s ease both;
+        font-style: italic;
+        color: #9E5A63;
     }
 
-    .people-members li:nth-child(2) { animation-delay: 0.06s; }
-    .people-members li:nth-child(3) { animation-delay: 0.12s; }
-
-    .people-group[aria-expanded="true"] .people-members {
-        display: flex;
+    @@media (prefers-reduced-motion: reduce) {
+        .piece path {
+            transition: none;
+        }
     }
 
-    .people-group[aria-expanded="true"] .people-hint {
-        display: none;
+    @@media (max-width: 860px) {
+        .pieces {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .pieces-theme {
+            font-size: 1.8em;
+        }
     }
 
     .world-card:hover {
@@ -972,7 +979,6 @@
             // Places I've visited (not lived): small sage dots with their name, not part of the journey line.
             var visited = new[]
             {
-                new { name = "Los Angeles", coords = new[] { 34.0522, -118.2437 }, labelSide = "bottom" },
                 new { name = "New York City", coords = new[] { 40.7128, -74.0060 }, labelSide = "right" },
                 new { name = "Chicago", coords = new[] { 41.8781, -87.6298 }, labelSide = "top" }
             };
@@ -988,55 +994,57 @@
             <span><span class="legend-dot visited" aria-hidden="true"></span>Visited</span>
         </p>
 
-        <!-- PEOPLE THAT SHAPED ME -->
+        <!-- PIECES OF ME -->
         @{
-            // The people who shaped me: (name, who they are to me, how they shaped me, group members).
-            // Relation and story are optional: leave them "" and that line just doesn't show.
-            // A card with members (like Family) opens to show them when clicked.
-            var people = new[]
+            // The pieces that make me: (short label on the piece, full name, what it gave me, traits, kind).
+            // kind: "person" = blush piece, "world" = sage piece, "me" = the center piece.
+            // Order fills the puzzle row by row around the center piece (me).
+            var pieces = new[]
             {
-                ("Family", "", "", new[] { "Dad", "Mom", "Sister" }),
-                ("Hana", "", "", Array.Empty<string>()),
-                ("Reese", "", "", Array.Empty<string>()),
-                ("Avery", "", "", Array.Empty<string>())
+                new { label = "Papa", source = "Papa", theme = "Drive", kind = "person",
+                      traits = new[] { "Ambition", "Hard work", "Resilience", "Independence", "Toughness", "Responsibility", "Decisiveness" } },
+                new { label = "Mumma", source = "Mumma", theme = "Heart", kind = "person",
+                      traits = new[] { "Compassion", "Patience", "Gratitude", "Selflessness", "Gentleness", "Humility", "Grace" } },
+                new { label = "Amaira", source = "Amaira", theme = "Imagination", kind = "person",
+                      traits = new[] { "Creativity", "Curiosity", "Wonder", "Playfulness", "Authenticity", "Self-expression" } },
+                new { label = "Avery", source = "Avery", theme = "Principles", kind = "person",
+                      traits = new[] { "Fairness", "Discipline", "Integrity", "Accountability", "Conviction", "Critical thinking", "Intellectual challenge" } },
+                new { label = "Reese", source = "Reese", theme = "Joy", kind = "person",
+                      traits = new[] { "Optimism", "Warmth", "Spontaneity", "Presence", "Openness", "Lightheartedness" } },
+                new { label = "Hana", source = "Hana", theme = "Perspective", kind = "person",
+                      traits = new[] { "Emotional wisdom", "Introspection", "Intentionality", "Self-worth", "Nuance", "Discernment", "Patience" } },
+                new { label = "India", source = "Indian upbringing", theme = "Roots", kind = "world",
+                      traits = new[] { "Family", "Tradition", "Community", "Interdependence", "Respect", "Heritage", "Celebration", "Cultural identity" } },
+                new { label = "Me", source = "Suhani", theme = "Choice", kind = "me",
+                      traits = new[] { "Agency", "Reflection", "Ambition", "Evolving values", "Choosing what I keep and what I change" } },
+                new { label = "America", source = "American education", theme = "Independence", kind = "world",
+                      traits = new[] { "Individuality", "Questioning", "Exploration", "Intellectual freedom", "Independence", "Opportunity", "Multidisciplinary thinking" } },
+                new { label = "Two cultures", source = "Growing up between two cultures", theme = "Duality", kind = "world",
+                      traits = new[] { "Adaptability", "Perspective", "Navigating different expectations", "Learning to belong to more than one world" } },
+                new { label = "School", source = "Education & academics", theme = "Curiosity", kind = "world",
+                      traits = new[] { "Achievement", "Intellectual ambition", "Analysis", "Lifelong learning", "Questioning", "Interdisciplinary thinking" } },
+                new { label = "Friendships", source = "Friendships & relationships", theme = "Connection", kind = "world",
+                      traits = new[] { "Belonging", "Vulnerability", "Boundaries", "Communication", "Trust", "Learning when to hold on and when to let go" } },
+                new { label = "Challenges", source = "Challenges & conflict", theme = "Resilience", kind = "world",
+                      traits = new[] { "Self-advocacy", "Persistence", "Emotional growth", "Learning from mistakes", "Becoming stronger without becoming harder" } },
+                new { label = "Creativity", source = "Creativity & writing", theme = "Expression", kind = "world",
+                      traits = new[] { "Storytelling", "Imagination", "Reflection", "Communication", "Making meaning from experiences" } },
+                new { label = "The internet", source = "The internet & social media", theme = "Exposure", kind = "world",
+                      traits = new[] { "Ideas", "Aesthetics", "Connection", "Inspiration", "Learning to be intentional about what influences me" } }
             };
         }
-        <h2 class="world-block-title">People That Shaped Me</h2>
-        <p class="world-block-subtitle">The people behind who I am</p>
-        <div class="people-carousel">
-            <button type="button" class="people-arrow prev" aria-label="Previous people">‹</button>
-            <div class="people-rail" tabindex="0" aria-label="People that shaped me">
-            @foreach (var (name, relation, story, members) in people)
-            {
-                if (members.Length > 0)
-                {
-                    <button type="button" class="world-card people-card people-group" aria-expanded="false">
-                        <h3>@name</h3>
-                        <span class="people-hint">See who</span>
-                        <ul class="people-members">
-                            @foreach (var m in members)
-                            {
-                                <li>@m</li>
-                            }
-                        </ul>
-                    </button>
-                    continue;
-                }
-                <div class="world-card people-card">
-                    <h3>@name</h3>
-                    @if (!string.IsNullOrEmpty(relation))
-                    {
-                        <div class="world-card-tag">@relation</div>
-                    }
-                    @if (!string.IsNullOrEmpty(story))
-                    {
-                        <p>@story</p>
-                    }
-                </div>
-            }
+        <h2 class="world-block-title">Pieces of Me</h2>
+        <p class="world-block-subtitle">I’m not made only by people. I’m made by family, friendships, cultures, education, experiences, and my own temperament.</p>
+        <div class="pieces">
+            <div class="pieces-board" id="piecesBoard"></div>
+            <div class="pieces-detail" aria-live="polite">
+                <p class="pieces-source" id="piecesSource"></p>
+                <h3 class="pieces-theme" id="piecesTheme"></h3>
+                <ul class="pieces-traits" id="piecesTraits"></ul>
             </div>
-            <button type="button" class="people-arrow next" aria-label="More people">›</button>
         </div>
+        <p class="pieces-hint">Tap a piece to see what it gave me.</p>
+        <p class="pieces-closing">Papa gave me toughness, Mumma compassion, Avery principles, Reese joy, Hana perspective, Amaira imagination, India my roots, and America another way of seeing the world. <strong>But I’m the one deciding how all of those pieces fit together.</strong></p>
 
         <!-- FAVORITE SPOTS IN AUSTIN -->
         @{
@@ -1331,52 +1339,95 @@
 </script>
 
 <script>
-    // Group cards (Family): click to show or hide who's in the group
-    document.querySelectorAll('.people-group').forEach(card => card.addEventListener('click', () => {
-        if (card.closest('.people-rail')?.classList.contains('dragging')) return;
-        card.setAttribute('aria-expanded', card.getAttribute('aria-expanded') !== 'true');
-    }));
-
-    // People carousel: arrows, drag with the mouse, arrow keys; swipe/trackpad scroll natively
+    // PIECES OF ME: draws the jigsaw (5 across on wide screens, 3 across on phones, me always in the middle)
     (function () {
-        const rail = document.querySelector('.people-rail');
-        if (!rail) return;
-        const prev = document.querySelector('.people-arrow.prev');
-        const next = document.querySelector('.people-arrow.next');
-        const step = () => rail.firstElementChild.offsetWidth + parseFloat(getComputedStyle(rail).columnGap);
-        const update = () => {
-            prev.disabled = rail.scrollLeft <= 2;
-            next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2;
-        };
-        prev.addEventListener('click', () => rail.scrollBy({ left: -step() * 2, behavior: 'smooth' }));
-        next.addEventListener('click', () => rail.scrollBy({ left: step() * 2, behavior: 'smooth' }));
-        rail.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update);
-        update();
+        const board = document.getElementById('piecesBoard');
+        if (!board) return;
+        const pieces = @(Html.Raw(Json.Serialize(pieces)));
+        const meIndex = pieces.findIndex(p => p.kind === 'me');
+        const others = pieces.filter((_, i) => i !== meIndex);
+        const S = 130;          // size of one square before the tabs
+        const PAD = 10;         // a little room around the edge so the hover lift and outline aren't clipped
+        const FILLS = { person: ['#F6E4E1', '#EFD3D0'], world: ['#EEF1E8', '#DDE3D3'], me: ['#9E5A63', '#9E5A63'] };
+        let selected = meIndex;
 
-        let drag = null;
-        rail.addEventListener('pointerdown', e => {
-            if (e.pointerType === 'mouse' && e.button === 0) drag = { x: e.clientX, left: rail.scrollLeft, moved: false };
-        });
-        window.addEventListener('pointermove', e => {
-            if (!drag) return;
-            const dx = e.clientX - drag.x;
-            if (!drag.moved && Math.abs(dx) > 4) { drag.moved = true; rail.classList.add('dragging'); }
-            if (drag.moved) rail.scrollLeft = drag.left - dx;
-        });
-        window.addEventListener('pointerup', () => {
-            if (drag && drag.moved) {
-                const left = rail.scrollLeft;
-                rail.classList.remove('dragging');
-                rail.scrollLeft = left;
-                rail.scrollTo({ left: Math.round(left / step()) * step(), behavior: 'smooth' });
+        // One edge of a piece from A to B. d = +1 bumps the tab outward, -1 cuts a blank inward, 0 = straight.
+        // The tab shape is symmetric, so neighbors drawing the same edge backwards line up exactly.
+        const TAB = [[0.40, 0, 0.44, 0.08, 0.40, 0.14], [0.35, 0.22, 0.42, 0.28, 0.50, 0.28],
+                     [0.58, 0.28, 0.65, 0.22, 0.60, 0.14], [0.56, 0.08, 0.60, 0, 0.64, 0]];
+        function edge(ax, ay, bx, by, d) {
+            if (!d) return ` L${bx},${by}`;
+            const ex = bx - ax, ey = by - ay;
+            const nx = ey * d, ny = -ex * d;   // outward normal, scaled to the edge length
+            const pt = (u, v) => `${(ax + ex * u + nx * v).toFixed(1)},${(ay + ey * u + ny * v).toFixed(1)}`;
+            let path = ` L${pt(0.36, 0)}`;
+            TAB.forEach(c => { path += ` C${pt(c[0], c[1])} ${pt(c[2], c[3])} ${pt(c[4], c[5])}`; });
+            return path + ` L${bx},${by}`;
+        }
+
+        function draw() {
+            const phone = window.matchMedia('(max-width: 640px)').matches;
+            const cols = phone ? 3 : 5, rows = phone ? 5 : 3;
+            const center = Math.floor(rows / 2) * cols + Math.floor(cols / 2);
+            // Tab directions for shared edges, fixed so the puzzle looks the same every visit
+            const h = (r, c) => ((r * 5 + c * 3) % 2 ? 1 : -1);        // edge below (r, c)
+            const v = (r, c) => ((r * 3 + c * 7 + 1) % 2 ? 1 : -1);    // edge right of (r, c)
+
+            // Pieces first, then every label on top, so a neighbor's tab never covers a word
+            let order = 0, svg = '', labels = '';
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const cell = r * cols + c;
+                    const index = cell === center ? meIndex : pieces.indexOf(others[order++]);
+                    const p = pieces[index];
+                    const x = PAD + c * S, y = PAD + r * S;
+                    const top = r === 0 ? 0 : -h(r - 1, c);
+                    const right = c === cols - 1 ? 0 : v(r, c);
+                    const bottom = r === rows - 1 ? 0 : h(r, c);
+                    const left = c === 0 ? 0 : -v(r, c - 1);
+                    const d = `M${x},${y}` + edge(x, y, x + S, y, top) + edge(x + S, y, x + S, y + S, right)
+                            + edge(x + S, y + S, x, y + S, bottom) + edge(x, y + S, x, y, left) + ' Z';
+                    const fill = FILLS[p.kind][(r + c) % 2];
+                    const cx = x + S / 2, cy = y + S / 2;
+                    const name = p.kind === 'me' ? p.label : p.theme;
+                    const small = p.kind === 'me' ? p.source : p.label;
+                    svg += `<g class="piece ${p.kind}${index === selected ? ' selected' : ''}" data-i="${index}" tabindex="0" role="button"
+                                aria-pressed="${index === selected}" aria-label="${p.source}: ${p.theme}">
+                                <path d="${d}" fill="${fill}"/>
+                            </g>`;
+                    labels += `<g class="piece-label ${p.kind}">
+                                <text class="piece-theme" x="${cx}" y="${cy - 6}">${name}</text>
+                                <text class="piece-source" x="${cx}" y="${cy + 15}">${small}</text>
+                            </g>`;
+                }
             }
-            drag = null;
-        });
-        rail.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight') { e.preventDefault(); rail.scrollBy({ left: step(), behavior: 'smooth' }); }
-            if (e.key === 'ArrowLeft') { e.preventDefault(); rail.scrollBy({ left: -step(), behavior: 'smooth' }); }
-        });
+            const w = cols * S + PAD * 2, hgt = rows * S + PAD * 2;
+            board.innerHTML = `<svg viewBox="0 0 ${w} ${hgt}" role="group" aria-label="Pieces of me puzzle">${svg}<g aria-hidden="true">${labels}</g></svg>`;
+            board.querySelectorAll('.piece').forEach(g => {
+                g.addEventListener('click', () => select(+g.dataset.i));
+                g.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(+g.dataset.i); }
+                });
+            });
+        }
+
+        function select(i) {
+            selected = i;
+            board.querySelectorAll('.piece').forEach(g => {
+                const on = +g.dataset.i === i;
+                g.classList.toggle('selected', on);
+                g.setAttribute('aria-pressed', on);
+            });
+            const p = pieces[i];
+            document.getElementById('piecesSource').textContent = p.source;
+            document.getElementById('piecesTheme').textContent = p.theme;
+            document.getElementById('piecesTraits').innerHTML = p.traits.map(t => `<li>${t}</li>`).join('');
+            document.querySelector('.pieces-detail').classList.toggle('world', p.kind === 'world');
+        }
+
+        draw();
+        select(selected);
+        window.matchMedia('(max-width: 640px)').addEventListener('change', () => { draw(); select(selected); });
     })();
 </script>
 
