@@ -308,6 +308,83 @@
         }
     }
 
+    /* "The thing about me is..." sits above the 01 / 02 / 03 cards */
+    .about-lead {
+        margin: 0 0 22px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-style: italic;
+        font-weight: 400;
+        text-align: center;
+        color: #8A4D57;
+    }
+
+    /* ===== I'M THE TYPE OF PERSON WHO...: little notes, gently tilted ===== */
+    .type-of-person {
+        padding: 10px 40px 90px;
+        background: #FAF1EF;
+    }
+
+    .tp-lead {
+        margin: 0 0 30px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-style: italic;
+        font-weight: 400;
+        text-align: center;
+        color: #8A4D57;
+    }
+
+    .tp-notes {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 22px 26px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .tp-note {
+        max-width: 300px;
+        padding: 24px 28px;
+        border-radius: 16px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 10px 24px rgba(158, 90, 99, 0.12);
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        line-height: 1.35;
+        color: #2A1810;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .tp-note.n0 { transform: rotate(-2deg); background: #FFF8F6; }
+    .tp-note.n1 { transform: rotate(1.5deg) translateY(8px); background: #F6E4E1; }
+    .tp-note.n2 { transform: rotate(-1deg); background: #EEF1E8; }
+    .tp-note.n3 { transform: rotate(2deg) translateY(6px); background: #FFF8F6; }
+
+    .tp-note:hover {
+        transform: rotate(0) translateY(-4px);
+    }
+
+    @@media (max-width: 860px) {
+        .type-of-person {
+            padding: 0 20px 60px;
+        }
+
+        .about-lead,
+        .tp-lead {
+            font-size: 1.5em;
+        }
+
+        .tp-note {
+            font-size: 1.15em;
+            padding: 18px 22px;
+        }
+    }
+
     /* ===== PERSONALITY SECTION ===== */
     /* Personality now comes straight after the hero photo, so no gap above it */
     #personality {
@@ -1447,6 +1524,7 @@
             <p>I’m a 20-year-old student at the McCombs School of Business at UT Austin studying Management Information Systems. My academic interests include psychology, marketing, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
+        <h3 class="about-lead">The thing about me is...</h3>
         <ol class="about-points">
             @foreach (var (num, title, text) in aboutPoints)
             {
@@ -1457,6 +1535,28 @@
                 </li>
             }
         </ol>
+    </div>
+</section>
+
+<!-- I'M THE TYPE OF PERSON WHO... -->
+@{
+    // Add or remove freely; each one becomes a little note.
+    var typeOfPerson = new[]
+    {
+        "cries in movies",
+        "can’t watch horror movies",
+        "will tell you 6 stories in 15 minutes"
+    };
+}
+<section class="type-of-person">
+    <div class="about-container">
+        <h2 class="tp-lead">I’m the type of person who...</h2>
+        <ul class="tp-notes">
+            @for (var i = 0; i < typeOfPerson.Length; i++)
+            {
+                <li class="tp-note n@(i % 4)">@typeOfPerson[i]</li>
+            }
+        </ul>
     </div>
 </section>
 

@@ -559,9 +559,75 @@
         max-width: 460px;
     }
 
+    /* Around Austin: shorter, compact cards, 2 to 5 per row */
+    .spots-grid.compact {
+        gap: 14px;
+    }
+
+
+    .spots-grid.compact .spot {
+        min-height: 0;
+        gap: 6px;
+        padding: 18px 18px 16px;
+    }
+
+    .spots-grid.compact .spot-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .spots-grid.compact .spot h3 {
+        margin-top: 4px;
+        font-size: 1.15em;
+    }
+
+    .spots-grid.compact .spot p {
+        font-size: 0.88em;
+        line-height: 1.5;
+    }
+
+    .spots-grid.compact .spot-pill {
+        font-size: 0.62em;
+    }
+
     .spots-grid.bento {
         grid-auto-flow: dense;
         grid-auto-rows: minmax(180px, auto);
+    }
+
+    /* comes after .spots-grid.bento, so compact rows are only as tall as their text */
+    .spots-grid.bento.compact {
+        grid-auto-rows: auto;
+    }
+
+    /* phones: compact spots stay two across so the list stays short */
+    @@media (max-width: 760px) {
+        .spots-grid.bento.compact {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .spots-grid.bento.compact .spot {
+            grid-column: span 1;
+            padding: 14px 14px 12px;
+        }
+
+        .spots-grid.bento.compact .spot-icon {
+            display: none;
+        }
+
+        .spots-grid.bento.compact .spot-top {
+            justify-content: flex-start;
+        }
+
+        .spots-grid.bento.compact .spot h3 {
+            margin-top: 0;
+            font-size: 1.02em;
+        }
+
+        .spots-grid.bento.compact .spot p {
+            font-size: 0.8em;
+        }
     }
 
     @@keyframes spotIn {
@@ -912,7 +978,7 @@
                         }
                     </div>
                 }
-                <div class="spots-grid bento" data-grouped="@(tab.Id == "austin" ? "true" : "false")">
+                <div class="spots-grid bento @(tab.Id == "austin" ? "compact" : "")" data-grouped="@(tab.Id == "austin" ? "true" : "false")">
                     @foreach (var spot in tab.Spots)
                     {
                         <article class="spot @(spot.Featured ? "featured" : "")" style="--span: @spot.Span;" data-filter="@FilterOf(spot.Category)">
@@ -970,8 +1036,49 @@
     // how many cards go into the next pattern, for a group with `left` cards still to place
     const chunkSize = left => left <= 5 ? left : left === 6 ? 3 : left === 7 ? 3 : left === 8 ? 4 : 3;
 
+    // Around Austin: every card is one row tall; rows hold 2 to 5 cards with varied widths.
+    // Widths are out of 60 columns (5 per row = 12 each, 4 = 15, 3 = 20, 2 = 30).
+    const ROW_WIDTHS = {
+        2: [[36, 24], [24, 36], [30, 30]],
+        3: [[24, 18, 18], [18, 24, 18], [18, 18, 24], [20, 20, 20]],
+        4: [[18, 12, 18, 12], [15, 15, 15, 15], [12, 18, 12, 18]],
+        5: [[12, 12, 12, 12, 12]]
+    };
+    const ROW_SIZES = [4, 3, 5, 3, 4, 2, 5];   // how many cards per row, cycled
+    function rowsFor(n) {
+        const rows = [];
+        let k = 0;
+        while (n > 0) {
+            let size = Math.min(ROW_SIZES[k++ % ROW_SIZES.length], n);
+            if (n - size === 1) size = size >= 3 ? size - 1 : size + 1;   // never leave one card alone
+            if (size > n) size = n;
+            rows.push(size);
+            n -= size;
+        }
+        return rows;
+    }
+    function layoutCompact(grid, cols) {
+        const cards = [...grid.querySelectorAll('.spot')];
+        cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });
+        const shown = cards.filter(c => !c.hidden);
+        grid.style.gridTemplateColumns = cols === 6 ? 'repeat(60, minmax(0, 1fr))' : '';
+        if (cols !== 6) return;
+        const used = {};
+        let i = 0;
+        rowsFor(shown.length).forEach(size => {
+            const options = ROW_WIDTHS[size];
+            const widths = options[(used[size] = (used[size] ?? -1) + 1) % options.length];
+            widths.forEach((w, k) => { shown[i + k].style.gridColumn = `span ${w}`; });
+            i += size;
+        });
+    }
+
     function layoutBento(grid) {
         if (!grid || grid.closest('[hidden]')) return;
+        if (grid.classList.contains('compact')) {
+            layoutCompact(grid, window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1);
+            return;
+        }
         const cols = window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1;
         const cards = [...grid.querySelectorAll('.spot')];
         cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });
