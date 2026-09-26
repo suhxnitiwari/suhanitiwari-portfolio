@@ -1832,9 +1832,12 @@
             };
         }
         <hr class="shelf-divider">
-        @{ RenderShelf("Watched It, Loved It, Moved On", otherShows); }
-        <hr class="shelf-divider">
         @{ RenderShelf("The Desi Edit", desiEdit); }
+
+        <!-- the rest of Watch stays tucked away until "View more awesome recs" is clicked -->
+        <div class="watch-more" id="watchMore" hidden>
+        <hr class="shelf-divider">
+        @{ RenderShelf("Watched It, Loved It, Moved On", otherShows); }
         <hr class="shelf-divider">
         @{ RenderShelf("Comedy That Never Misses", comedy); }
         <hr class="shelf-divider">
@@ -1859,6 +1862,11 @@
         }
         <hr class="shelf-divider">
         @{ RenderVideoShelf("Inspiration", inspiration); }
+        </div>
+
+        <div class="watch-more-wrap">
+            <button type="button" class="watch-more-btn" aria-expanded="false" aria-controls="watchMore">View more awesome recs ↓</button>
+        </div>
     </div>
 </section>
 

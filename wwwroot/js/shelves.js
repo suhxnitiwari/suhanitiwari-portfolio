@@ -107,6 +107,20 @@ document.querySelectorAll('.video-topics').forEach(group => {
     }));
 });
 
+// ===== Watch: "View more awesome recs" reveals the rest of the rows =====
+document.querySelectorAll('.watch-more-btn').forEach(btn => {
+    const more = document.getElementById(btn.getAttribute('aria-controls'));
+    btn.addEventListener('click', () => {
+        const open = more.hidden;
+        more.hidden = !open;
+        btn.setAttribute('aria-expanded', open);
+        btn.textContent = open ? 'Show fewer ↑' : 'View more awesome recs ↓';
+        // the rows were hidden when the page loaded, so let their arrows measure again
+        if (open) window.dispatchEvent(new Event('resize'));
+        else btn.closest('section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+
 // ===== Shelves: drag to scroll, arrows, "See all" =====
 document.querySelectorAll('.shelf').forEach(shelf => {
     const rail = shelf.querySelector('.shelf-rail');

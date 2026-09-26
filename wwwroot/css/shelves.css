@@ -319,6 +319,51 @@
     }
 }
 
+/* Watch: three rows up front, the rest behind "View more awesome recs" */
+.watch-more[hidden] {
+    display: none;
+}
+
+.watch-more {
+    animation: watchIn 0.4s ease both;
+}
+
+@keyframes watchIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+.watch-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+}
+
+.watch-more-btn {
+    padding: 14px 32px;
+    border-radius: 30px;
+    border: 1.5px solid #8A4D57;
+    background: #FFF8F6;
+    color: #2A1810;
+    font: inherit;
+    font-size: 0.95em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.watch-more-btn:hover {
+    background: #8A4D57;
+    color: #FAF1EF;
+    transform: translateY(-2px);
+}
+
+.watch-more-btn:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 3px;
+}
+
 /* Inspiration: YouTube talks as 16:9 thumbnails with a play button */
 /* topic buttons above the talks, and each card's topic */
 .video-topics {
