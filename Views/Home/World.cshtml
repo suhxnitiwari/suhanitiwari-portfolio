@@ -26,6 +26,7 @@
         ["tiles"] = "<rect x='4' y='4' width='7' height='7' rx='1'/><rect x='13' y='4' width='7' height='7' rx='1'/><rect x='4' y='13' width='7' height='7' rx='1'/><rect x='13' y='13' width='7' height='7' rx='1'/>",
         ["brush"] = "<path d='M14.5 4.5l5 5L11 18l-5-5z'/><path d='M6 13c-2 0-3 1.5-3 3.5S2 20 2 20s2.5.5 4.5-.5S9 17 9 16'/>",
         ["flame"] = "<path d='M12 3c1 3 4.5 4.5 4.5 8.5a4.5 4.5 0 0 1-9 0C7.5 9 9.5 8 10 6c1 1.5 1.5 2.5 1.5 4'/><path d='M8 21h8M10 17h4v4h-4z'/>",
+        ["lotus"] = "<path d='M12 20c-4 0-8-2.5-8-6 2 0 4.5.8 6 2.5M12 20c4 0 8-2.5 8-6-2 0-4.5.8-6 2.5'/><path d='M12 20c-2.5-2-3.5-5-3.5-8S10 6 12 4c2 2 3.5 5 3.5 8s-1 6-3.5 8z'/>",
         ["pin"] = "<path d='M12 21s-6.5-5.8-6.5-11.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.2'/>"
     };
 }
@@ -951,6 +952,7 @@
                 new Spot("The Little Bisque", "Art", "Paint-your-own pottery, for an afternoon of making something cute.", "brush"),
                 new Spot("7th Street Candle", "Art", "Make-your-own candles: pick a scent, pour, and take it home.", "flame"),
                 new Spot("Rosa Pottery Studio", "Art", "A pottery studio for getting my hands messy with clay.", "brush"),
+                new Spot("Prana Wellness Club", "Pilates", "Pilates, and my favorite way to reset.", "lotus"),
                 // one-off cuisines keep their own label and only show under "All"
                 new Spot("Roya", "Persian", "My one and only Persian spot in Austin.", "dining"),
                 new Spot("Numero 28", "Italian", "Lots of good memories here.", "dining")
@@ -963,10 +965,10 @@
                 "Coffee" or "Café" => "Café",
                 "Shop" => "Shopping",
                 "Make Something" or "Art" => "Art",
-                "Brunch" or "Indian" or "Mediterranean" or "Mexican" => category,
+                "Brunch" or "Indian" or "Mediterranean" or "Mexican" or "Pilates" => category,
                 _ => "None"   // one-off cuisines (Roya, Numero 28): no filter, shown under "All" only
             };
-            var filterOrder = new[] { "Brunch", "Indian", "Mediterranean", "Mexican", "Café", "Shopping", "Art", "More" };
+            var filterOrder = new[] { "Brunch", "Indian", "Mediterranean", "Mexican", "Café", "Shopping", "Art", "Pilates", "More" };
             var austinFilters = filterOrder.Where(f => aroundAustin.Any(sp => FilterOf(sp.Category) == f)).ToArray();
 
             var spotTabs = new[]
