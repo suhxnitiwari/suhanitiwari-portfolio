@@ -255,7 +255,8 @@
     var riasecStrengths = new[] { "Original thinking", "Visual and verbal expression", "Brainstorming and ideation", "Adaptability to new approaches" };
     // work style, from the report's other dimension descriptions (not job titles, so nothing is ruled out)
     var riasecStyle = new[] { "Independent or on a team", "Hands-on and big-picture", "Balances research with action", "Adapts when plans change" };
-    var riasecPlaces = new[] { "Design studios", "Ad agencies", "Media companies", "Startups with creative freedom" };
+    // what the report says drives me (not industries, so no workplace is ruled out)
+    var riasecEnergy = new[] { "Creative freedom", "Variety", "Helping people", "Leading when it matters" };
 
     // My CliftonStrengths top 5 (Gallup, taken 02/11/2025), in order.
     // Lines are my short versions of Gallup's theme descriptions.
@@ -409,7 +410,7 @@
         <div class="test-panel" id="test-riasec" role="tabpanel" aria-labelledby="tab-riasec" hidden>
             <div class="type-header">
                 <h2>ASE</h2>
-                <p>My Holland code · where I thrive</p>
+                <p>My Holland code</p>
             </div>
 
             <div class="riasec-letters">
@@ -436,8 +437,8 @@
                     <ul class="disc-pills">@foreach (var x in riasecStyle) { <li>@x</li> }</ul>
                 </div>
                 <div class="disc-block">
-                    <h4>Where I Thrive</h4>
-                    <ul class="disc-pills soft">@foreach (var x in riasecPlaces) { <li>@x</li> }</ul>
+                    <h4>What Energizes Me</h4>
+                    <ul class="disc-pills soft">@foreach (var x in riasecEnergy) { <li>@x</li> }</ul>
                 </div>
             </div>
         </div>
