@@ -46,7 +46,7 @@
         button.addEventListener('click', () => {
             if (button.closest('.shelf-rail').dataset.dragged) return;
             image.src = button.dataset.image;
-            image.alt = `${button.dataset.title}, digital illustration`;
+            image.alt = button.dataset.title;
             document.getElementById('artTitle').textContent = button.dataset.title;
             const idea = document.getElementById('artIdea');
             idea.textContent = button.dataset.idea;

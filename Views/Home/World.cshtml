@@ -6,8 +6,9 @@
     // One favorite spot. Category = the small pill; Icon = a key from SpotIcons below;
     // Span = how many of the grid's 6 columns the card covers (2 = small, 3 = half, 4 = featured-size);
     // Featured = the one highlighted card per tab. Photo is optional: add a path to show one on the card.
+    // Mini = a small name-only box, lined up in a row after the main cards (quick food spots).
     public record Spot(string Name, string Category, string Line, string Icon, int Span = 2,
-                       bool Featured = false, string Photo = "");
+                       bool Featured = false, string Photo = "", bool Mini = false);
 
     // Small line-art icons (drawn with the text color, so they match any card)
     static readonly Dictionary<string, string> SpotIcons = new()
@@ -561,6 +562,34 @@
         max-width: 460px;
     }
 
+    /* On Campus: quick food spots as small name-only boxes in a row at the end */
+    .spot.mini {
+        min-height: 0;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 14px;
+    }
+
+    .spot.mini .spot-top {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .spot.mini .spot-icon {
+        display: none;
+    }
+
+    .spot.mini h3 {
+        margin: 0;
+        font-size: 1.02em;
+    }
+
+    .spot.mini .spot-pill {
+        font-size: 0.6em;
+    }
+
     /* Around Austin: shorter, compact cards, 2 to 5 per row */
     .spots-grid.compact {
         gap: 14px;
@@ -592,9 +621,10 @@
         font-size: 0.62em;
     }
 
+    /* rows size to their cards (normal cards have their own min-height), so mini boxes stay small */
     .spots-grid.bento {
         grid-auto-flow: dense;
-        grid-auto-rows: minmax(180px, auto);
+        grid-auto-rows: auto;
     }
 
     /* comes after .spots-grid.bento, so compact rows are only as tall as their text */
@@ -906,7 +936,10 @@
                 new Spot("Life Science Library", "Study Spot", "Stained glass, old wood and quiet: the prettiest place on campus to study.", "book"),
                 new Spot("Architecture and Planning Library", "Study Spot", "Tucked inside Battle Hall, under beautiful painted ceilings.", "book"),
                 new Spot("PCL", "Old Study Favorite", "My go-to for locking in freshman year.", "book", Span: 3),
-                new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors.", "chat", Span: 3)
+                new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors.", "chat", Span: 3),
+                new Spot("Pizza Press", "Food", "", "dining", Mini: true),
+                new Spot("Sweetgreen", "Food", "", "dining", Mini: true),
+                new Spot("Kerbey Lane", "Food", "", "dining", Mini: true)
             };
 
             // Grouped by filter (Mediterranean, Indian, Mexican, Café, Brunch, Shopping, Art). Card sizes are set
@@ -934,7 +967,10 @@
                 new Spot("Mosaic Workshop", "Art", "A DIY mosaic studio where you build your own piece, tile by tile.", "tiles"),
                 new Spot("The Little Bisque", "Art", "Paint-your-own pottery, for an afternoon of making something cute.", "brush"),
                 new Spot("7th Street Candle", "Art", "Make-your-own candles: pick a scent, pour, and take it home.", "flame"),
-                new Spot("Rosa Pottery Studio", "Art", "A pottery studio for getting my hands messy with clay.", "brush")
+                new Spot("Rosa Pottery Studio", "Art", "A pottery studio for getting my hands messy with clay.", "brush"),
+                // one-off cuisines keep their own label and only show under "All"
+                new Spot("Roya", "Persian", "My one and only Persian spot in Austin.", "dining"),
+                new Spot("Numero 28", "Italian", "Lots of good memories here.", "dining")
             };
 
             // Filters for Around Austin: coffee shops and cafés share "Café", shops go under
@@ -944,7 +980,8 @@
                 "Coffee" or "Café" => "Café",
                 "Shop" => "Shopping",
                 "Make Something" or "Art" => "Art",
-                _ => category
+                "Brunch" or "Indian" or "Mediterranean" or "Mexican" => category,
+                _ => "None"   // one-off cuisines (Roya, Numero 28): no filter, shown under "All" only
             };
             var filterOrder = new[] { "Brunch", "Indian", "Mediterranean", "Mexican", "Café", "Shopping", "Art", "More" };
             var austinFilters = filterOrder.Where(f => aroundAustin.Any(sp => FilterOf(sp.Category) == f)).ToArray();
@@ -988,7 +1025,7 @@
                 <div class="spots-grid bento @(tab.Id == "austin" ? "compact" : "")" data-grouped="@(tab.Id == "austin" ? "true" : "false")">
                     @foreach (var spot in tab.Spots)
                     {
-                        <article class="spot @(spot.Featured ? "featured" : "")" style="--span: @spot.Span;" data-filter="@FilterOf(spot.Category)">
+                        <article class="spot @(spot.Featured ? "featured" : "") @(spot.Mini ? "mini" : "")" style="--span: @spot.Span;" data-filter="@FilterOf(spot.Category)">
                             <div class="spot-top">
                                 <span class="spot-icon" aria-hidden="true">
                                     <svg viewBox="0 0 24 24">@Html.Raw(SpotIcons.GetValueOrDefault(spot.Icon, SpotIcons["pin"]))</svg>
@@ -1000,7 +1037,10 @@
                                 <img class="spot-photo" src="@spot.Photo" alt="@spot.Name" loading="lazy">
                             }
                             <h3>@spot.Name</h3>
-                            <p>@spot.Line</p>
+                            @if (!string.IsNullOrEmpty(spot.Line))
+                            {
+                                <p>@spot.Line</p>
+                            }
                         </article>
                     }
                 </div>
@@ -1046,6 +1086,7 @@
     // Around Austin: every card is one row tall; rows hold 2 to 5 cards with varied widths.
     // Widths are out of 60 columns (5 per row = 12 each, 4 = 15, 3 = 20, 2 = 30).
     const ROW_WIDTHS = {
+        1: [[30]],   // a filter with a single spot: one half-width card
         2: [[36, 24], [24, 36], [30, 30]],
         3: [[24, 18, 18], [18, 24, 18], [18, 18, 24], [20, 20, 20]],
         4: [[18, 12, 18, 12], [15, 15, 15, 15], [12, 18, 12, 18]],
@@ -1089,7 +1130,10 @@
         const cols = window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1;
         const cards = [...grid.querySelectorAll('.spot')];
         cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });
-        const shown = cards.filter(c => !c.hidden);
+        // mini boxes sit in their own row at the end: a third of the width each (half on phones)
+        const minis = cards.filter(c => !c.hidden && c.classList.contains('mini'));
+        minis.forEach(c => { c.style.gridColumn = cols === 6 ? 'span 2' : cols === 2 ? 'span 1' : ''; });
+        const shown = cards.filter(c => !c.hidden && !c.classList.contains('mini'));
         if (cols === 1) {
             if (shown[0]) shown[0].classList.add('featured');
             return;
