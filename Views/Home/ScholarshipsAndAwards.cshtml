@@ -136,7 +136,7 @@
             <ul class="honors-grid">
                 @foreach (var honor in honors)
                 {
-                    var meta = string.Join(" · ", new[] { honor.From, honor.Year }.Where(part => !string.IsNullOrEmpty(part)));
+                    var meta = string.Join(", ", new[] { honor.From, honor.Year }.Where(part => !string.IsNullOrEmpty(part)));
                     <li class="honor">
                         <h3 class="honor-name">@honor.Name</h3>
                         @if (!string.IsNullOrEmpty(meta))

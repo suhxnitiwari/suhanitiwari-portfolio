@@ -23,7 +23,7 @@
             }
             document.getElementById('recipeTitle').textContent = r.Title;
             document.getElementById('recipeLine').textContent = r.Line;
-            document.getElementById('recipeMeta').textContent = [r.Time, r.Serves].filter(Boolean).join(' · ');
+            document.getElementById('recipeMeta').textContent = [r.Time, r.Serves].filter(Boolean).join(', ');
             const hasRecipe = r.Steps.length > 0;
             document.getElementById('recipeSoon').hidden = hasRecipe;
             document.getElementById('recipeColumns').hidden = !hasRecipe;

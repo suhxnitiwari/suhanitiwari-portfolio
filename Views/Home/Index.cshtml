@@ -1456,7 +1456,7 @@
         <div class="test-panel" id="test-ocean" role="tabpanel" aria-labelledby="tab-ocean" hidden>
             <div class="type-header">
                 <h2>OCEAN</h2>
-                <p>The Big Five · hover or click a letter</p>
+                <p>The Big Five, one letter at a time</p>
             </div>
 
             <div class="ocean" id="ocean">
@@ -1489,7 +1489,7 @@
                 {
                     var facetsReady = t.ShowFacets && t.Facets.All(f => f.Score.HasValue);
                     <article class="ocean-card" data-letter="@t.Letter" hidden>
-                        <p class="ocean-card-kicker">@t.Letter · @t.Name</p>
+                        <p class="ocean-card-kicker">@t.Name</p>
                         <p class="ocean-card-score">@t.Score</p>
 
                         <ul class="ocean-words" aria-label="@t.Name in words">
@@ -1599,27 +1599,27 @@
             // "Me, in practice" must be my own real examples: leave it "" and that part stays hidden.
             var sky = new[]
             {
-                ("sun", "Who I Am", "☀︎", "Pisces Sun", "Sun in Pisces · 15°24′ · 11th house",
+                ("sun", "Who I Am", "☀︎", "Pisces Sun", "Sun in Pisces, 15°24′, 11th house",
                     "An imaginative, deeply empathetic core that comes alive through other people. With the Sun in the 11th house, identity grows through friendships, community and shared hopes: the self feels most itself when it belongs to something bigger.", ""),
-                ("moon", "How I Feel", "☾︎", "Gemini Moon", "Moon in Gemini · 6°56′ · 2nd house",
+                ("moon", "How I Feel", "☾︎", "Gemini Moon", "Moon in Gemini, 6°56′, 2nd house",
                     "Feelings move through words and curiosity: emotions get processed by talking, reading and thinking them through, and curiosity keeps life interesting. In the 2nd house, emotional security is tied to what feels tangible and steady.", ""),
-                ("rising", "How I Show Up", "↑", "Taurus Rising", "Ascendant in Taurus · 1°49′ · 1st house",
+                ("rising", "How I Show Up", "↑", "Taurus Rising", "Ascendant in Taurus, 1°49′, 1st house",
                     "First impressions read calm, grounded and composed: someone deliberate, warm and quietly steady, with an eye for beauty and comfort, who doesn't rush to be known.", ""),
-                ("mercury", "How I Think", "☿︎", "Pisces Mercury", "Mercury in Pisces · 26°06′ · 11th house",
+                ("mercury", "How I Think", "☿︎", "Pisces Mercury", "Mercury in Pisces, 26°06′, 11th house",
                     "Thinking is intuitive and associative rather than linear: reading between the lines, catching emotional subtext, connecting ideas that don't obviously belong together. In the 11th house, the mind lights up around people, groups and big-picture ideals.", ""),
-                ("venus", "How I Love", "♀︎", "Aquarius Venus", "Venus in Aquarius · 0°37′ · 10th house",
+                ("venus", "How I Love", "♀︎", "Aquarius Venus", "Venus in Aquarius, 0°37′, 10th house",
                     "Love looks like friendship first: loyalty, respect and real mental connection over grand gestures. In the 10th house, affection shows up as support for someone's goals and showing up for what matters to them.", ""),
-                ("mars", "How I Act", "♂︎", "Gemini Mars", "Mars in Gemini · 8°19′ · 2nd house",
+                ("mars", "How I Act", "♂︎", "Gemini Mars", "Mars in Gemini, 8°19′, 2nd house",
                     "Energy runs on curiosity and variety: quick, verbal, and happiest juggling several things at once. In the 2nd house, that drive gets pointed toward building something tangible and secure.", ""),
-                ("jupiter", "How I Grow", "♃︎", "Scorpio Jupiter", "Jupiter in Scorpio · 18°51′ · 7th house",
+                ("jupiter", "How I Grow", "♃︎", "Scorpio Jupiter", "Jupiter in Scorpio, 18°51′, 7th house",
                     "Growth comes through depth rather than breadth: through intense, honest one-on-one relationships and getting beneath surface-level explanations. Close partnerships are where the biggest lessons happen.", ""),
-                ("saturn", "Where I Grow Up", "♄︎", "Leo Saturn", "Saturn in Leo · 5°11′ · 4th house",
+                ("saturn", "Where I Grow Up", "♄︎", "Leo Saturn", "Saturn in Leo, 5°11′, 4th house",
                     "Saturn in Leo builds confidence that's earned rather than performed. In the 4th house, it grows from strong foundations and a steady sense of home.", ""),
-                ("uranus", "How I Think Differently", "♅︎", "Pisces Uranus", "Uranus in Pisces · 10°59′ · 11th house",
+                ("uranus", "How I Think Differently", "♅︎", "Pisces Uranus", "Uranus in Pisces, 10°59′, 11th house",
                     "An original streak that's imaginative rather than loud: rethinking dated expectations about who belongs where, and reimagining what friendship and community can look like.", ""),
-                ("neptune", "How I Dream", "♆︎", "Aquarius Neptune", "Neptune in Aquarius · 18°19′ · 10th house",
+                ("neptune", "How I Dream", "♆︎", "Aquarius Neptune", "Neptune in Aquarius, 18°19′, 10th house",
                     "Big, idealistic visions for career and impact: work that means something beyond the title, and a future built around ideas that help people.", ""),
-                ("pluto", "How I Transform", "♇︎", "Sagittarius Pluto", "Pluto in Sagittarius · 26°36′ · 9th house",
+                ("pluto", "How I Transform", "♇︎", "Sagittarius Pluto", "Pluto in Sagittarius, 26°36′, 9th house",
                     "Transformation comes through learning, travel, faith and philosophy: beliefs that get questioned, deepened and rebuilt over time.", "")
             };
 

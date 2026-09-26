@@ -302,7 +302,8 @@
                 ("Problem Solving", "Identifies and fixes problems before others even notice them.")
             };
             var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
-            var discCareers = new[] { "Executive Leadership", "Entrepreneurship", "Sales and Business Development", "Project Management", "Law and Politics" };
+            // from the report's Communication Style section (not job titles, so no role is ruled out)
+            var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive", "Action-oriented" };
 
             // The DISC wheel: D top-left, I top-right, S bottom-right, C bottom-left; mine is filled in.
             var discQuadrants = new[]
@@ -330,7 +331,7 @@
                     <circle cx="120" cy="120" r="110" class="disc-ring" />
                 </svg>
                 <div class="disc-intro">
-                    <p class="disc-kicker">D · My DISC style</p>
+                    <p class="disc-kicker">My DISC style</p>
                     <h3>@discType</h3>
                     <p>@discSummary</p>
                 </div>
@@ -363,8 +364,8 @@
                     <ul class="disc-pills">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
                 </div>
                 <div class="disc-block">
-                    <h4>Career Paths</h4>
-                    <ul class="disc-pills">@foreach (var c in discCareers) { <li>@c</li> }</ul>
+                    <h4>How I Communicate</h4>
+                    <ul class="disc-pills">@foreach (var c in discCommunication) { <li>@c</li> }</ul>
                 </div>
             </div>
         </div>
@@ -399,8 +400,8 @@
                     }
                 </div>
                 <ul class="clifton-key">
-                    <li>Relationship Building · @clifton.Count(c => c.Item2 == "Relationship Building") of 5</li>
-                    <li class="influencing">Influencing · @clifton.Count(c => c.Item2 == "Influencing") of 5</li>
+                    <li>Relationship Building (@clifton.Count(c => c.Item2 == "Relationship Building") of 5)</li>
+                    <li class="influencing">Influencing (@clifton.Count(c => c.Item2 == "Influencing") of 5)</li>
                 </ul>
             </div>
 
@@ -410,7 +411,7 @@
         <div class="test-panel" id="test-riasec" role="tabpanel" aria-labelledby="tab-riasec" hidden>
             <div class="type-header">
                 <h2>ASE</h2>
-                <p>My Holland code</p>
+                <p>Artistic, Social, Enterprising</p>
             </div>
 
             <div class="riasec-letters">

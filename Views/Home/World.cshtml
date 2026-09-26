@@ -788,7 +788,7 @@
         </div>
 
         <div class="spots-map">
-            <span class="spots-map-label" aria-hidden="true"><b>N</b>Austin, TX · 30.27° N</span>
+            <span class="spots-map-label" aria-hidden="true"><b>N</b>Austin, TX, 30.27° N</span>
             @for (var t = 0; t < spotTabs.Length; t++)
             {
                 var tab = spotTabs[t];
@@ -910,7 +910,7 @@
         const box = map.getContainer();
         const note = document.createElement('div');
         note.className = 'map-scroll-note';
-        note.textContent = L.Browser.mobile ? 'Use two fingers to move the map' : 'Click the map to zoom · keep scrolling to move on';
+        note.textContent = L.Browser.mobile ? 'Use two fingers to move the map' : 'Click the map to zoom, or keep scrolling to move on';
         box.appendChild(note);
         let hideTimer;
         const showNote = () => {
@@ -974,7 +974,7 @@
         const when = `${label(start)} – ${loc.to ? label(end) : 'now'}`;
         // Where I was born: "my first 2 months" reads better than an age
         const summary = bornHere ? `my first ${length}`
-            : `${ages} · ${loc.to ? length : `${length} and counting`}`;
+            : `${ages}, ${loc.to ? length : `${length} and counting`}`;
         return { summary, when };
     }
 

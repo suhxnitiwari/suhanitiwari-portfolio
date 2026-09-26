@@ -280,7 +280,7 @@
                 @for (var i = 0; i < area.Initiatives.Length; i++)
                 {
                     var project = area.Initiatives[i];
-                    var meta = string.Join(" · ", new[] { project.Role, project.Years }.Where(part => !string.IsNullOrEmpty(part)));
+                    var meta = string.Join(", ", new[] { project.Role, project.Years }.Where(part => !string.IsNullOrEmpty(part)));
                     <article class="project">
                         @if (!string.IsNullOrEmpty(project.Photo))
                         {
