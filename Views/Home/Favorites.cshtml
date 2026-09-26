@@ -718,8 +718,17 @@
         color: #2A1810;
     }
 
+    .dna-caption {
+        margin: 0 0 18px;
+        font-family: Georgia, serif;
+        font-size: 1.05em;
+        font-style: italic;
+        line-height: 1.55;
+        color: #2A1810;
+    }
+
     .dna-note {
-        margin: 16px 0 0;
+        margin: 10px 0 0;
         font-size: 0.8em;
         color: #56634A;
     }
@@ -1532,6 +1541,7 @@
                 </div>
             </div>
             <div>
+                <p class="dna-caption">Mostly pop in different fonts. The Hindi, Punjabi, and occasional Spanish song diversify the portfolio.</p>
                 <ul class="dna-legend">
                     ${slices.map((s, i) => `
                         <li><button type="button" class="dna-key" data-i="${i}" aria-pressed="false">
@@ -1934,7 +1944,6 @@
                 new ShelfItem("The American Roommate Experiment", "Elena Armas", "/images/covers/the-american-roommate-experiment.jpg"),
                 // Open Library only has a tiny or square (audiobook) cover for this one, so it's from Amazon
                 new ShelfItem("The Worst Best Man", "Mia Sosa", "/images/covers/the-worst-best-man.jpg"),
-                new ShelfItem("The Deal", "Elle Kennedy", "/images/covers/the-deal.jpg"),
                 new ShelfItem("The Love Hypothesis", "Ali Hazelwood", "/images/covers/the-love-hypothesis.jpg")
             };
 

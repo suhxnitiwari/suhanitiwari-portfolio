@@ -403,10 +403,19 @@
     }
 
     .duality-card h2 {
-        margin: 0 0 34px;
+        margin: 0 0 8px;
         font-size: 1em;
         font-weight: 700;
         letter-spacing: 4px;
+        text-transform: uppercase;
+        text-align: center;
+        color: #9E5A63;
+    }
+
+    .duality-hint {
+        margin: 0 0 30px;
+        font-size: 0.85em;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
         text-align: center;
         color: #9E5A63;
@@ -418,7 +427,9 @@
         padding: 0;
     }
 
-    .duality-pairs li {
+    .duality-pairs summary {
+        list-style: none;
+        cursor: pointer;
         display: grid;
         grid-template-columns: 1fr auto 1fr;
         align-items: baseline;
@@ -431,8 +442,27 @@
         transition: background 0.25s ease;
     }
 
-    .duality-pairs li:hover {
+    .duality-pairs summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .duality-pairs summary:hover,
+    .duality-pairs details[open] summary {
         background: #F6E4E1;
+    }
+
+    .duality-pairs summary:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 2px;
+    }
+
+    .dp-story {
+        max-width: 540px;
+        margin: 10px auto 18px;
+        font-size: 1em;
+        line-height: 1.75;
+        text-align: center;
+        color: #2A1810;
     }
 
     .dp-one {
@@ -444,7 +474,8 @@
         transition: transform 0.3s ease, color 0.3s ease;
     }
 
-    .duality-pairs li:hover .dp-slash {
+    .duality-pairs summary:hover .dp-slash,
+    .duality-pairs details[open] .dp-slash {
         transform: rotate(-20deg) scale(1.3);
         color: #9E5A63;
     }
@@ -486,7 +517,7 @@
             padding: 34px 16px;
         }
 
-        .duality-pairs li {
+        .duality-pairs summary {
             gap: 10px;
             padding: 10px 4px;
             font-size: 1.1em;
@@ -1877,29 +1908,37 @@
 
 <!-- THE DUALITY OF A WOMAN -->
 @{
-    // (one side, the other side). Add or remove freely.
+    // (one side, the other side, what I mean). Add or remove freely.
     var dualities = new[]
     {
-        ("Practical", "Hopelessly romantic"),
-        ("Analytical", "Creative"),
-        ("Ambitious", "Sentimental"),
-        ("Social", "In my own head"),
-        ("Loves a plan", "Wants to be surprised"),
-        ("Decisive", "Please give me 3–5 business days"),
-        ("Technology", "Old traditions"),
-        ("Evidence", "Intuition")
+        ("Practical", "Romantic", "I’ll tell my friends their boyfriends aren’t all that and declare modern dating doomed. I’ll think nothing is going to work out and somehow believe everything will work out at the exact same time. Prince Charming included."),
+        ("Analytical", "Creative", "I’ll spend four hours figuring out why something works and sixteen thinking, “okay, but what if we made this?” I like understanding the system. I love imagining what else it could be."),
+        ("Ambitious", "Sentimental", "I’m always thinking about the next goal, the next opportunity, the next version of my life. I’m also keeping the card, the photo, the receipt, and probably the random little thing you gave me six years ago."),
+        ("Social", "Introspective", "I can talk to basically anyone. Big on small talk. Then I’ll go home and overthink the conversation, analyze the person, and wonder why humans are the way they are."),
+        ("Decisive", "Indecisive", "Ask me which dress, restaurant, font, or shade of pink is better and I have an answer immediately. Ask me one major life question and suddenly I need a committee, seventeen tabs, and 3–5 business days."),
+        ("Habitual", "Spontaneous", "Same hot vanilla latte every day. Same favorite colors. Same few foods on repeat. New restaurant tonight? Absolutely. Chicago in four hours? Apparently we’re going to Chicago."),
+        ("Independent", "Attached", "I want my own career, my own interests, my own opinions, and a life that is completely mine. I also get ridiculously attached to my people and care about my relationships more than almost anything."),
+        ("Techy", "Traditional", "I’m fascinated by AI, emerging technology, and whatever comes next. I’m equally fascinated by traditions that have survived for generations and why people still choose to carry them forward."),
+        ("Sensitive", "Direct", "Please phrase my feedback gently. Yours is coming with sharp bullet points. I know—the irony is not lost on me. I’m working on meeting somewhere in the middle."),
+        ("Polished", "Unfiltered", "I’ll edit the work seventeen times. My hair will be perfectly curled. My words? Considerably less edited. Perfectionism applies to the output, not always the commentary.")
     };
 }
 <section class="duality">
     <div class="duality-card">
         <h2>The Duality of a Woman™</h2>
+        <p class="duality-hint">Tap one to see what I mean.</p>
         <ul class="duality-pairs">
-            @foreach (var (one, other) in dualities)
+            @foreach (var (one, other, story) in dualities)
             {
                 <li>
-                    <span class="dp-one">@one</span>
-                    <span class="dp-slash" aria-hidden="true">/</span>
-                    <span class="dp-other">@other</span>
+                    <details>
+                        <summary>
+                            <span class="dp-one">@one</span>
+                            <span class="dp-slash" aria-hidden="true">/</span>
+                            <span class="dp-other">@other</span>
+                        </summary>
+                        <p class="dp-story">@story</p>
+                    </details>
                 </li>
             }
         </ul>
