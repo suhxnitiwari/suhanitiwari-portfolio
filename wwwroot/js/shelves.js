@@ -114,7 +114,7 @@ document.querySelectorAll('.watch-more-btn').forEach(btn => {
         const open = more.hidden;
         more.hidden = !open;
         btn.setAttribute('aria-expanded', open);
-        btn.textContent = open ? 'Show fewer ↑' : 'View more awesome recs ↓';
+        btn.textContent = open ? 'Okayyy Suhani, I’ve seen enough of your “taste” ↑' : 'View more awesome recs ↓';
         // the rows were hidden when the page loaded, so let their arrows measure again
         if (open) window.dispatchEvent(new Event('resize'));
         else btn.closest('section').scrollIntoView({ behavior: 'smooth', block: 'start' });
