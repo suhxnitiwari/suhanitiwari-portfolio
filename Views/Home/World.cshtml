@@ -912,7 +912,7 @@
                         }
                     </div>
                 }
-                <div class="spots-grid @(tab.Id == "austin" ? "bento" : "")">
+                <div class="spots-grid bento" data-grouped="@(tab.Id == "austin" ? "true" : "false")">
                     @foreach (var spot in tab.Spots)
                     {
                         <article class="spot @(spot.Featured ? "featured" : "")" style="--span: @spot.Span;" data-filter="@FilterOf(spot.Category)">
@@ -941,48 +941,75 @@
 <script>
     // Favorite spots: switch between On Campus and Around Austin (click, or arrow keys)
     // Around Austin: filter buttons, and card sizes that form a small mosaic for each group
-    const bento = document.querySelector('.spots-grid.bento');
-    function layoutBento() {
-        if (!bento || bento.closest('[hidden]')) return;
+    // Card sizes are chosen here, not in the data: each group of spots gets one of several
+    // mosaic patterns (big feature, tall card, wide strip, pairs...), rotating so no two
+    // groups look alike. Every pattern fills complete rows of the 6-column grid.
+    // [columns, rows] per card, for groups of 1 to 5.
+    const SHAPES = {
+        1: [[[6, 1]]],
+        2: [[[4, 1], [2, 1]], [[3, 1], [3, 1]], [[2, 1], [4, 1]]],
+        3: [
+            [[4, 2], [2, 1], [2, 1]],   // big left, two stacked right
+            [[2, 2], [4, 1], [4, 1]],   // tall left, two wide right
+            [[2, 1], [4, 2], [2, 1]],   // big right
+            [[4, 1], [2, 2], [4, 1]],   // tall right, two wide left
+            [[3, 1], [3, 1], [6, 1]],   // a pair, then a full-width strip
+            [[2, 1], [2, 1], [2, 1]]    // three in a row
+        ],
+        4: [
+            [[2, 2], [4, 1], [2, 1], [2, 1]],
+            [[4, 1], [2, 2], [2, 1], [2, 1]],
+            [[3, 1], [3, 1], [2, 1], [4, 1]],
+            [[2, 1], [2, 1], [2, 1], [6, 1]]
+        ],
+        5: [
+            [[4, 2], [2, 1], [2, 1], [3, 1], [3, 1]],
+            [[2, 2], [2, 1], [2, 1], [2, 1], [2, 1]]
+        ]
+    };
+    // how many cards go into the next pattern, for a group with `left` cards still to place
+    const chunkSize = left => left <= 5 ? left : left === 6 ? 3 : left === 7 ? 3 : left === 8 ? 4 : 3;
+
+    function layoutBento(grid) {
+        if (!grid || grid.closest('[hidden]')) return;
         const cols = window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1;
-        const cards = [...bento.querySelectorAll('.spot')];
+        const cards = [...grid.querySelectorAll('.spot')];
         cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });
-        if (cols === 1) return;
         const shown = cards.filter(c => !c.hidden);
-        // split the shown cards into their groups (Mediterranean, Indian, ...)
+        if (cols === 1) {
+            if (shown[0]) shown[0].classList.add('featured');
+            return;
+        }
+        // Around Austin splits into its filter groups; On Campus is one group
         const groups = [];
+        const grouped = grid.dataset.grouped === 'true';
         shown.forEach(c => {
             const last = groups[groups.length - 1];
-            if (last && last[0].dataset.filter === c.dataset.filter) last.push(c); else groups.push([c]);
+            if (last && (!grouped || last[0].dataset.filter === c.dataset.filter)) last.push(c); else groups.push([c]);
         });
-        // [columns, rows] for 1-4 cards; every pattern fills whole rows. The second set is mirrored.
-        const shapes = {
-            1: [[[6, 1]], [[6, 1]]],
-            2: [[[4, 1], [2, 1]], [[2, 1], [4, 1]]],
-            3: [[[4, 2], [2, 1], [2, 1]], [[2, 1], [4, 2], [2, 1]]],
-            4: [[[2, 2], [4, 1], [2, 1], [2, 1]], [[4, 1], [2, 2], [2, 1], [2, 1]]]
-        };
-        let flip = 0;
+        // each group size cycles through its patterns in order, so neighbours never match;
+        // pattern 0 (which opens with the big feature card) always comes first
+        const next = {};
         groups.forEach(group => {
             for (let i = 0; i < group.length;) {
-                const left = group.length - i;
-                const n = left > 4 ? 3 : left;
-                const shape = shapes[n][flip++ % 2];
-                shape.forEach(([c, r], k) => {
+                const n = chunkSize(group.length - i);
+                const options = SHAPES[n];
+                const pick = (next[n] ?? 0) % options.length;
+                next[n] = pick + 1;
+                options[pick].forEach(([c, r], k) => {
                     const card = group[i + k];
                     if (cols === 6) {
                         card.style.gridColumn = `span ${c}`;
                         card.style.gridRow = `span ${r}`;
                     } else {
-                        // two columns on phones: the big card spans both, the rest pair up
                         card.style.gridColumn = c >= 4 ? 'span 2' : 'span 1';
                     }
-                    // only the first big card gets the dark treatment; the others stay light
-                    if (c === 4 && r === 2) card.classList.add(bento.querySelector('.spot.featured') ? 'big' : 'featured');
+                    if (r === 2) card.classList.add(grid.querySelector('.spot.featured') ? 'big' : 'featured');
                 });
                 i += n;
             }
         });
+        if (!grid.querySelector('.spot.featured') && shown[0] && cols === 6 && shown[0].style.gridRow === 'span 2') shown[0].classList.add('featured');
         if (cols === 2) {
             // a lone card at the end of a two-column row takes the full width
             let col = 0;
@@ -993,13 +1020,17 @@
             });
         }
     }
+    const grids = [...document.querySelectorAll('.spots-grid.bento')];
+    const bento = document.querySelector('.spots-grid.bento[data-grouped="true"]');
+    const layoutAll = () => grids.forEach(layoutBento);
     document.querySelectorAll('.spot-filter').forEach(btn => btn.addEventListener('click', () => {
         const f = btn.dataset.filter;
         document.querySelectorAll('.spot-filter').forEach(b => b.setAttribute('aria-pressed', b === btn));
         bento.querySelectorAll('.spot').forEach(c => c.hidden = f !== '' && c.dataset.filter !== f);
-        layoutBento();
+        layoutBento(bento);
     }));
-    window.addEventListener('resize', layoutBento);
+    window.addEventListener('resize', layoutAll);
+    layoutAll();
     (function () {
         const tabs = [...document.querySelectorAll('.spots-tab')];
         const show = tab => {
@@ -1013,7 +1044,7 @@
             });
             // the campus map only sits behind On Campus
             document.querySelector('.spots-map').classList.toggle('campus', tab.getAttribute('aria-controls') === 'spots-campus');
-            layoutBento();
+            layoutAll();
         };
         tabs.forEach((tab, i) => {
             tab.addEventListener('click', () => show(tab));
