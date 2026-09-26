@@ -104,7 +104,7 @@
     //   new Recipe("Walnut Banana Bread", "a line about it", "/images/bakes/walnut-banana-bread.jpg",
     //              "1 hr 10 min", "Makes 1 loaf", new[] { "3 ripe bananas", ... }, new[] { "Mash the bananas...", ... })
     // Photo is optional: without one, the card shows a soft blush cover with a whisk.
-    // Cooking: same format as Baking. Empty for now, so the shelf just says "Coming soon."
+    // Cooking: same format as Baking. Empty for now, so the shelf shows my note instead.
     var cooks = Array.Empty<Recipe>();
 
     var bakes = new[]
@@ -118,7 +118,7 @@
 }
 @{
     // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
-    void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset)
+    void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null)
     {
         if (recipes.Length == 0)
         {
@@ -126,7 +126,7 @@
                 <div class="shelf-head">
                     <h3 class="shelf-title">@title</h3>
                 </div>
-                <p class="shelf-caption">Coming soon.</p>
+                <p class="shelf-caption">@(emptyNote ?? "Coming soon.")</p>
             </div>
             return;
         }
@@ -243,7 +243,8 @@
 
         @{ RenderRecipeShelf("baking", "Baking", bakes, 0); }
         <hr class="shelf-divider">
-        @{ RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length); }
+        @{ RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length,
+               "This will be my new hobby as soon as I learn to stop burning everything I cook... including toast."); }
     </div>
 </section>
 <!-- Recipe card (one dialog, filled in when a bake is clicked) -->
