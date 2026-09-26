@@ -9,8 +9,9 @@
     // One artwork in Make > Art. Idea = my own line about it (from my AP portfolio).
     public record Artwork(string Title, string Idea, string Image);
 
-    // One piece of writing in Make > Writing. Opening = its first lines (\n starts a new line).
-    public record Writing(string Title, string Kind, string Year, string Dedication, string Opening);}
+    // One piece of writing in Make > Writing. Opening = its first lines (\n starts a new line); Link = where it's published.
+    public record Writing(string Title, string Kind, string Year, string Dedication, string Opening, string Link);
+}
 
 <style>
     * {
@@ -86,13 +87,17 @@
     var writing = new[]
     {
         new Writing("Sisterly Serenade", "Poem", "2024", "For Amaira",
-                    "Endless questions, she hurls my way,\nIn mimicry, she loves to play."),
+                    "Endless questions, she hurls my way,\nIn mimicry, she loves to play.",
+                    "https://www.girlspring.com/poem-sisterly-serenade/"),
         new Writing("Beyond the Storm", "Poem", "2024", "",
-                    "In the shadows of despair, I sail,\nThrough a never-ending storm, I wail."),
+                    "In the shadows of despair, I sail,\nThrough a never-ending storm, I wail.",
+                    "https://www.girlspring.com/beyond-the-storm/"),
         new Writing("Reflections of Imperfection: A Journey to Self-Acceptance", "Poem", "2023", "",
-                    "In the realm of filters, I yearn to shine,\nPosting images that obscure what’s mine."),
+                    "In the realm of filters, I yearn to shine,\nPosting images that obscure what’s mine.",
+                    "https://www.girlspring.com/reflections-of-imperfection-a-journey-to-self-acceptance/"),
         new Writing("8 Life-Changing Habits", "Article", "2023", "",
-                    "Creating daily habits is crucial to productivity…")
+                    "Creating daily habits is crucial to productivity…",
+                    "https://www.girlspring.com/8-life-changing-habits/")
     };
 
     // Baking. Fill in each recipe when ready; until then its card says "recipe coming soon".
@@ -159,7 +164,8 @@
                     @foreach (var piece in writing)
                     {
                         <li class="shelf-item">
-                            <div class="writing-card">
+                            <a class="writing-card" href="@piece.Link" target="_blank" rel="noopener" draggable="false"
+                               aria-label="Read @piece.Title on GirlSpring (opens in a new tab)">
                                 <div class="shelf-cover writing-cover">
                                     <span class="writing-kind">@piece.Kind</span>
                                     @if (!string.IsNullOrEmpty(piece.Dedication))
@@ -172,10 +178,11 @@
                                             <span>@line</span>
                                         }
                                     </span>
+                                    <span class="writing-read">Read on GirlSpring ↗</span>
                                 </div>
-                                <p class="shelf-item-title">@piece.Title</p>
-                                <p class="shelf-item-meta">@piece.Kind, @piece.Year</p>
-                            </div>
+                                <span class="shelf-item-title">@piece.Title</span>
+                                <span class="shelf-item-meta">@piece.Kind, @piece.Year</span>
+                            </a>
                         </li>
                     }
                 </ul>

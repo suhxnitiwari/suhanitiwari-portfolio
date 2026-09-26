@@ -279,6 +279,39 @@
     color: #2A1810;
 }
 
+/* each card links to the piece on GirlSpring */
+.writing-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.writing-card:hover {
+    color: inherit;
+}
+
+.writing-card .shelf-item-title,
+.writing-card .shelf-item-meta {
+    display: block;
+}
+
+.writing-card:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 4px;
+}
+
+.writing-card:hover .shelf-cover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(42, 24, 16, 0.22);
+}
+
+.writing-read {
+    margin-top: auto;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: #8A4D57;
+}
+
 /* phones: wider pages so the opening lines have room */
 @media (max-width: 600px) {
     .shelf.writing-shelf .shelf-rail {
