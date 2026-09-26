@@ -470,19 +470,99 @@
         gap: 20px;
     }
 
-    .spots-grid[hidden] {
+    .spots-panel[hidden],
+    .spot[hidden] {
         display: none;
     }
 
-    .spots-grid.show .spot {
+    .spots-panel.show .spot {
         animation: spotIn 0.45s ease both;
     }
 
-    .spots-grid.show .spot:nth-child(2) { animation-delay: 0.05s; }
-    .spots-grid.show .spot:nth-child(3) { animation-delay: 0.1s; }
-    .spots-grid.show .spot:nth-child(4) { animation-delay: 0.15s; }
-    .spots-grid.show .spot:nth-child(5) { animation-delay: 0.2s; }
-    .spots-grid.show .spot:nth-child(6) { animation-delay: 0.25s; }
+    .spots-panel.show .spot:nth-child(2) { animation-delay: 0.05s; }
+    .spots-panel.show .spot:nth-child(3) { animation-delay: 0.1s; }
+    .spots-panel.show .spot:nth-child(4) { animation-delay: 0.15s; }
+    .spots-panel.show .spot:nth-child(5) { animation-delay: 0.2s; }
+    .spots-panel.show .spot:nth-child(6) { animation-delay: 0.25s; }
+
+    /* On Campus sits on a real map of UT, drawn from OpenStreetMap in my colors */
+    .spots-map.campus {
+        background-image:
+            linear-gradient(rgba(250, 241, 239, 0.3), rgba(250, 241, 239, 0.3)),
+            url("/images/ut-campus-map.jpg");
+        background-size: cover;
+        background-position: center 45%;
+    }
+
+    .spots-map-credit {
+        display: none;
+        position: absolute;
+        right: 22px;
+        bottom: 10px;
+        font-size: 0.65em;
+        color: #8A4D57;
+        opacity: 0.8;
+    }
+
+    .spots-map.campus .spots-map-credit {
+        display: block;
+    }
+
+    /* Around Austin: filter buttons, then a mosaic of mixed card sizes */
+    .spot-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 22px;
+    }
+
+    .spot-filter {
+        padding: 8px 18px;
+        border-radius: 20px;
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        color: #2A1810;
+        font: inherit;
+        font-size: 0.85em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .spot-filter:hover {
+        border-color: #9E5A63;
+    }
+
+    .spot-filter[aria-pressed="true"] {
+        background: #8A4D57;
+        border-color: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .spot-filter:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    /* big cards after the first: a blush wash, with the name set large at the bottom */
+    .spot.big {
+        background: linear-gradient(155deg, #F8E7E3 0%, #EFD2CF 100%);
+    }
+
+    .spot.big h3 {
+        margin-top: auto;
+        font-size: 2.1em;
+    }
+
+    .spot.big p {
+        font-size: 1.05em;
+        max-width: 460px;
+    }
+
+    .spots-grid.bento {
+        grid-auto-flow: dense;
+        grid-auto-rows: minmax(180px, auto);
+    }
 
     @@keyframes spotIn {
         from { opacity: 0; transform: translateY(10px); }
@@ -656,7 +736,7 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .spots-grid.show .spot,
+        .spots-panel.show .spot,
         .spot {
             animation: none;
             transition: none;
@@ -761,24 +841,36 @@
                 new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors.", "chat", Span: 3)
             };
 
-            // Rows: Mediterranean, Indian, coffee, shopping, brunch
+            // Grouped by filter (Mediterranean, Indian, Café, Brunch, More). Card sizes are set
+            // automatically so each group reads as a little mosaic, whatever filter is on.
             var aroundAustin = new[]
             {
-                new Spot("Yamas", "Mediterranean", "Good food, gorgeous space, and one of my favorite Austin atmospheres.", "flower", Span: 4, Featured: true),
+                new Spot("Yamas", "Mediterranean", "Good food, gorgeous space, and one of my favorite Austin atmospheres.", "flower"),
                 new Spot("Aba", "Mediterranean", "One of my favorite spots for a pretty lunch or dinner.", "dining"),
+                new Spot("Éma", "Mediterranean", "Mediterranean food will always have my heart.", "olive"),
                 new Spot("Clay Pit", "Indian", "Indian food in a gorgeous old limestone building.", "dining"),
                 new Spot("Tarka", "Indian", "Quick, cozy Indian comfort food.", "dining"),
                 new Spot("Saffron", "Indian", "Another Indian favorite.", "dining"),
                 new Spot("Mozart's", "Coffee", "Coffee by the water. Enough said.", "cup"),
                 new Spot("Black Fox", "Coffee", "Good coffee, always.", "cup"),
                 new Spot("Two Hands", "Café", "I love their fries. The coffee is alright.", "dining"),
+                new Spot("Hillside Farmacy", "Brunch", "Brunch inside a restored old-school pharmacy.", "egg"),
+                new Spot("Josephine House", "Brunch", "Brunch in a charming little cottage.", "egg"),
                 new Spot("South Congress", "Shop", "One of my favorite places to spend an afternoon shopping. My stops: Kendra Scott, Yellow Rose and Tecovas.", "pin"),
                 new Spot("The Domain", "Shop", "Shopping, food, and wandering around with no particular agenda.", "bag"),
-                new Spot("Mosaic Workshop", "Make Something", "A DIY mosaic studio where you build your own piece, tile by tile.", "tiles"),
-                new Spot("Éma", "Mediterranean", "Mediterranean food will always have my heart.", "olive"),
-                new Spot("Hillside Farmacy", "Brunch", "Brunch inside a restored old-school pharmacy.", "egg"),
-                new Spot("Josephine House", "Brunch", "Brunch in a charming little cottage.", "egg")
+                new Spot("Mosaic Workshop", "Make Something", "A DIY mosaic studio where you build your own piece, tile by tile.", "tiles")
             };
+
+            // Filters for Around Austin: coffee shops and cafés share "Café"; shopping and
+            // make-something spots go under "More". A filter only shows up once it has a spot.
+            string FilterOf(string category) => category switch
+            {
+                "Coffee" or "Café" => "Café",
+                "Shop" or "Make Something" => "More",
+                _ => category
+            };
+            var filterOrder = new[] { "Brunch", "Indian", "Mediterranean", "Mexican", "Café", "More" };
+            var austinFilters = filterOrder.Where(f => aroundAustin.Any(sp => FilterOf(sp.Category) == f)).ToArray();
 
             var spotTabs = new[]
             {
@@ -800,15 +892,26 @@
             }
         </div>
 
-        <div class="spots-map">
+        <div class="spots-map campus">
             <span class="spots-map-label" aria-hidden="true"><b>N</b>Austin, TX, 30.27° N</span>
             @for (var t = 0; t < spotTabs.Length; t++)
             {
                 var tab = spotTabs[t];
-                <div class="spots-grid" role="tabpanel" id="spots-@tab.Id" aria-labelledby="spots-tab-@tab.Id" hidden="@(t != 0)">
+                <div class="spots-panel" role="tabpanel" id="spots-@tab.Id" aria-labelledby="spots-tab-@tab.Id" hidden="@(t != 0)">
+                @if (tab.Id == "austin")
+                {
+                    <div class="spot-filters" role="group" aria-label="Filter spots around Austin">
+                        <button type="button" class="spot-filter" data-filter="" aria-pressed="true">All</button>
+                        @foreach (var f in austinFilters)
+                        {
+                            <button type="button" class="spot-filter" data-filter="@f" aria-pressed="false">@f</button>
+                        }
+                    </div>
+                }
+                <div class="spots-grid @(tab.Id == "austin" ? "bento" : "")">
                     @foreach (var spot in tab.Spots)
                     {
-                        <article class="spot @(spot.Featured ? "featured" : "")" style="--span: @spot.Span;">
+                        <article class="spot @(spot.Featured ? "featured" : "")" style="--span: @spot.Span;" data-filter="@FilterOf(spot.Category)">
                             <div class="spot-top">
                                 <span class="spot-icon" aria-hidden="true">
                                     <svg viewBox="0 0 24 24">@Html.Raw(SpotIcons.GetValueOrDefault(spot.Icon, SpotIcons["pin"]))</svg>
@@ -824,13 +927,75 @@
                         </article>
                     }
                 </div>
+                </div>
             }
+            <span class="spots-map-credit">Map data © OpenStreetMap contributors</span>
         </div>
     </div>
 </div>
 
 <script>
     // Favorite spots: switch between On Campus and Around Austin (click, or arrow keys)
+    // Around Austin: filter buttons, and card sizes that form a small mosaic for each group
+    const bento = document.querySelector('.spots-grid.bento');
+    function layoutBento() {
+        if (!bento || bento.closest('[hidden]')) return;
+        const cols = window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1;
+        const cards = [...bento.querySelectorAll('.spot')];
+        cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });
+        if (cols === 1) return;
+        const shown = cards.filter(c => !c.hidden);
+        // split the shown cards into their groups (Mediterranean, Indian, ...)
+        const groups = [];
+        shown.forEach(c => {
+            const last = groups[groups.length - 1];
+            if (last && last[0].dataset.filter === c.dataset.filter) last.push(c); else groups.push([c]);
+        });
+        // [columns, rows] for 1-4 cards; every pattern fills whole rows. The second set is mirrored.
+        const shapes = {
+            1: [[[6, 1]], [[6, 1]]],
+            2: [[[4, 1], [2, 1]], [[2, 1], [4, 1]]],
+            3: [[[4, 2], [2, 1], [2, 1]], [[2, 1], [4, 2], [2, 1]]],
+            4: [[[2, 2], [4, 1], [2, 1], [2, 1]], [[4, 1], [2, 2], [2, 1], [2, 1]]]
+        };
+        let flip = 0;
+        groups.forEach(group => {
+            for (let i = 0; i < group.length;) {
+                const left = group.length - i;
+                const n = left > 4 ? 3 : left;
+                const shape = shapes[n][flip++ % 2];
+                shape.forEach(([c, r], k) => {
+                    const card = group[i + k];
+                    if (cols === 6) {
+                        card.style.gridColumn = `span ${c}`;
+                        card.style.gridRow = `span ${r}`;
+                    } else {
+                        // two columns on phones: the big card spans both, the rest pair up
+                        card.style.gridColumn = c >= 4 ? 'span 2' : 'span 1';
+                    }
+                    // only the first big card gets the dark treatment; the others stay light
+                    if (c === 4 && r === 2) card.classList.add(bento.querySelector('.spot.featured') ? 'big' : 'featured');
+                });
+                i += n;
+            }
+        });
+        if (cols === 2) {
+            // a lone card at the end of a two-column row takes the full width
+            let col = 0;
+            shown.forEach((card, k) => {
+                const span = card.style.gridColumn === 'span 2' ? 2 : 1;
+                if (span === 1 && col === 0 && (k === shown.length - 1 || shown[k + 1].style.gridColumn === 'span 2')) card.style.gridColumn = 'span 2';
+                col = (col + (card.style.gridColumn === 'span 2' ? 2 : 1)) % 2;
+            });
+        }
+    }
+    document.querySelectorAll('.spot-filter').forEach(btn => btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        document.querySelectorAll('.spot-filter').forEach(b => b.setAttribute('aria-pressed', b === btn));
+        bento.querySelectorAll('.spot').forEach(c => c.hidden = f !== '' && c.dataset.filter !== f);
+        layoutBento();
+    }));
+    window.addEventListener('resize', layoutBento);
     (function () {
         const tabs = [...document.querySelectorAll('.spots-tab')];
         const show = tab => {
@@ -842,6 +1007,9 @@
                 panel.hidden = !on;
                 panel.classList.toggle('show', on);
             });
+            // the campus map only sits behind On Campus
+            document.querySelector('.spots-map').classList.toggle('campus', tab.getAttribute('aria-controls') === 'spots-campus');
+            layoutBento();
         };
         tabs.forEach((tab, i) => {
             tab.addEventListener('click', () => show(tab));
