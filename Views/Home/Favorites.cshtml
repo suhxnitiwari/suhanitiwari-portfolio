@@ -116,9 +116,34 @@
         background: radial-gradient(circle at 45% 40%, #FFFFFF 0%, #FCF4F2 55%, #F4E3DF 100%);
         box-shadow: 0 10px 30px rgba(158, 90, 99, 0.12);
         cursor: grab;
-        touch-action: none;
+        /* one finger scrolls the page up and down; two fingers pinch-zoom the universe */
+        touch-action: pan-y;
         user-select: none;
         -webkit-user-select: none;
+    }
+
+    /* shown briefly when someone scrolls over the universe before clicking into it */
+    .universe-hint {
+        position: absolute;
+        left: 50%;
+        bottom: 18px;
+        transform: translate(-50%, 6px);
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: rgba(42, 24, 16, 0.78);
+        color: #FAF1EF;
+        font-size: 0.8em;
+        font-weight: 600;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        z-index: 5;
+    }
+
+    .universe-hint.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
     }
 
     .universe:focus-visible {
@@ -859,6 +884,7 @@
              aria-label="Interactive map of my top 20 Spotify artists. Bigger bubbles are artists I listen to more. Drag to explore, use the zoom buttons, and select an artist for details.">
             <div class="universe-world" id="universeWorld"></div>
             <p class="universe-status" id="universeStatus">Loading...</p>
+            <span class="universe-hint" id="universeHint" aria-hidden="true">Click the universe to zoom, or keep scrolling</span>
             <div class="universe-tag" id="universeTag" hidden></div>
             <div class="universe-panel" id="universePanel" hidden></div>
             <p class="snoop-remark" id="snoopRemark" role="status" aria-live="polite"></p>
@@ -1309,6 +1335,9 @@
         };
         const isUi = target => target.closest('.universe-controls, .universe-panel');
 
+        // engaged = clicked into, so the scroll wheel zooms (see the wheel handler below)
+        let engaged = false, hintTimer = 0;
+        const hint = document.getElementById('universeHint');
         view.addEventListener('pointerdown', e => {
             if (isUi(e.target) || !uv.bounds) return;
             cancelAnimationFrame(uv.anim);
@@ -1321,8 +1350,9 @@
                 drag = null;
             } else {
                 const bubble = e.target.closest('.ub');
-                drag = { start: localPoint(e), tx: uv.tx, ty: uv.ty, moved: false, index: bubble ? Number(bubble.dataset.index) : -1 };
+                drag = { start: localPoint(e), tx: uv.tx, ty: uv.ty, moved: false, index: bubble ? Number(bubble.dataset.index) : -1, touch: e.pointerType === 'touch' };
             }
+            engaged = true;
         });
 
         view.addEventListener('pointermove', e => {
@@ -1345,6 +1375,8 @@
             } else if (drag) {
                 const p = localPoint(e);
                 const dx = p.x - drag.start.x, dy = p.y - drag.start.y;
+                // on touch, a one-finger swipe is page scrolling, not panning
+                if (drag.touch) return;
                 if (!drag.moved && Math.hypot(dx, dy) > 4) {
                     drag.moved = true;
                     view.classList.add('dragging');
@@ -1389,10 +1421,18 @@
             }
         });
 
-        // Scroll/pinch on a trackpad zooms around the pointer. Only while the pointer is
-        // over the universe, so normal page scrolling everywhere else is untouched.
+        // Scrolling over the universe scrolls the page, like the World map. It only zooms once
+        // it's been clicked (until the pointer leaves), or on a trackpad pinch (ctrlKey).
+        view.addEventListener('mouseleave', () => { engaged = false; });
         view.addEventListener('wheel', e => {
             if (!uv.bounds || isUi(e.target)) return;
+            if (!engaged && !e.ctrlKey) {
+                hint.classList.add('show');
+                clearTimeout(hintTimer);
+                hintTimer = setTimeout(() => hint.classList.remove('show'), 1400);
+                return;
+            }
+            hint.classList.remove('show');
             e.preventDefault();
             cancelAnimationFrame(uv.anim);
             const p = localPoint(e);
