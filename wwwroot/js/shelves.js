@@ -14,6 +14,8 @@
     document.querySelectorAll('.bake-open').forEach(button => {
         button.addEventListener('click', () => {
             const r = data[Number(button.dataset.recipe)];
+            const kicker = document.getElementById('recipeKicker');
+            if (kicker && button.dataset.kind) kicker.textContent = button.dataset.kind;
             const photo = document.getElementById('recipePhoto');
             if (r.Photo) {
                 const img = Object.assign(document.createElement('img'), { src: r.Photo, alt: r.Title });

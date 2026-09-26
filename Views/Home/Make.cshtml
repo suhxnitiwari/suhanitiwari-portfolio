@@ -57,7 +57,7 @@
     }
 
     /* leave room for the sticky menu when jumping to #art / #writing / #baking */
-    #art, #writing, #baking {
+    #art, #writing, #baking, #cooking {
         scroll-margin-top: 90px;
     }
 
@@ -104,6 +104,9 @@
     //   new Recipe("Walnut Banana Bread", "a line about it", "/images/bakes/walnut-banana-bread.jpg",
     //              "1 hr 10 min", "Makes 1 loaf", new[] { "3 ripe bananas", ... }, new[] { "Mash the bananas...", ... })
     // Photo is optional: without one, the card shows a soft blush cover with a whisk.
+    // Cooking: same format as Baking. Empty for now, so the shelf just says "Coming soon."
+    var cooks = Array.Empty<Recipe>();
+
     var bakes = new[]
     {
         new Recipe("Walnut Banana Bread", "", "", "", "", new string[0], new string[0]),
@@ -113,6 +116,54 @@
         new Recipe("Brownies", "", "", "", "", new string[0], new string[0])
     };
 }
+@{
+    // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
+    void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset)
+    {
+        if (recipes.Length == 0)
+        {
+            <div class="shelf" id="@id">
+                <div class="shelf-head">
+                    <h3 class="shelf-title">@title</h3>
+                </div>
+                <p class="shelf-caption">Coming soon.</p>
+            </div>
+            return;
+        }
+            <div class="shelf" id="@id">
+                <div class="shelf-head">
+                    <h3 class="shelf-title">@title</h3>
+                </div>
+                <div class="shelf-rail-wrap">
+                    <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
+                    <ul class="shelf-rail" tabindex="0" aria-label="@title">
+                        @for (var i = 0; i < recipes.Length; i++)
+                        {
+                            var bake = recipes[i];
+                            <li class="shelf-item">
+                                <button type="button" class="bake-open" data-recipe="@(offset + i)" data-kind="@title" aria-label="Open the @bake.Title recipe">
+                                    <div class="shelf-cover bake-cover">
+                                        @if (!string.IsNullOrEmpty(bake.Photo))
+                                        {
+                                            <img src="@bake.Photo" alt="@bake.Title" loading="lazy" draggable="false">
+                                        }
+                                        else
+                                        {
+                                            <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13v8"/><path d="M12 13c-3-3-4-7-2-10 1.5 2 2 5 2 10z"/><path d="M12 13c3-3 4-7 2-10-1.5 2-2 5-2 10z"/><path d="M12 13c-1.5-4-1.5-8 0-10 1.5 2 1.5 6 0 10z"/></svg>
+                                        }
+                                    </div>
+                                </button>
+                                <p class="shelf-item-title">@bake.Title</p>
+                                <p class="shelf-item-meta">@(bake.Steps.Length == 0 ? "recipe coming soon" : bake.Line)</p>
+                            </li>
+                        }
+                    </ul>
+                    <button type="button" class="shelf-arrow next" aria-label="Scroll @title right">›</button>
+                </div>
+            </div>
+    }
+}
+
 <section class="listen-section shelf-section make-page page-fill">
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
@@ -190,37 +241,9 @@
         </div>
         <hr class="shelf-divider">
 
-        <div class="shelf" id="baking">
-            <div class="shelf-head">
-                <h3 class="shelf-title">Baking</h3>
-            </div>
-            <div class="shelf-rail-wrap">
-                <button type="button" class="shelf-arrow prev" aria-label="Scroll Baking left">‹</button>
-                <ul class="shelf-rail" tabindex="0" aria-label="Baking">
-                    @for (var i = 0; i < bakes.Length; i++)
-                    {
-                        var bake = bakes[i];
-                        <li class="shelf-item">
-                            <button type="button" class="bake-open" data-recipe="@i" aria-label="Open the @bake.Title recipe">
-                                <div class="shelf-cover bake-cover">
-                                    @if (!string.IsNullOrEmpty(bake.Photo))
-                                    {
-                                        <img src="@bake.Photo" alt="@bake.Title" loading="lazy" draggable="false">
-                                    }
-                                    else
-                                    {
-                                        <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13v8"/><path d="M12 13c-3-3-4-7-2-10 1.5 2 2 5 2 10z"/><path d="M12 13c3-3 4-7 2-10-1.5 2-2 5-2 10z"/><path d="M12 13c-1.5-4-1.5-8 0-10 1.5 2 1.5 6 0 10z"/></svg>
-                                    }
-                                </div>
-                            </button>
-                            <p class="shelf-item-title">@bake.Title</p>
-                            <p class="shelf-item-meta">@(bake.Steps.Length == 0 ? "recipe coming soon" : bake.Line)</p>
-                        </li>
-                    }
-                </ul>
-                <button type="button" class="shelf-arrow next" aria-label="Scroll Baking right">›</button>
-            </div>
-        </div>
+        @{ RenderRecipeShelf("baking", "Baking", bakes, 0); }
+        <hr class="shelf-divider">
+        @{ RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length); }
     </div>
 </section>
 <!-- Recipe card (one dialog, filled in when a bake is clicked) -->
@@ -228,7 +251,7 @@
     <button type="button" class="recipe-close" aria-label="Close recipe">×</button>
     <div class="recipe-photo" id="recipePhoto"></div>
     <div class="recipe-body">
-        <p class="recipe-kicker">Baking</p>
+        <p class="recipe-kicker" id="recipeKicker">Baking</p>
         <h3 id="recipeTitle"></h3>
         <p class="recipe-line" id="recipeLine"></p>
         <p class="recipe-meta" id="recipeMeta"></p>
@@ -254,6 +277,6 @@
         <p class="recipe-line" id="artIdea"></p>
         <p class="recipe-meta">Holding onto the traditions we carried with us, while making a home in American culture.</p>
     </div>
-</dialog><script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes))</script>
+</dialog><script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes.Concat(cooks)))</script>
 
 <script src="~/js/shelves.js" asp-append-version="true"></script>

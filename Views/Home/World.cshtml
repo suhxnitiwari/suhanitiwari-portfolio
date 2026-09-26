@@ -562,32 +562,15 @@
         max-width: 460px;
     }
 
-    /* On Campus: quick food spots as small name-only boxes in a row at the end */
+    /* On Campus: quick food spots, a row of name-only cards at the end (no description line) */
     .spot.mini {
-        min-height: 0;
-        flex-direction: row;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
-        border-radius: 14px;
-    }
-
-    .spot.mini .spot-top {
-        order: 2;
-        margin-left: auto;
-    }
-
-    .spot.mini .spot-icon {
-        display: none;
+        min-height: 130px;
+        justify-content: space-between;
     }
 
     .spot.mini h3 {
         margin: 0;
-        font-size: 1.02em;
-    }
-
-    .spot.mini .spot-pill {
-        font-size: 0.6em;
+        font-size: 1.35em;
     }
 
     /* Around Austin: shorter, compact cards, 2 to 5 per row */
