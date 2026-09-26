@@ -1724,41 +1724,83 @@
         font-family: Georgia, serif;
     }
 
-    .cta-buttons {
+    /* four places to go: label + arrow on top, a one-liner underneath */
+    .cta-links {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .cta-link {
         display: flex;
-        gap: 30px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .cta-btn {
-        padding: 16px 40px;
-        border: 2px solid #9E5A63;
-        background: transparent;
-        color: #2A1810;
+        flex-direction: column;
+        gap: 12px;
+        padding: 28px 24px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        text-align: left;
         text-decoration: none;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 0.95em;
+        color: #2A1810;
+        transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
     }
 
-    .cta-btn:hover {
-        background: #9E5A63;
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    .cta-btn.primary {
-        background: #56634A;
-        color: white;
-        border-color: #56634A;
-    }
-
-    .cta-btn.primary:hover {
+    .cta-link:hover,
+    .cta-link:focus-visible {
+        transform: translateY(-4px);
         background: #9E5A63;
         border-color: #9E5A63;
+        color: #FFF8F6;
+    }
+
+    .cta-label {
+        font-size: 0.92em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+        transition: color 0.3s ease;
+    }
+
+    .cta-link:hover .cta-label,
+    .cta-link:focus-visible .cta-label {
+        color: #FFF8F6;
+    }
+
+    .cta-arrow {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    .cta-link:hover .cta-arrow {
+        transform: translateX(5px);
+    }
+
+    .cta-desc {
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        line-height: 1.45;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cta-link,
+        .cta-arrow {
+            transition: none;
+        }
+    }
+
+    @@media (max-width: 1000px) {
+        .cta-links {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .cta-links {
+            grid-template-columns: 1fr;
+        }
     }
 
     @@media (max-width: 768px) {
@@ -2519,9 +2561,22 @@
 <!-- CTA -->
 <section class="cta-section page-fill">
     <h2>Where to go next</h2>
-    <div class="cta-buttons">
-        <a href="/home/world" class="cta-btn">Meet my people</a>
-        <a href="/home/favorites" class="cta-btn primary">Raid my favorites</a>
-        <a href="/home/coursework" class="cta-btn">See what I'm working on</a>
+    <div class="cta-links">
+        <a href="/home/world" class="cta-link">
+            <span class="cta-label">World <span class="cta-arrow" aria-hidden="true">→</span></span>
+            <span class="cta-desc">The people and places that made me, me.</span>
+        </a>
+        <a href="/home/favorites" class="cta-link">
+            <span class="cta-label">Favorites <span class="cta-arrow" aria-hidden="true">→</span></span>
+            <span class="cta-desc">Things I love enough to put on the internet.</span>
+        </a>
+        <a href="/home/make" class="cta-link">
+            <span class="cta-label">Curate <span class="cta-arrow" aria-hidden="true">→</span></span>
+            <span class="cta-desc">Things I made and would like you to admire.</span>
+        </a>
+        <a href="/resume" class="cta-link">
+            <span class="cta-label">Résumé <span class="cta-arrow" aria-hidden="true">→</span></span>
+            <span class="cta-desc">Credentials you’re more than welcome to verify.</span>
+        </a>
     </div>
 </section>
