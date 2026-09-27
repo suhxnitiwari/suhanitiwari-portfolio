@@ -422,22 +422,25 @@
         opacity: 1;
     }
 
-    .map-hint {
-        text-align: center;
-        color: #56634A;
-        font-size: 0.95em;
-        margin: -40px 0 8px;
+    /* Hint + key, in a small card in the map's bottom-left corner */
+    .map-key {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: rgba(250, 241, 239, 0.94);
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 4px 14px rgba(42, 24, 16, 0.12);
+        font-size: 12px;
+        line-height: 1.3;
+        color: #2A1810;
     }
 
-    /* Key under the map: numbered rose pins vs. small sage "visited" dots */
-    .map-legend {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px 22px;
-        margin: 0 0 60px;
-        font-size: 0.85em;
-        color: #2A1810;
+    .map-key-hint {
+        margin: 0 0 2px;
+        font-weight: 600;
+        color: #56634A;
     }
 
     .legend-dot {
@@ -931,10 +934,6 @@
             height: 500px;
             margin-bottom: 40px;
         }
-
-        .map-hint {
-            margin: -20px 0 40px;
-        }
     }
 </style>
 
@@ -973,11 +972,6 @@
         <h2 class="world-block-title">Places That Shaped Me</h2>
         <p class="world-block-subtitle">a little map of how I became me</p>
         <div id="map"></div>
-        <p class="map-hint">Click a place on the map to read about it</p>
-        <p class="map-legend">
-            <span><span class="legend-dot lived" aria-hidden="true"></span>Lived there, in order</span>
-            <span><span class="legend-dot visited" aria-hidden="true"></span>Visited</span>
-        </p>
 
         <!-- PIECES OF ME -->
         @{
@@ -1588,6 +1582,19 @@
                 className: 'visit-label'
             });
     });
+
+    // Hint + key live on the map itself (bottom-left), so they don't take space under it
+    const key = L.control({ position: 'bottomleft' });
+    key.onAdd = () => {
+        const div = L.DomUtil.create('div', 'map-key');
+        div.innerHTML = `
+            <p class="map-key-hint">Click a place to read about it</p>
+            <span><span class="legend-dot lived" aria-hidden="true"></span>Lived there, in order</span>
+            <span><span class="legend-dot visited" aria-hidden="true"></span>Visited</span>`;
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+    };
+    key.addTo(map);
 
     // Fit map to show all markers
     const group = new L.featureGroup(locations.map(loc => L.marker(loc.coords)));

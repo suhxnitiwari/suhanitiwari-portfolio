@@ -657,7 +657,7 @@
         }
     }
 
-    /* ===== IF I WERE A...: same flip-card carousel, each card with its own swatch ===== */
+    /* ===== IF I WERE A...: same flip-card carousel as "If you know me" ===== */
     .if-i-were {
         padding: 10px 40px 90px;
         background: #FAF1EF;
@@ -670,15 +670,6 @@
     .iw-front {
         flex-direction: column;
         gap: 8px;
-    }
-
-    .iw-swatch {
-        width: 34px;
-        height: 34px;
-        margin-bottom: 4px;
-        border-radius: 50%;
-        border: 3px solid #FFF8F6;
-        box-shadow: 0 0 0 1px #EBD5D0;
     }
 
     .iw-category {
@@ -2038,19 +2029,19 @@
 
 <!-- IF I WERE A... -->
 @{
-    // (category, answer, swatch color, aspect of me, note). Add or remove freely.
+    // (category, answer, aspect of me, note). Add or remove freely.
     var ifIWere = new[]
     {
-        ("Color", "Mulberry", "#7B2D52", "Femininity + depth", "Feminine without being delicate. Warm and expressive, but darker and more substantial than something sugary or pastel."),
-        ("Flower", "Peony", "#E7A1B0", "Love + relationships", "I love abundantly. I get attached, remember the little things, and put a lot of myself into the people I care about."),
-        ("Season", "Autumn", "#C0692F", "Tradition + security", "I like growth, but I also like roots. Familiar places, rituals, traditions and things I can return to matter enormously to me."),
-        ("Weather", "Sunshower", "#E8C35A", "Emotional complexity", "I can be genuinely cheerful and deeply emotional at the exact same time. Apparently the forecast is complicated."),
-        ("Feeling", "Anticipation", "#C98A9A", "Ambition + anxiety", "Curiosity, hope, planning and excitement about what’s next. Also overthinking what’s next before what’s next has even happened."),
-        ("Fire", "Hearth", "#B5452E", "Leadership + community", "I like taking charge and making things happen, but I want people gathered around me while I do it. Assertive doesn’t mean solitary."),
-        ("Drink", "Vanilla Latte", "#D9BF9B", "Social warmth + energy", "Warm, familiar and a little sweet, with considerably more caffeine underneath than the first impression suggests."),
-        ("Dessert", "Tiramisu", "#8B5E3C", "Complexity + contrast", "Sweet, bitter, soft, strong, layered. No single flavor gets to explain the whole thing."),
-        ("Gemstone", "Ruby", "#9B111E", "Drive + resilience", "Beautiful, yes, but also hard and durable. Achievement matters to me, and I’m considerably more stubborn than the packaging suggests."),
-        ("Word", "Earnest", "#56634A", "Core character", "I mean things. I care about people, ideas, promises, what I make and what I’m becoming. Very little ironic detachment over here.")
+        ("Color", "Mulberry", "Femininity and depth", "Feminine without being delicate. Warm and expressive, but darker and more substantial than something sugary or pastel."),
+        ("Flower", "Peony", "Love and relationships", "I love abundantly. I get attached, remember the little things, and put a lot of myself into the people I care about."),
+        ("Season", "Autumn", "Tradition and security", "I like growth, but I also like roots. Familiar places, rituals, traditions and things I can return to matter enormously to me."),
+        ("Weather", "Sunshower", "Emotional complexity", "I can be genuinely cheerful and deeply emotional at the exact same time. Apparently the forecast is complicated."),
+        ("Feeling", "Anticipation", "Ambition and curiosity", "Curiosity, hope, planning and excitement about what’s next."),
+        ("Fire", "Hearth", "Leadership and community", "I like taking charge and making things happen, but I want people gathered around me while I do it. Assertive doesn’t mean solitary."),
+        ("Drink", "Vanilla Latte", "Social warmth and energy", "Warm, familiar and a little sweet, with considerably more caffeine underneath than the first impression suggests."),
+        ("Dessert", "Tiramisu", "Complexity and contrast", "Sweet, bitter, soft, strong, layered. No single flavor gets to explain the whole thing."),
+        ("Gemstone", "Ruby", "Drive and resilience", "Beautiful, yes, but also hard and durable. Achievement matters to me, and I’m considerably more determined than the packaging suggests."),
+        ("Word", "Earnest", "Core character", "I mean things. I care about people, ideas, promises, what I make and what I’m becoming. Very little ironic detachment over here.")
     };
 }
 <section class="if-i-were">
@@ -2062,12 +2053,11 @@
         <ul class="kn-cards">
             @for (var i = 0; i < ifIWere.Length; i++)
             {
-                var (category, answer, swatch, aspect, note) = ifIWere[i];
+                var (category, answer, aspect, note) = ifIWere[i];
                 <li class="kn-item n@(i % 4)">
                     <button type="button" class="kn-card" aria-pressed="false">
                         <span class="kn-inner">
                             <span class="kn-face kn-front iw-front">
-                                <span class="iw-swatch" style="background: @swatch" aria-hidden="true"></span>
                                 <span class="iw-category">If I were a @category.ToLower()</span>
                                 <span class="iw-answer">@answer</span>
                             </span>

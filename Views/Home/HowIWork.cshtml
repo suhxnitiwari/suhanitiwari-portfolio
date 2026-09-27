@@ -144,8 +144,55 @@
         color: #2A1810;
     }
 
-    .clifton-summary p:last-child {
+    .clifton-summary .clifton-domain {
+        margin: 0 0 12px;
+        font-size: 0.72em;
+        line-height: 1.4;
+        color: #56634A;
+    }
+
+    .clifton-summary .clifton-domain.influencing {
+        color: #9E5A63;
+    }
+
+    .clifton-slide p:last-child {
         margin-bottom: 0;
+    }
+
+    /* ‹ 1 of 2 › under the text, to flip between Relationship Building and Influencing */
+    .clifton-pager {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 22px;
+    }
+
+    .clifton-page {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #EBD5D0;
+        background: #FAF1EF;
+        color: #9E5A63;
+        font-size: 1.5em;
+        line-height: 1;
+        cursor: pointer;
+        transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .clifton-page:hover:not(:disabled) {
+        background: #F6E4E1;
+    }
+
+    .clifton-page:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+
+    .clifton-count {
+        font-size: 0.85em;
+        color: #56634A;
     }
 
     /* ===== RIASEC: my three Holland letters, each with its score ===== */
@@ -431,8 +478,20 @@
             </div>
 
             <div class="clifton-summary">
-                <p>With four of my five strengths in Relationship Building, people shape how I work. I notice people. I remember how someone likes to communicate, what they light up talking about, what they’re quietly great at, when they have something to say but haven’t said it yet, and when they could use a little more encouragement than usual. I like figuring out what makes each person them and making sure those differences have a place on the team.</p>
-                <p>Communication, my fifth strength, gives all that noticing somewhere to go: into thoughtful feedback, genuine encouragement, a presentation that holds attention, or a pitch shaped around the person actually hearing it. I can be direct and decisive while still paying attention to the people involved. To me, working well with people starts with actually seeing them.</p>
+                <div class="clifton-slide" data-slide="0">
+                    <p class="clifton-domain">Relationship Building</p>
+                    <p>With four of my five strengths in Relationship Building, people shape how I work. I notice people. I remember how someone likes to communicate, what they light up talking about, what they’re quietly great at, when they have something to say but haven’t said it yet, and when they could use a little more encouragement than usual. I like figuring out what makes each person them and making sure those differences have a place on the team.</p>
+                    <p>Communication, my fifth strength, gives all that noticing somewhere to go: into thoughtful feedback, genuine encouragement, a presentation that holds attention, or a pitch shaped around the person actually hearing it. I can be direct and decisive while still paying attention to the people involved. To me, working well with people starts with actually seeing them.</p>
+                </div>
+                <div class="clifton-slide" data-slide="1" hidden>
+                    <p class="clifton-domain influencing">Influencing</p>
+                    <p>I have a lot of thoughts, and fortunately, I usually have the words for them too. I love taking an idea and figuring out how to make someone else care about it: through a story, an example, a presentation, a pitch, or the exact sentence that finally makes it click. I’m comfortable speaking up, asking the question everyone is thinking, and giving an idea enough energy that other people want to join in. But Communication works especially well with my other strengths: I notice the person first, then shape the message for the person actually hearing it. The goal isn’t just to be heard. It’s to make an idea understood, memorable, and worth responding to.</p>
+                </div>
+                <div class="clifton-pager">
+                    <button type="button" class="clifton-page prev" aria-label="Previous: Relationship Building" disabled>‹</button>
+                    <span class="clifton-count" aria-live="polite">1 of 2</span>
+                    <button type="button" class="clifton-page next" aria-label="Next: Influencing">›</button>
+                </div>
             </div>
 
             <p class="test-credit">CliftonStrengths® and each theme name are trademarks of Gallup, Inc.</p>
@@ -477,6 +536,25 @@
 </div>
 
 <script>
+    // CliftonStrengths summary: ‹ › flip between Relationship Building and Influencing
+    (() => {
+        const slides = [...document.querySelectorAll('.clifton-slide')];
+        if (!slides.length) return;
+        const prev = document.querySelector('.clifton-page.prev');
+        const next = document.querySelector('.clifton-page.next');
+        const count = document.querySelector('.clifton-count');
+        let current = 0;
+        const show = i => {
+            current = i;
+            slides.forEach((slide, n) => slide.hidden = n !== i);
+            prev.disabled = i === 0;
+            next.disabled = i === slides.length - 1;
+            count.textContent = `${i + 1} of ${slides.length}`;
+        };
+        prev.addEventListener('click', () => show(current - 1));
+        next.addEventListener('click', () => show(current + 1));
+    })();
+
     // Switch between the tests (click, or arrow keys)
     (function () {
         const tabs = [...document.querySelectorAll('.test-tab')];
