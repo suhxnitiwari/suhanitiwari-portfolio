@@ -411,8 +411,14 @@
         gap: 6px;
     }
 
-    .dp-slash {
-        color: #C9A3A8;
+    /* the little "AND" between the two sides of each card */
+    .dp-and {
+        font-family: system-ui, sans-serif;
+        font-size: 0.55em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #9E5A63;
     }
 
     .dp-other {
@@ -1829,7 +1835,7 @@
     {
         (Num: "01", Title: "I understand people.",
             Paras: new[] {
-                "I’m fascinated by why people choose what they choose — what makes an idea resonate, a product stick, or a brand mean something.",
+                "I’m fascinated by why people choose what they choose: what makes an idea resonate, a product stick, or a brand mean something.",
                 "That curiosity is basically where psychology, marketing, and business collide for me." },
             Photo: (string?)null, Alt: ""),
         (Num: "02", Title: "I make things.",
@@ -1839,7 +1845,7 @@
             Photo: (string?)null, Alt: ""),
         (Num: "03", Title: "I tend to start things.",
             Paras: new[] {
-                "Sometimes literally — I started Girls Who Code chapters at two middle schools and grew them to 60+ students per session.",
+                "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 60+ students per session.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
             Photo: (string?)null, Alt: "")
     };
@@ -1894,7 +1900,7 @@
         ("Habitual", "Spontaneous", "Same hot vanilla latte every day. Same favorite colors. Same few foods on repeat. New restaurant tonight? Absolutely. Chicago in four hours? Apparently we’re going to Chicago."),
         ("Independent", "Attached", "I want my own career, my own interests, my own opinions, and a life that is completely mine. I also get ridiculously attached to my people and care about my relationships more than almost anything."),
         ("Techy", "Traditional", "I’m fascinated by AI, emerging technology, and whatever comes next. I’m equally fascinated by traditions that have survived for generations and why people still choose to carry them forward."),
-        ("Sensitive", "Direct", "Please phrase my feedback gently. Yours is coming with sharp bullet points. I know—the irony is not lost on me. I’m working on meeting somewhere in the middle."),
+        ("Sensitive", "Direct", "Please phrase my feedback gently. Yours is coming with sharp bullet points. I know, the irony is not lost on me. I’m working on meeting somewhere in the middle."),
         ("Polished", "Unfiltered", "I’ll edit the work seventeen times. My hair will be perfectly curled. My words? Considerably less edited. Perfectionism applies to the output, not always the commentary.")
     };
 }
@@ -1913,7 +1919,7 @@
                         <span class="kn-inner">
                             <span class="kn-face kn-front dp-front">
                                 <span class="dp-one">@one</span>
-                                <span class="dp-slash" aria-hidden="true">/</span>
+                                <span class="dp-and">and</span>
                                 <span class="dp-other">@other</span>
                             </span>
                             <span class="kn-face kn-back">@story</span>

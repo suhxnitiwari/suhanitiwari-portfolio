@@ -127,6 +127,27 @@
         background: #9E5A63;
     }
 
+    /* what my top five mean for how I work, under the domain bar */
+    .clifton-summary {
+        max-width: 760px;
+        margin: 34px auto 0;
+        padding: 28px 30px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+    }
+
+    .clifton-summary p {
+        margin: 0 0 14px;
+        font-size: 1.02em;
+        line-height: 1.75;
+        color: #2A1810;
+    }
+
+    .clifton-summary p:last-child {
+        margin-bottom: 0;
+    }
+
     /* ===== RIASEC: my three Holland letters, each with its score ===== */
     .riasec-letters {
         display: grid;
@@ -219,6 +240,10 @@
     @@media (max-width: 768px) {
         .work-tests {
             padding: 44px 18px 70px;
+        }
+
+        .clifton-summary {
+            padding: 22px 20px;
         }
 
         .work-tests-hero h1 {
@@ -373,7 +398,7 @@
         <div class="test-panel" id="test-clifton" role="tabpanel" aria-labelledby="tab-clifton" hidden>
             <div class="type-header">
                 <h2>CliftonStrengths</h2>
-                <p>My top 5</p>
+                <p>A suspicious amount of Relationship Building for someone with a very exclusive inner circle</p>
             </div>
 
             <ol class="clifton-list">
@@ -403,6 +428,11 @@
                     <li>Relationship Building (@clifton.Count(c => c.Item2 == "Relationship Building") of 5)</li>
                     <li class="influencing">Influencing (@clifton.Count(c => c.Item2 == "Influencing") of 5)</li>
                 </ul>
+            </div>
+
+            <div class="clifton-summary">
+                <p>With four of my five strengths in Relationship Building, people shape how I work. I notice people. I remember how someone likes to communicate, what they light up talking about, what they’re quietly great at, when they have something to say but haven’t said it yet, and when they could use a little more encouragement than usual. I like figuring out what makes each person them and making sure those differences have a place on the team.</p>
+                <p>Communication, my fifth strength, gives all that noticing somewhere to go: into thoughtful feedback, genuine encouragement, a presentation that holds attention, or a pitch shaped around the person actually hearing it. I can be direct and decisive while still paying attention to the people involved. To me, working well with people starts with actually seeing them.</p>
             </div>
 
             <p class="test-credit">CliftonStrengths® and each theme name are trademarks of Gallup, Inc.</p>
