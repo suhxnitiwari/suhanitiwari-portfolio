@@ -41,7 +41,7 @@ public class HomeController : Controller
         return View();
     }
 
-    // "On Paper": my résumé once wwwroot/resume.pdf exists, a short holding page until then
+    // "Résumé": my résumé once wwwroot/resume.pdf exists, a short holding page until then
     [Route("resume")]
     public IActionResult Resume([FromServices] IWebHostEnvironment environment)
     {

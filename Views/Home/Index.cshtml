@@ -133,6 +133,82 @@
     }
 
 
+    /* Tagline and two buttons, tucked under SUHANI over the darker flowers (clear of my face) */
+    .cover-intro {
+        position: absolute;
+        left: 2.6%;
+        top: calc(38% + 10.5cqw);
+        max-width: 30%;
+        opacity: calc(1 - var(--p, 0) * 2.2);
+        animation: coverFade 1.2s ease 1.5s backwards;
+    }
+
+    .cover-tagline {
+        margin: 0 0 18px;
+        font-family: Georgia, serif;
+        font-size: clamp(1rem, 1.55cqw, 1.45rem);
+        font-style: italic;
+        line-height: 1.35;
+        color: #FFFFFF;
+        text-shadow: 0 1px 12px rgba(20, 8, 6, 0.55);
+    }
+
+    .cover-tagline span {
+        display: block;
+        margin-bottom: 6px;
+        font-family: system-ui, sans-serif;
+        font-size: 0.62em;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #FAF1EF;
+    }
+
+    .cover-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .cover-btn {
+        padding: 11px 24px;
+        border-radius: 999px;
+        border: 1.5px solid rgba(255, 248, 246, 0.85);
+        background: rgba(30, 14, 12, 0.18);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        color: #FFF8F6;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .cover-btn:hover {
+        background: rgba(255, 248, 246, 0.2);
+        color: #FFF8F6;
+    }
+
+    .cover-btn.primary {
+        background: #FFF8F6;
+        border-color: #FFF8F6;
+        color: #8A4D57;
+    }
+
+    .cover-btn.primary:hover {
+        background: #F6E4E1;
+        color: #8A4D57;
+    }
+
+    .cover-btn:focus-visible {
+        outline: 2px solid #FFF8F6;
+        outline-offset: 3px;
+    }
+
     .cover-scroll {
         position: absolute;
         left: 50%;
@@ -178,8 +254,31 @@
         }
 
         .cover-name.right {
-            bottom: 9%;
+            bottom: 21%;
             right: 4%;
+        }
+
+        /* phones: tagline and buttons across the bottom, where the scroll hint was */
+        .cover-intro {
+            left: 5%;
+            right: 5%;
+            top: auto;
+            bottom: 4%;
+            max-width: none;
+            text-align: center;
+        }
+
+        .cover-tagline {
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+        }
+
+        .cover-actions {
+            justify-content: center;
+        }
+
+        .cover-scroll {
+            display: none;
         }
 
         .cover-scrim {
@@ -187,7 +286,7 @@
                 rgba(30, 14, 12, 0.55) 0%,
                 rgba(30, 14, 12, 0) 24%,
                 rgba(30, 14, 12, 0) 66%,
-                rgba(30, 14, 12, 0.6) 100%);
+                rgba(30, 14, 12, 0.72) 100%);
         }
     }
 
@@ -198,7 +297,8 @@
         }
 
         .cover-name .ch,
-        .cover-scroll {
+        .cover-scroll,
+        .cover-intro {
             animation: none;
         }
     }
@@ -707,6 +807,289 @@
     @@media (max-width: 520px) {
         .if-i-were .kn-card {
             height: 250px;
+        }
+    }
+
+    /* ===== THIS OR THAT: inside View more, my pick filled in rose ===== */
+    .tot-title {
+        margin: 60px 0 24px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-style: italic;
+        font-weight: 400;
+        text-align: center;
+        color: #8A4D57;
+    }
+
+    .tot-grid {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .tot-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        flex: 0 0 calc((100% - 48px) / 4);
+        padding: 18px 14px;
+        border-radius: 16px;
+        border: 1px solid #EBD5D0;
+        background: #FFF8F6;
+        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.08);
+        text-align: center;
+    }
+
+    .tot-pair {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tot-option {
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-family: Georgia, serif;
+        font-size: 1.02em;
+        color: #B89A96;
+    }
+
+    .tot-option.picked {
+        background: #9E5A63;
+        color: #FFF8F6;
+    }
+
+    .tot-or {
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .tot-line {
+        font-size: 0.88em;
+        font-style: italic;
+        color: #56634A;
+    }
+
+    @@media (max-width: 860px) {
+        .tot-title {
+            font-size: 1.5em;
+        }
+
+        .tot-card {
+            flex-basis: calc((100% - 16px) / 2);
+        }
+    }
+
+    @@media (max-width: 420px) {
+        .tot-card {
+            flex-basis: 100%;
+        }
+    }
+
+    /* ===== HOW WELL DO YOU KNOW SUHANI?: one question at a time ===== */
+    .quiz [hidden],
+    .tot-grid[hidden] {
+        display: none !important;
+    }
+
+    .quiz {
+        max-width: 540px;
+        margin: 0 auto;
+    }
+
+    .quiz-progress {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .quiz-count {
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .quiz-bar {
+        width: 160px;
+        height: 6px;
+        border-radius: 999px;
+        background: #EBD5D0;
+        overflow: hidden;
+    }
+
+    .quiz-bar span {
+        display: block;
+        height: 100%;
+        width: 0;
+        border-radius: 999px;
+        background: #9E5A63;
+        transition: width 0.4s ease;
+    }
+
+    .quiz-card {
+        position: relative;
+        padding: 34px 28px 30px;
+        border-radius: 20px;
+        border: 1px solid #EBD5D0;
+        background: #FFF8F6;
+        box-shadow: 0 12px 28px rgba(158, 90, 99, 0.12);
+        text-align: center;
+    }
+
+    .quiz-options {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .quiz-option {
+        position: relative;
+        padding: 12px 26px;
+        border-radius: 999px;
+        border: 1.5px solid #D9B8B3;
+        background: #FFFFFF;
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        color: #2A1810;
+        cursor: pointer;
+        transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.3s ease;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+        border-color: #9E5A63;
+        background: #F6E4E1;
+    }
+
+    .quiz-option:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    .quiz-option:disabled {
+        cursor: default;
+        opacity: 0.45;
+    }
+
+    /* after a guess: my pick fills in mulberry, the one you tapped gets a ✓ or ✗ */
+    .quiz-option.picked:disabled,
+    .quiz-option.chosen:disabled {
+        opacity: 1;
+    }
+
+    .quiz-option.picked {
+        background: #8A4D57;
+        border-color: #8A4D57;
+        color: #FFF8F6;
+    }
+
+    .quiz-option.chosen {
+        animation: quizBounce 0.35s ease;
+    }
+
+    .quiz-mark {
+        margin-left: 8px;
+        font-family: system-ui, sans-serif;
+        font-weight: 700;
+    }
+
+    .quiz-line {
+        min-height: 1.6em;
+        margin: 18px 0 0;
+        font-style: italic;
+        color: #56634A;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+    }
+
+    .quiz-line.show {
+        opacity: 1;
+    }
+
+    .quiz-btn {
+        margin-top: 14px;
+        padding: 10px 26px;
+        border-radius: 999px;
+        border: 1px solid #EBD5D0;
+        background: #F6E4E1;
+        font-family: Georgia, serif;
+        font-size: 1em;
+        font-style: italic;
+        color: #8A4D57;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .quiz-btn:hover {
+        background: #EFD3D0;
+    }
+
+    .quiz-btn:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+    }
+
+    .quiz-score {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 2.2em;
+        color: #2A1810;
+    }
+
+    .quiz-verdict {
+        margin: 6px 0 8px;
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        font-style: italic;
+        color: #9E5A63;
+    }
+
+    /* a little burst of hearts on a right guess, in rose and gold */
+    .quiz-heart {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-size: 14px;
+        pointer-events: none;
+        animation: quizHeart 0.8s ease-out forwards;
+    }
+
+    @@keyframes quizBounce {
+        0% { transform: scale(1); }
+        40% { transform: scale(0.93); }
+        75% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @@keyframes quizHeart {
+        from { transform: translate(-50%, -50%) scale(0.6); opacity: 1; }
+        to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity: 0; }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .quiz-option.chosen {
+            animation: none;
+        }
+
+        .quiz-bar span,
+        .quiz-line {
+            transition: none;
         }
     }
 
@@ -1885,6 +2268,13 @@
     <h1 class="visually-hidden">Suhani Tiwari</h1>
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
     <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
+    <div class="cover-intro">
+        <p class="cover-tagline"><span>MIS at McCombs, UT Austin</span>Psychology, marketing and product</p>
+        <div class="cover-actions">
+            <a class="cover-btn primary" href="/home/beyondtheclassroom">See my work</a>
+            <a class="cover-btn" href="/resume">Résumé</a>
+        </div>
+    </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>
 </section>
 
@@ -2059,6 +2449,21 @@
 </section>
 <!-- THE DUALITY OF A WOMAN -->
 @{
+    // This or That (inside View more, under Duality): (this, that, which one I pick (or something else entirely), optional line). Add or remove freely.
+    var thisOrThat = new[]
+    {
+        ("Coffee", "Tea", "Coffee", ""),
+        ("Sunrise", "Sunset", "Sunset", ""),
+        ("Beach", "Mountains", "Lake house", "Honestly? A lake house."),
+        ("Sweet", "Savory", "Savory", ""),
+        ("Morning", "Night", "Night", ""),
+        ("Books", "Movies", "Movies", ""),
+        ("Rom-com", "Horror", "Rom-com", ""),
+        ("City", "Country", "City", ""),
+        ("Dogs", "Cats", "Dogs", ""),
+        ("Road trip", "Flight", "Flight", "Always flight.")
+    };
+
     // (one side, the other side, what I mean). Add or remove freely.
     var dualities = new[]
     {
@@ -2101,11 +2506,153 @@
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
         <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
+
+        <h3 class="tot-title">How well do you know Suhani?</h3>
+        <p class="kn-hint">This or that? Guess my pick.</p>
+
+        <!-- the quiz (built by the script below); the grid underneath is the no-JavaScript version -->
+        <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, line = t.Item4 })).ToString()" hidden>
+            <div class="quiz-progress">
+                <span class="quiz-count" aria-live="polite"></span>
+                <span class="quiz-bar" aria-hidden="true"><span></span></span>
+            </div>
+            <div class="quiz-card">
+                <div class="quiz-play">
+                    <div class="quiz-options" role="group" aria-label="Your guess"></div>
+                    <p class="quiz-line" aria-live="polite"></p>
+                    <button type="button" class="quiz-btn quiz-next" hidden>Next</button>
+                </div>
+                <div class="quiz-result" hidden>
+                    <p class="quiz-score" aria-live="polite"></p>
+                    <p class="quiz-verdict"></p>
+                    <button type="button" class="quiz-btn quiz-again">Play again</button>
+                </div>
+            </div>
+        </div>
+
+        <ul class="tot-grid">
+            @foreach (var (one, other, pick, line) in thisOrThat)
+            {
+                <li class="tot-card">
+                    <span class="tot-pair">
+                        <span class="tot-option@(pick == one ? " picked" : "")">@one</span>
+                        <span class="tot-or">or</span>
+                        <span class="tot-option@(pick == other ? " picked" : "")">@other</span>
+                    </span>
+                    <span class="visually-hidden">My pick: @pick.</span>
+                    @if (!string.IsNullOrEmpty(line))
+                    {
+                        <span class="tot-line">@line</span>
+                    }
+                </li>
+            }
+        </ul>
         <button type="button" class="view-more view-less" aria-controls="duality">Okay, that’s enough about me</button>
     </div>
 </section>
 
 <script>
+    // How well do you know Suhani?: one This or That at a time. Guess, see my pick, get a score at the end.
+    // A card whose pick isn't either option (Beach or Mountains → lake house) gets a "Neither?" button.
+    (() => {
+        const quiz = document.getElementById('quiz');
+        if (!quiz) return;
+        const questions = JSON.parse(quiz.dataset.questions);
+        const $ = sel => quiz.querySelector(sel);
+        const options = $('.quiz-options'), line = $('.quiz-line'), next = $('.quiz-next');
+        const play = $('.quiz-play'), result = $('.quiz-result');
+        const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let current = 0, score = 0;
+
+        quiz.hidden = false;
+        document.querySelector('.tot-grid').hidden = true;
+
+        const curveball = q => q.pick !== q.a && q.pick !== q.b;
+
+        function show(i) {
+            current = i;
+            clearHearts();
+            const q = questions[i];
+            $('.quiz-count').textContent = `${i + 1} of ${questions.length}`;
+            $('.quiz-bar span').style.width = `${(i / questions.length) * 100}%`;
+            const choices = curveball(q) ? [q.a, q.b, 'Neither?'] : [q.a, q.b];
+            options.innerHTML = choices.map((c, n) =>
+                (n === 1 ? '<span class="tot-or">or</span>' : '') +
+                `<button type="button" class="quiz-option" data-choice="${n}">${c}</button>`).join('');
+            options.querySelectorAll('.quiz-option').forEach(btn => btn.addEventListener('click', () => guess(btn)));
+            line.textContent = '';
+            line.classList.remove('show');
+            next.hidden = true;
+            next.textContent = i === questions.length - 1 ? 'See my score' : 'Next';
+        }
+
+        function guess(btn) {
+            const q = questions[current];
+            const buttons = [...options.querySelectorAll('.quiz-option')];
+            // the right answer: my pick, or "Neither?" on a curveball card
+            const right = curveball(q) ? buttons[2] : buttons.find(b => b.textContent === q.pick);
+            const correct = btn === right;
+            if (correct) score++;
+            buttons.forEach(b => b.disabled = true);
+            right.classList.add('picked');
+            if (curveball(q)) right.textContent = q.pick;
+            btn.classList.add('chosen');
+            btn.insertAdjacentHTML('beforeend', `<span class="quiz-mark" aria-hidden="true">${correct ? '✓' : '✗'}</span>`);
+            line.textContent = q.line || (correct ? 'You know me.' : `It’s ${q.pick.toLowerCase()}.`);
+            requestAnimationFrame(() => line.classList.add('show'));
+            if (correct && !calm) hearts(btn);
+            $('.quiz-bar span').style.width = `${((current + 1) / questions.length) * 100}%`;
+            next.hidden = false;
+            next.focus({ preventScroll: true });
+        }
+
+        const clearHearts = () => quiz.querySelectorAll('.quiz-heart').forEach(h => h.remove());
+
+        function hearts(btn) {
+            const card = $('.quiz-card');
+            const box = btn.getBoundingClientRect(), base = card.getBoundingClientRect();
+            for (let n = 0; n < 8; n++) {
+                const heart = document.createElement('span');
+                const angle = (n / 8) * Math.PI * 2;
+                heart.className = 'quiz-heart';
+                heart.textContent = '♥';
+                heart.style.color = n % 2 ? '#C9A24D' : '#C98A9A';
+                heart.style.left = `${box.left - base.left + box.width / 2}px`;
+                heart.style.top = `${box.top - base.top + box.height / 2}px`;
+                heart.style.setProperty('--dx', `${Math.cos(angle) * 46}px`);
+                heart.style.setProperty('--dy', `${Math.sin(angle) * 34}px`);
+                card.appendChild(heart);
+                heart.addEventListener('animationend', () => heart.remove());
+            }
+        }
+
+        function finish() {
+            const total = questions.length, pct = score / total;
+            clearHearts();
+            $('.quiz-bar span').style.width = '100%';
+            play.hidden = true;
+            result.hidden = false;
+            $('.quiz-count').textContent = 'Done';
+            $('.quiz-score').textContent = `You got ${score}/${total}.`;
+            $('.quiz-verdict').textContent =
+                pct >= 0.9 ? 'Are you my best friend?' :
+                pct >= 0.6 ? 'We’d get along.' :
+                pct >= 0.3 ? 'We should grab coffee (not tea).' :
+                             'Okay, stranger 😭';
+            $('.quiz-again').focus({ preventScroll: true });
+        }
+
+        next.addEventListener('click', () => current === questions.length - 1 ? finish() : show(current + 1));
+        $('.quiz-again').addEventListener('click', () => {
+            score = 0;
+            result.hidden = true;
+            play.hidden = false;
+            show(0);
+            options.querySelector('.quiz-option').focus({ preventScroll: true });
+        });
+        show(0);
+    })();
+
     // "View more…" under If I were a... opens The Duality of a Woman; the button at its bottom closes it again
     (() => {
         const more = document.querySelector('.view-more:not(.view-less)');
