@@ -657,6 +657,68 @@
         }
     }
 
+    /* ===== IF I WERE A...: same flip-card carousel, each card with its own swatch ===== */
+    .if-i-were {
+        padding: 10px 40px 90px;
+        background: #FAF1EF;
+    }
+
+    .if-i-were .kn-card {
+        height: 260px;
+    }
+
+    .iw-front {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .iw-swatch {
+        width: 34px;
+        height: 34px;
+        margin-bottom: 4px;
+        border-radius: 50%;
+        border: 3px solid #FFF8F6;
+        box-shadow: 0 0 0 1px #EBD5D0;
+    }
+
+    .iw-category {
+        font-family: system-ui, sans-serif;
+        font-size: 0.55em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .iw-answer {
+        font-size: 1.2em;
+        font-style: italic;
+        color: #2A1810;
+    }
+
+    .iw-back {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .iw-aspect {
+        font-family: Georgia, serif;
+        font-size: 1.1em;
+        font-style: italic;
+    }
+
+    @@media (max-width: 860px) {
+        .if-i-were {
+            padding: 0 20px 60px;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .if-i-were .kn-card {
+            height: 250px;
+        }
+    }
+
     /* ===== PERSONALITY SECTION ===== */
     /* Personality now comes straight after the hero photo, so no gap above it */
     #personality {
@@ -1964,6 +2026,55 @@
                         <span class="kn-inner">
                             <span class="kn-face kn-front">@front</span>
                             <span class="kn-face kn-back">@back</span>
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+        <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
+        </div>
+    </div>
+</section>
+
+<!-- IF I WERE A... -->
+@{
+    // (category, answer, swatch color, aspect of me, note). Add or remove freely.
+    var ifIWere = new[]
+    {
+        ("Color", "Mulberry", "#7B2D52", "Femininity + depth", "Feminine without being delicate. Warm and expressive, but darker and more substantial than something sugary or pastel."),
+        ("Flower", "Peony", "#E7A1B0", "Love + relationships", "I love abundantly. I get attached, remember the little things, and put a lot of myself into the people I care about."),
+        ("Season", "Autumn", "#C0692F", "Tradition + security", "I like growth, but I also like roots. Familiar places, rituals, traditions and things I can return to matter enormously to me."),
+        ("Weather", "Sunshower", "#E8C35A", "Emotional complexity", "I can be genuinely cheerful and deeply emotional at the exact same time. Apparently the forecast is complicated."),
+        ("Feeling", "Anticipation", "#C98A9A", "Ambition + anxiety", "Curiosity, hope, planning and excitement about what’s next. Also overthinking what’s next before what’s next has even happened."),
+        ("Fire", "Hearth", "#B5452E", "Leadership + community", "I like taking charge and making things happen, but I want people gathered around me while I do it. Assertive doesn’t mean solitary."),
+        ("Drink", "Vanilla Latte", "#D9BF9B", "Social warmth + energy", "Warm, familiar and a little sweet, with considerably more caffeine underneath than the first impression suggests."),
+        ("Dessert", "Tiramisu", "#8B5E3C", "Complexity + contrast", "Sweet, bitter, soft, strong, layered. No single flavor gets to explain the whole thing."),
+        ("Gemstone", "Ruby", "#9B111E", "Drive + resilience", "Beautiful, yes, but also hard and durable. Achievement matters to me, and I’m considerably more stubborn than the packaging suggests."),
+        ("Word", "Earnest", "#56634A", "Core character", "I mean things. I care about people, ideas, promises, what I make and what I’m becoming. Very little ironic detachment over here.")
+    };
+}
+<section class="if-i-were">
+    <div class="about-container">
+        <h2 class="tp-lead">If I were a…</h2>
+        <p class="kn-hint">Tap a card to see why.</p>
+        <div class="kn-carousel">
+        <button type="button" class="kn-arrow kn-prev" aria-label="Previous cards">‹</button>
+        <ul class="kn-cards">
+            @for (var i = 0; i < ifIWere.Length; i++)
+            {
+                var (category, answer, swatch, aspect, note) = ifIWere[i];
+                <li class="kn-item n@(i % 4)">
+                    <button type="button" class="kn-card" aria-pressed="false">
+                        <span class="kn-inner">
+                            <span class="kn-face kn-front iw-front">
+                                <span class="iw-swatch" style="background: @swatch" aria-hidden="true"></span>
+                                <span class="iw-category">If I were a @category.ToLower()</span>
+                                <span class="iw-answer">@answer</span>
+                            </span>
+                            <span class="kn-face kn-back iw-back">
+                                <span class="iw-aspect">@aspect</span>
+                                <span>@note</span>
+                            </span>
                         </span>
                     </button>
                 </li>

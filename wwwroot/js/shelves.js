@@ -126,6 +126,7 @@ document.querySelectorAll('.watch-more-btn').forEach(btn => {
 // ===== Shelves: drag to scroll, arrows, "See all" =====
 document.querySelectorAll('.shelf').forEach(shelf => {
     const rail = shelf.querySelector('.shelf-rail');
+    if (!rail) return; // an empty shelf (just a note) has nothing to scroll
     const prev = shelf.querySelector('.shelf-arrow.prev');
     const next = shelf.querySelector('.shelf-arrow.next');
     const seeAll = shelf.querySelector('.shelf-see-all');
