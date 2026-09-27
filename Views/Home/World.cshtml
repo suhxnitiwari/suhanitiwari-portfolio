@@ -46,7 +46,7 @@
 
     .world-section {
         background: linear-gradient(135deg, #FAF1EF 0%, #FAF1EF 100%);
-        padding: 80px 40px;
+        padding: 40px 40px 80px;
     }
 
     .world-container {
@@ -107,11 +107,9 @@
     /* ===== PIECES OF ME: a jigsaw with me in the middle ===== */
     .pieces {
         display: grid;
-        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); /* card left, puzzle right */
         gap: 40px;
-        align-items: center;
-        max-width: 1080px;
-        margin: 0 auto;
+        align-items: stretch; /* the card runs the full height of the puzzle */
     }
 
     .pieces-board svg {
@@ -138,11 +136,24 @@
     }
 
     .piece.selected path {
+        filter: brightness(0.92);
+    }
+
+    /* the selected (and keyboard-focused) outline is its own layer on top of every piece,
+       so neighbors drawn later never cover part of it */
+    .piece-outline,
+    .piece-focus {
+        fill: none;
+        pointer-events: none;
+        stroke-linejoin: round;
+    }
+
+    .piece-outline {
         stroke: #8A4D57;
         stroke-width: 3.5;
     }
 
-    .piece:focus-visible path {
+    .piece-focus {
         stroke: #2A1810;
         stroke-width: 3;
     }
@@ -177,6 +188,10 @@
     }
 
     .pieces-detail {
+        order: -1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding: 30px 28px;
         border-radius: 20px;
         background: #FFF8F6;
@@ -239,6 +254,10 @@
         .pieces {
             grid-template-columns: 1fr;
             gap: 24px;
+        }
+
+        .pieces-detail {
+            order: 0; /* on phones the card goes back under the puzzle */
         }
 
         .pieces-theme {
@@ -586,6 +605,16 @@
     .spots-panel.show .spot:nth-child(5) { animation-delay: 0.2s; }
     .spots-panel.show .spot:nth-child(6) { animation-delay: 0.25s; }
 
+    /* Around Austin sits on downtown (the Capitol, Congress Ave, Lady Bird Lake), made the same way;
+       it's busier than campus, so it gets a slightly stronger wash to keep the cards readable */
+    .spots-map.austin {
+        background-image:
+            linear-gradient(rgba(250, 241, 239, 0.45), rgba(250, 241, 239, 0.45)),
+            url("/images/austin-downtown-map.jpg");
+        background-size: cover;
+        background-position: center 40%;
+    }
+
     /* On Campus sits on a real map of UT, drawn from OpenStreetMap in my colors */
     .spots-map.campus {
         background-image:
@@ -605,7 +634,8 @@
         opacity: 0.8;
     }
 
-    .spots-map.campus .spots-map-credit {
+    .spots-map.campus .spots-map-credit,
+    .spots-map.austin .spots-map-credit {
         display: block;
     }
 
@@ -923,7 +953,7 @@
 
     @@media (max-width: 768px) {
         .world-section {
-            padding: 40px 20px;
+            padding: 24px 20px 40px;
         }
 
         .world-hero h1 {
@@ -992,8 +1022,8 @@
                       traits = new[] { "Optimism", "Warmth", "Spontaneity", "Presence", "Openness", "Lightheartedness" } },
                 new { label = "Hana", source = "Hana", theme = "Perspective", kind = "person",
                       traits = new[] { "Emotional wisdom", "Introspection", "Intentionality", "Self-worth", "Nuance", "Discernment", "Patience" } },
-                new { label = "India", source = "Indian upbringing", theme = "Roots", kind = "world",
-                      traits = new[] { "Family", "Tradition", "Community", "Interdependence", "Respect", "Heritage", "Celebration", "Cultural identity" } },
+                new { label = "India", source = "Indian upbringing", theme = "Tradition", kind = "world",
+                      traits = new[] { "Family", "Rituals", "Language", "Celebration", "Community", "Respect", "Heritage", "Cultural identity" } },
                 new { label = "Me", source = "Suhani", theme = "Choice", kind = "me",
                       traits = new[] { "Agency", "Reflection", "Ambition", "Evolving values", "Choosing what I keep and what I change" } },
                 new { label = "America", source = "American education", theme = "Independence", kind = "world",
@@ -1300,8 +1330,9 @@
                 panel.hidden = !on;
                 panel.classList.toggle('show', on);
             });
-            // the campus map only sits behind On Campus
+            // each tab sits on its own map: UT for On Campus, downtown for Around Austin
             document.querySelector('.spots-map').classList.toggle('campus', tab.getAttribute('aria-controls') === 'spots-campus');
+            document.querySelector('.spots-map').classList.toggle('austin', tab.getAttribute('aria-controls') === 'spots-austin');
             layoutAll();
         };
         tabs.forEach((tab, i) => {
@@ -1325,9 +1356,11 @@
         const meIndex = pieces.findIndex(p => p.kind === 'me');
         const others = pieces.filter((_, i) => i !== meIndex);
         const S = 130;          // size of one square before the tabs
-        const PAD = 10;         // a little room around the edge so the hover lift and outline aren't clipped
+        const PAD = 0;          // no border, so the puzzle's edges line up with the maps above and below
+        const R = 20;           // rounded outer corners, to match the maps
         const FILLS = { person: ['#F6E4E1', '#EFD3D0'], world: ['#EEF1E8', '#DDE3D3'], me: ['#9E5A63', '#9E5A63'] };
         let selected = meIndex;
+        let paths = [];         // each piece's outline, by index, for the selected and focus rings
 
         // One edge of a piece from A to B. d = +1 bumps the tab outward, -1 cuts a blank inward, 0 = straight.
         // The tab shape is symmetric, so neighbors drawing the same edge backwards line up exactly.
@@ -1352,6 +1385,7 @@
             const v = (r, c) => ((r * 3 + c * 7 + 1) % 2 ? 1 : -1);    // edge right of (r, c)
 
             // Pieces first, then every label on top, so a neighbor's tab never covers a word
+            paths = [];
             let order = 0, svg = '', labels = '';
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
@@ -1365,6 +1399,7 @@
                     const left = c === 0 ? 0 : -v(r, c - 1);
                     const d = `M${x},${y}` + edge(x, y, x + S, y, top) + edge(x + S, y, x + S, y + S, right)
                             + edge(x + S, y + S, x, y + S, bottom) + edge(x, y + S, x, y, left) + ' Z';
+                    paths[index] = d;
                     const fill = FILLS[p.kind][(r + c) % 2];
                     const cx = x + S / 2, cy = y + S / 2;
                     const name = p.kind === 'me' ? p.label : p.theme;
@@ -1380,12 +1415,22 @@
                 }
             }
             const w = cols * S + PAD * 2, hgt = rows * S + PAD * 2;
-            board.innerHTML = `<svg viewBox="0 0 ${w} ${hgt}" role="group" aria-label="Pieces of me puzzle">${svg}<g aria-hidden="true">${labels}</g></svg>`;
+            board.innerHTML = `<svg viewBox="0 0 ${w} ${hgt}" role="group" aria-label="Pieces of me puzzle">
+                <defs>
+                    <clipPath id="puzzleCorners"><rect width="${w}" height="${hgt}" rx="${R}"/></clipPath>
+                    <clipPath id="puzzleRing"><rect x="-2" y="-2" width="${w + 4}" height="${hgt + 4}" rx="${R + 2}"/></clipPath>
+                </defs>
+                <g clip-path="url(#puzzleCorners)">${svg}</g>
+                <g clip-path="url(#puzzleRing)"><path class="piece-outline" d=""/><path class="piece-focus" d=""/></g>
+                <g aria-hidden="true">${labels}</g></svg>`;
+            const focusRing = board.querySelector('.piece-focus');
             board.querySelectorAll('.piece').forEach(g => {
                 g.addEventListener('click', () => select(+g.dataset.i));
                 g.addEventListener('keydown', e => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(+g.dataset.i); }
                 });
+                g.addEventListener('focus', () => focusRing.setAttribute('d', g.matches(':focus-visible') ? paths[+g.dataset.i] : ''));
+                g.addEventListener('blur', () => focusRing.setAttribute('d', ''));
             });
         }
 
@@ -1396,6 +1441,7 @@
                 g.classList.toggle('selected', on);
                 g.setAttribute('aria-pressed', on);
             });
+            board.querySelector('.piece-outline').setAttribute('d', paths[i]);
             const p = pieces[i];
             document.getElementById('piecesSource').textContent = p.source;
             document.getElementById('piecesTheme').textContent = p.theme;

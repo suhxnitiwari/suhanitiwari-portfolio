@@ -710,6 +710,35 @@
         }
     }
 
+    /* "View more…" under If I were a... */
+    .view-more {
+        display: block;
+        margin: 30px auto 0;
+        padding: 10px 26px;
+        border-radius: 999px;
+        border: 1px solid #EBD5D0;
+        background: #FFF8F6;
+        font-family: Georgia, serif;
+        font-size: 1.05em;
+        font-style: italic;
+        color: #9E5A63;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .view-more[hidden] {
+        display: none;
+    }
+
+    .view-more:hover {
+        background: #F6E4E1;
+    }
+
+    .view-more:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+    }
+
     /* ===== PERSONALITY SECTION ===== */
     /* Personality now comes straight after the hero photo, so no gap above it */
     #personality {
@@ -1940,53 +1969,6 @@
     </div>
 </section>
 
-<!-- THE DUALITY OF A WOMAN -->
-@{
-    // (one side, the other side, what I mean). Add or remove freely.
-    var dualities = new[]
-    {
-        ("Practical", "Romantic", "I’ll tell my friends their boyfriends aren’t all that and declare modern dating doomed. I’ll think nothing is going to work out and somehow believe everything will work out at the exact same time. Prince Charming included."),
-        ("Analytical", "Creative", "I’ll spend four hours figuring out why something works and sixteen thinking, “okay, but what if we made this?” I like understanding the system. I love imagining what else it could be."),
-        ("Ambitious", "Sentimental", "I’m always thinking about the next goal, the next opportunity, the next version of my life. I’m also keeping the card, the photo, the receipt, and probably the random little thing you gave me six years ago."),
-        ("Social", "Introspective", "I can talk to basically anyone. Big on small talk. Then I’ll go home and overthink the conversation, analyze the person, and wonder why humans are the way they are."),
-        ("Decisive", "Indecisive", "Ask me which dress, restaurant, font, or shade of pink is better and I have an answer immediately. Ask me one major life question and suddenly I need a committee, seventeen tabs, and 3–5 business days."),
-        ("Habitual", "Spontaneous", "Same hot vanilla latte every day. Same favorite colors. Same few foods on repeat. New restaurant tonight? Absolutely. Chicago in four hours? Apparently we’re going to Chicago."),
-        ("Independent", "Attached", "I want my own career, my own interests, my own opinions, and a life that is completely mine. I also get ridiculously attached to my people and care about my relationships more than almost anything."),
-        ("Techy", "Traditional", "I’m fascinated by AI, emerging technology, and whatever comes next. I’m equally fascinated by traditions that have survived for generations and why people still choose to carry them forward."),
-        ("Sensitive", "Direct", "Please phrase my feedback gently. Yours is coming with sharp bullet points. I know, the irony is not lost on me. I’m working on meeting somewhere in the middle."),
-        ("Polished", "Unfiltered", "I’ll edit the work seventeen times. My hair will be perfectly curled. My words? Considerably less edited. Perfectionism applies to the output, not always the commentary.")
-    };
-}
-<section class="duality">
-    <div class="about-container">
-        <h2 class="duality-title">The Duality of a Woman™</h2>
-        <p class="kn-hint">Tap a card to see what I mean.</p>
-        <div class="kn-carousel">
-        <button type="button" class="kn-arrow kn-prev" aria-label="Previous cards">‹</button>
-        <ul class="kn-cards">
-            @for (var i = 0; i < dualities.Length; i++)
-            {
-                var (one, other, story) = dualities[i];
-                <li class="kn-item n@(i % 4)">
-                    <button type="button" class="kn-card" aria-pressed="false">
-                        <span class="kn-inner">
-                            <span class="kn-face kn-front dp-front">
-                                <span class="dp-one">@one</span>
-                                <span class="dp-and">and</span>
-                                <span class="dp-other">@other</span>
-                            </span>
-                            <span class="kn-face kn-back">@story</span>
-                        </span>
-                    </button>
-                </li>
-            }
-        </ul>
-        <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
-        </div>
-        <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
-    </div>
-</section>
-
 <!-- IF YOU KNOW ME, YOU KNOW... -->
 @{
     // Flip cards: (front, back). Add or remove freely.
@@ -2072,9 +2054,79 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
+        <button type="button" class="view-more" aria-expanded="false" aria-controls="duality">View more…</button>
     </div>
 </section>
+<!-- THE DUALITY OF A WOMAN -->
+@{
+    // (one side, the other side, what I mean). Add or remove freely.
+    var dualities = new[]
+    {
+        ("Practical", "Romantic", "I’ll tell my friends their boyfriends aren’t all that and declare modern dating doomed. I’ll think nothing is going to work out and somehow believe everything will work out at the exact same time. Prince Charming included."),
+        ("Analytical", "Creative", "I’ll spend four hours figuring out why something works and sixteen thinking, “okay, but what if we made this?” I like understanding the system. I love imagining what else it could be."),
+        ("Ambitious", "Sentimental", "I’m always thinking about the next goal, the next opportunity, the next version of my life. I’m also keeping the card, the photo, the receipt, and probably the random little thing you gave me six years ago."),
+        ("Social", "Introspective", "I can talk to basically anyone. Big on small talk. Then I’ll go home and overthink the conversation, analyze the person, and wonder why humans are the way they are."),
+        ("Decisive", "Indecisive", "Ask me which dress, restaurant, font, or shade of pink is better and I have an answer immediately. Ask me one major life question and suddenly I need a committee, seventeen tabs, and 3–5 business days."),
+        ("Habitual", "Spontaneous", "Same hot vanilla latte every day. Same favorite colors. Same few foods on repeat. New restaurant tonight? Absolutely. Chicago in four hours? Apparently we’re going to Chicago."),
+        ("Independent", "Attached", "I want my own career, my own interests, my own opinions, and a life that is completely mine. I also get ridiculously attached to my people and care about my relationships more than almost anything."),
+        ("Techy", "Traditional", "I’m fascinated by AI, emerging technology, and whatever comes next. I’m equally fascinated by traditions that have survived for generations and why people still choose to carry them forward."),
+        ("Sensitive", "Direct", "Please phrase my feedback gently. Yours is coming with sharp bullet points. I know, the irony is not lost on me. I’m working on meeting somewhere in the middle."),
+        ("Polished", "Unfiltered", "I’ll edit the work seventeen times. My hair will be perfectly curled. My words? Considerably less edited. Perfectionism applies to the output, not always the commentary.")
+    };
+}
+<section class="duality" id="duality" hidden>
+    <div class="about-container">
+        <h2 class="duality-title">The Duality of a Woman™</h2>
+        <p class="kn-hint">Tap a card to see what I mean.</p>
+        <div class="kn-carousel">
+        <button type="button" class="kn-arrow kn-prev" aria-label="Previous cards">‹</button>
+        <ul class="kn-cards">
+            @for (var i = 0; i < dualities.Length; i++)
+            {
+                var (one, other, story) = dualities[i];
+                <li class="kn-item n@(i % 4)">
+                    <button type="button" class="kn-card" aria-pressed="false">
+                        <span class="kn-inner">
+                            <span class="kn-face kn-front dp-front">
+                                <span class="dp-one">@one</span>
+                                <span class="dp-and">and</span>
+                                <span class="dp-other">@other</span>
+                            </span>
+                            <span class="kn-face kn-back">@story</span>
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+        <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
+        </div>
+        <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
+        <button type="button" class="view-more view-less" aria-controls="duality">Okay, that’s enough about me</button>
+    </div>
+</section>
+
 <script>
+    // "View more…" under If I were a... opens The Duality of a Woman; the button at its bottom closes it again
+    (() => {
+        const more = document.querySelector('.view-more:not(.view-less)');
+        const less = document.querySelector('.view-less');
+        if (!more || !less) return;
+        const target = document.getElementById(more.getAttribute('aria-controls'));
+        more.addEventListener('click', () => {
+            target.hidden = false;
+            more.hidden = true;
+            more.setAttribute('aria-expanded', true);
+            window.dispatchEvent(new Event('resize')); // its arrows were measured while hidden
+        });
+        less.addEventListener('click', () => {
+            target.hidden = true;
+            more.hidden = false;
+            more.setAttribute('aria-expanded', false);
+            more.scrollIntoView({ block: 'center' }); // back to where you were, not left somewhere further down
+            more.focus({ preventScroll: true });
+        });
+    })();
+
     // arrows scroll each row by one card; they fade out at either end
     document.querySelectorAll('.kn-carousel').forEach(carousel => {
         const row = carousel.querySelector('.kn-cards');
