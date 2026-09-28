@@ -21,35 +21,288 @@
         color: #2A1810;
     }
 
-    /* ===== CLIFTONSTRENGTHS: my top five, ranked ===== */
-    .clifton-list {
-        list-style: none;
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 0;
+    .work-tests-hero p {
+        margin: 8px 0 0;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.15em;
+        color: #56634A;
     }
 
-    .clifton-item {
+    /* ===== DISC: Dominance, what it looks like in me, and how it meets my Clifton side ===== */
+    .disc-words {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 0;
+        margin: 6px 0 0;
+        padding: 0;
+        list-style: none;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.15em;
+        color: #56634A;
+    }
+
+    /* a small rose dot between the words, drawn in CSS */
+    .disc-words li + li::before {
+        content: "";
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        margin: 0 14px;
+        border-radius: 50%;
+        background: #C9959F;
+        vertical-align: middle;
+    }
+
+    .disc-line {
+        max-width: 420px;
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 1.45em;
+        line-height: 1.45;
+        color: #2A1810;
+    }
+
+    .disc-section {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 44px 0;
+        border-top: 1px solid #EBD5D0;
+        text-align: center;
+    }
+
+    .disc-heading {
+        margin: 0 0 26px;
+        font-size: 0.82em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .disc-me {
         display: grid;
-        grid-template-columns: 64px 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
-        align-items: start;
-        padding: 22px 26px;
-        border-radius: 18px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+    }
+
+    .disc-me li {
+        padding: 22px 24px;
+        border-radius: 14px;
         background: #FFF8F6;
         border: 1px solid #EBD5D0;
     }
 
-    .clifton-item + .clifton-item {
-        margin-top: 14px;
+    .disc-me-title {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin: 0 0 8px;
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #2A1810;
     }
 
-    .clifton-rank {
-        font-family: Georgia, serif;
-        font-size: 2.8em;
-        font-weight: 700;
-        line-height: 1;
+    .disc-me-title span {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 0.6em;
+        letter-spacing: 2px;
         color: #8A4D57;
+    }
+
+    .disc-me li p:last-child {
+        margin: 0;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .disc-big {
+        margin: 0 0 30px;
+        font-family: Georgia, serif;
+        font-size: 2em;
+        line-height: 1.3;
+        color: #2A1810;
+    }
+
+    /* DISC and Clifton on top, two lines curving down into how I actually work */
+    .disc-meet {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+    .disc-source {
+        justify-self: center;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 14px 20px;
+        border-radius: 14px;
+        background: #FAF1EF;
+        border: 1px solid #D9B8B3;
+        font-family: Georgia, serif;
+        font-weight: 700;
+        color: #8A4D57;
+    }
+
+    .disc-source.clifton {
+        border-color: #B7C2AB;
+        color: #56634A;
+    }
+
+    .disc-source span {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 0.68em;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .disc-meet-lines {
+        grid-column: 1 / -1;
+        width: 100%;
+        height: 48px;
+    }
+
+    .disc-meet-lines path {
+        fill: none;
+        stroke: #C9959F;
+        stroke-width: 1.5;
+        stroke-dasharray: 4 4;
+        vector-effect: non-scaling-stroke;
+    }
+
+    .disc-result {
+        grid-column: 1 / -1;
+        justify-self: center;
+        padding: 14px 28px;
+        border-radius: 999px;
+        background: linear-gradient(150deg, #A4646E 0%, #7E4550 100%);
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        font-weight: 700;
+        color: #FAF1EF;
+        box-shadow: 0 10px 24px rgba(126, 69, 80, 0.22);
+    }
+
+    .disc-chips {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .disc-chips li {
+        padding: 12px 24px;
+        border-radius: 999px;
+        background: #8A4D57;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        color: #FAF1EF;
+    }
+
+    .disc-chips.soft li {
+        background: #FFF8F6;
+        border: 1px solid #D9B8B3;
+        color: #8A4D57;
+    }
+
+    /* ===== CLIFTONSTRENGTHS: my top five as cards; tap one to see what it means ===== */
+    .clifton-lead,
+    .riasec-lead {
+        max-width: 560px;
+        margin: 0 auto 34px;
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        line-height: 1.45;
+        text-align: center;
+        color: #2A1810;
+    }
+
+    .clifton-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    .clifton-card {
+        --domain: #56634A;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 20px 22px;
+        border: 1px solid #EBD5D0;
+        border-radius: 14px;
+        background: #FFF8F6;
+        box-shadow: 0 6px 18px rgba(158, 90, 99, 0.08);
+        font: inherit;
+        color: #2A1810;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .clifton-card.influencing {
+        --domain: #9E5A63;
+    }
+
+    /* the fifth card sits centered under the other four, number and name on one line */
+    .clifton-card:last-child {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 9px);
+        flex-direction: row;
+        align-items: baseline;
+        gap: 14px;
+    }
+
+    .clifton-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(158, 90, 99, 0.14);
+    }
+
+    .clifton-card:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+    }
+
+    .clifton-card[aria-pressed="true"] {
+        border-color: var(--domain);
+        background: #FAF1EF;
+        box-shadow: 0 0 0 1px var(--domain), 0 10px 24px rgba(158, 90, 99, 0.14);
+    }
+
+    .clifton-num {
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--domain);
+    }
+
+    .clifton-name {
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
     }
 
     .clifton-domain {
@@ -65,255 +318,177 @@
         color: #9E5A63;
     }
 
-    .clifton-item h3 {
-        margin: 4px 0 6px;
-        font-family: Georgia, serif;
-        font-size: 1.6em;
-        color: #2A1810;
+    /* what the picked strength means */
+    .clifton-detail {
+        max-width: 640px;
+        margin: 22px auto 0;
     }
 
-    .clifton-item p.clifton-line {
+    .clifton-hint {
         margin: 0;
-        line-height: 1.6;
-        color: #2A1810;
-    }
-
-    /* "At work ⌄": opens under the definition to show what the strength looks like on a team */
-    .clifton-work summary {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 6px;
-        margin-top: 10px;
-        font-size: 0.78em;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #9E5A63;
-        cursor: pointer;
-        list-style: none;
-    }
-
-    .clifton-work summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .clifton-work summary::after {
-        content: "⌄";
-        font-size: 1.4em;
-        line-height: 0.6;
-        transition: transform 0.25s ease;
-    }
-
-    .clifton-work[open] summary::after {
-        transform: rotate(180deg) translateY(-3px);
-    }
-
-    .clifton-work summary:hover {
+        text-align: center;
+        font-style: italic;
         color: #8A4D57;
     }
 
-    .clifton-work summary:focus-visible {
-        outline: 2px solid #9E5A63;
-        outline-offset: 3px;
-        border-radius: 4px;
+    .clifton-meaning {
+        padding: 24px 26px;
+        border-radius: 14px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        animation: cliftonFade 0.3s ease;
     }
 
-    .clifton-work ul {
-        list-style: none;
-        margin: 14px 0 0;
-        padding: 14px 0 0;
-        border-top: 1px solid #EBD5D0;
+    .clifton-meaning h3 {
+        margin: 4px 0 8px;
+        font-family: Georgia, serif;
+        font-size: 1.5em;
+        color: #2A1810;
     }
 
-    .clifton-work li {
-        position: relative;
-        padding-left: 20px;
+    .clifton-meaning .clifton-line {
+        margin: 0;
+        font-size: 1.02em;
         line-height: 1.6;
         color: #2A1810;
     }
 
-    .clifton-work li + li {
-        margin-top: 8px;
+    .clifton-meaning-sub {
+        margin: 18px 0 8px;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #8A4D57;
     }
 
-    .clifton-work li::before {
-        content: "▸";
-        position: absolute;
-        left: 0;
-        color: #9E5A63;
+    .clifton-meaning ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    .clifton-meaning li {
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .clifton-meaning li + li {
+        margin-top: 6px;
+    }
+
+    @@keyframes cliftonFade {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    /* What this looks like at work */
+    .clifton-at-work {
+        max-width: 640px;
+        margin: 56px auto 0;
+        padding-top: 44px;
+        border-top: 1px solid #EBD5D0;
+        text-align: center;
+    }
+
+    .clifton-kicker {
+        margin: 0;
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .clifton-at-work h3 {
+        margin: 12px 0 22px;
+        font-family: Georgia, serif;
+        font-size: 2em;
+        color: #2A1810;
+    }
+
+    .clifton-at-work p:not(.clifton-kicker) {
+        margin: 0 0 16px;
+        font-size: 1.02em;
+        line-height: 1.75;
+        text-align: left;
+        color: #2A1810;
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .clifton-work summary::after {
+        .clifton-card,
+        .clifton-meaning,
+        .hex-info-card {
             transition: none;
+            animation: none;
         }
     }
 
-    /* four of five in one domain: shown as a single bar under the list */
-    .clifton-domains {
-        max-width: 760px;
-        margin: 26px auto 0;
+    /* ===== RIASEC: what each point on the hexagon means, shown when you tap it ===== */
+    .hex-point.picked .hex-dot {
+        r: 7;
     }
 
-    .clifton-bar {
-        display: flex;
-        height: 10px;
-        border-radius: 6px;
-        overflow: hidden;
-        gap: 3px;
+    .hex-point.picked .hex-label {
+        font-weight: 700;
     }
 
-    .clifton-bar span {
-        flex: 1;
-        background: #7F9A6B;
+    .hex-info {
+        max-width: 560px;
+        margin: 6px auto 18px;
     }
 
-    .clifton-bar span.influencing {
-        background: #9E5A63;
+    .hex-hint {
+        margin: 0;
+        text-align: center;
+        font-style: italic;
+        color: #8A4D57;
     }
 
-    .clifton-key {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px 22px;
-        margin: 12px 0 0;
-        padding: 0;
-        list-style: none;
-        font-size: 0.85em;
-        color: #2A1810;
-    }
-
-    .clifton-key li::before {
-        content: "";
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin-right: 7px;
-        border-radius: 3px;
-        background: #7F9A6B;
-    }
-
-    .clifton-key li.influencing::before {
-        background: #9E5A63;
-    }
-
-    /* what my top five mean for how I work, under the domain bar */
-    .clifton-summary {
-        max-width: 760px;
-        margin: 34px auto 0;
-        padding: 28px 30px;
-        border-radius: 18px;
+    .hex-info-card {
+        padding: 20px 24px;
+        border-radius: 14px;
         background: #FFF8F6;
         border: 1px solid #EBD5D0;
+        text-align: left;
+        animation: cliftonFade 0.3s ease;
     }
 
-    .clifton-summary p {
-        margin: 0 0 14px;
-        font-size: 1.02em;
-        line-height: 1.75;
+    .hex-info-card.mine {
+        border-color: #C9959F;
+    }
+
+    .hex-info-head {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin: 0 0 4px;
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        font-weight: 700;
         color: #2A1810;
     }
 
-    .clifton-summary .clifton-domain {
-        margin: 0 0 12px;
-        font-size: 0.72em;
-        line-height: 1.4;
+    .hex-info-head span {
+        margin-left: auto;
+        font-family: inherit;
+        font-size: 0.7em;
+        letter-spacing: 1px;
+        color: #8A4D57;
+    }
+
+    .hex-info-nick {
+        margin: 0 0 8px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
         color: #56634A;
     }
 
-    .clifton-summary .clifton-domain.influencing {
-        color: #9E5A63;
-    }
-
-    /* slide 3 uses both colors: a green dot and a mulberry dot before its label */
-    .clifton-summary .clifton-domain.together {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+    .hex-info-card p:last-child {
+        margin: 0;
+        line-height: 1.6;
         color: #2A1810;
-    }
-
-    .clifton-dots {
-        display: inline-flex;
-        gap: 4px;
-    }
-
-    .clifton-dots::before,
-    .clifton-dots::after {
-        content: "";
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: #7F9A6B;
-    }
-
-    .clifton-dots::after {
-        background: #9E5A63;
-    }
-
-    /* the bar highlights the strengths the current slide is about */
-    .clifton-bar span {
-        transition: opacity 0.35s ease;
-    }
-
-    .clifton-bar[data-focus="relationship"] span.influencing,
-    .clifton-bar[data-focus="influencing"] span:not(.influencing) {
-        opacity: 0.22;
-    }
-
-    /* all three slides stack in one spot, so the box keeps the tallest one's height and the arrows don't jump */
-    .clifton-slides.ready {
-        display: grid;
-    }
-
-    .clifton-slides.ready .clifton-slide {
-        grid-area: 1 / 1;
-    }
-
-    .clifton-slides.ready .clifton-slide:not(.active) {
-        visibility: hidden;
-    }
-
-    .clifton-slide p:last-child {
-        margin-bottom: 0;
-    }
-
-    /* ‹ 1 of 2 › under the text, to flip between Relationship Building and Influencing */
-    .clifton-pager {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-        margin-top: 22px;
-    }
-
-    .clifton-page {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        border: 1px solid #EBD5D0;
-        background: #FAF1EF;
-        color: #9E5A63;
-        font-size: 1.5em;
-        line-height: 1;
-        cursor: pointer;
-        transition: background 0.2s ease, opacity 0.2s ease;
-    }
-
-    .clifton-page:hover:not(:disabled) {
-        background: #F6E4E1;
-    }
-
-    .clifton-page:disabled {
-        opacity: 0.35;
-        cursor: default;
-    }
-
-    .clifton-count {
-        font-size: 0.85em;
-        color: #56634A;
     }
 
     /* ===== RIASEC: my three Holland letters, each with its score ===== */
@@ -321,12 +496,12 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 18px;
-        max-width: 900px;
-        margin: 0 auto 20px;
+        max-width: 760px;
+        margin: 0 auto;
     }
 
     .riasec-card {
-        padding: 26px 24px 24px;
+        padding: 26px 22px 24px;
         border-radius: 18px;
         background: #FFF8F6;
         border: 1px solid #EBD5D0;
@@ -337,65 +512,176 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 64px;
-        height: 64px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
         background: linear-gradient(150deg, #A4646E 0%, #7E4550 100%);
         font-family: Georgia, serif;
-        font-size: 2em;
+        font-size: 1.8em;
         font-weight: 700;
         color: #FAF1EF;
     }
 
     .riasec-card h3 {
-        margin: 12px 0 2px;
-        font-family: Georgia, serif;
-        font-size: 1.5em;
+        margin: 12px 0 0;
+        font-size: 0.85em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
         color: #2A1810;
     }
 
-    .riasec-dimension {
-        margin: 0;
-        font-size: 0.72em;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #56634A;
-    }
-
     .riasec-score {
-        margin: 12px 0 6px;
+        margin: 4px 0 10px;
         font-family: Georgia, serif;
         font-size: 1.9em;
         font-weight: 700;
         color: #8A4D57;
     }
 
-    .riasec-bar {
-        display: block;
-        height: 5px;
-        border-radius: 3px;
-        background: rgba(138, 77, 87, 0.13);
-        overflow: hidden;
-    }
-
-    .riasec-bar span {
-        display: block;
-        height: 100%;
-        background: #8A4D57;
-    }
-
     .riasec-line {
-        margin: 14px 0 0;
-        font-size: 0.92em;
-        line-height: 1.55;
+        margin: 0;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.1em;
         color: #2A1810;
+    }
+
+    /* The interesting part is the overlap */
+    .riasec-overlap {
+        max-width: 760px;
+        margin: 60px auto 0;
+        padding-top: 44px;
+        border-top: 1px solid #EBD5D0;
+        text-align: center;
+    }
+
+    .riasec-overlap h3 {
+        margin: 0 0 26px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        color: #2A1810;
+    }
+
+    .riasec-pairs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .riasec-pair {
+        padding: 20px 16px;
+        border-radius: 14px;
+        border: 1px dashed #D9B8B3;
+    }
+
+    .riasec-combo {
+        display: block;
+        margin-bottom: 8px;
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #8A4D57;
+    }
+
+    .riasec-pair-name {
+        font-size: 0.82em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #2A1810;
+    }
+
+    /* all three at once, in the middle */
+    .riasec-all {
+        max-width: 420px;
+        margin: 22px auto 0;
+        padding: 26px 24px;
+        border-radius: 18px;
+        background: linear-gradient(150deg, #A4646E 0%, #7E4550 100%);
+        color: #FAF1EF;
+        box-shadow: 0 12px 30px rgba(126, 69, 80, 0.25);
+    }
+
+    .riasec-all .riasec-combo {
+        color: #F6E4E1;
+    }
+
+    .riasec-all-name {
+        margin: 0 0 8px;
+        font-family: Georgia, serif;
+        font-size: 1.7em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+    }
+
+    .riasec-all p:last-child {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.1em;
+        line-height: 1.5;
+    }
+
+    /* Where this shows up */
+    .riasec-where {
+        max-width: 760px;
+        margin: 56px auto 0;
+        text-align: center;
+    }
+
+    .riasec-where h3 {
+        margin: 0 0 20px;
+        font-size: 0.85em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .riasec-where ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .riasec-where li {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 150px;
+        padding: 14px 20px;
+        border-radius: 999px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+    }
+
+    .riasec-where-name {
+        font-family: Georgia, serif;
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .riasec-where-code {
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        color: #8A4D57;
     }
 
     /* the hexagon: all six letters, my three in mulberry */
     .riasec-hex {
-        max-width: 520px;
-        margin: 0 auto 28px;
+        max-width: 860px;
+        margin: 0 auto 30px;
     }
 
     .riasec-hex svg {
@@ -458,18 +744,18 @@
     }
 
     .hex-label {
-        font-size: 12px;
+        font-size: 8.5px;
         fill: #7A6A66;
     }
 
     .hex-letter {
         font-family: Georgia, serif;
-        font-size: 15px;
+        font-size: 10.5px;
         font-weight: 700;
     }
 
     .hex-score {
-        font-size: 11px;
+        font-size: 8px;
         font-weight: 700;
         letter-spacing: 1px;
         fill: #7A6A66;
@@ -484,16 +770,6 @@
         fill: #8A4D57;
     }
 
-    .riasec-hex figcaption {
-        margin-top: 10px;
-        font-size: 0.9em;
-        text-align: center;
-        color: #56634A;
-    }
-
-    .disc-grid.riasec-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
 
     .test-credit {
         max-width: 760px;
@@ -509,27 +785,36 @@
             padding: 44px 18px 70px;
         }
 
-        .clifton-summary {
-            padding: 22px 20px;
-        }
-
         .work-tests-hero h1 {
             font-size: 2.5em;
         }
 
-        .clifton-item {
-            grid-template-columns: 44px 1fr;
-            gap: 12px;
-            padding: 18px;
+        .clifton-grid {
+            grid-template-columns: 1fr;
         }
 
-        .clifton-rank {
-            font-size: 2.1em;
+        .clifton-card:last-child {
+            width: 100%;
+        }
+
+        .clifton-lead {
+            font-size: 1.15em;
         }
 
         .riasec-letters,
-        .disc-grid.riasec-grid {
+        .riasec-pairs,
+        .disc-me {
             grid-template-columns: 1fr;
+        }
+
+        .disc-top {
+            flex-direction: column;
+            gap: 24px;
+            text-align: center;
+        }
+
+        .disc-big {
+            font-size: 1.5em;
         }
     }
 </style>
@@ -537,12 +822,27 @@
 
 @{
     // My RIASEC / Holland code (MyCareerTest.org career personality report, 09/26/2026): ASE.
-    // Each letter = its matching dimension from the report and that score; lines are my short versions.
+    // Each letter with its score from the report, and what it means for me in a few words.
     var riasec = new[]
     {
-        ("A", "Artistic", "Creative & Expressive", 91.7, "Driven by self-expression and originality. I do my best work with creative freedom and variety, and I bring a unique perspective to everything I touch."),
-        ("S", "Social", "People & Helping", 67.5, "I care about people and love helping wherever I can."),
-        ("E", "Enterprising", "Leadership & Influence", 66.7, "I step into leadership when it's needed and enjoy having real influence on the outcome.")
+        ("A", "Artistic", 91.7, "Make things."),
+        ("S", "Social", 67.5, "Understand people."),
+        ("E", "Enterprising", 66.7, "Move ideas forward.")
+    };
+    // The overlap: what two (or all three) of my letters look like together
+    var riasecPairs = new[]
+    {
+        ("A × S", "Human-centered creativity"),
+        ("S × E", "Influence through people"),
+        ("A × E", "Ideas → things")
+    };
+    // Where this shows up, and which letters it uses
+    var riasecWhere = new[]
+    {
+        ("Website", "A × E"),
+        ("Girls Who Code", "S × E"),
+        ("Book", "A × S"),
+        ("Oracle", "S × E")
     };
     // All six letters in Holland's hexagon order (R at the top, then clockwise), with my scores from the same report.
     // My code (ASE) is highlighted; the other three are shown faded, so the full shape is visible.
@@ -556,6 +856,16 @@
         ("C", "Conventional", 50.0)
     };
     var myCode = riasec.Select(r => r.Item1).ToHashSet();
+    // What each letter means (Holland's six types), shown when its point on the hexagon is tapped
+    var riasecMeaning = new Dictionary<string, (string Nickname, string Meaning)>
+    {
+        ["R"] = ("The Doers", "Practical, hands-on work with tools, machines or the physical world, where the result is something you can see and touch."),
+        ["I"] = ("The Thinkers", "Observing, researching and analyzing. Figuring out how and why things work, and solving problems with ideas and evidence."),
+        ["A"] = ("The Creators", "Self-expression, originality and imagination. Work that leaves room to create, with freedom from rigid structure."),
+        ["S"] = ("The Helpers", "Teaching, supporting and working with people. Helping others learn, grow or solve their problems."),
+        ["E"] = ("The Persuaders", "Leading, persuading and taking initiative. Setting goals, making decisions and influencing how things turn out."),
+        ["C"] = ("The Organizers", "Structure, detail and accuracy. Working with data, clear systems and procedures, and keeping things in order.")
+    };
     // a point on the hexagon: r = 0 to 100 (distance from the center), k = which corner (0 = R at the top)
     string HexPoint(double r, int k)
     {
@@ -564,12 +874,6 @@
         return (r * Math.Cos(angle)).ToString("0.#", ic) + "," + (r * Math.Sin(angle)).ToString("0.#", ic);
     }
     string HexRing(double r) => string.Join(" ", Enumerable.Range(0, 6).Select(k => HexPoint(r, k)));
-
-    var riasecStrengths = new[] { "Original thinking", "Visual and verbal expression", "Brainstorming and ideation", "Adaptability to new approaches" };
-    // work style, from the report's other dimension descriptions (not job titles, so nothing is ruled out)
-    var riasecStyle = new[] { "Works well solo or with a team", "Hands-on and big-picture", "Balances research with action", "Adapts when plans change" };
-    // what the report says drives me (not industries, so no workplace is ruled out)
-    var riasecEnergy = new[] { "Creative freedom", "Variety", "Helping people", "Leading when it matters" };
 
     // My CliftonStrengths top 5 (Gallup, taken 02/11/2025), in order.
     // Lines are my short versions of Gallup's theme descriptions.
@@ -607,36 +911,30 @@
     <div class="type-container">
         <div class="work-tests-hero">
             <h1>How I Work</h1>
+            <p>Apparently, there are tests for this.</p>
         </div>
 
         <div class="test-tabs" role="tablist" aria-label="Work style tests">
-            <button type="button" class="test-tab" role="tab" id="tab-disc" aria-controls="test-disc" aria-selected="true">DISC</button>
-            <button type="button" class="test-tab" role="tab" id="tab-clifton" aria-controls="test-clifton" aria-selected="false" tabindex="-1">CliftonStrengths</button>
+            <button type="button" class="test-tab" role="tab" id="tab-clifton" aria-controls="test-clifton" aria-selected="true">CliftonStrengths</button>
+            <button type="button" class="test-tab" role="tab" id="tab-disc" aria-controls="test-disc" aria-selected="false" tabindex="-1">DISC</button>
             <button type="button" class="test-tab" role="tab" id="tab-riasec" aria-controls="test-riasec" aria-selected="false" tabindex="-1">RIASEC</button>
         </div>
 
         @{
-            // My DISC profile (BlossomUp). Wording taken from my report.
+            // My DISC profile (BlossomUp): Dominance.
             var discType = "Dominance";
-            var discSummary = "Assertive, results-driven, and motivated by ownership and impact. I thrive in challenging situations and like to move things forward in both my personal and professional life.";
-            var discTraits = new[]
+            var discWords = new[] { "Decisive", "Direct", "Ownership-oriented" };
+            var discLine = "I like having somewhere to go, something to solve, and enough autonomy to figure it out.";
+            // What Dominance looks like in me (built on my report's Decisive, Self-Reliant, Problem Solving and Goal-Oriented)
+            var discInMe = new[]
             {
-                ("Assertive and Confident", "Rarely hesitates when confronted with challenges and is eager to take charge."),
-                ("Goal-Oriented", "Sets ambitious goals and works diligently toward achieving them."),
-                ("Competitive", "Views challenges as opportunities to prove myself."),
-                ("Decisive", "Analyzes situations rapidly, identifies the best course of action, and implements it with minimal hesitation."),
-                ("Self-Reliant", "Takes ownership of my work from start to finish.")
+                ("Decide", "I don’t love sitting in indecision. I size up the situation quickly, pick the best path, and commit to it."),
+                ("Own", "I like having real responsibility. Give me something that’s mine and I’ll take it from start to finish."),
+                ("Solve", "Give me a messy problem and I’ll start pulling it apart. I like catching issues before anyone else notices them."),
+                ("Move", "Once I know where we’re going, I want to get there. I set ambitious goals and keep things moving toward them.")
             };
-            var discStrengths = new[]
-            {
-                ("Leadership and Vision", "Sees the big picture, sets long-term goals, and inspires others to follow."),
-                ("Resilience Under Pressure", "Thrives in high-stakes environments where quick thinking and determination are required."),
-                ("Strategic Thinking", "Focuses on what truly matters and eliminates distractions or obstacles."),
-                ("Problem Solving", "Identifies and fixes problems before others even notice them.")
-            };
-            var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
-            // from the report's Communication Style section (not job titles, so no role is ruled out)
-            var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive", "Action-oriented" };
+            var discMoving = new[] { "Autonomy", "Challenge", "Progress" };
+            var discWorkingWithMe = new[] { "Give me the why", "Be direct", "Let me own it", "Disagree with me" };
 
             // The DISC wheel: D top-left, I top-right, S bottom-right, C bottom-left; mine is filled in.
             var discQuadrants = new[]
@@ -647,10 +945,10 @@
                 ("C", "Conscientiousness", "M 120 120 L 120 230 A 110 110 0 0 1 10 120 Z", 72, 174)
             };
         }
-        <div class="test-panel" id="test-disc" role="tabpanel" aria-labelledby="tab-disc">
+        <div class="test-panel" id="test-disc" role="tabpanel" aria-labelledby="tab-disc" hidden>
             <div class="type-header">
-                <h2>DISC</h2>
-                <p>My primary style</p>
+                <h2>@discType</h2>
+                <ul class="disc-words">@foreach (var w in discWords) { <li>@w</li> }</ul>
             </div>
 
             <div class="disc-top">
@@ -663,114 +961,95 @@
                     }
                     <circle cx="120" cy="120" r="110" class="disc-ring" />
                 </svg>
-                <div class="disc-intro">
-                    <p class="disc-kicker">My DISC style</p>
-                    <h3>@discType</h3>
-                    <p>@discSummary</p>
-                </div>
+                <p class="disc-line">@discLine</p>
             </div>
 
-            <div class="disc-grid">
-                <div class="disc-block">
-                    <h4>Core Traits</h4>
-                    <ul class="disc-list">
-                        @foreach (var (name, text) in discTraits)
-                        {
-                            <li><strong>@name</strong><span>@text</span></li>
-                        }
-                    </ul>
-                </div>
-                <div class="disc-block">
-                    <h4>Strengths</h4>
-                    <ul class="disc-list">
-                        @foreach (var (name, text) in discStrengths)
-                        {
-                            <li><strong>@name</strong><span>@text</span></li>
-                        }
-                    </ul>
-                </div>
-            </div>
+            <section class="disc-section" aria-labelledby="disc-me-heading">
+                <h3 class="disc-heading" id="disc-me-heading">What Dominance looks like in me</h3>
+                <ol class="disc-me">
+                    @for (var i = 0; i < discInMe.Length; i++)
+                    {
+                        var (verb, text) = discInMe[i];
+                        <li>
+                            <p class="disc-me-title"><span>0@(i + 1)</span>@verb</p>
+                            <p>@text</p>
+                        </li>
+                    }
+                </ol>
+            </section>
 
-            <div class="disc-grid two-one">
-                <div class="disc-block">
-                    <h4>Motivators</h4>
-                    <ul class="disc-pills">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
+            <section class="disc-section" aria-labelledby="disc-interesting-heading">
+                <h3 class="disc-heading" id="disc-interesting-heading">The part I find interesting</h3>
+                <p class="disc-big">Direct with the work.<br />Softer with the people.</p>
+                <div class="disc-meet">
+                    <div class="disc-source"><span>DISC</span>Dominance</div>
+                    <div class="disc-source clifton"><span>CliftonStrengths</span>Relationship Building</div>
+                    <svg class="disc-meet-lines" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+                        <path d="M100 0 C100 34 200 26 200 58" />
+                        <path d="M300 0 C300 34 200 26 200 58" />
+                    </svg>
+                    <div class="disc-result">How I actually work</div>
                 </div>
-                <div class="disc-block">
-                    <h4>How I Communicate</h4>
-                    <ul class="disc-pills">@foreach (var c in discCommunication) { <li>@c</li> }</ul>
-                </div>
-            </div>
+            </section>
+
+            <section class="disc-section" aria-labelledby="disc-moving-heading">
+                <h3 class="disc-heading" id="disc-moving-heading">What gets me moving</h3>
+                <ul class="disc-chips">@foreach (var m in discMoving) { <li>@m</li> }</ul>
+            </section>
+
+            <section class="disc-section" aria-labelledby="disc-with-heading">
+                <h3 class="disc-heading" id="disc-with-heading">If you’re working with me</h3>
+                <ul class="disc-chips soft">@foreach (var w in discWorkingWithMe) { <li>@w</li> }</ul>
+            </section>
         </div>
 
-        <div class="test-panel" id="test-clifton" role="tabpanel" aria-labelledby="tab-clifton" hidden>
-            <div class="type-header">
-                <h2>CliftonStrengths</h2>
-                <p>A suspicious amount of Relationship Building for someone with a very exclusive inner circle</p>
+        <div class="test-panel" id="test-clifton" role="tabpanel" aria-labelledby="tab-clifton">
+            <h2 class="visually-hidden">CliftonStrengths</h2>
+            <p class="clifton-lead">A suspicious amount of Relationship Building for someone with a very exclusive inner circle.</p>
+
+            <!-- my top five: tap one to see what it means and what it looks like at work -->
+            <div class="clifton-grid">
+                @for (var i = 0; i < clifton.Length; i++)
+                {
+                    var (name, domain, _) = clifton[i];
+                    <button type="button" class="clifton-card @(domain == "Influencing" ? "influencing" : "")" data-strength="@i"
+                            aria-pressed="false" aria-controls="clifton-detail">
+                        <span class="clifton-num">0@(i + 1)</span>
+                        <span class="clifton-name">@name</span>
+                    </button>
+                }
             </div>
 
-            <ol class="clifton-list">
+            <div class="clifton-detail" id="clifton-detail" aria-live="polite">
+                <p class="clifton-hint">Click a strength to see what it means ♡</p>
                 @for (var i = 0; i < clifton.Length; i++)
                 {
                     var (name, domain, line) = clifton[i];
-                    var influencing = domain == "Influencing";
-                    <li class="clifton-item">
-                        <span class="clifton-rank">@(i + 1)</span>
-                        <div>
-                            <p class="clifton-domain @(influencing ? "influencing" : "")">@domain</p>
-                            <h3>@name</h3>
-                            <p class="clifton-line">@line</p>
-                            @if (cliftonAtWork.TryGetValue(name, out var atWork))
-                            {
-                                <details class="clifton-work">
-                                    <summary>At work</summary>
-                                    <ul>
-                                        @foreach (var point in atWork)
-                                        {
-                                            <li>@point</li>
-                                        }
-                                    </ul>
-                                </details>
-                            }
-                        </div>
-                    </li>
+                    <div class="clifton-meaning" data-strength="@i" hidden>
+                        <p class="clifton-domain @(domain == "Influencing" ? "influencing" : "")">@domain</p>
+                        <h3>@name</h3>
+                        <p class="clifton-line">@line</p>
+                        @if (cliftonAtWork.TryGetValue(name, out var atWork))
+                        {
+                            <p class="clifton-meaning-sub">At work</p>
+                            <ul>
+                                @foreach (var point in atWork)
+                                {
+                                    <li>@point</li>
+                                }
+                            </ul>
+                        }
+                    </div>
                 }
-            </ol>
-
-            <div class="clifton-domains" aria-hidden="true">
-                <div class="clifton-bar">
-                    @foreach (var (_, domain, _) in clifton)
-                    {
-                        <span class="@(domain == "Influencing" ? "influencing" : "")"></span>
-                    }
-                </div>
-                <ul class="clifton-key">
-                    <li>Relationship Building (@clifton.Count(c => c.Item2 == "Relationship Building") of 5)</li>
-                    <li class="influencing">Influencing (@clifton.Count(c => c.Item2 == "Influencing") of 5)</li>
-                </ul>
             </div>
 
-            <div class="clifton-summary">
-                <div class="clifton-slides">
-                <div class="clifton-slide" data-slide="0" data-name="Relationship Building" data-focus="relationship">
-                    <p class="clifton-domain">Relationship Building</p>
-                    <p>With four of my five strengths in Relationship Building, people shape how I work. I notice how someone likes to communicate, what they light up talking about, what they’re quietly great at, and when they could use a little more encouragement than usual. I like figuring out what makes each person them, and making sure those differences have a place on the team.</p>
-                </div>
-                <div class="clifton-slide" data-slide="1" data-name="Influencing" data-focus="influencing">
-                    <p class="clifton-domain influencing">Influencing</p>
-                    <p>I have a lot of thoughts, and fortunately, I usually have the words for them too. I love taking an idea and figuring out how to make someone else care about it: through a story, a presentation, a pitch, or the exact sentence that finally makes it click. I’m comfortable speaking up, asking the question everyone’s thinking, and giving an idea enough energy that other people want to join in.</p>
-                </div>
-                <div class="clifton-slide" data-slide="2" data-name="How it all works together" data-focus="all">
-                    <p class="clifton-domain together"><span class="clifton-dots" aria-hidden="true"></span>How it all works together</p>
-                    <p>My strengths work as one loop: I notice the person first, then shape the message for the person actually hearing it. That’s how noticing turns into thoughtful feedback, genuine encouragement, or a pitch that lands. It also means I can be direct and decisive while still paying attention to the people involved. The goal isn’t just to be heard. It’s to make an idea understood, memorable, and worth responding to, because working well with people starts with actually seeing them.</p>
-                </div>
-                </div>
-                <div class="clifton-pager">
-                    <button type="button" class="clifton-page prev" aria-label="Previous" disabled>‹</button>
-                    <span class="clifton-count" aria-live="polite">1 of 3</span>
-                    <button type="button" class="clifton-page next" aria-label="Next: Influencing">›</button>
-                </div>
-            </div>
+            <section class="clifton-at-work" aria-labelledby="clifton-work-heading">
+                <p class="clifton-kicker">What this looks like at work</p>
+                <h3 id="clifton-work-heading">I pay attention to people.</h3>
+                <p>With four of my five strengths in Relationship Building, people shape how I work. I notice how someone likes to communicate, what they light up talking about, what they’re quietly great at, and when they could use a little more encouragement than usual. I like figuring out what makes each person them, and making sure those differences have a place on the team.</p>
+                <p>I have a lot of thoughts, and fortunately, I usually have the words for them too. I love taking an idea and figuring out how to make someone else care about it: through a story, a presentation, a pitch, or the exact sentence that finally makes it click. I’m comfortable speaking up, asking the question everyone’s thinking, and giving an idea enough energy that other people want to join in.</p>
+                <p>My strengths work as one loop: I notice the person first, then shape the message for the person actually hearing it. That’s how noticing turns into thoughtful feedback, genuine encouragement, or a pitch that lands. It also means I can be direct and decisive while still paying attention to the people involved. The goal isn’t just to be heard. It’s to make an idea understood, memorable, and worth responding to, because working well with people starts with actually seeing them.</p>
+            </section>
 
             <p class="test-credit">CliftonStrengths® and each theme name are trademarks of Gallup, Inc.</p>
         </div>
@@ -778,8 +1057,9 @@
         <div class="test-panel" id="test-riasec" role="tabpanel" aria-labelledby="tab-riasec" hidden>
             <div class="type-header">
                 <h2>ASE</h2>
-                <p>Artistic, Social, Enterprising</p>
+                <p>Artistic × Social × Enterprising</p>
             </div>
+            <p class="riasec-lead">Apparently, I want to make things, with people, and then convince everyone they should care.</p>
 
             <figure class="riasec-hex">
                 <svg viewBox="-200 -150 400 300" role="img"
@@ -805,7 +1085,7 @@
                         var ly = double.Parse(label[1], System.Globalization.CultureInfo.InvariantCulture);
                         var anchor = lx > 5 ? "start" : lx < -5 ? "end" : "middle";
                         var shift = ly < -90 ? -10 : ly > 90 ? 12 : 0;
-                        <g class="hex-point @(mine ? "mine" : "")" tabindex="0">
+                        <g class="hex-point @(mine ? "mine" : "")" data-letter="@letter" tabindex="0" role="button" aria-pressed="false" aria-controls="hex-info">
                             <title>@name: @score.ToString("0")</title>
                             <circle class="hex-hit" cx="@dot[0]" cy="@dot[1]" r="14" />
                             <circle class="hex-dot" cx="@dot[0]" cy="@dot[1]" r="5" />
@@ -816,66 +1096,108 @@
                         </g>
                     }
                 </svg>
-                <figcaption>Strongly Artistic, with Social, Enterprising and Realistic close behind. My three letters are in mulberry.</figcaption>
+                <!-- tap a point to see what its letter means -->
+                <div class="hex-info" id="hex-info" aria-live="polite">
+                    <p class="hex-hint">Click a point to see what it means</p>
+                    @foreach (var (letter, name, score) in hexagon)
+                    {
+                        var (nickname, meaning) = riasecMeaning[letter];
+                        <div class="hex-info-card @(myCode.Contains(letter) ? "mine" : "")" data-letter="@letter" hidden>
+                            <p class="hex-info-head">@letter @name<span>@score.ToString("0")</span></p>
+                            <p class="hex-info-nick">@nickname</p>
+                            <p>@meaning</p>
+                        </div>
+                    }
+                </div>
             </figure>
 
             <div class="riasec-letters">
-                @foreach (var (letter, name, dimension, score, line) in riasec)
+                @foreach (var (letter, name, score, line) in riasec)
                 {
                     <div class="riasec-card">
                         <span class="riasec-letter">@letter</span>
                         <h3>@name</h3>
-                        <p class="riasec-dimension">@dimension</p>
                         <p class="riasec-score">@score.ToString("0")</p>
-                        <span class="riasec-bar" aria-hidden="true"><span style="width: @(score.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></span></span>
                         <p class="riasec-line">@line</p>
                     </div>
                 }
             </div>
 
-            <div class="disc-grid riasec-grid">
-                <div class="disc-block">
-                    <h4>Key Strengths</h4>
-                    <ul class="disc-pills">@foreach (var x in riasecStrengths) { <li>@x</li> }</ul>
+            <section class="riasec-overlap" aria-labelledby="overlap-heading">
+                <h3 id="overlap-heading">The interesting part is the overlap.</h3>
+                <ul class="riasec-pairs">
+                    @foreach (var (combo, name) in riasecPairs)
+                    {
+                        <li class="riasec-pair">
+                            <span class="riasec-combo">@combo</span>
+                            <span class="riasec-pair-name">@name</span>
+                        </li>
+                    }
+                </ul>
+                <div class="riasec-all">
+                    <span class="riasec-combo">A × S × E</span>
+                    <p class="riasec-all-name">Product</p>
+                    <p>Make something. Understand who it’s for. Get it into the world.</p>
                 </div>
-                <div class="disc-block">
-                    <h4>How I Work Best</h4>
-                    <ul class="disc-pills">@foreach (var x in riasecStyle) { <li>@x</li> }</ul>
-                </div>
-                <div class="disc-block">
-                    <h4>What Energizes Me</h4>
-                    <ul class="disc-pills soft">@foreach (var x in riasecEnergy) { <li>@x</li> }</ul>
-                </div>
-            </div>
+            </section>
+
+            <section class="riasec-where" aria-labelledby="where-heading">
+                <h3 id="where-heading">Where this shows up</h3>
+                <ul>
+                    @foreach (var (place, code) in riasecWhere)
+                    {
+                        <li>
+                            <span class="riasec-where-name">@place</span>
+                            <span class="riasec-where-code">@code</span>
+                        </li>
+                    }
+                </ul>
+            </section>
         </div>
     </div>
 </div>
 
 <script>
-    // CliftonStrengths summary: ‹ › flip through Relationship Building, Influencing, then how they work together.
-    // The bar above lights up the matching strengths: the 4 green, then the mulberry one, then all five.
+    // CliftonStrengths: tapping a card shows what that strength means; tapping it again closes it
     (() => {
-        const slides = [...document.querySelectorAll('.clifton-slide')];
-        if (!slides.length) return;
-        const bar = document.querySelector('.clifton-bar');
-        const prev = document.querySelector('.clifton-page.prev');
-        const next = document.querySelector('.clifton-page.next');
-        const count = document.querySelector('.clifton-count');
-        let current = 0;
+        const cards = [...document.querySelectorAll('.clifton-card')];
+        const meanings = [...document.querySelectorAll('.clifton-meaning')];
+        const hint = document.querySelector('.clifton-hint');
+        let open = null;
         const show = i => {
-            current = i;
-            slides.forEach((slide, n) => slide.classList.toggle('active', n === i));
-            bar.dataset.focus = slides[i].dataset.focus;
-            prev.disabled = i === 0;
-            next.disabled = i === slides.length - 1;
-            prev.setAttribute('aria-label', i > 0 ? `Previous: ${slides[i - 1].dataset.name}` : 'Previous');
-            next.setAttribute('aria-label', i < slides.length - 1 ? `Next: ${slides[i + 1].dataset.name}` : 'Next');
-            count.textContent = `${i + 1} of ${slides.length}`;
+            open = i;
+            cards.forEach((c, n) => c.setAttribute('aria-pressed', n === i));
+            meanings.forEach((m, n) => m.hidden = n !== i);
+            hint.hidden = i !== null;
         };
-        prev.addEventListener('click', () => show(current - 1));
-        next.addEventListener('click', () => show(current + 1));
-        show(0);
-        document.querySelector('.clifton-slides').classList.add('ready');
+        cards.forEach((c, n) => c.addEventListener('click', () => show(open === n ? null : n)));
+    })();
+
+    // RIASEC: tapping a point on the hexagon (or Enter / Space on it) shows what that letter means
+    (() => {
+        const points = [...document.querySelectorAll('.hex-point')];
+        const cards = [...document.querySelectorAll('.hex-info-card')];
+        const hint = document.querySelector('.hex-hint');
+        let open = null;
+        const show = letter => {
+            open = letter;
+            points.forEach(p => {
+                const on = p.dataset.letter === letter;
+                p.classList.toggle('picked', on);
+                p.setAttribute('aria-pressed', on);
+            });
+            cards.forEach(c => c.hidden = c.dataset.letter !== letter);
+            hint.hidden = letter !== null;
+        };
+        points.forEach(p => {
+            const toggle = () => show(open === p.dataset.letter ? null : p.dataset.letter);
+            p.addEventListener('click', toggle);
+            p.addEventListener('keydown', e => {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                e.preventDefault();
+                toggle();
+            });
+        });
     })();
 
     // Switch between the tests (click, or arrow keys)
