@@ -380,15 +380,6 @@
     color: #2A1810;
 }
 
-.gallery-medium {
-    display: block;
-    margin-top: 2px;
-    font-size: 0.66em;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #8A7A76;
-}
-
 @media (max-width: 900px) {
     .gallery-wall {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -424,10 +415,6 @@
 
     .gallery-title {
         font-size: 0.8em;
-    }
-
-    .gallery-medium {
-        font-size: 0.56em;
     }
 }
 
