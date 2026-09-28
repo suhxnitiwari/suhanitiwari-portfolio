@@ -1,0 +1,801 @@
+/* ===== Coursework > MIS Major: the story around the cycle ===== */
+
+/* the opening line, big and in serif */
+.story-hero-quote {
+    position: relative;
+    max-width: 820px;
+    margin: 10px auto 22px;
+    padding: 0;
+    border: none;
+}
+
+.story-hero-quote::before {
+    content: "“";
+    display: block;
+    height: 0.55em;
+    font-family: Georgia, serif;
+    font-size: 5em;
+    line-height: 1;
+    color: #8F4661;
+    opacity: 0.35;
+}
+
+.mis-intro .story-hero-quote p {
+    font-family: Georgia, serif;
+    font-size: clamp(1.4em, 2.6vw, 2em);
+    line-height: 1.4;
+    color: #2A1810;
+}
+
+/* People, technology, business */
+.story-triangle {
+    width: 100%;
+    max-width: 440px;
+    margin: 10px auto 30px;
+}
+
+.story-triangle svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.tri-fill {
+    fill: #F6E4E1;
+    opacity: 0.55;
+}
+
+.tri-edge {
+    stroke: #A9788A;
+    stroke-width: 2;
+    stroke-linecap: round;
+    marker-start: url(#tri-head);
+    marker-end: url(#tri-head);
+}
+
+.tri-center {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    text-anchor: middle;
+    fill: #2A1810;
+}
+
+.tri-center.accent {
+    font-style: italic;
+    fill: #8F4661;
+}
+
+.tri-node circle {
+    fill: var(--node);
+    stroke: #FAF1EF;
+    stroke-width: 4;
+}
+
+.tri-node text {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-anchor: middle;
+    fill: var(--node);
+}
+
+/* ===== shared bits ===== */
+.story {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.story-section {
+    margin: 0 auto 70px;
+}
+
+.story-heading {
+    margin: 0 0 10px;
+    font-family: Georgia, serif;
+    font-size: 2em;
+    text-align: center;
+    color: #2A1810;
+}
+
+.story-sub {
+    max-width: 620px;
+    margin: 0 auto 28px;
+    text-align: center;
+    line-height: 1.6;
+    color: #56634A;
+}
+
+.story-heading + :not(.story-sub) {
+    margin-top: 26px;
+}
+
+/* pull quotes between the sections */
+.story-pull {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    max-width: 760px;
+    margin: 0 auto 70px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.25em, 2.2vw, 1.6em);
+    line-height: 1.35;
+    text-align: center;
+    color: #8F4661;
+}
+
+.story-pull::before,
+.story-pull::after {
+    content: "";
+    flex: 1 1 40px;
+    min-width: 24px;
+    height: 1px;
+    background: #D9B8B3;
+}
+
+/* sections ease in as they scroll into view */
+.reveal.pending {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.pending.shown {
+    opacity: 1;
+    transform: none;
+}
+
+/* ===== The zoom lens ===== */
+.zoom {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 40px;
+    padding: 34px;
+    border-radius: 16px;
+    border: 1px solid #EBD5D0;
+    background: #FFF8F6;
+}
+
+.zoom-lens {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+}
+
+.zoom-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--r) / 7 * 100%);
+    height: calc(var(--r) / 7 * 100%);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1.5px dashed #D9B8B3;
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.zoom-ring.inside {
+    border-style: solid;
+    border-color: #C99AA5;
+    background: rgba(143, 70, 97, 0.07);
+}
+
+.zoom-ring.current {
+    border: 3px solid #8F4661;
+    background: rgba(143, 70, 97, 0.12);
+    box-shadow: 0 0 0 6px rgba(143, 70, 97, 0.1);
+}
+
+.zoom-range {
+    --fill: 0%;
+    width: 100%;
+    height: 6px;
+    margin: 0;
+    border-radius: 999px;
+    background: linear-gradient(to right, #8F4661 var(--fill), #EBD5D0 var(--fill));
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.zoom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 3px solid #FFF8F6;
+    background: #8F4661;
+    box-shadow: 0 0 0 1.5px #8F4661;
+}
+
+.zoom-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid #FFF8F6;
+    background: #8F4661;
+    box-shadow: 0 0 0 1.5px #8F4661;
+}
+
+.zoom-range:focus-visible {
+    outline: 2px solid #8F4661;
+    outline-offset: 6px;
+}
+
+.zoom-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px -6px 26px;
+}
+
+.zoom-tick {
+    padding: 2px 4px;
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #8A7A76;
+    cursor: pointer;
+}
+
+.zoom-tick.current {
+    color: #8F4661;
+}
+
+.zoom-stop {
+    min-height: 190px;
+}
+
+.zoom-level,
+.zoom-trained {
+    margin: 0;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #6B7F5E;
+}
+
+.zoom-label {
+    margin: 4px 0 18px;
+    font-family: Georgia, serif;
+    font-size: 2em;
+    color: #2A1810;
+}
+
+.zoom-courses {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.zoom-courses li {
+    padding: 10px 0;
+    border-top: 1px solid #EBD5D0;
+    font-weight: 600;
+    color: #2A1810;
+}
+
+.zoom-courses .mis-question {
+    display: block;
+    font-weight: 400;
+    font-size: 0.95em;
+}
+
+/* ===== AI shows up everywhere ===== */
+.ai-trail {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* the thread running through all four */
+.ai-trail::before {
+    content: "";
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+    top: 9px;
+    height: 2px;
+    background: linear-gradient(to right, #6B7F5E, #56705F, #8F4661);
+}
+
+.ai-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
+
+.ai-dot {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    border: 4px solid #FAF1EF;
+    background: #8F4661;
+    box-shadow: 0 0 0 1.5px #8F4661;
+}
+
+.ai-course {
+    font-size: 0.9em;
+    color: #56634A;
+}
+
+.ai-topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.ai-topics span {
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: #8F4661;
+    color: #FFF8F6;
+    font-size: 0.82em;
+    font-weight: 600;
+}
+
+.ai-caption {
+    max-width: 640px;
+    margin: 34px auto 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.2em;
+    line-height: 1.5;
+    text-align: center;
+    color: #2A1810;
+}
+
+/* ===== Translation is a technical skill ===== */
+.translate {
+    display: grid;
+    gap: 12px;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.translate-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid #EBD5D0;
+    background: #FFF8F6;
+    cursor: default;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.translate-item {
+    flex: 0 1 220px;
+    padding: 9px 14px;
+    border-radius: 999px;
+    background: #F6E4E1;
+    font-weight: 600;
+    text-align: center;
+    color: #2A1810;
+    transition: background 0.35s ease, color 0.35s ease, transform 0.35s ease;
+}
+
+.translate-arrow {
+    flex: 0 0 40px;
+    display: flex;
+    color: #A9788A;
+}
+
+.translate-arrow svg {
+    width: 40px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 60;
+    stroke-dashoffset: 0;
+}
+
+.translate-row:hover,
+.translate-row:focus-visible {
+    border-color: #C99AA5;
+    box-shadow: 0 8px 24px rgba(143, 70, 97, 0.12);
+    outline: none;
+}
+
+/* on hover the arrow draws itself again and the result turns over into mulberry */
+.translate-row:hover .translate-arrow svg,
+.translate-row:focus-visible .translate-arrow svg {
+    animation: translate-draw 0.5s ease both;
+    color: #8F4661;
+}
+
+.translate-row:hover .translate-item.to,
+.translate-row:focus-visible .translate-item.to {
+    background: #8F4661;
+    color: #FFF8F6;
+    animation: translate-flip 0.5s ease 0.2s both;
+}
+
+@keyframes translate-draw {
+    from { stroke-dashoffset: 60; }
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes translate-flip {
+    0% { transform: rotateX(0); }
+    50% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0); }
+}
+
+/* ===== Questions I ask now ===== */
+.ask-deck {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin: 0;
+    padding: 10px 0;
+    list-style: none;
+}
+
+.ask-card {
+    position: relative;
+    flex: 0 1 280px;
+    min-height: 200px;
+    display: flex;
+    align-items: flex-end;
+    padding: 26px 24px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #9A5F68 0%, #7A3F4A 100%);
+    color: #FFF8F6;
+    box-shadow: 0 10px 30px rgba(158, 90, 99, 0.18);
+    transform: rotate(var(--tilt));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.ask-card:nth-child(2) {
+    background: linear-gradient(135deg, #667856 0%, #4C5C3C 100%);
+}
+
+.ask-card:nth-child(3) {
+    background: linear-gradient(135deg, #8E5E5B 0%, #5C3A33 100%);
+}
+
+.ask-card:hover {
+    transform: rotate(0) translateY(-6px);
+    box-shadow: 0 20px 44px rgba(158, 90, 99, 0.28);
+}
+
+.ask-mark {
+    position: absolute;
+    top: -18px;
+    right: 14px;
+    font-family: Georgia, serif;
+    font-size: 7em;
+    line-height: 1;
+    opacity: 0.18;
+}
+
+.ask-card p {
+    position: relative;
+    font-family: Georgia, serif;
+    font-size: 1.35em;
+    line-height: 1.35;
+}
+
+/* ===== What MIS did to my brain ===== */
+.brain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.brain-grid li {
+    padding: 22px 22px 24px;
+    border-radius: 14px;
+    border: 1px solid #EBD5D0;
+    background: #FFF8F6;
+    font-family: Georgia, serif;
+    font-size: 1.15em;
+    line-height: 1.35;
+    color: #2A1810;
+}
+
+.brain-num {
+    display: block;
+    margin-bottom: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.62em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #8F4661;
+}
+
+/* ===== Where it all meets ===== */
+.meets {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 1;
+    margin: 0 auto;
+    container-type: inline-size;
+}
+
+.meets-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.meets-ring circle,
+.meets-ring line {
+    fill: none;
+    stroke: #D9B8B3;
+    stroke-width: 0.3;
+    stroke-dasharray: 1 1.5;
+}
+
+.meets-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #A0606E, #7A3F4A);
+    box-shadow: 0 0 0 10px rgba(143, 70, 97, 0.1), 0 14px 34px rgba(122, 63, 74, 0.3);
+    font-family: Georgia, serif;
+    font-size: clamp(1.1em, 4.2cqw, 1.7em);
+    font-weight: 700;
+    color: #FFF8F6;
+}
+
+.meets-nodes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.meets-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 29%;
+    padding: 2.2cqw 1.8cqw;
+    border-radius: 14px;
+    border: 1px solid #EBD5D0;
+    background: #FFF8F6;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(42, 24, 16, 0.06);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.meets-node:hover,
+.meets-node:focus-visible {
+    border-color: #8F4661;
+    box-shadow: 0 12px 28px rgba(143, 70, 97, 0.18);
+    transform: translate(-50%, -50%) scale(1.04);
+    outline: none;
+}
+
+.meets-field {
+    display: block;
+    font-size: clamp(0.62em, 1.9cqw, 0.78em);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8F4661;
+}
+
+.meets-q {
+    display: block;
+    margin-top: 4px;
+    font-family: Georgia, serif;
+    font-size: clamp(0.85em, 2.8cqw, 1.1em);
+    line-height: 1.3;
+    color: #2A1810;
+}
+
+/* ===== Closing thesis ===== */
+.story-thesis {
+    max-width: 760px;
+    margin: 0 auto 40px;
+    padding: 50px 40px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #8F4661 0%, #6B4A5A 100%);
+    color: #FFF8F6;
+    text-align: center;
+}
+
+.thesis-lead {
+    font-family: Georgia, serif;
+    font-size: clamp(1.4em, 2.6vw, 1.9em);
+    line-height: 1.35;
+}
+
+.thesis-beats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 18px;
+    margin: 26px 0 18px;
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.thesis-close {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.25em;
+    line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal.pending,
+    .zoom-ring,
+    .translate-item,
+    .ask-card,
+    .meets-node {
+        transition: none;
+    }
+
+    .translate-row:hover .translate-arrow svg,
+    .translate-row:focus-visible .translate-arrow svg,
+    .translate-row:hover .translate-item.to,
+    .translate-row:focus-visible .translate-item.to {
+        animation: none;
+    }
+}
+
+/* ===== tablets ===== */
+@media (max-width: 800px) {
+    .zoom {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding: 26px 22px;
+    }
+
+    .zoom-lens {
+        max-width: 220px;
+    }
+
+    .ai-trail {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 30px;
+    }
+
+    .ai-trail::before {
+        display: none;
+    }
+
+    .brain-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* ===== phones ===== */
+@media (max-width: 560px) {
+    .story-section,
+    .story-pull {
+        margin-bottom: 50px;
+    }
+
+    .story-heading {
+        font-size: 1.6em;
+    }
+
+    .zoom-tick {
+        font-size: 0.6em;
+    }
+
+    .zoom-label {
+        font-size: 1.6em;
+    }
+
+    .ai-trail,
+    .brain-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .translate-row {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .translate-item {
+        flex-basis: auto;
+        width: 100%;
+    }
+
+    .translate-arrow {
+        transform: rotate(90deg);
+        flex-basis: auto;
+    }
+
+    .ask-card {
+        flex-basis: 100%;
+        min-height: 150px;
+        transform: none;
+    }
+
+    /* the circle gets too tight: Product on top, the six questions in a grid below */
+    .meets {
+        aspect-ratio: auto;
+        display: grid;
+        gap: 18px;
+    }
+
+    .meets-ring {
+        display: none;
+    }
+
+    .meets-center {
+        position: static;
+        width: 120px;
+        margin: 0 auto;
+        transform: none;
+        font-size: 1.3em;
+    }
+
+    .meets-nodes {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .meets-node {
+        position: static;
+        width: auto;
+        padding: 14px 12px;
+        transform: none;
+    }
+
+    .meets-node:hover,
+    .meets-node:focus-visible {
+        transform: scale(1.03);
+    }
+
+    .meets-field {
+        font-size: 0.7em;
+    }
+
+    .meets-q {
+        font-size: 1em;
+    }
+
+    .story-thesis {
+        padding: 36px 22px;
+    }
+}

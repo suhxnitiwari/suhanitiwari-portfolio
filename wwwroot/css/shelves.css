@@ -144,6 +144,72 @@
     color: #8A4D57;
 }
 
+/* Make > Traveling: a trip's card, one row per spot */
+.trip-card {
+    width: min(640px, calc(100vw - 32px));
+}
+
+.trip-spots {
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.trip-spot {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    padding: 16px 0;
+    border-top: 1px solid #EBD5D0;
+}
+
+.trip-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #F6E4E1;
+    font-size: 1.2em;
+}
+
+.trip-spot h4 {
+    margin: 0;
+    font-family: Georgia, serif;
+    font-size: 1.15em;
+    color: #2A1810;
+}
+
+.trip-must {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #8A4D57;
+    color: #FFF8F6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.6em;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.trip-kind {
+    margin: 2px 0 6px;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6B7F5E;
+}
+
+.trip-spot p:last-child {
+    margin: 0;
+    line-height: 1.6;
+}
+
 /* Wide shelves (board game boxes): landscape cards, fewer across */
 .shelf.wide {
     --visible: 3.3;
@@ -414,6 +480,82 @@
 
 .video-open .video-topic + .shelf-item-title {
     margin-top: 4px;
+}
+
+/* the mulberry card at the front of Inspiration: my line for All, or "Why I value…" for a topic */
+.why-card,
+.soon-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    min-height: 100%;
+    padding: 22px 22px;
+    border-radius: 12px;
+    background: linear-gradient(150deg, #9E5A63 0%, #7E4550 100%);
+    color: #FFF8F6;
+    box-shadow: 0 10px 24px rgba(138, 77, 87, 0.18);
+}
+
+.why-kicker {
+    font-size: 0.7em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #F3DADA;
+}
+
+.why-topic {
+    margin-top: 4px;
+    font-family: Georgia, serif;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.why-text {
+    margin: 10px 0 0;
+    font-family: Georgia, serif;
+    font-size: 1.15em;
+    font-style: italic;
+    line-height: 1.45;
+}
+
+/* a topic with no talks yet */
+.soon-card {
+    background: #FFF8F6;
+    border: 1.5px dashed #D9B8B3;
+    box-shadow: none;
+    color: #2A1810;
+}
+
+.soon-card .why-kicker {
+    color: #9E5A63;
+}
+
+.soon-card p {
+    margin: 8px 0 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+}
+
+/* a picked topic: a 3-column grid instead of one scrolling row */
+.shelf.video-shelf.filtered .shelf-rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+    scroll-snap-type: none;
+    cursor: default;
+}
+
+.shelf.video-shelf.filtered .shelf-arrow {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    /* phones: the card on top, the talks stacked under it */
+    .shelf.video-shelf.filtered .shelf-rail {
+        grid-template-columns: 1fr;
+    }
 }
 
 .shelf-item[hidden] {

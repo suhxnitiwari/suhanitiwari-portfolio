@@ -1007,7 +1007,9 @@
         @{
             // The pieces that make me: (short label on the piece, full name, what it gave me, traits, kind).
             // kind: "person" = blush piece, "world" = sage piece, "me" = the center piece.
-            // Order fills the puzzle row by row around the center piece (me).
+            // The first four (my family and Hana) always sit in the four corners: top-left, top-right, bottom-left, bottom-right.
+            // The rest fill the other spots row by row, around the center piece (me), people mixed in with everything else.
+            // A few spots are notched on both sides, so the shortest labels (Joy, Curiosity, Tradition, Principles) sit there.
             var pieces = new[]
             {
                 new { label = "Papa", source = "Papa", theme = "Drive", kind = "person",
@@ -1016,30 +1018,30 @@
                       traits = new[] { "Compassion", "Patience", "Gratitude", "Selflessness", "Gentleness", "Humility", "Grace" } },
                 new { label = "Amaira", source = "Amaira", theme = "Imagination", kind = "person",
                       traits = new[] { "Creativity", "Curiosity", "Wonder", "Playfulness", "Authenticity", "Self-expression" } },
-                new { label = "Avery", source = "Avery", theme = "Principles", kind = "person",
-                      traits = new[] { "Fairness", "Discipline", "Integrity", "Accountability", "Conviction", "Critical thinking", "Intellectual challenge" } },
-                new { label = "Reese", source = "Reese", theme = "Joy", kind = "person",
-                      traits = new[] { "Optimism", "Warmth", "Spontaneity", "Presence", "Openness", "Lightheartedness" } },
                 new { label = "Hana", source = "Hana", theme = "Perspective", kind = "person",
                       traits = new[] { "Emotional wisdom", "Introspection", "Intentionality", "Self-worth", "Nuance", "Discernment", "Patience" } },
-                new { label = "India", source = "Indian upbringing", theme = "Tradition", kind = "world",
-                      traits = new[] { "Family", "Rituals", "Language", "Celebration", "Community", "Respect", "Heritage", "Cultural identity" } },
-                new { label = "Me", source = "Suhani", theme = "Choice", kind = "me",
-                      traits = new[] { "Agency", "Reflection", "Ambition", "Evolving values", "Choosing what I keep and what I change" } },
-                new { label = "America", source = "American education", theme = "Independence", kind = "world",
-                      traits = new[] { "Individuality", "Questioning", "Exploration", "Intellectual freedom", "Independence", "Opportunity", "Multidisciplinary thinking" } },
-                new { label = "Two cultures", source = "Growing up between two cultures", theme = "Duality", kind = "world",
-                      traits = new[] { "Adaptability", "Perspective", "Navigating different expectations", "Learning to belong to more than one world" } },
                 new { label = "School", source = "Education & academics", theme = "Curiosity", kind = "world",
                       traits = new[] { "Achievement", "Intellectual ambition", "Analysis", "Lifelong learning", "Questioning", "Interdisciplinary thinking" } },
+                new { label = "America", source = "American education", theme = "Independence", kind = "world",
+                      traits = new[] { "Individuality", "Questioning", "Exploration", "Intellectual freedom", "Independence", "Opportunity", "Multidisciplinary thinking" } },
+                new { label = "Reese", source = "Reese", theme = "Joy", kind = "person",
+                      traits = new[] { "Optimism", "Warmth", "Spontaneity", "Presence", "Openness", "Lightheartedness" } },
+                new { label = "Two cultures", source = "Growing up between two cultures", theme = "Duality", kind = "world",
+                      traits = new[] { "Adaptability", "Perspective", "Navigating different expectations", "Learning to belong to more than one world" } },
                 new { label = "Friendships", source = "Friendships & relationships", theme = "Connection", kind = "world",
                       traits = new[] { "Belonging", "Vulnerability", "Boundaries", "Communication", "Trust", "Learning when to hold on and when to let go" } },
+                new { label = "Me", source = "Suhani", theme = "Choice", kind = "me",
+                      traits = new[] { "Agency", "Reflection", "Ambition", "Evolving values", "Choosing what I keep and what I change" } },
                 new { label = "Challenges", source = "Challenges & conflict", theme = "Resilience", kind = "world",
                       traits = new[] { "Self-advocacy", "Persistence", "Emotional growth", "Learning from mistakes", "Becoming stronger without becoming harder" } },
                 new { label = "Creativity", source = "Creativity & writing", theme = "Expression", kind = "world",
                       traits = new[] { "Storytelling", "Imagination", "Reflection", "Communication", "Making meaning from experiences" } },
+                new { label = "Avery", source = "Avery", theme = "Principles", kind = "person",
+                      traits = new[] { "Fairness", "Discipline", "Integrity", "Accountability", "Conviction", "Critical thinking", "Intellectual challenge" } },
                 new { label = "The internet", source = "The internet & social media", theme = "Exposure", kind = "world",
-                      traits = new[] { "Ideas", "Aesthetics", "Connection", "Inspiration", "Learning to be intentional about what influences me" } }
+                      traits = new[] { "Ideas", "Aesthetics", "Connection", "Inspiration", "Learning to be intentional about what influences me" } },
+                new { label = "India", source = "Indian upbringing", theme = "Tradition", kind = "world",
+                      traits = new[] { "Family", "Rituals", "Language", "Celebration", "Community", "Respect", "Heritage", "Cultural identity" } }
             };
         }
         <h2 class="world-block-title">Pieces of Me</h2>
@@ -1355,6 +1357,7 @@
         const pieces = @(Html.Raw(Json.Serialize(pieces)));
         const meIndex = pieces.findIndex(p => p.kind === 'me');
         const others = pieces.filter((_, i) => i !== meIndex);
+        const cornerPieces = others.slice(0, 4), middlePieces = others.slice(4);
         const S = 130;          // size of one square before the tabs
         const PAD = 0;          // no border, so the puzzle's edges line up with the maps above and below
         const R = 20;           // rounded outer corners, to match the maps
@@ -1366,13 +1369,16 @@
         // The tab shape is symmetric, so neighbors drawing the same edge backwards line up exactly.
         const TAB = [[0.40, 0, 0.44, 0.08, 0.40, 0.14], [0.35, 0.22, 0.42, 0.28, 0.50, 0.28],
                      [0.58, 0.28, 0.65, 0.22, 0.60, 0.14], [0.56, 0.08, 0.60, 0, 0.64, 0]];
+        const DEPTH = 0.72;     // tabs a little shallower than the classic shape, so the words have room
+        const NOTCH = 0.28 * DEPTH * S + 5;   // how far a blank cuts into a piece, plus a little breathing room
+
         function edge(ax, ay, bx, by, d) {
             if (!d) return ` L${bx},${by}`;
             const ex = bx - ax, ey = by - ay;
             const nx = ey * d, ny = -ex * d;   // outward normal, scaled to the edge length
             const pt = (u, v) => `${(ax + ex * u + nx * v).toFixed(1)},${(ay + ey * u + ny * v).toFixed(1)}`;
             let path = ` L${pt(0.36, 0)}`;
-            TAB.forEach(c => { path += ` C${pt(c[0], c[1])} ${pt(c[2], c[3])} ${pt(c[4], c[5])}`; });
+            TAB.forEach(c => { path += ` C${pt(c[0], c[1] * DEPTH)} ${pt(c[2], c[3] * DEPTH)} ${pt(c[4], c[5] * DEPTH)}`; });
             return path + ` L${bx},${by}`;
         }
 
@@ -1386,11 +1392,14 @@
 
             // Pieces first, then every label on top, so a neighbor's tab never covers a word
             paths = [];
+            const corners = [0, cols - 1, (rows - 1) * cols, rows * cols - 1];
             let order = 0, svg = '', labels = '';
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const cell = r * cols + c;
-                    const index = cell === center ? meIndex : pieces.indexOf(others[order++]);
+                    const index = cell === center ? meIndex
+                                : corners.includes(cell) ? pieces.indexOf(cornerPieces[corners.indexOf(cell)])
+                                : pieces.indexOf(middlePieces[order++]);
                     const p = pieces[index];
                     const x = PAD + c * S, y = PAD + r * S;
                     const top = r === 0 ? 0 : -h(r - 1, c);
@@ -1401,14 +1410,16 @@
                             + edge(x + S, y + S, x, y + S, bottom) + edge(x, y + S, x, y, left) + ' Z';
                     paths[index] = d;
                     const fill = FILLS[p.kind][(r + c) % 2];
-                    const cx = x + S / 2, cy = y + S / 2;
+                    // a blank on the left or right cuts into the middle, so the words shift away from it
+                    const inL = left === -1 ? NOTCH : 8, inR = right === -1 ? NOTCH : 8;
+                    const cx = x + (inL + S - inR) / 2, cy = y + S / 2;
                     const name = p.kind === 'me' ? p.label : p.theme;
                     const small = p.kind === 'me' ? p.source : p.label;
                     svg += `<g class="piece ${p.kind}${index === selected ? ' selected' : ''}" data-i="${index}" tabindex="0" role="button"
                                 aria-pressed="${index === selected}" aria-label="${p.source}: ${p.theme}">
                                 <path d="${d}" fill="${fill}"/>
                             </g>`;
-                    labels += `<g class="piece-label ${p.kind}">
+                    labels += `<g class="piece-label ${p.kind}" data-room="${S - inL - inR}">
                                 <text class="piece-theme" x="${cx}" y="${cy - 6}">${name}</text>
                                 <text class="piece-source" x="${cx}" y="${cy + 15}">${small}</text>
                             </g>`;
@@ -1424,6 +1435,17 @@
                 <g clip-path="url(#puzzleRing)"><path class="piece-outline" d=""/><path class="piece-focus" d=""/></g>
                 <g aria-hidden="true">${labels}</g></svg>`;
             const focusRing = board.querySelector('.piece-focus');
+            // if any word is wider than its piece, every word of that kind shrinks by the same amount,
+            // so the puzzle reads evenly ('Me' keeps its own size)
+            ['.piece-theme', '.piece-source'].forEach(kind => {
+                let scale = 1;
+                board.querySelectorAll(`.piece-label:not(.me) ${kind}`).forEach(t => {
+                    scale = Math.min(scale, +t.parentNode.dataset.room / t.getComputedTextLength());
+                });
+                if (scale < 1) board.querySelectorAll(`.piece-label:not(.me) ${kind}`).forEach(t => {
+                    t.style.fontSize = `${parseFloat(getComputedStyle(t).fontSize) * scale}px`;
+                });
+            });
             board.querySelectorAll('.piece').forEach(g => {
                 g.addEventListener('click', () => select(+g.dataset.i));
                 g.addEventListener('keydown', e => {

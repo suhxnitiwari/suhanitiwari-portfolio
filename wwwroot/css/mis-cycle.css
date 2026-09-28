@@ -1,0 +1,679 @@
+/* ===== Coursework: Overview / MIS Major tabs ===== */
+.cw-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: -24px 0 48px;
+}
+
+.cw-tab {
+    padding: 11px 26px;
+    border-radius: 999px;
+    border: 1.5px solid #D9B8B3;
+    background: #FFF8F6;
+    color: #2A1810;
+    font: inherit;
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cw-tab:hover {
+    border-color: #8F4661;
+}
+
+.cw-tab[aria-selected="true"] {
+    background: #8F4661;
+    border-color: #8F4661;
+    color: #FFF8F6;
+}
+
+.cw-tab:focus-visible {
+    outline: 2px solid #8F4661;
+    outline-offset: 3px;
+}
+
+.cw-panel[hidden] {
+    display: none;
+}
+
+.cw-overview-note {
+    margin: -20px 0 36px;
+    font-size: 1.1em;
+    text-align: center;
+    color: #56634A;
+}
+
+/* ===== MIS Coursework: the cycle ===== */
+.mis {
+    max-width: 1100px;
+    margin: 0 auto 60px;
+}
+
+.mis-intro {
+    max-width: 680px;
+    margin: 0 auto 36px;
+    text-align: center;
+}
+
+.mis-intro h2 {
+    margin: 0 0 12px;
+    font-family: Georgia, serif;
+    font-size: 2.2em;
+    color: #2A1810;
+}
+
+.mis-intro p {
+    font-size: 1.05em;
+    line-height: 1.7;
+    color: #2A1810;
+}
+
+.mis-diagram {
+    position: relative;
+    width: 100%;
+    max-width: 940px;
+    aspect-ratio: 600 / 470;
+    container-type: inline-size;   /* the boxes and their text scale with the diagram */
+    margin: calc(4.5% + 18px) auto calc(5% + 22px); /* room for STRATEGIC above and APPLIED below, growing with the diagram */
+}
+
+.mis-diagram > svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.mis-axis {
+    stroke: #D9B8B3;
+    stroke-width: 1;
+    stroke-dasharray: 4 6;
+}
+
+.mis-ring {
+    fill: none;
+    stroke: #A9788A;
+    stroke-opacity: 0.18;
+    stroke-width: 18;
+}
+
+.mis-arrow {
+    fill: none;
+    stroke: #A9788A;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    marker-end: url(#mis-head);
+    transition: opacity 0.25s ease, stroke 0.25s ease, stroke-width 0.25s ease;
+}
+
+.mis-arrow.active {
+    stroke: #8F4661;
+    stroke-width: 4;
+    marker-end: url(#mis-head-active);
+}
+
+.mis-arrow.faded {
+    opacity: 0.45;
+}
+
+.mis-center {
+    fill: #FFF8F6;
+    stroke: #EBD5D0;
+    stroke-width: 1;
+}
+
+.mis-center-text {
+    font-family: Georgia, serif;
+    font-size: 14px;
+    text-anchor: middle;
+    fill: #2A1810;
+}
+
+.mis-center-text.accent {
+    font-style: italic;
+    fill: #8F4661;
+}
+
+.mis-axis-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    fill: #8A7A76;
+    text-anchor: middle;
+}
+
+/* the four steps, sitting on the ring */
+.mis-box {
+    position: absolute;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    width: 29.3%;
+    min-width: 150px;
+    padding: 1.6cqw 1.9cqw 1.8cqw;
+    font-size: clamp(13px, 1.85cqw, 18px);
+    border: none;
+    border-radius: 16px;
+    background: var(--step);
+    color: #FFFFFF;
+    font: inherit;
+    text-align: left;
+    transition: box-shadow 0.25s ease;
+}
+
+/* the step button covers the whole box; the course chips sit on top as their own buttons */
+.mis-box-main,
+.mis-row-main {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mis-box-main::after,
+.mis-row-main::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.mis-box-main:focus-visible,
+.mis-row-main:focus-visible {
+    outline: none;
+}
+
+.mis-box-main:focus-visible::after,
+.mis-row-main:focus-visible::after {
+    outline: 3px solid #2A1810;
+    outline-offset: 3px;
+    border-radius: 16px;
+}
+
+.mis-box-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mis-num {
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: 0.85;
+}
+
+.mis-icon {
+    width: 1.35em;
+    height: 1.35em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.mis-box-title {
+    display: block;
+    margin: 0.4em 0 0.55em;
+    font-family: Georgia, serif;
+    font-size: 1.3em;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.mis-chips {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.mis-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.15em 0.7em;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.mis-chip:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.mis-chip:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+}
+
+.mis-chip.elective {
+    border-style: dashed;
+}
+
+.mis-clock {
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+}
+
+/* picked: a mulberry ring. The others step back (like about 75% opacity) with a cream wash rather than real
+   transparency, so the ring and axes behind them don't show through */
+.mis.has-selection .mis-box {
+    box-shadow: inset 0 0 0 999px rgba(250, 241, 239, 0.22);
+}
+
+.mis .mis-box.selected {
+    box-shadow: 0 0 0 3px #FAF1EF, 0 0 0 6px #8F4661;
+}
+
+.mis-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 22px;
+    margin: 18px 0 30px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.82em;
+    color: #56634A;
+}
+
+.mis-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.mis-legend-chip {
+    display: inline-block;
+    width: 26px;
+    height: 14px;
+    border-radius: 999px;
+    border: 1.5px dashed #6B4A5A;
+}
+
+.mis-legend .mis-clock {
+    width: 14px;
+    height: 14px;
+    color: #6B4A5A;
+}
+
+/* ===== the detail card ===== */
+.mis-details {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.mis-detail {
+    padding: 28px 30px;
+    border-radius: 16px;
+    border: 1px solid #EBD5D0;
+    background: #FFF8F6;
+}
+
+.mis-details .mis-detail:not(.active) {
+    display: none;
+}
+
+.mis-detail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.mis-detail-label {
+    margin: 0 0 6px;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #6B7F5E;
+}
+
+.mis-detail-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-family: Georgia, serif;
+    font-size: 1.7em;
+    color: #2A1810;
+}
+
+.mis-dot {
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--step);
+}
+
+.mis-detail-nav {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.mis-nav-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #EBD5D0;
+    background: #FAF1EF;
+    color: #8F4661;
+    font-size: 1.4em;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.mis-nav-btn:hover {
+    background: #F6E4E1;
+}
+
+.mis-nav-btn:focus-visible {
+    outline: 2px solid #8F4661;
+    outline-offset: 2px;
+}
+
+.mis-detail-desc {
+    margin: 14px 0 18px;
+    line-height: 1.7;
+    color: #2A1810;
+}
+
+.mis-courses {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mis-course {
+    padding: 14px 0;
+    border-top: 1px solid #EBD5D0;
+}
+
+.mis-course-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+}
+
+.mis-code {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: #8F4661;
+}
+
+.mis-course-name {
+    font-weight: 600;
+    color: #2A1810;
+}
+
+.mis-tag {
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.mis-tag.elective {
+    border: 1.5px dashed #6B4A5A;
+    color: #6B4A5A;
+}
+
+.mis-tag.coming {
+    background: #E6ECDF;
+    color: #56705F;
+}
+
+.mis-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mis-skills li {
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: #F6E4E1;
+    font-size: 0.82em;
+    color: #2A1810;
+}
+
+.mis-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid #EBD5D0;
+    font-style: italic;
+    color: #8F4661;
+}
+
+.mis-footer .mis-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* who taught it */
+.mis-prof {
+    margin: 8px 0 0;
+    font-size: 0.9em;
+    color: #56634A;
+}
+
+/* the big question each course made me answer, under its name */
+.mis-question {
+    margin: 6px 0 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.02em;
+    color: #8F4661;
+}
+
+/* MIS 333K's four capabilities: a small row of columns */
+.mis-caps {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.mis-caps[hidden] {
+    display: none;
+}
+
+.mis-cap {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #FAF1EF;
+    border-top: 3px solid var(--step, #8F4661);
+}
+
+.mis-cap-title {
+    margin: 0 0 6px;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: #2A1810;
+}
+
+.mis-cap ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.82em;
+    line-height: 1.55;
+    color: #56634A;
+}
+
+.mis-course-dialog .mis-caps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ===== one course, opened from its chip ===== */
+.mis-course-dialog {
+    margin: auto;   /* the page resets every margin to 0, which would pin the card to the top-left */
+    width: min(480px, calc(100vw - 32px));
+    padding: 30px 30px 28px;
+    border: 1px solid #EBD5D0;
+    border-top: 6px solid var(--step, #8F4661);
+    border-radius: 16px;
+    background: #FFF8F6;
+    color: #2A1810;
+}
+
+.mis-course-dialog::backdrop {
+    background: rgba(42, 24, 16, 0.4);
+}
+
+.mis-dialog-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    border: none;
+    background: none;
+    font-size: 1.8em;
+    line-height: 1;
+    color: #2A1810;
+    cursor: pointer;
+}
+
+.mis-dialog-close:hover {
+    color: #8F4661;
+}
+
+.mis-dialog-close:focus-visible {
+    outline: 2px solid #8F4661;
+    outline-offset: 2px;
+}
+
+.mis-dialog-title {
+    margin: 0 30px 10px 0;
+    font-family: Georgia, serif;
+    font-size: 1.45em;
+    line-height: 1.3;
+}
+
+.mis-dialog-title .mis-code {
+    display: block;
+    font-size: 0.75em;
+}
+
+.mis-dialog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.mis-dialog-tags:empty {
+    display: none;
+}
+
+.mis-dialog-sub {
+    margin: 18px 0 0;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #6B7F5E;
+}
+
+/* the step cards used on phones (hidden on wider screens) */
+.mis-row {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mis-arrow,
+    .mis-box,
+    .cw-tab {
+        transition: none;
+    }
+}
+
+/* ===== phones: a list of the four steps; tapping one opens its detail underneath ===== */
+@media (max-width: 499px) {
+    .cw-tabs {
+        margin-top: -16px;
+    }
+
+    .mis-intro h2 {
+        font-size: 1.7em;
+    }
+
+    .mis-diagram {
+        display: none;
+    }
+
+    .mis-legend {
+        margin: 0 0 18px;
+    }
+
+    .mis-row {
+        position: relative;
+        display: block;
+        margin-top: 12px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: var(--step);
+        color: #FFFFFF;
+    }
+
+    .mis-row:has(.mis-row-main[aria-expanded="true"]) {
+        border-radius: 16px 16px 0 0;
+    }
+
+    .mis-details .mis-detail {
+        display: none;
+        padding: 20px 18px;
+        border-top: none;
+        border-radius: 0 0 16px 16px;
+    }
+
+    .mis-details .mis-detail.active {
+        display: block;
+    }
+
+    .mis-detail-nav {
+        display: none;
+    }
+
+    .mis-detail-title {
+        font-size: 1.35em;
+    }
+
+    .mis-caps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

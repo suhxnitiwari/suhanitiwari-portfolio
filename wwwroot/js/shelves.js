@@ -11,7 +11,7 @@
         const list = document.getElementById(id);
         list.replaceChildren(...items.map(text => Object.assign(document.createElement('li'), { textContent: text })));
     };
-    document.querySelectorAll('.bake-open').forEach(button => {
+    document.querySelectorAll('.bake-open[data-recipe]').forEach(button => {
         button.addEventListener('click', () => {
             const r = data[Number(button.dataset.recipe)];
             const kicker = document.getElementById('recipeKicker');
@@ -38,6 +38,18 @@
     // click outside the card closes it (Esc closes it too)
     dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
 })();
+
+// ===== Make > Traveling: clicking a trip opens its card of spots =====
+document.querySelectorAll('.trip-open').forEach(button => {
+    const dialog = document.getElementById(button.dataset.trip);
+    if (!dialog) return;
+    button.addEventListener('click', () => {
+        if (button.closest('.shelf-rail').dataset.dragged) return;
+        dialog.showModal();
+    });
+    dialog.querySelector('.recipe-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+});
 
 // ===== Make > Art: clicking a piece shows it large =====
 (function () {
@@ -88,19 +100,27 @@
 })();
 
 // ===== Watch > Inspiration: topic buttons show just that topic's talks =====
+// All: one scrolling row led by the mulberry card. A topic: a 3-column grid led by its "Why I value…" card
+// (if it has one), or a "coming soon" tile for a topic with no talks yet.
 document.querySelectorAll('.video-topics').forEach(group => {
     const shelf = group.closest('.shelf');
     const rail = shelf.querySelector('.shelf-rail');
     const items = [...rail.querySelectorAll('.shelf-item')];
+    const talks = items.filter(item => !item.matches('.why-item, .soon-item'));
     const seeAll = shelf.querySelector('.shelf-see-all');
     group.querySelectorAll('.video-topic-btn').forEach(btn => btn.addEventListener('click', () => {
         const topic = btn.dataset.topic;
         group.querySelectorAll('.video-topic-btn').forEach(b => b.setAttribute('aria-pressed', b === btn));
-        items.forEach(item => item.hidden = topic !== '' && item.dataset.topic !== topic);
-        const shown = items.filter(item => !item.hidden).length;
+        items.forEach(item => {
+            if (item.classList.contains('why-item')) item.hidden = item.dataset.why !== topic;
+            else if (item.classList.contains('soon-item')) item.hidden = item.dataset.topic !== topic;
+            else item.hidden = topic !== '' && item.dataset.topic !== topic;
+        });
+        shelf.classList.toggle('filtered', topic !== '');
         if (seeAll) {
+            const shown = talks.filter(item => !item.hidden).length;
             seeAll.dataset.count = shown;
-            seeAll.hidden = shown <= 3;
+            seeAll.hidden = topic !== '' || shown <= 3;
             if (!shelf.classList.contains('expanded')) seeAll.textContent = `See all ${shown} →`;
         }
         rail.scrollLeft = 0;

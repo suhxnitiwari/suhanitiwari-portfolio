@@ -78,6 +78,78 @@
         color: #2A1810;
     }
 
+    /* "At work ⌄": opens under the definition to show what the strength looks like on a team */
+    .clifton-work summary {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .clifton-work summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .clifton-work summary::after {
+        content: "⌄";
+        font-size: 1.4em;
+        line-height: 0.6;
+        transition: transform 0.25s ease;
+    }
+
+    .clifton-work[open] summary::after {
+        transform: rotate(180deg) translateY(-3px);
+    }
+
+    .clifton-work summary:hover {
+        color: #8A4D57;
+    }
+
+    .clifton-work summary:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+
+    .clifton-work ul {
+        list-style: none;
+        margin: 14px 0 0;
+        padding: 14px 0 0;
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .clifton-work li {
+        position: relative;
+        padding-left: 20px;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .clifton-work li + li {
+        margin-top: 8px;
+    }
+
+    .clifton-work li::before {
+        content: "▸";
+        position: absolute;
+        left: 0;
+        color: #9E5A63;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .clifton-work summary::after {
+            transition: none;
+        }
+    }
+
     /* four of five in one domain: shown as a single bar under the list */
     .clifton-domains {
         max-width: 760px;
@@ -153,6 +225,55 @@
 
     .clifton-summary .clifton-domain.influencing {
         color: #9E5A63;
+    }
+
+    /* slide 3 uses both colors: a green dot and a mulberry dot before its label */
+    .clifton-summary .clifton-domain.together {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #2A1810;
+    }
+
+    .clifton-dots {
+        display: inline-flex;
+        gap: 4px;
+    }
+
+    .clifton-dots::before,
+    .clifton-dots::after {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #7F9A6B;
+    }
+
+    .clifton-dots::after {
+        background: #9E5A63;
+    }
+
+    /* the bar highlights the strengths the current slide is about */
+    .clifton-bar span {
+        transition: opacity 0.35s ease;
+    }
+
+    .clifton-bar[data-focus="relationship"] span.influencing,
+    .clifton-bar[data-focus="influencing"] span:not(.influencing) {
+        opacity: 0.22;
+    }
+
+    /* all three slides stack in one spot, so the box keeps the tallest one's height and the arrows don't jump */
+    .clifton-slides.ready {
+        display: grid;
+    }
+
+    .clifton-slides.ready .clifton-slide {
+        grid-area: 1 / 1;
+    }
+
+    .clifton-slides.ready .clifton-slide:not(.active) {
+        visibility: hidden;
     }
 
     .clifton-slide p:last-child {
@@ -271,6 +392,105 @@
         color: #2A1810;
     }
 
+    /* the hexagon: all six letters, my three in mulberry */
+    .riasec-hex {
+        max-width: 520px;
+        margin: 0 auto 28px;
+    }
+
+    .riasec-hex svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .hex-ring {
+        fill: none;
+        stroke: #EBD5D0;
+        stroke-width: 1;
+    }
+
+    .hex-ring:last-of-type {
+        stroke: #D9B8B3;
+    }
+
+    .hex-spoke {
+        stroke: #EBD5D0;
+        stroke-width: 1;
+    }
+
+    .hex-shape {
+        fill: rgba(138, 77, 87, 0.16);
+        stroke: #8A4D57;
+        stroke-width: 2;
+        stroke-linejoin: round;
+    }
+
+    .hex-hit {
+        fill: transparent;
+    }
+
+    .hex-dot {
+        fill: #C9A3A8;
+        stroke: #FFF8F6;
+        stroke-width: 2;
+        transition: r 0.2s ease;
+    }
+
+    .hex-point.mine .hex-dot {
+        fill: #8A4D57;
+    }
+
+    .hex-point {
+        outline: none;
+        cursor: default;
+    }
+
+    .hex-point:hover .hex-dot,
+    .hex-point:focus-visible .hex-dot {
+        r: 7;
+    }
+
+    .hex-point:focus-visible .hex-hit {
+        stroke: #8A4D57;
+        stroke-width: 1.5;
+    }
+
+    .hex-label {
+        font-size: 12px;
+        fill: #7A6A66;
+    }
+
+    .hex-letter {
+        font-family: Georgia, serif;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .hex-score {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        fill: #7A6A66;
+    }
+
+    .hex-point.mine .hex-label {
+        fill: #2A1810;
+    }
+
+    .hex-point.mine .hex-letter,
+    .hex-point.mine .hex-score {
+        fill: #8A4D57;
+    }
+
+    .riasec-hex figcaption {
+        margin-top: 10px;
+        font-size: 0.9em;
+        text-align: center;
+        color: #56634A;
+    }
+
     .disc-grid.riasec-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -324,6 +544,27 @@
         ("S", "Social", "People & Helping", 67.5, "I care about people and love helping wherever I can."),
         ("E", "Enterprising", "Leadership & Influence", 66.7, "I step into leadership when it's needed and enjoy having real influence on the outcome.")
     };
+    // All six letters in Holland's hexagon order (R at the top, then clockwise), with my scores from the same report.
+    // My code (ASE) is highlighted; the other three are shown faded, so the full shape is visible.
+    var hexagon = new[]
+    {
+        ("R", "Realistic", 65.6),
+        ("I", "Investigative", 55.6),
+        ("A", "Artistic", 91.7),
+        ("S", "Social", 67.5),
+        ("E", "Enterprising", 66.7),
+        ("C", "Conventional", 50.0)
+    };
+    var myCode = riasec.Select(r => r.Item1).ToHashSet();
+    // a point on the hexagon: r = 0 to 100 (distance from the center), k = which corner (0 = R at the top)
+    string HexPoint(double r, int k)
+    {
+        var angle = (-90 + 60 * k) * Math.PI / 180;
+        var ic = System.Globalization.CultureInfo.InvariantCulture;
+        return (r * Math.Cos(angle)).ToString("0.#", ic) + "," + (r * Math.Sin(angle)).ToString("0.#", ic);
+    }
+    string HexRing(double r) => string.Join(" ", Enumerable.Range(0, 6).Select(k => HexPoint(r, k)));
+
     var riasecStrengths = new[] { "Original thinking", "Visual and verbal expression", "Brainstorming and ideation", "Adaptability to new approaches" };
     // work style, from the report's other dimension descriptions (not job titles, so nothing is ruled out)
     var riasecStyle = new[] { "Works well solo or with a team", "Hands-on and big-picture", "Balances research with action", "Adapts when plans change" };
@@ -339,6 +580,26 @@
         ("Individualization", "Relationship Building", "I notice what makes each person unique, and how different people can work together best."),
         ("Developer", "Relationship Building", "I see the potential in people and get real satisfaction from helping them grow."),
         ("Communication", "Influencing", "I put thoughts into words easily, whether it's a conversation or a presentation.")
+    };
+
+    // "At work": what each strength looks like on a team, shown when the card opens
+    var cliftonAtWork = new Dictionary<string, string[]>
+    {
+        ["Relator"] = new[] {
+            "I build real trust with the people I work with, so hard conversations and honest feedback feel easier.",
+            "I’m the teammate people come to when something’s off, which means problems surface early instead of late." },
+        ["Empathy"] = new[] {
+            "I pick up on how a meeting actually went, not just what was said, and I notice who’s frustrated, lost or holding back.",
+            "In customer or user work, I’m good at understanding what people feel about a product, not just what they say about it." },
+        ["Individualization"] = new[] {
+            "I notice what each teammate is best at and help match people to the tasks they’ll do well.",
+            "I adjust how I communicate for each person: data for one, the big picture for another, a quick check-in for someone else." },
+        ["Developer"] = new[] {
+            "I give specific, genuine recognition, and I notice the small wins people don’t always get credit for.",
+            "I like onboarding and mentoring. At Girls Who Code, I grew chapters at two schools to 60+ students per session." },
+        ["Communication"] = new[] {
+            "I turn messy ideas into clear presentations, pitches and write-ups that people actually remember.",
+            "I’m comfortable presenting to a room, and I shape the message for whoever’s listening." }
     };
 }
 
@@ -459,6 +720,18 @@
                             <p class="clifton-domain @(influencing ? "influencing" : "")">@domain</p>
                             <h3>@name</h3>
                             <p class="clifton-line">@line</p>
+                            @if (cliftonAtWork.TryGetValue(name, out var atWork))
+                            {
+                                <details class="clifton-work">
+                                    <summary>At work</summary>
+                                    <ul>
+                                        @foreach (var point in atWork)
+                                        {
+                                            <li>@point</li>
+                                        }
+                                    </ul>
+                                </details>
+                            }
                         </div>
                     </li>
                 }
@@ -478,18 +751,23 @@
             </div>
 
             <div class="clifton-summary">
-                <div class="clifton-slide" data-slide="0">
+                <div class="clifton-slides">
+                <div class="clifton-slide" data-slide="0" data-name="Relationship Building" data-focus="relationship">
                     <p class="clifton-domain">Relationship Building</p>
-                    <p>With four of my five strengths in Relationship Building, people shape how I work. I notice people. I remember how someone likes to communicate, what they light up talking about, what they’re quietly great at, when they have something to say but haven’t said it yet, and when they could use a little more encouragement than usual. I like figuring out what makes each person them and making sure those differences have a place on the team.</p>
-                    <p>Communication, my fifth strength, gives all that noticing somewhere to go: into thoughtful feedback, genuine encouragement, a presentation that holds attention, or a pitch shaped around the person actually hearing it. I can be direct and decisive while still paying attention to the people involved. To me, working well with people starts with actually seeing them.</p>
+                    <p>With four of my five strengths in Relationship Building, people shape how I work. I notice how someone likes to communicate, what they light up talking about, what they’re quietly great at, and when they could use a little more encouragement than usual. I like figuring out what makes each person them, and making sure those differences have a place on the team.</p>
                 </div>
-                <div class="clifton-slide" data-slide="1" hidden>
+                <div class="clifton-slide" data-slide="1" data-name="Influencing" data-focus="influencing">
                     <p class="clifton-domain influencing">Influencing</p>
-                    <p>I have a lot of thoughts, and fortunately, I usually have the words for them too. I love taking an idea and figuring out how to make someone else care about it: through a story, an example, a presentation, a pitch, or the exact sentence that finally makes it click. I’m comfortable speaking up, asking the question everyone is thinking, and giving an idea enough energy that other people want to join in. But Communication works especially well with my other strengths: I notice the person first, then shape the message for the person actually hearing it. The goal isn’t just to be heard. It’s to make an idea understood, memorable, and worth responding to.</p>
+                    <p>I have a lot of thoughts, and fortunately, I usually have the words for them too. I love taking an idea and figuring out how to make someone else care about it: through a story, a presentation, a pitch, or the exact sentence that finally makes it click. I’m comfortable speaking up, asking the question everyone’s thinking, and giving an idea enough energy that other people want to join in.</p>
+                </div>
+                <div class="clifton-slide" data-slide="2" data-name="How it all works together" data-focus="all">
+                    <p class="clifton-domain together"><span class="clifton-dots" aria-hidden="true"></span>How it all works together</p>
+                    <p>My strengths work as one loop: I notice the person first, then shape the message for the person actually hearing it. That’s how noticing turns into thoughtful feedback, genuine encouragement, or a pitch that lands. It also means I can be direct and decisive while still paying attention to the people involved. The goal isn’t just to be heard. It’s to make an idea understood, memorable, and worth responding to, because working well with people starts with actually seeing them.</p>
+                </div>
                 </div>
                 <div class="clifton-pager">
-                    <button type="button" class="clifton-page prev" aria-label="Previous: Relationship Building" disabled>‹</button>
-                    <span class="clifton-count" aria-live="polite">1 of 2</span>
+                    <button type="button" class="clifton-page prev" aria-label="Previous" disabled>‹</button>
+                    <span class="clifton-count" aria-live="polite">1 of 3</span>
                     <button type="button" class="clifton-page next" aria-label="Next: Influencing">›</button>
                 </div>
             </div>
@@ -503,6 +781,44 @@
                 <p>Artistic, Social, Enterprising</p>
             </div>
 
+            <figure class="riasec-hex">
+                <svg viewBox="-200 -150 400 300" role="img"
+                     aria-label="My RIASEC hexagon: @string.Join(", ", hexagon.Select(h => $"{h.Item2} {h.Item3:0}"))">
+                    @* faint rings at 25, 50, 75 and 100, and a spoke to each corner *@
+                    @foreach (var ring in new[] { 25.0, 50, 75, 100 })
+                    {
+                        <polygon class="hex-ring" points="@HexRing(ring)" />
+                    }
+                    @for (var k = 0; k < 6; k++)
+                    {
+                        <line class="hex-spoke" x1="0" y1="0" x2="@HexPoint(100, k).Split(',')[0]" y2="@HexPoint(100, k).Split(',')[1]" />
+                    }
+                    @* my shape *@
+                    <polygon class="hex-shape" points="@string.Join(" ", hexagon.Select((h, k) => HexPoint(h.Item3, k)))" />
+                    @for (var k = 0; k < 6; k++)
+                    {
+                        var (letter, name, score) = hexagon[k];
+                        var mine = myCode.Contains(letter);
+                        var dot = HexPoint(score, k).Split(',');
+                        var label = HexPoint(122, k).Split(',');
+                        var lx = double.Parse(label[0], System.Globalization.CultureInfo.InvariantCulture);
+                        var ly = double.Parse(label[1], System.Globalization.CultureInfo.InvariantCulture);
+                        var anchor = lx > 5 ? "start" : lx < -5 ? "end" : "middle";
+                        var shift = ly < -90 ? -10 : ly > 90 ? 12 : 0;
+                        <g class="hex-point @(mine ? "mine" : "")" tabindex="0">
+                            <title>@name: @score.ToString("0")</title>
+                            <circle class="hex-hit" cx="@dot[0]" cy="@dot[1]" r="14" />
+                            <circle class="hex-dot" cx="@dot[0]" cy="@dot[1]" r="5" />
+                            <text class="hex-label" x="@label[0]" y="@(ly + shift - 6)" text-anchor="@anchor">
+                                <tspan class="hex-letter">@letter</tspan> @name
+                            </text>
+                            <text class="hex-score" x="@label[0]" y="@(ly + shift + 12)" text-anchor="@anchor">@score.ToString("0")</text>
+                        </g>
+                    }
+                </svg>
+                <figcaption>Strongly Artistic, with Social, Enterprising and Realistic close behind. My three letters are in mulberry.</figcaption>
+            </figure>
+
             <div class="riasec-letters">
                 @foreach (var (letter, name, dimension, score, line) in riasec)
                 {
@@ -510,7 +826,7 @@
                         <span class="riasec-letter">@letter</span>
                         <h3>@name</h3>
                         <p class="riasec-dimension">@dimension</p>
-                        <p class="riasec-score">@score.ToString("0.#")%</p>
+                        <p class="riasec-score">@score.ToString("0")</p>
                         <span class="riasec-bar" aria-hidden="true"><span style="width: @(score.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></span></span>
                         <p class="riasec-line">@line</p>
                     </div>
@@ -536,23 +852,30 @@
 </div>
 
 <script>
-    // CliftonStrengths summary: ‹ › flip between Relationship Building and Influencing
+    // CliftonStrengths summary: ‹ › flip through Relationship Building, Influencing, then how they work together.
+    // The bar above lights up the matching strengths: the 4 green, then the mulberry one, then all five.
     (() => {
         const slides = [...document.querySelectorAll('.clifton-slide')];
         if (!slides.length) return;
+        const bar = document.querySelector('.clifton-bar');
         const prev = document.querySelector('.clifton-page.prev');
         const next = document.querySelector('.clifton-page.next');
         const count = document.querySelector('.clifton-count');
         let current = 0;
         const show = i => {
             current = i;
-            slides.forEach((slide, n) => slide.hidden = n !== i);
+            slides.forEach((slide, n) => slide.classList.toggle('active', n === i));
+            bar.dataset.focus = slides[i].dataset.focus;
             prev.disabled = i === 0;
             next.disabled = i === slides.length - 1;
+            prev.setAttribute('aria-label', i > 0 ? `Previous: ${slides[i - 1].dataset.name}` : 'Previous');
+            next.setAttribute('aria-label', i < slides.length - 1 ? `Next: ${slides[i + 1].dataset.name}` : 'Next');
             count.textContent = `${i + 1} of ${slides.length}`;
         };
         prev.addEventListener('click', () => show(current - 1));
         next.addEventListener('click', () => show(current + 1));
+        show(0);
+        document.querySelector('.clifton-slides').classList.add('ready');
     })();
 
     // Switch between the tests (click, or arrow keys)

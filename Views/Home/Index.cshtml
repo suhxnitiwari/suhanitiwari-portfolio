@@ -897,6 +897,48 @@
         }
     }
 
+    /* Duality paragraph on the left, the quiz on the right */
+    .duality-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+        gap: 56px;
+        align-items: center;
+        max-width: 1100px;
+        margin: 56px auto 0;
+    }
+
+    .duality-row .duality-note {
+        max-width: none;
+        margin: 0;
+        padding-left: 24px;
+        border-left: 3px solid #EBD5D0;
+        font-size: 1.2em;
+        text-align: left;
+    }
+
+    .duality-row .duality-note strong {
+        display: block;
+        margin: 10px 0;
+        font-size: 1.25em;
+        line-height: 1.4;
+    }
+
+    .duality-row .tot-title {
+        margin-top: 0;
+    }
+
+    @@media (max-width: 860px) {
+        .duality-row {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-top: 36px;
+        }
+
+        .duality-row .duality-note {
+            font-size: 1.05em;
+        }
+    }
+
     /* ===== HOW WELL DO YOU KNOW SUHANI?: one question at a time ===== */
     .quiz [hidden],
     .tot-grid[hidden] {
@@ -2505,48 +2547,52 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
-        <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
+        <!-- the paragraph wraps up Duality and sets up the quiz beside it (stacks on phones) -->
+        <div class="duality-row">
+            <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
+            <div class="quiz-col">
+                <h3 class="tot-title">How well do you know Suhani?</h3>
+                <p class="kn-hint">This or that? Guess my pick.</p>
 
-        <h3 class="tot-title">How well do you know Suhani?</h3>
-        <p class="kn-hint">This or that? Guess my pick.</p>
+                <!-- the quiz (built by the script below); the grid underneath is the no-JavaScript version -->
+                <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, line = t.Item4 })).ToString()" hidden>
+                    <div class="quiz-progress">
+                        <span class="quiz-count" aria-live="polite"></span>
+                        <span class="quiz-bar" aria-hidden="true"><span></span></span>
+                    </div>
+                    <div class="quiz-card">
+                        <div class="quiz-play">
+                            <div class="quiz-options" role="group" aria-label="Your guess"></div>
+                            <p class="quiz-line" aria-live="polite"></p>
+                            <button type="button" class="quiz-btn quiz-next" hidden>Next</button>
+                        </div>
+                        <div class="quiz-result" hidden>
+                            <p class="quiz-score" aria-live="polite"></p>
+                            <p class="quiz-verdict"></p>
+                            <button type="button" class="quiz-btn quiz-again">Play again</button>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- the quiz (built by the script below); the grid underneath is the no-JavaScript version -->
-        <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, line = t.Item4 })).ToString()" hidden>
-            <div class="quiz-progress">
-                <span class="quiz-count" aria-live="polite"></span>
-                <span class="quiz-bar" aria-hidden="true"><span></span></span>
-            </div>
-            <div class="quiz-card">
-                <div class="quiz-play">
-                    <div class="quiz-options" role="group" aria-label="Your guess"></div>
-                    <p class="quiz-line" aria-live="polite"></p>
-                    <button type="button" class="quiz-btn quiz-next" hidden>Next</button>
-                </div>
-                <div class="quiz-result" hidden>
-                    <p class="quiz-score" aria-live="polite"></p>
-                    <p class="quiz-verdict"></p>
-                    <button type="button" class="quiz-btn quiz-again">Play again</button>
-                </div>
+                <ul class="tot-grid">
+                    @foreach (var (one, other, pick, line) in thisOrThat)
+                    {
+                        <li class="tot-card">
+                            <span class="tot-pair">
+                                <span class="tot-option@(pick == one ? " picked" : "")">@one</span>
+                                <span class="tot-or">or</span>
+                                <span class="tot-option@(pick == other ? " picked" : "")">@other</span>
+                            </span>
+                            <span class="visually-hidden">My pick: @pick.</span>
+                            @if (!string.IsNullOrEmpty(line))
+                            {
+                                <span class="tot-line">@line</span>
+                            }
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
-
-        <ul class="tot-grid">
-            @foreach (var (one, other, pick, line) in thisOrThat)
-            {
-                <li class="tot-card">
-                    <span class="tot-pair">
-                        <span class="tot-option@(pick == one ? " picked" : "")">@one</span>
-                        <span class="tot-or">or</span>
-                        <span class="tot-option@(pick == other ? " picked" : "")">@other</span>
-                    </span>
-                    <span class="visually-hidden">My pick: @pick.</span>
-                    @if (!string.IsNullOrEmpty(line))
-                    {
-                        <span class="tot-line">@line</span>
-                    }
-                </li>
-            }
-        </ul>
         <button type="button" class="view-more view-less" aria-controls="duality">Okay, that’s enough about me</button>
     </div>
 </section>

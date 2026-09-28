@@ -1698,7 +1698,7 @@
     public record ShelfItem(string Title, string Meta, string Image, bool ShowWhole = false);
 
     // One YouTube video in Watch > Inspiration. YouTubeId = the part after "v=" in the link.
-    // Topic = one of the shelf's topic buttons (Psychology, Education, Creativity, Growth, Meaning).
+    // Topic = one of the shelf's topic buttons (Psychology, Education, Creativity, Growth, Meaning, Business & Brands).
     public record Video(string Title, string Meta, string YouTubeId, string Image, string Topic = "");
 }
 
@@ -1744,7 +1744,9 @@
 
 @{
     // Like RenderShelf, but each card is a video that plays in the pop-up player
-    void RenderVideoShelf(string title, Video[] videos, string? caption = null)
+    // topics = the filter buttons, in order (a topic with no talks yet shows a "coming soon" tile);
+    // allNote = the mulberry card at the front of All; whyLines = a "Why I value…" card for each topic that has one
+    void RenderVideoShelf(string title, Video[] videos, string[] topics, string allNote, Dictionary<string, string> whyLines, string? caption = null)
     {
         <div class="shelf wide video-shelf">
             <div class="shelf-head">
@@ -1757,9 +1759,6 @@
             @if (!string.IsNullOrEmpty(caption))
             {
                 <p class="shelf-caption">@caption</p>
-            }
-            @{
-                var topics = videos.Select(v => v.Topic).Where(t => t != "").Distinct().ToArray();
             }
             @if (topics.Length > 1)
             {
@@ -1774,6 +1773,31 @@
             <div class="shelf-rail-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
                 <ul class="shelf-rail" tabindex="0" aria-label="@title">
+                    <li class="shelf-item why-item" data-why="">
+                        <div class="why-card">
+                            <span class="why-kicker">@title</span>
+                            <p class="why-text">@allNote</p>
+                        </div>
+                    </li>
+                    @foreach (var (topic, why) in whyLines)
+                    {
+                        <li class="shelf-item why-item" data-why="@topic" hidden>
+                            <div class="why-card">
+                                <span class="why-kicker">Why I watch</span>
+                                <span class="why-topic">@topic</span>
+                                <p class="why-text">@why</p>
+                            </div>
+                        </li>
+                    }
+                    @foreach (var topic in topics.Where(t => !videos.Any(v => v.Topic == t)))
+                    {
+                        <li class="shelf-item soon-item" data-topic="@topic" hidden>
+                            <div class="soon-card">
+                                <span class="why-kicker">@topic</span>
+                                <p>Talks coming soon.</p>
+                            </div>
+                        </li>
+                    }
                     @foreach (var video in videos)
                     {
                         <li class="shelf-item" data-topic="@video.Topic">
@@ -1808,6 +1832,42 @@
         <div class="shelf-intro">
             <h2 class="section-title">Watch</h2>
         </div>
+        @{
+            // Inspiration: talks and videos. Thumbnails from YouTube (Dweck's photo from TED's talk page), saved in wwwroot/images/videos.
+            var inspiration = new[]
+            {
+                new Video("Change Your Mindset, Change the Game", "Alia Crum, TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg", "Psychology"),
+                new Video("You Aren’t at the Mercy of Your Emotions: Your Brain Creates Them", "Lisa Feldman Barrett, TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg", "Psychology"),
+                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn, TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg", "Education"),
+                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag, TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg", "Education"),
+                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker, TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg", "Education"),
+                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh, TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg", "Creativity"),
+                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut, TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg", "Creativity"),
+                new Video("The Power of Believing That You Can Improve", "Carol Dweck, TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg", "Growth"),
+                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth, TED", "H14bBuluwB8", "/images/videos/grit.jpg", "Growth"),
+                new Video("How Every Child Can Thrive by Five", "Molly Wright, TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg", "Growth"),
+                new Video("What Makes a Good Life?", "Robert Waldinger, TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg", "Meaning"),
+                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith, TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg", "Meaning")
+            };
+        }
+        @{
+            // Topic buttons in order. Business & Brands shows "coming soon" until its talks are added above.
+            var inspirationTopics = new[] { "Psychology", "Education", "Creativity", "Growth", "Meaning", "Business & Brands" };
+            // "Why I value…" cards: add a line for a topic and its card appears first when that topic is picked
+            // Drafted from my own words elsewhere on the site (home page intro, "The thing about me is…", Duality); edit freely.
+            var inspirationWhy = new Dictionary<string, string>
+            {
+                ["Psychology"] = "I want to know why people do what they do: why we feel what we feel, choose what we choose, and keep coming back. One innocent question can become a 45-minute investigation, and these talks are where it usually starts.",
+                ["Education"] = "I started Girls Who Code chapters at two middle schools and grew them to 60+ students per session. Ever since, I’ve been hooked on how people learn, and what makes learning actually stick.",
+                ["Creativity"] = "I’m happiest taking something from “wait, what if…” to something you can actually see, use, or experience. These talks are about exactly that.",
+                ["Growth"] = "I’d rather temporarily suck at something interesting than only do things I already know how to do. These are the talks I go back to when being a beginner feels hard.",
+                ["Meaning"] = "I care about my relationships more than almost anything. These talks ask what actually makes a life good, and the answer keeps coming back to people.",
+                ["Business & Brands"] = "This is where psychology meets my major: what makes people choose a product, connect with a brand, and keep coming back to it."
+            };
+            RenderVideoShelf("Inspiration", inspiration, inspirationTopics,
+                "Some people have comfort shows. I have comfort TED talks.", inspirationWhy);
+        }
+        <hr class="shelf-divider">
         @{
             // Edit these lists to change your favorites: (title, small line under the title, cover image).
             // These are collections, not rankings: add or remove as many as you like, in any order.
@@ -1873,48 +1933,16 @@
                 new ShelfItem("The Great Indian Kapil Show", "2024–", "/images/posters/great-indian-kapil-show.jpg")
             };
 
-            // Shows I loved as a kid.
-            var kidShows = new[]
-            {
-                new ShelfItem("Sofia the First", "2013–2018", "/images/posters/sofia-the-first.jpg"),
-                new ShelfItem("Jessie", "2011–2015", "/images/posters/jessie.jpg"),
-                new ShelfItem("Good Luck Charlie", "2010–2014", "/images/posters/good-luck-charlie.jpg"),
-                new ShelfItem("Liv and Maddie", "2013–2017", "/images/posters/liv-and-maddie.jpg"),
-                new ShelfItem("Full House", "1987–1995", "/images/posters/full-house.jpg"),
-                new ShelfItem("Lab Rats", "2012–2016", "/images/posters/lab-rats.jpg")
-            };
         }
-        <hr class="shelf-divider">
-        @{ RenderShelf("The Desi Edit", desiEdit); }
 
         <!-- the rest of Watch stays tucked away until "View more awesome recs" is clicked -->
         <div class="watch-more" id="watchMore" hidden>
         <hr class="shelf-divider">
+        @{ RenderShelf("The Desi Edit", desiEdit); }
+        <hr class="shelf-divider">
         @{ RenderShelf("Watched It, Loved It, Moved On", otherShows); }
         <hr class="shelf-divider">
         @{ RenderShelf("Comedy That Never Misses", comedy); }
-        <hr class="shelf-divider">
-        @{ RenderShelf("Shows I Loved as a Kid", kidShows); }
-        @{
-            // Inspiration: talks and videos. Thumbnails from YouTube (Dweck's photo from TED's talk page), saved in wwwroot/images/videos.
-            var inspiration = new[]
-            {
-                new Video("Change Your Mindset, Change the Game", "Alia Crum, TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg", "Psychology"),
-                new Video("You Aren’t at the Mercy of Your Emotions: Your Brain Creates Them", "Lisa Feldman Barrett, TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg", "Psychology"),
-                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn, TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg", "Education"),
-                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag, TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg", "Education"),
-                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker, TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg", "Education"),
-                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh, TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg", "Creativity"),
-                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut, TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg", "Creativity"),
-                new Video("The Power of Believing That You Can Improve", "Carol Dweck, TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg", "Growth"),
-                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth, TED", "H14bBuluwB8", "/images/videos/grit.jpg", "Growth"),
-                new Video("How Every Child Can Thrive by Five", "Molly Wright, TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg", "Growth"),
-                new Video("What Makes a Good Life?", "Robert Waldinger, TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg", "Meaning"),
-                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith, TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg", "Meaning")
-            };
-        }
-        <hr class="shelf-divider">
-        @{ RenderVideoShelf("Inspiration", inspiration); }
         </div>
 
         <div class="watch-more-wrap">

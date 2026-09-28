@@ -14,7 +14,11 @@
 
     // One trip on the Traveling shelf. Line and Photo are optional: without a photo the card shows
     // a soft blush cover with a suitcase, and without a line it says "photos coming soon".
-    public record Trip(string City, string Line = "", string Photo = "");
+    // Spots = the places I went, shown in the trip's pop-up card.
+    public record Trip(string City, string Line = "", string Photo = "", TripSpot[]? Spots = null);
+
+    // One place on a trip. Kind = what it is and where; MustDo gets a little badge.
+    public record TripSpot(string Emoji, string Name, string Kind, string Line, bool MustDo = false);
 }
 
 <style>
@@ -65,7 +69,7 @@
         scroll-margin-top: 90px;
     }
 
-    /* Traveling, until there are trips: a loading bar that never quite gets there */
+    /* Traveling: a loading bar that never quite gets there (more trips, someday) */
     .travel-loading {
         max-width: 320px;
         height: 10px;
@@ -143,9 +147,26 @@
     // Cooking: same format as Baking. Empty for now, so the shelf shows my note instead.
     var cooks = Array.Empty<Recipe>();
 
-    // Traveling: empty for now, so the shelf shows my note and a loading bar instead.
-    // Add trips when ready, e.g. new Trip("Miami", "a line about it", "/images/travel/miami.jpg")
-    var trips = Array.Empty<Trip>();
+    // Traveling: each trip is a card on the shelf; clicking it opens the spots I went to.
+    // Add trips when ready, e.g. new Trip("Miami", "a line about it", "/images/travel/miami.jpg", new[] { new TripSpot(...) })
+    var trips = new[]
+    {
+        new Trip("Chicago", "", "", new[]
+        {
+            new TripSpot("☕️", "Venteux Brasserie, Cafe & Oyster Bar", "French café, inside the Pendry",
+                "Super cute French café and brasserie. Very Parisian, with pretty interiors. Good for coffee, breakfast or brunch."),
+            new TripSpot("🎨", "Art Institute of Chicago", "Museum",
+                "Obviouslyyy. One of my favorite Chicago things to do. The collection is huge, and you can easily spend a few hours here."),
+            new TripSpot("🌿", "SIFR", "Middle Eastern and Mediterranean, River North",
+                "Modern Middle Eastern and Mediterranean with a beautiful rooftop. Lots of shareable mezze, hummus, pita and kebabs, and it has a Michelin Bib Gourmand too."),
+            new TripSpot("🌿", "Aba", "Mediterranean, West Loop",
+                "THE OG ABA!!! The original Aba is in Chicago. Gorgeous greenery everywhere, a huge rooftop patio and Mediterranean food. You already know I love Aba lol."),
+            new TripSpot("⛲️", "3 Arts Club Cafe at RH Chicago", "Brunch",
+                "This one is SO pretty. It’s inside RH Chicago in the historic Three Arts Club building, in a giant glass atrium with chandeliers, trees and a fountain in the middle. Very fancy, very pretty, very Chicago-girl brunch. Walk around all the RH floors afterward too.", MustDo: true),
+            new TripSpot("🥞", "Somerset", "Breakfast and brunch, inside the Viceroy in Gold Coast",
+                "Go for breakfast or brunch, and get the French toast. It’s the reason I had this saved.")
+        })
+    };
 
     var bakes = new[]
     {
@@ -291,19 +312,19 @@
             <div class="shelf-head">
                 <h3 class="shelf-title">Traveling</h3>
             </div>
-            @if (trips.Length == 0)
-            {
-                <p class="shelf-caption">Currently awaiting some more money to go travel somewhere. Travel is loading…</p>
-                <div class="travel-loading" role="img" aria-label="Travel is loading"><span></span></div>
-            }
-            else
+            <p class="shelf-caption">Currently awaiting some more money to go travel somewhere. Travel is loading…</p>
+            <div class="travel-loading" role="img" aria-label="Travel is loading"><span></span></div>
+            @if (trips.Length > 0)
             {
             <div class="shelf-rail-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Scroll Traveling left">‹</button>
                 <ul class="shelf-rail" tabindex="0" aria-label="Traveling">
-                    @foreach (var trip in trips)
+                    @for (var t = 0; t < trips.Length; t++)
                     {
+                        var trip = trips[t];
+                        var spotCount = trip.Spots?.Length ?? 0;
                         <li class="shelf-item">
+                            <button type="button" class="bake-open trip-open" data-trip="trip-@t" aria-haspopup="dialog" aria-label="See my @trip.City spots">
                             <div class="shelf-cover bake-cover">
                                 @if (!string.IsNullOrEmpty(trip.Photo))
                                 {
@@ -314,8 +335,9 @@
                                     <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M8 7v12M16 7v12"/></svg>
                                 }
                             </div>
+                            </button>
                             <p class="shelf-item-title">@trip.City</p>
-                            <p class="shelf-item-meta">@(string.IsNullOrEmpty(trip.Line) ? "photos coming soon" : trip.Line)</p>
+                            <p class="shelf-item-meta">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : spotCount > 0 ? $"{spotCount} spots I’ve been to" : "photos coming soon")</p>
                         </li>
                     }
                 </ul>
@@ -356,6 +378,32 @@
         <p class="recipe-line" id="artIdea"></p>
         <p class="recipe-meta">Holding onto the traditions we carried with us, while making a home in American culture.</p>
     </div>
-</dialog><script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes.Concat(cooks)))</script>
+</dialog>@for (var t = 0; t < trips.Length; t++)
+{
+    var trip = trips[t];
+    <!-- Trip card: the spots I went to -->
+    <dialog class="recipe-card trip-card" id="trip-@t" aria-labelledby="trip-title-@t">
+        <button type="button" class="recipe-close" aria-label="Close @trip.City">×</button>
+        <div class="recipe-body">
+            <p class="recipe-kicker">Traveling</p>
+            <h3 id="trip-title-@t">@trip.City</h3>
+            <p class="recipe-line">Spots I’ve been to</p>
+            <ul class="trip-spots">
+                @foreach (var spot in trip.Spots ?? Array.Empty<TripSpot>())
+                {
+                    <li class="trip-spot">
+                        <span class="trip-emoji" aria-hidden="true">@spot.Emoji</span>
+                        <div>
+                            <h4>@spot.Name @if (spot.MustDo) { <span class="trip-must">Must do</span> }</h4>
+                            <p class="trip-kind">@spot.Kind</p>
+                            <p>@spot.Line</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </dialog>
+}
+<script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes.Concat(cooks)))</script>
 
 <script src="~/js/shelves.js" asp-append-version="true"></script>
