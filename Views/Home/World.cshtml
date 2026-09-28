@@ -354,28 +354,29 @@
         color: #8A4D57;
     }
 
+    /* before a place is picked: a few lines about growing up on the move, then the hint */
     .place-panel-empty {
-        height: 100%;
+        min-height: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
         gap: 14px;
-        padding: 30px;
-        text-align: center;
-        font-family: Georgia, serif;
-        font-style: italic;
-        font-size: 1.1em;
-        color: #8A4D57;
+        padding: 30px 28px;
     }
 
-    .place-panel-empty::before {
-        content: "";
-        width: 72%;
-        aspect-ratio: 1 / 1;
-        border-radius: 10px;
-        border: 1.5px dashed #E2C4C0;
-        background: #FAF1EF;
+    .place-intro {
+        margin: 0;
+        font-size: 0.95em;
+        line-height: 1.65;
+        color: #2A1810;
+    }
+
+    .place-hint {
+        margin: 6px 0 0;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.05em;
+        color: #8A4D57;
     }
 
     .place-panel-inner.fade-in {
@@ -1095,11 +1096,7 @@
         }
 
         .place-panel-empty {
-            padding: 28px 20px;
-        }
-
-        .place-panel-empty::before {
-            display: none;
+            padding: 24px 20px;
         }
     }
 </style>
@@ -1143,7 +1140,11 @@
             <div id="map"></div>
             <aside class="place-panel" aria-label="About the place you picked">
                 <div class="place-panel-inner" id="placePanel" aria-live="polite">
-                    <p class="place-panel-empty">Click a place to read about it ♡</p>
+                    <div class="place-panel-empty">
+                        <p class="place-intro">My childhood was split across three countries, two continents, and ten schools, so I got very used to being the new person. I learned how to walk into a room where I knew absolutely no one, talk to pretty much anyone, make friends from scratch, and figure out a new environment quickly.</p>
+                        <p class="place-intro">Moving so much made me independent, adaptable, socially confident, and very comfortable with change. It also exposed me to people who grew up completely differently from me, which is where a lot of my curiosity about people, culture, and why we behave the way we do comes from.</p>
+                        <p class="place-hint">Click a place to read about it ♡</p>
+                    </div>
                 </div>
             </aside>
         </div>
