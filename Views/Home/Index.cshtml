@@ -371,6 +371,11 @@
         gap: 64px;
     }
 
+    /* flipped rows mirror the columns too, so every photo gets the same width */
+    .about-story.flip {
+        grid-template-columns: 0.9fr 1.1fr;
+    }
+
     .about-story.flip .about-story-text {
         order: 2;
     }
@@ -469,7 +474,7 @@
 
     .about-story-photo.n0 { transform: rotate(1.5deg); }
     .about-story-photo.n1 { transform: rotate(-1.5deg); }
-    .about-story-photo.n2 { transform: rotate(1deg); aspect-ratio: 4 / 3; align-self: center; }
+    .about-story-photo.n2 { transform: rotate(1deg); }
 
     .about-story-photo:hover {
         transform: rotate(0);
@@ -513,7 +518,8 @@
             gap: 56px;
         }
 
-        .about-story {
+        .about-story,
+        .about-story.flip {
             grid-template-columns: 1fr;
             gap: 28px;
         }
@@ -2524,7 +2530,7 @@
             Paras: new[] {
                 "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 120+ students.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
-            Photo: (string?)"/images/girls-who-code-classroom.png", Alt: "Teaching a Girls Who Code session with students following along on laptops",
+            Photo: (string?)"/images/girls-who-code-teaching.jpg", Alt: "Teaching a Girls Who Code session at the whiteboard while students follow along on laptops",
             Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("How I lead", "/home/howiwork#disc"), ("Leadership courses", "/home/coursework#leadership") })
     };
 }
