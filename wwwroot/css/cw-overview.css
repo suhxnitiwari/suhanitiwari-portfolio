@@ -1,0 +1,106 @@
+/* Coursework Overview: the intro paragraph and the six theme buttons above the grid.
+   Picking a theme adds .has-pick to .courses-grid; cards that feed it get .lit and show their courses (.cx-lit). */
+
+.cx {
+    max-width: 920px;
+    margin: -20px auto 36px;
+    text-align: center;
+}
+
+.cx-intro {
+    max-width: 760px;
+    margin-inline: auto;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.15em;
+    line-height: 1.7;
+    color: #3B2A24;
+    margin-bottom: 36px;
+}
+
+.cx-heading {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.6em;
+    color: #2A1810;
+    margin: 0 0 16px;
+}
+
+.cx-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cx-pill {
+    font: inherit;
+    font-size: 0.9em;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 9px 20px;
+    border-radius: 999px;
+    border: 1.5px solid #D9B8B3;
+    background: #FFF8F6;
+    color: #8F4661;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cx-pill:hover {
+    border-color: #8F4661;
+}
+
+.cx-pill[aria-pressed="true"] {
+    background: #8F4661;
+    border-color: #8F4661;
+    color: #FFF8F6;
+}
+
+.cx-pill:focus-visible {
+    outline: 2px solid #8F4661;
+    outline-offset: 3px;
+}
+
+.cx-q {
+    min-height: 1.6em;
+    margin: 18px 0 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 1.15em;
+    color: #8F4661;
+}
+
+/* the grid while a theme is picked */
+.courses-grid .course-card {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.courses-grid.has-pick .course-card:not(.lit) {
+    opacity: 0.25;
+}
+
+.courses-grid .course-card.lit {
+    transform: scale(1.03);
+}
+
+.courses-grid .course-card.lit .course-front {
+    box-shadow: 0 0 0 3px #FAF1EF, 0 0 0 6px #8F4661, 0 20px 50px rgba(158, 90, 99, 0.25);
+}
+
+.cx-lit {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 248, 246, 0.4);
+    font-size: 0.85em;
+    line-height: 1.5;
+}
+
+.cx-lit[hidden] {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .cx { margin-top: -10px; }
+    .cx-intro { font-size: 1.05em; text-align: left; }
+    .cx-heading { font-size: 1.3em; }
+    .cx-pill { padding: 8px 16px; font-size: 0.85em; }
+}

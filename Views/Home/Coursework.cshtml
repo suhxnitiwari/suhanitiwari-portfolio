@@ -12,12 +12,12 @@
 
     public record MisCapability(string Title, string[] Items);
 
-    // Overview: one subject (a card in the catalog, a node on the left of the weave).
+    // Overview: one subject (a card in the grid).
     public record CwTheme(string Short, string Name, string Subtitle, string Blurb, string Color, string[] Courses);
 
-    // Overview: one crossover, where courses from different subjects meet (a node on the right of the weave).
-    // From = (index into themes, exact course name from that theme). Problem = the "Hand me a problem" tab it shows up in on MIS Major, or -1.
-    public record CwCross(string Title, string Question, string Insight, (int Theme, string Course)[] From, int Problem = -1, string ProblemLabel = "");
+    // Overview: one way the subjects work together (a button above the grid).
+    // From = (index into themes, exact course name from that theme); those subjects' cards light up and list the courses.
+    public record CwCross(string Title, string Question, (int Theme, string Course)[] From);
 
     // "What I can do": one block per capability. Thread = the AI block's course-by-course rows instead of skill pills.
     public record MisCan(string Name, string Line, string[] Key, string From, (string Verb, string Text)[]? Thread = null);
@@ -174,43 +174,28 @@
             new[] { "Macroeconomics", "Microeconomics", "Physical Geology", "Sustaining a Planet", "Studio Art Lab", "Speech Communication", "Intro Media/Entertainment", "Fundamentals of Nutrition", "Computer Fluency" })
     };
 
-    // Overview: where the subjects meet. Order = top to bottom on the weave (roughly follows the subjects, so the threads cross less).
+    // Overview: six ways the subjects work together, in button order.
     // Theme indexes: 0 MIS · 1 Leadership · 2 Marketing · 3 Ed Psych · 4 Psychology · 5 Advertising · 6 Analytics & Ops · 7 Foundations · 8 Creation & Analysis
     var crossovers = new[]
     {
-        new CwCross("Tools people adopt", "Why do people ignore a system that works?",
-            "Every new system is something someone has to learn. Learning science explains where people get stuck, organizational behavior explains why teams push back, and MIS lets me change the system instead of blaming the user.",
-            new[] { (3, "Cognition & Human Learning"), (3, "Strategic Learning for 21st Century"), (1, "Organizational Behavior"), (0, "Web Application Development"), (0, "Business System Development") },
-            0, "the Adoption problem"),
-        new CwCross("Leading through change", "Why do good plans stall once people get involved?",
-            "Projects rarely fail on the plan. They stall on people. Personality and social psychology explain what’s happening in the room, and leadership taught me to respond with patience instead of pressure.",
-            new[] { (1, "Leadership Challenges"), (1, "Organizational Behavior"), (4, "Personality"), (4, "Social Psychology"), (3, "Mindfulness & Compassion") }),
-        new CwCross("Why people buy", "What actually makes someone choose?",
-            "A choice gets made in the brain long before it shows up in a spreadsheet. Marketing tells me what people pick, psychology and neuroscience tell me why, and advertising shows how that knowledge gets used, for better or worse.",
-            new[] { (2, "Consumer Behavior"), (2, "Science of Influence"), (5, "Psychology of Advertising"), (4, "Social Cognition"), (4, "Neuroscience of Motivation") }),
-        new CwCross("Stories that persuade", "How do you make someone care about something technical?",
-            "Rhetoric, brand storytelling and film all teach the same shape: a person, a problem, a turn. It’s how I explain technical work to people who don’t want the technical details.",
-            new[] { (7, "Rhetoric & Writing"), (5, "Brand Storytelling"), (5, "Storytelling in Film & TV"), (1, "Business Communication"), (2, "Creativity in Marketing") },
-            3, "the Messaging problem"),
-        new CwCross("Worth building?", "Should this exist, and who pays for it?",
-            "Before anything gets built: will anyone want it, can we afford it, and what rules surround it? Product strategy, IT strategy, finance, economics and government each answer one piece.",
-            new[] { (0, "Strategic IT Management"), (2, "Strategic Product Management"), (6, "Strategy Beyond Markets"), (6, "Corporate Finance"), (8, "Microeconomics"), (7, "Federal Government") },
-            1, "the AI problem"),
-        new CwCross("Numbers that decide", "When does data actually change a decision?",
-            "Data only matters when it moves a decision. Databases get me the data, statistics and calculus keep me honest about it, and decision science turns it into a choice someone can make.",
-            new[] { (0, "Database Management"), (6, "Statistics for Business"), (6, "Intro to Data Science"), (6, "Intro to Decision Science"), (7, "Calculus for Business") },
-            2, "the Data problem")
+        new CwCross("Human Behavior", "Why do people do what they do?",
+            new[] { (4, "Cognitive Psychology"), (4, "Social Cognition"), (3, "Cognition & Human Learning"), (2, "Consumer Behavior") }),
+        new CwCross("Persuasion", "What changes someone’s mind?",
+            new[] { (5, "Psychology of Advertising"), (2, "Science of Influence"), (7, "Rhetoric & Writing"), (8, "Speech Communication") }),
+        new CwCross("Storytelling", "Why do some stories stick?",
+            new[] { (5, "Brand Storytelling"), (5, "Storytelling in Film & TV"), (7, "Masterworks of Literature"), (7, "Classical Mythology"), (2, "Creativity in Marketing") }),
+        new CwCross("Decision-Making", "How do you choose well with the facts you have?",
+            new[] { (6, "Statistics for Business"), (6, "Intro to Decision Science"), (0, "Database Management"), (8, "Microeconomics"), (7, "Calculus for Business") }),
+        new CwCross("Leadership", "How do you move a group of people?",
+            new[] { (1, "Leadership Challenges"), (1, "Organizational Behavior"), (4, "Personality"), (3, "Mindfulness & Compassion") }),
+        new CwCross("Innovation", "What’s worth building next?",
+            new[] { (0, "Web Application Development"), (0, "Strategic IT Management"), (2, "Strategic Product Management"), (6, "Strategy Beyond Markets"), (8, "Sustaining a Planet") })
     };
-    // a typo in a course name above would quietly drop a thread, so fail loudly instead
+    // a typo in a course name above would quietly drop it from its card, so fail loudly instead
     foreach (var cx in crossovers)
         foreach (var (t, course) in cx.From)
             if (!themes[t].Courses.Contains(course)) throw new InvalidOperationException($"\"{course}\" isn't in {themes[t].Name}");
 
-    var courseCount = themes.SelectMany(t => t.Courses).Distinct().Count();
-    // the weave: one thread per (subject, crossover) pair, thicker when the subject brings more courses
-    var threads = crossovers.SelectMany((cx, c) => cx.From.GroupBy(f => f.Theme).Select(g => (T: g.Key, C: c, N: g.Count()))).ToList();
-    int ThemeY(int i) => 44 + i * 52;
-    int CrossY(int i) => 74 + i * 72;
 
     const string clockIcon ="<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
 }
@@ -441,6 +426,7 @@
 <link rel="stylesheet" href="~/css/mis-cycle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/cw-overview.css" asp-append-version="true" />
 
 <div class="coursework-section page-fill">
     <div class="coursework-container">
@@ -456,94 +442,19 @@
         </div>
 
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview">
-        <section class="cx mp" aria-labelledby="cx-heading">
-            <header class="cx-hero">
-                <p class="mp-eyebrow">@courseCount courses · @themes.Length subjects · @crossovers.Length crossovers</p>
-                <h2 class="mp-h2" id="cx-heading">On a transcript, these look unrelated.<br />They’re not.</h2>
-                <p class="mp-lead">Almost everything I’ve studied answers one piece of the same question: how do you build something people will actually want, use and understand? Pick a crossover, or a subject, to see which classes pull together.</p>
-            </header>
-
-            <div class="cx-map">
-                <svg class="cx-weave" viewBox="0 0 720 500" role="group" aria-label="Subjects on the left, threaded to the crossovers they feed on the right">
-                    <text class="cx-col" x="186" y="14" text-anchor="end">SUBJECTS</text>
-                    <text class="cx-col" x="516" y="14">WHERE THEY MEET</text>
-                    @foreach (var th in threads)
-                    {
-                        var y1 = ThemeY(th.T);
-                        var y2 = CrossY(th.C);
-                        <path class="cx-link" data-t="@th.T" data-c="@th.C" style="--w: @(1 + th.N * 1.5)px; --tc: @themes[th.T].Color;" d="M200,@y1 C350,@y1 350,@y2 500,@y2" />
-                    }
-                    @for (var i = 0; i < themes.Length; i++)
-                    {
-                        var y = ThemeY(i);
-                        <g class="cx-node cx-t" data-t="@i" tabindex="0" role="button" aria-pressed="false" aria-label="@themes[i].Name" style="--tc: @themes[i].Color;">
-                            <rect x="30" y="@(y - 17)" width="184" height="34" rx="17" />
-                            <circle cx="200" cy="@y" r="6" />
-                            <text x="186" y="@(y + 5)" text-anchor="end">@themes[i].Short</text>
-                        </g>
-                    }
-                    @for (var i = 0; i < crossovers.Length; i++)
-                    {
-                        var y = CrossY(i);
-                        <g class="cx-node cx-c" data-c="@i" tabindex="0" role="button" aria-pressed="false" aria-label="@crossovers[i].Title">
-                            <rect x="486" y="@(y - 19)" width="228" height="38" rx="19" />
-                            <circle cx="500" cy="@y" r="9" />
-                            <text x="518" y="@(y + 6)">@crossovers[i].Title</text>
-                        </g>
-                    }
-                </svg>
-
-                <!-- the panel: one card per crossover and one per subject; the weave picks which shows. On phones every crossover card shows, stacked. -->
-                <div class="cx-panel" aria-live="polite">
-                    @for (var i = 0; i < crossovers.Length; i++)
-                    {
-                        var cx = crossovers[i];
-                        <article class="cx-card" data-c="@i">
-                            <p class="mp-eyebrow">Crossover 0@(i + 1)</p>
-                            <h3 class="cx-title">@cx.Title</h3>
-                            <p class="cx-q">“@cx.Question”</p>
-                            <p class="cx-insight">@cx.Insight</p>
-                            <p class="cx-sub">Pulled from @cx.From.Select(f => f.Theme).Distinct().Count() subjects</p>
-                            <ul class="cx-courses">
-                                @foreach (var group in cx.From.GroupBy(f => f.Theme))
-                                {
-                                    var th = themes[group.Key];
-                                    <li style="--tc: @th.Color;">
-                                        <span class="cx-from">@th.Short</span>
-                                        @foreach (var f in group) { <span class="cx-course">@f.Course</span> }
-                                    </li>
-                                }
-                            </ul>
-                            @if (cx.Problem >= 0)
-                            {
-                                <button type="button" class="cx-applied" data-problem="@cx.Problem">See it at work in @cx.ProblemLabel on MIS Major →</button>
-                            }
-                        </article>
-                    }
-                    @for (var i = 0; i < themes.Length; i++)
-                    {
-                        var th = themes[i];
-                        var feeds = crossovers.Select((cx, c) => (cx, c)).Where(p => p.cx.From.Any(f => f.Theme == i)).ToList();
-                        var used = crossovers.SelectMany(cx => cx.From).Where(f => f.Theme == i).Select(f => f.Course).Distinct().ToList();
-                        <article class="cx-card cx-theme-card" data-t="@i" style="--tc: @th.Color;">
-                            <p class="mp-eyebrow">Subject @((i + 1).ToString("00")) · @th.Courses.Length courses</p>
-                            <h3 class="cx-title">@th.Name</h3>
-                            <p class="cx-insight">@th.Blurb</p>
-                            <p class="cx-sub">Feeds @feeds.Count @(feeds.Count == 1 ? "crossover" : "crossovers")</p>
-                            <div class="cx-picks">
-                                @foreach (var p in feeds) { <button type="button" data-pick="@p.c">@p.cx.Title</button> }
-                            </div>
-                            <p class="cx-sub">Doing the work</p>
-                            <ul class="cx-courses"><li style="--tc: @th.Color;">@foreach (var course in used) { <span class="cx-course">@course</span> }</li></ul>
-                        </article>
-                    }
-                </div>
+        <!-- six ways the subjects work together: picking one lights up the cards that feed it -->
+        <div class="cx">
+            <p class="cx-intro">On paper, my classes look scattered across nine departments and four schools. In practice, they keep answering the same question: how do people think, and how do you build things that work for them? Psychology and education taught me how people learn and decide. Marketing and advertising taught me how to reach them. MIS, analytics and economics taught me how to build and measure what they need. The humanities taught me how to explain all of it.</p>
+            <p class="cx-heading" id="cx-heading">Nine subjects. Six ways they work together.</p>
+            <div class="cx-pills" role="group" aria-labelledby="cx-heading">
+                @for (var c = 0; c < crossovers.Length; c++)
+                {
+                    <button type="button" class="cx-pill" data-x="@c" aria-pressed="false">@crossovers[c].Title</button>
+                }
             </div>
-        </section>
-
-        <div class="cx-catalog mp">
-            <p class="mp-eyebrow">The full catalog</p>
-            <h2 class="mp-h2">Every course, by subject.</h2>
+            <p class="cx-q" aria-live="polite">
+                @for (var c = 0; c < crossovers.Length; c++) { <span data-x="@c" hidden>“@crossovers[c].Question”</span> }
+            </p>
         </div>
 
         <!-- COURSES GRID: tap a card to flip it, then View More for the whole list -->
@@ -551,13 +462,18 @@
             @for (var i = 0; i < themes.Length; i++)
             {
                 var th = themes[i];
-                <div class="course-card" onclick="toggleFlip(this)">
+                var feeds = Enumerable.Range(0, crossovers.Length).Where(c => crossovers[c].From.Any(f => f.Theme == i));
+                <div class="course-card" data-feeds="@string.Join(" ", feeds)" onclick="toggleFlip(this)">
                     <div class="course-card-inner">
                         <div class="course-front">
                             <div><div class="course-number">@((i + 1).ToString("00"))</div></div>
                             <div class="course-content">
                                 <h2 class="course-title">@th.Name</h2>
                                 <p class="course-subtitle">@th.Subtitle</p>
+                                @foreach (var c in feeds)
+                                {
+                                    <p class="cx-lit" data-x="@c">@string.Join(" · ", crossovers[c].From.Where(f => f.Theme == i).Select(f => f.Course))</p>
+                                }
                             </div>
                             <div class="course-arrow">→</div>
                         </div>
@@ -573,6 +489,7 @@
         </div>
         <script type="application/json" id="cwThemes">@Json.Serialize(themes.Select(t => new { t.Name, t.Courses }))</script>
         </div>
+
         <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis" hidden>
             <section class="mis mp" aria-labelledby="mis-heading">
                 <!-- 1. who I am in one screen -->
@@ -1069,6 +986,35 @@
     }), { threshold: 0.15 });
     items.forEach(el => { el.classList.add('pending'); io.observe(el); });
 })();
+
+// Overview: a button per theme; the cards that feed it light up (and list the courses), the rest fade. Tap it again to clear.
+(() => {
+    const pills = [...document.querySelectorAll('.cx-pill')];
+    const grid = document.querySelector('#cw-overview .courses-grid');
+    if (!pills.length || !grid) return;
+    const cards = [...grid.querySelectorAll('.course-card')];
+    const questions = [...document.querySelectorAll('.cx-q [data-x]')];
+    let picked = null;
+
+    function pick(x) {
+        picked = x;
+        pills.forEach(p => p.setAttribute('aria-pressed', +p.dataset.x === x));
+        questions.forEach(q => q.hidden = +q.dataset.x !== x);
+        grid.classList.toggle('has-pick', x !== null);
+        cards.forEach(card => {
+            card.classList.toggle('lit', x !== null && card.dataset.feeds.split(' ').includes(String(x)));
+            card.querySelectorAll('.cx-lit').forEach(l => l.hidden = +l.dataset.x !== x);
+        });
+    }
+
+    pills.forEach(p => p.addEventListener('click', () => pick(picked === +p.dataset.x ? null : +p.dataset.x)));
+    pick(0);
+})();
+
+function openThemeModal(i) {
+    const theme = JSON.parse(document.getElementById('cwThemes').textContent)[i];
+    openCourseModal(theme.name, theme.courses);
+}
 
 function toggleFlip(card) {
     card.classList.toggle('flipped');
