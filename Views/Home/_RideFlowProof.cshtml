@@ -105,7 +105,7 @@
                     </div>
                     </div>
 
-                    <!-- MIS 325 ride share database: my own scripts (HW 2 schema, HW 4 ROLLUP, HW 5 Snowflake ranking), one file per tab -->
+                    <!-- MIS 325 ride share database: my own scripts (HW 2 schema, HW 4 ROLLUP, HW 5 Snowflake ranking, HW 6 procedure), one file per tab -->
                     <div class="mp-proj" id="mp-proj-2" role="tabpanel" aria-labelledby="mp-rideshare-db" hidden>
                     <div class="mp-proof">
                         <div class="mp-code">
@@ -114,6 +114,7 @@
                                     <button type="button" role="tab" aria-selected="true" aria-controls="mp-sql-0">schema.sql</button>
                                     <button type="button" role="tab" aria-selected="false" aria-controls="mp-sql-1" tabindex="-1">rollup.sql</button>
                                     <button type="button" role="tab" aria-selected="false" aria-controls="mp-sql-2" tabindex="-1">ranking.sql</button>
+                                    <button type="button" role="tab" aria-selected="false" aria-controls="mp-sql-3" tabindex="-1">procedure.sql</button>
                                 </div>
                             </div>
 <pre id="mp-sql-0" role="tabpanel" aria-label="schema.sql"><code><span class="c">-- HW 2 · PL/SQL deploy script, safe to re-run</span>
@@ -161,10 +162,29 @@
 
 <span class="c">-- Oracle used INSTR; Snowflake needed POSITION.</span>
 <span class="c">-- I submitted both versions.</span></code></pre>
+<pre id="mp-sql-3" role="tabpanel" aria-label="procedure.sql" hidden><code><span class="c">-- HW 6 · Snowflake procedure: insert, or roll back</span>
+<span class="k">CREATE OR REPLACE PROCEDURE</span> hw6.insert_rider(
+    p_first_name <span class="k">VARCHAR</span>,
+    p_last_name  <span class="k">VARCHAR</span>,
+    p_email      <span class="k">VARCHAR</span>  <span class="c">-- … 4 more trimmed</span>
+)
+<span class="k">RETURNS VARCHAR LANGUAGE SQL AS</span>
+<span class="k">BEGIN</span>
+    <span class="k">INSERT INTO</span> hw6.rider
+        (rider_id, first_name, last_name, email)
+    <span class="k">VALUES</span> (rider_id_seq.<span class="k">NEXTVAL</span>,
+            :p_first_name, :p_last_name, :p_email);
+    <span class="k">COMMIT</span>;
+    <span class="k">RETURN</span> <span class="n">'1 row was inserted into the rider table.'</span>;
+<span class="k">EXCEPTION</span>
+    <span class="k">WHEN OTHER THEN</span>
+        <span class="k">ROLLBACK</span>;
+        <span class="k">RETURN</span> <span class="n">'Row was not inserted.'</span>;
+<span class="k">END</span>;</code></pre>
                         </div>
                         <div>
                             <h3 id="mp-rideshare-db">Ride Share Database</h3>
-                            <p class="mp-proof-sub">Where RideFlow started. An eight-table schema I designed from scratch, deployed with a PL/SQL script, and queried in both Oracle and Snowflake.</p>
+                            <p class="mp-proof-sub">Where RideFlow started. An eight-table schema I designed from scratch, deployed with a PL/SQL script, then queried and automated in both Oracle and Snowflake.</p>
                             <ul class="mp-facts">
                                 <li><b>8</b><span>TABLES</span></li>
                                 <li><b>9</b><span>FOREIGN KEYS</span></li>
@@ -176,6 +196,7 @@
                                 <li>Re-runnable PL/SQL deploy script, with seven sequences feeding primary keys as column defaults</li>
                                 <li>Every foreign key indexed, plus two lookups I chose for the queries that run most: ride request time, and vehicle make and model</li>
                                 <li>Analytics with ROLLUP subtotals, HAVING, correlated and inline subqueries, CASE tiers, and DENSE_RANK and ROW_NUMBER window functions</li>
+                                <li>Snowflake Scripting: a stored procedure that commits or rolls back, cursors that return result sets, and a user-defined function for ride counts</li>
                             </ul>
                         </div>
                     </div>
