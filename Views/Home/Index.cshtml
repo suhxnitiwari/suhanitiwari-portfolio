@@ -1228,10 +1228,10 @@
         margin: 60px 0;
     }
 
-    /* ===== BIG FIVE: the letters O C E A N float on one gentle swell ===== */
+    /* ===== BIG FIVE: letters floating over layered ocean swells ===== */
     .ocean {
         position: relative;
-        height: 320px;
+        height: 360px;
         max-width: 900px;
         margin: 10px auto 0;
     }
@@ -1244,17 +1244,48 @@
         overflow: visible;
     }
 
+    .ocean-water {
+        pointer-events: none;
+        transform-origin: 50% 80%;
+        animation: oceanTide 8s ease-in-out infinite alternate;
+    }
+
+    .ocean-water-back {
+        opacity: 0.55;
+        animation-delay: -4s;
+    }
+
+    .ocean-foam {
+        fill: none;
+        stroke: #EFFCF7;
+        stroke-width: 3;
+        stroke-linecap: round;
+        opacity: 0.85;
+    }
+
+    .ocean-ripple {
+        fill: none;
+        stroke: #C5EAE2;
+        stroke-width: 1.5;
+        opacity: 0.6;
+    }
+
+    @@keyframes oceanTide {
+        from { transform: translateY(3px) scaleY(0.96); }
+        to { transform: translateY(-5px) scaleY(1.04); }
+    }
+
     .ocean-line,
     .ocean-section {
         fill: none;
-        stroke: #8A4D57;
+        stroke: #D9F5EC;
         stroke-linecap: round;
         vector-effect: non-scaling-stroke;
     }
 
     .ocean-line {
-        stroke-width: 1.25;
-        opacity: 0.32;
+        stroke-width: 2;
+        opacity: 0.75;
         stroke-dasharray: 1;
         stroke-dashoffset: 1;
     }
@@ -1312,8 +1343,8 @@
     }
 
     @@keyframes oceanSwell {
-        0%, 100% { transform: translateY(-2px); }
-        50% { transform: translateY(2px); }
+        0%, 100% { transform: translateY(-6px); }
+        50% { transform: translateY(6px); }
     }
 
     .ocean-circle {
@@ -1324,9 +1355,9 @@
         width: var(--d);
         height: var(--d);
         border-radius: 50%;
-        background: linear-gradient(150deg, #A4646E 0%, #7E4550 100%);
+        background: radial-gradient(circle at 30% 20%, #9CD6CF 0%, #397F87 48%, #204C62 100%);
         color: #FAF1EF;
-        box-shadow: 0 8px 22px rgba(126, 69, 80, 0.22);
+        box-shadow: inset 0 2px 3px #E0F8EB99, 0 8px 22px #204C6233;
         transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
     }
 
@@ -1361,7 +1392,7 @@
     /* dimmed letters stay solid (so the line never shows through), just softer */
     .ocean.settled.hovering .ocean-node:not(.hovered):not(.selected) .ocean-circle,
     .ocean.settled.has-selection:not(.hovering) .ocean-node:not(.selected) .ocean-circle {
-        background: linear-gradient(150deg, #CFA7AC 0%, #BC9098 100%);
+        background: linear-gradient(150deg, #A6CBC7 0%, #719DA7 100%);
         box-shadow: none;
     }
 
@@ -1376,7 +1407,7 @@
 
     .ocean-node.selected .ocean-circle {
         transform: scale(1.12);
-        box-shadow: 0 12px 30px rgba(126, 69, 80, 0.32);
+        box-shadow: 0 12px 30px #204C6252;
     }
 
     .ocean-node.hovered .ocean-name,
@@ -1562,7 +1593,7 @@
     /* phones: same swell, smaller circles, names only for the chosen letter */
     @@media (max-width: 700px) {
         .ocean {
-            height: 190px;
+            height: 230px;
             width: 88%;
         }
 
@@ -1603,6 +1634,7 @@
             stroke-dashoffset: 0;
         }
 
+        .ocean-water,
         .ocean-bob {
             animation: none !important;
         }
@@ -1974,7 +2006,7 @@
     }
 
     .letter-card:hover {
-        transform: translateY(-2px);
+        transform: translateY(-6px);
         border-color: #9E5A63;
         box-shadow: 0 14px 30px rgba(42, 24, 16, 0.12);
     }
@@ -2514,7 +2546,7 @@
         ("Season", "Autumn", "Tradition and security", "I like growth, but I also like roots. Familiar places, rituals, traditions and things I can return to matter enormously to me."),
         ("Weather", "Sunshower", "Emotional complexity", "I can be genuinely cheerful and deeply emotional at the exact same time. Apparently the forecast is complicated."),
         ("Feeling", "Anticipation", "Ambition and curiosity", "Curiosity, hope, planning and excitement about what’s next."),
-        ("Fire", "Hearth", "Leadership and community", "I like taking charge and making things happen, but I want people gathered around me while I do it. Assertive doesn’t mean solitary."),
+        ("Element", "Hearth fire", "Leadership and community", "I like taking charge and making things happen, but I want people gathered around me while I do it. Assertive doesn’t mean solitary."),
         ("Drink", "Vanilla Latte", "Social warmth and energy", "Warm, familiar and a little sweet, with considerably more caffeine underneath than the first impression suggests."),
         ("Dessert", "Tiramisu", "Complexity and contrast", "Sweet, bitter, soft, strong, layered. No single flavor gets to explain the whole thing."),
         ("Gemstone", "Ruby", "Drive and resilience", "Beautiful, yes, but also hard and durable. Achievement matters to me, and I’m considerably more determined than the packaging suggests."),
@@ -2535,7 +2567,7 @@
                     <button type="button" class="kn-card" aria-pressed="false">
                         <span class="kn-inner">
                             <span class="kn-face kn-front iw-front">
-                                <span class="iw-category">If I were a @category.ToLower()</span>
+                                <span class="iw-category">If I were @(category == "Element" ? "an" : "a") @category.ToLower()</span>
                                 <span class="iw-answer">@answer</span>
                             </span>
                             <span class="kn-face kn-back iw-back">
@@ -2917,7 +2949,7 @@
             // The wave is only a design motif: each letter sits on a gentle swell (up, down, up, down).
             // Heights don't mean anything; size does. Coordinates are in a 1000 x 300 box.
             double[] waveX = { 100, 300, 500, 700, 900 };
-            double[] waveY = { 175, 105, 190, 110, 160 };
+            double[] waveY = { 155, 90, 165, 95, 150 };
             int lowScore = ocean.Min(t => t.Score), highScore = ocean.Max(t => t.Score);
             double Diameter(int score) => highScore == lowScore ? 110 : 90 + (score - lowScore) * 35.0 / (highScore - lowScore);
 
@@ -2944,6 +2976,25 @@
 
             <div class="ocean" id="ocean">
                 <svg class="ocean-wave" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="ocean-depth" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#79C6C0" />
+                            <stop offset="55%" stop-color="#377F91" stop-opacity="0.8" />
+                            <stop offset="100%" stop-color="#377F91" stop-opacity="0" />
+                        </linearGradient>
+                        <linearGradient id="ocean-mist" x1="0" y1="0" x2="0" y2="1">
+                            <stop stop-color="#AEDDD1" />
+                            <stop offset="100%" stop-color="#85BFC6" stop-opacity="0" />
+                        </linearGradient>
+                    </defs>
+                    <g class="ocean-water ocean-water-back">
+                        <path fill="url(#ocean-mist)" d="M 0 155 C 95 215 145 60 260 58 C 330 56 361 98 325 117 C 348 70 282 88 310 134 C 380 231 478 182 565 115 C 644 55 706 37 758 70 C 805 100 783 128 757 125 C 784 94 733 88 744 125 C 784 211 922 124 1000 108 L 1000 300 L 0 300 Z" />
+                    </g>
+                    <g class="ocean-water">
+                        <path fill="url(#ocean-depth)" d="M 0 181 C 101 228 168 141 225 111 C 270 86 314 91 336 117 C 365 155 334 179 307 163 C 334 160 332 134 308 135 C 274 138 304 198 358 210 C 463 237 539 130 622 101 C 674 83 726 94 745 124 C 764 156 741 181 713 165 C 739 158 736 136 717 137 C 684 140 708 199 767 208 C 858 225 925 156 1000 164 L 1000 300 L 0 300 Z" />
+                        <path class="ocean-foam" d="M 175 151 C 239 93 304 75 336 117 C 365 155 334 179 307 163 M 562 132 C 639 81 717 80 745 124 C 764 156 741 181 713 165" />
+                        <path class="ocean-ripple" d="M 20 215 Q 105 245 192 193 M 347 228 Q 431 254 519 190 M 768 231 Q 867 245 964 194 M 97 256 Q 225 224 307 258 M 501 260 Q 612 219 687 250" />
+                    </g>
                     <path class="ocean-line" d="@wavePath" pathLength="1" />
                     @for (var i = 0; i < ocean.Length; i++)
                     {
@@ -2967,6 +3018,7 @@
                 }
             </div>
 
+            <p style="text-align: center; color: #356D73; font-family: Georgia, serif; font-style: italic; letter-spacing: 2px;">♓ a little depth, a little daydream</p>
             <div class="ocean-detail" aria-live="polite">
                 @foreach (var t in ocean)
                 {

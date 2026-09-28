@@ -151,8 +151,9 @@
     // Add trips when ready, e.g. new Trip("Miami", "a line about it", "/images/travel/miami.jpg", new[] { new TripSpot(...) })
     var trips = new[]
     {
-        // Photo: "Chicago Loop Skyline at Sunset" by GazeboJake, Wikimedia Commons, CC0 (free to use, no credit needed)
-        new Trip("Chicago", "", "/images/travel/chicago.jpg", new[]
+        // Photo: Chicago skyline at sunset / Pexels, Pexels License. 3840 × 2560.
+        // https://www.pexels.com/photo/stunning-chicago-skyline-at-sunset-reflecting-on-lake-28832672/
+        new Trip("Chicago", "", "/images/travel/chicago-skyline-4k.jpg", new[]
         {
             new TripSpot("☕️", "Venteux Brasserie, Cafe & Oyster Bar", "French café, inside the Pendry",
                 "Super cute French café and brasserie. Very Parisian, with pretty interiors. Good for coffee, breakfast or brunch."),
@@ -166,6 +167,29 @@
                 "This one is SO pretty. It’s inside RH Chicago in the historic Three Arts Club building, in a giant glass atrium with chandeliers, trees and a fountain in the middle. Very fancy, very pretty, very Chicago-girl brunch. Walk around all the RH floors afterward too.", MustDo: true),
             new TripSpot("🥞", "Somerset", "Breakfast and brunch, inside the Viceroy in Gold Coast",
                 "Go for breakfast or brunch, and get the French toast. It’s the reason I had this saved.")
+        }),
+        new Trip("New York", "NEW YORK FAVS 🗽💌", "", new[]
+        {
+            new TripSpot("🍦", "Venchi", "Italian chocolate + gelato, West Village",
+                "Italian chocolate + gelato. Get the gelato!! There are a few NYC locations, but the Bleecker Street one is perfect if you’re already wandering around the West Village."),
+            new TripSpot("🥙", "Shuka", "Mediterranean, SoHo",
+                "Mediterranean in SoHo. Super cute, amazing for lunch/brunch/dinner, and very shareable. Get a bunch of dips + pita + mezze."),
+            new TripSpot("🇵🇸", "Ayat", "Palestinian food",
+                "Palestinian food!! Fresh pita, hummus, muhammara, falafel, shawarma, etc. The interiors are also really pretty."),
+            new TripSpot("🎨", "The Met", "Museum",
+                "THE museum to do in New York. It is absolutely massive, so don’t try to see everything. Pick a few sections you actually care about and wander."),
+            new TripSpot("🇮🇳", "Musaafer", "Upscale Indian",
+                "Gorgeous upscale Indian restaurant. The interiors are INSANE. Definitely more of a fancy dinner/special occasion situation."),
+            new TripSpot("☕️", "Central Perk Coffeehouse", "FRIENDS café, Times Square",
+                "The FRIENDS café!! There’s now a real Central Perk in Times Square with drinks inspired by the show, Friends references, merch, etc. Very touristy but very fun if you love Friends."),
+            new TripSpot("🧞‍♂️", "Aladdin on Broadway", "Broadway",
+                "Jasmine is my FAVORITE Disney princess, so obviously this had to make the list. Such a fun Broadway show with huge sets, gorgeous costumes, all the songs, and full Disney spectacle. Perfect for a happy Broadway night."),
+            new TripSpot("🎀", "Ladurée SoHo", "Restaurant + tea salon, SoHo",
+                "GO TO THE SOHO ONE. It’s the full restaurant/tea salon with the gorgeous garden, not just a little macaron counter. Very Parisian princess energy."),
+            new TripSpot("👜", "Louis Vuitton 57th Street", "Shopping + café + chocolate",
+                "The gigantic five-floor Louis Vuitton on 57th Street. There’s a massive trunk installation inside, plus Le Café Louis Vuitton and a Louis Vuitton chocolate shop.", MustDo: true),
+            new TripSpot("🍫", "Läderach", "Swiss chocolate",
+                "Swiss chocolate!! Go in, pick the giant slabs of FrischSchoggi chocolate you want, and they break pieces off for you. Very good little treat/gift stop.")
         })
     };
 
@@ -388,7 +412,7 @@
         <div class="recipe-body">
             <p class="recipe-kicker">Traveling</p>
             <h3 id="trip-title-@t">@trip.City</h3>
-            <p class="recipe-line">Spots I’ve been to</p>
+            <p class="recipe-line">@(string.IsNullOrEmpty(trip.Line) ? "Spots I’ve been to" : trip.Line)</p>
             <ul class="trip-spots">
                 @foreach (var spot in trip.Spots ?? Array.Empty<TripSpot>())
                 {
