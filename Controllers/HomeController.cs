@@ -31,6 +31,12 @@ public class HomeController : Controller
         return View();
     }
 
+    // Pursue: all five Pursue pages stacked on one page you can keep scrolling through
+    public IActionResult Pursue()
+    {
+        return View();
+    }
+
     public IActionResult ScholarshipsAndAwards()
     {
         return View();

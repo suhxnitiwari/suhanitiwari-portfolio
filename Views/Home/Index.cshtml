@@ -253,9 +253,9 @@
             left: 4%;
         }
 
-        /* sits just above the tagline and the 2×2 buttons (about 150px tall together) */
+        /* sits just above the tagline and the row of buttons (about 100px tall together) */
         .cover-name.right {
-            bottom: calc(4% + 162px);
+            bottom: calc(4% + 112px);
             right: 4%;
         }
 
@@ -274,7 +274,7 @@
             font-size: 1rem;
         }
 
-        /* four buttons as a compact 2×2 grid so they never climb into the name */
+        /* the two buttons side by side, sized to fit a phone */
         .cover-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -2436,11 +2436,9 @@
     <div class="cover-intro">
         <p class="cover-tagline"><span>MIS at McCombs, UT Austin</span>Psychology, marketing and product</p>
         <div class="cover-actions">
-            @* what a recruiter came for: what I know, what I can do, my résumé; then the STEM work that started it all *@
-            <a class="cover-btn primary" href="/home/coursework#mis">What I know</a>
-            <a class="cover-btn" href="/home/coursework#skills">What I can do</a>
+            @* just the two things a recruiter came for: my MIS work and my résumé *@
+            <a class="cover-btn primary" href="/home/coursework#mis">My MIS work</a>
             <a class="cover-btn" href="/resume">My résumé</a>
-            <a class="cover-btn" href="/home/beyondtheclassroom">Early STEM education</a>
         </div>
     </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>

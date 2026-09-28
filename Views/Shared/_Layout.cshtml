@@ -466,16 +466,18 @@
         string ActiveIf(string page) => currentPage == page ? "active" : "";
 
         // Pursue, in story order: in the classroom (education, coursework, awards), then beyond it.
-        // The dropdown, the Pursue bar on top of each Pursue page and the "Next up" card all read from this list.
+        // The Pursue dropdown reads from this list.
+        // Each item jumps to its section on the one long Pursue page.
         var pursue = new (string Page, string Url, string Name)[]
         {
-            ("Education", "/home/education", "Education"),
-            ("Coursework", "/home/coursework", "Coursework"),
-            ("ScholarshipsAndAwards", "/home/scholarshipsandawards", "Scholarships & Awards"),
-            ("BeyondTheClassroom", "/home/beyondtheclassroom", "Beyond the Classroom"),
-            ("HowIWork", "/home/howiwork", "How I Work")
+            ("Education", "/home/pursue#education", "Education"),
+            ("Coursework", "/home/pursue#coursework", "Coursework"),
+            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
+            ("BeyondTheClassroom", "/home/pursue#beyond", "Beyond the Classroom"),
+            ("HowIWork", "/home/pursue#how-i-work", "How I Work")
         };
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
+        var onPursue = currentPage == "Pursue" || pursueIndex >= 0;
     }
     <nav class="navbar navbar-expand-md" id="top">
         <div class="navbar-container">
@@ -513,7 +515,7 @@
                         </div>
                     </li>
                     <li class="nav-item nav-dropdown" id="workNav">
-                        <a href="javascript:void(0)" class="nav-link @(pursueIndex >= 0 ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="javascript:void(0)" class="nav-link @(onPursue ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
                             Pursue<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
@@ -531,35 +533,7 @@
 
     <!-- Main Content -->
     <main role="main">
-        @if (pursueIndex >= 0)
-        {
-            @* Pursue bar: every Pursue page, the current one marked; swipes sideways on phones *@
-            <nav class="pursue-bar" aria-label="Pursue">
-                <span class="pursue-label">Pursue</span>
-                <ol class="pursue-steps">
-                    @for (var i = 0; i < pursue.Length; i++)
-                    {
-                        <li class="@(i == 3 ? "pursue-break" : "")">
-                            <a href="@pursue[i].Url" class="@(i == pursueIndex ? "current" : "")" @(i == pursueIndex ? "aria-current=page" : "")>
-                                <span>@((i + 1).ToString("00"))</span>@pursue[i].Name
-                            </a>
-                        </li>
-                    }
-                </ol>
-            </nav>
-        }
         @RenderBody()
-        @if (pursueIndex >= 0)
-        {
-            var last = pursueIndex == pursue.Length - 1;
-            @* Next up: keep going through Pursue; the last page hands off to the résumé *@
-            <div class="pursue-next-wrap">
-                <a class="pursue-next" href="@(last ? "/resume" : pursue[pursueIndex + 1].Url)">
-                    <span class="pursue-next-label">@(last ? "That’s everything in Pursue ✦ Next up" : $"Next up · {(pursueIndex + 2):00} of {pursue.Length:00}")</span>
-                    <span class="pursue-next-name">@(last ? "My résumé" : pursue[pursueIndex + 1].Name) <i aria-hidden="true">→</i></span>
-                </a>
-            </div>
-        }
     </main>
 
     <!-- Footer on every page -->
@@ -603,14 +577,6 @@
     @* Sitara ✦, my fairy guide: floating chat on every page *@
     <partial name="_Sitara" />
     <script src="~/js/sitara.js" asp-append-version="true"></script>
-    <script>
-        // Pursue bar: on narrow screens, slide the current page's pill into view
-        (() => {
-            const strip = document.querySelector('.pursue-steps');
-            const current = strip && strip.querySelector('a.current');
-            if (current) strip.scrollLeft = current.offsetLeft - (strip.clientWidth - current.offsetWidth) / 2;
-        })();
-    </script>
     <script>
         // Dropdowns (Favorites, Work): click to open, click anywhere else to close
         const dropdowns = document.querySelectorAll('.nav-dropdown');

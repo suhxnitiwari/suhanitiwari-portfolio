@@ -1,0 +1,28 @@
+@* Pursue: every Pursue page stacked into one long page, like Hello, in story order:
+   in the classroom (education, coursework, awards), then beyond it. Each section is the same view that also
+   works on its own address (/home/education and so on), so deep links from elsewhere keep working. *@
+<style>
+    /* land each section just below the sticky navbar when jumping from the Pursue menu */
+    .pursue-part { scroll-margin-top: 70px; }
+</style>
+
+<section class="pursue-part" id="education" aria-label="Education">
+    @await Html.PartialAsync("Education")
+</section>
+<section class="pursue-part" id="coursework" aria-label="Coursework">
+    @await Html.PartialAsync("Coursework")
+</section>
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
+</section>
+<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
+    @await Html.PartialAsync("BeyondTheClassroom")
+</section>
+<section class="pursue-part" id="how-i-work" aria-label="How I work">
+    @await Html.PartialAsync("HowIWork")
+</section>
+
+@{
+    // set last: each section sets its own title while it renders
+    ViewData["Title"] = "Pursue";
+}
