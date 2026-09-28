@@ -361,6 +361,11 @@
         background: #F5E5E1;
     }
 
+    .popup-photo.personal-photo {
+        height: 230px;
+        object-fit: contain;
+    }
+
     .popup-tag {
         display: inline-block;
         background: #9E5A63;
@@ -1573,7 +1578,7 @@
     const popupHTML = (loc) => {
         const t = timeThere(loc);
         return `
-        ${loc.photo ? `<img class="popup-photo" src="${loc.photo}" alt="${loc.name}">` : ''}
+        ${loc.photo ? `<img class="popup-photo${loc.myPhoto ? ' personal-photo' : ''}" src="${loc.photo}" alt="${loc.name}">` : ''}
         <div class="popup-content">
             <div class="popup-title">${loc.number}. ${loc.name}</div>
             <div class="popup-when">${t.summary}</div>
