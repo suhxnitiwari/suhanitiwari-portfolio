@@ -103,16 +103,6 @@
         ("MIS 375", new[] { "AI strategy" })
     };
 
-    // Translation: each row turns one kind of thing into another
-    var translations = new[]
-    {
-        new[] { "Customer need", "Product requirement" },
-        new[] { "Business objective", "Technical requirement" },
-        new[] { "Technical constraint", "Business tradeoff" },
-        new[] { "Data", "Insight", "Recommendation" },
-        new[] { "User feedback", "Product decision" }
-    };
-
     const string clockIcon = "<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
 }
 
@@ -766,24 +756,6 @@
                             </li>
                         }
                     </ol>
-                    <p class="ai-caption">The more capable technology becomes, the more important the human question becomes.</p>
-                </section>
-
-                <!-- Translation -->
-                <section class="story-section reveal" aria-labelledby="translate-heading">
-                    <h2 class="story-heading" id="translate-heading">Translation is a technical skill</h2>
-                    <ul class="translate">
-                        @foreach (var row in translations)
-                        {
-                            <li class="translate-row" tabindex="0">
-                                @for (var t = 0; t < row.Length; t++)
-                                {
-                                    if (t > 0) { <span class="translate-arrow" aria-label="becomes"><svg viewBox="0 0 40 12" aria-hidden="true"><path d="M1 6h36M31 1l6 5-6 5" /></svg></span> }
-                                    <span class="translate-item @(t == row.Length - 1 ? "to" : "")">@row[t]</span>
-                                }
-                            </li>
-                        }
-                    </ul>
                 </section>
             </div>
         </div>
