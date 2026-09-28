@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIS Major Mockup</title>
+<style>
+:root{
+  --cream:#FAF1EF; --ivory:#FFFBF9; --blush:#F5E5E1; --choc:#2A1810; --ink:#3B2A24;
+  --muted:#7A665F; --mul:#8F4661; --plum:#6B4A5A; --sage:#6B7F5E; --sage-d:#56634A; --rose:#A9788A;
+  --line:rgba(143,70,97,.18); --serif:Georgia,"Times New Roman",serif; --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--choc);margin:0}
+p{margin:0}
+.eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--mul);font-weight:600}
+.wrap{max-width:1180px;margin:0 auto;padding:0 40px}
+.wide{max-width:1280px;margin:0 auto;padding:0 40px}
+.prose{max-width:720px}
+section{padding:110px 0}
+.bg-ivory{background:var(--ivory)} .bg-blush{background:var(--blush)}
+.sec-head{margin-bottom:48px}
+.sec-head h2{font-size:44px;line-height:1.12;margin-top:12px}
+.sec-head p{color:var(--muted);font-size:17px;margin-top:14px;max-width:640px}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--mul);outline-offset:3px}
+
+/* top nav + tabs (context only) */
+.nav{display:flex;justify-content:center;gap:40px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line);font-size:13px;letter-spacing:.1em;background:var(--cream)}
+.nav b{font-family:var(--serif);font-size:22px;letter-spacing:0;margin-right:30px;color:var(--choc)}
+.nav .on{color:var(--mul);border-bottom:2px solid var(--mul);padding-bottom:4px}
+.tabs{display:flex;justify-content:center;gap:10px;padding:34px 0 0}
+.tabs span{padding:10px 26px;border-radius:999px;border:1px solid var(--line);font-size:12.5px;letter-spacing:.14em;font-weight:600}
+.tabs .on{background:var(--mul);color:#fff;border-color:var(--mul)}
+
+/* 1 hero */
+.hero{padding:70px 0 90px}
+.hero-grid{display:block;max-width:900px}
+.hero h1{font-size:60px;line-height:1.05;margin:16px 0 26px}
+.thesis{font-family:var(--serif);font-style:italic;font-size:29px;line-height:1.3;color:var(--mul);margin-bottom:26px}
+.hero .body{font-size:17.5px;color:var(--ink);max-width:640px}
+.hero .body + .body{margin-top:14px;color:var(--muted)}
+.index{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
+.index a{font-size:12px;letter-spacing:.2em;font-weight:600;color:var(--choc);text-decoration:none}
+.index a:hover{color:var(--mul)}
+.glance{background:var(--ivory);border:1px solid var(--line);border-radius:22px;padding:30px 30px 26px;margin-top:8px}
+.stat{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid var(--line)}
+.stat:first-of-type{border-top:none}
+.stat b{font-family:var(--serif);font-weight:400;font-size:34px;color:var(--mul);min-width:92px}
+.stat span{font-size:14px;color:var(--muted);line-height:1.45}
+
+/* 2 capabilities */
+.caps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.cap{background:var(--ivory);border:1px solid var(--line);border-radius:20px;padding:30px 28px 26px;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
+.cap:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(42,24,16,.35)}
+.cap .no{font-family:var(--serif);font-size:15px;color:var(--rose)}
+.cap h3{font-size:14px;font-family:var(--sans);font-weight:700;letter-spacing:.2em;margin:6px 0 10px}
+.cap .say{font-family:var(--serif);font-size:23px;line-height:1.25;color:var(--choc);margin-bottom:18px}
+.key{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.key span{font-size:13.5px;font-weight:600;padding:6px 13px;border-radius:999px;background:rgba(143,70,97,.09);color:var(--mul)}
+.also{font-size:13.5px;color:var(--muted);line-height:1.6}
+.learned{margin-top:auto;padding-top:16px;font-size:12px;letter-spacing:.08em;color:var(--sage-d);font-weight:600}
+.thread{display:grid;gap:9px;margin:2px 0 6px}
+.thread div{display:grid;grid-template-columns:86px 1fr;gap:10px;font-size:13.5px;line-height:1.4}
+.thread b{font-size:11px;letter-spacing:.14em;color:var(--mul);padding-top:2px}
+.thread span{color:var(--muted)}
+details.toolkit{margin-top:30px;border-top:1px solid var(--line);padding-top:18px}
+details.toolkit summary{cursor:pointer;font-family:var(--serif);font-size:19px;color:var(--mul);list-style:none}
+details.toolkit summary::-webkit-details-marker{display:none}
+.tk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px;margin-top:22px;font-size:14px;color:var(--muted)}
+.tk b{display:block;font-size:11px;letter-spacing:.18em;color:var(--choc);margin-bottom:8px}
+
+/* 3 proof */
+.proof{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:start}
+.browser{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -35px rgba(42,24,16,.4)}
+.browser .bar{display:flex;gap:7px;padding:12px 14px;background:var(--blush);border-bottom:1px solid var(--line)}
+.browser .bar i{width:10px;height:10px;border-radius:50%;background:rgba(143,70,97,.3)}
+.shot{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--muted);font-size:14px;background:repeating-linear-gradient(135deg,#fff 0 14px,var(--ivory) 14px 28px)}
+.shot b{font-family:var(--serif);font-weight:400;font-size:20px;color:var(--choc)}
+.verify{display:inline-block;font-size:12px;padding:4px 10px;border:1px dashed var(--mul);border-radius:8px;color:var(--mul);margin-bottom:16px}
+.proof h2{font-size:52px;margin:10px 0 10px}
+.proof .sub{font-size:18px;color:var(--muted);margin-bottom:26px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 28px}
+.facts div{border-top:2px solid var(--mul);padding-top:10px}
+.facts b{display:block;font-family:var(--serif);font-weight:400;font-size:32px;color:var(--choc);line-height:1}
+.facts span{font-size:11px;letter-spacing:.14em;color:var(--muted);font-weight:600}
+.stack{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin-bottom:22px}
+.stack span{padding:7px 13px;border-radius:10px;background:var(--ivory);border:1px solid var(--line)}
+.stack em{color:var(--rose);font-style:normal}
+.erd{margin-top:46px;background:var(--ivory);border:1px solid var(--line);border-radius:20px;padding:30px 34px}
+.erd-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:40px;align-items:center}
+.erd h3{font-size:28px;margin:10px 0 10px}
+.erd p{color:var(--muted);font-size:15.5px}
+.also-built{margin-top:22px;display:flex;gap:18px;align-items:center;background:var(--ivory);border:1px solid var(--line);border-radius:16px;padding:18px 22px;font-size:15px}
+.also-built b{font-family:var(--serif);font-weight:400;font-size:19px;color:var(--choc);white-space:nowrap}
+
+/* 4 pipeline */
+.pipe{display:grid;grid-template-columns:140px repeat(5,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--ivory)}
+.pipe > div{padding:20px 18px;border-top:1px solid var(--line);border-left:1px solid var(--line);font-size:14.5px;line-height:1.45;position:relative}
+.pipe .hd{border-top:none;background:var(--choc);color:#F5E5E1;font-size:11.5px;letter-spacing:.18em;font-weight:600}
+.pipe .hd:first-child{border-left:none}
+.pipe .hd:not(:first-child)::after{content:"→";position:absolute;left:-9px;top:17px;color:var(--rose);font-size:15px}
+.pipe .lane{border-left:none;font-family:var(--serif);font-size:17px;color:var(--mul);line-height:1.3}
+.pipe .lane small{display:block;font-family:var(--sans);font-size:11.5px;letter-spacing:.1em;color:var(--muted);margin-top:4px}
+.pipe-note{margin-top:18px;font-size:14.5px;color:var(--muted)}
+
+/* 5 triangle */
+.tri-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:56px;align-items:start}
+.tri-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.tri-tabs button{border:1px solid var(--line);background:var(--ivory);padding:9px 16px;border-radius:999px;cursor:pointer;font-size:14px;color:var(--ink);transition:all .2s}
+.tri-tabs button.on{background:var(--mul);color:#fff;border-color:var(--mul)}
+.tri-card{background:var(--ivory);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.tri-card .bar{height:4px;background:var(--mul)}
+.tri-card .in{padding:24px 28px 22px}
+.q{font-family:var(--serif);font-style:italic;font-size:25px;color:var(--mul);line-height:1.3;margin-bottom:10px}
+.step{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.step .n{width:34px;height:34px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif)}
+.step .c{font-size:11px;letter-spacing:.18em;font-weight:700}
+.step .t{font-family:var(--serif);font-size:20px;color:var(--choc);line-height:1.25;margin:2px 0 3px}
+.step .d{font-size:14.5px;color:var(--muted);line-height:1.5}
+.step .r{font-size:13px;font-style:italic;color:var(--ink);margin-top:6px}
+.step .r::before{content:"✓  ";color:var(--mul);font-style:normal;font-weight:700}
+.get{border-top:1px solid var(--line);padding-top:14px;margin-top:2px;font-size:14px;color:var(--muted)}
+.get b{color:var(--choc);font-weight:600}
+.fade{transition:opacity .3s}
+
+/* 6 curriculum */
+.cycle-ph{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.cy{border-radius:18px;padding:22px 22px 20px;color:#fff;position:relative}
+.cy small{font-size:11px;letter-spacing:.16em;opacity:.8}
+.cy h3{color:#fff;font-size:22px;margin:6px 0 12px}
+.cy .cs{font-size:13px;opacity:.92;line-height:1.55}
+.cy .soon{display:inline-block;margin-top:6px;font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.2)}
+.cy:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--rose);font-size:18px}
+.keep-note{margin-top:14px;font-size:13.5px;color:var(--muted);font-style:italic}
+.btlc{margin-top:56px;display:grid;grid-template-columns:260px repeat(4,minmax(0,1fr));gap:18px;align-items:start}
+.btlc h3{font-size:30px;line-height:1.15}
+.btlc .lead p{color:var(--muted);font-size:14.5px;margin-top:10px}
+.bt{border-top:2px solid var(--mul);padding-top:14px}
+.bt b{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--choc)}
+.bt ul{margin:10px 0 0;padding:0;list-style:none;font-size:14.5px;color:var(--muted)}
+.bt li{padding:3px 0}
+
+
+/* curriculum cycle (kept from live site) */
+.cyc-wrap{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:10px;max-width:860px;margin:0 auto}
+.cyc-nav{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--ivory);color:var(--mul);font-size:18px;cursor:pointer}
+.cyc{position:relative;width:100%;aspect-ratio:640/560}
+.cyc svg{position:absolute;inset:0;width:100%;height:100%}
+.nd{position:absolute;transform:translate(-50%,-50%);width:31%;min-width:170px;border:none;border-radius:16px;padding:14px 16px 16px;color:#fff;cursor:pointer;text-align:left;transition:transform .2s,opacity .25s;outline:3px solid transparent;outline-offset:4px}
+.nd:hover{transform:translate(-50%,-53%)}
+.nd.on{outline-color:var(--mul)}
+.cyc.sel .nd:not(.on){opacity:.8}
+.nd .tp{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;opacity:.85}
+.nd .tl{display:block;font-family:var(--serif);font-size:21px;line-height:1.2;margin:6px 0 10px}
+.nd em{font-style:normal;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.75);margin-right:5px;display:inline-block}
+.nd em.el{border-style:dashed}
+.ax{position:absolute;font-size:11.5px;letter-spacing:.24em;color:var(--muted);font-weight:600}
+.cyc-legend{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:18px 0 22px}
+.cyc-legend .d{display:inline-block;width:18px;height:11px;border:1px dashed var(--muted);border-radius:6px;vertical-align:-1px;margin-right:6px}
+.cyc-panel{max-width:860px;margin:0 auto;background:var(--ivory);border:1px solid var(--line);border-radius:20px;padding:26px 30px}
+.cyc-panel .cr{border-top:1px solid var(--line);padding:14px 0 8px}
+.cyc-panel .cq{font-family:var(--serif);font-style:italic;color:var(--mul);font-size:16px;margin:2px 0 8px}
+.cyc-panel .pl{display:inline-block;font-size:12.5px;padding:3px 11px;border-radius:999px;margin:0 5px 6px 0;background:rgba(143,70,97,.08);border:1px solid rgba(143,70,97,.2)}
+.cyc-panel .tag{font-size:11px;padding:2px 8px;border-radius:999px;margin-left:8px;border:1px solid var(--line);color:var(--muted);vertical-align:2px}
+.cyc-panel .tag.soon{background:rgba(107,127,94,.18);border-color:transparent}
+@media (max-width:700px){.cyc-wrap{grid-template-columns:1fr}.cyc-nav{display:none}.nd{min-width:130px;padding:10px 12px}.nd .tl{font-size:16px}}
+
+/* 7 zoom */
+.zoom-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:60px;align-items:center}
+.zoom svg{width:100%;max-width:540px;display:block;margin:0 auto}
+.zoom .ring{fill:transparent;stroke:rgba(143,70,97,.28);stroke-width:1.5;cursor:pointer;transition:all .25s}
+.zoom .ring.on{fill:rgba(143,70,97,.08);stroke:var(--mul);stroke-width:3}
+.zoom .lbl{font-family:var(--sans);font-size:11px;letter-spacing:.16em;font-weight:700;fill:var(--muted);cursor:pointer}
+.zoom .lbl.on{fill:var(--mul)}
+.zinfo .lvl{font-size:12px;letter-spacing:.2em;font-weight:700;color:var(--mul)}
+.zinfo .what{font-family:var(--serif);font-size:40px;color:var(--choc);line-height:1.15;margin:8px 0 12px}
+.zinfo .crs{font-size:13px;letter-spacing:.08em;color:var(--sage-d);font-weight:600;margin-bottom:22px}
+.zinfo .ques{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--mul);line-height:1.35;border-left:3px solid var(--mul);padding-left:18px}
+.zbtns{display:flex;gap:10px;margin-top:28px}
+.zbtns button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--ivory);color:var(--mul);cursor:pointer;font-size:17px}
+.habits{margin-top:80px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+.habits div{border-top:1px solid var(--choc);padding-top:14px}
+.habits small{font-family:var(--serif);color:var(--rose);font-size:14px}
+.habits b{display:block;font-size:12.5px;letter-spacing:.2em;margin:4px 0 6px;color:var(--choc)}
+.habits span{font-size:14px;color:var(--muted);line-height:1.5}
+
+/* 8 close */
+.close{background:var(--plum);color:#F5E5E1;padding:120px 0;text-align:center}
+.close .big{font-family:var(--serif);font-size:40px;line-height:1.35;max-width:960px;margin:0 auto;color:#fff}
+.close .big em{color:#F3C9D5}
+.close .who{margin-top:24px;font-size:12px;letter-spacing:.22em;opacity:.75}
+
+.mock-note{position:fixed;right:18px;bottom:18px;background:var(--choc);color:#F5E5E1;font-size:12.5px;padding:10px 14px;border-radius:12px;max-width:260px;line-height:1.45;z-index:9}
+
+/* responsive */
+@media (max-width:1100px){
+  .caps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .btlc{grid-template-columns:repeat(2,minmax(0,1fr))} .btlc .lead{grid-column:1/-1}
+  .habits{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tk{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  section{padding:80px 0}
+  .wrap,.wide{padding:0 22px}
+  .hero-grid,.proof,.erd-grid,.tri-grid,.zoom-grid{grid-template-columns:1fr;gap:36px}
+  .hero h1{font-size:44px} .thesis{font-size:24px} .sec-head h2{font-size:34px} .proof h2{font-size:40px}
+  .pipe{grid-template-columns:1fr} .pipe .hd{display:none}
+  .pipe > div{border-left:none}
+  .pipe .cell::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.16em;color:var(--mul);font-weight:700;margin-bottom:3px}
+  .cycle-ph{grid-template-columns:1fr 1fr} .cy::after{display:none}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{display:none}
+}
+@media (max-width:560px){
+  .caps,.btlc,.habits,.cycle-ph,.tk{grid-template-columns:1fr}
+  .hero h1{font-size:38px} .close .big{font-size:28px}
+  .zinfo .what{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="mock-note">Mockup of Coursework → MIS Major. Everything here is backed by your syllabi, résumé or RideFlow docs.</div>
+
+<nav class="nav" aria-label="Site"><b>Suhani</b><span>HELLO</span><span>WORLD</span><span>FAVORITES ▾</span><span>CURATE ▾</span><span class="on">PURSUE ▾</span><span>RÉSUMÉ</span></nav>
+<div class="tabs" aria-hidden="true"><span>OVERVIEW</span><span class="on">MIS MAJOR</span></div>
+
+<!-- 1 HERO -->
+<header class="hero">
+  <div class="wide hero-grid">
+    <div>
+      <div class="eyebrow">Management Information Systems · McCombs · UT Austin</div>
+      <h1>I studied MIS.<br>Here's what that means for you.</h1>
+      <p class="thesis">I can move between the code, the data, the user and the business decision.</p>
+      <p class="body">Give me a vague problem and I can help take it from "something isn't working" to a system, an analysis and a recommendation someone can actually act on.</p>
+    </div>
+  </div>
+</header>
+
+<!-- 2 CAPABILITIES -->
+<section class="bg-ivory" id="caps">
+  <div class="wide">
+    <div class="sec-head">
+      <div class="eyebrow">From classroom to capability</div>
+      <h2>I didn't just learn the vocabulary.<br>I built with it.</h2>
+    </div>
+    <div class="caps">
+      <article class="cap" id="build">
+        <span class="no">01</span><h3>BUILD</h3>
+        <p class="say">Full-stack web apps, from the database to the screen.</p>
+        <div class="key"><span>C#</span><span>ASP.NET Core MVC</span><span>React</span></div>
+        <p class="learned">MIS 333K · MIS 372T</p>
+      </article>
+      <article class="cap" id="data">
+        <span class="no">02</span><h3>DATA</h3>
+        <p class="say">Databases designed, queried and moved.</p>
+        <div class="key"><span>SQL</span><span>Data modeling</span><span>ETL</span></div>
+        <p class="learned">MIS 325 · MIS 333K</p>
+      </article>
+      <article class="cap" id="secure">
+        <span class="no">03</span><h3>SECURE</h3>
+        <p class="say">Logins, roles and protected routes.</p>
+        <div class="key"><span>Authentication</span><span>Authorization</span><span>Role-based access</span></div>
+        <p class="learned">MIS 372T · MIS 333K · MIS 325</p>
+      </article>
+      <article class="cap" id="ai">
+        <span class="no">04</span><h3>AI</h3>
+        <p class="say">AI features inside real apps, and checks on what they output.</p>
+        <div class="thread">
+          <div><b>USE IT</b><span>LLMs and prompt engineering · MIS 304</span></div>
+          <div><b>FEED IT</b><span>Embeddings and vector databases · MIS 325</span></div>
+          <div><b>BUILD IT</b><span>AI features inside web apps · MIS 333K, 372T</span></div>
+          <div><b>JUDGE IT</b><span>Whether AI is worth it · MIS 375</span></div>
+        </div>
+      </article>
+      <article class="cap" id="analyze">
+        <span class="no">05</span><h3>ANALYZE</h3>
+        <p class="say">Data turned into something a person can decide with.</p>
+        <div class="key"><span>Python</span><span>pandas</span><span>Power BI</span></div>
+        <p class="learned">MIS 304 · MIS 301 · MIS 325</p>
+      </article>
+      <article class="cap" id="strategize">
+        <span class="no">06</span><h3>STRATEGIZE</h3>
+        <p class="say">Whether it's worth building, and what it costs.</p>
+        <div class="key"><span>IT strategy</span><span>Cost justification</span><span>Go-to-market</span></div>
+        <p class="learned">MIS 301 · MIS 375</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 3 PROOF -->
+<section id="proof">
+  <div class="wide">
+    <div class="proof">
+      <div>
+        <div class="browser" role="img" aria-label="RideFlow screenshot placeholder">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div class="shot" style="padding:0;background:#fff;overflow:hidden;position:relative;display:block"><iframe src="https://rideflow-frontend.onrender.com/" title="RideFlow live app" loading="lazy" style="position:absolute;top:0;left:0;width:250%;height:250%;border:0;transform:scale(.4);transform-origin:0 0"></iframe></div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Built, not just studied · MIS 372T · Spring 2026</div>
+        <h2>RideFlow</h2>
+        <p class="sub">A full-stack rideshare platform for riders, drivers and administrators, built solo in a course designed for teams. Riders request rides, drivers accept and complete them, and admins run the platform, with fares and payment records underneath.</p>
+        <div class="facts">
+          <div><b>3</b><span>USER ROLES</span></div>
+          <div><b>4</b><span>DATA TABLES</span></div>
+          <div><b>1</b><span>PERSON TEAM</span></div>
+          <div><b>Live</b><span>ON RENDER</span></div>
+        </div>
+        <ul style="color:var(--muted);font-size:15px;padding-left:18px;margin:0 0 20px;line-height:1.7"><li>Full CRUD across riders, drivers, rides and payments through a REST API</li><li>Admin-only features behind an elevated login, plus row-level authorization so users only see and change their own records</li><li>An AI feature that prompts an LLM with RideFlow's own data, plus a context-based chatbot</li></ul>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><a href="https://rideflow-frontend.onrender.com/" style="padding:10px 18px;border-radius:999px;background:var(--mul);color:#fff;text-decoration:none;font-size:14px">Open the live app ↗</a><a href="https://github.com/suhanitiwari0306/MIS372T_Rideshare_App" style="padding:10px 18px;border-radius:999px;border:1px solid var(--mul);color:var(--mul);text-decoration:none;font-size:14px">View the code ↗</a></div>
+      </div>
+    </div>
+
+    <div class="erd">
+      <div class="erd-grid">
+        <div>
+          <div class="eyebrow">Before the interface came the system</div>
+          <h3>Business rules had to become relationships.</h3>
+          <p>A rider can take many rides. A driver completes many rides, but a ride has no driver until someone accepts it. A payment exists only once a ride is completed. Those rules had to become tables, keys and constraints before they could become screens.</p>
+        </div>
+        <svg viewBox="0 0 560 210" role="img" aria-label="Simplified data model: a rider requests rides, a driver completes rides, each ride has a payment">
+          <g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle">
+            <rect x="10" y="20" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661"/><text x="75" y="54">Rider</text>
+            <rect x="10" y="134" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661"/><text x="75" y="168">Driver</text>
+            <rect x="215" y="77" width="130" height="56" rx="12" fill="#8F4661"/><text x="280" y="111" fill="#fff">Ride</text>
+            <rect x="420" y="77" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661"/><text x="485" y="111">Payment</text>
+          </g>
+          <g stroke="#A9788A" stroke-width="1.8" fill="none">
+            <path d="M140,48 C180,48 180,95 215,95"/><path d="M140,162 C180,162 180,115 215,115"/><path d="M345,105 L420,105"/>
+          </g>
+          <g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">
+            <text x="178" y="60">1 : MANY</text><text x="178" y="160">1 : MANY</text><text x="382" y="96">1 : 0..1</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="also-built">
+      <b>Also built: this website.</b>
+      <span style="color:var(--muted)">C# and ASP.NET Core MVC on .NET 10, containerized with Docker and deployed on Render. Every page you're reading runs on it.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 TRIANGLE -->
+<section id="triangle" class="bg-blush">
+  <div class="wide">
+    <div class="sec-head">
+      <div class="eyebrow">People · Technology · Business</div>
+      <h2>Hand me a problem.</h2>
+      <p>Most problems need all three corners. What changes is where I start. Pick one and see the order I'd work it, and where I've done it before.</p>
+    </div>
+    <div class="tri-tabs" id="tt" style="margin-top:-20px;margin-bottom:28px"></div>
+    <div class="tri-grid">
+      <div>
+        <svg id="tsv" viewBox="0 0 520 440" width="100%" style="max-width:560px;display:block" role="img" aria-label="Triangle showing the order of people, technology and business steps for the selected problem">
+          <defs><marker id="arw" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8F4661"/></marker></defs>
+          <circle cx="260" cy="262" r="96" fill="rgba(143,70,97,.07)"/>
+          <polygon points="260,82 90,360 430,360" fill="none" stroke="rgba(143,70,97,.22)" stroke-width="1.6"/>
+          <text x="260" y="256" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#2A1810">MIS</text>
+          <text x="260" y="282" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="14" fill="#8F4661">works all three</text>
+          <g id="tpath"></g><g id="tvx"></g>
+        </svg>
+      </div>
+      <div class="tri-card"><div class="bar"></div><div class="in fade" id="tcard"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 PIPELINE -->
+<section>
+  <div class="wide">
+    <div class="sec-head">
+      <div class="eyebrow">From blank repo to working application</div>
+      <h2>I know how the layers connect,<br>in two different stacks.</h2>
+    </div>
+    <div class="pipe" role="table" aria-label="Application layers in two stacks">
+      <div class="hd">STACK</div><div class="hd">FRONT END</div><div class="hd">BACK END</div><div class="hd">DATA</div><div class="hd">SECURITY</div><div class="hd">SHIP</div>
+      <div class="lane">.NET<small>MIS 333K</small></div>
+      <div class="cell" data-l="FRONT END">Razor views, forms, validation, responsive UI</div>
+      <div class="cell" data-l="BACK END">ASP.NET Core MVC controllers holding the business rules</div>
+      <div class="cell" data-l="DATA">Entity Framework Core and LINQ over Azure SQL</div>
+      <div class="cell" data-l="SECURITY">Users, roles and authorization</div>
+      <div class="cell" data-l="SHIP">Team app on GitHub · this site on Render</div>
+      <div class="lane">JavaScript<small>MIS 372T</small></div>
+      <div class="cell" data-l="FRONT END">React components, state and routing</div>
+      <div class="cell" data-l="BACK END">Node.js and Express routes and middleware, REST APIs</div>
+      <div class="cell" data-l="DATA">Sequelize ORM over PostgreSQL, full CRUD</div>
+      <div class="cell" data-l="SECURITY">Authentication and protected routes</div>
+      <div class="cell" data-l="SHIP">Front end and back end deployed</div>
+    </div>
+    <p class="pipe-note">Same layers, two ecosystems. Once you understand how a request travels from the screen to the database and back, a new framework is mostly new syntax.</p>
+  </div>
+</section>
+
+<!-- 6 CURRICULUM -->
+<section class="bg-ivory">
+  <div class="wide">
+    <div class="sec-head">
+      <div class="eyebrow">How the curriculum built that range</div>
+      <h2>One major. Four levels of the same problem.</h2>
+    </div>
+    <div class="cyc-wrap">
+      <button class="cyc-nav" id="cpv" aria-label="Previous step">‹</button>
+      <div class="cyc" id="cyc">
+        <svg viewBox="0 0 640 560" aria-hidden="true">
+          <defs><marker id="cm" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+          <line x1="320" y1="40" x2="320" y2="520" stroke="rgba(143,70,97,.25)" stroke-dasharray="3 7"/>
+          <line x1="40" y1="280" x2="600" y2="280" stroke="rgba(143,70,97,.25)" stroke-dasharray="3 7"/>
+          <circle cx="320" cy="280" r="178" fill="none" stroke="rgba(143,70,97,.12)" stroke-width="18"/>
+          <path class="ca" d="M418,131 A178,178 0 0,1 480,212" fill="none" stroke-width="2.5" marker-end="url(#cm)"/>
+          <path class="ca" d="M480,348 A178,178 0 0,1 418,429" fill="none" stroke-width="2.5" marker-end="url(#cm)"/>
+          <path class="ca" d="M222,429 A178,178 0 0,1 160,348" fill="none" stroke-width="2.5" marker-end="url(#cm)"/>
+          <path class="ca" d="M160,212 A178,178 0 0,1 222,131" fill="none" stroke-width="2.5" marker-end="url(#cm)"/>
+          <circle cx="320" cy="280" r="70" fill="#FFFBF9" stroke="rgba(143,70,97,.2)"/>
+          <text x="320" y="276" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#2A1810">Business problem</text>
+          <text x="320" y="300" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="17" fill="#8F4661">to IT solution</text>
+        </svg>
+        <div class="ax" style="left:50%;top:0;transform:translateX(-50%)">STRATEGIC</div>
+        <div class="ax" style="left:50%;bottom:0;transform:translateX(-50%)">APPLIED</div>
+        <div class="ax" style="left:0;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl">FUNCTIONAL</div>
+        <div class="ax" style="right:0;top:50%;transform:translateY(-50%);writing-mode:vertical-rl">TECHNICAL</div>
+        <button class="nd" data-k="0" style="left:50%;top:18.2%;background:#8F4661"><span class="tp"><span>01</span><span>◎</span></span><span class="tl">Business strategy</span><em>301</em><em>375</em></button>
+        <button class="nd" data-k="1" style="left:77%;top:50%;background:#8C9A78"><span class="tp"><span>02</span><span>&lt;/&gt;</span></span><span class="tl">Technical skills</span><em>304</em><em>325</em></button>
+        <button class="nd" data-k="2" style="left:50%;top:81.8%;background:#7A8B7C"><span class="tp"><span>03</span><span>▭</span></span><span class="tl">Build the system</span><em>333K</em><em class="el">372T</em></button>
+        <button class="nd" data-k="3" style="left:23%;top:50%;background:#8A6C7A"><span class="tp"><span>04</span><span>☰</span></span><span class="tl">Project management</span><em>374 ◷</em><em class="el">381N ◷</em></button>
+      </div>
+      <button class="cyc-nav" id="cnx" aria-label="Next step">›</button>
+    </div>
+    <div class="cyc-legend"><span><span class="d"></span>Elective</span><span>◷ Coming Spring 2027</span><span>Tap any step to explore</span></div>
+    <div class="cyc-panel fade" id="cpn"></div>
+  </div>
+</section>
+
+<!-- 7 ZOOM -->
+<section class="bg-blush">
+  <div class="wide">
+    <div class="zoom-grid zoom">
+      <svg id="zsv" viewBox="0 0 540 540" role="group" aria-label="Zoom lens: select a level"></svg>
+      <div class="zinfo">
+        <div class="eyebrow">The zoom lens</div>
+        <h2 style="font-size:40px;margin:12px 0 34px;line-height:1.15">MIS taught me to zoom in and out.</h2>
+        <div class="fade" id="zi"></div>
+        <div class="zbtns"><button id="zin" aria-label="Zoom in">−</button><button id="zout" aria-label="Zoom out">+</button></div>
+      </div>
+    </div>
+    <div class="habits" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+      <div><small>01</small><b>DECOMPOSE</b><span>Break a big problem into small, testable pieces.</span></div>
+      <div><small>02</small><b>DIAGNOSE</b><span>Separate the symptom from the cause.</span></div>
+      <div><small>03</small><b>DEBUG</b><span>Find the failure point instead of guessing.</span></div>
+      <div><small>04</small><b>VERIFY</b><span>Check the output before trusting it.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 CLOSE -->
+<section class="close">
+  <div class="wrap">
+    <p class="big">"I learn enough technology to <em>build it</em>, enough business to know <em>why we're building it</em>, and enough about people to make sure what we build <em>actually works for them</em>."</p>
+    <p class="who">SUHANI TIWARI · MIS · MCCOMBS</p>
+  </div>
+</section>
+
+<script>
+/* triangle */
+const V=[{n:"PEOPLE",c:"#8F4661",x:260,y:82,ly:44},{n:"TECHNOLOGY",c:"#6B7F5E",x:90,y:360,ly:404},{n:"BUSINESS",c:"#6B4A5A",x:430,y:360,ly:404}];
+const P=[
+{t:"Adoption",q:"Our team won't use the new system.",p:[0,1,2],s:[["Find out why","Talk to the people using it and find exactly where they get stuck.","Discovery calls on ERP pain points with $20M–$200M companies at Oracle"],["Check the data","Query usage and error data in SQL, then fix the data model or permissions behind the friction.","SQL in MIS 325 · roles and authorization in MIS 333K"],["Price the fix","Weigh fixing, retraining or replacing against the time being lost.","Cost justification in MIS 375 · ERP implementation case in MIS 301"]],g:"the root cause, a working prototype and a cost-backed recommendation."},
+{t:"AI",q:"Should we add AI to our product?",p:[2,1,0],s:[["Decide build, buy or skip","Work out whether AI changes the product's position or just adds cost.","AI strategy in MIS 375 · go-to-market for an Azure AI product at Acacia"],["Prototype the feature","Build it with structured AI output and error handling.","AI-enabled app in MIS 333K · vector databases in MIS 325"],["Test it before users do","Check outputs for accuracy, safety and reasoning before launch.","1,000+ AI model outputs evaluated at Outlier"]],g:"a go / no-go call, a working prototype and an evaluation rubric."},
+{t:"Data",q:"We have data everywhere and no answers.",p:[1,2,0],s:[["Pull it together","Design the schema and build an ETL pipeline into a cloud warehouse.","ER modeling, ETL and Snowflake in MIS 325"],["Pick the numbers that matter","Find the few metrics leadership actually decides with.","Executive KPIs turned into recommendations at Acacia"],["Make it readable","Build a dashboard people open, and explain what changed.","Power BI in MIS 301 · pandas in MIS 304"]],g:"one source of truth, a dashboard and a leadership readout."},
+{t:"Messaging",q:"Customers don't get what our tech does.",p:[0,2,1],s:[["Learn what buyers care about","Research who's buying, what worries them and the words they use.","Market research and competitive analysis at Acacia"],["Position it","Compare competitors and pricing, then pick the problem to lead with.","Pricing and competitor analysis for an Azure product launch at Acacia"],["Get the tech right","Explain the product accurately, without overpromising.","Rebuilt Acacia's website messaging for its AI and cloud services"]],g:"positioning, accurate messaging and launch-ready copy."}];
+const tt=document.getElementById('tt');
+tt.innerHTML=P.map((x,i)=>`<button data-i="${i}">${x.t}</button>`).join('');
+function seg(a,b){const dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy);return `M${a.x+dx/l*24},${a.y+dy/l*24} L${b.x-dx/l*28},${b.y-dy/l*28}`}
+function tri(i){const x=P[i];tt.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.i===i));
+document.getElementById('tpath').innerHTML=[0,1].map(j=>`<path d="${seg(V[x.p[j]],V[x.p[j+1]])}" stroke="#8F4661" stroke-width="2.4" fill="none" marker-end="url(#arw)"/>`).join('');
+document.getElementById('tvx').innerHTML=V.map((v,k)=>{const o=x.p.indexOf(k)+1,f=o===1,w=v.n.length*9+44;return `<circle cx="${v.x}" cy="${v.y}" r="${f?11:8}" fill="${f?v.c:'#FFFBF9'}" stroke="${v.c}" stroke-width="2.4"/><rect x="${v.x-w/2}" y="${v.ly-17}" width="${w}" height="34" rx="17" fill="${f?v.c:'#FFFBF9'}" stroke="${v.c}" stroke-opacity="${f?1:.45}"/><text x="${v.x-10}" y="${v.ly+5}" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" letter-spacing="2" fill="${f?'#fff':v.c}">${v.n}</text><text x="${v.x+w/2-16}" y="${v.ly+5.5}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${f?'#fff':v.c}">${o}</text>`}).join('');
+const c=document.getElementById('tcard');c.style.opacity=0;
+setTimeout(()=>{c.innerHTML=`<div class="eyebrow">The problem</div><p class="q">"${x.q}"</p>${x.p.map((k,j)=>`<div class="step"><div class="n" style="background:${V[k].c}">${j+1}</div><div><div class="c" style="color:${V[k].c}">${V[k].n}</div><div class="t">${x.s[j][0]}</div><div class="d">${x.s[j][1]}</div><div class="r">${x.s[j][2]}</div></div></div>`).join('')}<p class="get"><b>You walk away with</b> ${x.g}</p>`;c.style.opacity=1},180)}
+tt.querySelectorAll('button').forEach(b=>b.onclick=()=>tri(+b.dataset.i));tri(0);
+
+
+/* curriculum cycle */
+const CY=[
+{s:"Step 01 · Start with why",t:"Business strategy",c:"#8F4661",d:"What problem is the business trying to solve, and how can technology create an advantage? Every project starts here.",k:[["MIS 301","Introduction to IT Management","How technology changes marketing, finance, operations and HR, taught through Harvard Business School cases."],["MIS 375","Strategic IT Management","Platforms, information economics and enterprise architecture, ending in a technology recommendation backed by a cost justification."]],n:"Leads to technical skills: now you know what to build."},
+{s:"Step 02 · Learn the building blocks",t:"Technical skills",c:"#8C9A78",d:"Code to solve problems and databases to hold the data behind any business.",k:[["MIS 304","Problem Solving and Programming","Turning business problems written in plain English into working Python."],["MIS 325","Database Management","Designing a database from scratch, then moving past SQL into NoSQL, pipelines and cloud warehouses."]],n:"Leads to building the system: time to put the pieces together."},
+{s:"Step 03 · Build the real thing",t:"Build the system",c:"#7A8B7C",d:"Code and data become working web apps, with the business rules built in: who can see what and what the app should do.",k:[["MIS 333K","Web Application Development","A full web app with user accounts, a real database and an AI feature, built as a team."],["MIS 372T","Full-Stack Web App Development","A full-stack app built and deployed end to end. Mine was RideFlow.",1]],n:"Leads to project management: now deliver it."},
+{s:"Step 04 · Deliver it for real people",t:"Project management",c:"#8A6C7A",d:"Next semester, I'll run a real project for a real client and dig into how information systems research is done.",k:[["MIS 374","Business Systems Development","About 11 weeks of agile sprints building a system for an Austin business or nonprofit.",0,1],["MIS 381N","Research Methods in Information Systems","Research methods, with my own work focused on project management.",1,1]],n:"Loops back to strategy: did it deliver business value?"}];
+let cyi=0;const cyc=document.getElementById('cyc'),cpn=document.getElementById('cpn');
+function cy(i){cyi=(i+4)%4;cyc.classList.add('sel');cyc.querySelectorAll('.nd').forEach(b=>b.classList.toggle('on',+b.dataset.k===cyi));
+cyc.querySelectorAll('.ca').forEach((a,j)=>{a.setAttribute('stroke',j===cyi?'#8F4661':'rgba(143,70,97,.35)');a.setAttribute('stroke-width',j===cyi?'3.5':'2.2')});
+const x=CY[cyi];cpn.style.opacity=0;setTimeout(()=>{cpn.innerHTML=`<div class="eyebrow">${x.s}</div><h3 style="font-size:26px;margin:6px 0 8px"><span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${x.c};margin-right:10px;vertical-align:3px"></span>${x.t}</h3><p style="color:var(--muted);font-size:15.5px;margin-bottom:10px">${x.d}</p>${x.k.map(([c,nm,ln,el,soon])=>`<div class="cr"><div style="font-size:15px"><span style="font-family:var(--serif);font-size:17px;color:var(--mul)">${c}</span> · ${nm}${el?'<span class="tag" style="border-style:dashed">Elective</span>':''}${soon?'<span class="tag soon">Coming Spring 2027</span>':''}</div><p style="color:var(--muted);font-size:14.5px;margin:4px 0 6px">${ln}</p></div>`).join('')}<p style="border-top:1px solid var(--line);padding-top:12px;font-size:14px;color:var(--mul)">↻ ${x.n}</p>`;cpn.style.opacity=1},150)}
+cyc.querySelectorAll('.nd').forEach(b=>b.onclick=()=>cy(+b.dataset.k));
+document.getElementById('cpv').onclick=()=>cy(cyi-1);document.getElementById('cnx').onclick=()=>cy(cyi+1);cy(0);
+
+/* zoom lens */
+const Z=[["CODE","A line of code","MIS 304 · Problem Solving and Programming","Can I translate ambiguity into executable logic?"],
+["QUERY","A query","MIS 325 · Database Management","Can I pull the information the system actually needs?"],
+["FEATURE","A working feature","MIS 333K · MIS 372T","Does it do what the requirement actually asked for?"],
+["USER","Someone using it","Where the Psychology side comes in","Does this work for the person it was built for?"],
+["WORKFLOW","A business process","MIS 301 · Intro to IT Management","How does this change the way the work gets done?"],
+["ORGANIZATION","A connected system","MIS 374 · Spring 2027","What else does this decision affect?"],
+["STRATEGY","A business decision","MIS 375 · Strategic IT Management","Should we build this at all?"]];
+const zs=document.getElementById('zsv');let zc=0;
+zs.innerHTML=Z.map((z,i)=>{const r=44+i*33;return `<circle class="ring" data-i="${i}" cx="270" cy="270" r="${r}" tabindex="0" role="button" aria-label="${z[0]}"/>`}).reverse().join('')+
+Z.map((z,i)=>{const r=44+i*33;return `<text class="lbl" data-i="${i}" x="270" y="${270-r+(i===0?48:21)}" text-anchor="middle">${z[0]}</text>`}).join('');
+function zoom(i){zc=Math.max(0,Math.min(6,i));zs.querySelectorAll('.ring,.lbl').forEach(e=>e.classList.toggle('on',+e.dataset.i===zc));
+const el=document.getElementById('zi'),z=Z[zc];el.style.opacity=0;setTimeout(()=>{el.innerHTML=`<div class="lvl">LEVEL ${zc+1} OF 7 · ${z[0]}</div><div class="what">${z[1]}</div><div class="crs">${z[2]}</div><p class="ques">${z[3]}</p>`;el.style.opacity=1},150)}
+zs.querySelectorAll('.ring,.lbl').forEach(e=>{e.addEventListener('click',()=>zoom(+e.dataset.i));e.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();zoom(+e.dataset.i)}})});
+document.getElementById('zin').onclick=()=>zoom(zc-1);document.getElementById('zout').onclick=()=>zoom(zc+1);zoom(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+@* RideFlow proof section for the MIS Major tab (rendered from Coursework.cshtml, right after the cycle). *@
+                <!-- 4. proof: RideFlow -->
+                <div class="mp-section" style="margin-top:120px" aria-labelledby="mp-rideflow">
+                    <div class="mp-proof">
+                        <div class="mp-browser">
+                            <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <div class="mp-browser-view">
+                                <iframe data-src="https://rideflow-frontend.onrender.com/" title="RideFlow, the live app" tabindex="-1"></iframe>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="mp-eyebrow">Built, not just studied · MIS 372T · Spring 2026</p>
+                            <h3 id="mp-rideflow">RideFlow</h3>
+                            <p class="mp-proof-sub">A full-stack rideshare platform for riders, drivers and administrators, built solo in a course designed for teams. Riders request rides, drivers accept and complete them, and admins run the platform, with fares and payment records underneath.</p>
+                            <ul class="mp-facts">
+                                <li><b>3</b><span>USER ROLES</span></li>
+                                <li><b>4</b><span>DATA TABLES</span></li>
+                                <li><b>1</b><span>PERSON TEAM</span></li>
+                                <li><b>33</b><span>AUTOMATED TESTS</span></li>
+                            </ul>
+                            <ul class="mp-proof-list">
+                                <li>The full ride lifecycle, from request to accept to pickup to completion, with the fare billed automatically at the end and a printable receipt</li>
+                                <li>Row-level security enforced on the server: riders, drivers and admins each see and change only what their role allows</li>
+                                <li>An AI feature that prompts an LLM with RideFlow’s own data, plus a context-based chatbot</li>
+                            </ul>
+                            <div class="mp-links">
+                                <a class="mp-link solid" href="https://rideflow-frontend.onrender.com/" target="_blank" rel="noopener">Open the live app ↗</a>
+                                <a class="mp-link" href="https://github.com/suhxnitiwari/ridemanagement" target="_blank" rel="noopener">View the code ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mp-erd">
+                        <div>
+                            <p class="mp-eyebrow">Before the interface came the system</p>
+                            <h4>Business rules had to become relationships.</h4>
+                            <p>A rider can take many rides. A driver completes many rides, but a ride has no driver until someone accepts it. A payment is created only when a ride is completed, or as a small fee if a rider cancels after a driver accepts. Those rules had to become tables, keys and constraints before they could become screens.</p>
+                        </div>
+                        <svg viewBox="0 0 560 210" role="img" aria-label="Data model: riders and drivers each have many rides; each ride has at most one payment">
+                            <g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle">
+                                <rect x="10" y="20" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="75" y="54">Rider</text>
+                                <rect x="10" y="134" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="75" y="168">Driver</text>
+                                <rect x="215" y="77" width="130" height="56" rx="12" fill="#8F4661" /><text x="280" y="111" fill="#fff">Ride</text>
+                                <rect x="420" y="77" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="485" y="111">Payment</text>
+                            </g>
+                            <g stroke="#A9788A" stroke-width="1.8" fill="none">
+                                <path d="M140,48 C180,48 180,95 215,95" /><path d="M140,162 C180,162 180,115 215,115" /><path d="M345,105 L420,105" />
+                            </g>
+                            <g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">
+                                <text x="178" y="60">1 : MANY</text><text x="178" y="160">1 : MANY</text><text x="382" y="96">1 : 0..1</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <p class="mp-built"><b>Also built: this website.</b> C# and ASP.NET Core MVC on .NET 10, containerized with Docker and deployed on Render.</p>
+                </div>
+

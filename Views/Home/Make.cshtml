@@ -113,13 +113,34 @@
 @{
     // Art: selected works from my AP 2-D Art and Design portfolio (digital, drawn in Procreate).
     // Images saved in wwwroot/images/art.
-    var artworks = new[]
+    // The wall is hung in four bays, left to right: prints | a wall of four | the braid | a wall of two.
+
+    // Bay 1: two unframed prints stacked. The first is the featured piece.
+    var featuredArt = new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg");
+    var artPrints = new[]
     {
-        new Artwork("Traditionalism Versus Modernism", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg"),
-        new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg"),
-        new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg"),
+        featuredArt,
+        // No idea line yet for this one
+        new Artwork("Getting Ready", "", "/images/art/vanity.jpg")
+    };
+
+    // Bay 2: four framed pieces, two by two
+    var artWall = new[]
+    {
+        new Artwork("Old and New", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg"),
+        // No idea line yet for this one
+        new Artwork("What I Carry", "", "/images/art/packing-home.jpg"),
         new Artwork("Between Two Worlds", "Show the IND and US flag in a child's hands to symbolize her navigating dual cultural identity", "/images/art/navigating-indian-american-identity.jpg"),
-        new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg"),
+        new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg")
+    };
+
+    // Bay 3: the braid, hung big and unframed in the middle. No idea line yet
+    var heroArt = new Artwork("Woven Together", "", "/images/art/braid.jpg");
+
+    // Bay 4: two framed pieces stacked
+    var artSide = new[]
+    {
+        new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg"),
         // The diya thali piece (Image 7 in the portfolio); no idea line yet
         new Artwork("Keeping the Light", "", "/images/art/diya-thali.jpg")
     };
@@ -244,11 +265,32 @@
         new Recipe("Chocolate Chip Cookies", "", "/images/baking/chocolate-chip-cookies.jpg", "", "", new string[0], new string[0]),
         new Recipe("Double Chocolate Muffins", "", "/images/baking/double-chocolate-muffins.jpg", "", "", new string[0], new string[0]),
         new Recipe("Chocolate Chip Muffins", "", "/images/baking/chocolate-chip-muffins.jpg", "", "", new string[0], new string[0]),
-        new Recipe("Brownies", "", "/images/baking/brownies.jpg", "", "", new string[0], new string[0])
+        new Recipe("Brownies", "", "/images/baking/brownies.jpg", "", "", new string[0], new string[0]),
+        new Recipe("Cupcakes", "", "/images/baking/cupcakes.jpg", "", "", new string[0], new string[0])
     };
 }
 @{
     // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
+    // One piece on the Digital Art wall. Style: "framed" (walnut frame + museum label),
+    // "print" (unframed, caption strip underneath) or "hero" (unframed, no label, fills its bay)
+    void RenderArtPiece(Artwork art, string style)
+    {
+        <li class="gallery-piece gallery-@style@(art == featuredArt ? " gallery-feature" : "")">
+            <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
+                    aria-label="View @art.Title larger">
+                <span class="gallery-frame">
+                    <img src="@art.Image" alt="@art.Title" loading="lazy" draggable="false">
+                </span>
+                @if (style != "hero")
+                {
+                    <span class="gallery-label">
+                        <span class="gallery-title">@art.Title</span>
+                    </span>
+                }
+            </button>
+        </li>
+    }
+
     void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null, Artwork[]? gallery = null)
     {
         if (recipes.Length == 0)
@@ -383,22 +425,20 @@
             <div class="shelf-head">
                 <h3 class="shelf-title">Digital Art</h3>
             </div>
-            <ul class="gallery-wall" aria-label="Digital Art">
-                @foreach (var art in artworks)
-                {
-                    <li class="gallery-piece">
-                        <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
-                                aria-label="View @art.Title larger">
-                            <span class="gallery-frame">
-                                <img src="@art.Image" alt="@art.Title" loading="lazy" draggable="false">
-                            </span>
-                            <span class="gallery-label">
-                                <span class="gallery-title">@art.Title</span>
-                            </span>
-                        </button>
-                    </li>
-                }
-            </ul>
+            <div class="gallery-salon" role="group" aria-label="Digital Art">
+                <ul class="salon-bay salon-prints">
+                    @foreach (var art in artPrints) { RenderArtPiece(art, "print"); }
+                </ul>
+                <ul class="salon-bay salon-wall salon-wall-grid">
+                    @foreach (var art in artWall) { RenderArtPiece(art, "framed"); }
+                </ul>
+                <ul class="salon-bay salon-hero">
+                    @{ RenderArtPiece(heroArt, "hero"); }
+                </ul>
+                <ul class="salon-bay salon-wall salon-wall-stack">
+                    @foreach (var art in artSide) { RenderArtPiece(art, "framed"); }
+                </ul>
+            </div>
         </div>
         <hr class="shelf-divider">
 

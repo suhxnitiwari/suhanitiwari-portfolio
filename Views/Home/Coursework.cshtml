@@ -8,9 +8,12 @@
     // Question = the big question the course made me answer (the italic line under its name).
     // Capabilities = an optional row of small columns (MIS 333K's Build, Think, Learn, Collaborate).
     public record MisCourse(string Code, string Name, string[] Skills, bool Elective = false, bool Coming = false, string Professor = "",
-                            string Question = "", MisCapability[]? Capabilities = null);
+                            string Question = "", MisCapability[]? Capabilities = null, string Summary = "");
 
     public record MisCapability(string Title, string[] Items);
+
+    // "What I can do": one block per capability. Thread = the AI block's course-by-course rows instead of skill pills.
+    public record MisCan(string Name, string Line, string[] Key, string From, (string Verb, string Text)[]? Thread = null);
 
     // One step of the cycle. Left/Top = where the box sits on the diagram (its center, in % of the diagram).
     public record MisStep(string Theme, string Title, string Color, string Icon, string Left, string Top,
@@ -36,18 +39,22 @@
             "Leads to technical skills: now you know what to build.",
             new[] {
                 new MisCourse("MIS 301", "Introduction to IT Management", new[] { "Excel", "Power BI", "Harvard case analysis", "Business processes", "ERP" },
-                    Question: "How does technology change how organizations work?"),
+                    Question: "How does technology change how organizations work?",
+                    Summary: "How technology changes marketing, finance, operations and HR, taught through Harvard Business School cases."),
                 new MisCourse("MIS 375", "Strategic IT Management", new[] { "Porter’s Five Forces", "Platform strategy", "Enterprise IT architecture", "Cost justification", "AI strategy" },
-                    Question: "Should the organization invest in this, and why?")
+                    Question: "Should the organization invest in this, and why?",
+                    Summary: "Platforms, information economics and enterprise architecture, ending in a technology recommendation backed by a cost justification.")
             }),
         new MisStep("Learn the building blocks", "Technical skills", "#6B7F5E", "code", "77.5%", "50%",
             "Code to solve problems and databases to store, query and analyze the data behind any business.",
             "Leads to building the system: time to put the pieces together.",
             new[] {
                 new MisCourse("MIS 304", "Problem Solving and Programming", new[] { "Python", "Object-oriented programming", "pandas", "Matplotlib", "Data structures", "List comprehensions", "File handling", "LLMs", "Prompt engineering", "AI-assisted data analysis" },
-                    Question: "Can I translate ambiguity into executable logic?"),
+                    Question: "Can I translate ambiguity into executable logic?",
+                    Summary: "Turning business problems written in plain English into working Python."),
                 new MisCourse("MIS 325", "Database Management", new[] { "SQL", "PL/SQL", "ER modeling", "Normalization", "MongoDB", "Snowflake", "ETL pipelines", "Embeddings", "Data management for AI" },
-                    Question: "How should information be represented and used?")
+                    Question: "How should information be represented and used?",
+                    Summary: "Designing a database from scratch, then moving past SQL into NoSQL, pipelines and cloud warehouses.")
             }),
         new MisStep("Build the real thing", "Build the system", "#56705F", "window", "50%", "85.1%",
             "Combine code and data into working web apps with the business rules built in: who can see what, how data connects and what the app should do.",
@@ -55,21 +62,25 @@
             new[] {
                 new MisCourse("MIS 333K", "Web Application Development", new[] { "C#", "ASP.NET Core", "Entity Framework Core", "LINQ", "Azure SQL", "Users and roles", "AI features", "MVC architecture", "APIs", "GitHub", "Testing AI output", "Systematic debugging" },
                     Question: "Can I turn code and data into something people can use?",
+                    Summary: "A full web app with user accounts, a real database and an AI feature, built as a team.",
                     Capabilities: new[] {
                         new MisCapability("Build", new[] { "MVC apps", "Data and APIs", "Responsive UI" }),
                         new MisCapability("Think", new[] { "Model business problems", "Test AI", "Debug" }),
                         new MisCapability("Learn", new[] { "New tech fast", "Docs", "Transfer patterns" }),
                         new MisCapability("Collaborate", new[] { "Technical teams", "Own your part", "GitHub" })
                     }),
-                new MisCourse("MIS 372T", "Full-Stack Web App Development", new[] { "React", "Node.js", "Express", "REST APIs", "TypeScript", "Deployment" }, Elective: true)
+                new MisCourse("MIS 372T", "Full-Stack Web App Development", new[] { "React", "Vite", "Node.js", "Express", "Sequelize", "PostgreSQL", "REST APIs", "Deployment" }, Elective: true,
+                    Summary: "A full-stack app built and deployed end to end. Mine was RideFlow, built solo.")
             }),
         new MisStep("Deliver it for real people", "Project management", "#6B4A5A", "checklist", "22.5%", "50%",
-            "Next semester, I’ll run a real project for a real client with agile sprints, and dig into research methods in information systems, with my own research focused on project management and PMP practices.",
+            "Next semester, I’ll run a real project for a real client and dig into how information systems research is done.",
             "Loops back to strategy: did it deliver business value? What’s next?",
             new[] {
                 new MisCourse("MIS 374", "Business Systems Development", new[] { "Software development lifecycle", "Agile sprints", "User stories", "Client management", "Scope and risk" }, Coming: true,
-                    Question: "Can the solution survive contact with reality?"),
-                new MisCourse("MIS 381N", "Research Methods in Information Systems", new[] { "Research methods", "Project management", "PMP practices" }, Elective: true, Coming: true)
+                    Question: "Can the solution survive contact with reality?",
+                    Summary: "About 11 weeks of agile sprints building a system for an Austin business or nonprofit."),
+                new MisCourse("MIS 381N", "Research Methods in Information Systems", new[] { "Research methods", "Project management", "PMP practices" }, Elective: true, Coming: true,
+                    Summary: "Research methods, with my own work focused on project management.")
             })
     };
     // the four arrows around the ring, each leaving the step with the same index
@@ -82,15 +93,30 @@
     };
     var misCourses = misSteps.SelectMany(st => st.Courses).ToDictionary(c => c.Code);
 
-    // The triangle (the second chart, after the loop): each corner is a button; its card shows one line about it and the courses behind it
-    var triCorners = new[]
+    // "Hand me a problem": corners are 0 People, 1 Technology, 2 Business; p = the order I'd work them.
+    // Each step: title, what I'd do, and where I've done it (a job or a course).
+    var misProblems = new[]
     {
-        (Id: "people", Name: "People", Color: "#8F4661", X: "220", Y: "40", Left: "50%", Top: "4.4%",
-         Line: "Enough about people to make sure what we build actually works for them.", Courses: new[] { "MIS 333K", "MIS 374" }),
-        (Id: "technology", Name: "Technology", Color: "#6B7F5E", X: "50", Y: "318", Left: "11.4%", Top: "97.2%",
-         Line: "Enough technology to build it.", Courses: new[] { "MIS 304", "MIS 325", "MIS 333K", "MIS 372T" }),
-        (Id: "business", Name: "Business", Color: "#6B4A5A", X: "390", Y: "318", Left: "88.6%", Top: "97.2%",
-         Line: "Enough business to know why we’re building it.", Courses: new[] { "MIS 301", "MIS 375" })
+        new { t = "Adoption", q = "Our team won’t use the new system.", p = new[] { 0, 1, 2 }, g = "the root cause, a working prototype and a cost-backed recommendation.",
+              s = new[] {
+                  new[] { "Find out why", "Talk to the people using it and find exactly where they get stuck.", "Discovery calls on ERP pain points with $20M–$200M companies at Oracle" },
+                  new[] { "Check the data", "Query usage and error data in SQL, then fix the data model or permissions behind the friction.", "SQL in MIS 325 · roles and authorization in MIS 333K" },
+                  new[] { "Price the fix", "Weigh fixing, retraining or replacing against the time being lost.", "Cost justification in MIS 375 · ERP implementation case in MIS 301" } } },
+        new { t = "AI", q = "Should we add AI to our product?", p = new[] { 2, 1, 0 }, g = "a go / no-go call, a working prototype and an evaluation rubric.",
+              s = new[] {
+                  new[] { "Decide build, buy or skip", "Work out whether AI changes the product’s position or just adds cost.", "AI strategy in MIS 375 · go-to-market for an Azure AI product at Acacia" },
+                  new[] { "Prototype the feature", "Build it on the product’s own data, with structured output and error handling.", "The LLM feature in RideFlow · AI-enabled app in MIS 333K" },
+                  new[] { "Test it before users do", "Check outputs for accuracy, safety and reasoning before launch.", "1,000+ AI model outputs evaluated at Outlier" } } },
+        new { t = "Data", q = "We have data everywhere and no answers.", p = new[] { 1, 2, 0 }, g = "one source of truth, a dashboard and a leadership readout.",
+              s = new[] {
+                  new[] { "Pull it together", "Design the schema and build an ETL pipeline into a cloud warehouse.", "ER modeling, ETL and Snowflake in MIS 325" },
+                  new[] { "Pick the numbers that matter", "Find the few metrics leadership actually decides with.", "Executive KPIs turned into recommendations at Acacia" },
+                  new[] { "Make it readable", "Build a dashboard people open, and explain what changed.", "Power BI in MIS 301 · pandas in MIS 304" } } },
+        new { t = "Messaging", q = "Customers don’t get what our tech does.", p = new[] { 0, 2, 1 }, g = "positioning, accurate messaging and launch-ready copy.",
+              s = new[] {
+                  new[] { "Learn what buyers care about", "Research who’s buying, what worries them and the words they use.", "Market research and competitive analysis at Acacia" },
+                  new[] { "Position it", "Compare competitors and pricing, then pick the problem to lead with.", "Pricing and competitor analysis for an Azure product launch at Acacia" },
+                  new[] { "Get the tech right", "Explain the product accurately, without overpromising.", "Rebuilt Acacia’s website messaging for its AI and cloud services" } } }
     };
 
     // The zoom lens: from a line of code out to the strategy, and the course that trained each level
@@ -105,29 +131,17 @@
         ("Strategy", "The strategy", new[] { "MIS 375" })
     };
 
-    // Skills at the top of the MIS page, grouped; every one comes from a course above
-    // What I can do, at the top of the MIS page: six big blocks (name, what it means, a few key skills)
-    var misCapabilities = new[]
+    // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
+    var misCan = new[]
     {
-        (Name: "Build", Line: "I can build the system.", Skills: new[] { "C#", "ASP.NET Core", "React", "Node.js", "Express", "REST APIs" }),
-        (Name: "Data", Line: "I can structure the information.", Skills: new[] { "SQL", "Oracle", "PostgreSQL", "MongoDB", "Snowflake", "Python" }),
-        (Name: "Secure", Line: "I can protect the application.", Skills: new[] { "Authentication", "Authorization", "Role-Based Access", "Secured Routes" }),
-        (Name: "AI", Line: "I can build with AI.", Skills: new[] { "LLM Apps", "RAG", "Embeddings", "Prompt Engineering", "AI Evaluation" }),
-        (Name: "Ship", Line: "I can get it working.", Skills: new[] { "Git/GitHub", "CRUD", "Deployment", "Debugging", "State Management" }),
-        (Name: "Strategize", Line: "I can ask if it’s worth building.", Skills: new[] { "Requirements", "IT Strategy", "Business Cases", "Cost Analysis", "GTM" })
-    };
-
-    // ...and the full toolkit behind "See full technical toolkit": (group, what it covers, skills)
-    var misSkills = new[]
-    {
-        (Group: "Build", Focus: "Full-Stack Development", Skills: new[] { "C#", "ASP.NET Core MVC", "HTML", "CSS", "JavaScript", "TypeScript", "React", "Vite", "Node.js", "Express", "Entity Framework Core", "LINQ", "REST APIs" }),
-        (Group: "Data", Focus: "Databases and Analytics", Skills: new[] { "SQL", "PL/SQL", "Oracle", "PostgreSQL", "MongoDB", "Snowflake", "Azure SQL", "Python", "pandas", "Power BI", "ER Modeling", "Normalization", "ETL/ELT" }),
-        (Group: "Secure", Focus: "Application Security", Skills: new[] { "Authentication", "Authorization", "Role-Based Access", "Row-Level Authorization", "Secured API Routes", "Protected CRUD", "Input Validation", "Environment Variables", "Security-Aware Application Design" }),
-        (Group: "AI", Focus: "AI-Enabled Systems", Skills: new[] { "LLM Applications", "Generative AI Integration", "Prompt Engineering", "AI Evaluation", "Testing AI Output", "Embeddings", "Vector Databases", "RAG" }),
-        (Group: "Engineer", Focus: "Application Architecture", Skills: new[] { "Frontend/Backend Architecture", "MVC Architecture", "Component Architecture", "State Management", "ORM", "CRUD", "API Design", "Database Design", "Responsive UI", "Light/Dark Mode", "Debugging" }),
-        (Group: "Ship", Focus: "Development and Deployment", Skills: new[] { "Git", "GitHub", "Version Control", "Deployment", "Render", "Vercel", "GitHub Pages", "Cloud Databases" }),
-        (Group: "Analyze", Focus: "Data → Decision", Skills: new[] { "Python", "pandas", "Power BI", "Excel", "Data Visualization", "Business Analysis", "Process Analysis", "Cost Analysis" }),
-        (Group: "Strategize", Focus: "Technology → Business Value", Skills: new[] { "Requirements Analysis", "IT Strategy", "Business Cases", "Cost Justification", "ERP", "GTM Strategy", "Project Management", "Technology Evaluation" })
+        new MisCan("Build", "Full-stack web apps, from the database to the screen.", new[] { "C#", "ASP.NET Core MVC", "React" }, "MIS 333K · MIS 372T"),
+        new MisCan("Data", "Databases designed, queried and moved.", new[] { "SQL", "Data modeling", "ETL" }, "MIS 325 · MIS 333K"),
+        new MisCan("Secure", "Logins, roles and protected routes.", new[] { "Authentication", "Authorization", "Role-based access" }, "MIS 372T · MIS 333K · MIS 325"),
+        new MisCan("AI", "AI features inside real apps, and checks on what they output.", Array.Empty<string>(), "",
+            new[] { ("Use it", "LLMs and prompt engineering · MIS 304"), ("Feed it", "Embeddings and vector databases · MIS 325"),
+                    ("Build it", "AI features inside web apps · MIS 333K, 372T"), ("Judge it", "Whether AI is worth it · MIS 375") }),
+        new MisCan("Analyze", "Data turned into something a person can decide with.", new[] { "Python", "pandas", "Power BI" }, "MIS 304 · MIS 301 · MIS 325"),
+        new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT strategy", "Cost justification", "Go-to-market" }, "MIS 301 · MIS 375")
     };
 
     const string clockIcon = "<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
@@ -358,6 +372,7 @@
 <link rel="stylesheet" href="/css/coursework-responsive.css">
 <link rel="stylesheet" href="~/css/mis-cycle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
 
 <div class="coursework-section page-fill">
     <div class="coursework-container">
@@ -560,55 +575,49 @@
         </div>
 
         <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis" hidden>
-            <section class="mis" aria-labelledby="mis-heading">
-                <div class="mis-intro">
-                    <h2 id="mis-heading">MIS Coursework</h2>
-                    <p>I can move between the code, the data, the user and the business decision. I build full-stack applications across the frontend, backend, APIs and databases; design and query relational and NoSQL databases; analyze and visualize data; secure applications with authentication, authorization and role-based access; integrate AI and LLM capabilities; and deploy working systems. I’ve worked across C#, ASP.NET Core, JavaScript, TypeScript, React, Node.js, Express, Python, SQL, Oracle, PostgreSQL, MongoDB, Snowflake and Power BI, alongside Git/GitHub, REST APIs, ORM frameworks and cloud deployment.</p>
-                    <p>But the part of MIS I value most is being able to connect all of it. I can talk to users, turn an ambiguous problem into requirements, model the data behind it, design the system, build and secure the application, analyze what it produces, and evaluate whether the technology makes business sense in the first place. I’ve applied that range beyond the classroom, from developing go-to-market strategy for a Microsoft Azure product at Acacia Advisors to evaluating more than 1,000 AI model outputs at Outlier. I know enough of each layer to move a problem from “something isn’t working” to a system that does and a recommendation someone can act on.</p>
-                </div>
+            <section class="mis mp" aria-labelledby="mis-heading">
+                <!-- 1. who I am in one screen -->
+                <header class="mp-hero">
+                    <p class="mp-eyebrow">Management Information Systems · McCombs · UT Austin</p>
+                    <h2 id="mis-heading">I studied MIS.<br />Here’s what that means for you.</h2>
+                    <p class="mp-thesis">I can move between the code, the data, the user and the business decision.</p>
+                    <p class="mp-hook">Give me a vague problem and I can help take it from “something isn’t working” to a system, an analysis and a recommendation someone can actually act on.</p>
+                </header>
 
-                <!-- what I can do: six big blocks, with the full toolkit folded away underneath -->
-                <div class="mis-can" aria-labelledby="mis-can-title">
-                    <h3 class="mis-can-title" id="mis-can-title">What I can do</h3>
-                    <ol class="mis-can-grid">
-                        @for (var i = 0; i < misCapabilities.Length; i++)
+                <!-- 2. what I can do -->
+                <div class="mp-section" aria-labelledby="mp-can-title">
+                    <div class="mp-head">
+                        <p class="mp-eyebrow">From classroom to capability</p>
+                        <h3 class="mp-h2" id="mp-can-title">I didn’t just learn the vocabulary.<br />I built with it.</h3>
+                    </div>
+                    <ol class="mp-caps">
+                        @for (var i = 0; i < misCan.Length; i++)
                         {
-                            var cap = misCapabilities[i];
-                            <li class="mis-can-block">
-                                <p class="mis-can-name"><span class="mis-can-num">0@(i + 1)</span>@cap.Name</p>
-                                <p class="mis-can-line">@cap.Line</p>
-                                <ul class="mis-can-pills">@foreach (var skill in cap.Skills) { <li>@skill</li> }</ul>
+                            var cap = misCan[i];
+                            <li class="mp-cap">
+                                <span class="mp-cap-num">0@(i + 1)</span>
+                                <p class="mp-cap-name">@cap.Name.ToUpperInvariant()</p>
+                                <p class="mp-cap-line">@cap.Line</p>
+                                @if (cap.Thread is { } thread)
+                                {
+                                    <ul class="mp-cap-thread">@foreach (var row in thread) { <li><b>@row.Verb.ToUpperInvariant()</b><span>@row.Text</span></li> }</ul>
+                                }
+                                else
+                                {
+                                    <ul class="mp-cap-key">@foreach (var k in cap.Key) { <li>@k</li> }</ul>
+                                    <p class="mp-cap-from">@cap.From</p>
+                                }
                             </li>
                         }
                     </ol>
-
-                    <button type="button" class="mis-can-more" aria-expanded="false" aria-controls="misToolkit">
-                        <span>See full technical toolkit</span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="mis-toolkit" id="misToolkit" hidden>
-                        @foreach (var (group, focus, skills) in misSkills)
-                        {
-                            <div class="mis-toolkit-group">
-                                <p class="mis-toolkit-name">@group</p>
-                                <p class="mis-toolkit-focus">@focus</p>
-                                <ul>@foreach (var skill in skills) { <li>@skill</li> }</ul>
-                            </div>
-                        }
-                    </div>
                 </div>
 
-                <!-- two charts: the loop, then the triangle; ‹ › on either side of the chart switches between them
-                     (on phones the arrows sit beside the chart's name instead) -->
-                <div class="mis-view-nav">
-                    <button type="button" class="mis-view-btn top" data-go="-1" aria-label="Previous chart">‹</button>
-                    <span class="mis-view-name" aria-live="polite">How a business problem becomes a working system</span>
-                    <button type="button" class="mis-view-btn top" data-go="1" aria-label="Next chart">›</button>
+                <!-- 3. how the major builds it: the cycle -->
+                <div class="mp-head">
+                    <p class="mp-eyebrow">How the curriculum built that range</p>
+                    <h3 class="mp-h2">One major. Four levels of the same problem.</h3>
                 </div>
-
-                <div class="mis-view" data-name="How a business problem becomes a working system">
                 <div class="mis-chart">
-                    <button type="button" class="mis-view-btn side" data-go="-1" aria-label="Previous chart">‹</button>
                 <div class="mis-diagram">
                     <svg viewBox="0 0 600 470" aria-hidden="true">
                         <defs>
@@ -655,7 +664,6 @@
                         </div>
                     }
                 </div>
-                    <button type="button" class="mis-view-btn side" data-go="1" aria-label="Next chart">›</button>
                 </div>
 
                 <ul class="mis-legend">
@@ -708,29 +716,11 @@
                                             @if (course.Elective) { <span class="mis-tag elective">Elective</span> }
                                             @if (course.Coming) { <span class="mis-tag coming">Coming Spring 2027</span> }
                                         </div>
-                                        @if (!string.IsNullOrEmpty(course.Question))
-                                        {
-                                            <p class="mis-question">@course.Question</p>
-                                        }
-                                        @if (!string.IsNullOrEmpty(course.Professor))
+@if (!string.IsNullOrEmpty(course.Professor))
                                         {
                                             <p class="mis-prof">Professor @course.Professor</p>
                                         }
-                                        <ul class="mis-skills">
-                                            @foreach (var skill in course.Skills) { <li>@skill</li> }
-                                        </ul>
-                                        @if (course.Capabilities is { } caps)
-                                        {
-                                            <div class="mis-caps">
-                                                @foreach (var cap in caps)
-                                                {
-                                                    <div class="mis-cap">
-                                                        <p class="mis-cap-title">@cap.Title</p>
-                                                        <ul>@foreach (var item in cap.Items) { <li>@item</li> }</ul>
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
+                                        @if (!string.IsNullOrEmpty(course.Summary)) { <p class="mis-summary">@course.Summary</p> }
                                     </li>
                                 }
                             </ul>
@@ -738,61 +728,56 @@
                         </section>
                     }
                 </div>
+
+                <!-- 4. proof: RideFlow (Views/Home/_RideFlowProof.cshtml) -->
+                <partial name="_RideFlowProof" />
+
+                <!-- 5. how I work: hand me a problem -->
+                <div class="mp-section" aria-labelledby="mp-problem">
+                    <div class="mp-head">
+                        <p class="mp-eyebrow">People · Technology · Business</p>
+                        <h3 class="mp-h2" id="mp-problem">Hand me a problem.</h3>
+                        <p class="mp-lead">Most problems need all three corners. What changes is where I start. Pick one to see the order I’d work it, and where I’ve done it before.</p>
+                    </div>
+                    <div class="mp-tabs" role="tablist" aria-label="Pick a problem"></div>
+                    <div class="mp-tri">
+                        <figure class="mp-tri-fig">
+                            <svg id="mpTri" viewBox="10 18 500 410" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The order of the people, technology and business steps for the chosen problem">
+                                <defs><marker id="mp-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8F4661" /></marker></defs>
+                                <circle cx="260" cy="262" r="96" fill="rgba(143,70,97,.07)" />
+                                <polygon points="260,82 90,360 430,360" fill="none" stroke="rgba(143,70,97,.22)" stroke-width="1.6" />
+                                <text x="260" y="256" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#2A1810">MIS</text>
+                                <text x="260" y="282" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="14" fill="#8F4661">works all three</text>
+                                <g class="mp-tri-path"></g><g class="mp-tri-corners"></g>
+                            </svg>
+                        </figure>
+                        <div class="mp-tri-card"><div class="mp-tri-body" role="tabpanel" aria-live="polite"></div></div>
+                    </div>
+                    <script type="application/json" id="mpProblems">@Json.Serialize(misProblems)</script>
                 </div>
 
-                <div class="mis-view" data-name="Where business, technology, and people meet" hidden>
-                <div class="mis-chart">
-                    <button type="button" class="mis-view-btn side" data-go="-1" aria-label="Previous chart">‹</button>
-                <figure class="story-triangle" aria-labelledby="triangle-caption">
-                    <svg viewBox="0 0 440 360" role="img" aria-labelledby="triangle-caption">
-                        <defs>
-                            <marker id="tri-head" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
-                                <path d="M0,0 L10,5 L0,10 z" fill="#A9788A" />
-                            </marker>
-                            <radialGradient id="tri-glow">
-                                <stop offset="0" stop-color="#8F4661" stop-opacity="0.22" />
-                                <stop offset="1" stop-color="#8F4661" stop-opacity="0" />
-                            </radialGradient>
-                        </defs>
-                        <polygon class="tri-fill" points="220,40 50,318 390,318" />
-                        <line class="tri-edge" x1="203.3" y1="67.3" x2="66.7" y2="290.7" />
-                        <line class="tri-edge" x1="236.7" y1="67.3" x2="373.3" y2="290.7" />
-                        <line class="tri-edge" x1="82" y1="318" x2="358" y2="318" />
-                        <circle cx="220" cy="224" r="80" fill="url(#tri-glow)" />
-                        <text class="tri-center" x="220" y="218">the interesting part</text>
-                        <text class="tri-center accent" x="220" y="240">is the middle</text>
-                        @foreach (var c in triCorners)
-                        {
-                            <circle class="tri-dot" data-corner="@c.Id" cx="@c.X" cy="@c.Y" r="9" style="--node: @c.Color;" />
-                        }
-                    </svg>
-                    @foreach (var c in triCorners)
-                    {
-                        <button type="button" class="tri-btn" data-corner="@c.Id" style="--node: @c.Color; left: @c.Left; top: @c.Top;"
-                                aria-pressed="false" aria-controls="tri-card-@c.Id">@c.Name</button>
-                    }
-                    <figcaption id="triangle-caption" class="visually-hidden">People, technology and business, connected in a triangle. The interesting part is the middle.</figcaption>
-                </figure>
-                    <button type="button" class="mis-view-btn side" data-go="1" aria-label="Next chart">›</button>
-                </div>
-                <!-- what each corner means, and the courses behind it -->
-                <div class="tri-cards">
-                    <p class="tri-hint">Tap a corner</p>
-                    @foreach (var c in triCorners)
-                    {
-                        <div class="tri-card" id="tri-card-@c.Id" data-corner="@c.Id" style="--node: @c.Color;" hidden>
-                            <p class="tri-card-name">@c.Name</p>
-                            <p class="tri-card-line">@c.Line</p>
-                            <div class="tri-card-courses">
-                                @foreach (var code in c.Courses)
-                                {
-                                    var course = misCourses[code];
-                                    <button type="button" class="mis-chip tri-chip" data-course="@code" aria-haspopup="dialog" aria-label="@code, @course.Name: see details">@code<span>@course.Name</span></button>
-                                }
-                            </div>
-                        </div>
-                    }
-                </div>
+                <!-- 6. technical depth: the same layers in two stacks -->
+                <div class="mp-section" aria-labelledby="mp-stacks">
+                    <div class="mp-head">
+                        <p class="mp-eyebrow">From blank repo to working application</p>
+                        <h3 class="mp-h2" id="mp-stacks">I know how the layers connect,<br />in two different stacks.</h3>
+                    </div>
+                    <div class="mp-pipe" role="table" aria-label="Application layers in .NET and JavaScript">
+                        <div class="hd" role="columnheader">STACK</div><div class="hd" role="columnheader">FRONT END</div><div class="hd" role="columnheader">BACK END</div><div class="hd" role="columnheader">DATA</div><div class="hd" role="columnheader">SECURITY</div><div class="hd" role="columnheader">SHIP</div>
+                        <div class="lane" role="rowheader">.NET<small>MIS 333K</small></div>
+                        <div data-l="FRONT END">Razor views, forms, validation, responsive UI</div>
+                        <div data-l="BACK END">ASP.NET Core MVC controllers holding the business rules</div>
+                        <div data-l="DATA">Entity Framework Core and LINQ over Azure SQL</div>
+                        <div data-l="SECURITY">Users, roles and authorization</div>
+                        <div data-l="SHIP">Team app on GitHub · this site on Render</div>
+                        <div class="lane" role="rowheader">JavaScript<small>MIS 372T</small></div>
+                        <div data-l="FRONT END">React components, state and routing</div>
+                        <div data-l="BACK END">Node.js and Express routes and middleware, REST APIs</div>
+                        <div data-l="DATA">Sequelize ORM over PostgreSQL, full CRUD</div>
+                        <div data-l="SECURITY">Authentication and protected routes</div>
+                        <div data-l="SHIP">Front end and back end deployed</div>
+                    </div>
+                    <p class="mp-pipe-note">Same layers, two ecosystems. Once you understand how a request travels from the screen to the database and back, a new framework is mostly new syntax.</p>
                 </div>
             </section>
 
@@ -812,25 +797,11 @@
 
             <!-- ===== the story around the cycle ===== -->
             <div class="story">
-                <!-- Build. Think. Learn. Collaborate.: what MIS 333K built -->
-                <section class="story-section reveal" aria-labelledby="killer-heading">
-                    <h2 class="story-heading" id="killer-heading">Build. Think. Learn. Collaborate.</h2>
-                    <p class="story-sub">@misCourses["MIS 333K"].Code: @misCourses["MIS 333K"].Name</p>
-                    <div class="mis-caps killer-caps">
-                        @foreach (var cap in misCourses["MIS 333K"].Capabilities!)
-                        {
-                            <div class="mis-cap">
-                                <p class="mis-cap-title">@cap.Title</p>
-                                <ul>@foreach (var item in cap.Items) { <li>@item</li> }</ul>
-                            </div>
-                        }
-                    </div>
-                </section>
 
                 <!-- The zoom lens -->
                 <section class="story-section reveal" aria-labelledby="zoom-heading">
-                    <h2 class="story-heading" id="zoom-heading">The zoom lens</h2>
-                    <p class="story-sub">Slide from a line of code all the way out to the strategy, and see which course trained each level.</p>
+                    <h2 class="story-heading" id="zoom-heading">MIS taught me to zoom in and out.</h2>
+                    <p class="story-sub">From a line of code out to the strategy, and the course that trained each level.</p>
                     <div class="zoom">
                         <div class="zoom-lens" aria-hidden="true">
                             @for (var z = zoomStops.Length - 1; z >= 0; z--)
@@ -867,6 +838,17 @@
                             }
                         </div>
                     </div>
+                    <ol class="mp-habits mp" aria-label="How I work through a problem">
+                        <li><small>01</small><b>DECOMPOSE</b><span>Break a big problem into small, testable pieces.</span></li>
+                        <li><small>02</small><b>DIAGNOSE</b><span>Separate the symptom from the cause.</span></li>
+                        <li><small>03</small><b>DEBUG</b><span>Find the failure point instead of guessing.</span></li>
+                        <li><small>04</small><b>VERIFY</b><span>Check the output before trusting it.</span></li>
+                    </ol>
+                </section>
+
+                <section class="mp mp-close" aria-label="In my words">
+                    <blockquote>“I learn enough technology to <em>build it</em>, enough business to know <em>why we’re building it</em>, and enough about people to make sure what we build <em>actually works for them</em>.”</blockquote>
+                    <p>SUHANI TIWARI · MIS · MCCOMBS</p>
                 </section>
 
             </div>
@@ -884,49 +866,64 @@
 </div>
 
 <script>
-    // "See full technical toolkit" opens and closes the full list
-    (() => {
-        const more = document.querySelector('.mis-can-more');
-        if (!more) return;
-        const toolkit = document.getElementById(more.getAttribute('aria-controls'));
-        more.addEventListener('click', () => {
-            const open = more.getAttribute('aria-expanded') !== 'true';
-            more.setAttribute('aria-expanded', open);
-            more.querySelector('span').textContent = open ? 'Hide full technical toolkit' : 'See full technical toolkit';
-            toolkit.hidden = !open;
-        });
-    })();
-
-// The two MIS charts: ‹ › flips between the loop and the triangle
+// "Hand me a problem": a tab per problem; the triangle shows the order I'd work the three corners, the card shows each step
 (() => {
-    const views = [...document.querySelectorAll('.mis-view')];
-    const name = document.querySelector('.mis-view-name');
-    if (!views.length) return;
-    let current = 0;
-    document.querySelectorAll('.mis-view-btn').forEach(btn => btn.addEventListener('click', () => {
-        current = (current + +btn.dataset.go + views.length) % views.length;
-        views.forEach((v, i) => v.hidden = i !== current);
-        name.textContent = views[current].dataset.name;
-    }));
-})();
-
-// The triangle: tapping a corner lights it up and shows its card; tapping it again closes it
-(() => {
-    const btns = [...document.querySelectorAll('.tri-btn')];
-    const cards = [...document.querySelectorAll('.tri-card')];
-    const dots = [...document.querySelectorAll('.tri-dot')];
-    const hint = document.querySelector('.tri-hint');
-    if (!btns.length) return;
-    let open = null;
-    const show = id => {
-        open = id;
-        btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.corner === id));
-        cards.forEach(c => c.hidden = c.dataset.corner !== id);
-        dots.forEach(d => d.classList.toggle('on', d.dataset.corner === id));
-        document.querySelector('.story-triangle').classList.toggle('has-pick', id !== null);
-        hint.hidden = id !== null;
+    const data = document.getElementById('mpProblems');
+    if (!data) return;
+    const problems = JSON.parse(data.textContent);
+    const corners = [
+        { n: 'PEOPLE', c: '#8F4661', x: 260, y: 82, ly: 44 },
+        { n: 'TECHNOLOGY', c: '#6B7F5E', x: 90, y: 360, ly: 404 },
+        { n: 'BUSINESS', c: '#6B4A5A', x: 430, y: 360, ly: 404 }
+    ];
+    const tabs = document.querySelector('.mp-tabs');
+    const path = document.querySelector('.mp-tri-path');
+    const nodes = document.querySelector('.mp-tri-corners');
+    const body = document.querySelector('.mp-tri-body');
+    const esc = t => t.replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+    const seg = (a, b) => {
+        const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy);
+        return `M${a.x + dx / l * 24},${a.y + dy / l * 24} L${b.x - dx / l * 28},${b.y - dy / l * 28}`;
     };
-    btns.forEach(b => b.addEventListener('click', () => show(open === b.dataset.corner ? null : b.dataset.corner)));
+    tabs.innerHTML = problems.map((pr, i) => `<button type="button" role="tab" aria-selected="false" data-i="${i}">${esc(pr.t)}</button>`).join('');
+    const buttons = [...tabs.querySelectorAll('button')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i) {
+        const pr = problems[i];
+        buttons.forEach((b, n) => { b.setAttribute('aria-selected', n === i); b.tabIndex = n === i ? 0 : -1; });
+        path.innerHTML = [0, 1].map(j => `<path d="${seg(corners[pr.p[j]], corners[pr.p[j + 1]])}" stroke="#8F4661" stroke-width="2.4" fill="none" marker-end="url(#mp-arrow)" />`).join('');
+        nodes.innerHTML = corners.map((v, k) => {
+            const order = pr.p.indexOf(k) + 1, first = order === 1, w = v.n.length * 9 + 44;
+            return `<circle cx="${v.x}" cy="${v.y}" r="${first ? 11 : 8}" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-width="2.4" />` +
+                `<rect x="${v.x - w / 2}" y="${v.ly - 17}" width="${w}" height="34" rx="17" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-opacity="${first ? 1 : 0.45}" />` +
+                `<text x="${v.x - 10}" y="${v.ly + 5}" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" letter-spacing="2" fill="${first ? '#fff' : v.c}">${v.n}</text>` +
+                `<text x="${v.x + w / 2 - 16}" y="${v.ly + 5.5}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${first ? '#fff' : v.c}">${order}</text>`;
+        }).join('');
+        const fill = () => {
+            body.innerHTML = `<p class="mp-eyebrow">The problem</p><p class="mp-q">“${esc(pr.q)}”</p>` +
+                pr.p.map((k, j) => `<div class="mp-step"><div class="mp-step-n" style="background:${corners[k].c}">${j + 1}</div><div>` +
+                    `<p class="mp-step-c" style="color:${corners[k].c}">${corners[k].n}</p><p class="mp-step-t">${esc(pr.s[j][0])}</p>` +
+                    `<p class="mp-step-d">${esc(pr.s[j][1])}</p><p class="mp-step-r">${esc(pr.s[j][2])}</p></div></div>`).join('') +
+                `<p class="mp-get"><b>You walk away with</b> ${esc(pr.g)}</p>`;
+            body.style.opacity = 1;
+        };
+        if (reduce) { fill(); return; }
+        body.style.opacity = 0;
+        setTimeout(fill, 180);
+    }
+
+    buttons.forEach((b, i) => {
+        b.addEventListener('click', () => show(i));
+        b.addEventListener('keydown', e => {
+            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+            e.preventDefault();
+            const next = (i + (e.key === 'ArrowRight' ? 1 : buttons.length - 1)) % buttons.length;
+            show(next);
+            buttons[next].focus();
+        });
+    });
+    show(0);
 })();
 
 // Overview / MIS Major tabs (click, or arrow keys). #mis in the link opens MIS Major.
@@ -939,6 +936,9 @@
             t.tabIndex = on ? 0 : -1;
             document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
         });
+        // the live RideFlow preview only loads once the MIS tab is actually open
+        const frame = document.querySelector('.mp-browser iframe[data-src]');
+        if (frame && tab.id === 'cw-tab-mis') { frame.src = frame.dataset.src; frame.removeAttribute('data-src'); }
     };
     tabs.forEach((tab, i) => {
         tab.addEventListener('click', () => show(tab));
