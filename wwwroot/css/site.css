@@ -53,7 +53,30 @@ html {
     }
 
     button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+
+    /* once sparkle.js is running it draws the sparkle itself (macOS swaps cursor images for a
+       plain arrow when you move fast); these invisible cursors tell it which sparkle to show */
+    html.fairy-cursor {
+        --cursor-soft: url("/images/cursor/blank-soft.svg") 1 1, none;
+        --cursor-hot: url("/images/cursor/blank-hot.svg") 1 1, none;
+    }
 }
+
+/* the sparkle drawn by sparkle.js, following the mouse */
+.fairy-pointer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2147483647;
+    width: 32px;
+    height: 32px;
+    pointer-events: none;
+    will-change: transform;
+}
+.fairy-pointer img { position: absolute; inset: 0; width: 32px; height: 32px; }
+.fairy-pointer .hot, .fairy-pointer.is-hot .soft { display: none; }
+.fairy-pointer.is-hot .hot { display: block; }
+.fairy-pointer[hidden] { display: none; }
 
 /* the glitter trail (drawn by sparkle.js) */
 .fairy-dust {
