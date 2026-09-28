@@ -96,6 +96,48 @@
         margin-top: 12px;
     }
 
+    /* the why behind the degree: a warm little note before the rankings */
+    .edu-why {
+        max-width: 760px;
+        margin: 64px auto 72px;
+        padding: 34px 40px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 100% 0%, #F2CFD7 0, rgba(242, 207, 215, 0) 55%), #FFFBF9;
+        border: 1px solid rgba(143, 70, 97, 0.16);
+        box-shadow: 0 24px 50px -36px rgba(42, 24, 16, 0.4);
+        text-align: center;
+    }
+
+    .edu-why-lead {
+        margin-bottom: 14px;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.6em;
+        color: #8F4661;
+    }
+
+    .edu-why p:not(.edu-why-lead) {
+        font-size: 1.08em;
+        line-height: 1.75;
+        color: #3B2A24;
+    }
+
+    .edu-why em {
+        font-family: Georgia, serif;
+        color: #8F4661;
+    }
+
+    @@media (max-width: 700px) {
+        .edu-why {
+            margin: 40px auto 48px;
+            padding: 26px 22px;
+        }
+
+        .edu-why-lead {
+            font-size: 1.3em;
+        }
+    }
+
     /* McCombs rankings: stat tiles under the degree */
     .rankings {
         text-align: center;
@@ -222,6 +264,12 @@
                     <li>Educational Psychology</li>
                 </ul>
             </div>
+        </div>
+
+        <!-- the why behind the mix, before any numbers -->
+        <div class="edu-why">
+            <p class="edu-why-lead">On paper, my mix looks a little unexpected.</p>
+            <p>MIS so I can build things. Psychology so I understand the people using them. Marketing so I know why they’d care. And educational psychology because I can’t stop wondering how people learn. Together they all circle one question I love: <em>how do you make technology that feels human?</em> UT is where I get to chase it, usually fueled by a vanilla latte from Medici and a long afternoon in the Life Science Library. ✦</p>
         </div>
 
         <!-- McCOMBS RANKINGS (U.S. News) -->
