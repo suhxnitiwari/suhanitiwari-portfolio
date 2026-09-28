@@ -43,11 +43,27 @@
         return el;
     }
 
+    // Fairy dust: 25 questions per visit (kept across pages in this tab). The Worker adds the
+    // "last question" warning at 24 and the goodbye at 25; after that the chat closes for the day.
+    const LIMIT = 25;
+    const store = {
+        get: () => { try { return +sessionStorage.getItem('sitaraAsked') || 0; } catch { return 0; } },
+        set: n => { try { sessionStorage.setItem('sitaraAsked', n); } catch { } }
+    };
     let busy = false;
-    let asked = 0;   // questions this visit; Sitara only gets sleepy after a lot of them
+    let asked = store.get();
+
+    function outOfDust() {
+        input.disabled = true;
+        send.disabled = true;
+        input.placeholder = 'Out of fairy dust for today ✦';
+        chips.hidden = true;
+        mood('tired', 'out of fairy dust for today ✦');
+    }
+    if (asked >= LIMIT) outOfDust();
     async function ask(question) {
         question = question.trim();
-        if (!question || busy) return;
+        if (!question || busy || asked >= LIMIT) return;
         busy = true;
         send.disabled = true;
         chips.hidden = true;
@@ -69,6 +85,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: question, count: ++asked })
             });
+            store.set(asked);
             const data = await res.json().catch(() => ({}));
             dots.remove();
             if (data.reply) {
@@ -79,14 +96,20 @@
                 mood('tired', 'even fairy dust has its limits');
             }
         } catch {
+            asked = Math.max(0, asked - 1);   // a question that never arrived doesn't cost fairy dust
+            store.set(asked);
             dots.remove();
             add('I can’t reach my notes right now. Try again in a moment. ✦', 'bot', 'oops');
             mood('tired', 'even fairy dust has its limits');
         } finally {
             root.classList.remove('thinking');
             busy = false;
-            send.disabled = false;
-            input.focus();
+            if (asked >= LIMIT) {
+                outOfDust();
+            } else {
+                send.disabled = false;
+                input.focus();
+            }
         }
     }
 
