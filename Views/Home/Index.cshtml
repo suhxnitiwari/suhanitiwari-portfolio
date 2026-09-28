@@ -363,6 +363,57 @@
         order: 2;
     }
 
+    /* where each idea shows up on the site */
+    .about-story-text .about-proof-label {
+        margin: 22px 0 10px;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .about-proof {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .about-proof a {
+        display: inline-block;
+        padding: 7px 15px;
+        border-radius: 999px;
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        color: #2A1810;
+        font-size: 0.9em;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .about-proof a span {
+        color: #9E5A63;
+    }
+
+    .about-proof a:hover {
+        border-color: #9E5A63;
+        background: #9E5A63;
+        color: #FFF8F6;
+    }
+
+    .about-proof a:hover span {
+        color: #FFF8F6;
+    }
+
+    .about-proof a:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
+    }
+
     .about-num {
         display: block;
         font-family: Georgia, serif;
@@ -2345,23 +2396,27 @@
 
     // Alternating story rows: text and photo swap sides each time.
     // Photo = null shows a "photo coming soon" frame until a picture is added.
+    // Proof = where each one shows up on the site: (label, link). These three ideas are how the whole site fits together.
     var aboutPoints = new[]
     {
         (Num: "01", Title: "I understand people.",
             Paras: new[] {
                 "I’m fascinated by why people choose what they choose: what makes an idea resonate, a product stick, or a brand mean something.",
                 "That curiosity is basically where psychology, marketing, and business collide for me." },
-            Photo: (string?)null, Alt: ""),
+            Photo: (string?)null, Alt: "",
+            Proof: new[] { ("Psychology", "/home/coursework"), ("Consumer behavior", "/home/coursework"), ("Marketing", "/home/coursework"), ("Advertising", "/home/coursework") }),
         (Num: "02", Title: "I make things.",
             Paras: new[] {
                 "Websites. Art. Brand projects. A children’s book. Random ideas that probably did not need to become full-fledged projects but somehow did.",
                 "I like taking something from “wait, what if…” to something you can actually see, use, or experience." },
-            Photo: (string?)null, Alt: ""),
+            Photo: (string?)null, Alt: "",
+            Proof: new[] { ("This website", "https://github.com/suhxnitiwari/suhanitiwari-portfolio"), ("My children’s book", "/home/beyondtheclassroom"), ("Art", "/home/make#art"), ("Writing", "/home/make#writing") }),
         (Num: "03", Title: "I tend to start things.",
             Paras: new[] {
                 "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 60+ students per session.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
-            Photo: (string?)null, Alt: "")
+            Photo: (string?)null, Alt: "",
+            Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("Early STEM education", "/home/beyondtheclassroom") })
     };
 }
 <section class="about-section" id="about">
@@ -2384,6 +2439,14 @@
                         {
                             <p>@para</p>
                         }
+                        <p class="about-proof-label">See it in</p>
+                        <ul class="about-proof">
+                            @foreach (var proof in point.Proof)
+                            {
+                                var external = proof.Item2.StartsWith("http");
+                                <li><a href="@proof.Item2" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)">@proof.Item1<span aria-hidden="true">@(external ? " ↗" : " →")</span></a></li>
+                            }
+                        </ul>
                     </div>
                     <figure class="about-story-photo n@(i % 4)">
                         @if (point.Photo != null)

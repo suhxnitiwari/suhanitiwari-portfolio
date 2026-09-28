@@ -51,14 +51,14 @@ document.querySelectorAll('.trip-open').forEach(button => {
     dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
 });
 
-// ===== Make > Art: clicking a piece shows it large =====
+// ===== Make > Digital Art: clicking a piece on the gallery wall shows it large =====
 (function () {
     const dialog = document.getElementById('artCard');
     if (!dialog) return;
     const image = document.getElementById('artImage');
     document.querySelectorAll('.art-open').forEach(button => {
         button.addEventListener('click', () => {
-            if (button.closest('.shelf-rail').dataset.dragged) return;
+            if (button.closest('.shelf-rail')?.dataset.dragged) return;
             image.src = button.dataset.image;
             image.alt = button.dataset.title;
             document.getElementById('artTitle').textContent = button.dataset.title;

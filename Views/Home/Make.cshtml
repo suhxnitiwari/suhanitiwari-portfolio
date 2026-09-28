@@ -151,7 +151,8 @@
     // Add trips when ready, e.g. new Trip("Miami", "a line about it", "/images/travel/miami.jpg", new[] { new TripSpot(...) })
     var trips = new[]
     {
-        new Trip("Chicago", "", "", new[]
+        // Photo: "Chicago Loop Skyline at Sunset" by GazeboJake, Wikimedia Commons, CC0 (free to use, no credit needed)
+        new Trip("Chicago", "", "/images/travel/chicago.jpg", new[]
         {
             new TripSpot("☕️", "Venteux Brasserie, Cafe & Oyster Bar", "French café, inside the Pendry",
                 "Super cute French café and brasserie. Very Parisian, with pretty interiors. Good for coffee, breakfast or brunch."),
@@ -232,32 +233,28 @@
             <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create.</p>
         </div>
 
+        <!-- Digital Art: hung like a gallery wall; each piece opens large -->
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
-                <h3 class="shelf-title">Drawing</h3>
-                @if (artworks.Length > 4)
+                <h3 class="shelf-title">Digital Art</h3>
+            </div>
+            <ul class="gallery-wall" aria-label="Digital Art">
+                @foreach (var art in artworks)
                 {
-                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@artworks.Length">See all @artworks.Length →</button>
+                    <li class="gallery-piece">
+                        <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
+                                aria-label="View @art.Title larger">
+                            <span class="gallery-frame">
+                                <img src="@art.Image" alt="@art.Title" loading="lazy" draggable="false">
+                            </span>
+                            <span class="gallery-label">
+                                <span class="gallery-title">@art.Title</span>
+                                <span class="gallery-medium">Digital, Procreate</span>
+                            </span>
+                        </button>
+                    </li>
                 }
-            </div>
-            <div class="shelf-rail-wrap">
-                <button type="button" class="shelf-arrow prev" aria-label="Scroll Drawing left">‹</button>
-                <ul class="shelf-rail" tabindex="0" aria-label="Drawing">
-                    @foreach (var art in artworks)
-                    {
-                        <li class="shelf-item">
-                            <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
-                                    aria-label="View @art.Title larger">
-                                <span class="shelf-cover art-cover">
-                                    <img src="@art.Image" alt="@art.Title" loading="lazy" draggable="false">
-                                </span>
-                                <span class="shelf-item-title">@art.Title</span>
-                            </button>
-                        </li>
-                    }
-                </ul>
-                <button type="button" class="shelf-arrow next" aria-label="Scroll Drawing right">›</button>
-            </div>
+            </ul>
         </div>
         <hr class="shelf-divider">
 
@@ -373,7 +370,7 @@
     <button type="button" class="recipe-close" aria-label="Close artwork">×</button>
     <div class="art-frame"><img id="artImage" src="" alt=""></div>
     <div class="recipe-body">
-        <p class="recipe-kicker">Drawing</p>
+        <p class="recipe-kicker">Digital Art</p>
         <h3 id="artTitle"></h3>
         <p class="recipe-line" id="artIdea"></p>
         <p class="recipe-meta">Holding onto the traditions we carried with us, while making a home in American culture.</p>
@@ -384,6 +381,10 @@
     <!-- Trip card: the spots I went to -->
     <dialog class="recipe-card trip-card" id="trip-@t" aria-labelledby="trip-title-@t">
         <button type="button" class="recipe-close" aria-label="Close @trip.City">×</button>
+        @if (!string.IsNullOrEmpty(trip.Photo))
+        {
+            <div class="recipe-photo trip-photo"><img src="@trip.Photo" alt="@trip.City skyline" loading="lazy"></div>
+        }
         <div class="recipe-body">
             <p class="recipe-kicker">Traveling</p>
             <h3 id="trip-title-@t">@trip.City</h3>
