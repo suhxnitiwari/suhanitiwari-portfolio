@@ -7,6 +7,7 @@
     <!-- Bootswatch "Pulse" theme (Bootstrap 5.3.3), saved locally in wwwroot/css; site.css keeps my own colors on top -->
     <link rel="stylesheet" href="~/css/bootswatch.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sitara.css" asp-append-version="true" />
     <style>
         * {
             margin: 0;
@@ -546,6 +547,10 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @* Sitara ✦, my fairy guide: floating chat on every page *@
+    <partial name="_Sitara" />
+    <script src="~/js/sitara.js" asp-append-version="true"></script>
     <script>
         // Dropdowns (Favorites, Work): click to open, click anywhere else to close
         const dropdowns = document.querySelectorAll('.nav-dropdown');

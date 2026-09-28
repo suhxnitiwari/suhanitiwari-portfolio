@@ -1,0 +1,37 @@
+@* Sitara ✦ — my tiny fairy guide. A floating "Ask Sitara" button on every page opens a chat panel.
+   Messages go to my Cloudflare Worker (sitara.suhxnitiwari.workers.dev), which answers from a knowledge base about me.
+   Her face changes with the conversation: hi when she opens, thinking while she answers, tired if something breaks. *@
+<div class="sitara" data-endpoint="https://sitara.suhxnitiwari.workers.dev/">
+    <button type="button" class="sitara-launch" aria-expanded="false" aria-controls="sitaraPanel">
+        <img src="~/images/sitara/hi.jpg" alt="" width="240" height="240">
+        <span>Ask Sitara <i aria-hidden="true">✦</i></span>
+    </button>
+
+    <section class="sitara-panel" id="sitaraPanel" role="dialog" aria-modal="false" aria-labelledby="sitaraTitle" hidden>
+        <header class="sitara-head">
+            <img class="sitara-face" src="~/images/sitara/hi.jpg" alt="" width="240" height="240">
+            <div>
+                <h2 id="sitaraTitle">Sitara <i aria-hidden="true">✦</i></h2>
+                <p class="sitara-status" aria-live="polite">your guide to all things Suhani</p>
+            </div>
+            <button type="button" class="sitara-close" aria-label="Close chat">×</button>
+        </header>
+
+        <div class="sitara-log" role="log" aria-live="polite" aria-relevant="additions">
+            <div class="sitara-msg bot">Hi, I’m Sitara ✦ I know an unreasonable amount about Suhani. Ask me anything.</div>
+        </div>
+
+        <div class="sitara-chips" role="group" aria-label="Suggested questions">
+            <button type="button">What is Suhani like?</button>
+            <button type="button">What did she do at Oracle?</button>
+            <button type="button">What does she study?</button>
+            <button type="button">Her favorite Austin spots?</button>
+        </div>
+
+        <form class="sitara-form">
+            <label class="visually-hidden" for="sitaraInput">Ask Sitara a question</label>
+            <input id="sitaraInput" type="text" maxlength="500" autocomplete="off" placeholder="Ask away ✦" required>
+            <button type="submit" aria-label="Send">↑</button>
+        </form>
+    </section>
+</div>

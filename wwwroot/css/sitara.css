@@ -1,0 +1,105 @@
+/* Sitara ✦ chat: a floating launcher and a small chat panel in the site's blush and mulberry palette */
+.sitara {
+    --s-mul: #8F4661;
+    --s-choc: #2A1810;
+    --s-ink: #3B2A24;
+    --s-muted: #7A665F;
+    --s-cream: #FFF8F3;
+    --s-blush: #F7E4E6;
+    --s-line: rgba(143, 70, 97, 0.18);
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1050;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* launcher: her face in a circle with a label */
+.sitara-launch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 18px 5px 5px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--s-mul);
+    color: #FFF8F6;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    box-shadow: 0 12px 30px -10px rgba(42, 24, 16, 0.55);
+    transition: transform 0.2s ease;
+}
+.sitara-launch:hover { transform: translateY(-2px); }
+.sitara-launch:focus-visible { outline: 3px solid #E9A6BC; outline-offset: 3px; }
+.sitara-launch img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #FFF8F6; }
+.sitara-launch i, .sitara-head h2 i { font-style: normal; color: #F3C9A0; }
+.sitara.open .sitara-launch { display: none; }
+
+/* panel */
+.sitara-panel {
+    width: min(380px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 110px));
+    display: flex;
+    flex-direction: column;
+    border-radius: 24px;
+    overflow: hidden;
+    background: radial-gradient(circle at 100% 0%, #F7DDE2 0, rgba(247, 221, 226, 0) 45%), var(--s-cream);
+    border: 1px solid var(--s-line);
+    box-shadow: 0 30px 70px -25px rgba(42, 24, 16, 0.55);
+    animation: sitara-in 0.25s ease;
+}
+.sitara-panel[hidden] { display: none; }
+@keyframes sitara-in { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
+
+.sitara-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--s-line); }
+.sitara-face { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 12px -4px rgba(42, 24, 16, 0.4); transition: transform 0.25s ease; }
+.sitara.thinking .sitara-face { animation: sitara-bob 1.2s ease-in-out infinite; }
+@keyframes sitara-bob { 50% { transform: translateY(-3px) rotate(-3deg); } }
+.sitara-head > div { flex: 1; min-width: 0; }
+.sitara-head h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 22px; color: var(--s-choc); line-height: 1.1; }
+.sitara-status { margin: 2px 0 0; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 13px; color: var(--s-mul); }
+.sitara-close { width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(143, 70, 97, 0.08); color: var(--s-mul); font-size: 22px; line-height: 1; cursor: pointer; }
+.sitara-close:hover { background: rgba(143, 70, 97, 0.16); }
+.sitara-close:focus-visible { outline: 2px solid var(--s-mul); outline-offset: 2px; }
+
+/* messages */
+.sitara-log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth; }
+.sitara-msg { max-width: 85%; padding: 10px 14px; border-radius: 18px; font-size: 14.5px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.sitara-msg.bot { align-self: flex-start; background: #fff; color: var(--s-ink); border: 1px solid var(--s-line); border-bottom-left-radius: 6px; }
+.sitara-msg.me { align-self: flex-end; background: var(--s-mul); color: #FFF8F6; border-bottom-right-radius: 6px; }
+.sitara-msg.oops { background: var(--s-blush); }
+.sitara-dots { display: inline-flex; gap: 4px; padding: 14px 16px; }
+.sitara-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--s-mul); opacity: 0.35; animation: sitara-dot 1s ease-in-out infinite; }
+.sitara-dots span:nth-child(2) { animation-delay: 0.15s; }
+.sitara-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes sitara-dot { 50% { opacity: 1; transform: translateY(-3px); } }
+
+/* suggested questions */
+.sitara-chips { display: flex; gap: 6px; padding: 0 16px 10px; overflow-x: auto; scrollbar-width: none; }
+.sitara-chips::-webkit-scrollbar { display: none; }
+.sitara-chips[hidden] { display: none; }
+.sitara-chips button { flex: none; padding: 7px 12px; border-radius: 999px; border: 1.5px solid var(--s-line); background: #fff; color: var(--s-mul); font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.sitara-chips button:hover { border-color: var(--s-mul); }
+.sitara-chips button:focus-visible { outline: 2px solid var(--s-mul); outline-offset: 2px; }
+
+/* input */
+.sitara-form { display: flex; gap: 8px; padding: 12px 14px 14px; border-top: 1px solid var(--s-line); background: rgba(255, 255, 255, 0.6); }
+.sitara-form input { flex: 1; min-width: 0; padding: 11px 14px; border-radius: 999px; border: 1.5px solid var(--s-line); background: #fff; color: var(--s-ink); font: inherit; font-size: 16px; }
+.sitara-form input:focus { outline: none; border-color: var(--s-mul); }
+.sitara-form button { width: 42px; height: 42px; flex: none; border-radius: 50%; border: 0; background: var(--s-mul); color: #FFF8F6; font-size: 18px; font-weight: 700; cursor: pointer; }
+.sitara-form button:disabled { opacity: 0.5; cursor: default; }
+.sitara-form button:focus-visible { outline: 2px solid var(--s-mul); outline-offset: 2px; }
+
+@media (max-width: 560px) {
+    .sitara { right: 12px; bottom: 12px; }
+    .sitara-launch span { display: none; }
+    .sitara-launch { padding: 4px; }
+    .sitara-launch img { width: 52px; height: 52px; }
+    .sitara.open { left: 8px; right: 8px; bottom: 8px; }
+    .sitara-panel { width: 100%; height: min(78vh, 620px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sitara-panel, .sitara.thinking .sitara-face, .sitara-dots span { animation: none; }
+}
