@@ -57,7 +57,7 @@
         border: none;
         border-radius: 25px;
         font-weight: 700;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         transition: all 0.3s ease;
         font-size: 0.95em;
         display: inline-block;
@@ -186,7 +186,7 @@
         display: flex;
         align-items: flex-end;
         justify-content: center;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         background-color: #9E5A63;
         background-image: linear-gradient(135deg, #9E5A63 0%, #8A4D57 100%);
         background-size: cover;
@@ -371,7 +371,7 @@
         font-size: 1.3em;
         line-height: 1;
         color: #56634A;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         padding: 4px 6px;
     }
 
@@ -463,7 +463,7 @@
         font-size: 1.2em;
         font-weight: 700;
         line-height: 1;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         box-shadow: 0 4px 12px rgba(42, 24, 16, 0.15);
         transition: background 0.2s ease, color 0.2s ease;
     }
@@ -606,7 +606,7 @@
     }
 
     .dna-slice {
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         outline: none;
         transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.25s ease;
     }
@@ -677,7 +677,7 @@
         background: none;
         font: inherit;
         text-align: left;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         transition: opacity 0.25s ease, background 0.25s ease;
     }
 
@@ -835,7 +835,7 @@
         border-radius: 12px;
         border-left: 4px solid #9E5A63;
         transition: all 0.3s ease;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
     }
 
     .carousel-song:hover {
@@ -1608,7 +1608,7 @@
     function displayTopSongs(songs) {
         const container = document.getElementById('topSongsContainer');
         container.innerHTML = songs.map(song => `
-            <li class="song-item" data-url="${escapeHtml(song.spotifyUrl)}" style="cursor: pointer;">
+            <li class="song-item" data-url="${escapeHtml(song.spotifyUrl)}" style="cursor: var(--cursor-hot, pointer);">
                 <div class="song-rank">#${song.position}</div>
                 <div class="song-image">
                     ${song.albumArt

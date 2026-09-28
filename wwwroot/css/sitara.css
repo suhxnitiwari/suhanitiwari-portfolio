@@ -27,7 +27,7 @@
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     box-shadow: 0 12px 30px -10px rgba(42, 24, 16, 0.55);
     transition: transform 0.2s ease;
 }
@@ -60,7 +60,7 @@
 .sitara-head > div { flex: 1; min-width: 0; }
 .sitara-head h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 22px; color: var(--s-choc); line-height: 1.1; }
 .sitara-status { margin: 2px 0 0; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 13px; color: var(--s-mul); }
-.sitara-close { width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(143, 70, 97, 0.08); color: var(--s-mul); font-size: 22px; line-height: 1; cursor: pointer; }
+.sitara-close { width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(143, 70, 97, 0.08); color: var(--s-mul); font-size: 22px; line-height: 1; cursor: var(--cursor-hot, pointer); }
 .sitara-close:hover { background: rgba(143, 70, 97, 0.16); }
 .sitara-close:focus-visible { outline: 2px solid var(--s-mul); outline-offset: 2px; }
 
@@ -80,7 +80,7 @@
 .sitara-chips { display: flex; gap: 6px; padding: 0 16px 10px; overflow-x: auto; scrollbar-width: none; }
 .sitara-chips::-webkit-scrollbar { display: none; }
 .sitara-chips[hidden] { display: none; }
-.sitara-chips button { flex: none; padding: 7px 12px; border-radius: 999px; border: 1.5px solid var(--s-line); background: #fff; color: var(--s-mul); font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.sitara-chips button { flex: none; padding: 7px 12px; border-radius: 999px; border: 1.5px solid var(--s-line); background: #fff; color: var(--s-mul); font-size: 12.5px; font-weight: 600; cursor: var(--cursor-hot, pointer); white-space: nowrap; }
 .sitara-chips button:hover { border-color: var(--s-mul); }
 .sitara-chips button:focus-visible { outline: 2px solid var(--s-mul); outline-offset: 2px; }
 
@@ -88,7 +88,7 @@
 .sitara-form { display: flex; gap: 8px; padding: 12px 14px 14px; border-top: 1px solid var(--s-line); background: rgba(255, 255, 255, 0.6); }
 .sitara-form input { flex: 1; min-width: 0; padding: 11px 14px; border-radius: 999px; border: 1.5px solid var(--s-line); background: #fff; color: var(--s-ink); font: inherit; font-size: 16px; }
 .sitara-form input:focus { outline: none; border-color: var(--s-mul); }
-.sitara-form button { width: 42px; height: 42px; flex: none; border-radius: 50%; border: 0; background: var(--s-mul); color: #FFF8F6; font-size: 18px; font-weight: 700; cursor: pointer; }
+.sitara-form button { width: 42px; height: 42px; flex: none; border-radius: 50%; border: 0; background: var(--s-mul); color: #FFF8F6; font-size: 18px; font-weight: 700; cursor: var(--cursor-hot, pointer); }
 .sitara-form button:disabled { opacity: 0.5; cursor: default; }
 .sitara-form button:focus-visible { outline: 2px solid var(--s-mul); outline-offset: 2px; }
 

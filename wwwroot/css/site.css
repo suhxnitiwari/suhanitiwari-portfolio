@@ -24,3 +24,51 @@ html {
 .navbar-toggler {
   border-radius: 0.3em;
 }
+
+/* ✦ Fairy-dust cursor: a gold sparkle everywhere, a bolder one on anything clickable.
+   Only on devices with a real mouse; typing spots keep the normal text cursor.
+   Every "cursor: pointer" on the site reads var(--cursor-hot, pointer), so it all follows along. */
+@media (hover: hover) and (pointer: fine) {
+    :root {
+        --cursor-soft: url("/images/cursor/sparkle.svg") 14 14, auto;
+        --cursor-hot: url("/images/cursor/sparkle-hot.svg") 14 14, pointer;
+    }
+
+    html, body { cursor: var(--cursor-soft); }
+
+    a[href], button, summary, select, label[for], [role="button"], [role="tab"], [role="option"],
+    input[type="range"], input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"],
+    .btn, .nav-link, .dropdown-item, .dropdown-toggle {
+        cursor: var(--cursor-hot);
+    }
+
+    input:not([type]), input[type="text"], input[type="email"], input[type="search"], input[type="url"],
+    input[type="tel"], input[type="number"], textarea, [contenteditable="true"] {
+        cursor: text;
+    }
+
+    /* Bootstrap forces a plain hand on every button with [type]:not(:disabled); same strength, loaded later, so the sparkle wins */
+    button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
+        cursor: var(--cursor-hot);
+    }
+
+    button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+}
+
+/* the glitter trail (drawn by sparkle.js) */
+.fairy-dust {
+    position: fixed;
+    z-index: 2147483647;
+    pointer-events: none;
+    width: var(--s, 6px);
+    height: var(--s, 6px);
+    margin: calc(var(--s, 6px) / -2) 0 0 calc(var(--s, 6px) / -2);
+    background: var(--c, #E0A83E);
+    clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+    animation: fairy-dust 0.9s ease-out forwards;
+}
+.fairy-dust.dot { clip-path: circle(50%); }
+@keyframes fairy-dust {
+    0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
+    100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 14px)) scale(0.3) rotate(var(--r, 90deg)); }
+}

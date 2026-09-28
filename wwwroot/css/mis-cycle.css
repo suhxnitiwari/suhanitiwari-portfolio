@@ -17,7 +17,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -176,7 +176,7 @@
     color: inherit;
     font: inherit;
     text-align: left;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
 }
 
 .mis-box-main::after,
@@ -250,7 +250,7 @@
     color: inherit;
     font: inherit;
     font-size: 0.8em;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -386,7 +386,7 @@
     color: #8F4661;
     font-size: 1.4em;
     line-height: 1;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease;
 }
 
@@ -566,7 +566,7 @@
     font-size: 1.8em;
     line-height: 1;
     color: #2A1810;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
 }
 
 .mis-dialog-close:hover {

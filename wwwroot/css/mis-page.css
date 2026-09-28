@@ -97,10 +97,10 @@
 /* projects: ‹ project names › above one slide at a time */
 .mp-proj-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 0 0 40px; }
 .mp-proj-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.mp-proj-tabs button { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 20px; border-radius: 999px; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: var(--mul); cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.mp-proj-tabs button { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 20px; border-radius: 999px; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: var(--mul); cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
 .mp-proj-tabs button:hover { border-color: var(--mul); }
 .mp-proj-tabs button[aria-selected="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; }
-.mp-proj-arrow { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(143, 70, 97, 0.35); background: var(--ivory); color: var(--mul); font-size: 22px; line-height: 1; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; }
+.mp-proj-arrow { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(143, 70, 97, 0.35); background: var(--ivory); color: var(--mul); font-size: 22px; line-height: 1; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, color 0.2s ease; }
 .mp-proj-arrow:hover { background: var(--mul); color: #FFF8F6; }
 .mp-proj-tabs button:focus-visible, .mp-proj-arrow:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
 .mp-proj.entering { animation: mp-proj-in 0.35s ease; }
@@ -112,7 +112,7 @@
 .mp-code-bar span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 248, 246, 0.28); }
 .mp-code-bar em { margin-left: 8px; font-style: normal; font-size: 12px; color: #D9B8B3; }
 .mp-code-files { display: flex; flex-wrap: wrap; gap: 4px; margin-left: 10px; }
-.mp-code-files button { background: none; border: 0; border-radius: 6px; padding: 4px 10px; font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #D9B8B3; cursor: pointer; }
+.mp-code-files button { background: none; border: 0; border-radius: 6px; padding: 4px 10px; font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #D9B8B3; cursor: var(--cursor-hot, pointer); }
 .mp-code-files button:hover { color: #F5E5E1; }
 .mp-code-files button[aria-selected="true"] { background: #2A1810; color: #F5E5E1; }
 /* all three SQL files take the height of the longest, so switching doesn't move the page */
@@ -150,7 +150,7 @@
 
 /* hand me a problem */
 .mp-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: -16px 0 28px; }
-.mp-tabs button { border: 1px solid var(--line); background: var(--ivory); padding: 9px 18px; border-radius: 999px; cursor: pointer; font-size: 14px; color: var(--ink); transition: background 0.2s, color 0.2s; }
+.mp-tabs button { border: 1px solid var(--line); background: var(--ivory); padding: 9px 18px; border-radius: 999px; cursor: var(--cursor-hot, pointer); font-size: 14px; color: var(--ink); transition: background 0.2s, color 0.2s; }
 .mp-tabs button[aria-selected="true"] { background: var(--mul); color: #fff; border-color: var(--mul); }
 .mp-tabs button:focus-visible, .mp-link:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
 .mp-tri { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; align-items: stretch; }
@@ -243,7 +243,7 @@
 /* tracker + brand tag */
 .mk-top { display: flex; align-items: center; justify-content: space-between; gap: 2cqw; }
 .mk-track { display: flex; flex-wrap: wrap; gap: 0.6cqw; }
-.mk-track button { font: inherit; font-size: clamp(9px, 0.9cqw, 11px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35cqw 0.9cqw; border: 0; border-radius: 99px; color: var(--muted); background: rgba(143, 70, 97, 0.06); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+.mk-track button { font: inherit; font-size: clamp(9px, 0.9cqw, 11px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35cqw 0.9cqw; border: 0; border-radius: 99px; color: var(--muted); background: rgba(143, 70, 97, 0.06); cursor: var(--cursor-hot, pointer); transition: background 0.15s ease, color 0.15s ease; }
 .mk-track button:hover { background: rgba(143, 70, 97, 0.16); color: var(--mul); }
 .mk-track li.on button { background: var(--mul); color: #FFF8F6; }
 .mk-track button:focus-visible { outline: 2px solid var(--mul); outline-offset: 2px; }
@@ -404,13 +404,13 @@
 .mk-metrics b { display: block; font-size: clamp(10px, 1cqw, 13px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--acc); margin-bottom: 0.3cqw; }
 
 /* stage controls and chapter buttons */
-.mk-step { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(255, 251, 249, 0.95); color: var(--mul); font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 4px 14px rgba(42, 24, 16, 0.18); opacity: 0; transition: opacity 0.2s ease; z-index: 2; }
+.mk-step { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(255, 251, 249, 0.95); color: var(--mul); font-size: 22px; line-height: 1; cursor: var(--cursor-hot, pointer); box-shadow: 0 4px 14px rgba(42, 24, 16, 0.18); opacity: 0; transition: opacity 0.2s ease; z-index: 2; }
 .mk-step.prev { left: 10px; }
 .mk-step.next { right: 10px; }
 .mk-stage:hover .mk-step, .mk-step:focus-visible { opacity: 1; }
 .mk-step:focus-visible { outline: 2px solid var(--mul); outline-offset: 2px; }
 .mk-chapters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; justify-content: center; }
-.mk-chapters button { font: inherit; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+.mk-chapters button { font: inherit; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); cursor: var(--cursor-hot, pointer); }
 .mk-chapters button span { color: var(--acc); margin-right: 6px; font-variant-numeric: tabular-nums; }
 .mk-chapters button:hover { border-color: var(--acc); }
 .mk-chapters button[aria-pressed="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; }
@@ -459,7 +459,7 @@
 .sat-hours span { display: flex; align-items: center; gap: 10px; }
 .sat-hours input { flex: 1; accent-color: #E9A6BC; }
 .sat-hours output { min-width: 2.2em; font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #F5E5E1; text-transform: none; letter-spacing: 0; }
-.sat-form button { grid-column: 1 / -1; padding: 11px 16px; border: 0; border-radius: 999px; background: #E9A6BC; color: #2A1810; font: 700 14px system-ui, sans-serif; cursor: pointer; transition: background 0.2s ease; }
+.sat-form button { grid-column: 1 / -1; padding: 11px 16px; border: 0; border-radius: 999px; background: #E9A6BC; color: #2A1810; font: 700 14px system-ui, sans-serif; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease; }
 .sat-form button:hover { background: #F2C1D1; }
 .sat-form button:disabled { opacity: 0.6; cursor: progress; }
 .sat-form :focus-visible { outline: 2px solid #E9A6BC; outline-offset: 2px; }

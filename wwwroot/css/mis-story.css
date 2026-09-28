@@ -96,7 +96,7 @@
     font: inherit;
     font-size: 0.9em;
     color: #8F4661;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease;
 }
 
@@ -189,7 +189,7 @@
     color: #8F4661;
     font-size: 1.3em;
     line-height: 1;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -330,7 +330,7 @@
     letter-spacing: 2.5px;
     text-transform: uppercase;
     white-space: nowrap;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -557,7 +557,7 @@
     background: linear-gradient(to right, #8F4661 var(--fill), #EBD5D0 var(--fill));
     appearance: none;
     -webkit-appearance: none;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
 }
 
 .zoom-range::-webkit-slider-thumb {
@@ -600,7 +600,7 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
     color: #8A7A76;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
 }
 
 .zoom-tick.current {

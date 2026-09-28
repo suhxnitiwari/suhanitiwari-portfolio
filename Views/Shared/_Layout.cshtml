@@ -244,7 +244,7 @@
             border-radius: 25px;
             border: none;
             font-weight: 600;
-            cursor: pointer;
+            cursor: var(--cursor-hot, pointer);
             transition: all 0.3s ease;
             font-size: 0.85em;
             text-decoration: none;
@@ -577,6 +577,7 @@
     @* Sitara ✦, my fairy guide: floating chat on every page *@
     <partial name="_Sitara" />
     <script src="~/js/sitara.js" asp-append-version="true"></script>
+    <script src="~/js/sparkle.js" asp-append-version="true" defer></script>
     <script>
         // Dropdowns (Favorites, Work): click to open, click anywhere else to close
         const dropdowns = document.querySelectorAll('.nav-dropdown');

@@ -256,7 +256,7 @@
         aspect-ratio: 1;
         border-radius: 16px;
         overflow: visible;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         color: white;
         perspective: 1200px;
         height: 100%;
@@ -328,7 +328,7 @@
         border-radius: 25px;
         font-size: 0.85em;
         font-weight: 700;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         transition: all 0.3s ease;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -1105,7 +1105,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     lens.addEventListener('mousemove', e => {
         const n = ringAt(e);
         rings.forEach(r => r.classList.toggle('hover', +r.dataset.ring === n));
-        lens.style.cursor = n >= 0 ? 'pointer' : '';
+        lens.style.cursor = n >= 0 ? 'var(--cursor-hot, pointer)' : '';
     });
     lens.addEventListener('mouseleave', () => rings.forEach(r => r.classList.remove('hover')));
     show(0);
@@ -1225,7 +1225,7 @@ document.addEventListener('keydown', function(event) {
     background: none;
     border: none;
     font-size: 28px;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     color: #2A1810;
     font-weight: 300;
 }

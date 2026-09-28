@@ -9,7 +9,7 @@
     padding: 0;
     border: none;
     background: none;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     border-radius: 8px;
 }
 
@@ -80,7 +80,7 @@
     color: #2A1810;
     font-size: 1.5em;
     line-height: 1;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
 }
 
 /* keep the focus ring on the close button in the site's rose, not the browser's blue */
@@ -577,7 +577,7 @@
     font-size: 0.95em;
     font-weight: 700;
     letter-spacing: 0.5px;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
@@ -611,7 +611,7 @@
     font-size: 0.82em;
     font-weight: 600;
     letter-spacing: 0.5px;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -742,7 +742,7 @@
     color: inherit;
     font: inherit;
     text-align: left;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
 }
 
 /* inside a button these are spans, so stack them like the other shelves' lines */
@@ -948,7 +948,7 @@
     color: #56634A;
     font-size: 0.9em;
     font-weight: 600;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-offset: 4px;
@@ -1063,7 +1063,7 @@
     color: #2A1810;
     font-size: 1.4em;
     line-height: 1;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     box-shadow: 0 6px 16px rgba(42, 24, 16, 0.18);
     opacity: 0;
     transition: opacity 0.25s ease, background 0.2s ease, color 0.2s ease;
@@ -1229,7 +1229,7 @@
     border: none;
     border-radius: 10px;
     overflow: hidden;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     background: linear-gradient(160deg, #F5E0DB 0%, #EFCFCD 100%);
     box-shadow: 0 6px 16px rgba(42, 24, 16, 0.14);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1304,7 +1304,7 @@
     color: #2A1810;
     font-size: 1.4em;
     line-height: 1;
-    cursor: pointer;
+    cursor: var(--cursor-hot, pointer);
     box-shadow: 0 6px 16px rgba(42, 24, 16, 0.18);
 }
 

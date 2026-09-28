@@ -120,7 +120,7 @@
     }
 
     .piece {
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         outline: none;
     }
 
@@ -485,7 +485,7 @@
         font-size: 0.85em;
         padding: 3px 10px;
         box-shadow: 0 2px 8px rgba(42, 24, 16, 0.15);
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
     }
 
     .leaflet-tooltip.place-label::before {
@@ -625,7 +625,7 @@
         font-weight: 700;
         letter-spacing: 2px;
         text-transform: uppercase;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
@@ -759,7 +759,7 @@
         font: inherit;
         font-size: 0.85em;
         font-weight: 600;
-        cursor: pointer;
+        cursor: var(--cursor-hot, pointer);
         transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
