@@ -886,6 +886,16 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
         chapters.forEach((b, n) => b.setAttribute('aria-pressed', n === current));
     }
     deck.querySelectorAll('.mk-step').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
+    // the tracker on top of each slide (Summary, Situation, ...): each section jumps to the first slide that belongs to it
+    const sectionStart = {};
+    slides.forEach((s, n) => {
+        const sec = [...s.querySelectorAll('.mk-track li')].findIndex(li => li.classList.contains('on'));
+        if (sec >= 0 && !(sec in sectionStart)) sectionStart[sec] = n;
+    });
+    deck.addEventListener('click', e => {
+        const b = e.target.closest('.mk-track button');
+        if (b && b.dataset.sec in sectionStart) show(sectionStart[b.dataset.sec]);
+    });
     deck.addEventListener('keydown', e => {
         if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
         e.preventDefault();

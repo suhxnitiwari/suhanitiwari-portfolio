@@ -3,10 +3,11 @@
    and a source line with page number on every slide. Slides scale with the stage (container query units);
    on phones they stack at their natural height. *@
 @functions {
-    // Storyline tracker across the top of a slide: every section, with the current one marked
+    // Storyline tracker across the top of a slide: every section, with the current one marked; each one jumps to its section
     static string Top(string[] sections, int current, string brand) =>
         "<div class=\"mk-top\"><ol class=\"mk-track\">" +
-        string.Concat(sections.Select((s, i) => $"<li{(i == current ? " class=\"on\"" : "")}>{s}</li>")) +
+        string.Concat(sections.Select((s, i) =>
+            $"<li{(i == current ? " class=\"on\"" : "")}><button type=\"button\" data-sec=\"{i}\"{(i == current ? " aria-current=\"step\"" : "")}>{s}</button></li>")) +
         $"</ol><span class=\"mk-brandtag\">{brand}</span></div>";
 
     // Footer: source on the left, page number on the right

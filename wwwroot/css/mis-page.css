@@ -240,8 +240,10 @@
 /* tracker + brand tag */
 .mk-top { display: flex; align-items: center; justify-content: space-between; gap: 2cqw; }
 .mk-track { display: flex; flex-wrap: wrap; gap: 0.6cqw; }
-.mk-track li { font-size: clamp(9px, 0.9cqw, 11px) !important; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35cqw 0.9cqw; border-radius: 99px; color: var(--muted); background: rgba(143, 70, 97, 0.06); }
-.mk-track li.on { background: var(--mul); color: #FFF8F6; }
+.mk-track button { font: inherit; font-size: clamp(9px, 0.9cqw, 11px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35cqw 0.9cqw; border: 0; border-radius: 99px; color: var(--muted); background: rgba(143, 70, 97, 0.06); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+.mk-track button:hover { background: rgba(143, 70, 97, 0.16); color: var(--mul); }
+.mk-track li.on button { background: var(--mul); color: #FFF8F6; }
+.mk-track button:focus-visible { outline: 2px solid var(--mul); outline-offset: 2px; }
 .mk-brandtag { font-family: var(--serif); font-style: italic; font-size: clamp(10px, 1.05cqw, 13px); color: var(--acc); white-space: nowrap; }
 
 /* action title: the takeaway, with one phrase in italic mulberry and a hand-drawn underline */
