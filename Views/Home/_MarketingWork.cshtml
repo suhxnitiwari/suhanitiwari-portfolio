@@ -1,0 +1,117 @@
+@* Marketing tab (rendered from Coursework.cshtml). Same project carousel as the MIS tab, but each project shows
+   slides from my deck in a viewer: the big slide, a caption, and a thumbnail strip to jump between them. *@
+@{
+    var projects = new[]
+    {
+        new
+        {
+            Id = "starbucks", Tab = "Product Management",
+            Title = "Starbucks AI Loyalty & Mobile Ecosystem",
+            Sub = "A 58-slide product strategy for the Starbucks app and Rewards program, built solo for MKT 372T Product Management.",
+            Facts = new[] { ("58", "SLIDES"), ("17", "SECTIONS"), ("10", "FEATURES SCORED"), ("35M+", "REWARDS MEMBERS") },
+            Points = new[]
+            {
+                "Mapped the business with a Business Model Canvas, Value Proposition Canvas, Product Vision Board and Opportunity Solution Tree",
+                "Prioritized ten new features with KANO analysis and RICE scoring, then sequenced them into a phased roadmap",
+                "Wrote an Amazon-style working-backwards memo and prototyped the redesigned app screens in Canva",
+                "Invented a north star metric, Weekly Active Ritual Orders per User (WARO), with the KPI tree behind it"
+            },
+            Slides = new[]
+            {
+                ("p01", "The pitch: AI-powered loyalty for 35M+ Rewards members"),
+                ("p13", "Value proposition: what the app does for busy students and professionals"),
+                ("p10", "Opportunity solution tree: from one outcome to the features that serve it"),
+                ("p27", "KANO analysis: which features delight and which are table stakes"),
+                ("p28", "RICE scoring: reach × impact × confidence ÷ effort, feature by feature"),
+                ("p37", "Prototype: AI drink recommendations and smart filtering"),
+                ("p56", "North star: Weekly Active Ritual Orders per User and its five drivers"),
+                ("p58", "Prioritization matrix: quick wins, strategic bets and what to cut")
+            }
+        },
+        new
+        {
+            Id = "owala", Tab = "Marketing Strategy",
+            Title = "Owala: The Marathon Series",
+            Sub = "A marketing plan to turn a bottle people buy once into one they collect: engraved, race-edition bottles sold at the finish line. Built solo for MKT 337.",
+            Facts = new[] { ("4", "COMPETITORS MAPPED"), ("32M+", "RACE FINISHERS / YR"), ("$49.99", "RACE-EDITION PRICE"), ("14", "PAGE PLAN") },
+            Points = new[]
+            {
+                "Diagnosed four growth problems: a one-and-done product, trend dependence, no ecosystem and no identity attachment",
+                "Mapped Stanley, YETI, Hydro Flask and CamelBak on identity versus function to find where Owala could win",
+                "Built the 4 P’s, with cost-plus race-edition pricing benchmarked against YETI’s $6 engraving fee",
+                "Planned a pilot in three to five marathon cities with pre-orders, finish-line pop-ups and retention metrics"
+            },
+            Slides = new[]
+            {
+                ("p01", "The Marathon Series: a marketing plan for Owala"),
+                ("p03", "The problem: attention that never turns into habit, identity or lifetime value"),
+                ("p04", "The market: $14.2B in drinkware, and who is winning it"),
+                ("p07", "The Race Series: one city, one bottle a year, engraved with your finish time"),
+                ("p11", "Positioning: moving Owala from the middle to identity-driven lifestyle value"),
+                ("p18", "Price: cost-plus pricing from $39.99 to $49.99"),
+                ("p19", "Place: pre-orders at race sign-up, pop-ups at the finish line"),
+                ("p23", "Year-round drops: a race-calendar strategy that keeps people collecting")
+            }
+        }
+    };
+}
+<section class="mis mp mk" aria-labelledby="mk-heading">
+    <header class="mp-hero">
+        <h2 id="mk-heading">I studied marketing, too.<br />Here’s why that matters.</h2>
+        <p class="mp-thesis">Building the right thing is only half the job. I also know how to find <em>who it’s for</em>, what makes them <em>come back</em>, and how to prove it’s <em>working</em>.</p>
+    </header>
+
+    <div class="mp-section mp-projects" id="mk-projects" role="region" aria-roledescription="carousel" aria-label="Marketing projects">
+        <div class="mp-proj-nav">
+            <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
+            <div class="mp-proj-tabs" role="tablist" aria-label="Choose a project">
+                @for (var i = 0; i < projects.Length; i++)
+                {
+                    <button type="button" role="tab" aria-selected="@(i == 0 ? "true" : "false")" aria-controls="mk-proj-@i" tabindex="@(i == 0 ? 0 : -1)">@projects[i].Tab</button>
+                }
+            </div>
+            <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
+        </div>
+
+        @for (var i = 0; i < projects.Length; i++)
+        {
+            var p = projects[i];
+            <div class="mp-proj" id="mk-proj-@i" role="tabpanel" aria-labelledby="mk-title-@i" hidden="@(i != 0)">
+                <div class="mp-proof">
+                    <figure class="mk-deck">
+                        <div class="mk-stage">
+                            <img src="/images/projects/@p.Id/@(p.Slides[0].Item1).jpg" alt="@p.Slides[0].Item2" width="1400" height="787" loading="lazy" decoding="async">
+                            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+                            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+                        </div>
+                        <figcaption aria-live="polite"><span class="mk-count">1 / @p.Slides.Length</span> <span class="mk-cap">@p.Slides[0].Item2</span></figcaption>
+                        <div class="mk-thumbs" role="group" aria-label="Slides">
+                            @for (var s = 0; s < p.Slides.Length; s++)
+                            {
+                                <button type="button" aria-pressed="@(s == 0 ? "true" : "false")" data-src="/images/projects/@p.Id/@(p.Slides[s].Item1).jpg" data-cap="@p.Slides[s].Item2" aria-label="Slide @(s + 1): @p.Slides[s].Item2">
+                                    <img src="/images/projects/@p.Id/@(p.Slides[s].Item1).jpg" alt="" loading="lazy" decoding="async">
+                                </button>
+                            }
+                        </div>
+                    </figure>
+                    <div>
+                        <h3 id="mk-title-@i">@p.Title</h3>
+                        <p class="mp-proof-sub">@p.Sub</p>
+                        <ul class="mp-facts">
+                            @foreach (var f in p.Facts)
+                            {
+                                <li><b>@f.Item1</b><span>@f.Item2</span></li>
+                            }
+                        </ul>
+                        <ul class="mp-proof-list">
+                            @foreach (var point in p.Points)
+                            {
+                                <li>@point</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

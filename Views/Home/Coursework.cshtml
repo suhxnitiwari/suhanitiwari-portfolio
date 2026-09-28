@@ -435,10 +435,11 @@
             <h1>Coursework</h1>
         </div>
 
-        <!-- Overview (all nine themes) or just my major -->
+        <!-- Overview (all nine themes), my MIS major, or my marketing projects -->
         <div class="cw-tabs" role="tablist" aria-label="Coursework view">
             <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="true">Overview</button>
             <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="false" tabindex="-1">MIS Major</button>
+            <button type="button" class="cw-tab" role="tab" id="cw-tab-mk" aria-controls="cw-mk" aria-selected="false" tabindex="-1">Marketing</button>
         </div>
 
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview">
@@ -756,6 +757,10 @@
 
             </div>
         </div>
+
+        <div class="cw-panel" id="cw-mk" role="tabpanel" aria-labelledby="cw-tab-mk" hidden>
+            <partial name="_MarketingWork" />
+        </div>
     </div>
 </div>
 
@@ -829,10 +834,10 @@
     show(0);
 })();
 
-// MIS projects: ‹ › and the project names show one project at a time (arrow keys work on the names too)
-(() => {
-    const tabs = [...document.querySelectorAll('.mp-proj-tabs [role="tab"]')];
-    const slides = [...document.querySelectorAll('.mp-proj')];
+// Project carousels (MIS and Marketing): ‹ › and the project names show one project at a time (arrow keys work on the names too)
+document.querySelectorAll('.mp-projects').forEach(root => {
+    const tabs = [...root.querySelectorAll('.mp-proj-tabs [role="tab"]')];
+    const slides = [...root.querySelectorAll('.mp-proj')];
     if (!tabs.length) return;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let current = 0;
@@ -854,8 +859,35 @@
             show(current + (e.key === 'ArrowRight' ? 1 : -1), true);
         });
     });
-    document.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
-})();
+    root.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
+});
+
+// Marketing decks: the big slide, ‹ › on it, and a thumbnail strip to jump to any slide
+document.querySelectorAll('.mk-deck').forEach(deck => {
+    const img = deck.querySelector('.mk-stage img');
+    const cap = deck.querySelector('.mk-cap');
+    const count = deck.querySelector('.mk-count');
+    const thumbs = [...deck.querySelectorAll('.mk-thumbs button')];
+    let current = 0;
+    const show = i => {
+        current = (i + thumbs.length) % thumbs.length;
+        const t = thumbs[current];
+        img.src = t.dataset.src;
+        img.alt = t.dataset.cap;
+        cap.textContent = t.dataset.cap;
+        count.textContent = `${current + 1} / ${thumbs.length}`;
+        thumbs.forEach((b, n) => b.setAttribute('aria-pressed', n === current));
+        t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+    };
+    thumbs.forEach((b, n) => b.addEventListener('click', () => show(n)));
+    deck.querySelectorAll('.mk-step').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
+    deck.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        e.stopPropagation();
+        show(current + (e.key === 'ArrowRight' ? 1 : -1));
+    });
+});
 
 // Ride share database: schema.sql / rollup.sql / ranking.sql tabs inside the code window
 (() => {
@@ -880,7 +912,7 @@
     });
 })();
 
-// Overview / MIS Major tabs (click, or arrow keys). #mis or #projects in the link opens MIS Major.
+// Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis or #projects opens MIS Major; #marketing opens Marketing.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
     const show = tab => {
@@ -907,6 +939,7 @@
     });
     // #mis opens MIS Major; #projects opens it and jumps to the projects (the home page links to both)
     if (location.hash === '#mis' || location.hash === '#projects') show(tabs[1]);
+    if (location.hash === '#marketing') show(tabs[2]);
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
     // unless the visitor has already started scrolling on their own
     if (location.hash === '#projects') {
