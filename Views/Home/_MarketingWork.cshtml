@@ -1,7 +1,22 @@
-@* Marketing Minor tab (rendered from Coursework.cshtml). Each project is a short deck of slides built in HTML
-   (not screenshots), in the site's palette with one accent per brand, followed by the summary.
-   Slides scale with the stage width (container query units); on phones they stack at their natural height. *@
+@* Marketing Minor tab (rendered from Coursework.cshtml). Each project is a consulting-style deck built in HTML:
+   answer-first executive summary, action titles, a storyline tracker, numbered exhibits, "so what" callouts,
+   and a source line with page number on every slide. Slides scale with the stage (container query units);
+   on phones they stack at their natural height. *@
+@functions {
+    // Storyline tracker across the top of a slide: every section, with the current one marked
+    static string Top(string[] sections, int current, string brand) =>
+        "<div class=\"mk-top\"><ol class=\"mk-track\">" +
+        string.Concat(sections.Select((s, i) => $"<li{(i == current ? " class=\"on\"" : "")}>{s}</li>")) +
+        $"</ol><span class=\"mk-brandtag\">{brand}</span></div>";
+
+    // Footer: source on the left, page number on the right
+    static string Foot(string source, int page, int total) =>
+        $"<div class=\"mk-foot\"><span>Source: {source}</span><span class=\"mk-sig\">suhani ✦</span><span class=\"mk-page\">{page}</span></div>";
+}
 @{
+    var sbuxSections = new[] { "Summary", "Situation", "Options", "Priorities", "Solution", "Measure" };
+    var owalaSections = new[] { "Summary", "Problem", "Market", "Strategy", "Plan" };
+
     // RICE scores from my Starbucks deck (Reach × Impact × Confidence ÷ Effort), highest first
     var rice = new (string Feature, int Score)[]
     {
@@ -17,6 +32,8 @@
         ("Study-optimized store finder", 3656)
     };
     var riceMax = rice.Max(r => r.Score);
+    var share = new (string Brand, int Pct)[] { ("Starbucks", 48), ("Dunkin", 24), ("Other chains", 19), ("McDonald’s", 6), ("Dutch Bros", 3) };
+    string Pct(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
 }
 <section class="mis mp mk" aria-labelledby="mk-heading">
     <header class="mp-hero">
@@ -34,112 +51,145 @@
             <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
         </div>
 
-        <!-- ===== Starbucks ===== -->
+        <!-- ===================== Starbucks ===================== -->
         <div class="mp-proj mk-sbux" id="mk-proj-0" role="tabpanel" aria-labelledby="mk-title-0">
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Starbucks slides">
                 <div class="mk-stage">
 
-                    <div class="mk-slide" data-title="The gap">
-                        <p class="mk-kicker">01 · The gap</p>
-                        <h4 class="mk-h">Starbucks owns the market.<br />Its app doesn’t own the habit yet.</h4>
-                        <div class="mk-gap">
-                            <div class="mk-big">
-                                <b>48%</b>
-                                <span>of North American coffee-shop spending goes to Starbucks. Dunkin, the next biggest, has 24%.</span>
-                            </div>
-                            <ul class="mk-stats">
-                                <li><b>~70%</b><span>of transactions still happen <em>outside</em> the app. That’s the growth.</span></li>
-                                <li><b>59%</b><span>of sales already come from Rewards members.</span></li>
-                                <li><b>3×</b><span>more spent by members than non-members.</span></li>
-                            </ul>
-                        </div>
+                    <div class="mk-slide" data-title="Executive summary">
+                        @Html.Raw(Top(sbuxSections, 0, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">Starbucks can grow by turning its app from a checkout tool into <em>a daily ritual</em>.</h4>
+                        <ol class="mk-scr">
+                            <li><span>the situation</span><p>Starbucks leads North American coffee with <b>48%</b> of coffee-shop spending, and Rewards members already drive <b>59%</b> of sales.</p></li>
+                            <li><span>the catch</span><p>Yet about <b>70%</b> of transactions still happen outside the app, and people use it to pay, not to discover or plan.</p></li>
+                            <li><span>the fix</span><p>Build habit-forming features first (customization profiles, smart filtering, recurring orders) and manage to one metric: <b>Weekly Active Ritual Orders per User</b>.</p></li>
+                        </ol>
+                        @Html.Raw(Foot("Statista; Starbucks company data; author analysis", 1, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="Opportunity solution tree" hidden>
-                        <p class="mk-kicker">02 · From outcome to solutions</p>
-                        <div class="mk-outcome">Turn the app into a <b>predictive, personalized daily ordering platform</b> that grows mobile revenue and habit-driven visits.</div>
+                    <div class="mk-slide" data-title="The gap" hidden>
+                        @Html.Raw(Top(sbuxSections, 1, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">Starbucks holds nearly half the market, but its app captures only <em>about 3 in 10</em> transactions.</h4>
+                        <div class="mk-split">
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 1 · North American coffee-shop market share, %</figcaption>
+                                <ol class="mk-hbars">
+                                    @foreach (var (brand, pct) in share)
+                                    {
+                                        <li class="@(brand == "Starbucks" ? "hi" : "")" style="--w: @Pct(pct * 100.0 / 48)%"><span>@brand</span><i></i><b>@pct</b></li>
+                                    }
+                                </ol>
+                            </figure>
+                            <div class="mk-side">
+                                <p class="mk-exlabel">The app today</p>
+                                <ul class="mk-kpis">
+                                    <li><b>31%</b>of transactions are mobile orders</li>
+                                    <li><b>59%</b>of sales come from Rewards members</li>
+                                    <li><b>3×</b>more spent by members than non-members</li>
+                                </ul>
+                                <p class="mk-sowhat"><b>So what</b>The growth isn’t new customers. It’s moving visits Starbucks already has into the app.</p>
+                            </div>
+                        </div>
+                        @Html.Raw(Foot("Statista; Starbucks company data", 2, 7))
+                    </div>
+
+                    <div class="mk-slide" data-title="Opportunities" hidden>
+                        @Html.Raw(Top(sbuxSections, 2, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">Three opportunities could make ordering <em>predictive and personal</em>.</h4>
+                        <p class="mk-outcome"><span>Target outcome</span>Grow mobile revenue and habit-driven visits by making the app a predictive, personalized daily ordering platform.</p>
                         <div class="mk-tree">
                             <div class="mk-branch">
-                                <h5>Routine automation &amp; predictive ordering</h5>
-                                <p class="mk-why">Ordering doesn’t adapt to routines or context, and nothing can be scheduled.</p>
+                                <h5><i>A</i>Routine automation</h5>
+                                <p class="mk-why"><b>Problem</b>Nothing can be scheduled, and ordering ignores routine and context.</p>
                                 <ul><li>Lifestyle-based recurring orders</li><li>Predictive order suggestions</li><li>Habit-loop rewards</li></ul>
-                                <p class="mk-test">Test: a “Schedule this weekly?” prompt after checkout</p>
+                                <p class="mk-test"><b>Test</b>“Schedule this weekly?” prompt after checkout</p>
                             </div>
                             <div class="mk-branch">
-                                <h5>Health-aware customization</h5>
-                                <p class="mk-why">Health preferences aren’t saved, and healthy customizing has no guidance.</p>
-                                <ul><li>Saved health preference profiles</li><li>Guided healthy customization</li><li>Goal-integrated ordering</li></ul>
-                                <p class="mk-test">Test: auto-applied modifiers vs. manual customizing</p>
+                                <h5><i>B</i>Health-aware customization</h5>
+                                <p class="mk-why"><b>Problem</b>Health preferences aren’t saved, and healthy choices get no guidance.</p>
+                                <ul><li>Saved preference profiles</li><li>Guided healthy customization</li><li>Goal-based ordering</li></ul>
+                                <p class="mk-test"><b>Test</b>Auto-applied modifiers vs. manual customizing</p>
                             </div>
                             <div class="mk-branch">
-                                <h5>Personalized recs &amp; intelligent deals</h5>
-                                <p class="mk-why">Offers ignore behavior, and a full menu is overwhelming to browse.</p>
+                                <h5><i>C</i>Personalized recs &amp; deals</h5>
+                                <p class="mk-why"><b>Problem</b>Offers ignore behavior, and the full menu overwhelms discovery.</p>
                                 <ul><li>Context-aware upsells</li><li>AI behavioral deal engine</li><li>Guided discovery</li></ul>
-                                <p class="mk-test">Test: personalized offer vs. a generic coupon</p>
+                                <p class="mk-test"><b>Test</b>Personalized offer vs. a generic coupon</p>
                             </div>
                         </div>
+                        @Html.Raw(Foot("Opportunity solution tree, author analysis", 3, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="RICE prioritization" hidden>
-                        <p class="mk-kicker">03 · What to build first</p>
-                        <h4 class="mk-h">I scored ten features with RICE.<br />The habit-builders won.</h4>
-                        <ol class="mk-bars">
-                            @foreach (var (feature, score) in rice)
-                            {
-                                <li class="@(score >= 20000 ? "top" : score < 5000 ? "low" : "")" style="--w: @((score * 100.0 / riceMax).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%">
-                                    <span class="mk-bar-label">@feature</span>
-                                    <span class="mk-bar"><i></i></span>
-                                    <span class="mk-bar-val">@score.ToString("N0")</span>
-                                </li>
-                            }
-                        </ol>
-                        <p class="mk-foot">Reach × Impact × Confidence ÷ Effort</p>
+                    <div class="mk-slide" data-title="RICE scores" hidden>
+                        @Html.Raw(Top(sbuxSections, 3, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">The features that <em>build habits</em> score highest; paid line-skipping scores near the bottom.</h4>
+                        <figure class="mk-exhibit grow">
+                            <figcaption>Exhibit 2 · RICE score by feature (Reach × Impact × Confidence ÷ Effort)</figcaption>
+                            <ol class="mk-bars">
+                                @foreach (var (feature, score) in rice)
+                                {
+                                    <li class="@(score >= 20000 ? "top" : score < 5000 ? "low" : "")" style="--w: @Pct(score * 100.0 / riceMax)%">
+                                        <span class="mk-bar-label">@feature</span>
+                                        <span class="mk-bar"><i></i></span>
+                                        <span class="mk-bar-val">@score.ToString("N0")</span>
+                                    </li>
+                                }
+                            </ol>
+                        </figure>
+                        <p class="mk-sowhat inline"><b>So what</b>The three highest scorers all build habits: they make the next order faster than the last.</p>
+                        @Html.Raw(Foot("RICE scoring, author analysis", 4, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="Prioritization matrix" hidden>
-                        <p class="mk-kicker">04 · The hard tradeoffs</p>
+                    <div class="mk-slide" data-title="Prioritization" hidden>
+                        @Html.Raw(Top(sbuxSections, 3, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">Ship <em>three quick wins</em> now, then fund the habit-forming bets.</h4>
                         <div class="mk-matrix">
-                            <div class="q win"><h5>Quick wins <small>ship now</small></h5><p>Smart menu filtering · Customization profiles · Wait-time store routing</p></div>
-                            <div class="q bet"><h5>Strategic bets <small>invest carefully</small></h5><p>Recurring orders · Scheduling ahead · AI drink suggestions · Multi-user profiles · Study-optimized store finder</p></div>
-                            <div class="q fill"><h5>Fill-ins <small>if time allows</small></h5><p>Side-by-side drink comparison</p></div>
-                            <div class="q cut"><h5>Deprioritize <small>weak link to the goal</small></h5><p>Line Priority Boost, a paid skip-the-line fee</p></div>
+                            <div class="q win"><h5>Quick wins <small>High impact · low effort</small></h5><p>Smart menu filtering<br />Customization profiles<br />Wait-time store routing</p></div>
+                            <div class="q bet"><h5>Strategic bets <small>High impact · high effort</small></h5><p>Recurring orders · Scheduling ahead<br />AI drink suggestions · Multi-user profiles<br />Study-optimized store finder</p></div>
+                            <div class="q fill"><h5>Fill-ins <small>Low impact · low effort</small></h5><p>Side-by-side drink comparison</p></div>
+                            <div class="q cut"><h5>Deprioritize <small>Low impact · high effort</small></h5><p>Line Priority Boost (paid)</p></div>
                             <div class="mk-goal">Goal<b>Maximize WARO</b></div>
-                            <span class="ax y">User impact ↑</span>
-                            <span class="ax x">Effort →</span>
+                            <span class="ax y">User impact →</span>
+                            <span class="ax x">Implementation effort →</span>
                         </div>
+                        @Html.Raw(Foot("Feature prioritization matrix, author analysis", 5, 7))
                     </div>
 
                     <div class="mk-slide" data-title="Prototype" hidden>
+                        @Html.Raw(Top(sbuxSections, 4, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">The prototype puts context-aware recommendations <em>one tap</em> from ordering.</h4>
                         <div class="mk-proto">
-                            <div>
-                                <p class="mk-kicker">05 · The product</p>
-                                <h4 class="mk-h">Recommendations that know the weather, the moment and your mood.</h4>
-                                <ul class="mk-list">
-                                    <li><b>Context-aware picks</b> from temperature, time of day and events nearby</li>
-                                    <li><b>“Set the vibe” filters</b>: cravings, chill-to-hot, indulgent-to-light</li>
-                                    <li><b>One-tap order</b> on every card, from discovery to purchase</li>
-                                </ul>
-                                <p class="mk-foot">Prototyped in Canva</p>
-                            </div>
+                            <ol class="mk-callouts">
+                                <li><b>Context-aware picks</b>Drinks matched to temperature, time of day and events nearby, like an ACL-weekend pick</li>
+                                <li><b>“Set the vibe” filters</b>Cravings, chill-to-hot and indulgent-to-light instead of scrolling a full menu</li>
+                                <li><b>One-tap order</b>Every recommendation goes straight to checkout, cutting friction at the moment of decision</li>
+                            </ol>
                             <img src="/images/projects/starbucks/prototype-ai-recs.jpg" alt="Two prototype app screens: AI drink picks such as an ACL Weekend Pick and a Hot Day Essential, and a Set the vibe filter panel" width="860" height="1000" loading="lazy" decoding="async">
                         </div>
+                        @Html.Raw(Foot("Author prototype (Canva)", 6, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="North star metric" hidden>
-                        <p class="mk-kicker">06 · How we’d know it worked</p>
+                    <div class="mk-slide" data-title="North star" hidden>
+                        @Html.Raw(Top(sbuxSections, 5, "Starbucks · App &amp; loyalty strategy"))
+                        <h4 class="mk-h">Success is measured by <em>weekly ritual orders</em>, not downloads.</h4>
                         <div class="mk-star">
                             <div class="mk-star-main">
+                                <p class="mk-exlabel">North star metric</p>
                                 <b>WARO</b>
-                                <span>Weekly Active Ritual Orders per User: how often people order from a saved, scheduled or AI-suggested routine. It measures habit, not just sales.</span>
+                                <span>Weekly Active Ritual Orders per User: orders placed from a saved, scheduled or AI-suggested routine. It captures both revenue and habit.</span>
                             </div>
-                            <ol class="mk-drivers">
-                                <li><b>Habit formation</b> recurring and scheduled orders created</li>
-                                <li><b>Personalization</b> recommendations that fit the moment</li>
-                                <li><b>Convenience</b> one-tap reorder, reliable pickup</li>
-                                <li><b>Engagement</b> active use beyond checkout</li>
-                                <li><b>Retention</b> people returning week after week</li>
-                            </ol>
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 3 · Drivers of WARO</figcaption>
+                                <ol class="mk-drivers">
+                                    <li><b>Habit formation</b>recurring and scheduled orders created</li>
+                                    <li><b>Personalization</b>recommendations that fit the moment</li>
+                                    <li><b>Convenience</b>one-tap reorder, reliable pickup</li>
+                                    <li><b>Engagement</b>active use beyond checkout</li>
+                                    <li><b>Retention</b>users returning week after week</li>
+                                </ol>
+                            </figure>
                         </div>
+                        @Html.Raw(Foot("Product metrics framework, author analysis", 7, 7))
                     </div>
 
                     <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
@@ -162,106 +212,140 @@
             </div>
         </div>
 
-        <!-- ===== Owala ===== -->
+        <!-- ===================== Owala ===================== -->
         <div class="mp-proj mk-owala" id="mk-proj-1" role="tabpanel" aria-labelledby="mk-title-1" hidden>
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Owala slides">
                 <div class="mk-stage">
 
-                    <div class="mk-slide" data-title="The problem">
-                        <p class="mk-kicker">01 · The problem</p>
-                        <h4 class="mk-h">Owala wins attention,<br />then loses the customer.</h4>
+                    <div class="mk-slide" data-title="Executive summary">
+                        @Html.Raw(Top(owalaSections, 0, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">Owala can turn one-time buyers into <em>collectors</em> by selling bottles runners earn at the finish line.</h4>
+                        <ol class="mk-scr">
+                            <li><span>the situation</span><p>Owala grew sales <b>400%</b> in 2024 on color drops and viral moments, but gives customers no reason to buy a second bottle.</p></li>
+                            <li><span>the catch</span><p><b>71%</b> of drinkware buyers never repurchase, and rivals retain customers through identity (Stanley, Hydro Flask) or an ecosystem (YETI).</p></li>
+                            <li><span>the fix</span><p>Launch the <b>Race Series</b>: city-exclusive, engraved bottles sold at marathons. Pilot at three to five races and measure repeat purchase.</p></li>
+                        </ol>
+                        @Html.Raw(Foot("Latterly (Ogle, 2025); Fortune Business Insights; author analysis", 1, 7))
+                    </div>
+
+                    <div class="mk-slide" data-title="Root causes" hidden>
+                        @Html.Raw(Top(owalaSections, 1, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">Owala’s demand is driven by <em>attention, not attachment</em>.</h4>
                         <div class="mk-cards">
-                            <div><i>1</i><h5>One and done</h5><p>Nobody needs a second bottle. There’s no natural reason to buy again.</p></div>
-                            <div><i>2</i><h5>Trend dependent</h5><p>Color drops create spikes, but most buyers stop after one or two.</p></div>
-                            <div><i>3</i><h5>No ecosystem</h5><p>No collection, progression or community to come back to.</p></div>
+                            <div><i>1</i><h5>One-and-done product</h5><p>Nobody needs a second bottle, so there’s no natural repurchase cycle.</p></div>
+                            <div><i>2</i><h5>Trend dependence</h5><p>Color drops create spikes, but most buyers stop after one or two.</p></div>
+                            <div><i>3</i><h5>No ecosystem</h5><p>No collection, progression or community pulls customers back.</p></div>
                             <div><i>4</i><h5>No identity</h5><p>Stylish and useful, but not tied to routine, achievement or meaning.</p></div>
                         </div>
+                        <p class="mk-sowhat inline"><b>So what</b>Without a reason to come back, Owala risks becoming a trend rather than a brand.</p>
+                        @Html.Raw(Foot("Author analysis", 2, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="The market" hidden>
-                        <p class="mk-kicker">02 · The market</p>
-                        <h4 class="mk-h">Huge category. Almost no repeat buyers.</h4>
+                    <div class="mk-slide" data-title="Market" hidden>
+                        @Html.Raw(Top(owalaSections, 2, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">The category is large, but <em>repeat buying</em>, not reach, is the constraint.</h4>
                         <ul class="mk-numbers">
-                            <li><b>$14.2B</b><span>drinkware market by 2032</span></li>
-                            <li><b>71%</b><span>of buyers never repurchase</span></li>
-                            <li><b>400%</b><span>Owala’s 2024 sales growth, with nothing to sustain it</span></li>
-                            <li><b>32M+</b><span>U.S. race finishers every year: the audience</span></li>
+                            <li><b>$14.2B</b><span>global drinkware market by 2032</span></li>
+                            <li class="hi"><b>71%</b><span>of drinkware buyers never repurchase</span></li>
+                            <li><b>400%</b><span>Owala’s 2024 sales growth, with no system to sustain it</span></li>
+                            <li><b>32M+</b><span>U.S. race finishers a year: an audience that commemorates achievement</span></li>
                         </ul>
-                        <p class="mk-quote">Without a reason to come back, Owala risks becoming a trend, not a brand.</p>
+                        <p class="mk-sowhat inline"><b>So what</b>Owala doesn’t need more first-time buyers. It needs a reason for existing fans to buy again.</p>
+                        @Html.Raw(Foot("Fortune Business Insights; Latterly (Ogle, 2025); Running USA", 3, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="Positioning map" hidden>
+                    <div class="mk-slide" data-title="Positioning" hidden>
+                        @Html.Raw(Top(owalaSections, 2, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">Rivals win on function or identity; Owala sits <em>stuck in the middle</em>.</h4>
                         <div class="mk-position">
-                            <div>
-                                <p class="mk-kicker">03 · Positioning</p>
-                                <h4 class="mk-h">Competitors win on function or identity. Owala sits in the middle.</h4>
-                                <p class="mk-note">The move: take Owala to high identity and emotional value, where loyalty lives.</p>
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 1 · Drinkware positioning map</figcaption>
+                                <svg viewBox="0 0 400 290" role="img" aria-label="Positioning map: Stanley and Hydro Flask lean toward identity, YETI and CamelBak toward function, and Owala moves from the middle to the high identity, emotional corner">
+                                    <defs><marker id="mk-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mk-arrowhead" /></marker></defs>
+                                    <rect x="200" y="20" width="186" height="125" class="mk-zone" />
+                                    <line x1="200" y1="20" x2="200" y2="270" class="mk-axis" />
+                                    <line x1="14" y1="145" x2="386" y2="145" class="mk-axis" />
+                                    <text x="200" y="12" class="mk-axis-label" text-anchor="middle">High identity &amp; loyalty</text>
+                                    <text x="200" y="284" class="mk-axis-label" text-anchor="middle">Low attachment</text>
+                                    <text x="16" y="138" class="mk-axis-label">Functional</text>
+                                    <text x="384" y="138" class="mk-axis-label" text-anchor="end">Emotional</text>
+                                    <circle cx="228" cy="62" r="6" class="mk-dot" /><text x="238" y="66" class="mk-brand">Stanley</text>
+                                    <circle cx="130" cy="90" r="6" class="mk-dot" /><text x="140" y="94" class="mk-brand">Hydro Flask</text>
+                                    <circle cx="96" cy="134" r="6" class="mk-dot" /><text x="106" y="128" class="mk-brand">YETI</text>
+                                    <circle cx="70" cy="220" r="6" class="mk-dot" /><text x="80" y="224" class="mk-brand">CamelBak</text>
+                                    <circle cx="222" cy="156" r="7" class="mk-dot owala-now" /><text x="232" y="174" class="mk-brand">Owala today</text>
+                                    <path d="M232,150 Q300,126 322,64" class="mk-move" marker-end="url(#mk-arrow)" />
+                                    <circle cx="330" cy="52" r="9" class="mk-dot owala" /><text x="330" y="36" class="mk-brand strong" text-anchor="middle">Owala + Race Series</text>
+                                </svg>
+                            </figure>
+                            <div class="mk-side">
+                                <p class="mk-exlabel">How rivals retain</p>
+                                <ul class="mk-kpis text">
+                                    <li><b>Stanley</b>cultural relevance and collab drops</li>
+                                    <li><b>Hydro Flask</b>personalization and daily wellness routines</li>
+                                    <li><b>YETI</b>premium durability and a broad product ecosystem</li>
+                                    <li><b>CamelBak</b>functional necessity for athletes</li>
+                                </ul>
+                                <p class="mk-sowhat"><b>So what</b>The open space is high identity plus emotional value, and achievement can own it.</p>
                             </div>
-                            <svg viewBox="0 0 400 300" role="img" aria-label="Positioning map: Stanley and Hydro Flask lean toward identity, YETI and CamelBak toward function, and Owala moves from the middle to the high identity, emotional corner">
-                                <defs><marker id="mk-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mk-arrowhead" /></marker></defs>
-                                <line x1="200" y1="18" x2="200" y2="282" class="mk-axis" />
-                                <line x1="14" y1="150" x2="386" y2="150" class="mk-axis" />
-                                <text x="200" y="11" class="mk-axis-label" text-anchor="middle">High identity &amp; loyalty</text>
-                                <text x="200" y="296" class="mk-axis-label" text-anchor="middle">Low attachment</text>
-                                <text x="16" y="142" class="mk-axis-label">Functional</text>
-                                <text x="384" y="142" class="mk-axis-label" text-anchor="end">Emotional</text>
-                                <circle cx="228" cy="66" r="6" class="mk-dot" /><text x="238" y="70" class="mk-brand">Stanley</text>
-                                <circle cx="130" cy="94" r="6" class="mk-dot" /><text x="140" y="98" class="mk-brand">Hydro Flask</text>
-                                <circle cx="96" cy="138" r="6" class="mk-dot" /><text x="106" y="132" class="mk-brand">YETI</text>
-                                <circle cx="70" cy="226" r="6" class="mk-dot" /><text x="80" y="230" class="mk-brand">CamelBak</text>
-                                <circle cx="222" cy="160" r="7" class="mk-dot owala-now" /><text x="232" y="178" class="mk-brand">Owala today</text>
-                                <path d="M232,154 Q300,130 320,66" class="mk-move" marker-end="url(#mk-arrow)" />
-                                <circle cx="328" cy="54" r="9" class="mk-dot owala" /><text x="328" y="36" class="mk-brand strong" text-anchor="middle">Owala + Race Series</text>
-                            </svg>
                         </div>
+                        @Html.Raw(Foot("Author analysis", 4, 7))
                     </div>
 
                     <div class="mk-slide" data-title="The Race Series" hidden>
+                        @Html.Raw(Top(owalaSections, 3, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">The Race Series makes each bottle <em>a record of achievement</em> worth collecting.</h4>
                         <div class="mk-proto">
-                            <div>
-                                <p class="mk-kicker">04 · The idea</p>
-                                <h4 class="mk-h">A bottle you earn, not just a bottle you buy.</h4>
-                                <ul class="mk-list">
-                                    <li><b>City-exclusive designs</b> that change every year</li>
-                                    <li><b>Engraved on site</b> with your name, finish time and race date</li>
-                                    <li><b>Race weekend only</b>, in limited quantities</li>
-                                    <li><b>Collect the cities</b>: “Which races have you run?”</li>
-                                </ul>
-                            </div>
+                            <ol class="mk-callouts">
+                                <li><b>City-exclusive design</b>New art for every race city, refreshed each year</li>
+                                <li><b>Engraved at the finish</b>Name, finish time and race date, so every year shows progress</li>
+                                <li><b>Race weekend only</b>Limited quantities create urgency and exclusivity</li>
+                                <li><b>Collect the cities</b>“Which races have you run?” becomes the reason to come back</li>
+                            </ol>
                             <img class="dark" src="/images/projects/owala/race-series-bottles.jpg" alt="Three Austin Marathon race-edition Owala bottles for 2026, 2027 and 2028, each engraved with a name and a faster finish time" width="1000" height="914" loading="lazy" decoding="async">
                         </div>
+                        @Html.Raw(Foot("Author concept and design", 5, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="The 4 P’s" hidden>
-                        <p class="mk-kicker">05 · Strategy within the 4 P’s</p>
+                    <div class="mk-slide" data-title="4 P’s" hidden>
+                        @Html.Raw(Top(owalaSections, 3, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">A small premium and finish-line pop-ups turn the bottle into <em>a keepsake</em>.</h4>
                         <div class="mk-ps">
-                            <div><h5>Product</h5><p>The iconic 40oz FreeSip, redesigned for each race city and engraved at the finish.</p><p class="mk-why-p">A keepsake that opens the fitness market</p></div>
-                            <div><h5>Price</h5><p><b class="mk-price">$39.99 → $49.99</b>Cost-plus for design and engraving. YETI charges $6 just to engrave.</p><p class="mk-why-p">Signals exclusivity; keeps the .99 feel of a deal</p></div>
+                            <div><h5>Product</h5><p>The iconic 40oz FreeSip, redesigned for each race city and engraved on site.</p><p class="mk-why-p">A keepsake that opens the fitness market</p></div>
+                            <div><h5>Price</h5><p><b class="mk-price">$39.99 → $49.99</b>Cost-plus for design and engraving; YETI charges $6 just to engrave.</p><p class="mk-why-p">Signals exclusivity, keeps the .99 feel of a deal</p></div>
                             <div><h5>Place</h5><p>Pre-order on the marathon sign-up site, then pick up at a finish-line pop-up.</p><p class="mk-why-p">Pre-orders size demand; the finish line is peak emotion</p></div>
-                            <div><h5>Promotion</h5><p>Paid social and local running micro-influencers before each race, then shared finish-line photos.</p><p class="mk-why-p">Collectors sharing cities turns paid reach into earned buzz</p></div>
+                            <div><h5>Promotion</h5><p>Paid social and local running micro-influencers before each race, then shared finish-line photos.</p><p class="mk-why-p">Collectors sharing cities turn paid reach into earned buzz</p></div>
                         </div>
+                        @Html.Raw(Foot("Owala; YETI; Austin Marathon; author analysis", 6, 7))
                     </div>
 
-                    <div class="mk-slide" data-title="Rollout &amp; metrics" hidden>
-                        <p class="mk-kicker">06 · Rollout and how we’d measure it</p>
-                        <h4 class="mk-h">Pilot at three to five major marathons, then follow the race calendar.</h4>
-                        <ol class="mk-timeline">
-                            <li><b>Feb</b>Austin</li>
-                            <li><b>Apr</b>Boston</li>
-                            <li><b>Oct</b>Chicago</li>
-                            <li><b>Nov</b>New York</li>
-                        </ol>
+                    <div class="mk-slide" data-title="Pilot &amp; KPIs" hidden>
+                        @Html.Raw(Top(owalaSections, 4, "Owala · The Marathon Series"))
+                        <h4 class="mk-h">A three-to-five-race pilot <em>tests demand</em> before a year-round drop calendar.</h4>
                         <ol class="mk-phases">
-                            <li><b>Pilot</b>New York, Chicago and Boston, partnering with organizers for finish-line and expo placement</li>
+                            <li><b>Pilot</b>New York, Chicago and Boston, with finish-line and expo placement through race organizers</li>
                             <li><b>Expand</b>More races once demand is validated, with pre-orders sizing each drop</li>
-                            <li><b>Year-round drops</b>Limited quantities per city, so every race is a new collectible</li>
+                            <li><b>Year-round drops</b>A race-calendar schedule, limited quantities per city</li>
                         </ol>
-                        <ul class="mk-metrics">
-                            <li><b>Sales</b>units per event, sell-through rate</li>
-                            <li><b>Repeat</b>bottles per customer, buying across events</li>
-                            <li><b>Loyalty</b>second-purchase rate, return racers</li>
-                            <li><b>Buzz</b>shared photos, tagged mentions</li>
-                        </ul>
+                        <figure class="mk-exhibit">
+                            <figcaption>Exhibit 2 · Race-calendar drops</figcaption>
+                            <ol class="mk-timeline">
+                                <li><b>Feb</b>Austin</li>
+                                <li><b>Apr</b>Boston</li>
+                                <li><b>Oct</b>Chicago</li>
+                                <li><b>Nov</b>New York</li>
+                            </ol>
+                        </figure>
+                        <figure class="mk-exhibit">
+                            <figcaption>Exhibit 3 · KPIs by objective</figcaption>
+                            <ul class="mk-metrics">
+                                <li><b>Sales</b>units per event, sell-through rate</li>
+                                <li><b>Repeat</b>bottles per customer, cross-event buying</li>
+                                <li><b>Loyalty</b>second-purchase rate, return racers</li>
+                                <li><b>Buzz</b>user-generated content, tagged mentions</li>
+                            </ul>
+                        </figure>
+                        @Html.Raw(Foot("Author analysis", 7, 7))
                     </div>
 
                     <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
