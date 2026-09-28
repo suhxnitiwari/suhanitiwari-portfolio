@@ -1,5 +1,73 @@
 /* ===== Coursework > MIS Major: the story around the cycle ===== */
 
+/* ===== my MIS skills, at the top of the page ===== */
+.mis-skills {
+    max-width: 1000px;
+    margin: 6px auto 44px;
+    padding: 24px 28px;
+    border-radius: 20px;
+    border: 1px solid #EBD5D0;
+    background: #FFF8F6;
+}
+
+.mis-skills-title {
+    margin: 0 0 16px;
+    font-family: Georgia, serif;
+    font-size: 1.3em;
+    text-align: center;
+    color: #2A1810;
+}
+
+.mis-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.mis-skill-name {
+    margin: 0 0 10px;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #8F4661;
+}
+
+.mis-skill-group ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mis-skill-group li {
+    padding: 4px 11px;
+    border-radius: 999px;
+    border: 1px solid #E2C4C0;
+    background: #FAF1EF;
+    font-size: 0.82em;
+    color: #2A1810;
+}
+
+@media (max-width: 900px) {
+    .mis-skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 499px) {
+    .mis-skills {
+        padding: 20px 16px;
+    }
+
+    .mis-skills-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
 /* ‹ › above the MIS charts: the loop, then the triangle */
 .mis-view-nav {
     display: flex;
@@ -33,7 +101,7 @@
 }
 
 .mis-view-name {
-    min-width: 160px;
+    max-width: 640px;
     font-size: 0.78em;
     font-weight: 700;
     letter-spacing: 2.5px;
@@ -44,6 +112,46 @@
 
 .mis-view[hidden] {
     display: none;
+}
+
+/* the chart with an arrow on each side, out past FUNCTIONAL and TECHNICAL */
+.mis-chart {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.mis-chart > .mis-diagram,
+.mis-chart > .story-triangle {
+    flex: 1;
+    min-width: 0;
+}
+
+.mis-chart > .story-triangle {
+    flex: 0 1 440px;
+}
+
+.mis-view-btn.side {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    font-size: 1.5em;
+}
+
+/* on a wide screen the arrows sit beside the chart; the name above is just a label */
+.mis-view-btn.top {
+    display: none;
+}
+
+@media (max-width: 499px) {
+    .mis-view-btn.top {
+        display: inline-block;
+    }
+
+    .mis-view-btn.side {
+        display: none;
+    }
 }
 
 /* People, technology, business */
@@ -429,69 +537,6 @@
     font-size: 0.95em;
 }
 
-/* ===== AI shows up everywhere ===== */
-.ai-trail {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-/* the thread running through all four */
-.ai-trail::before {
-    content: "";
-    position: absolute;
-    left: 12.5%;
-    right: 12.5%;
-    top: 9px;
-    height: 2px;
-    background: linear-gradient(to right, #6B7F5E, #56705F, #8F4661);
-}
-
-.ai-stop {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    text-align: center;
-}
-
-.ai-dot {
-    position: relative;
-    width: 20px;
-    height: 20px;
-    margin-bottom: 12px;
-    border-radius: 50%;
-    border: 4px solid #FAF1EF;
-    background: #8F4661;
-    box-shadow: 0 0 0 1.5px #8F4661;
-}
-
-.ai-course {
-    font-size: 0.9em;
-    color: #56634A;
-}
-
-.ai-topics {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 8px;
-}
-
-.ai-topics span {
-    padding: 5px 12px;
-    border-radius: 999px;
-    background: #8F4661;
-    color: #FFF8F6;
-    font-size: 0.82em;
-    font-weight: 600;
-}
-
 /* ===== Where it all meets ===== */
 .meets {
     position: relative;
@@ -602,14 +647,7 @@
         max-width: 220px;
     }
 
-    .ai-trail {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        row-gap: 30px;
-    }
 
-    .ai-trail::before {
-        display: none;
-    }
 }
 
 /* ===== phones ===== */
@@ -631,9 +669,6 @@
         font-size: 1.6em;
     }
 
-    .ai-trail {
-        grid-template-columns: 1fr;
-    }
 
 
     /* the circle gets too tight: Product on top, the six questions in a grid below */

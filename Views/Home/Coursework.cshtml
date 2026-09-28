@@ -105,13 +105,13 @@
         ("Strategy", "The strategy", new[] { "MIS 375" })
     };
 
-    // AI, followed through the courses
-    var aiTrail = new (string Code, string[] Topics)[]
+    // Skills at the top of the MIS page, grouped; every one comes from a course above
+    var misSkills = new[]
     {
-        ("MIS 304", new[] { "LLMs", "Prompt engineering" }),
-        ("MIS 325", new[] { "Vector databases", "Embeddings" }),
-        ("MIS 333K", new[] { "Inspecting and testing AI" }),
-        ("MIS 375", new[] { "AI strategy" })
+        (Group: "Build", Skills: new[] { "C#", "ASP.NET Core", "MVC architecture", "Entity Framework Core", "LINQ", "APIs", "React", "Node.js", "TypeScript", "GitHub" }),
+        (Group: "Data", Skills: new[] { "Python", "pandas", "SQL", "PL/SQL", "ER modeling", "MongoDB", "Snowflake", "ETL pipelines", "Azure SQL" }),
+        (Group: "AI", Skills: new[] { "LLMs", "Prompt engineering", "Embeddings", "Testing AI output" }),
+        (Group: "Business", Skills: new[] { "Excel", "Power BI", "Business processes", "ERP", "Case analysis", "IT strategy", "Cost justification" })
     };
 
     const string clockIcon = "<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
@@ -547,17 +547,34 @@
             <section class="mis" aria-labelledby="mis-heading">
                 <div class="mis-intro">
                     <h2 id="mis-heading">MIS Coursework</h2>
-                    <p>MIS sits right between business and technology. I learned to build the technical side, run the project side, and think strategically about why any of it matters. And there’s rarely just one right answer, which is my favorite part.</p>
+                    <p>I’m a Management Information Systems major at McCombs. I’ve studied programming in Python, database design in SQL and MongoDB, full-stack web development in C# and ASP.NET Core, and IT strategy. That means I can take a business problem, design the data behind it, build a working app, and explain why it’s worth the investment. What makes me useful on a team is that I can work on both sides: I know the technical details well enough to build, and the business well enough to know what’s worth building. And I pick up new tools fast.</p>
                 </div>
 
-                <!-- two charts: the loop, then the triangle; ‹ › switches between them -->
+                <!-- my MIS skills, grouped -->
+                <div class="mis-skills" aria-label="What I can do">
+                    <p class="mis-skills-title">What I can do</p>
+                    <div class="mis-skills-grid">
+                        @foreach (var (group, skills) in misSkills)
+                        {
+                            <div class="mis-skill-group">
+                                <p class="mis-skill-name">@group</p>
+                                <ul>@foreach (var skill in skills) { <li>@skill</li> }</ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- two charts: the loop, then the triangle; ‹ › on either side of the chart switches between them
+                     (on phones the arrows sit beside the chart's name instead) -->
                 <div class="mis-view-nav">
-                    <button type="button" class="mis-view-btn" data-go="-1" aria-label="Previous chart">‹</button>
-                    <span class="mis-view-name" aria-live="polite">The MIS loop</span>
-                    <button type="button" class="mis-view-btn" data-go="1" aria-label="Next chart">›</button>
+                    <button type="button" class="mis-view-btn top" data-go="-1" aria-label="Previous chart">‹</button>
+                    <span class="mis-view-name" aria-live="polite">How a business problem becomes a working system</span>
+                    <button type="button" class="mis-view-btn top" data-go="1" aria-label="Next chart">›</button>
                 </div>
 
-                <div class="mis-view" data-name="The MIS loop">
+                <div class="mis-view" data-name="How a business problem becomes a working system">
+                <div class="mis-chart">
+                    <button type="button" class="mis-view-btn side" data-go="-1" aria-label="Previous chart">‹</button>
                 <div class="mis-diagram">
                     <svg viewBox="0 0 600 470" aria-hidden="true">
                         <defs>
@@ -603,6 +620,8 @@
                             </span>
                         </div>
                     }
+                </div>
+                    <button type="button" class="mis-view-btn side" data-go="1" aria-label="Next chart">›</button>
                 </div>
 
                 <ul class="mis-legend">
@@ -687,7 +706,9 @@
                 </div>
                 </div>
 
-                <div class="mis-view" data-name="The MIS triangle" hidden>
+                <div class="mis-view" data-name="Where business, technology, and people meet" hidden>
+                <div class="mis-chart">
+                    <button type="button" class="mis-view-btn side" data-go="-1" aria-label="Previous chart">‹</button>
                 <figure class="story-triangle" aria-labelledby="triangle-caption">
                     <svg viewBox="0 0 440 360" role="img" aria-labelledby="triangle-caption">
                         <defs>
@@ -718,6 +739,8 @@
                     }
                     <figcaption id="triangle-caption" class="visually-hidden">People, technology and business, connected in a triangle. The interesting part is the middle.</figcaption>
                 </figure>
+                    <button type="button" class="mis-view-btn side" data-go="1" aria-label="Next chart">›</button>
+                </div>
                 <!-- what each corner means, and the courses behind it -->
                 <div class="tri-cards">
                     <p class="tri-hint">Tap a corner</p>
@@ -812,22 +835,6 @@
                     </div>
                 </section>
 
-                <!-- AI, through every course -->
-                <section class="story-section reveal" aria-labelledby="ai-heading">
-                    <h2 class="story-heading" id="ai-heading">AI shows up everywhere</h2>
-                    <ol class="ai-trail">
-                        @foreach (var stop in aiTrail)
-                        {
-                            var c = misCourses[stop.Code];
-                            <li class="ai-stop">
-                                <span class="ai-dot" aria-hidden="true"></span>
-                                <span class="mis-code">@c.Code</span>
-                                <span class="ai-course">@c.Name</span>
-                                <span class="ai-topics">@foreach (var t in stop.Topics) { <span>@t</span> }</span>
-                            </li>
-                        }
-                    </ol>
-                </section>
             </div>
         </div>
     </div>
