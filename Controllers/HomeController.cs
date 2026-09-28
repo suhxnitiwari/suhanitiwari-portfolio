@@ -21,9 +21,6 @@ public class HomeController : Controller
         return View();
     }
 
-    // Saturday in Austin: my Python planner as its own page (the "Open the live app" button)
-    public IActionResult Saturday() => View();
-
     public IActionResult BeyondTheClassroom()
     {
         return View();

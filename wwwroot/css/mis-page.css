@@ -476,3 +476,4 @@
     .sat-form { grid-template-columns: 1fr; }
     .sat-row { grid-template-columns: 6.4em 1fr; }
 }
+.sat-sass { margin-bottom: 10px !important; color: #E9A6BC; font: italic 14px/1.5 var(--serif, Georgia, serif); }
