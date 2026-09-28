@@ -867,9 +867,10 @@
             t.tabIndex = on ? 0 : -1;
             document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
         });
-        // the live RideFlow preview only loads once the MIS tab is actually open
-        const frame = document.querySelector('.mp-browser iframe[data-src]');
-        if (frame && tab.id === 'cw-tab-mis') { frame.src = frame.dataset.src; frame.removeAttribute('data-src'); }
+        // the live project previews only load once the MIS tab is actually open
+        if (tab.id === 'cw-tab-mis') {
+            document.querySelectorAll('.mp-browser iframe[data-src]').forEach(frame => { frame.src = frame.dataset.src; frame.removeAttribute('data-src'); });
+        }
     };
     tabs.forEach((tab, i) => {
         tab.addEventListener('click', () => show(tab));

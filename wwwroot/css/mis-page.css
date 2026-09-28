@@ -126,6 +126,11 @@
 .mp-erd h4 { font-family: var(--serif); font-weight: 400; font-size: 28px; color: var(--choc); margin: 10px 0; }
 .mp-erd p { color: var(--muted); font-size: 15.5px; line-height: 1.6; margin: 0; }
 .mp-erd svg { width: 100%; height: auto; }
+/* compact version that sits under a project's live preview */
+.mp-erd-mini { margin-top: 20px; padding: 22px 24px; gap: 20px; border-radius: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+.mp-erd-mini .mp-eyebrow { font-size: 10px; }
+.mp-erd-mini h4 { font-size: 19px; margin: 6px 0 8px; }
+.mp-erd-mini p { font-size: 12.5px; line-height: 1.55; }
 .mp-built { margin-top: 22px; display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; background: var(--ivory); border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; font-size: 15px; color: var(--muted); }
 .mp-built b { font-family: var(--serif); font-weight: 400; font-size: 19px; color: var(--choc); }
 
@@ -176,7 +181,7 @@
     .mp-hero h2 { font-size: 42px; }
     .mp-thesis { font-size: 23px; }
     .mp-h2 { font-size: 33px; }
-    .mp-proof, .mp-erd, .mp-tri { grid-template-columns: 1fr; gap: 32px; }
+    .mp-proof, .mp-erd, .mp-erd-mini, .mp-tri { grid-template-columns: 1fr; gap: 32px; }
     .mp-proof h3 { font-size: 40px; }
     .mp-tri-fig { min-height: 0; }
     .mp-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
