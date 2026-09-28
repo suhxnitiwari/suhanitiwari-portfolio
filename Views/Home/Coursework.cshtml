@@ -12,6 +12,13 @@
 
     public record MisCapability(string Title, string[] Items);
 
+    // Overview: one subject (a card in the catalog, a node on the left of the weave).
+    public record CwTheme(string Short, string Name, string Subtitle, string Blurb, string Color, string[] Courses);
+
+    // Overview: one crossover, where courses from different subjects meet (a node on the right of the weave).
+    // From = (index into themes, exact course name from that theme). Problem = the "Hand me a problem" tab it shows up in on MIS Major, or -1.
+    public record CwCross(string Title, string Question, string Insight, (int Theme, string Course)[] From, int Problem = -1, string ProblemLabel = "");
+
     // "What I can do": one block per capability. Thread = the AI block's course-by-course rows instead of skill pills.
     public record MisCan(string Name, string Line, string[] Key, string From, (string Verb, string Text)[]? Thread = null);
 
@@ -144,7 +151,68 @@
         new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT strategy", "Cost justification", "Go-to-market" }, "MIS 301 · MIS 375")
     };
 
-    const string clockIcon = "<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
+    // Overview: the nine subjects, in catalog order
+    var themes = new[]
+    {
+        new CwTheme("MIS", "Management Information Systems", "Technology & Systems", "Diving deep into technology, systems, and how to build the future.", "#8F4661",
+            new[] { "Intro to IT Management", "Problem Solving & Programming", "Database Management", "Web Application Development", "Business System Development", "Strategic IT Management", "Full-Stack Web App Development", "Independent Research in MIS" }),
+        new CwTheme("Leadership", "Leadership & Communication", "People & Organizations", "Understanding people, influence, and how to lead with intention.", "#7A4A42",
+            new[] { "Professional Development", "Leadership Challenges", "Organizational Behavior", "Business Communication" }),
+        new CwTheme("Marketing", "Marketing", "Brand, Product & Consumer Strategy", "Brand strategy, consumer psychology, and the art of telling stories that sell.", "#98626C",
+            new[] { "Principles of Marketing", "Strategic Product Management", "Brand Management", "Business to Business Marketing", "Consumer Behavior", "Sales-Driving B2B Strategy", "Science of Influence", "Creativity in Marketing" }),
+        new CwTheme("Ed Psych", "Educational Psychology", "Learning & Human Development", "How humans learn, grow, and develop.", "#5E7050",
+            new[] { "Strategic Learning for 21st Century", "Cognition & Human Learning", "Mindfulness & Compassion", "Intro to Career Planning", "Research in Educational Psychology" }),
+        new CwTheme("Psychology", "Psychology", "Mind, Behavior & Cognition", "The science of mind and behavior, from neurons to social dynamics.", "#5C3A2A",
+            new[] { "Intro to Psychology", "Personality", "Cognitive Psychology", "Social Psychology", "Conditioning & Learning", "Hormones & Behavior", "Neuroscience of Motivation", "Cognitive Neuroscience", "Social Cognition" }),
+        new CwTheme("Advertising", "Advertising", "Storytelling & Influence", "Storytelling across mediums: podcasts, brands, film.", "#8E5656",
+            new[] { "Psychology of Advertising", "Brand Podcasting", "Brand Storytelling", "Intro Media/Entertainment", "Storytelling in Film & TV" }),
+        new CwTheme("Analytics & Ops", "Analytics & Operations", "Business Fundamentals", "Numbers, data, and strategic decisions.", "#4E5F42",
+            new[] { "Strategy Beyond Markets", "Fundamentals of Accounting", "Financial Accounting II", "Corporate Finance", "Intro to Data Science", "Statistics for Business", "Intro to Decision Science", "Operations Management" }),
+        new CwTheme("Foundations", "Foundations of Thought", "Humanities & Social Sciences", "Ideas, history, and how humans think.", "#946058",
+            new[] { "News Literacy", "Rhetoric & Writing", "Masterworks of Literature", "Classical Mythology", "Federal Government", "American & Texas Government", "US History Since 1865", "US History 1492-1865", "Calculus for Business" }),
+        new CwTheme("Creation & Analysis", "Creation & Analysis", "Science, Math & Arts", "Creating and analyzing: art, science, and economics.", "#A0606E",
+            new[] { "Macroeconomics", "Microeconomics", "Physical Geology", "Sustaining a Planet", "Studio Art Lab", "Speech Communication", "Intro Media/Entertainment", "Fundamentals of Nutrition", "Computer Fluency" })
+    };
+
+    // Overview: where the subjects meet. Order = top to bottom on the weave (roughly follows the subjects, so the threads cross less).
+    // Theme indexes: 0 MIS · 1 Leadership · 2 Marketing · 3 Ed Psych · 4 Psychology · 5 Advertising · 6 Analytics & Ops · 7 Foundations · 8 Creation & Analysis
+    var crossovers = new[]
+    {
+        new CwCross("Tools people adopt", "Why do people ignore a system that works?",
+            "Every new system is something someone has to learn. Learning science explains where people get stuck, organizational behavior explains why teams push back, and MIS lets me change the system instead of blaming the user.",
+            new[] { (3, "Cognition & Human Learning"), (3, "Strategic Learning for 21st Century"), (1, "Organizational Behavior"), (0, "Web Application Development"), (0, "Business System Development") },
+            0, "the Adoption problem"),
+        new CwCross("Leading through change", "Why do good plans stall once people get involved?",
+            "Projects rarely fail on the plan. They stall on people. Personality and social psychology explain what’s happening in the room, and leadership taught me to respond with patience instead of pressure.",
+            new[] { (1, "Leadership Challenges"), (1, "Organizational Behavior"), (4, "Personality"), (4, "Social Psychology"), (3, "Mindfulness & Compassion") }),
+        new CwCross("Why people buy", "What actually makes someone choose?",
+            "A choice gets made in the brain long before it shows up in a spreadsheet. Marketing tells me what people pick, psychology and neuroscience tell me why, and advertising shows how that knowledge gets used, for better or worse.",
+            new[] { (2, "Consumer Behavior"), (2, "Science of Influence"), (5, "Psychology of Advertising"), (4, "Social Cognition"), (4, "Neuroscience of Motivation") }),
+        new CwCross("Stories that persuade", "How do you make someone care about something technical?",
+            "Rhetoric, brand storytelling and film all teach the same shape: a person, a problem, a turn. It’s how I explain technical work to people who don’t want the technical details.",
+            new[] { (7, "Rhetoric & Writing"), (5, "Brand Storytelling"), (5, "Storytelling in Film & TV"), (1, "Business Communication"), (2, "Creativity in Marketing") },
+            3, "the Messaging problem"),
+        new CwCross("Worth building?", "Should this exist, and who pays for it?",
+            "Before anything gets built: will anyone want it, can we afford it, and what rules surround it? Product strategy, IT strategy, finance, economics and government each answer one piece.",
+            new[] { (0, "Strategic IT Management"), (2, "Strategic Product Management"), (6, "Strategy Beyond Markets"), (6, "Corporate Finance"), (8, "Microeconomics"), (7, "Federal Government") },
+            1, "the AI problem"),
+        new CwCross("Numbers that decide", "When does data actually change a decision?",
+            "Data only matters when it moves a decision. Databases get me the data, statistics and calculus keep me honest about it, and decision science turns it into a choice someone can make.",
+            new[] { (0, "Database Management"), (6, "Statistics for Business"), (6, "Intro to Data Science"), (6, "Intro to Decision Science"), (7, "Calculus for Business") },
+            2, "the Data problem")
+    };
+    // a typo in a course name above would quietly drop a thread, so fail loudly instead
+    foreach (var cx in crossovers)
+        foreach (var (t, course) in cx.From)
+            if (!themes[t].Courses.Contains(course)) throw new InvalidOperationException($"\"{course}\" isn't in {themes[t].Name}");
+
+    var courseCount = themes.SelectMany(t => t.Courses).Distinct().Count();
+    // the weave: one thread per (subject, crossover) pair, thicker when the subject brings more courses
+    var threads = crossovers.SelectMany((cx, c) => cx.From.GroupBy(f => f.Theme).Select(g => (T: g.Key, C: c, N: g.Count()))).ToList();
+    int ThemeY(int i) => 44 + i * 52;
+    int CrossY(int i) => 74 + i * 72;
+
+    const string clockIcon ="<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
 }
 
 <style>
@@ -388,192 +456,123 @@
         </div>
 
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview">
-        <p class="cw-overview-note">Nine themes that shape how I think and create</p>
+        <section class="cx mp" aria-labelledby="cx-heading">
+            <header class="cx-hero">
+                <p class="mp-eyebrow">@courseCount courses · @themes.Length subjects · @crossovers.Length crossovers</p>
+                <h2 class="mp-h2" id="cx-heading">On a transcript, these look unrelated.<br />They’re not.</h2>
+                <p class="mp-lead">Almost everything I’ve studied answers one piece of the same question: how do you build something people will actually want, use and understand? Pick a crossover, or a subject, to see which classes pull together.</p>
+            </header>
 
-        <!-- COURSES GRID -->
+            <div class="cx-map">
+                <svg class="cx-weave" viewBox="0 0 720 500" role="group" aria-label="Subjects on the left, threaded to the crossovers they feed on the right">
+                    <text class="cx-col" x="186" y="14" text-anchor="end">SUBJECTS</text>
+                    <text class="cx-col" x="516" y="14">WHERE THEY MEET</text>
+                    @foreach (var th in threads)
+                    {
+                        var y1 = ThemeY(th.T);
+                        var y2 = CrossY(th.C);
+                        <path class="cx-link" data-t="@th.T" data-c="@th.C" style="--w: @(1 + th.N * 1.5)px; --tc: @themes[th.T].Color;" d="M200,@y1 C350,@y1 350,@y2 500,@y2" />
+                    }
+                    @for (var i = 0; i < themes.Length; i++)
+                    {
+                        var y = ThemeY(i);
+                        <g class="cx-node cx-t" data-t="@i" tabindex="0" role="button" aria-pressed="false" aria-label="@themes[i].Name" style="--tc: @themes[i].Color;">
+                            <rect x="30" y="@(y - 17)" width="184" height="34" rx="17" />
+                            <circle cx="200" cy="@y" r="6" />
+                            <text x="186" y="@(y + 5)" text-anchor="end">@themes[i].Short</text>
+                        </g>
+                    }
+                    @for (var i = 0; i < crossovers.Length; i++)
+                    {
+                        var y = CrossY(i);
+                        <g class="cx-node cx-c" data-c="@i" tabindex="0" role="button" aria-pressed="false" aria-label="@crossovers[i].Title">
+                            <rect x="486" y="@(y - 19)" width="228" height="38" rx="19" />
+                            <circle cx="500" cy="@y" r="9" />
+                            <text x="518" y="@(y + 6)">@crossovers[i].Title</text>
+                        </g>
+                    }
+                </svg>
+
+                <!-- the panel: one card per crossover and one per subject; the weave picks which shows. On phones every crossover card shows, stacked. -->
+                <div class="cx-panel" aria-live="polite">
+                    @for (var i = 0; i < crossovers.Length; i++)
+                    {
+                        var cx = crossovers[i];
+                        <article class="cx-card" data-c="@i">
+                            <p class="mp-eyebrow">Crossover 0@(i + 1)</p>
+                            <h3 class="cx-title">@cx.Title</h3>
+                            <p class="cx-q">“@cx.Question”</p>
+                            <p class="cx-insight">@cx.Insight</p>
+                            <p class="cx-sub">Pulled from @cx.From.Select(f => f.Theme).Distinct().Count() subjects</p>
+                            <ul class="cx-courses">
+                                @foreach (var group in cx.From.GroupBy(f => f.Theme))
+                                {
+                                    var th = themes[group.Key];
+                                    <li style="--tc: @th.Color;">
+                                        <span class="cx-from">@th.Short</span>
+                                        @foreach (var f in group) { <span class="cx-course">@f.Course</span> }
+                                    </li>
+                                }
+                            </ul>
+                            @if (cx.Problem >= 0)
+                            {
+                                <button type="button" class="cx-applied" data-problem="@cx.Problem">See it at work in @cx.ProblemLabel on MIS Major →</button>
+                            }
+                        </article>
+                    }
+                    @for (var i = 0; i < themes.Length; i++)
+                    {
+                        var th = themes[i];
+                        var feeds = crossovers.Select((cx, c) => (cx, c)).Where(p => p.cx.From.Any(f => f.Theme == i)).ToList();
+                        var used = crossovers.SelectMany(cx => cx.From).Where(f => f.Theme == i).Select(f => f.Course).Distinct().ToList();
+                        <article class="cx-card cx-theme-card" data-t="@i" style="--tc: @th.Color;">
+                            <p class="mp-eyebrow">Subject @((i + 1).ToString("00")) · @th.Courses.Length courses</p>
+                            <h3 class="cx-title">@th.Name</h3>
+                            <p class="cx-insight">@th.Blurb</p>
+                            <p class="cx-sub">Feeds @feeds.Count @(feeds.Count == 1 ? "crossover" : "crossovers")</p>
+                            <div class="cx-picks">
+                                @foreach (var p in feeds) { <button type="button" data-pick="@p.c">@p.cx.Title</button> }
+                            </div>
+                            <p class="cx-sub">Doing the work</p>
+                            <ul class="cx-courses"><li style="--tc: @th.Color;">@foreach (var course in used) { <span class="cx-course">@course</span> }</li></ul>
+                        </article>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <div class="cx-catalog mp">
+            <p class="mp-eyebrow">The full catalog</p>
+            <h2 class="mp-h2">Every course, by subject.</h2>
+        </div>
+
+        <!-- COURSES GRID: tap a card to flip it, then View More for the whole list -->
         <div class="courses-grid">
-            <!-- 01: MIS -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">01</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Management Information Systems</h2>
-                            <p class="course-subtitle">Technology & Systems</p>
+            @for (var i = 0; i < themes.Length; i++)
+            {
+                var th = themes[i];
+                <div class="course-card" onclick="toggleFlip(this)">
+                    <div class="course-card-inner">
+                        <div class="course-front">
+                            <div><div class="course-number">@((i + 1).ToString("00"))</div></div>
+                            <div class="course-content">
+                                <h2 class="course-title">@th.Name</h2>
+                                <p class="course-subtitle">@th.Subtitle</p>
+                            </div>
+                            <div class="course-arrow">→</div>
                         </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Diving deep into technology, systems, and how to build the future. 8 courses across tech stack fundamentals.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Management Information Systems', ['Intro to IT Management', 'Problem Solving & Programming', 'Database Management', 'Web Application Development', 'Business System Development', 'Strategic IT Management', 'Full-Stack Web App Development', 'Independent Research in MIS'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 02: Leadership -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">02</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Leadership & Communication</h2>
-                            <p class="course-subtitle">People & Organizations</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Understanding people, influence, and how to lead with intention. 4 courses on communication and organizational dynamics.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Leadership & Communication', ['Professional Development', 'Leadership Challenges', 'Organizational Behavior', 'Business Communication'])">VIEW MORE</button>
+                        <div class="course-back">
+                            <div class="course-back-content">
+                                <p class="course-description">@th.Blurb @th.Courses.Length courses.</p>
+                                <button class="view-more-btn" onclick="event.stopPropagation(); openThemeModal(@i)">VIEW MORE</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 03: Marketing -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">03</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Marketing</h2>
-                            <p class="course-subtitle">Brand, Product & Consumer Strategy</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Brand strategy, consumer psychology, and the art of telling stories that sell. 8 courses on marketing excellence.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Marketing', ['Principles of Marketing', 'Strategic Product Management', 'Brand Management', 'Business to Business Marketing', 'Consumer Behavior', 'Sales-Driving B2B Strategy', 'Science of Influence', 'Creativity in Marketing'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 04: Educational Psychology -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">04</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Educational Psychology</h2>
-                            <p class="course-subtitle">Learning & Human Development</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">How humans learn, grow, and develop. 5 courses on cognition, mindfulness, and human potential.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Educational Psychology', ['Strategic Learning for 21st Century', 'Cognition & Human Learning', 'Mindfulness & Compassion', 'Intro to Career Planning', 'Research in Educational Psychology'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 05: Psychology -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">05</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Psychology</h2>
-                            <p class="course-subtitle">Mind, Behavior & Cognition</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">The science of mind and behavior, from neurons to social dynamics. 9 courses diving into psychology.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Psychology', ['Intro to Psychology', 'Personality', 'Cognitive Psychology', 'Social Psychology', 'Conditioning & Learning', 'Hormones & Behavior', 'Neuroscience of Motivation', 'Cognitive Neuroscience', 'Social Cognition'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 06: Advertising -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">06</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Advertising</h2>
-                            <p class="course-subtitle">Storytelling & Influence</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Storytelling across mediums: podcasts, brands, film. 5 courses on influence and creative storytelling.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Advertising', ['Psychology of Advertising', 'Brand Podcasting', 'Brand Storytelling', 'Intro Media/Entertainment', 'Storytelling in Film & TV'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 07: Analytics & Operations -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">07</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Analytics & Operations</h2>
-                            <p class="course-subtitle">Business Fundamentals</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Numbers, data, and strategic decisions. 8 courses on finance, analytics, and business operations.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Analytics & Operations', ['Strategy Beyond Markets', 'Fundamentals of Accounting', 'Financial Accounting II', 'Corporate Finance', 'Intro to Data Science', 'Statistics for Business', 'Intro to Decision Science', 'Operations Management'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 08: Foundations of Thought -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">08</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Foundations of Thought</h2>
-                            <p class="course-subtitle">Humanities & Social Sciences</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Ideas, history, and how humans think. 9 courses on humanities, social sciences, and literature.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Foundations of Thought', ['News Literacy', 'Rhetoric & Writing', 'Masterworks of Literature', 'Classical Mythology', 'Federal Government', 'American & Texas Government', 'US History Since 1865', 'US History 1492-1865', 'Calculus for Business'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 09: Creation & Analysis -->
-            <div class="course-card" onclick="toggleFlip(this)">
-                <div class="course-card-inner">
-                    <div class="course-front">
-                        <div><div class="course-number">09</div></div>
-                        <div class="course-content">
-                            <h2 class="course-title">Creation & Analysis</h2>
-                            <p class="course-subtitle">Science, Math & Arts</p>
-                        </div>
-                        <div class="course-arrow">→</div>
-                    </div>
-                    <div class="course-back">
-                        <div class="course-back-content">
-                            <p class="course-description">Creating and analyzing: art, science, and economics. 9 courses on creative and analytical thinking.</p>
-                            <button class="view-more-btn" onclick="event.stopPropagation(); openCourseModal('Creation & Analysis', ['Macroeconomics', 'Microeconomics', 'Physical Geology', 'Sustaining a Planet', 'Studio Art Lab', 'Speech Communication', 'Intro Media/Entertainment', 'Fundamentals of Nutrition', 'Computer Fluency'])">VIEW MORE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
+        <script type="application/json" id="cwThemes">@Json.Serialize(themes.Select(t => new { t.Name, t.Courses }))</script>
         </div>
-
         <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis" hidden>
             <section class="mis mp" aria-labelledby="mis-heading">
                 <!-- 1. who I am in one screen -->
