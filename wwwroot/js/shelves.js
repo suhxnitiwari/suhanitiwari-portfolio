@@ -75,6 +75,19 @@ document.querySelectorAll('.trip-open').forEach(button => {
     dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
 })();
 
+// ===== Make > Baking: the arrows flip through the cake gallery, one cake at a time =====
+document.querySelectorAll('.cake-viewer').forEach(viewer => {
+    const slides = [...viewer.querySelectorAll('.cake-slide')];
+    let current = 0;
+    const show = step => {
+        slides[current].hidden = true;
+        current = (current + step + slides.length) % slides.length;
+        slides[current].hidden = false;
+    };
+    viewer.querySelector('.cake-arrow.prev')?.addEventListener('click', () => show(-1));
+    viewer.querySelector('.cake-arrow.next')?.addEventListener('click', () => show(1));
+});
+
 // ===== Watch > Inspiration: clicking a video plays it in the pop-up =====
 (function () {
     const dialog = document.getElementById('videoCard');

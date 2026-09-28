@@ -1140,3 +1140,193 @@
         transition: none;
     }
 }
+
+/* Make > Baking: the cake gallery on the left (one cake at a time, arrows flip through),
+   the treats as a 3-across grid of tiles on the right. The cake is as tall as the grid. */
+.bake-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr);
+    gap: 28px;
+    margin-top: 8px;
+}
+
+.cake-viewer,
+.treat-side {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.bake-group-label {
+    margin: 0 0 12px;
+    font-size: 0.75em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #9E5A63;
+}
+
+.cake-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+}
+
+.cake-slides {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.cake-slide {
+    height: 100%;
+}
+
+.cake-slide[hidden] {
+    display: none;
+}
+
+.treat-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.treat-grid > li {
+    aspect-ratio: 1;
+}
+
+/* a photo tile with its name laid over the bottom */
+.bake-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    background: linear-gradient(160deg, #F5E0DB 0%, #EFCFCD 100%);
+    box-shadow: 0 6px 16px rgba(42, 24, 16, 0.14);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bake-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(42, 24, 16, 0.18);
+}
+
+.bake-tile:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 4px;
+}
+
+.bake-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bake-tile .bake-whisk {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 34%;
+    transform: translateX(-50%);
+}
+
+.bake-tile-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 36px 14px 12px;
+    text-align: left;
+    background: linear-gradient(to top, rgba(42, 24, 16, 0.72), rgba(42, 24, 16, 0));
+    color: #FFF8F6;
+}
+
+.bake-tile-title {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    font-size: 1.05em;
+    line-height: 1.2;
+}
+
+.bake-tile-meta {
+    font-size: 0.8em;
+    opacity: 0.85;
+}
+
+.cake-viewer .bake-tile-title {
+    font-size: 1.35em;
+}
+
+.cake-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #EDD8D3;
+    background: rgba(250, 241, 239, 0.95);
+    color: #2A1810;
+    font-size: 1.4em;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(42, 24, 16, 0.18);
+}
+
+.cake-arrow.prev { left: 12px; }
+.cake-arrow.next { right: 12px; }
+
+.cake-arrow:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 2px;
+}
+
+/* the leftover spots in the last row */
+.treat-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1.5px dashed #E3C4C0;
+    border-radius: 10px;
+    color: #9E5A63;
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+.treat-soon .bake-whisk {
+    width: 30%;
+}
+
+@media (max-width: 768px) {
+    .bake-split {
+        grid-template-columns: 1fr;
+    }
+
+    .cake-stage {
+        flex: none;
+        aspect-ratio: 4 / 5;
+    }
+
+    .treat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}

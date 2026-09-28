@@ -261,6 +261,11 @@
             </div>
             return;
         }
+        if (gallery is { Length: > 0 })
+        {
+            RenderBakeSplit(id, title, recipes, offset, gallery);
+            return;
+        }
             <div class="shelf" id="@id">
                 <div class="shelf-head">
                     <h3 class="shelf-title">@title</h3>
@@ -268,16 +273,6 @@
                 <div class="shelf-rail-wrap">
                     <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
                     <ul class="shelf-rail" tabindex="0" aria-label="@title">
-                        @foreach (var photo in gallery ?? Array.Empty<Artwork>())
-                        {
-                            <li class="shelf-item">
-                                <button type="button" class="art-open" data-kind="Baking" data-image="@photo.Image" data-title="@photo.Title" data-idea="@photo.Idea" aria-label="View @photo.Title larger">
-                                    <span class="shelf-cover bake-cover"><img src="@photo.Image" alt="@photo.Title" loading="lazy" draggable="false"></span>
-                                    <span class="shelf-item-title">@photo.Title</span>
-                                    <span class="shelf-item-meta">cake gallery</span>
-                                </button>
-                            </li>
-                        }
                         @for (var i = 0; i < recipes.Length; i++)
                         {
                             var bake = recipes[i];
@@ -300,6 +295,77 @@
                         }
                     </ul>
                     <button type="button" class="shelf-arrow next" aria-label="Scroll @title right">›</button>
+                </div>
+            </div>
+    }
+
+    // Baking with cakes: the cake gallery on the left (one cake at a time, arrows flip through them),
+    // the treats as a grid of tiles on the right. Empty spots in the last grid row get a "more soon" tile.
+    void RenderBakeSplit(string id, string title, Recipe[] recipes, int offset, Artwork[] cakes)
+    {
+        var spare = (3 - recipes.Length % 3) % 3;
+            <div class="shelf" id="@id">
+                <div class="shelf-head">
+                    <h3 class="shelf-title">@title</h3>
+                </div>
+                <div class="bake-split">
+                    <div class="cake-viewer" aria-roledescription="carousel" aria-label="Cake gallery">
+                        <p class="bake-group-label">Cake Gallery</p>
+                        <div class="cake-stage">
+                            <ul class="cake-slides">
+                                @for (var c = 0; c < cakes.Length; c++)
+                                {
+                                    var cake = cakes[c];
+                                    <li class="cake-slide" hidden="@(c != 0)" aria-roledescription="slide" aria-label="@(c + 1) of @cakes.Length">
+                                        <button type="button" class="art-open bake-tile" data-kind="Cake Gallery" data-image="@cake.Image" data-title="@cake.Title" data-idea="@cake.Idea" aria-label="View @cake.Title larger">
+                                            <img src="@cake.Image" alt="@cake.Title" loading="lazy" draggable="false">
+                                            <span class="bake-tile-label">
+                                                <span class="bake-tile-title">@cake.Title</span>
+                                                <span class="bake-tile-meta">@(c + 1) / @cakes.Length</span>
+                                            </span>
+                                        </button>
+                                    </li>
+                                }
+                            </ul>
+                            @if (cakes.Length > 1)
+                            {
+                                <button type="button" class="cake-arrow prev" aria-label="Previous cake">‹</button>
+                                <button type="button" class="cake-arrow next" aria-label="Next cake">›</button>
+                            }
+                        </div>
+                    </div>
+                    <div class="treat-side">
+                        <p class="bake-group-label">Treats</p>
+                        <ul class="treat-grid" aria-label="Treats">
+                            @for (var i = 0; i < recipes.Length; i++)
+                            {
+                                var bake = recipes[i];
+                                <li>
+                                    <button type="button" class="bake-open bake-tile" data-recipe="@(offset + i)" data-kind="@title" aria-label="Open the @bake.Title recipe">
+                                        @if (!string.IsNullOrEmpty(bake.Photo))
+                                        {
+                                            <img src="@bake.Photo" alt="@bake.Title" loading="lazy" draggable="false">
+                                        }
+                                        else
+                                        {
+                                            <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13v8"/><path d="M12 13c-3-3-4-7-2-10 1.5 2 2 5 2 10z"/><path d="M12 13c3-3 4-7 2-10-1.5 2-2 5-2 10z"/><path d="M12 13c-1.5-4-1.5-8 0-10 1.5 2 1.5 6 0 10z"/></svg>
+                                        }
+                                        <span class="bake-tile-label">
+                                            <span class="bake-tile-title">@bake.Title</span>
+                                            <span class="bake-tile-meta">@(bake.Steps.Length == 0 ? "recipe coming soon" : !string.IsNullOrEmpty(bake.Line) ? bake.Line : bake.Time)</span>
+                                        </span>
+                                    </button>
+                                </li>
+                            }
+                            @for (var k = 0; k < spare; k++)
+                            {
+                                <li class="treat-soon" aria-hidden="true">
+                                    <svg class="bake-whisk" viewBox="0 0 24 24"><path d="M12 13v8"/><path d="M12 13c-3-3-4-7-2-10 1.5 2 2 5 2 10z"/><path d="M12 13c3-3 4-7 2-10-1.5 2-2 5-2 10z"/><path d="M12 13c-1.5-4-1.5-8 0-10 1.5 2 1.5 6 0 10z"/></svg>
+                                    <span>more treats soon</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
     }
