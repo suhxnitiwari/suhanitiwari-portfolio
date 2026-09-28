@@ -88,6 +88,10 @@
 .mp-browser { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px -35px rgba(42, 24, 16, 0.4); }
 .mp-browser-bar { display: flex; gap: 7px; padding: 12px 14px; background: #F5E5E1; border-bottom: 1px solid var(--line); }
 .mp-browser-bar span { width: 10px; height: 10px; border-radius: 50%; background: rgba(143, 70, 97, 0.3); }
+.mp-browser-bar em { margin-left: 8px; font-style: normal; font-size: 12px; color: #8F4661; }
+.mp-browser-stack { display: grid; gap: 20px; }
+/* two stacked pages: a wider crop so the pair ends level with the text beside it */
+.mp-browser-stack .mp-browser-view { aspect-ratio: 2 / 1; }
 .mp-browser-view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #fff; }
 .mp-browser-view iframe { position: absolute; top: 0; left: 0; width: 250%; height: 250%; border: 0; transform: scale(0.4); transform-origin: 0 0; }
 /* projects: ‹ project names › above one slide at a time */
@@ -107,6 +111,13 @@
 .mp-code-bar { display: flex; align-items: center; gap: 7px; padding: 12px 14px; background: #3B2A24; }
 .mp-code-bar span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 248, 246, 0.28); }
 .mp-code-bar em { margin-left: 8px; font-style: normal; font-size: 12px; color: #D9B8B3; }
+.mp-code-files { display: flex; flex-wrap: wrap; gap: 4px; margin-left: 10px; }
+.mp-code-files button { background: none; border: 0; border-radius: 6px; padding: 4px 10px; font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #D9B8B3; cursor: pointer; }
+.mp-code-files button:hover { color: #F5E5E1; }
+.mp-code-files button[aria-selected="true"] { background: #2A1810; color: #F5E5E1; }
+/* all three SQL files take the height of the longest, so switching doesn't move the page */
+.mp-code:has(.mp-code-files) pre { min-height: 34.5em; }
+.mp-code-files button:focus-visible { outline: 2px solid #E9A6BC; outline-offset: 1px; }
 .mp-code pre { margin: 0; padding: 26px 28px 30px; overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14.5px; line-height: 1.7; color: #F5E5E1; }
 .mp-code .k { color: #E9A6BC; }
 .mp-code .c { color: #A9BE98; }

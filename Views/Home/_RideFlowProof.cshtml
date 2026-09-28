@@ -1,7 +1,7 @@
 @* Projects section for the MIS Major tab (rendered from Coursework.cshtml, right after the cycle).
    One slide per project; ‹ › and the project names switch between them. *@
                 <!-- 4. proof: my projects, one slide each -->
-                <div class="mp-section mp-projects" style="margin-top:120px" role="region" aria-roledescription="carousel" aria-label="Projects I built">
+                <div class="mp-section mp-projects" id="projects" style="margin-top:120px; scroll-margin-top:100px" role="region" aria-roledescription="carousel" aria-label="Projects I built">
                     <div class="mp-proj-nav">
                         <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
                         <div class="mp-proj-tabs" role="tablist" aria-label="Choose a project">
@@ -68,10 +68,19 @@
                     <!-- Bevo's Tacos -->
                     <div class="mp-proj" id="mp-proj-1" role="tabpanel" aria-labelledby="mp-bevos" hidden>
                     <div class="mp-proof">
-                        <div class="mp-browser">
-                            <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-                            <div class="mp-browser-view">
-                                <iframe data-src="https://suhxnitiwari.github.io/Bevo_Taco-Checkout/" title="Bevo’s Tacos Checkout, the live app" tabindex="-1"></iframe>
+                        <!-- two live pages, stacked: the welcome screen, then a catering order with its delivery rules -->
+                        <div class="mp-browser-stack">
+                            <div class="mp-browser">
+                                <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Home</em></div>
+                                <div class="mp-browser-view">
+                                    <iframe data-src="https://suhxnitiwari.github.io/Bevo_Taco-Checkout/" title="Bevo’s Tacos Checkout, the live app" tabindex="-1"></iframe>
+                                </div>
+                            </div>
+                            <div class="mp-browser">
+                                <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Catering order</em></div>
+                                <div class="mp-browser-view">
+                                    <iframe data-src="https://suhxnitiwari.github.io/Bevo_Taco-Checkout/#/order/catering" title="Bevo’s Tacos catering order page" tabindex="-1"></iframe>
+                                </div>
                             </div>
                         </div>
                         <div>
@@ -96,35 +105,77 @@
                     </div>
                     </div>
 
-                    <!-- MIS 325 ride share database: my own SQL (HW 4, question 3) in an editor frame instead of a screenshot -->
+                    <!-- MIS 325 ride share database: my own scripts (HW 2 schema, HW 4 ROLLUP, HW 5 Snowflake ranking), one file per tab -->
                     <div class="mp-proj" id="mp-proj-2" role="tabpanel" aria-labelledby="mp-rideshare-db" hidden>
                     <div class="mp-proof">
                         <div class="mp-code">
-                            <div class="mp-code-bar" aria-hidden="true"><span></span><span></span><span></span><em>hw4.sql</em></div>
-<pre><code><span class="c">-- Average fare per rider, highest first</span>
-<span class="k">SELECT</span> r.rider_id,
-       r.first_name,
-       r.last_name,
-       <span class="k">ROUND</span>(<span class="k">AVG</span>(ri.final_fare), <span class="n">2</span>) <span class="k">AS</span> avg_fare
+                            <div class="mp-code-bar"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+                                <div class="mp-code-files" role="tablist" aria-label="SQL files">
+                                    <button type="button" role="tab" aria-selected="true" aria-controls="mp-sql-0">schema.sql</button>
+                                    <button type="button" role="tab" aria-selected="false" aria-controls="mp-sql-1" tabindex="-1">rollup.sql</button>
+                                    <button type="button" role="tab" aria-selected="false" aria-controls="mp-sql-2" tabindex="-1">ranking.sql</button>
+                                </div>
+                            </div>
+<pre id="mp-sql-0" role="tabpanel" aria-label="schema.sql"><code><span class="c">-- HW 2 · PL/SQL deploy script, safe to re-run</span>
+<span class="k">BEGIN</span>
+  <span class="k">EXECUTE IMMEDIATE</span> <span class="n">'DROP TABLE Ride CASCADE CONSTRAINTS'</span>;
+<span class="k">EXCEPTION WHEN OTHERS THEN NULL</span>;
+<span class="k">END</span>;
+/
+<span class="k">CREATE SEQUENCE</span> Seq_Ride_ID <span class="k">START WITH</span> <span class="n">1</span> <span class="k">INCREMENT BY</span> <span class="n">1</span>;
+
+<span class="k">CREATE TABLE</span> Ride (
+  Ride_ID  <span class="k">NUMBER DEFAULT</span> Seq_Ride_ID.<span class="k">NEXTVAL NOT NULL</span>,
+  <span class="c">-- … columns and foreign keys trimmed for display</span>
+  <span class="k">CONSTRAINT</span> Ride_Rating_Range
+    <span class="k">CHECK</span> (Rating <span class="k">IS NULL OR</span> Rating <span class="k">BETWEEN</span> <span class="n">1</span> <span class="k">AND</span> <span class="n">5</span>),
+  <span class="k">CONSTRAINT</span> Ride_End_After_Start
+    <span class="k">CHECK</span> (End_Datetime &gt; Start_Datetime),
+  <span class="k">CONSTRAINT</span> Ride_Final_Fare_Check
+    <span class="k">CHECK</span> (Final_Fare = Initial_Fare - Discount_Amount)
+);</code></pre>
+<pre id="mp-sql-1" role="tabpanel" aria-label="rollup.sql" hidden><code><span class="c">-- HW 4 · low-rated rides, subtotaled by city and zip</span>
+<span class="k">SELECT</span> r.city,
+       r.zip,
+       <span class="k">COUNT</span>(*) <span class="k">AS</span> low_rated_rides
 <span class="k">FROM</span> rider r
 <span class="k">JOIN</span> ride ri
   <span class="k">ON</span> r.rider_id = ri.rider_id
-<span class="k">GROUP BY</span> r.rider_id, r.first_name, r.last_name
-<span class="k">ORDER BY</span> avg_fare <span class="k">DESC</span>;</code></pre>
+<span class="k">WHERE</span> ri.rating &lt;= <span class="n">3</span>
+<span class="k">GROUP BY ROLLUP</span>(r.city, r.zip)
+<span class="k">ORDER BY</span> r.city, r.zip;
+
+<span class="c">-- CUBE would total every combination;</span>
+<span class="c">-- ROLLUP keeps the city → zip hierarchy.</span></code></pre>
+<pre id="mp-sql-2" role="tabpanel" aria-label="ranking.sql" hidden><code><span class="c">-- HW 5 · Snowflake: top three driver ranks, ties kept</span>
+<span class="k">SELECT</span> first_name, last_name, rides_given, driver_rank
+<span class="k">FROM</span> (
+  <span class="k">SELECT</span> first_name,
+         last_name,
+         rides_given,
+         <span class="k">DENSE_RANK</span>() <span class="k">OVER</span> (<span class="k">ORDER BY</span> rides_given <span class="k">DESC</span>)
+           <span class="k">AS</span> driver_rank
+  <span class="k">FROM</span> driver
+)
+<span class="k">WHERE</span> driver_rank &lt;= <span class="n">3</span>;
+
+<span class="c">-- Oracle used INSTR; Snowflake needed POSITION.</span>
+<span class="c">-- I submitted both versions.</span></code></pre>
                         </div>
                         <div>
                             <h3 id="mp-rideshare-db">Ride Share Database</h3>
-                            <p class="mp-proof-sub">Where RideFlow started. Before it was an app, it was a database: riders, drivers, vehicles, rides, payments and discounts, designed and queried in Oracle SQL.</p>
+                            <p class="mp-proof-sub">Where RideFlow started. An eight-table schema I designed from scratch, deployed with a PL/SQL script, and queried in both Oracle and Snowflake.</p>
                             <ul class="mp-facts">
                                 <li><b>8</b><span>TABLES</span></li>
                                 <li><b>9</b><span>FOREIGN KEYS</span></li>
-                                <li><b>9</b><span>CHECK RULES</span></li>
-                                <li><b>13</b><span>QUERIES</span></li>
+                                <li><b>15</b><span>CHECK RULES</span></li>
+                                <li><b>9</b><span>INDEXES</span></li>
                             </ul>
                             <ul class="mp-proof-list">
-                                <li>A schema built from scratch, with ID sequences, keys and check constraints enforcing the business rules</li>
-                                <li>Sample data loaded and indexed for the queries that run most</li>
-                                <li>Queries using joins, GROUP BY and HAVING, subqueries, and ROLLUP and CUBE subtotals</li>
+                                <li>Business rules live in the schema, not the app: fares must equal initial minus discount, trips must end after they start, and each driver gets one bank account</li>
+                                <li>Re-runnable PL/SQL deploy script, with seven sequences feeding primary keys as column defaults</li>
+                                <li>Every foreign key indexed, plus two lookups I chose for the queries that run most: ride request time, and vehicle make and model</li>
+                                <li>Analytics with ROLLUP subtotals, HAVING, correlated and inline subqueries, CASE tiers, and DENSE_RANK and ROW_NUMBER window functions</li>
                             </ul>
                         </div>
                     </div>

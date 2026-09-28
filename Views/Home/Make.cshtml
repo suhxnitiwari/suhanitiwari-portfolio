@@ -479,9 +479,9 @@
 
         @{ RenderRecipeShelf("baking", "Baking", bakes, 0, gallery: cakes); }
         <hr class="shelf-divider">
-        @{ RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length,
-               "This will be my new hobby as soon as I learn to stop burning everything I cook... including toast."); }
-        <hr class="shelf-divider">
+        @* Cooking is hidden for now. To bring it back, restore this shelf and its link in _Layout.cshtml:
+           RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length,
+               "This will be my new hobby as soon as I learn to stop burning everything I cook... including toast."); *@
 
         <div class="shelf" id="traveling">
             <div class="shelf-head">

@@ -857,7 +857,30 @@
     document.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
 })();
 
-// Overview / MIS Major tabs (click, or arrow keys). #mis in the link opens MIS Major.
+// Ride share database: schema.sql / rollup.sql / ranking.sql tabs inside the code window
+(() => {
+    const tabs = [...document.querySelectorAll('.mp-code-files [role="tab"]')];
+    if (!tabs.length) return;
+    const show = (i, focus) => {
+        tabs.forEach((t, n) => {
+            t.setAttribute('aria-selected', n === i);
+            t.tabIndex = n === i ? 0 : -1;
+            document.getElementById(t.getAttribute('aria-controls')).hidden = n !== i;
+        });
+        if (focus) tabs[i].focus();
+    };
+    tabs.forEach((t, n) => {
+        t.addEventListener('click', () => show(n));
+        t.addEventListener('keydown', e => {
+            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+            e.preventDefault();
+            e.stopPropagation();   // don't also switch the project slide
+            show((n + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length, true);
+        });
+    });
+})();
+
+// Overview / MIS Major tabs (click, or arrow keys). #mis or #projects in the link opens MIS Major.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
     const show = tab => {
@@ -882,7 +905,17 @@
             next.focus();
         });
     });
-    if (location.hash === '#mis') show(tabs[1]);
+    // #mis opens MIS Major; #projects opens it and jumps to the projects (the home page links to both)
+    if (location.hash === '#mis' || location.hash === '#projects') show(tabs[1]);
+    // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
+    // unless the visitor has already started scrolling on their own
+    if (location.hash === '#projects') {
+        const jump = () => document.getElementById('projects').scrollIntoView({ behavior: 'instant' });
+        let moved = false;
+        ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, () => moved = true, { once: true, passive: true }));
+        setTimeout(jump, 0);
+        addEventListener('load', () => { if (!moved) jump(); }, { once: true });
+    }
 })();
 
 // MIS cycle: picking a step lights up its box and its outgoing arrow and shows its detail card.
@@ -1003,7 +1036,7 @@
     items.forEach(el => { el.classList.add('pending'); io.observe(el); });
 })();
 
-// Overview: a button per theme; the cards that feed it light up (and list the courses), the rest fade. Tap it again to clear.
+// Overview: a button per theme; the cards that feed it light up (and list the courses), the rest fade. Nothing is picked on load; tap a pick again to clear.
 (() => {
     const pills = [...document.querySelectorAll('.cx-pill')];
     const grid = document.querySelector('#cw-overview .courses-grid');
@@ -1024,7 +1057,7 @@
     }
 
     pills.forEach(p => p.addEventListener('click', () => pick(picked === +p.dataset.x ? null : +p.dataset.x)));
-    pick(0);
+    pick(null);   // nothing picked on load: every card shows until someone chooses a theme
 })();
 
 function openThemeModal(i) {
