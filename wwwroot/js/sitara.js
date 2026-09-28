@@ -44,6 +44,7 @@
     }
 
     let busy = false;
+    let asked = 0;   // questions this visit; Sitara only gets sleepy after a lot of them
     async function ask(question) {
         question = question.trim();
         if (!question || busy) return;
@@ -66,7 +67,7 @@
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: question })
+                body: JSON.stringify({ message: question, count: ++asked })
             });
             const data = await res.json().catch(() => ({}));
             dots.remove();
