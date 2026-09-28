@@ -995,8 +995,8 @@
             // Places I've visited (not lived): small sage dots with their name, not part of the journey line.
             var visited = new[]
             {
-                new { name = "New York City", coords = new[] { 40.7128, -74.0060 }, labelSide = "right", photo = "/images/places/nyc.png" },
-                new { name = "Chicago", coords = new[] { 41.8781, -87.6298 }, labelSide = "top", photo = "" }
+                new { name = "New York City", coords = new[] { 40.7128, -74.0060 }, labelSide = "right", photo = "/images/places/nyc.png", photoPosition = "center top", caption = "" },
+                new { name = "Chicago", coords = new[] { 41.8781, -87.6298 }, labelSide = "top", photo = "/images/places/chicago-selfie.jpg", photoPosition = "center 25%", caption = "Sorry for the super zoomed-in silly selfie… this was my FIRST ever solo trip, it was cold, and I didn’t wanna ask someone to take a photo. P.S. That’s not blush… that’s my cheeks turning red from the COLD." }
             };
         }
 
@@ -1653,7 +1653,7 @@
                 interactive: true
             });
         if (place.photo) {
-            marker.bindPopup(`<img class="popup-photo" src="${place.photo}" alt="My visit to ${place.name}"><div class="popup-content"><div class="popup-title">${place.name}</div><a href="/home/make#traveling">My favorite spots →</a></div>`, { minWidth: 260, maxWidth: 260 });
+            marker.bindPopup(`<img class="popup-photo" src="${place.photo}" style="object-position: ${place.photoPosition}" alt="My visit to ${place.name}"><div class="popup-content"><div class="popup-title">${place.name}</div>${place.caption ? `<p class="popup-desc">${place.caption}</p>` : ''}<a href="/home/make#traveling">My favorite spots →</a></div>`, { minWidth: 260, maxWidth: 260 });
             marker.getTooltip().on('click', () => marker.openPopup());
         }
     });
