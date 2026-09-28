@@ -209,27 +209,7 @@
                     <!-- Saturday in Austin: my Python planner, running in the visitor's browser through Pyodide -->
                     <div class="mp-proj" id="mp-proj-3" role="tabpanel" aria-labelledby="mp-saturday" hidden>
                     <div class="mp-proof">
-                        <div class="mp-code sat-planner">
-                            <div class="mp-code-bar"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><em>python -m saturday</em></div>
-                            <form class="sat-form">
-                                <label>Wake up <input type="time" name="wake" value="09:00" required></label>
-                                <label>Bedtime <input type="time" name="sleep" value="23:00" required></label>
-                                <label class="sat-hours">Hours out <span><input type="range" name="hours" min="1" max="14" step="0.5" value="8"><output>8</output></span></label>
-                                <label>Mood
-                                    <select name="mood">
-                                        <option value="everything">Surprise me</option>
-                                        <option value="cozy">Cozy</option>
-                                        <option value="creative">Creative</option>
-                                        <option value="foodie">Foodie</option>
-                                        <option value="productive">Productive</option>
-                                    </select>
-                                </label>
-                                <button type="submit">Plan my Saturday ✦</button>
-                            </form>
-                            <div class="sat-out" aria-live="polite">
-                                <p class="sat-status">Pick your times and hit plan. My Python code runs right here in your browser, and every click is a different Saturday.</p>
-                            </div>
-                        </div>
+                        @await Html.PartialAsync("_SaturdayPlanner")
                         <div>
                             <span class="mp-coded">Suhani Coded™</span>
                             <h3 id="mp-saturday">Saturday in Austin</h3>
@@ -247,10 +227,10 @@
                                 <li>Tested against a brute-force search that tries every possible order, on 40 random days</li>
                             </ul>
                             <div class="mp-links">
-                                <a class="mp-link solid" href="https://github.com/suhxnitiwari/saturday-in-austin" target="_blank" rel="noopener">View the code ↗</a>
+                                <a class="mp-link solid" href="/home/saturday" target="_blank" rel="noopener">Open the live app ↗</a>
+                                <a class="mp-link" href="https://github.com/suhxnitiwari/saturday-in-austin" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
                         </div>
                     </div>
                     </div>
                 </div>
-<script src="~/js/saturday.js" asp-append-version="true" defer></script>
