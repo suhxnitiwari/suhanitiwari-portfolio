@@ -106,7 +106,18 @@
     };
 
     // Skills at the top of the MIS page, grouped; every one comes from a course above
-    // What I can do, at the top of the MIS page: (group, what it covers, skills)
+    // What I can do, at the top of the MIS page: six big blocks (name, what it means, a few key skills)
+    var misCapabilities = new[]
+    {
+        (Name: "Build", Line: "I can build the system.", Skills: new[] { "C#", "ASP.NET Core", "React", "Node.js", "Express", "REST APIs" }),
+        (Name: "Data", Line: "I can structure the information.", Skills: new[] { "SQL", "Oracle", "PostgreSQL", "MongoDB", "Snowflake", "Python" }),
+        (Name: "Secure", Line: "I can protect the application.", Skills: new[] { "Authentication", "Authorization", "Role-Based Access", "Secured Routes" }),
+        (Name: "AI", Line: "I can build with AI.", Skills: new[] { "LLM Apps", "RAG", "Embeddings", "Prompt Engineering", "AI Evaluation" }),
+        (Name: "Ship", Line: "I can get it working.", Skills: new[] { "Git/GitHub", "CRUD", "Deployment", "Debugging", "State Management" }),
+        (Name: "Strategize", Line: "I can ask if it’s worth building.", Skills: new[] { "Requirements", "IT Strategy", "Business Cases", "Cost Analysis", "GTM" })
+    };
+
+    // ...and the full toolkit behind "See full technical toolkit": (group, what it covers, skills)
     var misSkills = new[]
     {
         (Group: "Build", Focus: "Full-Stack Development", Skills: new[] { "C#", "ASP.NET Core MVC", "HTML", "CSS", "JavaScript", "TypeScript", "React", "Vite", "Node.js", "Express", "Entity Framework Core", "LINQ", "REST APIs" }),
@@ -556,15 +567,31 @@
                     <p>But the part of MIS I value most is being able to connect all of it. I can talk to users, turn an ambiguous problem into requirements, model the data behind it, design the system, build and secure the application, analyze what it produces, and evaluate whether the technology makes business sense in the first place. I’ve applied that range beyond the classroom, from developing go-to-market strategy for a Microsoft Azure product at Acacia Advisors to evaluating more than 1,000 AI model outputs at Outlier. I know enough of each layer to move a problem from “something isn’t working” to a system that does and a recommendation someone can act on.</p>
                 </div>
 
-                <!-- my MIS skills, grouped -->
-                <div class="mis-skills" aria-label="What I can do">
-                    <p class="mis-skills-title">What I can do</p>
-                    <div class="mis-skills-grid">
+                <!-- what I can do: six big blocks, with the full toolkit folded away underneath -->
+                <div class="mis-can" aria-labelledby="mis-can-title">
+                    <h3 class="mis-can-title" id="mis-can-title">What I can do</h3>
+                    <ol class="mis-can-grid">
+                        @for (var i = 0; i < misCapabilities.Length; i++)
+                        {
+                            var cap = misCapabilities[i];
+                            <li class="mis-can-block">
+                                <p class="mis-can-name"><span class="mis-can-num">0@(i + 1)</span>@cap.Name</p>
+                                <p class="mis-can-line">@cap.Line</p>
+                                <ul class="mis-can-pills">@foreach (var skill in cap.Skills) { <li>@skill</li> }</ul>
+                            </li>
+                        }
+                    </ol>
+
+                    <button type="button" class="mis-can-more" aria-expanded="false" aria-controls="misToolkit">
+                        <span>See full technical toolkit</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="mis-toolkit" id="misToolkit" hidden>
                         @foreach (var (group, focus, skills) in misSkills)
                         {
-                            <div class="mis-skill-group">
-                                <p class="mis-skill-name">@group</p>
-                                <p class="mis-skill-focus">@focus</p>
+                            <div class="mis-toolkit-group">
+                                <p class="mis-toolkit-name">@group</p>
+                                <p class="mis-toolkit-focus">@focus</p>
                                 <ul>@foreach (var skill in skills) { <li>@skill</li> }</ul>
                             </div>
                         }
@@ -857,6 +884,19 @@
 </div>
 
 <script>
+    // "See full technical toolkit" opens and closes the full list
+    (() => {
+        const more = document.querySelector('.mis-can-more');
+        if (!more) return;
+        const toolkit = document.getElementById(more.getAttribute('aria-controls'));
+        more.addEventListener('click', () => {
+            const open = more.getAttribute('aria-expanded') !== 'true';
+            more.setAttribute('aria-expanded', open);
+            more.querySelector('span').textContent = open ? 'Hide full technical toolkit' : 'See full technical toolkit';
+            toolkit.hidden = !open;
+        });
+    })();
+
 // The two MIS charts: ‹ › flips between the loop and the triangle
 (() => {
     const views = [...document.querySelectorAll('.mis-view')];
