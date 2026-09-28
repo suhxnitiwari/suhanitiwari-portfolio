@@ -2,26 +2,118 @@
     ViewData["Title"] = "Coursework";
 }
 
-@{
-    var capabilities = new[]
+@functions {
+    // MIS Major: one course in a step of the cycle. Elective = dashed chip; Coming = not taken yet (clock icon).
+    // Professor = who taught it (leave empty and the line is hidden).
+    // Question = the big question the course made me answer (the italic line under its name).
+    // Capabilities = an optional row of small columns (MIS 333K's Build, Think, Learn, Collaborate).
+    public record MisCourse(string Code, string Name, string[] Skills, bool Elective = false, bool Coming = false, string Professor = "",
+                            string Question = "", MisCapability[]? Capabilities = null);
+
+    public record MisCapability(string Title, string[] Items);
+
+    // One step of the cycle. Left/Top = where the box sits on the diagram (its center, in % of the diagram).
+    public record MisStep(string Theme, string Title, string Color, string Icon, string Left, string Top,
+                          string Description, string Footer, MisCourse[] Courses);
+
+    // Line icons, drawn with the text color (same idea as the World page's spot icons)
+    static readonly Dictionary<string, string> MisIcons = new()
     {
-        (Title: "Build web apps", Tools: new[] { "C#", "ASP.NET Core", "MVC", "Entity Framework Core", "LINQ", "APIs" },
-         Learned: "I can connect a page to application logic and a database, control access by user role, and validate information before it’s saved.",
-         Build: "A booking app with separate customer and admin views, availability checks, and saved reservations.",
-         Detail: "Access rules need to hold even when someone bypasses the interface."),
-        (Title: "Design and query databases", Tools: new[] { "SQL", "PL/SQL", "ER modeling", "Normalization", "MongoDB", "Snowflake" },
-         Learned: "I can turn a set of business entities into related tables, choose keys and constraints, and write queries that combine and summarize records.",
-         Build: "An inventory database that connects products, suppliers, and orders, with queries for stock levels and reorder needs.",
-         Detail: "Defining what each record represents helps prevent duplicate or mismatched data."),
-        (Title: "Turn raw data into an answer", Tools: new[] { "Python", "pandas", "Matplotlib", "Excel", "Power BI" },
-         Learned: "I can clean a dataset, calculate comparisons, and visualize patterns. I’ve learned to check missing values and the level of detail before drawing a conclusion.",
-         Build: "A sales dashboard that compares products and time periods, shows trends, and makes it easier to investigate a change.",
-         Detail: "A useful analysis also explains what the data can’t establish."),
-        (Title: "Evaluate a technology investment", Tools: new[] { "Business process analysis", "Cost justification", "Platform strategy", "Porter’s Five Forces" },
-         Learned: "I can map how work gets done, identify where a system could help, and compare options against costs, constraints, and business priorities.",
-         Build: "A decision brief comparing a custom tool with an existing platform, including implementation costs and a measurable definition of success.",
-         Detail: "A recommendation should make its assumptions visible enough to challenge.")
+        ["target"] = "<circle cx='12' cy='12' r='9'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='1'/>",
+        ["code"] = "<polyline points='8 7 3 12 8 17'/><polyline points='16 7 21 12 16 17'/>",
+        ["window"] = "<rect x='3' y='4' width='18' height='16' rx='2'/><path d='M3 9h18'/><path d='M6.5 6.5h.01M9 6.5h.01'/>",
+        ["checklist"] = "<path d='M10 6h10M10 12h10M10 18h10'/><path d='M3.5 6l1.5 1.5 2.5-3M3.5 12l1.5 1.5 2.5-3M3.5 18l1.5 1.5 2.5-3'/>",
+        ["loop"] = "<path d='M17 2l4 4-4 4'/><path d='M3 11V9a3 3 0 0 1 3-3h15'/><path d='M7 22l-4-4 4-4'/><path d='M21 13v2a3 3 0 0 1-3 3H3'/>"
     };
+}
+
+@{
+    // MIS Major: the four steps, in order around the cycle. Edit courses and skills here.
+    var misSteps = new[]
+    {
+        new MisStep("Start with why", "Business strategy", "#8F4661", "target", "50%", "14.9%",
+            "What problem is the business trying to solve, and how can technology create an advantage? Every project starts here.",
+            "Leads to technical skills: now you know what to build.",
+            new[] {
+                new MisCourse("MIS 301", "Introduction to IT Management", new[] { "Excel", "Power BI", "Harvard case analysis", "Business processes", "ERP" },
+                    Question: "How does technology change how organizations work?"),
+                new MisCourse("MIS 375", "Strategic IT Management", new[] { "Porter’s Five Forces", "Platform strategy", "Enterprise IT architecture", "Cost justification", "AI strategy" },
+                    Question: "Should the organization invest in this, and why?")
+            }),
+        new MisStep("Learn the building blocks", "Technical skills", "#6B7F5E", "code", "77.5%", "50%",
+            "Code to solve problems and databases to store, query and analyze the data behind any business.",
+            "Leads to building the system: time to put the pieces together.",
+            new[] {
+                new MisCourse("MIS 304", "Problem Solving and Programming", new[] { "Python", "Object-oriented programming", "pandas", "Matplotlib", "Data structures", "List comprehensions", "File handling", "LLMs", "Prompt engineering", "AI-assisted data analysis" },
+                    Question: "Can I translate ambiguity into executable logic?"),
+                new MisCourse("MIS 325", "Database Management", new[] { "SQL", "PL/SQL", "ER modeling", "Normalization", "MongoDB", "Snowflake", "ETL pipelines", "Embeddings", "Data management for AI" },
+                    Question: "How should information be represented and used?")
+            }),
+        new MisStep("Build the real thing", "Build the system", "#56705F", "window", "50%", "85.1%",
+            "Combine code and data into working web apps with the business rules built in: who can see what, how data connects and what the app should do.",
+            "Leads to project management: now deliver it.",
+            new[] {
+                new MisCourse("MIS 333K", "Web Application Development", new[] { "C#", "ASP.NET Core", "Entity Framework Core", "LINQ", "Azure SQL", "Users and roles", "AI features", "MVC architecture", "APIs", "GitHub", "Testing AI output", "Systematic debugging" },
+                    Question: "Can I turn code and data into something people can use?",
+                    Capabilities: new[] {
+                        new MisCapability("Build", new[] { "MVC apps", "Data and APIs", "Responsive UI" }),
+                        new MisCapability("Think", new[] { "Model business problems", "Test AI", "Debug" }),
+                        new MisCapability("Learn", new[] { "New tech fast", "Docs", "Transfer patterns" }),
+                        new MisCapability("Collaborate", new[] { "Technical teams", "Own your part", "GitHub" })
+                    }),
+                new MisCourse("MIS 372T", "Full-Stack Web App Development", new[] { "React", "Node.js", "Express", "REST APIs", "TypeScript", "Deployment" }, Elective: true)
+            }),
+        new MisStep("Deliver it for real people", "Project management", "#6B4A5A", "checklist", "22.5%", "50%",
+            "Next semester, I’ll run a real project for a real client with agile sprints, and dig into research methods in information systems, with my own research focused on project management and PMP practices.",
+            "Loops back to strategy: did it deliver business value? What’s next?",
+            new[] {
+                new MisCourse("MIS 374", "Business Systems Development", new[] { "Software development lifecycle", "Agile sprints", "User stories", "Client management", "Scope and risk" }, Coming: true,
+                    Question: "Can the solution survive contact with reality?"),
+                new MisCourse("MIS 381N", "Research Methods in Information Systems", new[] { "Research methods", "Project management", "PMP practices" }, Elective: true, Coming: true)
+            })
+    };
+    // the four arrows around the ring, each leaving the step with the same index
+    var misArrows = new[]
+    {
+        "M394.6,99.8 A165,165 0 0,1 455,178.6",
+        "M455,291.4 A165,165 0 0,1 394.6,370.2",
+        "M205.4,370.2 A165,165 0 0,1 145,291.4",
+        "M145,178.6 A165,165 0 0,1 205.4,99.8"
+    };
+    var misCourses = misSteps.SelectMany(st => st.Courses).ToDictionary(c => c.Code);
+
+    // The zoom lens: from a line of code out to the strategy, and the course that trained each level
+    var zoomStops = new (string Short, string Label, string[] Courses)[]
+    {
+        ("Code", "A line of code", new[] { "MIS 304" }),
+        ("Query", "A SQL query", new[] { "MIS 325" }),
+        ("Feature", "An app feature", new[] { "MIS 333K" }),
+        ("User", "The user", new[] { "MIS 333K" }),
+        ("Workflow", "The workflow", new[] { "MIS 301" }),
+        ("Org", "The organization", new[] { "MIS 301", "MIS 375" }),
+        ("Strategy", "The strategy", new[] { "MIS 375" })
+    };
+
+    // AI, followed through the courses
+    var aiTrail = new (string Code, string[] Topics)[]
+    {
+        ("MIS 304", new[] { "LLMs", "Prompt engineering" }),
+        ("MIS 325", new[] { "Vector databases", "Embeddings" }),
+        ("MIS 333K", new[] { "Inspecting and testing AI" }),
+        ("MIS 375", new[] { "AI strategy" })
+    };
+
+    // Translation: each row turns one kind of thing into another
+    var translations = new[]
+    {
+        new[] { "Customer need", "Product requirement" },
+        new[] { "Business objective", "Technical requirement" },
+        new[] { "Technical constraint", "Business tradeoff" },
+        new[] { "Data", "Insight", "Recommendation" },
+        new[] { "User feedback", "Product decision" }
+    };
+
+    const string clockIcon = "<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
 }
 
 <style>
@@ -248,7 +340,7 @@
 <!-- phone/tablet styles load after the page styles so they win -->
 <link rel="stylesheet" href="/css/coursework-responsive.css">
 <link rel="stylesheet" href="~/css/mis-cycle.css" asp-append-version="true" />
-<link rel="stylesheet" href="~/css/mis-capabilities.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
 
 <div class="coursework-section page-fill">
     <div class="coursework-container">
@@ -451,53 +543,249 @@
         </div>
 
         <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis" hidden>
-            <section class="mis-capabilities" aria-labelledby="mis-heading">
-                <header class="mis-cap-intro">
-                    <p class="mis-eyebrow">Management Information Systems</p>
-                    <h2 id="mis-heading">What I can do with it</h2>
-                    <p>I can build database-backed web apps, analyze data, and evaluate the business case behind a technical decision. Here’s what that looks like in practice.</p>
-                </header>
+            <section class="mis" aria-labelledby="mis-heading">
+                <div class="mis-intro">
+                    <h2 id="mis-heading">MIS Coursework</h2>
+                    <p>MIS sits right between business and technology. I learned to build the technical side, run the project side, and think strategically about why any of it matters. And there’s rarely just one right answer, which is my favorite part.</p>
+                </div>
 
-                <div class="mis-cap-grid">
-                    @for (var i = 0; i < capabilities.Length; i++)
+                <div class="mis-diagram">
+                    <svg viewBox="0 0 600 470" aria-hidden="true">
+                        <defs>
+                            <marker id="mis-head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#A9788A" />
+                            </marker>
+                            <marker id="mis-head-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#8F4661" />
+                            </marker>
+                        </defs>
+                        <line class="mis-axis" x1="300" y1="10" x2="300" y2="460" />
+                        <line class="mis-axis" x1="10" y1="235" x2="590" y2="235" />
+                        <circle class="mis-ring" cx="300" cy="235" r="165" />
+                        @for (var a = 0; a < misArrows.Length; a++)
+                        {
+                            <path class="mis-arrow" data-arrow="@a" d="@misArrows[a]" />
+                        }
+                        <circle class="mis-center" cx="300" cy="235" r="66" />
+                        <text class="mis-center-text" x="300" y="231">Business problem</text>
+                        <text class="mis-center-text accent" x="300" y="252">to IT solution</text>
+                        <text class="mis-axis-label" x="300" y="-14">STRATEGIC</text>
+                        <text class="mis-axis-label" x="300" y="492">APPLIED</text>
+                        <text class="mis-axis-label" transform="translate(8 235) rotate(-90)">FUNCTIONAL</text>
+                        <text class="mis-axis-label" transform="translate(592 235) rotate(90)">TECHNICAL</text>
+                    </svg>
+
+                    @for (var i = 0; i < misSteps.Length; i++)
                     {
-                        var capability = capabilities[i];
-                        <article class="mis-ability">
-                            <span class="mis-ability-number">0@(i + 1)</span>
-                            <h3>@capability.Title</h3>
-                            <p>@capability.Learned</p>
-                            <ul class="mis-tool-list" aria-label="Tools and methods for @capability.Title.ToLower()">
-                                @foreach (var tool in capability.Tools)
+                        var step = misSteps[i];
+                        <div class="mis-box" data-step="@i" style="--step: @step.Color; left: @step.Left; top: @step.Top;">
+                            <button type="button" class="mis-box-main" aria-pressed="false" aria-controls="mis-detail-@i">
+                            <span class="mis-box-top">
+                                <span class="mis-num">0@(i + 1)</span>
+                                <svg class="mis-icon" viewBox="0 0 24 24" aria-hidden="true">@Html.Raw(MisIcons[step.Icon])</svg>
+                            </span>
+                            <span class="mis-box-title">@step.Title</span>
+                            </button>
+                            <span class="mis-chips">
+                                @foreach (var course in step.Courses)
                                 {
-                                    <li>@tool</li>
+                                    <button type="button" class="mis-chip @(course.Elective ? "elective" : "")" data-course="@course.Code" aria-haspopup="dialog" aria-label="@course.Code, @course.Name: see details">@course.Code.Replace("MIS ", "")@if (course.Coming) {@Html.Raw(clockIcon)}</button>
                                 }
-                            </ul>
-                            <div class="mis-build-example">
-                                <h4>What I can build</h4>
-                                <p>@capability.Build</p>
-                            </div>
-                            <p class="mis-ability-lesson">@capability.Detail</p>
-                        </article>
+                            </span>
+                        </div>
                     }
                 </div>
 
-                <section class="mis-practice" aria-labelledby="mis-practice-heading">
-                    <div>
-                        <p class="mis-eyebrow">How I work through a build</p>
-                        <h3 id="mis-practice-heading">Write it. Test it. Explain it.</h3>
+                <ul class="mis-legend">
+                    <li><span class="mis-legend-chip" aria-hidden="true"></span>Elective</li>
+                    <li>@Html.Raw(clockIcon)Coming Spring 2027</li>
+                    <li>Tap any step to explore</li>
+                </ul>
+
+                <!-- one detail card per step; on phones each sits under its own step card (an accordion) -->
+                <div class="mis-details">
+                    @for (var i = 0; i < misSteps.Length; i++)
+                    {
+                        var step = misSteps[i];
+                        var prevStep = misSteps[(i + misSteps.Length - 1) % misSteps.Length];
+                        var nextStep = misSteps[(i + 1) % misSteps.Length];
+                        <div class="mis-row" data-step="@i" style="--step: @step.Color;">
+                            <button type="button" class="mis-row-main" aria-expanded="false" aria-controls="mis-detail-@i">
+                            <span class="mis-box-top">
+                                <span class="mis-num">0@(i + 1)</span>
+                                <svg class="mis-icon" viewBox="0 0 24 24" aria-hidden="true">@Html.Raw(MisIcons[step.Icon])</svg>
+                            </span>
+                            <span class="mis-box-title">@step.Title</span>
+                            </button>
+                            <span class="mis-chips">
+                                @foreach (var course in step.Courses)
+                                {
+                                    <button type="button" class="mis-chip @(course.Elective ? "elective" : "")" data-course="@course.Code" aria-haspopup="dialog" aria-label="@course.Code, @course.Name: see details">@course.Code.Replace("MIS ", "")@if (course.Coming) {@Html.Raw(clockIcon)}</button>
+                                }
+                            </span>
+                        </div>
+                        <section class="mis-detail" id="mis-detail-@i" data-step="@i" aria-labelledby="mis-detail-title-@i" style="--step: @step.Color;">
+                            <div class="mis-detail-head">
+                                <div>
+                                    <p class="mis-detail-label">Step 0@(i + 1): @step.Theme</p>
+                                    <h3 class="mis-detail-title" id="mis-detail-title-@i"><span class="mis-dot" aria-hidden="true"></span>@step.Title</h3>
+                                </div>
+                                <div class="mis-detail-nav">
+                                    <button type="button" class="mis-nav-btn" data-go="-1" aria-label="Previous step: @prevStep.Title">‹</button>
+                                    <button type="button" class="mis-nav-btn" data-go="1" aria-label="Next step: @nextStep.Title">›</button>
+                                </div>
+                            </div>
+                            <p class="mis-detail-desc">@step.Description</p>
+                            <ul class="mis-courses">
+                                @foreach (var course in step.Courses)
+                                {
+                                    <li class="mis-course">
+                                        <div class="mis-course-head">
+                                            <span class="mis-code">@course.Code</span>
+                                            <span class="mis-course-name">@course.Name</span>
+                                            @if (course.Elective) { <span class="mis-tag elective">Elective</span> }
+                                            @if (course.Coming) { <span class="mis-tag coming">Coming Spring 2027</span> }
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(course.Question))
+                                        {
+                                            <p class="mis-question">@course.Question</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(course.Professor))
+                                        {
+                                            <p class="mis-prof">Professor @course.Professor</p>
+                                        }
+                                        <ul class="mis-skills">
+                                            @foreach (var skill in course.Skills) { <li>@skill</li> }
+                                        </ul>
+                                        @if (course.Capabilities is { } caps)
+                                        {
+                                            <div class="mis-caps">
+                                                @foreach (var cap in caps)
+                                                {
+                                                    <div class="mis-cap">
+                                                        <p class="mis-cap-title">@cap.Title</p>
+                                                        <ul>@foreach (var item in cap.Items) { <li>@item</li> }</ul>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                            <p class="mis-footer"><svg class="mis-icon" viewBox="0 0 24 24" aria-hidden="true">@Html.Raw(MisIcons["loop"])</svg>@step.Footer</p>
+                        </section>
+                    }
+                </div>
+            </section>
+
+            <!-- one course, opened from its chip on the diagram -->
+            <dialog class="mis-course-dialog" id="misCourse" aria-labelledby="misCourseTitle"
+                    data-courses="@Json.Serialize(misSteps.SelectMany(st => st.Courses.Select(c => new { code = c.Code, name = c.Name, skills = c.Skills, elective = c.Elective, coming = c.Coming, professor = c.Professor, question = c.Question, caps = c.Capabilities ?? Array.Empty<MisCapability>(), step = st.Title, color = st.Color }))).ToString()">
+                <button type="button" class="mis-dialog-close" aria-label="Close">&times;</button>
+                <p class="mis-detail-label" id="misCourseStep"></p>
+                <h3 class="mis-dialog-title" id="misCourseTitle"><span class="mis-code"></span> <span class="mis-dialog-name"></span></h3>
+                <p class="mis-question" hidden></p>
+                <div class="mis-dialog-tags"></div>
+                <p class="mis-prof" hidden></p>
+                <p class="mis-dialog-sub">Skills</p>
+                <ul class="mis-skills"></ul>
+                <div class="mis-caps" hidden></div>
+            </dialog>
+
+            <!-- ===== the story around the cycle ===== -->
+            <div class="story">
+                <!-- Killer K: what MIS 333K built -->
+                <section class="story-section reveal" aria-labelledby="killer-heading">
+                    <h2 class="story-heading" id="killer-heading">Killer K</h2>
+                    <p class="story-sub">@misCourses["MIS 333K"].Code: @misCourses["MIS 333K"].Name</p>
+                    <div class="mis-caps killer-caps">
+                        @foreach (var cap in misCourses["MIS 333K"].Capabilities!)
+                        {
+                            <div class="mis-cap">
+                                <p class="mis-cap-title">@cap.Title</p>
+                                <ul>@foreach (var item in cap.Items) { <li>@item</li> }</ul>
+                            </div>
+                        }
                     </div>
-                    <ul>
-                        <li><strong>Debug systematically.</strong> Reproduce the failure, trace the data through the code, and check the assumption that broke.</li>
-                        <li><strong>Check AI output.</strong> Read generated code, test edge cases, and verify the result before relying on it.</li>
-                        <li><strong>Make changes traceable.</strong> Use GitHub to manage code changes and collaborate without losing track of who changed what.</li>
-                    </ul>
                 </section>
 
-                <aside class="mis-next">
-                    <h3>Next: delivering for a real client</h3>
-                    <p>In Spring 2027, I’ll apply these skills to client work, agile sprints, scope and risk management, and project-management research.</p>
-                </aside>
-            </section>
+                <!-- The zoom lens -->
+                <section class="story-section reveal" aria-labelledby="zoom-heading">
+                    <h2 class="story-heading" id="zoom-heading">The zoom lens</h2>
+                    <p class="story-sub">Slide from a line of code all the way out to the strategy, and see which course trained each level.</p>
+                    <div class="zoom">
+                        <div class="zoom-lens" aria-hidden="true">
+                            @for (var z = zoomStops.Length - 1; z >= 0; z--)
+                            {
+                                <span class="zoom-ring" data-ring="@z" style="--r: @(z + 1);"></span>
+                            }
+                        </div>
+                        <div class="zoom-panel">
+                            <input class="zoom-range" id="zoomRange" type="range" min="0" max="@(zoomStops.Length - 1)" value="0" step="1"
+                                   aria-label="Zoom level" aria-valuetext="@zoomStops[0].Label" />
+                            <div class="zoom-ticks">
+                                @for (var z = 0; z < zoomStops.Length; z++)
+                                {
+                                    <button type="button" class="zoom-tick" data-zoom="@z" tabindex="-1" aria-hidden="true">@zoomStops[z].Short</button>
+                                }
+                            </div>
+                            @for (var z = 0; z < zoomStops.Length; z++)
+                            {
+                                <div class="zoom-stop" data-stop="@z" @(z == 0 ? "" : "hidden") aria-live="polite">
+                                    <p class="zoom-level">Zoom level @(z + 1) of @zoomStops.Length</p>
+                                    <h3 class="zoom-label">@zoomStops[z].Label</h3>
+                                    <p class="zoom-trained">Trained in</p>
+                                    <ul class="zoom-courses">
+                                        @foreach (var code in zoomStops[z].Courses)
+                                        {
+                                            var c = misCourses[code];
+                                            <li>
+                                                <span class="mis-code">@c.Code</span> @c.Name
+                                                @if (!string.IsNullOrEmpty(c.Question)) { <span class="mis-question">@c.Question</span> }
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI, through every course -->
+                <section class="story-section reveal" aria-labelledby="ai-heading">
+                    <h2 class="story-heading" id="ai-heading">AI shows up everywhere</h2>
+                    <ol class="ai-trail">
+                        @foreach (var stop in aiTrail)
+                        {
+                            var c = misCourses[stop.Code];
+                            <li class="ai-stop">
+                                <span class="ai-dot" aria-hidden="true"></span>
+                                <span class="mis-code">@c.Code</span>
+                                <span class="ai-course">@c.Name</span>
+                                <span class="ai-topics">@foreach (var t in stop.Topics) { <span>@t</span> }</span>
+                            </li>
+                        }
+                    </ol>
+                    <p class="ai-caption">The more capable technology becomes, the more important the human question becomes.</p>
+                </section>
+
+                <!-- Translation -->
+                <section class="story-section reveal" aria-labelledby="translate-heading">
+                    <h2 class="story-heading" id="translate-heading">Translation is a technical skill</h2>
+                    <ul class="translate">
+                        @foreach (var row in translations)
+                        {
+                            <li class="translate-row" tabindex="0">
+                                @for (var t = 0; t < row.Length; t++)
+                                {
+                                    if (t > 0) { <span class="translate-arrow" aria-label="becomes"><svg viewBox="0 0 40 12" aria-hidden="true"><path d="M1 6h36M31 1l6 5-6 5" /></svg></span> }
+                                    <span class="translate-item @(t == row.Length - 1 ? "to" : "")">@row[t]</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </section>
+            </div>
         </div>
     </div>
 </div>
@@ -534,6 +822,124 @@
         });
     });
     if (location.hash === '#mis') show(tabs[1]);
+})();
+
+// MIS cycle: picking a step lights up its box and its outgoing arrow and shows its detail card.
+// On phones the steps are a list, and tapping the open one closes it again.
+(() => {
+    const mis = document.querySelector('.mis');
+    if (!mis) return;
+    const boxes = [...mis.querySelectorAll('.mis-box')];
+    const boxButtons = [...mis.querySelectorAll('.mis-box-main')];
+    const rows = [...mis.querySelectorAll('.mis-row-main')];
+    const details = [...mis.querySelectorAll('.mis-detail')];
+    const arrows = [...mis.querySelectorAll('.mis-arrow')];
+    const phone = window.matchMedia('(max-width: 499px)');
+    const count = details.length;
+    let selected = 0;
+
+    function select(i) {
+        selected = i;
+        mis.classList.toggle('has-selection', i !== null);
+        boxes.forEach((b, n) => b.classList.toggle('selected', n === i));
+        boxButtons.forEach((b, n) => b.setAttribute('aria-pressed', n === i));
+        rows.forEach((r, n) => r.setAttribute('aria-expanded', n === i));
+        details.forEach((d, n) => d.classList.toggle('active', n === i));
+        arrows.forEach((a, n) => {
+            a.classList.toggle('active', n === i);
+            a.classList.toggle('faded', i !== null && n !== i);
+        });
+    }
+
+    const step = go => ((selected ?? 0) + go + count) % count;
+    const focusCurrent = () => (phone.matches ? rows : boxButtons)[selected]?.focus();
+
+    boxButtons.forEach((b, n) => b.addEventListener('click', () => select(n)));
+    rows.forEach((r, n) => r.addEventListener('click', () => select(selected === n ? null : n)));
+    mis.querySelectorAll('.mis-nav-btn').forEach(btn => btn.addEventListener('click', () => select(step(+btn.dataset.go))));
+
+    // a course chip opens that course's card (title, tags, professor, skills) and picks its step
+    const dialog = document.getElementById('misCourse');
+    const courses = JSON.parse(dialog.dataset.courses);
+    mis.querySelectorAll('.mis-chip').forEach(chip => chip.addEventListener('click', () => {
+        const c = courses.find(x => x.code === chip.dataset.course);
+        const owner = chip.closest('[data-step]');
+        if (owner) select(+owner.dataset.step);
+        dialog.style.setProperty('--step', c.color);
+        dialog.querySelector('#misCourseStep').textContent = c.step;
+        dialog.querySelector('.mis-code').textContent = c.code;
+        dialog.querySelector('.mis-dialog-name').textContent = c.name;
+        dialog.querySelector('.mis-dialog-tags').innerHTML =
+            (c.elective ? '<span class="mis-tag elective">Elective</span>' : '') +
+            (c.coming ? '<span class="mis-tag coming">Coming Spring 2027</span>' : '');
+        const prof = dialog.querySelector('.mis-prof');
+        prof.hidden = !c.professor;
+        prof.textContent = c.professor ? `Professor ${c.professor}` : '';
+        const question = dialog.querySelector('.mis-question');
+        question.hidden = !c.question;
+        question.textContent = c.question;
+        const li = text => Object.assign(document.createElement('li'), { textContent: text });
+        dialog.querySelector('.mis-skills').replaceChildren(...c.skills.map(li));
+        const caps = dialog.querySelector('.mis-caps');
+        caps.hidden = c.caps.length === 0;
+        caps.replaceChildren(...c.caps.map(cap => {
+            const col = Object.assign(document.createElement('div'), { className: 'mis-cap' });
+            const list = document.createElement('ul');
+            list.replaceChildren(...cap.items.map(li));
+            col.append(Object.assign(document.createElement('p'), { className: 'mis-cap-title', textContent: cap.title }), list);
+            return col;
+        }));
+        dialog.showModal();
+    }));
+    dialog.querySelector('.mis-dialog-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });   // click outside the card
+
+    // ← → move around the cycle while focus is anywhere in the section
+    mis.addEventListener('keydown', e => {
+        if (e.target.closest('dialog')) return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        select(step(e.key === 'ArrowRight' ? 1 : -1));
+        focusCurrent();
+    });
+
+    // back on a wide screen with everything closed: show step 01 again
+    phone.addEventListener('change', () => { if (!phone.matches && selected === null) select(0); });
+    select(0);
+})();
+
+// The zoom lens: the slider (or a tick) picks a level; the rings up to that level light up
+(() => {
+    const range = document.getElementById('zoomRange');
+    if (!range) return;
+    const stops = [...document.querySelectorAll('.zoom-stop')];
+    const rings = [...document.querySelectorAll('.zoom-ring')];
+    const ticks = [...document.querySelectorAll('.zoom-tick')];
+    const show = n => {
+        range.value = n;
+        range.setAttribute('aria-valuetext', stops[n].querySelector('.zoom-label').textContent);
+        range.style.setProperty('--fill', `${n / (stops.length - 1) * 100}%`);
+        stops.forEach((s, i) => s.hidden = i !== n);
+        rings.forEach(r => {
+            const i = +r.dataset.ring;
+            r.classList.toggle('inside', i < n);
+            r.classList.toggle('current', i === n);
+        });
+        ticks.forEach((t, i) => t.classList.toggle('current', i === n));
+    };
+    range.addEventListener('input', () => show(+range.value));
+    ticks.forEach((t, i) => t.addEventListener('click', () => show(i)));
+    show(0);
+})();
+
+// The story sections ease in as they scroll into view (the MIS tab starts hidden, which is fine: they wait)
+(() => {
+    const items = document.querySelectorAll('.story .reveal');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('shown'); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    items.forEach(el => { el.classList.add('pending'); io.observe(el); });
 })();
 
 function toggleFlip(card) {
