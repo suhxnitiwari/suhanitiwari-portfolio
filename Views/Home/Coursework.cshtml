@@ -82,6 +82,17 @@
     };
     var misCourses = misSteps.SelectMany(st => st.Courses).ToDictionary(c => c.Code);
 
+    // The triangle (the second chart, after the loop): each corner is a button; its card shows one line about it and the courses behind it
+    var triCorners = new[]
+    {
+        (Id: "people", Name: "People", Color: "#8F4661", X: "220", Y: "40", Left: "50%", Top: "4.4%",
+         Line: "Enough about people to make sure what we build actually works for them.", Courses: new[] { "MIS 333K", "MIS 374" }),
+        (Id: "technology", Name: "Technology", Color: "#6B7F5E", X: "50", Y: "318", Left: "11.4%", Top: "97.2%",
+         Line: "Enough technology to build it.", Courses: new[] { "MIS 304", "MIS 325", "MIS 333K", "MIS 372T" }),
+        (Id: "business", Name: "Business", Color: "#6B4A5A", X: "390", Y: "318", Left: "88.6%", Top: "97.2%",
+         Line: "Enough business to know why we’re building it.", Courses: new[] { "MIS 301", "MIS 375" })
+    };
+
     // The zoom lens: from a line of code out to the strategy, and the course that trained each level
     var zoomStops = new (string Short, string Label, string[] Courses)[]
     {
@@ -539,6 +550,14 @@
                     <p>MIS sits right between business and technology. I learned to build the technical side, run the project side, and think strategically about why any of it matters. And there’s rarely just one right answer, which is my favorite part.</p>
                 </div>
 
+                <!-- two charts: the loop, then the triangle; ‹ › switches between them -->
+                <div class="mis-view-nav">
+                    <button type="button" class="mis-view-btn" data-go="-1" aria-label="Previous chart">‹</button>
+                    <span class="mis-view-name" aria-live="polite">The MIS loop</span>
+                    <button type="button" class="mis-view-btn" data-go="1" aria-label="Next chart">›</button>
+                </div>
+
+                <div class="mis-view" data-name="The MIS loop">
                 <div class="mis-diagram">
                     <svg viewBox="0 0 600 470" aria-hidden="true">
                         <defs>
@@ -666,6 +685,58 @@
                         </section>
                     }
                 </div>
+                </div>
+
+                <div class="mis-view" data-name="The MIS triangle" hidden>
+                <figure class="story-triangle" aria-labelledby="triangle-caption">
+                    <svg viewBox="0 0 440 360" role="img" aria-labelledby="triangle-caption">
+                        <defs>
+                            <marker id="tri-head" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+                                <path d="M0,0 L10,5 L0,10 z" fill="#A9788A" />
+                            </marker>
+                            <radialGradient id="tri-glow">
+                                <stop offset="0" stop-color="#8F4661" stop-opacity="0.22" />
+                                <stop offset="1" stop-color="#8F4661" stop-opacity="0" />
+                            </radialGradient>
+                        </defs>
+                        <polygon class="tri-fill" points="220,40 50,318 390,318" />
+                        <line class="tri-edge" x1="203.3" y1="67.3" x2="66.7" y2="290.7" />
+                        <line class="tri-edge" x1="236.7" y1="67.3" x2="373.3" y2="290.7" />
+                        <line class="tri-edge" x1="82" y1="318" x2="358" y2="318" />
+                        <circle cx="220" cy="224" r="80" fill="url(#tri-glow)" />
+                        <text class="tri-center" x="220" y="218">the interesting part</text>
+                        <text class="tri-center accent" x="220" y="240">is the middle</text>
+                        @foreach (var c in triCorners)
+                        {
+                            <circle class="tri-dot" data-corner="@c.Id" cx="@c.X" cy="@c.Y" r="9" style="--node: @c.Color;" />
+                        }
+                    </svg>
+                    @foreach (var c in triCorners)
+                    {
+                        <button type="button" class="tri-btn" data-corner="@c.Id" style="--node: @c.Color; left: @c.Left; top: @c.Top;"
+                                aria-pressed="false" aria-controls="tri-card-@c.Id">@c.Name</button>
+                    }
+                    <figcaption id="triangle-caption" class="visually-hidden">People, technology and business, connected in a triangle. The interesting part is the middle.</figcaption>
+                </figure>
+                <!-- what each corner means, and the courses behind it -->
+                <div class="tri-cards">
+                    <p class="tri-hint">Tap a corner</p>
+                    @foreach (var c in triCorners)
+                    {
+                        <div class="tri-card" id="tri-card-@c.Id" data-corner="@c.Id" style="--node: @c.Color;" hidden>
+                            <p class="tri-card-name">@c.Name</p>
+                            <p class="tri-card-line">@c.Line</p>
+                            <div class="tri-card-courses">
+                                @foreach (var code in c.Courses)
+                                {
+                                    var course = misCourses[code];
+                                    <button type="button" class="mis-chip tri-chip" data-course="@code" aria-haspopup="dialog" aria-label="@code, @course.Name: see details">@code<span>@course.Name</span></button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                </div>
             </section>
 
             <!-- one course, opened from its chip on the diagram -->
@@ -772,6 +843,38 @@
 </div>
 
 <script>
+// The two MIS charts: ‹ › flips between the loop and the triangle
+(() => {
+    const views = [...document.querySelectorAll('.mis-view')];
+    const name = document.querySelector('.mis-view-name');
+    if (!views.length) return;
+    let current = 0;
+    document.querySelectorAll('.mis-view-btn').forEach(btn => btn.addEventListener('click', () => {
+        current = (current + +btn.dataset.go + views.length) % views.length;
+        views.forEach((v, i) => v.hidden = i !== current);
+        name.textContent = views[current].dataset.name;
+    }));
+})();
+
+// The triangle: tapping a corner lights it up and shows its card; tapping it again closes it
+(() => {
+    const btns = [...document.querySelectorAll('.tri-btn')];
+    const cards = [...document.querySelectorAll('.tri-card')];
+    const dots = [...document.querySelectorAll('.tri-dot')];
+    const hint = document.querySelector('.tri-hint');
+    if (!btns.length) return;
+    let open = null;
+    const show = id => {
+        open = id;
+        btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.corner === id));
+        cards.forEach(c => c.hidden = c.dataset.corner !== id);
+        dots.forEach(d => d.classList.toggle('on', d.dataset.corner === id));
+        document.querySelector('.story-triangle').classList.toggle('has-pick', id !== null);
+        hint.hidden = id !== null;
+    };
+    btns.forEach(b => b.addEventListener('click', () => show(open === b.dataset.corner ? null : b.dataset.corner)));
+})();
+
 // Overview / MIS Major tabs (click, or arrow keys). #mis in the link opens MIS Major.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
