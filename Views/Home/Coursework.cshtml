@@ -931,7 +931,13 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
 // Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis, #skills or #projects opens MIS Major; #marketing opens Marketing.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
+    // each tab has its own address and title, so a view can be shared and the back button moves between tabs
+    const hashFor = { 'cw-tab-overview': '', 'cw-tab-mis': '#mis', 'cw-tab-mk': '#marketing' };
+    const baseTitle = document.title;
+    const tabForHash = h =>
+        ['#mis', '#skills', '#projects'].includes(h) ? tabs[1] : h === '#marketing' ? tabs[2] : tabs[0];
     const show = tab => {
+        document.title = tab === tabs[0] ? baseTitle : `${tab.textContent.trim()} · ${baseTitle}`;
         tabs.forEach(t => {
             const on = t === tab;
             t.setAttribute('aria-selected', on);
@@ -943,20 +949,27 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
             document.querySelectorAll('.mp-browser iframe[data-src]').forEach(frame => { frame.src = frame.dataset.src; frame.removeAttribute('data-src'); });
         }
     };
+    // switching tabs by hand adds a history entry with that tab's address
+    const open = tab => {
+        show(tab);
+        const url = location.pathname + location.search + hashFor[tab.id];
+        if (location.pathname + location.search + location.hash !== url) history.pushState(null, '', url);
+    };
     tabs.forEach((tab, i) => {
-        tab.addEventListener('click', () => show(tab));
+        tab.addEventListener('click', () => open(tab));
         tab.addEventListener('keydown', e => {
             if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
             e.preventDefault();
             const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-            show(next);
+            open(next);
             next.focus();
         });
     });
+    // back / forward: show whichever tab the address now points to
+    addEventListener('popstate', () => show(tabForHash(location.hash)));
     // #mis opens MIS Major; #skills and #projects open it and jump to that section (the home page links here)
     const jumpTo = ['#skills', '#projects'].includes(location.hash) ? location.hash.slice(1) : null;
-    if (location.hash === '#mis' || jumpTo) show(tabs[1]);
-    if (location.hash === '#marketing') show(tabs[2]);
+    show(tabForHash(location.hash));
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
     // unless the visitor has already started scrolling on their own
     if (jumpTo) {
