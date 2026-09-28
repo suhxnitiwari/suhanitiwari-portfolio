@@ -115,7 +115,7 @@
     // Images saved in wwwroot/images/art.
     // The wall is hung in four bays, left to right: prints | a wall of four | the braid | a wall of two.
 
-    // Bay 1: two unframed prints stacked. The first is the featured piece.
+    // Bay 1: two pieces stacked. The first is the featured piece.
     var featuredArt = new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg");
     var artPrints = new[]
     {
@@ -134,7 +134,7 @@
         new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg")
     };
 
-    // Bay 3: the braid, hung big and unframed in the middle. No idea line yet
+    // Bay 3: the braid, hung big in the middle. No idea line yet
     var heroArt = new Artwork("Woven Together", "", "/images/art/braid.jpg");
 
     // Bay 4: two framed pieces stacked
@@ -271,8 +271,8 @@
 }
 @{
     // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
-    // One piece on the Digital Art wall. Style: "framed" (walnut frame + museum label),
-    // "print" (unframed, caption strip underneath) or "hero" (unframed, no label, fills its bay)
+    // One piece on the Digital Art wall. Every piece gets the walnut frame and museum label.
+    // Style: "framed" (square opening, on a wall), "print" (stacked in the first bay) or "hero" (the braid, fills its bay)
     void RenderArtPiece(Artwork art, string style)
     {
         <li class="gallery-piece gallery-@style@(art == featuredArt ? " gallery-feature" : "")">
@@ -281,12 +281,9 @@
                 <span class="gallery-frame">
                     <img src="@art.Image" alt="@art.Title" loading="lazy" draggable="false">
                 </span>
-                @if (style != "hero")
-                {
-                    <span class="gallery-label">
-                        <span class="gallery-title">@art.Title</span>
-                    </span>
-                }
+                <span class="gallery-label">
+                    <span class="gallery-title">@art.Title</span>
+                </span>
             </button>
         </li>
     }

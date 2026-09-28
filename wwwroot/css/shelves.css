@@ -288,7 +288,8 @@
 }
 
 /* Make > Digital Art: a salon-style gallery hung in four bays, left to right:
-   two unframed prints stacked | a warm wall of four framed pieces | the braid, hung big | a narrow wall of two.
+   two pieces stacked | a warm wall of four | the braid, hung big | a narrow wall of two.
+   Every piece gets the same walnut frame, white mat and museum label.
    On wide screens every bay is as tall as the wall of four; the prints and the braid crop to fit. */
 .gallery-salon {
     display: grid;
@@ -352,8 +353,8 @@
     pointer-events: none;
 }
 
-/* walnut frame, white mat. Every framed piece gets the same square opening so rows line up */
-.gallery-framed .gallery-frame {
+/* walnut frame, white mat on every piece. The small pieces share a square opening so rows line up */
+.gallery-piece .gallery-frame {
     display: block;
     width: 100%;
     padding: 12px;
@@ -373,8 +374,8 @@
     object-fit: contain;
 }
 
-/* the little museum label */
-.gallery-framed .gallery-label {
+/* the little museum label, the same under every piece */
+.gallery-piece .gallery-label {
     display: block;
     margin-top: 16px;
     padding: 7px 12px 8px;
@@ -391,7 +392,7 @@
     color: #2A1810;
 }
 
-/* ---- bay 1: unframed prints with a caption strip ---- */
+/* ---- bay 1: two pieces stacked, the featured one taller ---- */
 .salon-prints {
     display: flex;
     flex-direction: column;
@@ -409,62 +410,48 @@
 
 .gallery-print .art-open {
     height: 100%;
-    align-items: stretch;
 }
 
-/* the image fills whatever height the bay has, so it never makes the wall taller */
+/* the tall pieces fill whatever height their bay has (inside the same frame and mat),
+   so they never make the wall taller */
 .gallery-print .gallery-frame,
 .gallery-hero .gallery-frame {
     position: relative;
-    display: block;
     flex: 1;
-    min-height: 90px;
-    overflow: hidden;
-    background: #EFE2DC;
-    box-shadow: 0 10px 24px rgba(42, 24, 16, 0.18);
+    align-self: stretch;
+    width: auto;
+    min-height: 110px;
 }
 
 .gallery-print .gallery-frame img,
 .gallery-hero .gallery-frame img {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    inset: 12px;
+    width: calc(100% - 24px);
+    height: calc(100% - 24px);
     object-fit: cover;
 }
 
-.gallery-print .gallery-label {
-    display: block;
-    padding: 6px 10px 7px;
-    background: #F4ECE8;
-    text-align: left;
-}
-
-.gallery-print .gallery-title {
-    font-size: 1.05em;
-}
-
-/* ---- bay 3: the braid, big and unframed ---- */
+/* ---- bay 3: the braid, hung big ---- */
 .gallery-hero {
     height: 100%;
 }
 
 .gallery-hero .art-open {
     height: 100%;
-    align-items: stretch;
 }
 
 .gallery-hero .gallery-frame img {
     object-position: 50% 30%;
 }
 
-/* ---- hover: framed pieces lift, unframed ones zoom a touch inside their crop ---- */
+/* ---- hover: every frame lifts ---- */
 .gallery-frame,
 .gallery-frame img {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gallery-framed .art-open:hover .gallery-frame {
+.gallery-piece .art-open:hover .gallery-frame {
     transform: translateY(-4px);
     box-shadow:
         inset 0 0 0 1px rgba(42, 24, 16, 0.08),
@@ -472,14 +459,9 @@
         0 28px 46px rgba(42, 24, 16, 0.26);
 }
 
-.gallery-print .art-open:hover .gallery-frame img,
-.gallery-hero .art-open:hover .gallery-frame img {
-    transform: scale(1.03);
-}
-
 /* wide screens: keep labels to one line so both rows of frames line up */
 @media (min-width: 1101px) {
-    .gallery-framed .gallery-label {
+    .gallery-piece .gallery-label {
         white-space: nowrap;
     }
 }
@@ -548,12 +530,19 @@
         padding-inline: 14px;
     }
 
-    .gallery-framed .gallery-frame {
+    .gallery-piece .gallery-frame {
         padding: 7px;
         border-width: 5px;
     }
 
-    .gallery-framed .gallery-label {
+    .gallery-print .gallery-frame img,
+    .gallery-hero .gallery-frame img {
+        inset: 7px;
+        width: calc(100% - 14px);
+        height: calc(100% - 14px);
+    }
+
+    .gallery-piece .gallery-label {
         margin-top: 12px;
         padding: 6px 8px 7px;
     }
