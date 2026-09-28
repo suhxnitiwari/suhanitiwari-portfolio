@@ -457,7 +457,7 @@
 
     .about-story-photo.n0 { transform: rotate(1.5deg); }
     .about-story-photo.n1 { transform: rotate(-1.5deg); }
-    .about-story-photo.n2 { transform: rotate(1deg); }
+    .about-story-photo.n2 { transform: rotate(1deg); aspect-ratio: 4 / 3; align-self: center; }
 
     .about-story-photo:hover {
         transform: rotate(0);
@@ -2447,7 +2447,7 @@
             Paras: new[] {
                 "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 60+ students per session.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
-            Photo: (string?)null, Alt: "",
+            Photo: (string?)"/images/girls-who-code-classroom.png", Alt: "Teaching a Girls Who Code session with students following along on laptops",
             Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("Early STEM education", "/home/beyondtheclassroom") })
     };
 }
