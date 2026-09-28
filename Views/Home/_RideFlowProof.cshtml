@@ -1,6 +1,18 @@
-@* RideFlow proof section for the MIS Major tab (rendered from Coursework.cshtml, right after the cycle). *@
-                <!-- 4. proof: RideFlow -->
-                <div class="mp-section" style="margin-top:120px" aria-labelledby="mp-rideflow">
+@* Projects section for the MIS Major tab (rendered from Coursework.cshtml, right after the cycle).
+   One slide per project; ‹ › and the project names switch between them. *@
+                <!-- 4. proof: my projects, one slide each -->
+                <div class="mp-section mp-projects" style="margin-top:120px" role="region" aria-roledescription="carousel" aria-label="Projects I built">
+                    <div class="mp-proj-nav">
+                        <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
+                        <div class="mp-proj-tabs" role="tablist" aria-label="Choose a project">
+                            <button type="button" role="tab" aria-selected="true" aria-controls="mp-proj-0" data-i="0">RideFlow</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-1" data-i="1" tabindex="-1">Bevo’s Tacos Checkout</button>
+                        </div>
+                        <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
+                    </div>
+
+                    <!-- RideFlow -->
+                    <div class="mp-proj" id="mp-proj-0" role="tabpanel" aria-labelledby="mp-rideflow">
                     <div class="mp-proof">
                         <div class="mp-browser">
                             <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -9,13 +21,12 @@
                             </div>
                         </div>
                         <div>
-                            <p class="mp-eyebrow">Built, not just studied · MIS 372T · Spring 2026</p>
+                            <p class="mp-eyebrow">Built, not just studied · MIS 372T · Full-Stack Web App Development</p>
                             <h3 id="mp-rideflow">RideFlow</h3>
                             <p class="mp-proof-sub">A full-stack rideshare platform for riders, drivers and administrators, built solo in a course designed for teams. Riders request rides, drivers accept and complete them, and admins run the platform, with fares and payment records underneath.</p>
-                            <ul class="mp-facts">
+                            <ul class="mp-facts three">
                                 <li><b>3</b><span>USER ROLES</span></li>
                                 <li><b>4</b><span>DATA TABLES</span></li>
-                                <li><b>1</b><span>PERSON TEAM</span></li>
                                 <li><b>33</b><span>AUTOMATED TESTS</span></li>
                             </ul>
                             <ul class="mp-proof-list">
@@ -49,6 +60,38 @@
                                 <text x="178" y="60">1 : MANY</text><text x="178" y="160">1 : MANY</text><text x="382" y="96">1 : 0..1</text>
                             </g>
                         </svg>
+                    </div>
+                    </div>
+
+                    <!-- Bevo's Tacos -->
+                    <div class="mp-proj" id="mp-proj-1" role="tabpanel" aria-labelledby="mp-bevos" hidden>
+                    <div class="mp-proof">
+                        <div class="mp-browser">
+                            <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <div class="mp-browser-view">
+                                <img src="~/images/projects/bevos-tacos-home.png" alt="The Bevo’s Tacos Checkout home page" loading="lazy" />
+                            </div>
+                        </div>
+                        <div>
+                            <p class="mp-eyebrow">Built, not just studied · MIS 333K · Web Application Development</p>
+                            <h3 id="mp-bevos">Bevo’s Tacos Checkout</h3>
+                            <p class="mp-proof-sub">A checkout app for an Austin food truck. It prices walk-up and catering orders with different rules: sales tax for walk-up customers, and delivery fees with free-delivery rules for catering.</p>
+                            <ul class="mp-facts">
+                                <li><b>2</b><span>ORDER TYPES</span></li>
+                                <li><b>8.25%</b><span>SALES TAX</span></li>
+                                <li><b>$1K</b><span>FREE DELIVERY</span></li>
+                                <li><b>24</b><span>UNIT TESTS</span></li>
+                            </ul>
+                            <ul class="mp-proof-list">
+                                <li>Two order types built on one abstract Order class: walk-up orders add sales tax, catering orders add a delivery fee that’s waived for preferred customers and orders of $1,000 or more</li>
+                                <li>Validation rules written once on the model and checked in both the browser and the server</li>
+                                <li>xUnit tests for pricing, tax rounding and the free-delivery threshold, run on every push with GitHub Actions</li>
+                            </ul>
+                            <div class="mp-links">
+                                <a class="mp-link solid" href="https://github.com/suhxnitiwari/Bevo_Taco-Checkout" target="_blank" rel="noopener">View the code ↗</a>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
 

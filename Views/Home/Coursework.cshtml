@@ -835,6 +835,34 @@
     show(0);
 })();
 
+// MIS projects: ‹ › and the project names show one project at a time (arrow keys work on the names too)
+(() => {
+    const tabs = [...document.querySelectorAll('.mp-proj-tabs [role="tab"]')];
+    const slides = [...document.querySelectorAll('.mp-proj')];
+    if (!tabs.length) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let current = 0;
+    const show = (i, focus) => {
+        current = (i + slides.length) % slides.length;
+        tabs.forEach((t, n) => { t.setAttribute('aria-selected', n === current); t.tabIndex = n === current ? 0 : -1; });
+        slides.forEach((s, n) => {
+            s.hidden = n !== current;
+            s.classList.toggle('entering', n === current && !reduce);
+        });
+        if (focus) tabs[current].focus();
+    };
+    tabs.forEach((t, n) => {
+        t.addEventListener('click', () => show(n));
+        t.addEventListener('keydown', e => {
+            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+            e.preventDefault();
+            e.stopPropagation();   // don't also spin the MIS cycle
+            show(current + (e.key === 'ArrowRight' ? 1 : -1), true);
+        });
+    });
+    document.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
+})();
+
 // Overview / MIS Major tabs (click, or arrow keys). #mis in the link opens MIS Major.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
