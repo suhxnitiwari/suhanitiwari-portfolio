@@ -21,16 +21,23 @@
 .mis-skills-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 22px;
+    gap: 26px 22px;
 }
 
 .mis-skill-name {
-    margin: 0 0 10px;
+    margin: 0 0 3px;
     font-size: 0.72em;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #8F4661;
+}
+
+.mis-skill-focus {
+    margin: 0 0 10px;
+    font-family: Georgia, serif;
+    font-size: 0.95em;
+    color: #2A1810;
 }
 
 .mis-skill-group ul {

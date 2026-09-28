@@ -106,12 +106,17 @@
     };
 
     // Skills at the top of the MIS page, grouped; every one comes from a course above
+    // What I can do, at the top of the MIS page: (group, what it covers, skills)
     var misSkills = new[]
     {
-        (Group: "Build", Skills: new[] { "C#", "ASP.NET Core", "MVC architecture", "Entity Framework Core", "LINQ", "APIs", "React", "Node.js", "TypeScript", "GitHub" }),
-        (Group: "Data", Skills: new[] { "Python", "pandas", "SQL", "PL/SQL", "ER modeling", "MongoDB", "Snowflake", "ETL pipelines", "Azure SQL" }),
-        (Group: "AI", Skills: new[] { "LLMs", "Prompt engineering", "Embeddings", "Testing AI output" }),
-        (Group: "Business", Skills: new[] { "Excel", "Power BI", "Business processes", "ERP", "Case analysis", "IT strategy", "Cost justification" })
+        (Group: "Build", Focus: "Full-Stack Development", Skills: new[] { "C#", "ASP.NET Core MVC", "HTML", "CSS", "JavaScript", "TypeScript", "React", "Vite", "Node.js", "Express", "Entity Framework Core", "LINQ", "REST APIs" }),
+        (Group: "Data", Focus: "Databases and Analytics", Skills: new[] { "SQL", "PL/SQL", "Oracle", "PostgreSQL", "MongoDB", "Snowflake", "Azure SQL", "Python", "pandas", "Power BI", "ER Modeling", "Normalization", "ETL/ELT" }),
+        (Group: "Secure", Focus: "Application Security", Skills: new[] { "Authentication", "Authorization", "Role-Based Access", "Row-Level Authorization", "Secured API Routes", "Protected CRUD", "Input Validation", "Environment Variables", "Security-Aware Application Design" }),
+        (Group: "AI", Focus: "AI-Enabled Systems", Skills: new[] { "LLM Applications", "Generative AI Integration", "Prompt Engineering", "AI Evaluation", "Testing AI Output", "Embeddings", "Vector Databases", "RAG" }),
+        (Group: "Engineer", Focus: "Application Architecture", Skills: new[] { "Frontend/Backend Architecture", "MVC Architecture", "Component Architecture", "State Management", "ORM", "CRUD", "API Design", "Database Design", "Responsive UI", "Light/Dark Mode", "Debugging" }),
+        (Group: "Ship", Focus: "Development and Deployment", Skills: new[] { "Git", "GitHub", "Version Control", "Deployment", "Render", "Vercel", "GitHub Pages", "Cloud Databases" }),
+        (Group: "Analyze", Focus: "Data → Decision", Skills: new[] { "Python", "pandas", "Power BI", "Excel", "Data Visualization", "Business Analysis", "Process Analysis", "Cost Analysis" }),
+        (Group: "Strategize", Focus: "Technology → Business Value", Skills: new[] { "Requirements Analysis", "IT Strategy", "Business Cases", "Cost Justification", "ERP", "GTM Strategy", "Project Management", "Technology Evaluation" })
     };
 
     const string clockIcon = "<svg class='mis-clock' viewBox='0 0 24 24' aria-hidden='true'><circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/></svg>";
@@ -547,17 +552,19 @@
             <section class="mis" aria-labelledby="mis-heading">
                 <div class="mis-intro">
                     <h2 id="mis-heading">MIS Coursework</h2>
-                    <p>I’m a Management Information Systems major at McCombs. I’ve studied programming in Python, database design in SQL and MongoDB, full-stack web development in C# and ASP.NET Core, and IT strategy. That means I can take a business problem, design the data behind it, build a working app, and explain why it’s worth the investment. What makes me useful on a team is that I can work on both sides: I know the technical details well enough to build, and the business well enough to know what’s worth building. And I pick up new tools fast.</p>
+                    <p>I can move between the code, the data, the user and the business decision. I build full-stack applications across the frontend, backend, APIs and databases; design and query relational and NoSQL databases; analyze and visualize data; secure applications with authentication, authorization and role-based access; integrate AI and LLM capabilities; and deploy working systems. I’ve worked across C#, ASP.NET Core, JavaScript, TypeScript, React, Node.js, Express, Python, SQL, Oracle, PostgreSQL, MongoDB, Snowflake and Power BI, alongside Git/GitHub, REST APIs, ORM frameworks and cloud deployment.</p>
+                    <p>But the part of MIS I value most is being able to connect all of it. I can talk to users, turn an ambiguous problem into requirements, model the data behind it, design the system, build and secure the application, analyze what it produces, and evaluate whether the technology makes business sense in the first place. I’ve applied that range beyond the classroom, from developing go-to-market strategy for a Microsoft Azure product at Acacia Advisors to evaluating more than 1,000 AI model outputs at Outlier. I know enough of each layer to move a problem from “something isn’t working” to a system that does and a recommendation someone can act on.</p>
                 </div>
 
                 <!-- my MIS skills, grouped -->
                 <div class="mis-skills" aria-label="What I can do">
                     <p class="mis-skills-title">What I can do</p>
                     <div class="mis-skills-grid">
-                        @foreach (var (group, skills) in misSkills)
+                        @foreach (var (group, focus, skills) in misSkills)
                         {
                             <div class="mis-skill-group">
                                 <p class="mis-skill-name">@group</p>
+                                <p class="mis-skill-focus">@focus</p>
                                 <ul>@foreach (var skill in skills) { <li>@skill</li> }</ul>
                             </div>
                         }
