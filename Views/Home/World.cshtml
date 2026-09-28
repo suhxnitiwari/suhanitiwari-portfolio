@@ -655,7 +655,7 @@
     /* The "map": faint street grid + the river, like an illustrated city guide */
     .spots-map {
         position: relative;
-        padding: 46px 40px 40px;
+        padding: 42px 32px 30px;
         border-radius: 28px;
         border: 1px solid #EBD5D0;
         background-color: #FAF1EF;
@@ -794,7 +794,7 @@
 
     /* On Campus: quick food spots, a row of name-only cards at the end (no description line) */
     .spot.mini {
-        min-height: 130px;
+        min-height: 0;
     }
 
     .spot.mini h3 {
@@ -802,35 +802,44 @@
         font-size: 1.35em;
     }
 
-    /* Around Austin: shorter, compact cards, 2 to 5 per row */
+    /* Around Austin: short, compact cards, 4 to 6 per row, so the whole list fits on one screen.
+       The category pill carries the label, so the round icon is left out here. */
     .spots-grid.compact {
-        gap: 14px;
+        gap: 10px;
     }
-
 
     .spots-grid.compact .spot {
         min-height: 0;
-        gap: 6px;
-        padding: 18px 18px 16px;
+        gap: 4px;
+        padding: 12px 14px 12px;
+        border-radius: 16px;
     }
 
     .spots-grid.compact .spot-icon {
-        width: 36px;
-        height: 36px;
+        display: none;
+    }
+
+    .spots-grid.compact .spot-top {
+        justify-content: flex-start;
     }
 
     .spots-grid.compact .spot h3 {
-        margin-top: 4px;
-        font-size: 1.15em;
+        margin-top: 2px;
+        font-size: 1.02em;
     }
 
     .spots-grid.compact .spot p {
-        font-size: 0.88em;
-        line-height: 1.5;
+        font-size: 0.8em;
+        line-height: 1.4;
     }
 
     .spots-grid.compact .spot-pill {
-        font-size: 0.62em;
+        padding: 3px 9px;
+        font-size: 0.58em;
+    }
+
+    .spots-map.austin .spot-filters {
+        margin-bottom: 14px;
     }
 
     /* rows size to their cards (normal cards have their own min-height), so mini boxes stay small */
@@ -883,9 +892,9 @@
         grid-column: span var(--span, 2);
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        min-height: 190px;
-        padding: 26px 26px 24px;
+        gap: 6px;
+        min-height: 0;
+        padding: 18px 20px 16px;
         border-radius: 20px;
         background: rgba(255, 248, 246, 0.92);
         border: 1px solid #EDD8D3;
@@ -964,7 +973,7 @@
     /* The one featured spot per tab: burgundy, bigger type */
     .spot.featured {
         justify-content: flex-end;
-        min-height: 250px;
+        min-height: 0;
         background: linear-gradient(135deg, #8A4D57 0%, #34422F 100%);
         border-color: transparent;
         color: #FAF1EF;
@@ -1351,16 +1360,17 @@
     // how many cards go into the next pattern, for a group with `left` cards still to place
     const chunkSize = left => left <= 5 ? left : left === 6 ? 3 : left === 7 ? 3 : left === 8 ? 4 : 3;
 
-    // Around Austin: every card is one row tall; rows hold 2 to 5 cards with varied widths.
-    // Widths are out of 60 columns (5 per row = 12 each, 4 = 15, 3 = 20, 2 = 30).
+    // Around Austin: every card is one row tall; rows hold 2 to 6 cards with varied widths.
+    // Widths are out of 60 columns (6 per row = 10 each, 5 = 12, 4 = 15, 3 = 20, 2 = 30).
     const ROW_WIDTHS = {
         1: [[30]],   // a filter with a single spot: one half-width card
         2: [[36, 24], [24, 36], [30, 30]],
         3: [[24, 18, 18], [18, 24, 18], [18, 18, 24], [20, 20, 20]],
         4: [[18, 12, 18, 12], [15, 15, 15, 15], [12, 18, 12, 18]],
-        5: [[12, 12, 12, 12, 12]]
+        5: [[12, 12, 12, 12, 12], [14, 10, 12, 10, 14]],
+        6: [[10, 10, 10, 10, 10, 10], [12, 8, 10, 10, 8, 12]]
     };
-    const ROW_SIZES = [4, 3, 5, 3, 4, 2, 5];   // how many cards per row, cycled
+    const ROW_SIZES = [6, 5, 6, 5, 4];   // how many cards per row, cycled
     function rowsFor(n) {
         const rows = [];
         let k = 0;
@@ -1379,12 +1389,26 @@
         const shown = cards.filter(c => !c.hidden);
         grid.style.gridTemplateColumns = cols === 6 ? 'repeat(60, minmax(0, 1fr))' : '';
         if (cols !== 6) return;
+        // a full row: each card's width follows how much text it has, so a long line gets
+        // a wider card and every card in the row ends up about the same height
+        const weight = card => Math.max(card.textContent.trim().length, 40);
         const used = {};
         let i = 0;
         rowsFor(shown.length).forEach(size => {
-            const options = ROW_WIDTHS[size];
-            const widths = options[(used[size] = (used[size] ?? -1) + 1) % options.length];
-            widths.forEach((w, k) => { shown[i + k].style.gridColumn = `span ${w}`; });
+            const row = shown.slice(i, i + size);
+            if (size < 4) {
+                const options = ROW_WIDTHS[size];
+                const widths = options[(used[size] = (used[size] ?? -1) + 1) % options.length];
+                widths.forEach((w, k) => { row[k].style.gridColumn = `span ${w}`; });
+            } else {
+                const total = row.reduce((sum, c) => sum + weight(c), 0);
+                let left = 60;
+                row.forEach((card, k) => {
+                    const cols = k === size - 1 ? left : Math.max(8, Math.round(60 * weight(card) / total));
+                    card.style.gridColumn = `span ${cols}`;
+                    left -= cols;
+                });
+            }
             i += size;
         });
     }
@@ -1402,6 +1426,18 @@
         const minis = cards.filter(c => !c.hidden && c.classList.contains('mini'));
         minis.forEach(c => { c.style.gridColumn = cols === 6 ? 'span 2' : cols === 2 ? 'span 1' : ''; });
         const shown = cards.filter(c => !c.hidden && !c.classList.contains('mini'));
+        // On Campus on a wide screen (12 columns): the feature card with the next six in two rows
+        // of three beside it, then the quick food spots in a row, so the whole tab fits on one screen
+        grid.style.gridTemplateColumns = '';
+        if (cols === 6 && grid.dataset.grouped !== 'true') {
+            grid.style.gridTemplateColumns = 'repeat(12, minmax(0, 1fr))';
+            shown.forEach((card, k) => {
+                card.style.gridColumn = 'span 3';
+                if (k === 0) { card.style.gridRow = 'span 2'; card.classList.add('featured'); }
+            });
+            minis.forEach(c => { c.style.gridColumn = `span ${12 / Math.min(minis.length, 4) | 0}`; });
+            return;
+        }
         if (cols === 1) {
             if (shown[0]) shown[0].classList.add('featured');
             return;
