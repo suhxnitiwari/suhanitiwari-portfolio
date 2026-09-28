@@ -30,8 +30,8 @@ html {
    Every "cursor: pointer" on the site reads var(--cursor-hot, pointer), so it all follows along. */
 @media (hover: hover) and (pointer: fine) {
     :root {
-        --cursor-soft: url("/images/cursor/sparkle.svg") 14 14, auto;
-        --cursor-hot: url("/images/cursor/sparkle-hot.svg") 14 14, pointer;
+        --cursor-soft: url("/images/cursor/sparkle.svg") 13 15, auto;
+        --cursor-hot: url("/images/cursor/sparkle-hot.svg") 13 15, pointer;
     }
 
     html, body { cursor: var(--cursor-soft); }
