@@ -7,7 +7,7 @@
     public record Recipe(string Title, string Line, string Photo, string Time, string Serves, string[] Ingredients, string[] Steps);
 
     // One artwork in Make > Art. Idea = my own line about it (from my AP portfolio).
-    public record Artwork(string Title, string Idea, string Image);
+    public record Artwork(string Title, string Idea, string Image, double Ratio = 1);
 
     // One piece of writing in Make > Writing. Opening = its first lines (\n starts a new line); Link = where it's published.
     public record Writing(string Title, string Kind, string Year, string Dedication, string Opening, string Link);
@@ -113,36 +113,45 @@
 @{
     // Art: selected works from my AP 2-D Art and Design portfolio (digital, drawn in Procreate).
     // Images saved in wwwroot/images/art.
-    // The wall is hung in four bays, left to right: prints | a wall of four | the braid | a wall of two.
+    // The wall is hung as one piece, left to right: two by two | the two flag pieces side by side | two over one wide piece.
+    // Ratio = the art's width / height, so every row lines up without cropping anything.
 
-    // Bay 1: two pieces stacked. The first is the featured piece.
-    var featuredArt = new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg");
-    var artPrints = new[]
+    // Left block: two by two
+    var artLeft = new[]
     {
-        featuredArt,
-        // No idea line yet for this one
-        new Artwork("Getting Ready", "", "/images/art/vanity.jpg")
+        new[]
+        {
+            new Artwork("Old and New", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg", 1.0),
+            new Artwork("Between Two Worlds", "Show the IND and US flag in a child's hands to symbolize her navigating dual cultural identity", "/images/art/navigating-indian-american-identity.jpg", 0.985)
+        },
+        new[]
+        {
+            // No idea line yet for these two (the diya thali is Image 7 in the portfolio)
+            new Artwork("What I Carry", "", "/images/art/packing-home.jpg", 0.969),
+            new Artwork("Keeping the Light", "", "/images/art/diya-thali.jpg", 0.84)
+        }
     };
 
-    // Bay 2: four framed pieces, two by two
-    var artWall = new[]
+    // Center: the two tall flag pieces, hung together. No idea line yet for the braid
+    var artCenter = new[]
     {
-        new Artwork("Old and New", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg"),
-        // No idea line yet for this one
-        new Artwork("What I Carry", "", "/images/art/packing-home.jpg"),
-        new Artwork("Between Two Worlds", "Show the IND and US flag in a child's hands to symbolize her navigating dual cultural identity", "/images/art/navigating-indian-american-identity.jpg"),
-        new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg")
+        new Artwork("Woven Together", "", "/images/art/braid.jpg", 0.563),
+        new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg", 0.75)
     };
 
-    // Bay 3: the braid, hung big in the middle. No idea line yet
-    var heroArt = new Artwork("Woven Together", "", "/images/art/braid.jpg");
-
-    // Bay 4: two framed pieces stacked
-    var artSide = new[]
+    // Right block: two pieces over one wide piece
+    var artRight = new[]
     {
-        new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg"),
-        // The diya thali piece (Image 7 in the portfolio); no idea line yet
-        new Artwork("Keeping the Light", "", "/images/art/diya-thali.jpg")
+        new[]
+        {
+            new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg", 0.931),
+            new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg", 0.883)
+        },
+        new[]
+        {
+            // No idea line yet for this one
+            new Artwork("Getting Ready", "", "/images/art/vanity.jpg", 1.853)
+        }
     };
 
     // Writing: my published pieces (opening lines copied from each piece)
@@ -271,11 +280,12 @@
 }
 @{
     // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
-    // One piece on the Digital Art wall. Every piece gets the walnut frame and museum label.
-    // Style: "framed" (square opening, on a wall), "print" (stacked in the first bay) or "hero" (the braid, fills its bay)
+    // One piece on the Digital Art wall. Every piece gets the walnut frame, white mat and a small title underneath.
+    // --r (the art's width / height) sizes the piece so everything in its row shares one height.
     void RenderArtPiece(Artwork art, string style)
     {
-        <li class="gallery-piece gallery-@style@(art == featuredArt ? " gallery-feature" : "")">
+        var ratio = art.Ratio.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        <li class="gallery-piece gallery-@style" style="--r: @ratio">
             <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
                     aria-label="View @art.Title larger">
                 <span class="gallery-frame">
@@ -286,6 +296,18 @@
                 </span>
             </button>
         </li>
+    }
+
+    void RenderArtBlock(Artwork[][] rows, string side)
+    {
+        <div class="salon-block salon-@side">
+            @foreach (var row in rows)
+            {
+                <ul class="salon-row">
+                    @foreach (var art in row) { RenderArtPiece(art, "framed"); }
+                </ul>
+            }
+        </div>
     }
 
     void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null, Artwork[]? gallery = null)
@@ -423,18 +445,11 @@
                 <h3 class="shelf-title">Digital Art</h3>
             </div>
             <div class="gallery-salon" role="group" aria-label="Digital Art">
-                <ul class="salon-bay salon-prints">
-                    @foreach (var art in artPrints) { RenderArtPiece(art, "print"); }
+                @{ RenderArtBlock(artLeft, "left"); }
+                <ul class="salon-row salon-center">
+                    @foreach (var art in artCenter) { RenderArtPiece(art, "tall"); }
                 </ul>
-                <ul class="salon-bay salon-wall salon-wall-grid">
-                    @foreach (var art in artWall) { RenderArtPiece(art, "framed"); }
-                </ul>
-                <ul class="salon-bay salon-hero">
-                    @{ RenderArtPiece(heroArt, "hero"); }
-                </ul>
-                <ul class="salon-bay salon-wall salon-wall-stack">
-                    @foreach (var art in artSide) { RenderArtPiece(art, "framed"); }
-                </ul>
+                @{ RenderArtBlock(artRight, "right"); }
             </div>
         </div>
         <hr class="shelf-divider">
