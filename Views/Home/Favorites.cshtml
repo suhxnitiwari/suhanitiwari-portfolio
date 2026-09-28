@@ -1958,6 +1958,26 @@
             <h2 class="section-title">What I'm Reading</h2>
         </div>
         @{
+            // Business books. Covers from Open Library (English editions), saved in wwwroot/images/covers.
+            var business = new[]
+            {
+                new ShelfItem("Onward: How Starbucks Fought for Its Life Without Losing Its Soul", "Howard Schultz", "/images/covers/onward.jpg"),
+                new ShelfItem("The Design of Everyday Things", "Don Norman", "/images/covers/the-design-of-everyday-things.jpg"),
+                new ShelfItem("Inspired", "Marty Cagan", "/images/covers/inspired.jpg"),
+                new ShelfItem("Creative Confidence", "Tom Kelley & David Kelley", "/images/covers/creative-confidence.jpg"),
+                new ShelfItem("The Innovator's Dilemma", "Clayton Christensen", "/images/covers/the-innovators-dilemma.jpg"),
+                new ShelfItem("Competing Against Luck", "Clayton Christensen", "/images/covers/competing-against-luck.jpg"),
+                new ShelfItem("Shoe Dog", "Phil Knight", "/images/covers/shoe-dog.jpg"),
+                new ShelfItem("Creativity, Inc.", "Ed Catmull", "/images/covers/creativity-inc.jpg"),
+                new ShelfItem("Alchemy", "Rory Sutherland", "/images/covers/alchemy.jpg"),
+                new ShelfItem("The Choice Factory", "Richard Shotton", "/images/covers/the-choice-factory.jpg"),
+                new ShelfItem("Decoded", "Phil Barden", "/images/covers/decoded.jpg"),
+                new ShelfItem("Influence", "Robert Cialdini", "/images/covers/influence.jpg")
+            };
+        }
+        @{ RenderShelf("Books Behind the Business", business); }
+        <hr class="shelf-divider">
+        @{
             // Edit this list to change your favorite rom-com books: (title, author, cover image).
             // A collection, not a ranking: any number of books works. Covers from Open Library (saved in wwwroot/images/covers).
             var books = new[]
@@ -1978,7 +1998,7 @@
                 new ShelfItem("The Love Hypothesis", "Ali Hazelwood", "/images/covers/the-love-hypothesis.jpg")
             };
 
-            RenderShelf("Books I'd Sell My Soul to Read Again", books);
+            RenderShelf("Books I’ll Never Shut Up About", books);
 
             // Self-help: same shelf, (title, author, cover image). Add more any time.
             var selfHelp = new[]
@@ -1992,26 +2012,6 @@
         }
         <hr class="shelf-divider">
         @{ RenderShelf("Books That Actually Changed How I Live", selfHelp); }
-        @{
-            // Business books. Covers from Open Library (English editions), saved in wwwroot/images/covers.
-            var business = new[]
-            {
-                new ShelfItem("Onward: How Starbucks Fought for Its Life Without Losing Its Soul", "Howard Schultz", "/images/covers/onward.jpg"),
-                new ShelfItem("The Design of Everyday Things", "Don Norman", "/images/covers/the-design-of-everyday-things.jpg"),
-                new ShelfItem("Inspired", "Marty Cagan", "/images/covers/inspired.jpg"),
-                new ShelfItem("Creative Confidence", "Tom Kelley & David Kelley", "/images/covers/creative-confidence.jpg"),
-                new ShelfItem("The Innovator's Dilemma", "Clayton Christensen", "/images/covers/the-innovators-dilemma.jpg"),
-                new ShelfItem("Competing Against Luck", "Clayton Christensen", "/images/covers/competing-against-luck.jpg"),
-                new ShelfItem("Shoe Dog", "Phil Knight", "/images/covers/shoe-dog.jpg"),
-                new ShelfItem("Creativity, Inc.", "Ed Catmull", "/images/covers/creativity-inc.jpg"),
-                new ShelfItem("Alchemy", "Rory Sutherland", "/images/covers/alchemy.jpg"),
-                new ShelfItem("The Choice Factory", "Richard Shotton", "/images/covers/the-choice-factory.jpg"),
-                new ShelfItem("Decoded", "Phil Barden", "/images/covers/decoded.jpg"),
-                new ShelfItem("Influence", "Robert Cialdini", "/images/covers/influence.jpg")
-            };
-        }
-        <hr class="shelf-divider">
-        @{ RenderShelf("Behind the Business", business); }
     </div>
 </section>
 

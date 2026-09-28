@@ -1104,6 +1104,7 @@
 
     .quiz-line {
         min-height: 1.6em;
+        line-height: 1.55;
         margin: 18px 0 0;
         font-style: italic;
         color: #56634A;
@@ -1111,8 +1112,30 @@
         transition: opacity 0.45s ease;
     }
 
-    .quiz-line.show {
+    .quiz-line.show,
+    .quiz-reveal.show {
         opacity: 1;
+    }
+
+    .quiz-line:empty,
+    .quiz-reveal:empty {
+        display: none;
+    }
+
+    /* the lake house reveal: set apart under the reply */
+    .quiz-reveal {
+        margin: 12px 0 0;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: #F6E4E1;
+        color: #2A1810;
+        line-height: 1.55;
+        opacity: 0;
+        transition: opacity 0.45s ease 0.25s;
+    }
+
+    .quiz-reveal strong {
+        color: #8A4D57;
     }
 
     .quiz-btn {
@@ -1146,11 +1169,21 @@
     }
 
     .quiz-verdict {
-        margin: 6px 0 8px;
+        margin: 6px 0 10px;
         font-family: Georgia, serif;
         font-size: 1.2em;
         font-style: italic;
         color: #9E5A63;
+    }
+
+    .quiz-verdict-body p {
+        margin: 0 0 8px;
+        line-height: 1.55;
+        color: #2A1810;
+    }
+
+    .quiz-verdict-body p:last-child {
+        margin-bottom: 4px;
     }
 
     /* a little burst of hearts on a right guess, in rose and gold */
@@ -1181,7 +1214,8 @@
         }
 
         .quiz-bar span,
-        .quiz-line {
+        .quiz-line,
+        .quiz-reveal {
             transition: none;
         }
     }
@@ -1228,7 +1262,7 @@
         margin: 60px 0;
     }
 
-    /* ===== BIG FIVE: letters floating over layered ocean swells ===== */
+    /* ===== BIG FIVE: letters riding a wave drawn in fine lines ===== */
     .ocean {
         position: relative;
         height: 360px;
@@ -1244,59 +1278,52 @@
         overflow: visible;
     }
 
-    .ocean-water {
-        pointer-events: none;
-        transform-origin: 50% 80%;
-        animation: oceanTide 8s ease-in-out infinite alternate;
-    }
-
-    .ocean-water-back {
-        opacity: 0.55;
-        animation-delay: -4s;
-    }
-
-    .ocean-foam {
-        fill: none;
-        stroke: #EFFCF7;
-        stroke-width: 3;
-        stroke-linecap: round;
-        opacity: 0.85;
-    }
-
-    .ocean-ripple {
-        fill: none;
-        stroke: #C5EAE2;
-        stroke-width: 1.5;
-        opacity: 0.6;
-    }
-
-    @@keyframes oceanTide {
-        from { transform: translateY(3px) scaleY(0.96); }
-        to { transform: translateY(-5px) scaleY(1.04); }
-    }
-
     .ocean-line,
+    .ocean-echo,
     .ocean-section {
         fill: none;
-        stroke: #D9F5EC;
+        stroke: #377F91;
         stroke-linecap: round;
         vector-effect: non-scaling-stroke;
     }
 
-    .ocean-line {
-        stroke-width: 2;
-        opacity: 0.75;
+    .ocean-line,
+    .ocean-echo {
         stroke-dasharray: 1;
         stroke-dashoffset: 1;
     }
 
-    .ocean.in .ocean-line {
+    .ocean-line {
+        stroke-width: 2;
+        opacity: 0.7;
+    }
+
+    /* thinner copies of the line underneath, each fainter than the last, like water lines */
+    .ocean-echo {
+        stroke-width: 1.25;
+        opacity: calc(0.42 - var(--e) * 0.12);
+        animation: oceanDrift 7s ease-in-out infinite alternate;
+        animation-delay: calc(var(--e) * -2.3s);
+    }
+
+    .ocean.in .ocean-line,
+    .ocean.in .ocean-echo {
         stroke-dashoffset: 0;
         transition: stroke-dashoffset 2.4s cubic-bezier(0.45, 0, 0.25, 1);
     }
 
+    .ocean.in .ocean-echo {
+        transition-delay: calc(0.25s + var(--e) * 0.2s);
+    }
+
+    @@keyframes oceanDrift {
+        from { transform: translateX(-6px); }
+        to { transform: translateX(6px); }
+    }
+
     .ocean-section {
-        stroke-width: 2;
+        stroke: #204C62;
+        stroke-width: 2.5;
         opacity: 0;
         transition: opacity 0.35s ease;
     }
@@ -1417,7 +1444,7 @@
     }
 
     .ocean-section.lit {
-        opacity: 0.55;
+        opacity: 0.8;
     }
 
     .ocean-node:focus-visible {
@@ -1627,14 +1654,15 @@
 
     @@media (prefers-reduced-motion: reduce) {
         .ocean-node,
-        .ocean-line {
+        .ocean-line,
+        .ocean-echo {
             transition: none !important;
             opacity: 1;
             translate: 0 0;
             stroke-dashoffset: 0;
         }
 
-        .ocean-water,
+        .ocean-echo,
         .ocean-bob {
             animation: none !important;
         }
@@ -2587,18 +2615,78 @@
 <!-- THE DUALITY OF A WOMAN -->
 @{
     // This or That (inside View more, under Duality): (this, that, which one I pick (or something else entirely), optional line). Add or remove freely.
+    // How Well Do You Know Me?: (option A, option B, my pick, what you see if you guessed right,
+    // if you guessed A and it's wrong, if you guessed B and it's wrong, the reveal).
+    // A pick that's neither option (Beach or Mountains → lake house) adds a "Neither?" button,
+    // and its reveal shows after any guess.
     var thisOrThat = new[]
     {
-        ("Coffee", "Tea", "Coffee", ""),
-        ("Sunrise", "Sunset", "Sunset", ""),
-        ("Beach", "Mountains", "Lake house", "Honestly? A lake house."),
-        ("Sweet", "Savory", "Savory", ""),
-        ("Morning", "Night", "Night", ""),
-        ("Books", "Movies", "Movies", ""),
-        ("Rom-com", "Horror", "Rom-com", ""),
-        ("City", "Country", "City", ""),
-        ("Dogs", "Cats", "Dogs", ""),
-        ("Road trip", "Flight", "Flight", "Always flight.")
+        ("Coffee", "Tea", "Coffee",
+            "Correct. Preferably a hot vanilla latte. Coffee is less of a beverage choice and more of an ongoing relationship at this point.",
+            "",
+            "Tea? Have we met? I am emotionally, socially, and academically supported by coffee.",
+            ""),
+        ("Sunrise", "Sunset", "Sunset",
+            "Correct. Golden hour, pretty skies, and absolutely no requirement that I be awake at 6 a.m. This one was made for me.",
+            "Sunrise is beautiful. Unfortunately, it occurs during hours in which I do not wish to participate.",
+            "",
+            ""),
+        ("Beach", "Mountains", "Lake house",
+            "",
+            "Beach? Too hot, too sandy, too chaotic. I love the view, but after twenty minutes I’m overstimulated, covered in sand, and wondering why relaxation requires this much effort. Give me a lake house.",
+            "Mountains? Gorgeous. Peaceful. Maybe a little TOO peaceful. What am I supposed to do up there after I’ve admired the view??? I need nature, not isolation. Give me a lake house.",
+            "Lake house. Water without the beach chaos. Nature without disappearing into the wilderness. Pretty, peaceful, but still enough going on that I don’t lose my mind. Perfect middle ground."),
+        ("Sweet", "Savory", "Savory",
+            "Correct. Give me an actual meal over dessert. The aesthetic may say pastry. The appetite says savory.",
+            "You looked at me and thought dessert girl? Understandable aesthetically. Incorrect gastronomically. Give me the savory option.",
+            "",
+            ""),
+        ("Morning", "Night", "Night",
+            "Correct. My brain apparently considers midnight an excellent time to become curious about seventeen completely unrelated things.",
+            "Morning? Ambitious assumption. I have a deep appreciation for mornings in theory. Experiencing them personally is where you lose me.",
+            "",
+            ""),
+        ("Books", "Movies", "Movies",
+            "Correct. Give me the whole production: the costumes, the soundtrack, the set design, the little world someone built from scratch. Books are lovely. Movies are the whole package.",
+            "I love a good book, but you can’t watch a book with your friends and scream at the same scene together. Movies win.",
+            "",
+            ""),
+        ("Rom-Com", "Horror", "Rom-Com",
+            "Free points. I’m here for the banter, the yearning, and the airport confession scene. I love love, and I’m not embarrassed about it.",
+            "",
+            "HORROR?! Absolutely not. I’ll be under a blanket, covering my eyes, asking everyone what happened, and somehow still be traumatized by the scene I didn’t even watch.",
+            ""),
+        ("City", "Country", "City",
+            "Correct. I need cafés, people, things happening, and approximately seventeen plans I could make within walking distance.",
+            "",
+            "Country? For a weekend, adorable. Permanently? Where are my cafés? Where are my people? What am I supposed to DO? HOW AM I SUPPOSED TO GET OVERSTIMULATED???",
+            ""),
+        ("Dogs", "Cats", "Dogs",
+            "Correct. Loyalty is basically my whole personality, so obviously I want a pet who’s just as loyal back and acts thrilled every time I walk through the door.",
+            "",
+            "Cats are lovely, independent, and mysterious. I, however, would like to be greeted at the door like a celebrity.",
+            ""),
+        ("Road Trip", "Flight", "Flight",
+            "Flight. Always. I’m here for the destination, not the gas station snacks. Put me on the plane and get me there by lunch.",
+            "Road trip? Nine hours in a car is cute in a movie. In real life, I have places to be and very little patience for “are we there yet?”",
+            "",
+            "")
+    };
+
+    // What you get for each score, 0 to 10: a headline, then a few short lines
+    var quizVerdicts = new[]
+    {
+        new[] { "Oh, this is extraordinary.", "Statistically, I feel like you should have gotten one by accident. You have apparently invented an entirely different woman in your head.", "Hi. I’m Suhani. Nice to meet you. ♡" },
+        new[] { "One point. ONE.", "You know exactly one thing about me and approached the remaining nine with confidence I genuinely admire.", "We have some catching up to do." },
+        new[] { "We’ve met before, right?", "You know just enough about me to make the other eight answers significantly more concerning." },
+        new[] { "Acquaintance behavior.", "You know enough to recognize me in public and perhaps order me a beverage.", "I would not yet let you order the entire meal." },
+        new[] { "Okayyyy, you KINDA know me. Emphasis on kinda.", "Some excellent instincts. Some answers that made me wonder who exactly you thought you were taking this quiz about.", "I’ll allow it." },
+        new[] { "Exactly half. Fascinating.", "You understand one version of me.", "Unfortunately, as the rest of this website has probably established, there are several." },
+        new[] { "Okay, you actually know me.", "Not quite “I trust you to order for me without asking” territory, but you’ve clearly been paying attention.", "I’ll give you that." },
+        new[] { "Oh, you’ve been LISTENING.", "Seven out of ten? You know me well enough that I’m starting to take the wrong three personally." },
+        new[] { "Suspiciously good.", "Either you know me very well or I’ve made myself alarmingly predictable on this website.", "Both possibilities concern me slightly." },
+        new[] { "ONE WRONG?!", "You were one answer away from knowing me better than I apparently know how to conceal myself.", "Now I desperately need to know which one got you." },
+        new[] { "Okay, this is getting invasive.", "You’re either inner circle, you studied this website like there was going to be an exam, or you’re me.", "Disturbing work. 10/10. No notes. ♡" }
     };
 
     // (one side, the other side, what I mean). Add or remove freely.
@@ -2646,11 +2734,12 @@
         <div class="duality-row">
             <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
             <div class="quiz-col">
-                <h3 class="tot-title">How well do you know Suhani?</h3>
+                <h3 class="tot-title">How Well Do You Know Me?</h3>
                 <p class="kn-hint">This or that? Guess my pick.</p>
 
                 <!-- the quiz (built by the script below); the grid underneath is the no-JavaScript version -->
-                <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, line = t.Item4 })).ToString()" hidden>
+                <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, right = t.Item4, wrongA = t.Item5, wrongB = t.Item6, reveal = t.Item7 })).ToString()"
+                     data-verdicts="@Json.Serialize(quizVerdicts).ToString()" hidden>
                     <div class="quiz-progress">
                         <span class="quiz-count" aria-live="polite"></span>
                         <span class="quiz-bar" aria-hidden="true"><span></span></span>
@@ -2658,19 +2747,23 @@
                     <div class="quiz-card">
                         <div class="quiz-play">
                             <div class="quiz-options" role="group" aria-label="Your guess"></div>
-                            <p class="quiz-line" aria-live="polite"></p>
+                            <div aria-live="polite">
+                                <p class="quiz-line"></p>
+                                <p class="quiz-reveal"></p>
+                            </div>
                             <button type="button" class="quiz-btn quiz-next" hidden>Next</button>
                         </div>
                         <div class="quiz-result" hidden>
                             <p class="quiz-score" aria-live="polite"></p>
                             <p class="quiz-verdict"></p>
+                            <div class="quiz-verdict-body"></div>
                             <button type="button" class="quiz-btn quiz-again">Play again</button>
                         </div>
                     </div>
                 </div>
 
                 <ul class="tot-grid">
-                    @foreach (var (one, other, pick, line) in thisOrThat)
+                    @foreach (var (one, other, pick, _, _, _, reveal) in thisOrThat)
                     {
                         <li class="tot-card">
                             <span class="tot-pair">
@@ -2679,9 +2772,9 @@
                                 <span class="tot-option@(pick == other ? " picked" : "")">@other</span>
                             </span>
                             <span class="visually-hidden">My pick: @pick.</span>
-                            @if (!string.IsNullOrEmpty(line))
+                            @if (!string.IsNullOrEmpty(reveal))
                             {
-                                <span class="tot-line">@line</span>
+                                <span class="tot-line">@reveal</span>
                             }
                         </li>
                     }
@@ -2693,14 +2786,15 @@
 </section>
 
 <script>
-    // How well do you know Suhani?: one This or That at a time. Guess, see my pick, get a score at the end.
+    // How Well Do You Know Me?: one This or That at a time. Guess, see my pick, get a score at the end.
     // A card whose pick isn't either option (Beach or Mountains → lake house) gets a "Neither?" button.
     (() => {
         const quiz = document.getElementById('quiz');
         if (!quiz) return;
         const questions = JSON.parse(quiz.dataset.questions);
+        const verdicts = JSON.parse(quiz.dataset.verdicts);
         const $ = sel => quiz.querySelector(sel);
-        const options = $('.quiz-options'), line = $('.quiz-line'), next = $('.quiz-next');
+        const options = $('.quiz-options'), line = $('.quiz-line'), reveal = $('.quiz-reveal'), next = $('.quiz-next');
         const play = $('.quiz-play'), result = $('.quiz-result');
         const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let current = 0, score = 0;
@@ -2723,6 +2817,8 @@
             options.querySelectorAll('.quiz-option').forEach(btn => btn.addEventListener('click', () => guess(btn)));
             line.textContent = '';
             line.classList.remove('show');
+            reveal.textContent = '';
+            reveal.classList.remove('show');
             next.hidden = true;
             next.textContent = i === questions.length - 1 ? 'See my score' : 'Next';
         }
@@ -2739,8 +2835,18 @@
             if (curveball(q)) right.textContent = q.pick;
             btn.classList.add('chosen');
             btn.insertAdjacentHTML('beforeend', `<span class="quiz-mark" aria-hidden="true">${correct ? '✓' : '✗'}</span>`);
-            line.textContent = q.line || (correct ? 'You know me.' : `It’s ${q.pick.toLowerCase()}.`);
-            requestAnimationFrame(() => line.classList.add('show'));
+            // what I say back depends on what you guessed; a curveball also reveals the real answer
+            line.textContent = correct ? q.right : (btn === buttons[0] ? q.wrongA : q.wrongB);
+            reveal.innerHTML = '';
+            if (q.reveal) {
+                const label = document.createElement('strong');
+                label.textContent = 'The actual answer: ';
+                reveal.append(label, q.reveal);
+            }
+            requestAnimationFrame(() => {
+                line.classList.add('show');
+                reveal.classList.add('show');
+            });
             if (correct && !calm) hearts(btn);
             $('.quiz-bar span').style.width = `${((current + 1) / questions.length) * 100}%`;
             next.hidden = false;
@@ -2775,11 +2881,16 @@
             result.hidden = false;
             $('.quiz-count').textContent = 'Done';
             $('.quiz-score').textContent = `You got ${score}/${total}.`;
-            $('.quiz-verdict').textContent =
-                pct >= 0.9 ? 'Are you my best friend?' :
-                pct >= 0.6 ? 'We’d get along.' :
-                pct >= 0.3 ? 'We should grab coffee (not tea).' :
-                             'Okay, stranger 😭';
+            // one verdict per score (0 to 10); if the quiz ever changes length, scale to the closest one
+            const [headline, ...lines] = verdicts[Math.round(pct * (verdicts.length - 1))];
+            $('.quiz-verdict').textContent = headline;
+            const body = $('.quiz-verdict-body');
+            body.innerHTML = '';
+            lines.forEach(text => {
+                const p = document.createElement('p');
+                p.textContent = text;
+                body.appendChild(p);
+            });
             $('.quiz-again').focus({ preventScroll: true });
         }
 
@@ -2976,25 +3087,12 @@
 
             <div class="ocean" id="ocean">
                 <svg class="ocean-wave" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
-                    <defs>
-                        <linearGradient id="ocean-depth" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#79C6C0" />
-                            <stop offset="55%" stop-color="#377F91" stop-opacity="0.8" />
-                            <stop offset="100%" stop-color="#377F91" stop-opacity="0" />
-                        </linearGradient>
-                        <linearGradient id="ocean-mist" x1="0" y1="0" x2="0" y2="1">
-                            <stop stop-color="#AEDDD1" />
-                            <stop offset="100%" stop-color="#85BFC6" stop-opacity="0" />
-                        </linearGradient>
-                    </defs>
-                    <g class="ocean-water ocean-water-back">
-                        <path fill="url(#ocean-mist)" d="M 0 155 C 95 215 145 60 260 58 C 330 56 361 98 325 117 C 348 70 282 88 310 134 C 380 231 478 182 565 115 C 644 55 706 37 758 70 C 805 100 783 128 757 125 C 784 94 733 88 744 125 C 784 211 922 124 1000 108 L 1000 300 L 0 300 Z" />
-                    </g>
-                    <g class="ocean-water">
-                        <path fill="url(#ocean-depth)" d="M 0 181 C 101 228 168 141 225 111 C 270 86 314 91 336 117 C 365 155 334 179 307 163 C 334 160 332 134 308 135 C 274 138 304 198 358 210 C 463 237 539 130 622 101 C 674 83 726 94 745 124 C 764 156 741 181 713 165 C 739 158 736 136 717 137 C 684 140 708 199 767 208 C 858 225 925 156 1000 164 L 1000 300 L 0 300 Z" />
-                        <path class="ocean-foam" d="M 175 151 C 239 93 304 75 336 117 C 365 155 334 179 307 163 M 562 132 C 639 81 717 80 745 124 C 764 156 741 181 713 165" />
-                        <path class="ocean-ripple" d="M 20 215 Q 105 245 192 193 M 347 228 Q 431 254 519 190 M 768 231 Q 867 245 964 194 M 97 256 Q 225 224 307 258 M 501 260 Q 612 219 687 250" />
-                    </g>
+                    @for (var e = 0; e < 3; e++)
+                    {
+                        <g transform="translate(0 @(16 * (e + 1)))">
+                            <path class="ocean-echo" d="@wavePath" pathLength="1" style="--e: @e;" />
+                        </g>
+                    }
                     <path class="ocean-line" d="@wavePath" pathLength="1" />
                     @for (var i = 0; i < ocean.Length; i++)
                     {

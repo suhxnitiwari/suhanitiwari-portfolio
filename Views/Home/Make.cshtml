@@ -15,7 +15,8 @@
     // One trip on the Traveling shelf. Line and Photo are optional: without a photo the card shows
     // a soft blush cover with a suitcase, and without a line it says "photos coming soon".
     // Spots = the places I went, shown in the trip's pop-up card.
-    public record Trip(string City, string Line = "", string Photo = "", TripSpot[]? Spots = null);
+    // PhotoPosition: where to crop the photo (CSS object-position); empty keeps the default in shelves.css
+    public record Trip(string City, string Line = "", string Photo = "", TripSpot[]? Spots = null, string PhotoPosition = "");
 
     // One place on a trip. Kind = what it is and where; MustDo gets a little badge.
     public record TripSpot(string Emoji, string Name, string Kind, string Line, bool MustDo = false);
@@ -168,7 +169,9 @@
             new TripSpot("🥞", "Somerset", "Breakfast and brunch, inside the Viceroy in Gold Coast",
                 "Go for breakfast or brunch, and get the French toast. It’s the reason I had this saved.")
         }),
-        new Trip("New York", "NEW YORK FAVS 🗽💌", "", new[]
+        // Photo: Midtown Manhattan at sunset by Andras Stefuca / Pexels, Pexels License. 3840 × 2177.
+        // https://www.pexels.com/photo/skyline-of-new-york-city-at-sunset-29297529/
+        new Trip("New York", "", "/images/travel/nyc-skyline-4k.jpg", new[]
         {
             new TripSpot("🍦", "Venchi", "Italian chocolate + gelato, West Village",
                 "Italian chocolate + gelato. Get the gelato!! There are a few NYC locations, but the Bleecker Street one is perfect if you’re already wandering around the West Village."),
@@ -190,7 +193,7 @@
                 "The gigantic five-floor Louis Vuitton on 57th Street. There’s a massive trunk installation inside, plus Le Café Louis Vuitton and a Louis Vuitton chocolate shop.", MustDo: true),
             new TripSpot("🍫", "Läderach", "Swiss chocolate",
                 "Swiss chocolate!! Go in, pick the giant slabs of FrischSchoggi chocolate you want, and they break pieces off for you. Very good little treat/gift stop.")
-        })
+        }, PhotoPosition: "22% 50%")
     };
 
     var bakes = new[]
@@ -349,7 +352,7 @@
                             <div class="shelf-cover bake-cover">
                                 @if (!string.IsNullOrEmpty(trip.Photo))
                                 {
-                                    <img src="@trip.Photo" alt="@trip.City" loading="lazy" draggable="false">
+                                    <img src="@trip.Photo" alt="@trip.City" loading="lazy" draggable="false" style="@(string.IsNullOrEmpty(trip.PhotoPosition) ? null : $"object-position: {trip.PhotoPosition}")">
                                 }
                                 else
                                 {
@@ -407,7 +410,7 @@
         <button type="button" class="recipe-close" aria-label="Close @trip.City">×</button>
         @if (!string.IsNullOrEmpty(trip.Photo))
         {
-            <div class="recipe-photo trip-photo"><img src="@trip.Photo" alt="@trip.City skyline" loading="lazy"></div>
+            <div class="recipe-photo trip-photo"><img src="@trip.Photo" alt="@trip.City skyline" loading="lazy" style="@(string.IsNullOrEmpty(trip.PhotoPosition) ? null : $"object-position: {trip.PhotoPosition}")"></div>
         }
         <div class="recipe-body">
             <p class="recipe-kicker">Traveling</p>

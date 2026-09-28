@@ -294,14 +294,114 @@
         font-size: 0.95em;
     }
 
+    /* MAP + DETAILS PANEL: map on the left (~72%), the chosen place on the right (~28%) */
+    .map-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 72fr) minmax(0, 28fr);
+        gap: 24px;
+        margin-bottom: 60px;
+    }
+
     /* MAP CONTAINER */
     #map {
         width: 100%;
-        height: 700px;
+        height: 620px;
         border-radius: 12px;
         box-shadow: 0 20px 60px rgba(158, 90, 99, 0.2);
-        margin-bottom: 60px;
         z-index: 1;
+    }
+
+    /* the panel is exactly as tall as the map; longer text scrolls inside it */
+    .place-panel {
+        position: relative;
+        min-height: 0;
+        border-radius: 12px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.12);
+        overflow: hidden;
+    }
+
+    .place-panel-inner {
+        position: absolute;
+        inset: 0;
+        overflow-y: auto;
+    }
+
+    .place-panel .popup-photo {
+        border-radius: 0;
+    }
+
+    .place-panel .popup-content {
+        padding: 20px 22px 24px;
+    }
+
+    .place-panel .popup-title {
+        font-size: 1.45em;
+    }
+
+    .place-panel .popup-desc {
+        margin: 0;
+        font-size: 0.95em;
+        line-height: 1.6;
+    }
+
+    .place-panel a {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 0.9em;
+        font-weight: 600;
+        color: #8A4D57;
+    }
+
+    .place-panel-empty {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 30px;
+        text-align: center;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 1.1em;
+        color: #8A4D57;
+    }
+
+    .place-panel-empty::before {
+        content: "";
+        width: 72%;
+        aspect-ratio: 1 / 1;
+        border-radius: 10px;
+        border: 1.5px dashed #E2C4C0;
+        background: #FAF1EF;
+    }
+
+    .place-panel-inner.fade-in {
+        animation: placeFade 0.35s ease;
+    }
+
+    @@keyframes placeFade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* the place being read about: a soft ring on its pin and a filled label */
+    .custom-marker.is-active > div {
+        box-shadow: 0 0 0 3px #FAF1EF, 0 0 0 5px #9E5A63;
+    }
+
+    .visit-marker.is-active > div {
+        box-shadow: 0 0 0 1.5px #56634A, 0 0 0 4px #FAF1EF, 0 0 0 5.5px #56634A !important;
+    }
+
+    .leaflet-tooltip.place-label.is-active {
+        background: #EFCFCD;
+    }
+
+    .leaflet-tooltip.visit-label.is-active {
+        background: #E3E8DC;
     }
 
     /* LEAFLET OVERRIDES */
@@ -964,7 +1064,33 @@
 
         #map {
             height: 500px;
+        }
+
+        .map-layout {
             margin-bottom: 40px;
+        }
+    }
+
+    /* narrower screens: map first, the details underneath at full width */
+    @@media (max-width: 900px) {
+        .map-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .place-panel-inner {
+            position: static;
+        }
+
+        .place-panel .popup-photo {
+            max-height: 420px;
+        }
+
+        .place-panel-empty {
+            padding: 28px 20px;
+        }
+
+        .place-panel-empty::before {
+            display: none;
         }
     }
 </style>
@@ -987,7 +1113,7 @@
                 new { name = "Singapore", from = "2012-07", to = "2015-06", region = "Singapore", coords = new[] { 1.3521, 103.8198 }, labelSide = "right", wiki = "Marina_Bay,_Singapore", myPhoto = "/images/places/singapore.jpg", description = "I was genuinely in awe. It was my first time in such a developed country: so green, so clean, and strict. Very strict. No gum for you there." },
                 new { name = "Cupertino", from = "2015-06", to = "2020-06", region = "California", coords = new[] { 37.3230, -122.0322 }, labelSide = "left", wiki = "Cupertino,_California", myPhoto = "/images/places/cupertino.jpg", description = "My first time in America! I loved going to California’s Great America, and I finished elementary and middle school here." },
                 new { name = "Frisco", from = "2020-06", to = "2024-08", region = "Texas", coords = new[] { 33.1507, -96.8236 }, labelSide = "top", wiki = "Frisco,_Texas", myPhoto = "/images/places/frisco-graduation.jpg", description = "Graduated from high school! Yas! I took art, choir and Spanish, plus way too many AP classes. Yikes." },
-                new { name = "Austin", from = "2024-08", to = "", region = "Texas", coords = new[] { 30.2672, -97.7431 }, labelSide = "bottom", wiki = "Austin,_Texas", myPhoto = "/images/places/austin.png", description = "UT Austin, where I'm studying now." }
+                new { name = "Austin", from = "2024-08", to = "", region = "Texas", coords = new[] { 30.2672, -97.7431 }, labelSide = "bottom", wiki = "Austin,_Texas", myPhoto = "/images/places/austin.jpg", description = "UT Austin, where I'm studying now." }
             };
         }
 
@@ -1003,7 +1129,14 @@
         <!-- PLACES THAT SHAPED ME -->
         <h2 class="world-block-title">Places That Shaped Me</h2>
         <p class="world-block-subtitle">a little map of how I became me</p>
-        <div id="map"></div>
+        <div class="map-layout">
+            <div id="map"></div>
+            <aside class="place-panel" aria-label="About the place you picked">
+                <div class="place-panel-inner" id="placePanel" aria-live="polite">
+                    <p class="place-panel-empty">Click a place to read about it ♡</p>
+                </div>
+            </aside>
+        </div>
 
         <!-- PIECES OF ME -->
         @{
@@ -1585,6 +1718,22 @@
     `;
     };
 
+    // Clicking a place fills the panel beside the map (nothing opens on top of the map)
+    const panel = document.getElementById('placePanel');
+    let activeMarker = null;
+    function showInPanel(marker, html) {
+        activeMarker?.getElement()?.classList.remove('is-active');
+        activeMarker?.getTooltip()?.getElement()?.classList.remove('is-active');
+        activeMarker = marker;
+        marker.getElement()?.classList.add('is-active');
+        marker.getTooltip()?.getElement()?.classList.add('is-active');
+        panel.innerHTML = html;
+        panel.scrollTop = 0;
+        panel.classList.remove('fade-in');
+        void panel.offsetWidth;   // restart the fade
+        panel.classList.add('fade-in');
+    }
+
     // Add markers and draw journey line
     const coordinates = [];
     locations.forEach(loc => {
@@ -1601,10 +1750,9 @@
             interactive: true
         });
 
-        marker.bindPopup(popupHTML(loc), { minWidth: 260, maxWidth: 260 });
-
-        // Load the city's photo from Wikipedia the first time its popup opens
-        marker.on('popupopen', async () => {
+        const select = async () => {
+            showInPanel(marker, popupHTML(loc));
+            // Load the city's photo from Wikipedia the first time it's picked
             if (loc.photo !== undefined) return;
             loc.photo = null;
             try {
@@ -1612,17 +1760,16 @@
                 const data = await response.json();
                 if (data.thumbnail) {
                     loc.photo = data.thumbnail.source;
-                    marker.setPopupContent(popupHTML(loc));
-                    marker.getPopup().getElement()?.querySelector('.popup-photo')
-                        ?.addEventListener('load', () => marker.getPopup().update());
+                    if (activeMarker === marker) panel.innerHTML = popupHTML(loc);
                 }
             } catch {
-                // No photo is fine; the popup still shows the name and description
+                // No photo is fine; the panel still shows the name and description
             }
-        });
+        };
 
-        // Clicking the city name opens the same info as clicking the pin
-        marker.getTooltip().on('click', () => marker.openPopup());
+        // Clicking the pin or the city name shows the same info
+        marker.on('click', select);
+        marker.getTooltip().on('click', select);
     });
 
     // Draw journey line connecting all points
@@ -1653,8 +1800,9 @@
                 interactive: true
             });
         if (place.photo) {
-            marker.bindPopup(`<img class="popup-photo" src="${place.photo}" style="object-position: ${place.photoPosition}" alt="My visit to ${place.name}"><div class="popup-content"><div class="popup-title">${place.name}</div>${place.caption ? `<p class="popup-desc">${place.caption}</p>` : ''}<a href="/home/make#traveling">My favorite spots →</a></div>`, { minWidth: 260, maxWidth: 260 });
-            marker.getTooltip().on('click', () => marker.openPopup());
+            const select = () => showInPanel(marker, `<img class="popup-photo" src="${place.photo}" style="object-position: ${place.photoPosition}" alt="My visit to ${place.name}"><div class="popup-content"><div class="popup-title">${place.name}</div>${place.caption ? `<p class="popup-desc">${place.caption}</p>` : ''}<a href="/home/make#traveling">My favorite spots →</a></div>`);
+            marker.on('click', select);
+            marker.getTooltip().on('click', select);
         }
     });
 
@@ -1680,4 +1828,8 @@
     limitZoomOut();
     map.on('resize', limitZoomOut);
     map.fitBounds(group.getBounds().pad(0.1));
+
+    // The map's box changes size with the two-column layout (window resizes, stacking on
+    // narrow screens), so tell Leaflet to re-measure whenever it does
+    new ResizeObserver(() => map.invalidateSize()).observe(map.getContainer());
 </script>
