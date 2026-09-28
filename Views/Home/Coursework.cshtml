@@ -1052,7 +1052,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     select(0);
 })();
 
-// The zoom lens: the slider (or a tick) picks a level; the rings up to that level light up
+// The zoom lens: the slider, a tick, or a click on a ring picks a level; the rings up to that level light up
 (() => {
     const range = document.getElementById('zoomRange');
     if (!range) return;
@@ -1073,6 +1073,25 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     };
     range.addEventListener('input', () => show(+range.value));
     ticks.forEach((t, i) => t.addEventListener('click', () => show(i)));
+
+    // Clicking the rings works too: the distance from the center says which ring you're on
+    // (ring n reaches (n + 1) / count of the way out), and hovering previews it
+    const lens = document.querySelector('.zoom-lens');
+    const ringAt = e => {
+        const box = lens.getBoundingClientRect();
+        const d = Math.hypot(e.clientX - (box.left + box.width / 2), e.clientY - (box.top + box.height / 2)) / (box.width / 2);
+        return d > 1 ? -1 : Math.max(0, Math.ceil(d * stops.length) - 1);
+    };
+    lens.addEventListener('click', e => {
+        const n = ringAt(e);
+        if (n >= 0) show(n);
+    });
+    lens.addEventListener('mousemove', e => {
+        const n = ringAt(e);
+        rings.forEach(r => r.classList.toggle('hover', +r.dataset.ring === n));
+        lens.style.cursor = n >= 0 ? 'pointer' : '';
+    });
+    lens.addEventListener('mouseleave', () => rings.forEach(r => r.classList.remove('hover')));
     show(0);
 })();
 
