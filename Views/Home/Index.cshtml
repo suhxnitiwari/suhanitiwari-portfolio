@@ -1220,7 +1220,7 @@
         }
     }
 
-    /* "View more…" under If I were a... */
+    /* "View more…" under If you know me... */
     .view-more {
         display: block;
         margin: 30px auto 0;
@@ -2561,9 +2561,12 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
+        <button type="button" class="view-more" aria-expanded="false" aria-controls="moreAboutMe">View more…</button>
     </div>
 </section>
 
+<!-- VIEW MORE: If I were a... and The Duality of a Woman stay tucked away until "View more…" is clicked -->
+<div class="more-about-me" id="moreAboutMe" hidden>
 <!-- IF I WERE A... -->
 @{
     // (category, answer, aspect of me, note). Add or remove freely.
@@ -2609,7 +2612,6 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
-        <button type="button" class="view-more" aria-expanded="false" aria-controls="duality">View more…</button>
     </div>
 </section>
 <!-- THE DUALITY OF A WOMAN -->
@@ -2704,7 +2706,7 @@
         ("Polished", "Unfiltered", "I’ll edit the work seventeen times. My hair will be perfectly curled. My words? Considerably less edited. Perfectionism applies to the output, not always the commentary.")
     };
 }
-<section class="duality" id="duality" hidden>
+<section class="duality" id="duality">
     <div class="about-container">
         <h2 class="duality-title">The Duality of a Woman™</h2>
         <p class="kn-hint">Tap a card to see what I mean.</p>
@@ -2781,9 +2783,10 @@
                 </ul>
             </div>
         </div>
-        <button type="button" class="view-more view-less" aria-controls="duality">Okay, that’s enough about me</button>
+        <button type="button" class="view-more view-less" aria-controls="moreAboutMe">Okay, that’s enough about me</button>
     </div>
 </section>
+</div>
 
 <script>
     // How Well Do You Know Me?: one This or That at a time. Guess, see my pick, get a score at the end.
@@ -2905,7 +2908,7 @@
         show(0);
     })();
 
-    // "View more…" under If I were a... opens The Duality of a Woman; the button at its bottom closes it again
+    // "View more…" under If you know me... opens If I were a... and The Duality of a Woman; the button at its bottom closes it again
     (() => {
         const more = document.querySelector('.view-more:not(.view-less)');
         const less = document.querySelector('.view-less');
