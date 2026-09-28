@@ -968,7 +968,10 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     // back / forward: show whichever tab the address now points to
     addEventListener('popstate', () => show(tabForHash(location.hash)));
     // #mis opens MIS Major; #skills and #projects open it and jump to that section (the home page links here)
-    const jumpTo = ['#skills', '#projects'].includes(location.hash) ? location.hash.slice(1) : null;
+    // On the one-page Pursue (/home/pursue), #mis and #marketing also scroll down to the Coursework section
+    const onPursue = !!document.getElementById('coursework');
+    const jumpTo = ['#skills', '#projects'].includes(location.hash) ? location.hash.slice(1)
+        : onPursue && ['#mis', '#marketing'].includes(location.hash) ? 'coursework' : null;
     show(tabForHash(location.hash));
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
     // unless the visitor has already started scrolling on their own

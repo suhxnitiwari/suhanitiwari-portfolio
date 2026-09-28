@@ -138,65 +138,81 @@
         }
     }
 
-    /* McCombs rankings: stat tiles under the degree */
-    .rankings {
-        text-align: center;
-    }
+    /* McCombs by the numbers: vertical tabs on the left, what each one means to me on the right */
+    .rankings { max-width: 1100px; margin: 0 auto; }
 
     .rankings h2 {
-        margin-bottom: 24px;
+        margin-bottom: 26px;
         font-family: Georgia, serif;
         font-size: 1.8em;
         color: #2A1810;
+        text-align: center;
     }
 
-    /* tiles wrap and center, so any number of rankings lays out evenly */
-    .rankings-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
+    .rank-tabs {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+        gap: 22px;
+        align-items: stretch;
     }
 
-    .rankings-row .ranking {
-        flex: 1 1 190px;
-        max-width: 260px;
-    }
+    .rank-list { display: flex; flex-direction: column; gap: 10px; }
 
-    .ranking {
-        display: flex;
-        flex-direction: column;
+    .rank-tab {
+        display: grid;
+        grid-template-columns: 76px 1fr;
         align-items: center;
-        gap: 6px;
-        padding: 26px 20px;
+        gap: 14px;
+        width: 100%;
+        padding: 14px 18px;
         border-radius: 18px;
+        border: 1.5px solid #EBD5D0;
         background: #FFF8F6;
-        border: 1px solid #EBD5D0;
-    }
-
-    .ranking-number {
-        font-size: 3.4em;
-        font-weight: 700;
-        line-height: 1;
-        color: #8A4D57;
-    }
-
-    .ranking-text {
-        max-width: 220px;
-        font-size: 0.95em;
-        line-height: 1.4;
         color: #2A1810;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
     }
+    .rank-tab:hover { border-color: #C99AA5; transform: translateX(3px); }
+    .rank-tab:focus-visible { outline: 2px solid #8F4661; outline-offset: 3px; }
+    .rank-tab[aria-selected="true"] { background: #8F4661; border-color: #8F4661; color: #FFF8F6; transform: translateX(6px); }
+
+    .ranking-number { font-family: Georgia, serif; font-size: 2.3em; line-height: 1; color: #8A4D57; }
+    .rank-tab[aria-selected="true"] .ranking-number { color: #F3C9A0; }
+
+    .ranking-text { font-size: 0.98em; line-height: 1.35; }
 
     /* says whether it ranks the undergraduate or graduate program */
     .ranking-school {
         display: block;
-        margin-bottom: 4px;
-        font-size: 0.78em;
+        margin-bottom: 3px;
+        font-size: 0.72em;
         font-weight: 700;
         letter-spacing: 1.5px;
         text-transform: uppercase;
         color: #56634A;
+    }
+    .rank-tab[aria-selected="true"] .ranking-school { color: #F5E5E1; opacity: 0.85; }
+
+    .rank-panel {
+        padding: 36px 40px;
+        border-radius: 24px;
+        background: radial-gradient(circle at 100% 0%, #F2CFD7 0, rgba(242, 207, 215, 0) 55%), #FFFBF9;
+        border: 1px solid rgba(143, 70, 97, 0.16);
+        box-shadow: 0 24px 50px -36px rgba(42, 24, 16, 0.4);
+    }
+    .rank-panel[hidden] { display: none; }
+    .rank-panel.entering { animation: rank-in 0.3s ease; }
+    @@keyframes rank-in { from { opacity: 0; transform: translateY(6px); } }
+    .rank-big { font-family: Georgia, serif; font-size: 4.6em; line-height: 0.9; color: #8F4661; }
+    .rank-title { margin: 10px 0 16px; font-family: Georgia, serif; font-size: 1.55em; line-height: 1.25; color: #2A1810; }
+    .rank-panel p { font-size: 1.05em; line-height: 1.75; color: #3B2A24; }
+    .rank-panel em { font-family: Georgia, serif; color: #8F4661; }
+    .rank-source { margin-top: 18px; font-size: 0.8em !important; letter-spacing: 0.06em; color: #7A665F !important; }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .rank-tab, .rank-panel.entering { transition: none; animation: none; }
     }
 
     @@media (max-width: 768px) {
@@ -217,26 +233,12 @@
             font-size: 1.25em;
         }
 
-        .rankings-row {
-            gap: 12px;
-        }
-
-        .rankings-row .ranking {
-            flex-basis: 100%;
-            max-width: none;
-        }
-
-        .ranking {
-            flex-direction: row;
-            justify-content: center;
-            gap: 16px;
-            padding: 16px 18px;
-            text-align: left;
-        }
-
-        .ranking-number {
-            font-size: 2.4em;
-        }
+        .rank-tabs { grid-template-columns: 1fr; gap: 14px; }
+        .rank-tab { grid-template-columns: 60px 1fr; padding: 12px 14px; }
+        .rank-tab[aria-selected="true"], .rank-tab:hover { transform: none; }
+        .ranking-number { font-size: 1.9em; }
+        .rank-panel { padding: 26px 22px; }
+        .rank-big { font-size: 3.4em; }
     }
 </style>
 
@@ -272,31 +274,73 @@
             <p>MIS so I can build things. Psychology so I understand the people using them. Marketing so I know why they’d care. And educational psychology because I can’t stop wondering how people learn. Together they all circle one question I love: <em>how do you make technology that feels human?</em> UT is where I get to chase it, usually fueled by a vanilla latte from Medici and a long afternoon in the Life Science Library. ✦</p>
         </div>
 
-        <!-- McCOMBS RANKINGS (U.S. News) -->
-        <div class="rankings">
+        <!-- McCOMBS RANKINGS (U.S. News): hidden for now, remove "hidden" to bring it back -->
+        <div class="rankings" hidden>
             <h2>McCombs by the Numbers</h2>
-            <div class="rankings-row">
-                <div class="ranking">
-                    <span class="ranking-number">#1</span>
-                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>Business School in Texas</span>
+            @{
+                // (number, program, what it ranks, my headline, what it means to me)
+                var ranks = new (string Num, string School, string Text, string Title, string Note)[]
+                {
+                    ("#1", "Undergraduate", "Business School in Texas", "The best business school in the state I’ve called home since 2020.",
+                        "I moved to Frisco in middle school and have been a Texan ever since, so getting to study at the best business school in the state feels like a very good plot twist for the girl who changed schools ten times."),
+                    ("#1", "Graduate program", "in Information Systems", "My major comes from a department at the very top of its field.",
+                        "My MIS classes come out of the same McCombs department behind the country’s #1 graduate Information Systems program. It shows in how the classes are built: less memorizing, more <em>go build the real thing</em>, like RideFlow and the ride share database."),
+                    ("#4", "Undergraduate", "in Management Information Systems", "My major, fourth in the country.",
+                        "This is where I learned to go from a line of code all the way out to company strategy: Python, SQL, databases, full-stack web apps and the business case for each. It’s also where I figured out I like building things almost as much as I like understanding the people who use them."),
+                    ("#5", "Undergraduate", "in Marketing", "My minor, fifth in the country.",
+                        "Marketing is where my psychology brain gets to play: why people choose what they choose, and what makes them come back. It’s the thinking behind my Starbucks product strategy and my Owala marathon campaign."),
+                    ("#6", "Undergraduate", "Business School in the US", "Top ten in the nation, and full of people who make me better.",
+                        "The ranking is nice. The real gift is the people: classmates who push each other, professors who actually know your name, and a campus where there’s always another idea to chase. Hook ’em. ✦")
+                };
+            }
+            <div class="rank-tabs">
+                <div class="rank-list" role="tablist" aria-orientation="vertical" aria-label="McCombs rankings">
+                    @for (var i = 0; i < ranks.Length; i++)
+                    {
+                        <button type="button" class="rank-tab" role="tab" id="rank-tab-@i" aria-controls="rank-panel-@i"
+                                aria-selected="@(i == 0 ? "true" : "false")" tabindex="@(i == 0 ? 0 : -1)">
+                            <span class="ranking-number">@ranks[i].Num</span>
+                            <span class="ranking-text"><span class="ranking-school">@ranks[i].School</span>@ranks[i].Text</span>
+                        </button>
+                    }
                 </div>
-                <div class="ranking">
-                    <span class="ranking-number">#1</span>
-                    <span class="ranking-text"><span class="ranking-school">Graduate program</span>in Information Systems</span>
-                </div>
-                <div class="ranking">
-                    <span class="ranking-number">#4</span>
-                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>in Management Information Systems</span>
-                </div>
-                <div class="ranking">
-                    <span class="ranking-number">#5</span>
-                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>in Marketing</span>
-                </div>
-                <div class="ranking">
-                    <span class="ranking-number">#6</span>
-                    <span class="ranking-text"><span class="ranking-school">Undergraduate</span>Business School in the US</span>
-                </div>
+                @for (var i = 0; i < ranks.Length; i++)
+                {
+                    <div class="rank-panel" role="tabpanel" id="rank-panel-@i" aria-labelledby="rank-tab-@i" hidden="@(i != 0)">
+                        <div class="rank-big">@ranks[i].Num</div>
+                        <h3 class="rank-title">@ranks[i].Title</h3>
+                        <p>@Html.Raw(ranks[i].Note)</p>
+                        <p class="rank-source">U.S. News &amp; World Report</p>
+                    </div>
+                }
             </div>
+            <script>
+                // McCombs by the numbers: click a ranking (or use the arrow keys) to read what it means to me
+                (() => {
+                    const tabs = [...document.querySelectorAll('.rank-tab')];
+                    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    const show = (i, focus) => {
+                        tabs.forEach((t, n) => {
+                            const on = n === i;
+                            t.setAttribute('aria-selected', on);
+                            t.tabIndex = on ? 0 : -1;
+                            const panel = document.getElementById(t.getAttribute('aria-controls'));
+                            panel.hidden = !on;
+                            panel.classList.toggle('entering', on && !reduce);
+                        });
+                        if (focus) tabs[i].focus();
+                    };
+                    tabs.forEach((t, i) => {
+                        t.addEventListener('click', () => show(i));
+                        t.addEventListener('keydown', e => {
+                            const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+                            if (!step) return;
+                            e.preventDefault();
+                            show((i + step + tabs.length) % tabs.length, true);
+                        });
+                    });
+                })();
+            </script>
         </div>
 
     </div>
