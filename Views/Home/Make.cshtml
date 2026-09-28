@@ -197,7 +197,16 @@
         }, PhotoPosition: "22% 50%"),
         // Photo: Miami at sunset by Brendon Spring / Pexels, Pexels License. 3840 × 2560.
         // https://www.pexels.com/photo/drone-shot-of-the-miami-part-at-sunset-8530566/
-        new Trip("Miami", "", "/images/travel/miami-skyline-4k.jpg", PhotoPosition: "20% 50%")
+        new Trip("Miami", "", "/images/travel/miami-skyline-4k.jpg", new[]
+        {
+            new TripSpot("🏨", "W South Beach", "Favorite stay", ""),
+            new TripSpot("☕️", "Cafe Americano", "Favorite café and brunch", ""),
+            new TripSpot("🛥️", "Fisher Island Boat Tour", "Favorite experience",
+                "The Biscayne Bay sightseeing routes pass Fisher Island."),
+            new TripSpot("🌴", "The Grove at W South Beach", "Favorite hotel hangout", ""),
+            new TripSpot("🌊", "Blue Waters Bar & Grill", "Favorite waterfront bite", ""),
+            new TripSpot("🛍️", "Aventura Mall", "Favorite shopping", "")
+        }, PhotoPosition: "20% 50%")
     };
 
     var bakes = new[]
@@ -428,7 +437,7 @@
                         <div>
                             <h4>@spot.Name @if (spot.MustDo) { <span class="trip-must">Must do</span> }</h4>
                             <p class="trip-kind">@spot.Kind</p>
-                            <p>@spot.Line</p>
+                            @if (!string.IsNullOrEmpty(spot.Line)) { <p>@spot.Line</p> }
                         </div>
                     </li>
                 }
