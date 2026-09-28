@@ -995,8 +995,8 @@
             // Places I've visited (not lived): small sage dots with their name, not part of the journey line.
             var visited = new[]
             {
-                new { name = "New York City", coords = new[] { 40.7128, -74.0060 }, labelSide = "right" },
-                new { name = "Chicago", coords = new[] { 41.8781, -87.6298 }, labelSide = "top" }
+                new { name = "New York City", coords = new[] { 40.7128, -74.0060 }, labelSide = "right", photo = "/images/places/nyc.png" },
+                new { name = "Chicago", coords = new[] { 41.8781, -87.6298 }, labelSide = "top", photo = "" }
             };
         }
 
@@ -1643,14 +1643,19 @@
     });
     const visitOffsets = { right: [10, 0], left: [-10, 0], top: [0, -10], bottom: [0, 10] };
     visited.forEach(place => {
-        L.marker(place.coords, { icon: visitIcon, keyboard: false, title: `Visited: ${place.name}` })
+        const marker = L.marker(place.coords, { icon: visitIcon, keyboard: true, title: `Visited: ${place.name}` })
             .addTo(map)
             .bindTooltip(place.name, {
                 permanent: true,
                 direction: place.labelSide,
                 offset: visitOffsets[place.labelSide],
-                className: 'visit-label'
+                className: 'visit-label',
+                interactive: true
             });
+        if (place.photo) {
+            marker.bindPopup(`<img class="popup-photo" src="${place.photo}" alt="My visit to ${place.name}"><div class="popup-content"><div class="popup-title">${place.name}</div><a href="/home/make#traveling">My favorite spots →</a></div>`, { minWidth: 260, maxWidth: 260 });
+            marker.getTooltip().on('click', () => marker.openPopup());
+        }
     });
 
     // Hint + key live on the map itself (bottom-left), so they don't take space under it
