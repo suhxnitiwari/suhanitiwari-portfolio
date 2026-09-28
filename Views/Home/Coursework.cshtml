@@ -1127,6 +1127,14 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
 
     pills.forEach(p => p.addEventListener('click', () => pick(picked === +p.dataset.x ? null : +p.dataset.x)));
     pick(null);   // nothing picked on load: every card shows until someone chooses a theme
+
+    // a link can pick a theme: /home/coursework#human-behavior, #persuasion, #storytelling, #decision-making, #leadership, #innovation
+    const slug = t => t.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');
+    const linked = pills.find(p => '#' + slug(p.textContent) === location.hash);
+    if (linked) {
+        pick(+linked.dataset.x);
+        requestAnimationFrame(() => document.querySelector('.cx').scrollIntoView({ behavior: 'instant', block: 'start' }));
+    }
 })();
 
 function openThemeModal(i) {

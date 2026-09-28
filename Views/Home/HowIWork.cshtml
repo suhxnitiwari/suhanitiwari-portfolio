@@ -596,7 +596,7 @@
             "I adjust how I communicate for each person: data for one, the big picture for another, a quick check-in for someone else." },
         ["Developer"] = new[] {
             "I give specific, genuine recognition, and I notice the small wins people don’t always get credit for.",
-            "I like onboarding and mentoring. At Girls Who Code, I grew chapters at two schools to 60+ students per session." },
+            "I like onboarding and mentoring. At Girls Who Code, I grew chapters at two schools to 120+ students." },
         ["Communication"] = new[] {
             "I turn messy ideas into clear presentations, pitches and write-ups that people actually remember.",
             "I’m comfortable presenting to a room, and I shape the message for whoever’s listening." }
@@ -898,5 +898,12 @@
                 next.focus();
             });
         });
+        // links can open a test directly: #strengths (CliftonStrengths), #disc, #riasec
+        const byHash = { '#strengths': 'tab-clifton', '#clifton': 'tab-clifton', '#disc': 'tab-disc', '#riasec': 'tab-riasec' };
+        const target = document.getElementById(byHash[location.hash]);
+        if (target) {
+            show(target);
+            requestAnimationFrame(() => document.querySelector('.test-tabs').scrollIntoView({ behavior: 'instant', block: 'start' }));
+        }
     })();
 </script>
