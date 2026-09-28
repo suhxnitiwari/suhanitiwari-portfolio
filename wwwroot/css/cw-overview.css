@@ -2,17 +2,18 @@
    Picking a theme adds .has-pick to .courses-grid; cards that feed it get .lit and show their courses (.cx-lit). */
 
 .cx {
-    max-width: 920px;
+    max-width: 1140px;
     margin: -20px auto 36px;
     text-align: center;
 }
 
 .cx-intro {
-    max-width: 760px;
+    max-width: 1140px;
     margin-inline: auto;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.15em;
+    font-size: 1.4em;
     line-height: 1.7;
+    text-wrap: pretty;
     color: #3B2A24;
     margin-bottom: 36px;
 }

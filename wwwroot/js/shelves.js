@@ -233,3 +233,25 @@ document.querySelectorAll('.shelf').forEach(shelf => {
         update();
     });
 });
+
+// ===== Digital Art: the wall slides sideways; the arrows move it most of a screen at a time =====
+(function () {
+    const wall = document.querySelector('.gallery-wall');
+    if (!wall) return;
+    const wrap = wall.closest('.gallery-wall-wrap');
+    const prev = wrap.querySelector('.shelf-arrow.prev');
+    const next = wrap.querySelector('.shelf-arrow.next');
+    const update = () => {
+        prev.disabled = wall.scrollLeft <= 2;
+        next.disabled = wall.scrollLeft + wall.clientWidth >= wall.scrollWidth - 2;
+    };
+    const slide = dir => wall.scrollBy({ left: dir * wall.clientWidth * 0.7, behavior: 'smooth' });
+    prev.addEventListener('click', () => slide(-1));
+    next.addEventListener('click', () => slide(1));
+    wall.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); slide(e.key === 'ArrowLeft' ? -1 : 1); }
+    });
+    wall.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+})();

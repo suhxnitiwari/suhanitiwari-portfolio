@@ -287,26 +287,32 @@
     box-shadow: 0 14px 28px rgba(42, 24, 16, 0.22);
 }
 
-/* Make > Digital Art: one gallery wall, hung left to right:
-   two by two | the two tall flag pieces side by side | two over one wide piece.
-   Every piece has the same walnut frame, white mat and title, and each row is sized from the art's
-   own proportions (--r = width / height), so the rows line up and nothing is ever cropped. */
+/* Make > Digital Art: one gallery wall of columns that slides sideways (‹ › or swipe).
+   A column holds one piece at full height, or two stacked pieces sharing its width. Each column's width is
+   worked out from its art (--n pieces, --inv = the sum of height / width) so every column is exactly
+   --wall-h tall: the wall is one rectangle and nothing is ever cropped. */
 .art-shelf {
     --frame: 8px;          /* walnut */
     --mat: 12px;           /* white mat */
     --edge: calc(2 * (var(--frame) + var(--mat)));
-    --gap: 22px;
+    --label: 34px;         /* the title under each piece */
+    --stack-gap: 26px;     /* between two stacked pieces */
+    --wall-h: clamp(440px, 72vh, 640px);
+    --cover-height: var(--wall-h);   /* centers the ‹ › arrows on the wall */
 }
 
-/* on wide screens the wall reaches a little past the text column, so the art gets more room;
-   column shares come from the art's proportions (the flag pair is about twice a block) */
-.gallery-salon {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr) minmax(0, 1fr);
-    align-items: stretch;
-    gap: 30px;
+.gallery-wall-wrap {
     margin-inline: calc(-1 * clamp(0px, (92vw - 1080px) / 2, 110px));
-    padding: 44px 34px 56px;
+}
+
+.gallery-wall {
+    display: flex;
+    align-items: flex-start;
+    gap: 34px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding: 44px 40px 56px;
     border-radius: 14px;
     background:
         radial-gradient(ellipse 70% 55% at 50% 0%, rgba(255, 250, 244, 0.75) 0%, rgba(255, 250, 244, 0) 100%),
@@ -314,27 +320,33 @@
     box-shadow: inset 0 -12px 0 #DCC6BE;   /* the baseboard */
 }
 
-.salon-block {
+.gallery-wall::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-wall:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 3px;
+}
+
+/* the shelf arrows sit on the wall's padding, so push them to its top edge */
+.gallery-wall-wrap .shelf-arrow {
+    top: calc(44px + var(--wall-h) / 2);
+}
+
+.gallery-wall-wrap .shelf-arrow.prev { left: 12px; }
+.gallery-wall-wrap .shelf-arrow.next { right: 12px; }
+
+.wall-col {
+    flex: none;
+    width: calc((var(--wall-h) - var(--n) * (var(--edge) + var(--label)) - (var(--n) - 1) * var(--stack-gap)) / var(--inv) + var(--edge));
+    height: var(--wall-h);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 30px;
-}
-
-.salon-row {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--gap);
     margin: 0;
     padding: 0;
     list-style: none;
-}
-
-/* each piece's share of its row grows with its width / height, on top of the frame and mat,
-   so every opening in the row comes out the same height */
-.gallery-piece {
-    flex: var(--r) 1 var(--edge);
-    min-width: 0;
 }
 
 .gallery-piece .art-open {
@@ -364,34 +376,13 @@
     object-fit: contain;
 }
 
-/* the two tall pieces stand as high as the blocks beside them */
-.salon-center {
-    align-items: stretch;
-}
-
-.gallery-tall .art-open {
-    height: 100%;
-}
-
-.gallery-tall .gallery-frame {
-    position: relative;
-    flex: 1;
-    min-height: 160px;
-}
-
-.gallery-tall .gallery-frame img {
-    position: absolute;
-    inset: var(--mat);
-    width: calc(100% - 2 * var(--mat));
-    height: calc(100% - 2 * var(--mat));
-    aspect-ratio: auto;
-}
-
-/* the title, the same under every piece */
+/* the title, the same under every piece (a fixed height, so the column math above holds) */
 .gallery-piece .gallery-label {
     display: block;
-    margin-top: 12px;
+    height: var(--label);
+    padding-top: 12px;
     line-height: 1.3;
+    white-space: nowrap;
 }
 
 .gallery-title {
@@ -419,67 +410,30 @@
     color: #8A4D57;
 }
 
-/* ---- medium screens: the flag pair on top, the two blocks side by side below ---- */
+/* ---- tablets and phones: a shorter wall, slimmer frames ---- */
 @media (max-width: 1300px) {
-    .gallery-salon {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin-inline: 0;
-        padding: 40px 30px 50px;
-    }
-
-    .salon-center {
-        grid-column: 1 / -1;
-        order: -1;
-        width: min(100%, 560px);
-        margin-inline: auto;
-        align-items: flex-start;
-    }
-
-    /* the tall pieces now set their own height from the art */
-    .gallery-tall .gallery-frame {
-        flex: none;
-        min-height: 0;
-    }
-
-    .gallery-tall .gallery-frame img {
-        position: static;
-        width: 100%;
-        height: auto;
-        aspect-ratio: var(--r);
-    }
+    .gallery-wall-wrap { margin-inline: 0; }
 }
 
-/* ---- small screens: one group per row ---- */
 @media (max-width: 680px) {
-    .gallery-salon {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 30px;
-    }
-}
-
-/* ---- phones: slimmer frames ---- */
-@media (max-width: 520px) {
     .art-shelf {
         --frame: 5px;
         --mat: 7px;
-        --gap: 12px;
+        --label: 28px;
+        --stack-gap: 18px;
+        --wall-h: 380px;
     }
 
-    .gallery-salon {
-        padding: 26px 14px 34px;
-    }
-
-    .salon-block {
+    .gallery-wall {
         gap: 22px;
+        padding: 26px 18px 34px;
     }
 
-    .gallery-piece .gallery-label {
-        margin-top: 9px;
-    }
+    .gallery-wall-wrap .shelf-arrow { top: calc(26px + var(--wall-h) / 2); }
 
-    .gallery-title {
-        font-size: 0.78em;
-    }
+    .gallery-piece .gallery-label { padding-top: 8px; }
+
+    .gallery-title { font-size: 0.78em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

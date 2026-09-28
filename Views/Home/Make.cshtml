@@ -113,45 +113,29 @@
 @{
     // Art: selected works from my AP 2-D Art and Design portfolio (digital, drawn in Procreate).
     // Images saved in wwwroot/images/art.
-    // The wall is hung as one piece, left to right: two by two | the two flag pieces side by side | two over one wide piece.
-    // Ratio = the art's width / height, so every row lines up without cropping anything.
+    // The wall is one rectangle of columns, left to right. A column holds one piece (it runs the full height)
+    // or two stacked pieces that share its width. Every column is the same height, so the edges line up.
+    // Ratio = the art's width / height, so nothing is ever cropped.
+    var oldAndNew = new Artwork("Old and New", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg", 1.0);
+    var betweenTwoWorlds = new Artwork("Between Two Worlds", "Show the IND and US flag in a child's hands to symbolize her navigating dual cultural identity", "/images/art/navigating-indian-american-identity.jpg", 0.985);
+    // No idea line yet for these four (the diya thali is Image 7 in the portfolio)
+    var whatICarry = new Artwork("What I Carry", "", "/images/art/packing-home.jpg", 0.969);
+    var keepingTheLight = new Artwork("Keeping the Light", "", "/images/art/diya-thali.jpg", 0.84);
+    var wovenTogether = new Artwork("Woven Together", "", "/images/art/braid.jpg", 0.563);
+    var gettingReady = new Artwork("Getting Ready", "", "/images/art/vanity.jpg", 1.853);
+    var inFullBloom = new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg", 0.75);
+    var softlyIBelong = new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg", 0.931);
+    var inheritedLight = new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg", 0.883);
 
-    // Left block: two by two
-    var artLeft = new[]
+    // The headliners (What I Carry, Inherited Light) get columns of their own; Getting Ready was made to sit under In Full Bloom
+    var artWall = new[]
     {
-        new[]
-        {
-            new Artwork("Old and New", "Highlight the delicate dance between tradition's allure and its outdated norms", "/images/art/traditionalism-versus-modernism.jpg", 1.0),
-            new Artwork("Between Two Worlds", "Show the IND and US flag in a child's hands to symbolize her navigating dual cultural identity", "/images/art/navigating-indian-american-identity.jpg", 0.985)
-        },
-        new[]
-        {
-            // No idea line yet for these two (the diya thali is Image 7 in the portfolio)
-            new Artwork("What I Carry", "", "/images/art/packing-home.jpg", 0.969),
-            new Artwork("Keeping the Light", "", "/images/art/diya-thali.jpg", 0.84)
-        }
-    };
-
-    // Center: the two tall flag pieces, hung together. No idea line yet for the braid
-    var artCenter = new[]
-    {
-        new Artwork("Woven Together", "", "/images/art/braid.jpg", 0.563),
-        new Artwork("In Full Bloom", "Display IND & US flag colors in vase to symbolize how identity of American-Indians can blossom", "/images/art/coexistence-of-both-my-worlds.jpg", 0.75)
-    };
-
-    // Right block: two pieces over one wide piece
-    var artRight = new[]
-    {
-        new[]
-        {
-            new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg", 0.931),
-            new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg", 0.883)
-        },
-        new[]
-        {
-            // No idea line yet for this one
-            new Artwork("Getting Ready", "", "/images/art/vanity.jpg", 1.853)
-        }
+        new[] { oldAndNew, betweenTwoWorlds },
+        new[] { whatICarry },
+        new[] { wovenTogether },
+        new[] { inFullBloom, gettingReady },
+        new[] { inheritedLight },
+        new[] { softlyIBelong, keepingTheLight }
     };
 
     // Writing: my published pieces (opening lines copied from each piece)
@@ -244,7 +228,7 @@
     {
         new Artwork("Lego Cake", "", "/images/baking/cake-lego.jpg"),
         new Artwork("Solar System Cake", "", "/images/baking/cake-solar-system.jpg"),
-        new Artwork("Rainbow Cake", "", "/images/baking/cake-rainbow.jpg")
+        new Artwork("Candy Crush Cake", "", "/images/baking/cake-candy-crush.jpg")
     };
 
     var bakes = new[]
@@ -298,16 +282,14 @@
         </li>
     }
 
-    void RenderArtBlock(Artwork[][] rows, string side)
+    // One column of the wall. --n = how many pieces, --inv = the sum of height / width, which is all CSS needs
+    // to work out the width that makes this column exactly as tall as the wall.
+    void RenderArtColumn(Artwork[] pieces)
     {
-        <div class="salon-block salon-@side">
-            @foreach (var row in rows)
-            {
-                <ul class="salon-row">
-                    @foreach (var art in row) { RenderArtPiece(art, "framed"); }
-                </ul>
-            }
-        </div>
+        var inv = pieces.Sum(a => 1 / a.Ratio).ToString("0.####", System.Globalization.CultureInfo.InvariantCulture);
+        <ul class="wall-col" style="--n: @pieces.Length; --inv: @inv">
+            @foreach (var art in pieces) { RenderArtPiece(art, "framed"); }
+        </ul>
     }
 
     void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null, Artwork[]? gallery = null)
@@ -439,17 +421,17 @@
             <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create.</p>
         </div>
 
-        <!-- Digital Art: hung like a gallery wall; each piece opens large -->
+        <!-- Digital Art: one gallery wall that slides sideways; each piece opens large -->
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
                 <h3 class="shelf-title">Digital Art</h3>
             </div>
-            <div class="gallery-salon" role="group" aria-label="Digital Art">
-                @{ RenderArtBlock(artLeft, "left"); }
-                <ul class="salon-row salon-center">
-                    @foreach (var art in artCenter) { RenderArtPiece(art, "tall"); }
-                </ul>
-                @{ RenderArtBlock(artRight, "right"); }
+            <div class="shelf-rail-wrap gallery-wall-wrap">
+                <button type="button" class="shelf-arrow prev" aria-label="Slide the Digital Art wall left">‹</button>
+                <div class="gallery-wall" role="group" aria-label="Digital Art" tabindex="0">
+                    @foreach (var column in artWall) { RenderArtColumn(column); }
+                </div>
+                <button type="button" class="shelf-arrow next" aria-label="Slide the Digital Art wall right">›</button>
             </div>
         </div>
         <hr class="shelf-divider">
