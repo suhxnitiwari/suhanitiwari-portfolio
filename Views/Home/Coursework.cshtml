@@ -499,8 +499,8 @@
                     <p class="mp-thesis">I learn enough technology to <em>build it</em>, enough business to know <em>why we’re building it</em>, and enough about people to make sure what we build <em>actually works for them</em>.</p>
                 </header>
 
-                <!-- 2. what I can do -->
-                <div class="mp-section" aria-labelledby="mp-can-title">
+                <!-- 2. what I can do (the home page's "What I can do" button lands here) -->
+                <div class="mp-section" id="skills" style="scroll-margin-top:100px" aria-labelledby="mp-can-title">
                     <div class="mp-head">
                         <p class="mp-eyebrow">From classroom to capability</p>
                         <h3 class="mp-h2" id="mp-can-title">I didn’t just learn the vocabulary.<br />I built with it.</h3>
@@ -912,7 +912,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     });
 })();
 
-// Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis or #projects opens MIS Major; #marketing opens Marketing.
+// Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis, #skills or #projects opens MIS Major; #marketing opens Marketing.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
     const show = tab => {
@@ -937,13 +937,14 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
             next.focus();
         });
     });
-    // #mis opens MIS Major; #projects opens it and jumps to the projects (the home page links to both)
-    if (location.hash === '#mis' || location.hash === '#projects') show(tabs[1]);
+    // #mis opens MIS Major; #skills and #projects open it and jump to that section (the home page links here)
+    const jumpTo = ['#skills', '#projects'].includes(location.hash) ? location.hash.slice(1) : null;
+    if (location.hash === '#mis' || jumpTo) show(tabs[1]);
     if (location.hash === '#marketing') show(tabs[2]);
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
     // unless the visitor has already started scrolling on their own
-    if (location.hash === '#projects') {
-        const jump = () => document.getElementById('projects').scrollIntoView({ behavior: 'instant' });
+    if (jumpTo) {
+        const jump = () => document.getElementById(jumpTo).scrollIntoView({ behavior: 'instant' });
         let moved = false;
         ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, () => moved = true, { once: true, passive: true }));
         setTimeout(jump, 0);
