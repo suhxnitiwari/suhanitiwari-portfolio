@@ -8,6 +8,7 @@
                             <button type="button" role="tab" aria-selected="true" aria-controls="mp-proj-0" data-i="0">Full-Stack Development</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-1" data-i="1" tabindex="-1">Object-Oriented Programming</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-2" data-i="2" tabindex="-1">Database Design</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-3" data-i="3" tabindex="-1">Algorithms in Python</button>
                         </div>
                         <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
                     </div>
@@ -204,4 +205,52 @@
                         </div>
                     </div>
                     </div>
+
+                    <!-- Saturday in Austin: my Python planner, running in the visitor's browser through Pyodide -->
+                    <div class="mp-proj" id="mp-proj-3" role="tabpanel" aria-labelledby="mp-saturday" hidden>
+                    <div class="mp-proof">
+                        <div class="mp-code sat-planner">
+                            <div class="mp-code-bar"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span><em>python -m saturday</em></div>
+                            <form class="sat-form">
+                                <label>Wake up <input type="time" name="wake" value="09:00" required></label>
+                                <label>Bedtime <input type="time" name="sleep" value="23:00" required></label>
+                                <label class="sat-hours">Hours out <span><input type="range" name="hours" min="1" max="14" step="0.5" value="8"><output>8</output></span></label>
+                                <label>Mood
+                                    <select name="mood">
+                                        <option value="everything">Surprise me</option>
+                                        <option value="cozy">Cozy</option>
+                                        <option value="creative">Creative</option>
+                                        <option value="foodie">Foodie</option>
+                                        <option value="productive">Productive</option>
+                                    </select>
+                                </label>
+                                <button type="submit">Plan my Saturday ✦</button>
+                            </form>
+                            <div class="sat-out" aria-live="polite">
+                                <p class="sat-status">Pick your times and hit plan. My Python code runs right here in your browser, and every click is a different Saturday.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="mp-coded">Suhani Coded™</span>
+                            <h3 id="mp-saturday">Saturday in Austin</h3>
+                            <p class="mp-proof-sub">My favorite Austin spots, turned into a Python app that plans the perfect Saturday: coffee first, brunch before noon, dinner somewhere wonderful, and never a wasted minute.</p>
+                            <ul class="mp-facts">
+                                <li><b>32</b><span>FAVORITE SPOTS</span></li>
+                                <li><b>5</b><span>MOODS</span></li>
+                                <li><b>31</b><span>AUTOMATED TESTS</span></li>
+                            </ul>
+                            <ul class="mp-proof-list">
+                                <li>Austin as a weighted graph, with Dijkstra's algorithm finding the fastest drive between neighborhoods</li>
+                                <li>Dynamic programming finds the happiest day in milliseconds, where trying every order of 15 spots would mean over a trillion options</li>
+                                <li>A weighted lottery (sampling without replacement) makes every run different while favorites come up more often</li>
+                                <li>Real rules: brunch in the morning, dinner in the evening, one meal per slot, always coffee, home before bed</li>
+                                <li>Tested against a brute-force search that tries every possible order, on 40 random days</li>
+                            </ul>
+                            <div class="mp-links">
+                                <a class="mp-link solid" href="https://github.com/suhxnitiwari/saturday-in-austin" target="_blank" rel="noopener">View the code ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
+<script src="~/js/saturday.js" asp-append-version="true" defer></script>

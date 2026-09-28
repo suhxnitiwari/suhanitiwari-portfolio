@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+// serve my Python files too (wwwroot/py), so the Saturday planner can run in the browser
+var contentTypes = new FileExtensionContentTypeProvider();
+contentTypes.Mappings[".py"] = "text/plain; charset=utf-8";
+app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
 
 app.UseRouting();
 

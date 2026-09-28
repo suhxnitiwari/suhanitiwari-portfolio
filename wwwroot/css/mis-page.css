@@ -450,3 +450,29 @@
     .mk-step { display: none; }
     .mk-info h3 { font-size: 32px; }
 }
+
+/* Saturday in Austin: the interactive Python planner (fourth project) */
+.sat-planner { display: flex; flex-direction: column; min-height: 36.5em; }
+.sat-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; padding: 18px 20px 16px; border-bottom: 1px solid rgba(245, 229, 225, 0.12); }
+.sat-form label { display: flex; flex-direction: column; gap: 6px; font: 600 11px/1 system-ui, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: #D9B8B3; }
+.sat-form input[type="time"], .sat-form select { font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #F5E5E1; background: #3B2A24; border: 1px solid rgba(245, 229, 225, 0.18); border-radius: 8px; padding: 8px 10px; color-scheme: dark; }
+.sat-hours span { display: flex; align-items: center; gap: 10px; }
+.sat-hours input { flex: 1; accent-color: #E9A6BC; }
+.sat-hours output { min-width: 2.2em; font: 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #F5E5E1; text-transform: none; letter-spacing: 0; }
+.sat-form button { grid-column: 1 / -1; padding: 11px 16px; border: 0; border-radius: 999px; background: #E9A6BC; color: #2A1810; font: 700 14px system-ui, sans-serif; cursor: pointer; transition: background 0.2s ease; }
+.sat-form button:hover { background: #F2C1D1; }
+.sat-form button:disabled { opacity: 0.6; cursor: progress; }
+.sat-form :focus-visible { outline: 2px solid #E9A6BC; outline-offset: 2px; }
+.sat-out { flex: 1; padding: 16px 20px 20px; font: 13.5px/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #F5E5E1; }
+.sat-out p { margin: 0; }
+.sat-status { color: #D9B8B3; font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.6; }
+.sat-head { color: #E9A6BC; font-weight: 700; margin-bottom: 6px !important; }
+.sat-row { display: grid; grid-template-columns: 7.2em 1fr; }
+.sat-row b { font-weight: 400; color: #D9B8B3; }
+.sat-row i { font-style: normal; color: #A98F89; }
+.sat-free span { color: #A98F89; }
+.sat-foot { margin-top: 12px !important; color: #A98F89; font-size: 12px; }
+@media (max-width: 560px) {
+    .sat-form { grid-template-columns: 1fr; }
+    .sat-row { grid-template-columns: 6.4em 1fr; }
+}
