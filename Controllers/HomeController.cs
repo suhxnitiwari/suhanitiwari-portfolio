@@ -48,6 +48,10 @@ public class HomeController : Controller
     }
 
     // "Résumé": my résumé once wwwroot/resume.pdf exists, a short holding page until then
+    // suhanitiwari.com/quiz: a direct link for people who just want to take How Well Do You Know Me?
+    [Route("quiz")]
+    public IActionResult Quiz() => Redirect("/#quiz");
+
     [Route("resume")]
     public IActionResult Resume([FromServices] IWebHostEnvironment environment)
     {

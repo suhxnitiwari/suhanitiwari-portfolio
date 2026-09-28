@@ -990,6 +990,42 @@
         margin-top: 0;
     }
 
+    .quiz-col { scroll-margin-top: 90px; }
+
+    /* leaderboard under the quiz */
+    .quiz-board {
+        margin: 22px auto 0;
+        max-width: 340px;
+        padding: 16px 20px 12px;
+        border-radius: 16px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+    }
+    .quiz-board-title {
+        margin: 0 0 8px;
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-align: center;
+        color: #9E5A63;
+    }
+    .quiz-board ol { margin: 0; padding: 0; list-style: none; counter-reset: rank; }
+    .quiz-board li {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        padding: 7px 0;
+        border-top: 1px dashed #EBD5D0;
+        counter-increment: rank;
+        color: #2A1810;
+    }
+    .quiz-board li:first-child { border-top: 0; }
+    .quiz-board li::before { content: counter(rank); min-width: 1.4em; font-family: Georgia, serif; color: #8A4D57; }
+    .quiz-board li span { flex: 1; }
+    .quiz-board li b { font-family: Georgia, serif; font-weight: 400; color: #8A4D57; }
+    .quiz-rank { margin: 10px 0 0; font-style: italic; color: #8A4D57; }
+
     @@media (max-width: 860px) {
         .duality-row {
             grid-template-columns: 1fr;
@@ -2695,6 +2731,13 @@
     };
 
     // What you get for each score, 0 to 10: a headline, then a few short lines
+    // Leaderboard for How Well Do You Know Me? (name, score out of 10). Add friends as they play.
+    var quizLeaders = new[]
+    {
+        ("Hana", 8),
+        ("Sara", 7),
+    }.OrderByDescending(l => l.Item2).ToArray();
+
     var quizVerdicts = new[]
     {
         new[] { "Oh, this is extraordinary.", "Statistically, I feel like you should have gotten one by accident. You have apparently invented an entirely different woman in your head.", "Hi. I’m Suhani. Nice to meet you. ♡" },
@@ -2760,7 +2803,8 @@
 
                 <!-- the quiz (built by the script below); the grid underneath is the no-JavaScript version -->
                 <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, right = t.Item4, wrongA = t.Item5, wrongB = t.Item6, reveal = t.Item7 })).ToString()"
-                     data-verdicts="@Json.Serialize(quizVerdicts).ToString()" hidden>
+                     data-verdicts="@Json.Serialize(quizVerdicts).ToString()"
+                     data-leaders="@Json.Serialize(quizLeaders.Select(l => new { name = l.Item1, score = l.Item2 })).ToString()" hidden>
                     <div class="quiz-progress">
                         <span class="quiz-count" aria-live="polite"></span>
                         <span class="quiz-bar" aria-hidden="true"><span></span></span>
@@ -2778,9 +2822,20 @@
                             <p class="quiz-score" aria-live="polite"></p>
                             <p class="quiz-verdict"></p>
                             <div class="quiz-verdict-body"></div>
+                            <p class="quiz-rank"></p>
                             <button type="button" class="quiz-btn quiz-again">Play again</button>
                         </div>
                     </div>
+                </div>
+
+                <div class="quiz-board">
+                    <p class="quiz-board-title">Leaderboard ✦</p>
+                    <ol>
+                        @foreach (var (name, points) in quizLeaders)
+                        {
+                            <li><span>@name</span><b>@points/10</b></li>
+                        }
+                    </ol>
                 </div>
 
                 <ul class="tot-grid">
@@ -2913,6 +2968,14 @@
                 p.textContent = text;
                 body.appendChild(p);
             });
+            // where you'd land on the leaderboard
+            const leaders = JSON.parse(quiz.dataset.leaders || '[]');
+            const place = leaders.filter(l => l.score > score).length + 1;
+            const tied = leaders.find(l => l.score === score);
+            $('.quiz-rank').textContent = !leaders.length ? ''
+                : place === 1 && !tied ? `That's the top score. Move over, ${leaders[0].name} ✦`
+                : tied ? `That ties you with ${tied.name} for #${place} on the leaderboard ✦`
+                : `That would put you #${place} on the leaderboard ✦`;
             $('.quiz-again').focus({ preventScroll: true });
         }
 
@@ -2939,6 +3002,16 @@
             more.setAttribute('aria-expanded', true);
             window.dispatchEvent(new Event('resize')); // its arrows were measured while hidden
         });
+        // suhanitiwari.com/quiz (or /#quiz): open this section and go straight to the quiz
+        const openQuiz = () => {
+            if (location.hash !== '#quiz') return;
+            more.click();
+            const jump = () => document.querySelector('.quiz-col').scrollIntoView({ behavior: 'instant', block: 'start' });
+            setTimeout(jump, 0);
+            window.addEventListener('load', jump, { once: true });
+        };
+        openQuiz();
+        window.addEventListener('hashchange', openQuiz);
         less.addEventListener('click', () => {
             target.hidden = true;
             more.hidden = false;
