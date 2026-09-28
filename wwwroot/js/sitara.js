@@ -52,6 +52,7 @@
     };
     let busy = false;
     let asked = store.get();
+    let misses = 0;   // "I don't know" answers in a row; after three, Sitara offers a menu of things she does know
 
     function outOfDust() {
         input.disabled = true;
@@ -83,12 +84,13 @@
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: question, count: ++asked })
+                body: JSON.stringify({ message: question, count: ++asked, misses })
             });
             store.set(asked);
             const data = await res.json().catch(() => ({}));
             dots.remove();
             if (data.reply) {
+                misses = data.unknown ? misses + 1 : 0;
                 add(data.reply, 'bot');
                 mood('helpful', 'your guide to all things Suhani');
             } else {
