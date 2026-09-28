@@ -209,6 +209,14 @@
         })
     };
 
+    // Cakes I've made: photos only, shown at the start of the Baking row and opened large like the art
+    var cakes = new[]
+    {
+        new Artwork("Lego Cake", "", "/images/baking/cake-lego.jpg"),
+        new Artwork("Solar System Cake", "", "/images/baking/cake-solar-system.jpg"),
+        new Artwork("Rainbow Cake", "", "/images/baking/cake-rainbow.jpg")
+    };
+
     var bakes = new[]
     {
         new Recipe("Chocolate Chip Banana Bread", "", "/images/baking/banana-bread.jpg", "75 minutes", "", new[]
@@ -241,7 +249,7 @@
 }
 @{
     // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
-    void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null)
+    void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null, Artwork[]? gallery = null)
     {
         if (recipes.Length == 0)
         {
@@ -260,6 +268,16 @@
                 <div class="shelf-rail-wrap">
                     <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
                     <ul class="shelf-rail" tabindex="0" aria-label="@title">
+                        @foreach (var photo in gallery ?? Array.Empty<Artwork>())
+                        {
+                            <li class="shelf-item">
+                                <button type="button" class="art-open" data-kind="Baking" data-image="@photo.Image" data-title="@photo.Title" data-idea="@photo.Idea" aria-label="View @photo.Title larger">
+                                    <span class="shelf-cover bake-cover"><img src="@photo.Image" alt="@photo.Title" loading="lazy" draggable="false"></span>
+                                    <span class="shelf-item-title">@photo.Title</span>
+                                    <span class="shelf-item-meta">cake gallery</span>
+                                </button>
+                            </li>
+                        }
                         @for (var i = 0; i < recipes.Length; i++)
                         {
                             var bake = recipes[i];
@@ -359,7 +377,7 @@
         </div>
         <hr class="shelf-divider">
 
-        @{ RenderRecipeShelf("baking", "Baking", bakes, 0); }
+        @{ RenderRecipeShelf("baking", "Baking", bakes, 0, gallery: cakes); }
         <hr class="shelf-divider">
         @{ RenderRecipeShelf("cooking", "Cooking", cooks, bakes.Length,
                "This will be my new hobby as soon as I learn to stop burning everything I cook... including toast."); }
@@ -430,10 +448,10 @@
     <button type="button" class="recipe-close" aria-label="Close artwork">×</button>
     <div class="art-frame"><img id="artImage" src="" alt=""></div>
     <div class="recipe-body">
-        <p class="recipe-kicker">Digital Art</p>
+        <p class="recipe-kicker" id="artKicker">Digital Art</p>
         <h3 id="artTitle"></h3>
         <p class="recipe-line" id="artIdea"></p>
-        <p class="recipe-meta">Holding onto the traditions we carried with us, while making a home in American culture.</p>
+        <p class="recipe-meta" id="artNote">Holding onto the traditions we carried with us, while making a home in American culture.</p>
     </div>
 </dialog>@for (var t = 0; t < trips.Length; t++)
 {

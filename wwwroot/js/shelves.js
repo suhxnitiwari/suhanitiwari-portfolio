@@ -65,6 +65,9 @@ document.querySelectorAll('.trip-open').forEach(button => {
             const idea = document.getElementById('artIdea');
             idea.textContent = button.dataset.idea;
             idea.hidden = !button.dataset.idea;
+            // the cakes in the Baking row open here too: they get their own label and skip the art series note
+            document.getElementById('artKicker').textContent = button.dataset.kind || 'Digital Art';
+            document.getElementById('artNote').hidden = !!button.dataset.kind;
             dialog.showModal();
         });
     });
