@@ -862,24 +862,29 @@ document.querySelectorAll('.mp-projects').forEach(root => {
     root.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
 });
 
-// Marketing decks: the big slide, ‹ › on it, and a thumbnail strip to jump to any slide
+// Marketing decks: one slide at a time, ‹ › on the stage, arrow keys, and a chapter button per slide (built from data-title)
 document.querySelectorAll('.mk-deck').forEach(deck => {
-    const img = deck.querySelector('.mk-stage img');
-    const cap = deck.querySelector('.mk-cap');
-    const count = deck.querySelector('.mk-count');
-    const thumbs = [...deck.querySelectorAll('.mk-thumbs button')];
+    const slides = [...deck.querySelectorAll('.mk-slide')];
+    const bar = deck.querySelector('.mk-chapters');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const chapters = slides.map((s, n) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.innerHTML = `<span>${String(n + 1).padStart(2, '0')}</span>`;
+        b.append(s.dataset.title);
+        b.addEventListener('click', () => show(n));
+        bar.append(b);
+        return b;
+    });
     let current = 0;
-    const show = i => {
-        current = (i + thumbs.length) % thumbs.length;
-        const t = thumbs[current];
-        img.src = t.dataset.src;
-        img.alt = t.dataset.cap;
-        cap.textContent = t.dataset.cap;
-        count.textContent = `${current + 1} / ${thumbs.length}`;
-        thumbs.forEach((b, n) => b.setAttribute('aria-pressed', n === current));
-        t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
-    };
-    thumbs.forEach((b, n) => b.addEventListener('click', () => show(n)));
+    function show(i) {
+        current = (i + slides.length) % slides.length;
+        slides.forEach((s, n) => {
+            s.hidden = n !== current;
+            s.classList.toggle('entering', n === current && !reduce);
+        });
+        chapters.forEach((b, n) => b.setAttribute('aria-pressed', n === current));
+    }
     deck.querySelectorAll('.mk-step').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
     deck.addEventListener('keydown', e => {
         if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
@@ -887,6 +892,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
         e.stopPropagation();
         show(current + (e.key === 'ArrowRight' ? 1 : -1));
     });
+    show(0);
 });
 
 // Ride share database: schema.sql / rollup.sql / ranking.sql tabs inside the code window

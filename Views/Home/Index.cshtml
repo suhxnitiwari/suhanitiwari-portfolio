@@ -253,8 +253,9 @@
             left: 4%;
         }
 
+        /* sits just above the tagline and the 2×2 buttons (about 150px tall together) */
         .cover-name.right {
-            bottom: 21%;
+            bottom: calc(4% + 162px);
             right: 4%;
         }
 
@@ -269,12 +270,23 @@
         }
 
         .cover-tagline {
-            margin-bottom: 14px;
-            font-size: 1.05rem;
+            margin-bottom: 12px;
+            font-size: 1rem;
         }
 
+        /* four buttons as a compact 2×2 grid so they never climb into the name */
         .cover-actions {
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .cover-btn {
+            padding: 10px 8px;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            text-align: center;
+            white-space: normal;
         }
 
         .cover-scroll {
