@@ -82,6 +82,17 @@
     };
     var misCourses = misSteps.SelectMany(st => st.Courses).ToDictionary(c => c.Code);
 
+    // The triangle: each corner is a button; its card shows one line about it and the courses behind it
+    var triCorners = new[]
+    {
+        (Id: "people", Name: "People", Color: "#8F4661", X: "220", Y: "40", Left: "50%", Top: "4.4%",
+         Line: "Enough about people to make sure what we build actually works for them.", Courses: new[] { "MIS 333K", "MIS 374" }),
+        (Id: "technology", Name: "Technology", Color: "#6B7F5E", X: "50", Y: "318", Left: "11.4%", Top: "97.2%",
+         Line: "Enough technology to build it.", Courses: new[] { "MIS 304", "MIS 325", "MIS 333K", "MIS 372T" }),
+        (Id: "business", Name: "Business", Color: "#6B4A5A", X: "390", Y: "318", Left: "88.6%", Top: "97.2%",
+         Line: "Enough business to know why we’re building it.", Courses: new[] { "MIS 301", "MIS 375" })
+    };
+
     // The zoom lens: from a line of code out to the strategy, and the course that trained each level
     var zoomStops = new (string Short, string Label, string[] Courses)[]
     {
@@ -111,23 +122,6 @@
         new[] { "Technical constraint", "Business tradeoff" },
         new[] { "Data", "Insight", "Recommendation" },
         new[] { "User feedback", "Product decision" }
-    };
-
-    var questionsIAsk = new[]
-    {
-        "Is that the real problem or only the symptom?",
-        "Can we build it? Should we build it?",
-        "What would success look like?"
-    };
-
-    var brainHabits = new[]
-    {
-        "Break big problems into testable pieces",
-        "Separate symptoms from causes",
-        "Debug instead of guessing",
-        "Test AI instead of trusting it",
-        "Zoom between code and strategy",
-        "Ask if it’s worth building"
     };
 
     // Where it all meets: six questions around Product
@@ -575,9 +569,6 @@
             <section class="mis" aria-labelledby="mis-heading">
                 <div class="mis-intro">
                     <h2 id="mis-heading">MIS Coursework</h2>
-                    <blockquote class="story-hero-quote">
-                        <p>I learn enough technology to build it, enough business to know why we’re building it, and enough about people to make sure what we build actually works for them.</p>
-                    </blockquote>
                     <p>MIS sits right between business and technology. I learned to build the technical side, run the project side, and think strategically about why any of it matters. And there’s rarely just one right answer, which is my favorite part.</p>
                 </div>
 
@@ -600,12 +591,36 @@
                         <circle cx="220" cy="224" r="80" fill="url(#tri-glow)" />
                         <text class="tri-center" x="220" y="218">the interesting part</text>
                         <text class="tri-center accent" x="220" y="240">is the middle</text>
-                        <g class="tri-node" style="--node: #8F4661;"><circle cx="220" cy="40" r="9" /><text x="220" y="16">People</text></g>
-                        <g class="tri-node" style="--node: #6B7F5E;"><circle cx="50" cy="318" r="9" /><text x="50" y="350">Technology</text></g>
-                        <g class="tri-node" style="--node: #6B4A5A;"><circle cx="390" cy="318" r="9" /><text x="390" y="350">Business</text></g>
+                        @foreach (var c in triCorners)
+                        {
+                            <circle class="tri-dot" data-corner="@c.Id" cx="@c.X" cy="@c.Y" r="9" style="--node: @c.Color;" />
+                        }
                     </svg>
+                    @foreach (var c in triCorners)
+                    {
+                        <button type="button" class="tri-btn" data-corner="@c.Id" style="--node: @c.Color; left: @c.Left; top: @c.Top;"
+                                aria-pressed="false" aria-controls="tri-card-@c.Id">@c.Name</button>
+                    }
                     <figcaption id="triangle-caption" class="visually-hidden">People, technology and business, connected in a triangle. The interesting part is the middle.</figcaption>
                 </figure>
+                <!-- what each corner means, and the courses behind it -->
+                <div class="tri-cards">
+                    <p class="tri-hint">Tap a corner</p>
+                    @foreach (var c in triCorners)
+                    {
+                        <div class="tri-card" id="tri-card-@c.Id" data-corner="@c.Id" style="--node: @c.Color;" hidden>
+                            <p class="tri-card-name">@c.Name</p>
+                            <p class="tri-card-line">@c.Line</p>
+                            <div class="tri-card-courses">
+                                @foreach (var code in c.Courses)
+                                {
+                                    var course = misCourses[code];
+                                    <button type="button" class="mis-chip tri-chip" data-course="@code" aria-haspopup="dialog" aria-label="@code, @course.Name: see details">@code<span>@course.Name</span></button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
 
                 <div class="mis-diagram">
                     <svg viewBox="0 0 600 470" aria-hidden="true">
@@ -833,32 +848,6 @@
                     </ul>
                 </section>
 
-                <p class="story-pull reveal">Execution is part of creativity.</p>
-
-                <!-- Questions I ask now -->
-                <section class="story-section reveal" aria-labelledby="questions-heading">
-                    <h2 class="story-heading" id="questions-heading">Questions I ask now</h2>
-                    <ul class="ask-deck">
-                        @for (var q = 0; q < questionsIAsk.Length; q++)
-                        {
-                            <li class="ask-card" style="--tilt: @((q - (questionsIAsk.Length - 1) / 2.0) * 3)deg;">
-                                <span class="ask-mark" aria-hidden="true">?</span>
-                                <p>@questionsIAsk[q]</p>
-                            </li>
-                        }
-                    </ul>
-                </section>
-
-                <!-- What MIS did to my brain -->
-                <section class="story-section reveal" aria-labelledby="brain-heading">
-                    <h2 class="story-heading" id="brain-heading">What MIS did to my brain</h2>
-                    <ol class="brain-grid">
-                        @for (var h = 0; h < brainHabits.Length; h++)
-                        {
-                            <li><span class="brain-num" aria-hidden="true">0@(h + 1)</span>@brainHabits[h]</li>
-                        }
-                    </ol>
-                </section>
 
                 <!-- Where it all meets -->
                 <section class="story-section reveal" aria-labelledby="meets-heading">
@@ -889,14 +878,7 @@
                     </div>
                 </section>
 
-                <p class="story-pull reveal">Build technology that survives contact with reality.</p>
 
-                <!-- Closing thesis -->
-                <section class="story-thesis reveal" aria-label="What MIS taught me">
-                    <p class="thesis-lead">MIS taught me to see technology as a system of decisions about people.</p>
-                    <p class="thesis-beats"><span>The code matters.</span> <span>The database matters.</span> <span>The system matters.</span></p>
-                    <p class="thesis-close">But what matters most is what all of it allows someone to do.</p>
-                </section>
             </div>
         </div>
     </div>
@@ -1018,6 +1000,25 @@
     // back on a wide screen with everything closed: show step 01 again
     phone.addEventListener('change', () => { if (!phone.matches && selected === null) select(0); });
     select(0);
+})();
+
+// The triangle: tapping a corner lights it up and shows its card; tapping it again closes it
+(() => {
+    const btns = [...document.querySelectorAll('.tri-btn')];
+    const cards = [...document.querySelectorAll('.tri-card')];
+    const dots = [...document.querySelectorAll('.tri-dot')];
+    const hint = document.querySelector('.tri-hint');
+    if (!btns.length) return;
+    let open = null;
+    const show = id => {
+        open = id;
+        btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.corner === id));
+        cards.forEach(c => c.hidden = c.dataset.corner !== id);
+        dots.forEach(d => d.classList.toggle('on', d.dataset.corner === id));
+        document.querySelector('.story-triangle').classList.toggle('has-pick', id !== null);
+        hint.hidden = id !== null;
+    };
+    btns.forEach(b => b.addEventListener('click', () => show(open === b.dataset.corner ? null : b.dataset.corner)));
 })();
 
 // The zoom lens: the slider (or a tick) picks a level; the rings up to that level light up

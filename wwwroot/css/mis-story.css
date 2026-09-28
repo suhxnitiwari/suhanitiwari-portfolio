@@ -1,32 +1,5 @@
 /* ===== Coursework > MIS Major: the story around the cycle ===== */
 
-/* the opening line, big and in serif */
-.story-hero-quote {
-    position: relative;
-    max-width: 820px;
-    margin: 10px auto 22px;
-    padding: 0;
-    border: none;
-}
-
-.story-hero-quote::before {
-    content: "“";
-    display: block;
-    height: 0.55em;
-    font-family: Georgia, serif;
-    font-size: 5em;
-    line-height: 1;
-    color: #8F4661;
-    opacity: 0.35;
-}
-
-.mis-intro .story-hero-quote p {
-    font-family: Georgia, serif;
-    font-size: clamp(1.4em, 2.6vw, 2em);
-    line-height: 1.4;
-    color: #2A1810;
-}
-
 /* People, technology, business */
 .story-triangle {
     width: 100%;
@@ -66,19 +39,139 @@
     fill: #8F4661;
 }
 
-.tri-node circle {
+.story-triangle {
+    position: relative;
+}
+
+.tri-dot {
     fill: var(--node);
     stroke: #FAF1EF;
     stroke-width: 4;
+    transition: r 0.25s ease, opacity 0.25s ease;
 }
 
-.tri-node text {
+.story-triangle.has-pick .tri-dot:not(.on) {
+    opacity: 0.4;
+}
+
+.tri-dot.on {
+    r: 13px;
+}
+
+/* the three corners are buttons sitting where the labels were */
+.tri-btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    padding: 6px 14px;
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    background: none;
+    color: var(--node);
+    font: inherit;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    text-anchor: middle;
-    fill: var(--node);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.tri-btn:hover {
+    border-color: var(--node);
+    background: #FFF8F6;
+}
+
+.tri-btn[aria-pressed="true"] {
+    border-color: var(--node);
+    background: var(--node);
+    color: #FFF8F6;
+}
+
+.tri-btn:focus-visible {
+    outline: 2px solid var(--node);
+    outline-offset: 3px;
+}
+
+/* the card under the triangle */
+.tri-cards {
+    max-width: 560px;
+    min-height: 150px;
+    margin: 18px auto 30px;
+}
+
+.tri-hint {
+    margin: 0;
+    padding-top: 10px;
+    font-size: 0.82em;
+    text-align: center;
+    color: #8A7A76;
+}
+
+.tri-card {
+    padding: 20px 24px;
+    border-radius: 16px;
+    border: 1px solid #EBD5D0;
+    border-top: 4px solid var(--node);
+    background: #FFF8F6;
+    text-align: center;
+    animation: tri-in 0.3s ease both;
+}
+
+@keyframes tri-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+}
+
+.tri-card-name {
+    margin: 0;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--node);
+}
+
+.mis-intro .tri-card-line,
+.tri-card-line {
+    margin: 6px 0 14px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.2em;
+    line-height: 1.4;
+    color: #2A1810;
+}
+
+.tri-card-courses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* course chips here are light, and open the same course card as the cycle */
+.mis-chip.tri-chip {
+    gap: 6px;
+    padding: 6px 13px;
+    border-color: #D9B8B3;
+    background: #FAF1EF;
+    color: #8F4661;
+    font-size: 0.85em;
+}
+
+.mis-chip.tri-chip span {
+    font-weight: 500;
+    letter-spacing: 0;
+    color: #2A1810;
+}
+
+.mis-chip.tri-chip:hover {
+    border-color: var(--node);
+    background: #F6E4E1;
+}
+
+.mis-chip.tri-chip:focus-visible {
+    outline-color: var(--node);
 }
 
 /* ===== shared bits ===== */
@@ -448,94 +541,6 @@
     100% { transform: rotateX(0); }
 }
 
-/* ===== Questions I ask now ===== */
-.ask-deck {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 22px;
-    margin: 0;
-    padding: 10px 0;
-    list-style: none;
-}
-
-.ask-card {
-    position: relative;
-    flex: 0 1 280px;
-    min-height: 200px;
-    display: flex;
-    align-items: flex-end;
-    padding: 26px 24px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #9A5F68 0%, #7A3F4A 100%);
-    color: #FFF8F6;
-    box-shadow: 0 10px 30px rgba(158, 90, 99, 0.18);
-    transform: rotate(var(--tilt));
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.ask-card:nth-child(2) {
-    background: linear-gradient(135deg, #667856 0%, #4C5C3C 100%);
-}
-
-.ask-card:nth-child(3) {
-    background: linear-gradient(135deg, #8E5E5B 0%, #5C3A33 100%);
-}
-
-.ask-card:hover {
-    transform: rotate(0) translateY(-6px);
-    box-shadow: 0 20px 44px rgba(158, 90, 99, 0.28);
-}
-
-.ask-mark {
-    position: absolute;
-    top: -18px;
-    right: 14px;
-    font-family: Georgia, serif;
-    font-size: 7em;
-    line-height: 1;
-    opacity: 0.18;
-}
-
-.ask-card p {
-    position: relative;
-    font-family: Georgia, serif;
-    font-size: 1.35em;
-    line-height: 1.35;
-}
-
-/* ===== What MIS did to my brain ===== */
-.brain-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.brain-grid li {
-    padding: 22px 22px 24px;
-    border-radius: 14px;
-    border: 1px solid #EBD5D0;
-    background: #FFF8F6;
-    font-family: Georgia, serif;
-    font-size: 1.15em;
-    line-height: 1.35;
-    color: #2A1810;
-}
-
-.brain-num {
-    display: block;
-    margin-bottom: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.62em;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #8F4661;
-}
-
 /* ===== Where it all meets ===== */
 .meets {
     position: relative;
@@ -625,48 +630,11 @@
     color: #2A1810;
 }
 
-/* ===== Closing thesis ===== */
-.story-thesis {
-    max-width: 760px;
-    margin: 0 auto 40px;
-    padding: 50px 40px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #8F4661 0%, #6B4A5A 100%);
-    color: #FFF8F6;
-    text-align: center;
-}
-
-.thesis-lead {
-    font-family: Georgia, serif;
-    font-size: clamp(1.4em, 2.6vw, 1.9em);
-    line-height: 1.35;
-}
-
-.thesis-beats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px 18px;
-    margin: 26px 0 18px;
-    font-size: 0.8em;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.85;
-}
-
-.thesis-close {
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-size: 1.25em;
-    line-height: 1.5;
-}
-
 @media (prefers-reduced-motion: reduce) {
     .reveal.pending,
+    .tri-card,
     .zoom-ring,
     .translate-item,
-    .ask-card,
     .meets-node {
         transition: none;
     }
@@ -699,10 +667,6 @@
     .ai-trail::before {
         display: none;
     }
-
-    .brain-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
 }
 
 /* ===== phones ===== */
@@ -724,8 +688,7 @@
         font-size: 1.6em;
     }
 
-    .ai-trail,
-    .brain-grid {
+    .ai-trail {
         grid-template-columns: 1fr;
     }
 
@@ -744,11 +707,6 @@
         flex-basis: auto;
     }
 
-    .ask-card {
-        flex-basis: 100%;
-        min-height: 150px;
-        transform: none;
-    }
 
     /* the circle gets too tight: Product on top, the six questions in a grid below */
     .meets {
@@ -793,9 +751,5 @@
 
     .meets-q {
         font-size: 1em;
-    }
-
-    .story-thesis {
-        padding: 36px 22px;
     }
 }

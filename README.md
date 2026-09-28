@@ -1,34 +1,93 @@
-# suhanitiwari.com
+# Suhani Tiwari, Personal Portfolio
 
-My personal portfolio site. I'm Suhani Tiwari, an MIS student at McCombs, UT Austin, with interests in psychology, marketing and product. The site is meant to show both sides of me: the work and the person behind it.
+**My corner of the internet, built from scratch.**
 
-Live at **[suhanitiwari.com](https://suhanitiwari.com)**.
+A full-stack personal portfolio exploring where technology, business and people meet, along with everything else I'm curious about.
 
-## What's on the site
+**→ Live at [suhanitiwari.com](https://suhanitiwari.com)**
 
-| Page | What it shows |
-|---|---|
-| **Hello** (home) | A hero with a tagline, "If you know me, you know…" flip cards, "If I were a…" cards, and a "How well do you know Suhani?" quiz |
-| **World** | An interactive map of the places I've lived, a "Pieces of Me" puzzle, and my favorite spots on campus and around Austin |
-| **Favorites** | Listen (my Spotify top artists as a zoomable "music universe"), Watch (TED talks by topic, rom-coms, comfort shows) and Read |
-| **Make** | Drawing, writing, baking, cooking and traveling shelves, with pop-up cards for recipes, artwork and trips |
-| **Pursue** | Education, Coursework, Beyond the Classroom, How I Work, and Scholarships and Awards |
-| **Résumé** | My résumé |
+![The home page of suhanitiwari.com](docs/screenshots/home.jpg)
 
-A few features I'm proud of:
+## About the project
 
-- **MIS curriculum cycle** (Coursework, MIS Major tab): an interactive diagram of how my MIS courses connect, from strategy to technical skills to building to delivery. Each course opens to show its skills and the big question it taught me to ask. A zoom-lens slider and other sections tell the story around it.
-- **How I Work:** my CliftonStrengths as a stepped slideshow, and my RIASEC results as a real hexagon chart.
-- **Pieces of Me puzzle** (World): an SVG jigsaw built in JavaScript. Each piece opens to show what it gave me.
-- **Music universe** (Favorites): my live Spotify top artists, sized by how much I listen to them.
+I wanted a portfolio that could do more than summarize a résumé.
+
+So I built one.
+
+This site brings together my work, education, projects, interests and personality. It also gives me a place to experiment with the technologies I'm learning in Management Information Systems at UT Austin.
 
 ## Built with
 
-- **ASP.NET Core MVC** on .NET 10, with Razor views
-- Plain **HTML, CSS and JavaScript** (no front-end framework)
-- **Leaflet** for the World map, with OpenStreetMap data
-- **Spotify Web API** for the Listen section
-- **Docker**, deployed on **Render** from the `main` branch
+- ASP.NET Core MVC (.NET 10) and C#
+- JavaScript, HTML and CSS (no front-end framework)
+- Spotify Web API, MusicBrainz API and Wikipedia API
+- Leaflet and OpenStreetMap
+- Docker, deployed on Render
+
+## What I built
+
+### A server-rendered MVC app where content is data
+
+Every page is a Razor view backed by a controller action. The content on each page (courses, skills, favorite spots, trips, talks, puzzle pieces) is defined as C# records at the top of its view and rendered with loops. Adding a course, a restaurant or a TED talk is a one-line change, and the layout, counts, filters and pop-ups update on their own.
+
+### Live Spotify data, with caching and a safe token flow
+
+The **Listen** section shows my real top artists as a zoomable "music universe," where bubble size reflects how much I listen.
+
+- **OAuth:** the authorization code flow runs once; after that, the site uses a stored refresh token to get access tokens.
+- **Access tokens:** these are cached in memory and renewed a minute before they expire. A lock makes sure that when several requests arrive at once, only one of them fetches a new token.
+- **API results:** these are cached for 12 hours with `IMemoryCache`, so most visitors never trigger a Spotify call.
+- **Genres:** these come from the **MusicBrainz API**. The site limits itself to one request per second, as MusicBrainz asks, and keeps each artist's genres in a cache.
+- **Secrets:** they never live in the code. Locally they're stored in user secrets, and on Render in environment variables. The saved login is kept out of git and out of published builds, and connecting a new account is switched off in production.
+
+![My Music Universe: top Spotify artists as bubbles](docs/screenshots/music-universe.jpg)
+
+### Interactive components in plain JavaScript
+
+**MIS curriculum cycle.** An SVG diagram of how my MIS courses connect: strategy, then technical skills, then building, then delivery, and back to strategy. It scales with the page using container query units. Picking a step highlights it along with its outgoing arrow. Each course chip opens a native `<dialog>` with the course's skills and the big question it taught me. On phones the diagram turns into an accordion.
+
+![The MIS curriculum cycle](docs/screenshots/mis-cycle.jpg)
+
+**Zoom lens.** A range slider that zooms out from a line of code to company strategy, showing which course trained each level.
+
+![The zoom lens slider](docs/screenshots/zoom-lens.jpg)
+
+**Pieces of Me puzzle.** A jigsaw generated in JavaScript. Each piece is an SVG path with tabs and blanks, clipped to rounded corners and outlined on its own layer so a selected piece is highlighted in full. Labels are shifted away from the blanks and scaled so words never spill out of a piece.
+
+![The Pieces of Me puzzle](docs/screenshots/puzzle.jpg)
+
+**Places That Shaped Me.** A **Leaflet** map of every city I've lived in, joined in order. Each popup loads a photo of the city from the **Wikipedia API** the first time it opens.
+
+![The Leaflet map of places I've lived](docs/screenshots/world-map.jpg)
+
+**How I Work.** My RIASEC results drawn as a real hexagon chart, computed from my scores, plus CliftonStrengths shown as slides.
+
+![RIASEC hexagon chart](docs/screenshots/riasec.jpg)
+
+**Shelves and pop-up cards.** One set of reusable horizontal rows with drag-to-scroll, arrow buttons, keyboard support and "See all." They power the Watch, Read and Make pages. Clicking a card opens a native `<dialog>` for a recipe, a piece of artwork, a video or a trip.
+
+![A trip card opened from the Traveling shelf](docs/screenshots/trip-card.jpg)
+
+**Custom maps.** The backgrounds behind my favorite spots on campus and around Austin are drawn from OpenStreetMap tiles and recolored to match the site's palette.
+
+![Favorite spots on a custom campus map](docs/screenshots/spots.jpg)
+
+### Accessible and responsive
+
+- Keyboard support throughout: arrow keys for tabs, the cycle and shelves; Esc and outside clicks close every pop-up
+- ARIA roles, labels and states on tabs, toggles, dialogs and live regions
+- Animations respect `prefers-reduced-motion`
+- Layouts built for phone widths (for example, the MIS diagram becomes an accordion and the "Where it all meets" circle becomes a grid)
+
+### Deployment
+
+A two-stage Dockerfile builds the app with the .NET SDK and runs it on the smaller ASP.NET runtime image. Render builds and deploys it on every push to `main`. The app reads Render's port from `$PORT`, and it trusts forwarded headers so HTTPS redirects work behind Render's proxy.
+
+## What I learned
+
+> I learn enough technology to build it, enough business to know why we're building it, and enough about people to make sure what we build actually works for them.
+
+Building my own portfolio turned those three pieces into one project. Every feature required decisions: whether something could work technically, what information mattered, how someone would interact with it, and whether the technology actually improved the experience.
 
 ## Project structure
 
@@ -37,14 +96,13 @@ Controllers/
   HomeController.cs      one action per page
   SpotifyController.cs   Spotify login and my top artists, songs and genres (cached for 12 hours)
 Services/
-  SpotifyService.cs      talks to the Spotify API
+  SpotifyService.cs      Spotify and MusicBrainz calls, token refresh
 Views/
-  Home/                  one Razor view per page; most page content lives as data at the top of each view
+  Home/                  one Razor view per page, with its content as data at the top
   Shared/_Layout.cshtml  navigation, footer and shared styles
 wwwroot/
-  css/                   shared styles (shelves, MIS cycle, coursework story)
-  js/                    shared scripts (shelves, pop-up cards, topic filters)
-  images/                photos, artwork and map backgrounds
+  css/  js/  images/     shared styles and scripts, photos, artwork and map backgrounds
+docs/                    README screenshots and the repository preview image
 Dockerfile               builds and runs the site on Render
 ```
 
@@ -59,19 +117,17 @@ dotnet run --launch-profile http
 
 Then open http://localhost:5142.
 
-Everything works without any setup except the Listen section, which needs Spotify credentials. To turn it on, add your own app's keys with user secrets:
+Everything works without setup except the Listen section, which needs Spotify credentials:
 
 ```bash
 dotnet user-secrets set "Spotify:ClientId" "<your client id>"
 dotnet user-secrets set "Spotify:ClientSecret" "<your client secret>"
 ```
 
-Then open http://127.0.0.1:5142/spotify/login to connect an account (the redirect URI in `appsettings.json` must match your Spotify app). The saved login (`spotify-token.json`) stays on your machine and is kept out of git and out of published builds.
+Then open http://127.0.0.1:5142/spotify/login to connect an account (the redirect URI in `appsettings.json` must match your Spotify app).
 
-## Deployment
-
-Render builds the `Dockerfile` on every push to `main`. On the live site, the Spotify keys and refresh token come from environment variables (`Spotify__ClientId`, `Spotify__ClientSecret`, `Spotify__RefreshToken`). Connecting a new Spotify account is switched off there unless `Spotify__AllowConnect=true` is set.
+On Render, the same settings come from environment variables: `Spotify__ClientId`, `Spotify__ClientSecret` and `Spotify__RefreshToken`.
 
 ## Contact
 
-[LinkedIn](https://www.linkedin.com/in/suhxnitiwari) or suhxnitiwari@gmail.com
+[suhanitiwari.com](https://suhanitiwari.com) | [LinkedIn](https://www.linkedin.com/in/suhxnitiwari) | suhxnitiwari@gmail.com
