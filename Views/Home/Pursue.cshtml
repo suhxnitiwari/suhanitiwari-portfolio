@@ -256,6 +256,14 @@
         background: #FAF1EF;
     }
 
+    /* PROJECTS: right after Experience, so recruiters see what I built early */
+    .career-projects {
+        padding: 72px 40px 24px;
+        background: #FAF1EF;
+    }
+
+    .career-projects .mp-projects { margin-bottom: 72px; }
+
     .career-section-title {
         margin: 0 0 28px;
         font-family: Georgia, serif;
@@ -315,7 +323,8 @@
 
     @@media (max-width: 800px) {
         .career-intro,
-        .career-experience {
+        .career-experience,
+        .career-projects {
             padding-left: 20px;
             padding-right: 20px;
         }
@@ -398,6 +407,7 @@
 
         <div class="career-actions">
             <a class="career-btn primary" href="/resume">View my résumé ↗</a>
+            <a class="career-btn" href="#projects">See my projects ↓</a>
             @* these two copy to the clipboard instead of opening anything *@
             <button type="button" class="career-btn career-copy" data-copy="suhxnitiwari@gmail.com" data-done="Email copied ✓">Email me</button>
             <button type="button" class="career-btn career-copy" data-copy="https://www.linkedin.com/in/suhxnitiwari/" data-done="LinkedIn copied ✓">LinkedIn</button>
@@ -445,6 +455,15 @@
                 </article>
             }
         </div>
+    </div>
+</section>
+
+<!-- PROJECTS: what I built, one project at a time (Views/Home/_RideFlowProof.cshtml) -->
+<link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
+<section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
+    <div class="career-wrap mp">
+        <h2 class="career-section-title" id="projects-heading">Projects</h2>
+        <partial name="_RideFlowProof" />
     </div>
 </section>
 

@@ -1051,11 +1051,49 @@
         align-items: stretch;
     }
 
+    /* the left side runs the full height of the card: caption, the DNA strip, a list that stretches to fill,
+       and the source note at the bottom, so it ends on the same line as the genre side */
     .dna-combo .dna-section {
-        display: block;
+        display: flex;
+        align-items: stretch;
         margin: 0;
-        align-self: start;
     }
+
+    .dna-combo .dna-fill {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        width: 100%;
+    }
+
+    .dna-combo .dna-legend {
+        flex: 1;
+        display: grid;
+        grid-auto-rows: 1fr;
+    }
+
+    .dna-combo .dna-legend li { display: flex; }
+    .dna-combo .dna-key { height: 100%; font-size: 1.05rem; }
+    .dna-combo .dna-note { margin-top: 16px; }
+
+    /* the DNA strip: every genre's share as one bar, in the same colors as the list */
+    .dna-strip {
+        display: flex;
+        gap: 3px;
+        height: 22px;
+        margin: 4px 0 18px;
+        border-radius: var(--r-small);
+        overflow: hidden;
+    }
+
+    .dna-seg {
+        min-width: 4px;
+        cursor: var(--cursor-hot, pointer);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .dna-strip.focus .dna-seg:not(.active) { opacity: 0.3; }
+    .dna-strip .dna-seg.active { transform: scaleY(1.15); }
 
     /* tall enough for the longest genre (six artists), so hovering never changes the card's height */
     .dna-combo .genre-spot {
@@ -2715,8 +2753,11 @@
 
         // The genre list; hovering or clicking a genre shows it in the genre card beside this one
         section.innerHTML = `
-            <div>
+            <div class="dna-fill">
                 <p class="dna-caption">Mostly pop in different fonts. The Hindi, Punjabi, and occasional Spanish song diversify the portfolio.</p>
+                <div class="dna-strip" aria-hidden="true">
+                    ${slices.map((s, i) => `<span class="dna-seg" data-i="${i}" style="flex: ${s.percent}; background: ${s.color};" title="${escapeHtml(s.name)}: ${pct(s.percent)}"></span>`).join('')}
+                </div>
                 <ul class="dna-legend">
                     ${slices.map((s, i) => `
                         <li><button type="button" class="dna-key" data-i="${i}" aria-pressed="false">
@@ -2735,10 +2776,11 @@
         const render = () => {
             const active = hovered >= 0 ? hovered : selected;
             legend.classList.toggle('focus', active >= 0);
-            section.querySelectorAll('.dna-key').forEach(el => {
+            section.querySelector('.dna-strip').classList.toggle('focus', active >= 0);
+            section.querySelectorAll('.dna-key, .dna-seg').forEach(el => {
                 const i = Number(el.dataset.i);
                 el.classList.toggle('active', i === active);
-                el.setAttribute('aria-pressed', i === selected);
+                if (el.classList.contains('dna-key')) el.setAttribute('aria-pressed', i === selected);
             });
             const i = active >= 0 ? active : 0;
             if (i !== shown) {
@@ -2747,7 +2789,8 @@
             }
         };
 
-        section.querySelectorAll('.dna-key').forEach(el => {
+        // the strip and the list both pick a genre
+        section.querySelectorAll('.dna-key, .dna-seg').forEach(el => {
             const i = Number(el.dataset.i);
             el.addEventListener('mouseenter', () => { hovered = i; render(); });
             el.addEventListener('mouseleave', () => { hovered = -1; render(); });
@@ -2762,7 +2805,7 @@
 
         // Clicking anywhere outside the list clears the selection
         document.addEventListener('click', event => {
-            if (selected >= 0 && !event.target.closest('.dna-legend')) {
+            if (selected >= 0 && !event.target.closest('.dna-legend, .dna-strip')) {
                 selected = -1;
                 render();
             }

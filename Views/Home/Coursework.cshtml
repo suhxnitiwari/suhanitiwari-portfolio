@@ -671,8 +671,7 @@
                 </div>
                 </div>
 
-                <!-- 4. proof: RideFlow (Views/Home/_RideFlowProof.cshtml) -->
-                <partial name="_RideFlowProof" />
+                <!-- 4. my projects moved to their own Projects section on Pursue, right after Experience (Views/Home/_RideFlowProof.cshtml) -->
 
                 <!-- 5. how I work: hand me a problem -->
                 <div class="mp-section" aria-labelledby="mp-problem">
@@ -1012,7 +1011,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     });
 })();
 
-// Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis, #skills or #projects opens MIS Major; #marketing opens Marketing.
+// Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis or #skills opens MIS Major; #marketing opens Marketing.
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
     // each tab has its own address and title, so a view can be shared and the back button moves between tabs
@@ -1057,10 +1056,10 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     });
     // back / forward: show whichever tab the address now points to
     addEventListener('popstate', () => show(tabForHash(location.hash)));
-    // #mis opens MIS Major; #skills and #projects open it and jump to that section (the home page links here)
+    // #mis opens MIS Major; #skills opens it and jumps to that section (the home page links here)
     // On the one-page Pursue (/home/pursue), #mis and #marketing also scroll down to the Coursework section
     const onPursue = !!document.getElementById('coursework');
-    const jumpTo = ['#skills', '#projects'].includes(location.hash) ? location.hash.slice(1)
+    const jumpTo = ['#skills'].includes(location.hash) ? location.hash.slice(1)
         : onPursue && ['#mis', '#marketing'].includes(location.hash) ? 'coursework' : null;
     show(tabForHash(location.hash));
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
