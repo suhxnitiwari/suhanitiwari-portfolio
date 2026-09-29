@@ -124,7 +124,8 @@
     color: #9E5A63;
 }
 
-.recipe-body h3 {
+.recipe-body > h2,
+.recipe-body > h3 {
     margin: 4px 0 6px;
     font-family: Georgia, serif;
     font-size: 2em;
@@ -345,7 +346,7 @@
     font-size: 1.2em;
 }
 
-.trip-spot h4 {
+.trip-spot h3 {
     margin: 0;
     font-family: Georgia, serif;
     font-size: 1.15em;
@@ -467,7 +468,7 @@
 }
 
 .gallery-wall-wrap {
-    margin-inline: calc(-1 * clamp(0px, (92vw - 1080px) / 2, 110px));
+    margin-inline: 0;
 }
 
 .gallery-wall {
@@ -576,10 +577,6 @@
 }
 
 /* ---- tablets and phones: a shorter wall, slimmer frames ---- */
-@media (max-width: 1300px) {
-    .gallery-wall-wrap { margin-inline: 0; }
-}
-
 @media (max-width: 680px) {
     .art-shelf {
         --frame: 5px;
@@ -997,7 +994,7 @@
     margin-top: 24px;
 }
 
-.recipe-columns h4 {
+.recipe-columns h3 {
     margin: 0 0 10px;
     font-family: Georgia, serif;
     font-size: 1.15em;
@@ -1146,6 +1143,13 @@
     scroll-padding-left: 2px;
     scrollbar-width: none;
     cursor: grab;
+}
+
+/* Make, wide screens: a row with 4 cards or fewer doesn't scroll, so its cards stretch to the section's right edge */
+@media (min-width: 901px) {
+    .make-page .shelf-rail:not(:has(> .shelf-item:nth-child(5))) {
+        grid-auto-columns: minmax(0, 1fr);
+    }
 }
 
 .shelf-rail::-webkit-scrollbar {

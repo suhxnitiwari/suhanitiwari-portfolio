@@ -307,7 +307,7 @@
         {
             <div class="shelf" id="@id">
                 <div class="shelf-head">
-                    <h3 class="shelf-title">@title</h3>
+                    <h2 class="shelf-title">@title</h2>
                 </div>
                 <p class="shelf-caption">@(emptyNote ?? "Coming soon.")</p>
             </div>
@@ -320,7 +320,7 @@
         }
             <div class="shelf" id="@id">
                 <div class="shelf-head">
-                    <h3 class="shelf-title">@title</h3>
+                    <h2 class="shelf-title">@title</h2>
                 </div>
                 <div class="shelf-rail-wrap">
                     <button type="button" class="shelf-arrow prev" aria-label="Scroll @title left">‹</button>
@@ -358,12 +358,12 @@
         var spare = (3 - recipes.Length % 3) % 3;
             <div class="shelf" id="@id">
                 <div class="shelf-head">
-                    <h3 class="shelf-title">@title</h3>
+                    <h2 class="shelf-title">@title</h2>
                 </div>
                 <p class="bake-intro">Baking is a lot like coding: get the structure right and the creative part is wide open. My favorite bakes are made for someone, like a Candy Crush cake for my mom, a Lego cake for my neighbor’s son and a Solar System cake for my friend’s little brother.</p>
                 <div class="bake-split">
                     <div class="cake-viewer" aria-roledescription="carousel" aria-label="Cake gallery">
-                        <p class="bake-group-label">Cake Gallery</p>
+                        <h3 class="bake-group-label">Cake Gallery</h3>
                         <div class="cake-stage">
                             <ul class="cake-slides">
                                 @for (var c = 0; c < cakes.Length; c++)
@@ -388,7 +388,7 @@
                         </div>
                     </div>
                     <div class="treat-side">
-                        <p class="bake-group-label">Treats</p>
+                        <h3 class="bake-group-label">Treats</h3>
                         <ul class="treat-grid" aria-label="Treats">
                             @for (var i = 0; i < recipes.Length; i++)
                             {
@@ -434,7 +434,7 @@
         <!-- Digital Art: one gallery wall that slides sideways; each piece opens large -->
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
-                <h3 class="shelf-title">Digital Art</h3>
+                <h2 class="shelf-title">Digital Art</h2>
             </div>
             <div class="shelf-rail-wrap gallery-wall-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Slide the Digital Art wall left">‹</button>
@@ -448,7 +448,7 @@
 
         <div class="shelf writing-shelf" id="writing">
             <div class="shelf-head">
-                <h3 class="shelf-title">Writing</h3>
+                <h2 class="shelf-title">Writing</h2>
                 @if (writing.Length > 4)
                 {
                     <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@writing.Length">See all @writing.Length →</button>
@@ -495,7 +495,7 @@
 
         <div class="shelf" id="traveling">
             <div class="shelf-head">
-                <h3 class="shelf-title">Traveling</h3>
+                <h2 class="shelf-title">Traveling</h2>
             </div>
             <p class="shelf-caption">Currently awaiting some more money to go travel somewhere. Travel is loading…</p>
             <div class="travel-loading" role="img" aria-label="Travel is loading"><span></span></div>
@@ -589,17 +589,17 @@
     <div class="recipe-photo" id="recipePhoto"></div>
     <div class="recipe-body">
         <p class="recipe-kicker" id="recipeKicker">Baking</p>
-        <h3 id="recipeTitle"></h3>
+        <h2 id="recipeTitle"></h2>
         <p class="recipe-line" id="recipeLine"></p>
         <p class="recipe-meta" id="recipeMeta"></p>
         <p class="recipe-soon" id="recipeSoon" hidden>Recipe coming soon. It's in my kitchen, just not on the internet yet.</p>
         <div class="recipe-columns" id="recipeColumns">
             <div>
-                <h4>Ingredients</h4>
+                <h3>Ingredients</h3>
                 <ul id="recipeIngredients"></ul>
             </div>
             <div>
-                <h4>Steps</h4>
+                <h3>Steps</h3>
                 <ol id="recipeSteps"></ol>
             </div>
         </div>
@@ -610,7 +610,7 @@
     <div class="art-frame"><img id="artImage" src="" alt=""></div>
     <div class="recipe-body">
         <p class="recipe-kicker" id="artKicker">Digital Art</p>
-        <h3 id="artTitle"></h3>
+        <h2 id="artTitle"></h2>
         <p class="recipe-line" id="artIdea"></p>
         <p class="recipe-meta" id="artNote">Holding onto the traditions we carried with us, while making a home in American culture.</p>
     </div>
@@ -626,7 +626,7 @@
         }
         <div class="recipe-body">
             <p class="recipe-kicker">Traveling</p>
-            <h3 id="trip-title-@t">@trip.City</h3>
+            <h2 id="trip-title-@t">@trip.City</h2>
             <p class="recipe-line">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : (trip.Spots?.Length ?? 0) > 0 ? "Spots I’ve been to" : "Spots coming soon.")</p>
             <ul class="trip-spots">
                 @foreach (var spot in trip.Spots ?? Array.Empty<TripSpot>())
@@ -634,7 +634,7 @@
                     <li class="trip-spot">
                         <span class="trip-emoji" aria-hidden="true">@spot.Emoji</span>
                         <div>
-                            <h4>@spot.Name @if (spot.MustDo) { <span class="trip-must">Must do</span> }</h4>
+                            <h3>@spot.Name @if (spot.MustDo) { <span class="trip-must">Must do</span> }</h3>
                             <p class="trip-kind">@spot.Kind</p>
                             @if (!string.IsNullOrEmpty(spot.Line)) { <p>@spot.Line</p> }
                         </div>
