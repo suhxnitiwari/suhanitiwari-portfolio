@@ -78,7 +78,7 @@
     /* the scan-in-five-seconds facts, like the header of a case study */
     .career-facts {
         display: grid;
-        grid-template-columns: 1.3fr 0.6fr 1fr 1fr 0.9fr;
+        grid-template-columns: 1.4fr 1fr 1fr 0.9fr;
         gap: 24px;
         margin: 40px 0 0;
         padding: 26px 0;
@@ -134,6 +134,78 @@
         background: #9E5A63;
         border-color: #9E5A63;
         color: #FAF1EF;
+    }
+
+    /* HOW I WORK, folded: a single calm bar until someone opens it */
+    .work-fold {
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        border-top: 1px solid #EBD5D0;
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .work-fold > summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 44px 40px;
+        list-style: none;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .work-fold > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .work-fold-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .work-fold-title {
+        margin-top: 6px;
+        font-family: Georgia, serif;
+        font-size: 2.2em;
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .work-fold-sub {
+        margin-top: 6px;
+        color: #56634A;
+    }
+
+    .work-fold-btn {
+        flex: none;
+        padding: 12px 26px;
+        border-radius: 999px;
+        border: 1.5px solid #8A4D57;
+        font-weight: 600;
+        color: #8A4D57;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .work-fold-btn .when-closed::after { content: " ↓"; }
+    .work-fold-btn .when-open::after { content: " ↑"; }
+    .work-fold-btn .when-open,
+    .work-fold[open] .work-fold-btn .when-closed { display: none; }
+    .work-fold[open] .work-fold-btn .when-open { display: inline; }
+
+    .work-fold > summary:hover .work-fold-btn {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .work-fold > summary:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: -6px;
+    }
+
+    /* the section's own big heading would repeat the bar's */
+    .work-fold .work-tests-hero {
+        display: none;
     }
 
     /* EXPERIENCE: one card per role */
@@ -231,6 +303,12 @@
         .job {
             padding: 24px 22px;
         }
+
+        .work-fold > summary {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 32px 20px;
+        }
     }
 </style>
 
@@ -266,19 +344,15 @@
 
         <dl class="career-facts">
             <div>
-                <dt>Studying</dt>
-                <dd>Management Information Systems<span>McCombs School of Business, UT Austin</span></dd>
+                <dt>Majors</dt>
+                <dd>Management Information Systems and Psychology<span>UT Austin, GPA 3.5/4.0</span></dd>
             </div>
             <div>
-                <dt>GPA</dt>
-                <dd>3.5/4.0</dd>
+                <dt>Minors</dt>
+                <dd>Marketing and Educational Psychology</dd>
             </div>
             <div>
-                <dt>Alongside</dt>
-                <dd>Psychology and Marketing<span>plus Educational Psychology</span></dd>
-            </div>
-            <div>
-                <dt>Most recently</dt>
+                <dt>Most recent</dt>
                 <dd>ERP Consultant Intern<span>Oracle, summer 2026</span></dd>
             </div>
             <div>
@@ -318,17 +392,30 @@
     </div>
 </section>
 
+@* Education is off the page for now while I rework it. To bring it back, restore:
 <section class="pursue-part" id="education" aria-label="Education">
     @await Html.PartialAsync("Education")
 </section>
+*@
 <section class="pursue-part" id="coursework" aria-label="Coursework">
     @await Html.PartialAsync("Coursework")
 </section>
 <section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
     @await Html.PartialAsync("BeyondTheClassroom")
 </section>
+@* How I Work is folded shut by default: it's there for anyone curious, one click away *@
 <section class="pursue-part" id="how-i-work" aria-label="How I work">
-    @await Html.PartialAsync("HowIWork")
+    <details class="work-fold" id="workFold">
+        <summary>
+            <span class="work-fold-text">
+                <span class="career-kicker">For the curious</span>
+                <span class="work-fold-title">How I Work</span>
+                <span class="work-fold-sub">My DISC, CliftonStrengths and RIASEC results, and what they look like day to day.</span>
+            </span>
+            <span class="work-fold-btn" aria-hidden="true"><span class="when-closed">Open</span><span class="when-open">Close</span></span>
+        </summary>
+        @await Html.PartialAsync("HowIWork")
+    </details>
 </section>
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
@@ -355,3 +442,21 @@
     // set last: each section sets its own title while it renders
     ViewData["Title"] = Context.Request.Path.StartsWithSegments("/career") ? "Career" : "Pursue";
 }
+
+<script>
+    // Opening a link to How I Work (the Pursue menu, #disc and so on) unfolds it first
+    (() => {
+        const fold = document.getElementById('workFold');
+        const openFor = () => {
+            const id = location.hash.slice(1);
+            if (!id) return;
+            const target = document.getElementById(id);
+            if (target && (target.id === 'how-i-work' || fold.contains(target))) {
+                fold.open = true;
+                requestAnimationFrame(() => target.scrollIntoView());
+            }
+        };
+        openFor();
+        window.addEventListener('hashchange', openFor);
+    })();
+</script>
