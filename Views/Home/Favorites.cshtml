@@ -104,7 +104,6 @@
         margin-bottom: 10px;
     }
 
-
     .universe {
         position: relative;
         width: min(100%, 680px);
@@ -602,7 +601,6 @@
         outline-offset: 2px;
     }
 
-
     @@media (max-width: 600px) {
         .universe-panel {
             top: auto;
@@ -629,74 +627,6 @@
     }
 
     /* ===== TOP 5 SONGS ===== */
-    .top-songs-section {
-        background: #FFF8F6;
-        padding: 50px;
-        border-radius: 16px;
-        margin-bottom: 100px;
-        box-shadow: 0 8px 24px rgba(158, 90, 99, 0.1);
-    }
-
-    .songs-list {
-        list-style: none;
-    }
-
-    .song-item {
-        display: flex;
-        align-items: center;
-        padding: 20px 0;
-        border-bottom: 1px solid #EBD5D0;
-        transition: all 0.3s ease;
-    }
-
-    .song-item:last-child {
-        border-bottom: none;
-    }
-
-    .song-item:hover {
-        background: #F5E5E1;
-        padding-left: 10px;
-    }
-
-    .song-rank {
-        font-size: 1.5em;
-        font-weight: 900;
-        color: #9E5A63;
-        width: 40px;
-        margin-right: 20px;
-    }
-
-    .song-image {
-        width: 60px;
-        height: 60px;
-        border-radius: 8px;
-        background: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
-        margin-right: 20px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.5em;
-        overflow: hidden;
-        object-fit: cover;
-    }
-
-    .song-info {
-        flex: 1;
-    }
-
-    .song-name {
-        font-weight: 700;
-        font-size: 1em;
-        color: #2A1810;
-        margin-bottom: 5px;
-    }
-
-    .song-artist {
-        font-size: 0.9em;
-        color: #56634A;
-    }
 
     /* ===== TOP 5 GENRES ===== */
     /* ===== LISTENING DNA (genre share as an interactive donut) ===== */
@@ -1000,7 +930,6 @@
             margin-bottom: 30px;
         }
 
-        .top-songs-section,
         .album-section {
             padding: 30px;
         }
@@ -1008,9 +937,9 @@
     }
     /* ===== WHAT I'M LISTENING TO: one compact dashboard ===== */
     /* A Pinterest board: three columns of pins in all different heights, each column stacking on its own.
-         left:   the Spotify player (tall), Music by Era
-         middle: My Music Universe (square), Listening DNA (donut over its legend)
-         right:  On Repeat (a dark record sleeve), Listening Clock, Then vs. Now
+         left:   the Spotify player (listening right now), Listening DNA (donut over its legend)
+         middle: My Music Universe (square)
+         right:  the Listening Clock (click an hour)
        Tablets and phones get one column in reading order. */
     .music-board {
         display: grid;
@@ -1033,22 +962,6 @@
         min-height: 0;
     }
 
-    /* On Repeat: a dark mulberry sleeve */
-    .repeat-card {
-        background: linear-gradient(160deg, #6E3844 0%, #4A2530 100%) !important;
-        border-color: #5A2C38 !important;
-        box-shadow: 0 18px 40px rgba(74, 37, 48, 0.28) !important;
-    }
-
-    .repeat-card .music-card-title { color: #FFF8F6; }
-    .repeat-card .music-card-sub { color: #E8B9C2; }
-    .repeat-card .song-item { border-bottom-color: rgba(255, 248, 246, 0.14); }
-    .repeat-card .song-item:hover { background: rgba(255, 248, 246, 0.08); }
-    .repeat-card .song-rank { color: #F3C9A0; font-family: Georgia, serif; }
-    .repeat-card .song-name { color: #FFF8F6; }
-    .repeat-card .song-artist { color: #E3C9CE; }
-    .repeat-card .music-loading { color: #E3C9CE; }
-
     /* Listening DNA in a narrow pin: the donut sits above its legend */
     .dna-card .dna-section {
         grid-template-columns: minmax(0, 1fr) !important;
@@ -1064,14 +977,6 @@
         width: 100%;
     }
 
-    /* Then vs. Now: sage paper */
-    .then-card {
-        background: linear-gradient(160deg, #F1F3EA 0%, #E7EBDC 100%) !important;
-        border-color: #D6DDC6 !important;
-    }
-
-    .then-card .music-card-sub { color: #56634A; }
-
     @@media (max-width: 1100px) {
         .music-board {
             grid-template-columns: minmax(0, 1fr);
@@ -1084,11 +989,8 @@
         /* reading order once it's one column */
         .now-card { order: 1; }
         .universe-card { order: 2; }
-        .repeat-card { order: 3; }
-        .clock-card { order: 4; }
-        .era-card { order: 5; }
-        .dna-card { order: 6; }
-        .then-card { order: 7; }
+        .clock-card { order: 3; }
+        .dna-card { order: 4; }
     }
 
     .music-card {
@@ -1137,42 +1039,6 @@
         margin: 0;
         border-radius: 16px;
         box-shadow: none;
-    }
-
-    /* On Repeat: one tidy line per song */
-    .music-card .songs-list {
-        margin: 0;
-        padding: 0;
-    }
-
-    .music-card .song-item {
-        padding: 8px 6px;
-        border-radius: 10px;
-    }
-
-    .music-card .song-item:hover {
-        padding-left: 10px;
-    }
-
-    .music-card .song-rank {
-        width: 26px;
-        margin-right: 8px;
-        font-size: 1rem;
-    }
-
-    .music-card .song-image {
-        width: 44px;
-        height: 44px;
-        margin-right: 12px;
-    }
-
-    .music-card .song-name {
-        margin-bottom: 2px;
-        font-size: 0.95rem;
-    }
-
-    .music-card .song-artist {
-        font-size: 0.82rem;
     }
 
     /* Listening DNA: a small donut beside its legend */
@@ -1561,86 +1427,6 @@
     .clock-detail-songs span span { font-size: 0.74rem; color: #7A6A64; }
     .clock-detail-songs em { font-size: 0.7rem; font-style: normal; color: #A08A84; white-space: nowrap; }
 
-    /* Then vs. Now: three short columns */
-    .then-now {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .then-now h4 {
-        margin: 0 0 8px;
-        font-size: 0.7rem;
-        font-weight: 800;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        color: #8F4661;
-    }
-
-    .then-now ol {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        gap: 6px;
-    }
-
-    .then-now li {
-        display: flex;
-        gap: 6px;
-        font-size: 0.84rem;
-        line-height: 1.25;
-        color: #2A1810;
-    }
-
-    .then-now li b {
-        color: #9E5A63;
-        min-width: 12px;
-    }
-
-    .then-now li.loyal {
-        font-weight: 700;
-    }
-
-    .then-now li.new-fave span {
-        color: #56634A;
-        font-style: italic;
-    }
-
-    /* Music by Era: horizontal bars */
-    .era-chart {
-        display: grid;
-        gap: 10px;
-    }
-
-    .era-row {
-        display: grid;
-        grid-template-columns: 88px minmax(0, 1fr) 28px;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.84rem;
-        color: #2A1810;
-    }
-
-    .era-track {
-        height: 12px;
-        border-radius: 999px;
-        background: #F2E1DC;
-        overflow: hidden;
-    }
-
-    .era-fill {
-        height: 100%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #C98B97, #8F4661);
-    }
-
-    .era-count {
-        text-align: right;
-        font-weight: 700;
-        color: #8F4661;
-    }
-
     /* Desktop: the listening dashboard at full size, so every number is easy to read */
     @@media (min-width: 821px) {
         .music-bento {
@@ -1655,11 +1441,6 @@
         .music-card-sub { margin: 6px 0 22px; font-size: 1rem; }
         .music-card-note { margin-top: 18px; font-size: 1.05rem; }
 
-        .music-card .song-rank { width: 34px; font-size: 1.25rem; }
-        .music-card .song-image { width: 56px; height: 56px; }
-        .music-card .song-name { font-size: 1.1rem; }
-        .music-card .song-artist { font-size: 0.95rem; }
-
         .music-card .dna-section { grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: center; }
         .music-card .dna-center-pct { font-size: 38px; }
         .music-card .dna-center-name { font-size: 0.72rem; }
@@ -1669,11 +1450,6 @@
 
         .clock-face { max-width: 340px; }
         .clock-legend { font-size: 0.85rem; }
-
-        .then-now h4 { font-size: 0.8rem; }
-        .then-now li { font-size: 1rem; }
-        .era-row { font-size: 1rem; }
-        .era-track { height: 14px; }
 
     }
 
@@ -1716,11 +1492,12 @@
         <div class="music-board">
             <div class="music-col">
                 <a class="now-card" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
-                <section class="music-card era-card" aria-labelledby="eraTitle">
-                    <h3 class="music-card-title" id="eraTitle">Music by Era</h3>
-                    <p class="music-card-sub">when my top 50 songs came out</p>
-                    <div class="era-chart" id="eraChart"><p class="music-loading">Loading...</p></div>
-                    <p class="music-card-note" id="eraNote"></p>
+                <section class="music-card dna-card" aria-labelledby="dnaTitle">
+                    <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
+                    <p class="music-card-sub">what my headphones are apparently made of</p>
+                    <div class="dna-section" id="dnaSection">
+                        <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
+                    </div>
                 </section>
             </div>
             <div class="music-col">
@@ -1742,43 +1519,19 @@
                     </div>
                 </div>
                 </section>
-                <section class="music-card dna-card" aria-labelledby="dnaTitle">
-                    <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
-                    <p class="music-card-sub">what my headphones are apparently made of</p>
-                    <div class="dna-section" id="dnaSection">
-                        <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
-                    </div>
-                </section>
             </div>
             <div class="music-col">
-                <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
-                    <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
-                    <p class="music-card-sub">the five songs I can't stop playing right now</p>
-                    <ul class="songs-list" id="topSongsContainer">
-                        <li class="music-loading">Loading...</li>
-                    </ul>
-                </section>
                 <section class="music-card clock-card" aria-labelledby="clockTitle">
                     <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
                     <p class="music-card-sub">when I press play, from my last 50 songs</p>
                     <div class="clock-chart" id="listenClock" role="group" aria-label="Listening clock"><p class="music-loading">Loading...</p></div>
                     <p class="music-card-note" id="clockNote"></p>
                 </section>
-                <section class="music-card then-card" aria-labelledby="thenNowTitle">
-                    <h3 class="music-card-title" id="thenNowTitle">Then vs. Now</h3>
-                    <p class="music-card-sub">my top five artists, over time</p>
-                    <div class="then-now" id="thenNow"><p class="music-loading">Loading...</p></div>
-                    <p class="music-card-note" id="thenNowNote"></p>
-                </section>
             </div>
         </div>
 
-        <!-- MUSIC LAB: every chart Spotify's data allows, numbered so I can pick which to keep -->
-        <section class="music-lab" aria-labelledby="musicLabTitle">
-            <div class="music-lab-head">
-                <h3 class="music-card-title" id="musicLabTitle">Music Lab</h3>
-                <p class="music-card-sub">every chart Spotify still lets me make</p>
-            </div>
+        <!-- a row under the board: Song Title Words, Albums I Can't Leave, From the Vault -->
+        <section class="music-lab" aria-label="More from my Spotify">
             <div class="music-lab-grid" id="musicLab"><p class="music-loading">Loading...</p></div>
         </section>
         <link rel="stylesheet" href="~/css/music-lab.css" asp-append-version="true" />
@@ -1829,7 +1582,6 @@
     function showNotConnected() {
         const connect = `Spotify isn't connected yet. <a href="/spotify/login" style="color: #9E5A63; font-weight: 700;">Connect Spotify →</a>`;
         document.getElementById('universeStatus').innerHTML = connect;
-        document.getElementById('topSongsContainer').innerHTML = `<li class="music-loading">${connect}</li>`;
         document.getElementById('dnaSection').innerHTML = `<p class="dna-loading">${connect}</p>`;
     }
 
@@ -1876,11 +1628,8 @@
         const genresPart = spotifyPart('genres');
 
         try {
-            // Top 50 songs: the first 5 are "On Repeat", and all 50 feed the artist and album stats
+            // Top 50 songs: they feed the artist details in the universe
             const songs = await songsPart;
-            if (songs.length > 0) {
-                displayTopSongs(songs.slice(0, 5));
-            }
 
             const artists = await artistsPart;
             if (artists.length > 0) {
@@ -1905,7 +1654,7 @@
     }
 
     // =====================================================================
-    // NOW PLAYING, LISTENING CLOCK, THEN VS. NOW, MUSIC BY ERA
+    // NOW PLAYING AND THE LISTENING CLOCK
     // =====================================================================
 
     const MUSIC_TIME_ZONE = 'America/Chicago';   // I live in Austin
@@ -2115,55 +1864,6 @@
         document.getElementById('clockNote').textContent = `Busiest around ${peakText}. ${vibe} ✦`;
     }
 
-    function drawThenVsNow(month, sixMonths, allTime) {
-        const box = document.getElementById('thenNow');
-        const names = list => list.slice(0, 5).map(a => a.name);
-        const cols = [['This month', names(month)], ['6 months', names(sixMonths)], ['All time', names(allTime)]];
-        if (cols.every(([, list]) => list.length === 0)) { box.innerHTML = '<p class="music-loading">Nothing to compare yet.</p>'; return; }
-
-        const everywhere = cols[0][1].filter(name => cols[1][1].includes(name) && cols[2][1].includes(name));
-        const newFaves = cols[0][1].filter(name => !cols[2][1].includes(name));
-        box.innerHTML = cols.map(([title, list]) => `
-            <div>
-                <h4>${title}</h4>
-                <ol>${list.map((name, i) => `<li class="${everywhere.includes(name) ? 'loyal' : ''}${title === 'This month' && newFaves.includes(name) ? ' new-fave' : ''}"><b>${i + 1}</b><span>${escapeHtml(name)}</span></li>`).join('')}</ol>
-            </div>`).join('');
-
-        const notes = [];
-        if (everywhere.length) notes.push(`Ride or die: ${everywhere.join(', ')}.`);
-        if (newFaves.length) notes.push(`New obsession${newFaves.length > 1 ? 's' : ''}: ${newFaves.join(', ')}.`);
-        document.getElementById('thenNowNote').textContent = notes.join(' ');
-    }
-
-    function drawMusicByEra(songs) {
-        const chart = document.getElementById('eraChart');
-        const years = songs.map(s => s.releaseYear).filter(Boolean);
-        if (!years.length) { chart.innerHTML = '<p class="music-loading">No release years yet.</p>'; return; }
-
-        const now = new Date().getFullYear();
-        const buckets = [
-            [`${now}`, y => y === now],
-            [`${now - 3} to ${now - 1}`, y => y >= now - 3 && y < now],
-            [`${now - 6} to ${now - 4}`, y => y >= now - 6 && y < now - 3],
-            [`${now - 10} to ${now - 7}`, y => y >= now - 10 && y < now - 6],
-            [`Before ${now - 10}`, y => y < now - 10]
-        ].map(([label, test]) => [label, years.filter(test).length]);
-        const max = Math.max(...buckets.map(([, n]) => n));
-        chart.innerHTML = buckets.map(([label, n]) => `
-            <div class="era-row">
-                <span>${label}</span>
-                <div class="era-track"><div class="era-fill" style="width: ${(n / max) * 100}%"></div></div>
-                <span class="era-count">${n}</span>
-            </div>`).join('');
-
-        const thisYear = years.filter(y => y === now).length;
-        const sorted = [...years].sort((a, b) => a - b);
-        const median = sorted[Math.floor(sorted.length / 2)];
-        document.getElementById('eraNote').textContent = thisYear
-            ? `${thisYear} of my top ${years.length} came out this year. The typical song is from ${median}. ✦`
-            : `The typical song in my top ${years.length} is from ${median}. ✦`;
-    }
-
     async function loadMusicStats() {
         const safe = part => spotifyPart(part).catch(() => []);
         const recentPart = safe('recent');
@@ -2175,14 +1875,11 @@
             setInterval(() => { if (!document.hidden) refreshNowPlaying(recent); }, 60000);
         });
 
-        Promise.all([safe('artistsShort'), safe('artists'), safe('artistsLong')])
-            .then(([month, sixMonths, allTime]) => {
+        Promise.all([safe('artistsShort'), safe('artistsLong')])
+            .then(([month, allTime]) => {
                 uv.month = month || [];
                 uv.allTime = allTime || [];
-                drawThenVsNow(month, sixMonths, allTime);
             });
-
-        safe('songs').then(drawMusicByEra);
     }
 
     // =====================================================================
@@ -2320,7 +2017,6 @@
                     </span>
                 </button>`;
         }).join('');
-
 
         computeHomeView(width, height);
         uv.k = uv.homeK;
@@ -2701,7 +2397,7 @@
             }, 200);
         });
 
-        // The box also grows taller once the cards beside it finish loading (the clock, On Repeat).
+        // The box also grows taller once the cards beside it finish loading (the clock).
         // If nobody has panned or zoomed yet, re-center the universe in the new space.
         new ResizeObserver(() => {
             if (!uv.nodes.length) return;
@@ -2837,27 +2533,6 @@
         });
 
         render();
-    }
-
-    function displayTopSongs(songs) {
-        const container = document.getElementById('topSongsContainer');
-        container.innerHTML = songs.map(song => `
-            <li class="song-item" data-url="${escapeHtml(song.spotifyUrl)}" style="cursor: var(--cursor-hot, pointer);">
-                <div class="song-rank">#${song.position}</div>
-                <div class="song-image">
-                    ${song.albumArt
-                        ? `<img src="${escapeHtml(song.albumArt)}" alt="${escapeHtml(song.name)}" style="width: 100%; height: 100%; object-fit: cover;">`
-                        : ''}
-                </div>
-                <div class="song-info">
-                    <div class="song-name">${escapeHtml(song.name)}</div>
-                    <div class="song-artist">${escapeHtml(song.artist)}</div>
-                </div>
-            </li>
-        `).join('');
-        container.querySelectorAll('.song-item').forEach(item => {
-            item.addEventListener('click', () => { if (item.dataset.url) window.open(item.dataset.url, '_blank', 'noopener'); });
-        });
     }
 
     // Optional: my own words about an album, shown under the stats. Key = album name on Spotify.
