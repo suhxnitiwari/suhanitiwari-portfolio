@@ -198,7 +198,7 @@
         align-items: center;
         gap: 8px;
         padding: 14px 28px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         border: 1.5px solid rgba(255, 248, 246, 0.9);
         background: rgba(30, 14, 12, 0.18);
         backdrop-filter: blur(4px);
@@ -469,7 +469,7 @@
     .about-proof a {
         display: inline-block;
         padding: 7px 15px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         border: 1.5px solid #D9B8B3;
         background: #FFF8F6;
         color: #2A1810;
@@ -531,11 +531,11 @@
         margin: 0;
         aspect-ratio: 4 / 5;
         max-height: 520px;
-        border-radius: 20px;
+        border-radius: var(--r-card);
         overflow: hidden;
         background: #F6E4E1;
-        border: 1px solid #EBD5D0;
-        box-shadow: 0 14px 32px rgba(158, 90, 99, 0.14);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
     }
 
     /* photos sit on the outer edge of their row (right, or left on flipped rows), never floating inside it */
@@ -824,7 +824,7 @@
     .kn-card:focus-visible {
         outline: 2px solid #9E5A63;
         outline-offset: 4px;
-        border-radius: 16px;
+        border-radius: var(--r-card);
     }
 
     .kn-face {
@@ -833,10 +833,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 22px 24px;
-        border-radius: 16px;
-        border: 1px solid #EBD5D0;
-        box-shadow: 0 10px 24px rgba(158, 90, 99, 0.12);
+        padding: var(--pad-card-sm);
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
         text-align: center;
         color: #2A1810;
         backface-visibility: hidden;
@@ -986,10 +986,10 @@
         gap: 8px;
         flex: 0 0 calc((100% - 48px) / 4);
         padding: 18px 14px;
-        border-radius: 16px;
-        border: 1px solid #EBD5D0;
+        border-radius: var(--r-card);
+        border: var(--card-border);
         background: #FFF8F6;
-        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.08);
+        box-shadow: var(--shadow-card);
         text-align: center;
     }
 
@@ -1003,7 +1003,7 @@
 
     .tot-option {
         padding: 6px 14px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         font-family: Georgia, serif;
         font-size: 1.02em;
         color: #B89A96;
@@ -1081,9 +1081,10 @@
         margin: 22px auto 0;
         max-width: 340px;
         padding: 16px 20px 12px;
-        border-radius: 16px;
+        border-radius: var(--r-card);
         background: #FFF8F6;
-        border: 1px solid #EBD5D0;
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
     }
     .quiz-board-title {
         margin: 0 0 8px;
@@ -1152,7 +1153,7 @@
     .quiz-bar {
         width: 160px;
         height: 6px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: #EBD5D0;
         overflow: hidden;
     }
@@ -1161,18 +1162,18 @@
         display: block;
         height: 100%;
         width: 0;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: #9E5A63;
         transition: width 0.4s ease;
     }
 
     .quiz-card {
         position: relative;
-        padding: 34px 28px 30px;
-        border-radius: 20px;
-        border: 1px solid #EBD5D0;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
+        border: var(--card-border);
         background: #FFF8F6;
-        box-shadow: 0 12px 28px rgba(158, 90, 99, 0.12);
+        box-shadow: var(--shadow-card);
         text-align: center;
     }
 
@@ -1187,7 +1188,7 @@
     .quiz-option {
         position: relative;
         padding: 12px 26px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         border: 1.5px solid #D9B8B3;
         background: #FFFFFF;
         font-family: Georgia, serif;
@@ -1258,7 +1259,7 @@
     .quiz-reveal {
         margin: 12px 0 0;
         padding: 12px 16px;
-        border-radius: 12px;
+        border-radius: var(--r-inset);
         background: #F6E4E1;
         color: #2A1810;
         line-height: 1.55;
@@ -1273,7 +1274,7 @@
     .quiz-btn {
         margin-top: 14px;
         padding: 10px 26px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         border: 1px solid #EBD5D0;
         background: #F6E4E1;
         font-family: Georgia, serif;
@@ -1357,7 +1358,7 @@
         display: block;
         margin: 30px auto 0;
         padding: 10px 26px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         border: 1px solid #EBD5D0;
         background: #FFF8F6;
         font-family: Georgia, serif;
@@ -1643,7 +1644,7 @@
         align-items: baseline;
         gap: 2px 12px;
         padding: 6px 10px;
-        border-radius: 8px;
+        border-radius: var(--r-small);
         transition: background 0.25s ease;
     }
 
@@ -1774,7 +1775,7 @@
         padding: 12px 14px;
         margin-bottom: 4px;
         border: none;
-        border-radius: 12px;
+        border-radius: var(--r-inset);
         background: transparent;
         font: inherit;
         text-align: left;
@@ -1826,11 +1827,11 @@
     }
 
     .sky-card {
-        padding: 30px 32px;
-        border-radius: 22px;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
         background: #FFF8F6;
-        border: 1px solid #EBD5D0;
-        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.12);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
         animation: testIn 0.35s ease both;
     }
 
@@ -1987,7 +1988,7 @@
     .stars-wrong {
         margin-top: 40px;
         padding: 30px 32px;
-        border-radius: 22px;
+        border-radius: var(--r-card);
         background: #F5E0DB;
     }
 
@@ -2133,11 +2134,11 @@
     }
 
     .via-card {
-        padding: 30px 32px;
-        border-radius: 22px;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
         background: #FAF1EF;
-        border: 1px solid #EBD5D0;
-        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.12);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
         animation: testIn 0.35s ease both;
     }
 
@@ -2206,10 +2207,10 @@
 
     .letter-card {
         background: #FAF1EF;
-        border: 1px solid #EBD5D0;
-        border-radius: 18px;
+        border: var(--card-border);
+        border-radius: var(--r-card);
         overflow: hidden;
-        box-shadow: 0 8px 20px rgba(158, 90, 99, 0.1);
+        box-shadow: var(--shadow-card);
         transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
@@ -2236,7 +2237,7 @@
     .letter-toggle:focus-visible {
         outline: 2px solid #8A4D57;
         outline-offset: -4px;
-        border-radius: 18px;
+        border-radius: var(--r-card);
     }
 
     .letter-card.open .letter-toggle {
@@ -2353,7 +2354,7 @@
         display: inline-block;
         margin-top: 14px;
         padding: 5px 14px;
-        border-radius: 20px;
+        border-radius: var(--r-pill);
         background: #8A4D57;
         color: #FAF1EF;
         font-size: 0.8em;
@@ -2365,7 +2366,7 @@
     .turbulent-card {
         margin-top: 16px;
         padding: 28px 40px;
-        border-radius: 22px;
+        border-radius: var(--r-card);
         border: 2px solid #8A4D57;
         background: #FAF1EF;
         text-align: center;
@@ -2411,7 +2412,7 @@
     .type-summary {
         margin-top: 16px;
         padding: 26px 34px;
-        border-radius: 22px;
+        border-radius: var(--r-card);
         background: linear-gradient(135deg, #56634A 0%, #34422F 100%);
         color: #FAF1EF;
     }
@@ -2469,14 +2470,15 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
-        padding: 28px 24px;
-        border-radius: 18px;
+        padding: var(--pad-card-sm);
+        border-radius: var(--r-card);
         background: #FFF8F6;
-        border: 1px solid #EBD5D0;
+        border: var(--card-border);
         text-align: left;
         text-decoration: none;
         color: #2A1810;
         transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+        box-shadow: var(--shadow-card);
     }
 
     .cta-link:hover,

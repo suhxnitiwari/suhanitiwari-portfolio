@@ -56,12 +56,12 @@
     .degree-card {
         flex: 1 1 320px;
         max-width: 520px;
-        padding: 32px 28px;
-        border-radius: 18px;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
         text-align: center;
         color: white;
         background: linear-gradient(135deg, #9A5F68 0%, #7A3F4A 100%);
-        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.15);
+        box-shadow: var(--shadow-card);
     }
 
     .degree-card.minors {
@@ -173,7 +173,7 @@
 
     .edu-stats li {
         padding: 8px 14px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: #FFF8F6;
         border: 1px solid #EBD5D0;
         font-size: 0.9em;
@@ -190,7 +190,7 @@
         max-width: 760px;
         margin: 24px auto 0;
         padding: 40px 40px 36px;
-        border-radius: 24px;
+        border-radius: var(--r-pill);
         background: radial-gradient(circle at 100% 0%, #F2CFD7 0, rgba(242, 207, 215, 0) 55%), #FFFBF9;
         border: 1px solid rgba(143, 70, 97, 0.16);
         box-shadow: 0 24px 50px -36px rgba(42, 24, 16, 0.4);
@@ -217,7 +217,7 @@
         display: inline-block;
         margin-top: 22px;
         padding: 12px 26px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: #8F4661;
         color: #FFF8F6;
         font-size: 0.85em;
@@ -267,7 +267,7 @@
         gap: 14px;
         width: 100%;
         padding: 14px 18px;
-        border-radius: 18px;
+        border-radius: var(--r-pill);
         border: 1.5px solid #EBD5D0;
         background: #FFF8F6;
         color: #2A1810;
@@ -299,7 +299,7 @@
 
     .rank-panel {
         padding: 36px 40px;
-        border-radius: 24px;
+        border-radius: var(--r-card);
         background: radial-gradient(circle at 100% 0%, #F2CFD7 0, rgba(242, 207, 215, 0) 55%), #FFFBF9;
         border: 1px solid rgba(143, 70, 97, 0.16);
         box-shadow: 0 24px 50px -36px rgba(42, 24, 16, 0.4);

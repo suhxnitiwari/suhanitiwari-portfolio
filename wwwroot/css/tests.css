@@ -22,7 +22,7 @@
 
 .test-tab {
     padding: 11px 24px;
-    border-radius: 30px;
+    border-radius: var(--r-pill);
     border: 1.5px solid #8A4D57;
     background: #FAF1EF;
     color: #2A1810;
@@ -161,10 +161,11 @@
 }
 
 .disc-block {
-    padding: 24px 26px;
-    border-radius: 18px;
+    padding: var(--pad-card-sm);
+    border-radius: var(--r-card);
     background: #FFF8F6;
-    border: 1px solid #EBD5D0;
+    border: var(--card-border);
+    box-shadow: var(--shadow-card);
 }
 
 .disc-block h4 {
@@ -212,7 +213,7 @@
 
 .disc-pills li {
     padding: 6px 13px;
-    border-radius: 20px;
+    border-radius: var(--r-pill);
     background: rgba(158, 90, 99, 0.14);
     font-size: 0.85em;
     font-weight: 600;

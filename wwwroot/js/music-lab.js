@@ -18,8 +18,9 @@
                 ${body}
             </article>`;
 
-    const list = items => `<ol class="lab-list">${items.map(i => `<li>${i}</li>`).join('')}</ol>`;
-    const song = t => `<b>${esc(t.name)}</b> <span>${esc(t.artists.join(', '))}</span>`;
+    // the fives row's shared rows (the same as On Repeat): rank, cover, name and one detail line
+    const fiveList = rows => `<ol class="five-list">${rows.map((r, i) => `
+            <li><div><em>${i + 1}</em>${r.art ? `<img src="${esc(r.art)}" alt="" loading="lazy">` : '<i></i>'}<span><b>${esc(r.title)}</b><span>${esc(r.detail)}</span></span></div></li>`).join('')}</ol>`;
 
     // Song title words: every word gets its own font, picked for what that word means, and no font is used twice.
     // [font, color, extra style]
@@ -90,15 +91,14 @@
             const seen = new Set();
             all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); const k = t.album; if (!k) return; albums[k] = albums[k] || { n: 0, art: t.albumArt, artist: main(t) }; albums[k].n++; });
             const top = Object.entries(albums).sort((a, b) => b[1].n - a[1].n).slice(0, 5);
-            card('albums', 'Albums I Can’t Leave', 'most songs across all my top lists',
-                `<ul class="lab-albums">${top.map(([n, a]) => `<li>${a.art ? `<img src="${esc(a.art)}" alt="" loading="lazy">` : ''}<span><b>${esc(n)}</b><span>${esc(a.artist)}, ${a.n} songs</span></span></li>`).join('')}</ul>`);
+            card('albums', 'Albums I Can’t Leave', 'most songs across all my top lists', fiveList(top.map(([n, a]) => ({ art: a.art, title: n, detail: `${a.artist} · ${a.n} songs` }))));
         }
 
         // From the vault
         if (all.length) {
             const seen = new Set();
             const oldest = all.filter(t => year(t) && !seen.has(key(t)) && seen.add(key(t))).sort((a, b) => year(a) - year(b)).slice(0, 5);
-            card('vault', 'From the Vault', 'the oldest songs still in my top lists', list(oldest.map(t => `${song(t)} <em>${year(t)}</em>`)));
+            card('vault', 'From the Vault', 'the oldest songs still in my top lists', fiveList(oldest.map(t => ({ art: t.albumArt, title: t.name, detail: `${t.artists[0]} · ${year(t)}` }))));
         }
 
         // Song title words

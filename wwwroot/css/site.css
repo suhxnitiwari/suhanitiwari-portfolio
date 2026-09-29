@@ -22,7 +22,7 @@ html {
 }
 /* The Pulse theme squares off the phone menu button; keep its soft corners */
 .navbar-toggler {
-  border-radius: 0.3em;
+  border-radius: var(--r-small);
 }
 
 /* ✦ Fairy-dust cursor: a gold sparkle everywhere, a bolder one on anything clickable.
@@ -122,9 +122,28 @@ html {
    Title      a page's (or a stacked Pursue part's) main heading: Georgia 3rem, weight 800
    Section    the headings that split a page into sections: Georgia 1.8rem, weight 700
    Sub        headings inside a section (story rows, projects, awards, places): Georgia 1.35rem, weight 700
-   The big display name (Hello cover, Pursue intro) is the brand and stays as it is. */
+   The big display name (Hello cover, Pursue intro) is the brand and stays as it is.
+   Corners    four sizes only, one per role:
+              --r-card  20px   every card and panel that sits on the page
+              --r-inset 14px   a panel, photo or box inside a card
+              --r-small  8px   thumbnails, covers, small tiles and inputs
+              --r-pill         buttons, tabs, chips and labels
+              (deliberate shapes stay: the arched portrait, paper journal pages, book spines, the Polaroid, thin bars,
+              and the marketing slide decks, whose corners scale with the slide)
+   Cards      every card uses --card-border and --shadow-card at rest, and one of two paddings:
+              --pad-card-sm for small grid cards, --pad-card for large panels */
 :root {
     --page-width: 1100px;
+    --r-card: 20px;
+    --r-inset: 14px;
+    --r-small: 8px;
+    --r-pill: 999px;
+    /* one resting shadow for every card, a soft rose one */
+    --shadow-card: 0 8px 24px rgba(158, 90, 99, 0.08);
+    --card-border: 1px solid #EBD5D0;
+    /* two card sizes: small grid cards and large panels */
+    --pad-card-sm: 22px 24px;
+    --pad-card: 30px 32px;
     --title-size: 3rem;
     --section-size: 1.8rem;
     --sub-size: 1.35rem;
@@ -154,7 +173,7 @@ html {
 
 /* Section */
 .shelf-title,
-.music-lab-head .music-card-title,
+
 .course-title,
 .honors-group h2,
 .project-text h2,
@@ -185,6 +204,7 @@ html {
 [id^="mk-title-"],
 .zoom-label,
 .honor-name,
+.job h3,
 .disc-intro h3,
 .riasec-card h3,
 .pieces-theme,

@@ -10,7 +10,7 @@
     border: none;
     background: none;
     cursor: var(--cursor-hot, pointer);
-    border-radius: 8px;
+    border-radius: var(--r-inset);
 }
 
 .bake-open:focus-visible {
@@ -46,7 +46,7 @@
     max-height: calc(100vh - 48px);
     padding: 0;
     border: none;
-    border-radius: 24px;
+    border-radius: var(--r-card);
     background: #FFF8F6;
     color: #2A1810;
     box-shadow: 0 30px 80px rgba(42, 24, 16, 0.3);
@@ -217,7 +217,7 @@
 .journal-ticket {
     display: grid;
     grid-template-columns: 1fr auto;
-    border-radius: 8px;
+    border-radius: var(--r-small);
     background: #FFF4EE;
     border: 1px solid #E9CFC6;
     box-shadow: 0 3px 8px rgba(42, 24, 16, 0.14);
@@ -357,7 +357,7 @@
     display: inline-block;
     margin-left: 6px;
     padding: 2px 9px;
-    border-radius: 999px;
+    border-radius: var(--r-pill);
     background: #8A4D57;
     color: #FFF8F6;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -479,7 +479,7 @@
     overscroll-behavior-x: contain;
     scrollbar-width: none;
     padding: 44px 40px 56px;
-    border-radius: 14px;
+    border-radius: var(--r-card);
     background:
         radial-gradient(ellipse 70% 55% at 50% 0%, rgba(255, 250, 244, 0.75) 0%, rgba(255, 250, 244, 0) 100%),
         linear-gradient(180deg, #F1E4DE 0%, #E9D7D0 100%);
@@ -731,7 +731,7 @@
 
 .watch-more-btn {
     padding: 14px 32px;
-    border-radius: 30px;
+    border-radius: var(--r-pill);
     border: 1.5px solid #8A4D57;
     background: #FFF8F6;
     color: #2A1810;
@@ -765,7 +765,7 @@
 
 .video-topic-btn {
     padding: 7px 16px;
-    border-radius: 20px;
+    border-radius: var(--r-pill);
     border: 1.5px solid #D9B8B3;
     background: #FFF8F6;
     color: #2A1810;
@@ -815,7 +815,7 @@
     height: 100%;
     min-height: 100%;
     padding: 22px 22px;
-    border-radius: 12px;
+    border-radius: var(--r-card);
     background: linear-gradient(150deg, #9E5A63 0%, #7E4550 100%);
     color: #FFF8F6;
     box-shadow: 0 10px 24px rgba(138, 77, 87, 0.18);
@@ -976,7 +976,7 @@
 .recipe-soon {
     margin: 22px 0 0;
     padding: 18px 20px;
-    border-radius: 14px;
+    border-radius: var(--r-inset);
     background: #F5E0DB;
     font-family: Georgia, serif;
     font-style: italic;
@@ -1159,7 +1159,7 @@
 .shelf-rail:focus-visible {
     outline: 2px solid #8A4D57;
     outline-offset: 4px;
-    border-radius: 8px;
+    border-radius: var(--r-small);
 }
 
 .shelf-rail.dragging {
@@ -1175,7 +1175,7 @@
 .shelf-cover {
     position: relative;
     aspect-ratio: 2 / 3;
-    border-radius: 8px;
+    border-radius: var(--r-small);
     overflow: hidden;
     background: linear-gradient(135deg, #F4E3DF 0%, #F0D9D4 100%);
     box-shadow: 0 6px 16px rgba(42, 24, 16, 0.14);
@@ -1227,7 +1227,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid #EDD8D3;
+    border: 1px solid #EBD5D0;
     background: rgba(250, 241, 239, 0.95);
     color: #2A1810;
     font-size: 1.4em;
@@ -1455,7 +1455,7 @@
     height: 100%;
     padding: 0;
     border: none;
-    border-radius: 10px;
+    border-radius: var(--r-inset);
     overflow: hidden;
     cursor: var(--cursor-hot, pointer);
     background: linear-gradient(160deg, #F5E0DB 0%, #EFCFCD 100%);
@@ -1527,7 +1527,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid #EDD8D3;
+    border: 1px solid #EBD5D0;
     background: rgba(250, 241, 239, 0.95);
     color: #2A1810;
     font-size: 1.4em;
@@ -1552,7 +1552,7 @@
     justify-content: center;
     gap: 10px;
     border: 1.5px dashed #E3C4C0;
-    border-radius: 10px;
+    border-radius: var(--r-inset);
     color: #9E5A63;
     font-size: 0.85em;
     font-style: italic;

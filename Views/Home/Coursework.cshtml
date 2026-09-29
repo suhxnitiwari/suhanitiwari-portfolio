@@ -276,7 +276,7 @@
         --card-bg: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
         position: relative;
         aspect-ratio: 1;
-        border-radius: 16px;
+        border-radius: var(--r-card);
         overflow: visible;
         cursor: var(--cursor-hot, pointer);
         color: white;
@@ -301,7 +301,7 @@
         width: 100%;
         height: 100%;
         background: var(--card-bg);
-        box-shadow: 0 10px 30px rgba(158, 90, 99, 0.15);
+        box-shadow: var(--shadow-card);
         transition: box-shadow 0.3s ease;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
@@ -309,7 +309,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 40px;
-        border-radius: 16px;
+        border-radius: var(--r-card);
     }
 
     .course-card:hover .course-front,
@@ -347,7 +347,7 @@
         border: 2px solid white;
         color: white;
         padding: 10px 25px;
-        border-radius: 25px;
+        border-radius: var(--r-pill);
         font-size: 0.85em;
         font-weight: 700;
         cursor: var(--cursor-hot, pointer);
@@ -1299,7 +1299,7 @@ document.addEventListener('keydown', function(event) {
 .course-modal-content {
     background-color: #FAF1EF;
     padding: 40px;
-    border-radius: 16px;
+    border-radius: var(--r-card);
     max-width: 500px;
     width: 90%;
     max-height: 80vh;

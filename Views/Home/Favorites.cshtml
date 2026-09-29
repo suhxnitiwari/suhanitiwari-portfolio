@@ -55,7 +55,7 @@
         color: white;
         padding: 14px 40px;
         border: none;
-        border-radius: 25px;
+        border-radius: var(--r-pill);
         font-weight: 700;
         cursor: var(--cursor-hot, pointer);
         transition: all 0.3s ease;
@@ -110,8 +110,8 @@
         aspect-ratio: 1 / 1;
         margin: 0 auto 100px;
         overflow: hidden;
-        border-radius: 28px;
-        border: 1px solid #EDD8D3;
+        border-radius: var(--r-inset);
+        border: 1px solid #EBD5D0;
         background: radial-gradient(circle at 45% 40%, #FFFFFF 0%, #FCF4F2 55%, #F4E3DF 100%);
         box-shadow: 0 10px 30px rgba(158, 90, 99, 0.12);
         cursor: grab;
@@ -128,7 +128,7 @@
         bottom: 18px;
         transform: translate(-50%, 6px);
         padding: 8px 16px;
-        border-radius: 20px;
+        border-radius: var(--r-pill);
         background: rgba(42, 24, 16, 0.78);
         color: #FAF1EF;
         font-size: 0.8em;
@@ -291,7 +291,7 @@
         background: #8A4D57;
         color: #FAF1EF;
         padding: 5px 12px;
-        border-radius: 14px;
+        border-radius: var(--r-inset);
         font-size: 0.82em;
         font-weight: 600;
         white-space: nowrap;
@@ -312,7 +312,7 @@
         max-width: calc(100% - 140px);
         margin: 0;
         padding: 10px 18px;
-        border-radius: 22px;
+        border-radius: var(--r-card);
         background: #8A4D57;
         color: #FAF1EF;
         font-family: Georgia, serif;
@@ -351,8 +351,8 @@
         overflow-y: auto;
         overscroll-behavior: contain;
         background: #FAF1EF;
-        border: 1px solid #EDD8D3;
-        border-radius: 20px;
+        border: var(--card-border);
+        border-radius: var(--r-card);
         padding: 18px;
         box-shadow: 0 14px 36px rgba(42, 24, 16, 0.2);
         cursor: default;
@@ -416,9 +416,6 @@
         color: #56634A;
     }
 
-
-
-
     .up-genres {
         display: flex;
         flex-wrap: wrap;
@@ -430,7 +427,7 @@
 
     .up-genres span {
         padding: 4px 10px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: rgba(158, 90, 99, 0.12);
         font-size: 0.74em;
         font-weight: 600;
@@ -490,7 +487,7 @@
     .up-songs img {
         width: 30px;
         height: 30px;
-        border-radius: 6px;
+        border-radius: var(--r-small);
         object-fit: cover;
     }
 
@@ -519,7 +516,7 @@
 
     .up-stats li {
         padding: 6px 0;
-        border-top: 1px solid #EDD8D3;
+        border-top: 1px solid #EBD5D0;
     }
 
     .up-stats strong {
@@ -535,7 +532,7 @@
         font-weight: 600;
         font-size: 0.9em;
         padding: 10px 14px;
-        border-radius: 22px;
+        border-radius: var(--r-pill);
         transition: background 0.2s ease;
     }
 
@@ -558,7 +555,7 @@
         width: 38px;
         height: 38px;
         border-radius: 50%;
-        border: 1px solid #EDD8D3;
+        border: 1px solid #EBD5D0;
         background: #FAF1EF;
         color: #2A1810;
         font-size: 1.2em;
@@ -722,8 +719,8 @@
     .album-section {
         background: #FFF8F6;
         padding: 50px;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(158, 90, 99, 0.1);
+        border-radius: var(--r-card);
+        box-shadow: var(--shadow-card);
     }
 
     .album-header {
@@ -737,7 +734,7 @@
     .album-art {
         width: 250px;
         height: 250px;
-        border-radius: 12px;
+        border-radius: var(--r-inset);
         background: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
         display: flex;
         align-items: center;
@@ -792,7 +789,7 @@
         min-width: 200px;
         background: linear-gradient(135deg, #F5E5E1 0%, #FAF1EF 100%);
         padding: 15px;
-        border-radius: 12px;
+        border-radius: var(--r-inset);
         border-left: 4px solid #9E5A63;
         transition: all 0.3s ease;
         cursor: var(--cursor-hot, pointer);
@@ -841,67 +838,6 @@
         }
 
     }
-    /* ===== ON REPEAT: my top five songs ===== */
-    .songs-list {
-        list-style: none;
-    }
-
-    .song-item {
-        display: flex;
-        align-items: center;
-        padding: 20px 0;
-        border-bottom: 1px solid #EBD5D0;
-        transition: all 0.3s ease;
-    }
-
-    .song-item:last-child {
-        border-bottom: none;
-    }
-
-    .song-item:hover {
-        background: #F5E5E1;
-        padding-left: 10px;
-    }
-
-    .song-rank {
-        font-size: 1.5em;
-        font-weight: 900;
-        color: #9E5A63;
-        width: 40px;
-        margin-right: 20px;
-    }
-
-    .song-image {
-        width: 60px;
-        height: 60px;
-        border-radius: 8px;
-        background: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
-        margin-right: 20px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.5em;
-        overflow: hidden;
-        object-fit: cover;
-    }
-
-    .song-info {
-        flex: 1;
-    }
-
-    .song-name {
-        font-weight: 700;
-        font-size: 1em;
-        color: #2A1810;
-        margin-bottom: 5px;
-    }
-
-    .song-artist {
-        font-size: 0.9em;
-        color: #56634A;
-    }
 
     /* On Repeat: a dark mulberry sleeve */
     .repeat-card {
@@ -912,55 +848,7 @@
 
     .repeat-card .music-card-title { color: #FFF8F6; }
     .repeat-card .music-card-sub { color: #E8B9C2; }
-    .repeat-card .song-item { border-bottom-color: rgba(255, 248, 246, 0.14); }
-    .repeat-card .song-item:hover { background: rgba(255, 248, 246, 0.08); }
-    .repeat-card .song-rank { color: #F3C9A0; font-family: Georgia, serif; }
-    .repeat-card .song-name { color: #FFF8F6; }
-    .repeat-card .song-artist { color: #E3C9CE; }
     .repeat-card .music-loading { color: #E3C9CE; }
-
-    /* On Repeat: one tidy line per song */
-    .music-card .songs-list {
-        margin: 0;
-        padding: 0;
-    }
-
-    .music-card .song-item {
-        padding: 8px 6px;
-        border-radius: 10px;
-    }
-
-    .music-card .song-item:hover {
-        padding-left: 10px;
-    }
-
-    .music-card .song-rank {
-        width: 26px;
-        margin-right: 8px;
-        font-size: 1rem;
-    }
-
-    .music-card .song-image {
-        width: 44px;
-        height: 44px;
-        margin-right: 12px;
-    }
-
-    .music-card .song-name {
-        margin-bottom: 2px;
-        font-size: 0.95rem;
-    }
-
-    .music-card .song-artist {
-        font-size: 0.82rem;
-    }
-
-    @@media (min-width: 821px) {
-        .music-card .song-rank { width: 34px; font-size: 1.25rem; }
-        .music-card .song-image { width: 56px; height: 56px; }
-        .music-card .song-name { font-size: 1.1rem; }
-        .music-card .song-artist { font-size: 0.95rem; }
-    }
 
     /* ===== WHAT I'M LISTENING TO: pairs of cards that go together ===== */
     /* Universe + the artist picked in it, Listening DNA + the genre picked in it,
@@ -1011,8 +899,7 @@
         animation: none;
     }
 
-    .artist-card .universe-panel.swap,
-    .genre-spot.swap { animation: panelIn 0.3s ease; }
+    .artist-card .universe-panel.swap { animation: panelIn 0.3s ease; }
 
     .artist-card .up-head { padding-right: 0; margin-bottom: 18px; }
     .artist-card .up-photo { width: 96px; height: 96px; box-shadow: 0 8px 20px rgba(42, 24, 16, 0.18); }
@@ -1079,8 +966,80 @@
     .play-duo .lab-slot > .lab-card { flex: none; width: 100%; }
 
     @@media (max-width: 1000px) {
-        .music-fives { grid-template-columns: minmax(0, 1fr); }
+        .music-fives { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
     }
+
+    /* the fives row: every card is a title, a subtitle and five equal rows (rank, cover, name, one detail line) */
+    /* the three cards share one grid (title row, subtitle row, list row), so everything lines up across them */
+    .music-fives { grid-template-rows: auto auto 1fr; row-gap: 0; }
+
+    .music-fives > .music-card,
+    .music-fives > .lab-slot,
+    .music-fives .lab-card {
+        display: grid;
+        grid-row: span 3;
+        grid-template-rows: subgrid;
+        align-content: start;
+    }
+
+    .five-list {
+        flex: 1;
+        display: grid;
+        grid-template-rows: repeat(5, 1fr);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .five-list li { min-width: 0; border-top: 1px solid #EBD5D0; }
+    .five-list li:first-child { border-top: none; }
+
+    .five-list li > a,
+    .five-list li > div {
+        display: grid;
+        grid-template-columns: 22px 52px minmax(0, 1fr);
+        align-items: center;
+        gap: 14px;
+        height: 100%;
+        padding: 10px 0;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .five-list em {
+        font-family: Georgia, serif;
+        font-style: normal;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #9E5A63;
+    }
+
+    .five-list img,
+    .five-list i {
+        width: 52px;
+        height: 52px;
+        border-radius: var(--r-small);
+        object-fit: cover;
+        background: #EBD5D0;
+    }
+
+    .five-list b,
+    .five-list span span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .five-list b { font-size: 0.98rem; color: #2A1810; }
+    .five-list span span { margin-top: 3px; font-size: 0.85rem; color: #56634A; }
+
+    /* On Repeat keeps its dark sleeve */
+    .repeat-card .five-list li { border-top-color: rgba(255, 248, 246, 0.14); }
+    .repeat-card .five-list em { color: #F3C9A0; }
+    .repeat-card .five-list b { color: #FFF8F6; }
+    .repeat-card .five-list span span { color: #E3C9CE; }
+    .repeat-card .five-list a:hover b { text-decoration: underline; }
 
     /* Listening DNA is one card: the genre list on the left, the picked genre on the right */
     .dna-combo-card { margin-bottom: 24px; }
@@ -1092,7 +1051,15 @@
         align-items: stretch;
     }
 
+    .dna-combo .dna-section {
+        display: block;
+        margin: 0;
+        align-self: start;
+    }
+
+    /* tall enough for the longest genre (six artists), so hovering never changes the card's height */
     .dna-combo .genre-spot {
+        min-height: 524px;
         padding-left: 40px;
         border-left: 1px solid #EBD5D0;
     }
@@ -1100,6 +1067,27 @@
     @@media (max-width: 900px) {
         .dna-combo { grid-template-columns: minmax(0, 1fr); gap: 28px; }
         .dna-combo .genre-spot { padding: 28px 0 0; border-left: none; border-top: 1px solid #EBD5D0; }
+    }
+
+    /* the Listening Clock ends where Song Title Words ends: the row's height comes from the left column,
+       and the hour's song list scrolls inside whatever room is left */
+    .music-duo.play-duo { align-items: stretch; }
+
+    .play-duo .clock-card {
+        display: flex;
+        flex-direction: column;
+        height: 0;
+        min-height: 100%;
+        overflow: hidden;
+    }
+
+    .play-duo .clock-chart { flex: 1; min-height: 0; }
+    .play-duo .clock-detail { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .play-duo .clock-detail-songs { flex: 1; min-height: 0; max-height: none; }
+
+    @@media (max-width: 900px) {
+        .play-duo .clock-card { height: auto; min-height: 0; overflow: visible; }
+        .play-duo .clock-detail-songs { max-height: 220px; }
     }
 
     /* the Spotify player sits beside the clock, so its cover stays a modest size */
@@ -1137,7 +1125,7 @@
     .gs-share { display: flex; align-items: baseline; gap: 10px; margin: 0; color: #56634A; font-size: 0.9em; }
     .gs-share b { font-family: Georgia, serif; font-size: 2.2em; color: var(--genre); }
 
-    .gs-bar { height: 10px; border-radius: 999px; background: #F1E3DF; overflow: hidden; }
+    .gs-bar { height: 10px; border-radius: var(--r-pill); background: #F1E3DF; overflow: hidden; }
     .gs-bar span { display: block; height: 100%; border-radius: inherit; background: var(--genre); transition: width 0.5s ease; }
 
     .gs-label { margin: 6px 0 0; font-size: 0.75em; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #56634A; }
@@ -1182,10 +1170,10 @@
 
     .music-card {
         padding: 22px 24px;
-        border-radius: 20px;
+        border-radius: var(--r-card);
         background: #FFF8F6;
-        border: 1px solid #EDD8D3;
-        box-shadow: 0 8px 24px rgba(158, 90, 99, 0.08);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
     }
 
     .music-card-title {
@@ -1224,7 +1212,7 @@
     .universe-card .universe {
         width: 100%;
         margin: 0;
-        border-radius: 16px;
+        border-radius: var(--r-inset);
         box-shadow: none;
     }
 
@@ -1235,9 +1223,6 @@
         gap: 16px;
         margin: 0;
     }
-
-
-
 
     .music-card .dna-caption {
         margin: 0 0 6px;
@@ -1265,7 +1250,7 @@
         display: block;
         overflow: hidden;
         padding: 20px 22px 18px;
-        border-radius: 20px;
+        border-radius: var(--r-card);
         background: #211A1C;
         color: #FFFFFF;
         text-decoration: none;
@@ -1355,7 +1340,7 @@
         width: 100%;
         aspect-ratio: 1 / 1;
         object-fit: cover;
-        border-radius: 10px;
+        border-radius: var(--r-inset);
         background: #3A2A2E;
         box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
     }
@@ -1407,7 +1392,7 @@
         display: block;
         position: relative;
         height: 4px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: rgba(255, 255, 255, 0.28);
     }
 
@@ -1415,7 +1400,7 @@
         position: absolute;
         inset: 0 auto 0 0;
         width: var(--p, 0%);
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: #FFFFFF;
     }
 
@@ -1528,14 +1513,14 @@
     .clock-switch {
         display: inline-flex;
         padding: 3px;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: #F5E7E3;
     }
 
     .clock-switch button {
         padding: 5px 18px;
         border: none;
-        border-radius: 999px;
+        border-radius: var(--r-pill);
         background: none;
         font: inherit;
         font-size: 0.78rem;
@@ -1560,7 +1545,7 @@
     .clock-detail {
         width: 100%;
         padding: 14px 16px;
-        border-radius: 14px;
+        border-radius: var(--r-inset);
         background: #F8EEEB;
         animation: clockDetailIn 0.3s ease;
     }
@@ -1592,13 +1577,13 @@
         align-items: center;
         gap: 10px;
         padding: 4px;
-        border-radius: 8px;
+        border-radius: var(--r-small);
         color: inherit;
         text-decoration: none;
     }
 
     .clock-detail-songs a:hover { background: #FFFBFA; }
-    .clock-detail-songs img, .clock-detail-songs i { width: 34px; height: 34px; border-radius: 5px; object-fit: cover; background: #EBD5D0; }
+    .clock-detail-songs img, .clock-detail-songs i { width: 34px; height: 34px; border-radius: var(--r-small); object-fit: cover; background: #EBD5D0; }
     .clock-detail-songs span span, .clock-detail-songs b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .clock-detail-songs b { font-size: 0.85rem; color: #2A1810; }
     .clock-detail-songs span span { font-size: 0.74rem; color: #7A6A64; }
@@ -1611,15 +1596,14 @@
         }
 
         .music-card {
-            padding: 30px 34px;
+            padding: var(--pad-card);
         }
 
-        .music-card-title { font-size: 1.75rem; }
+        .music-card-title { font-size: var(--section-size); }
         .music-card-sub { margin: 6px 0 22px; font-size: 1rem; }
         .music-card-note { margin-top: 18px; font-size: 1.05rem; }
 
         .music-card .dna-section { grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: center; }
-
 
         .music-card .dna-caption { font-size: 1rem; }
         .music-card .dna-legend li .dna-key { font-size: 1rem; }
@@ -1719,8 +1703,8 @@
         <div class="music-fives" aria-label="My top fives">
             <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
                 <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
-                <p class="music-card-sub">the five songs I can't stop playing right now</p>
-                <ul class="songs-list" id="topSongsContainer">
+                <p class="music-card-sub">the five I can't stop playing</p>
+                <ul class="five-list" id="topSongsContainer">
                     <li class="music-loading">Loading...</li>
                 </ul>
             </section>
@@ -2711,9 +2695,6 @@
                        </ul>`
                     : ''}
             <p class="gs-hint">Hover or click a genre to see another.</p>`;
-        box.classList.remove('swap');
-        void box.offsetWidth;   // restart the fade
-        box.classList.add('swap');
     }
 
     function displayListeningDna(genres) {
@@ -2790,25 +2771,15 @@
         render();
     }
 
+    // On Repeat: my top five songs, in the same rows as the other two cards in the fives row
     function displayTopSongs(songs) {
         const container = document.getElementById('topSongsContainer');
         container.innerHTML = songs.map(song => `
-            <li class="song-item" data-url="${escapeHtml(song.spotifyUrl)}" style="cursor: var(--cursor-hot, pointer);">
-                <div class="song-rank">#${song.position}</div>
-                <div class="song-image">
-                    ${song.albumArt
-                        ? `<img src="${escapeHtml(song.albumArt)}" alt="${escapeHtml(song.name)}" style="width: 100%; height: 100%; object-fit: cover;">`
-                        : ''}
-                </div>
-                <div class="song-info">
-                    <div class="song-name">${escapeHtml(song.name)}</div>
-                    <div class="song-artist">${escapeHtml(song.artist)}</div>
-                </div>
-            </li>
-        `).join('');
-        container.querySelectorAll('.song-item').forEach(item => {
-            item.addEventListener('click', () => { if (item.dataset.url) window.open(item.dataset.url, '_blank', 'noopener'); });
-        });
+            <li><a href="${escapeHtml(song.spotifyUrl || 'https://open.spotify.com')}" target="_blank" rel="noopener">
+                <em>${song.position}</em>
+                ${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="" loading="lazy">` : '<i></i>'}
+                <span><b>${escapeHtml(song.name)}</b><span>${escapeHtml(song.artist)}</span></span>
+            </a></li>`).join('');
     }
 
     // Optional: my own words about an album, shown under the stats. Key = album name on Spotify.

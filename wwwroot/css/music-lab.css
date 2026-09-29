@@ -2,18 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bebas+Neue&family=Bodoni+Moda:ital@1&family=Bungee&family=Bungee+Shade&family=Caveat:wght@600&family=Comic+Neue:wght@700&family=Cormorant+Garamond:ital,wght@1,300&family=Creepster&family=Dancing+Script&family=Fraunces&family=Great+Vibes&family=Homemade+Apple&family=Italiana&family=Josefin+Sans&family=Kalam&family=Lobster&family=Monoton&family=Orbitron&family=Pacifico&family=Permanent+Marker&family=Pinyon+Script&family=Playfair+Display&family=Racing+Sans+One&family=Righteous&family=Rubik+Burned&family=Rubik+Distressed&family=Rubik+Glitch&family=Rubik+Wet+Paint&family=Rye&family=Satisfy&family=Shrikhand&family=Special+Elite&family=Syne&family=Tangerine&display=swap');
 .lab-card {
     position: relative;
-    padding: 24px 26px;
-    border-radius: 20px;
+    padding: 22px 24px;
+    border-radius: var(--r-card);
     background: #FFF8F6;
-    border: 1px solid #EDD8D3;
-    box-shadow: 0 8px 24px rgba(158, 90, 99, 0.08);
+    border: var(--card-border);
+    box-shadow: var(--shadow-card);
 }
 
 .lab-title {
     margin: 0;
     font-family: Georgia, serif;
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.35rem;
+    font-weight: 800;
     color: #2A1810;
 }
 
@@ -22,57 +22,6 @@
     font-size: 0.88rem;
     font-style: italic;
     color: #9E5A63;
-}
-
-.lab-list {
-    display: grid;
-    gap: 8px;
-    margin: 14px 0 0;
-    padding-left: 1.3em;
-    font-size: 0.88rem;
-    color: #2A1810;
-}
-
-.lab-list span {
-    color: #56634A;
-}
-
-.lab-list em {
-    float: right;
-    font-family: Georgia, serif;
-    color: #8A4D57;
-}
-
-
-.lab-albums {
-    display: grid;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.lab-albums li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.88rem;
-}
-
-.lab-albums img {
-    width: 48px;
-    height: 48px;
-    border-radius: 6px;
-    object-fit: cover;
-}
-
-.lab-albums b {
-    display: block;
-    color: #2A1810;
-}
-
-.lab-albums li > span > span {
-    color: #56634A;
 }
 
 .lab-cloud {
@@ -86,3 +35,9 @@
 
 /* title words: each word's own font is set inline by music-lab.js (WORD_FONTS) */
 
+/* these cards sit among the other music cards, so they match them exactly: same padding, title and subtitle */
+@media (min-width: 821px) {
+    .lab-card { padding: var(--pad-card); }
+    .lab-title { font-size: var(--section-size); }
+    .lab-sub { margin: 6px 0 22px; font-size: 1rem; }
+}

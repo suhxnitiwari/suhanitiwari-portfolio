@@ -38,7 +38,7 @@
     font-weight: 600;
     white-space: nowrap;
     padding: 9px 20px;
-    border-radius: 999px;
+    border-radius: var(--r-pill);
     border: 1.5px solid #D9B8B3;
     background: #FFF8F6;
     color: #8F4661;

@@ -135,7 +135,7 @@
         width: 100%;
         aspect-ratio: 3 / 4;
         object-fit: cover;
-        border-radius: 14px;
+        border-radius: var(--r-inset);
         border: 6px solid #FAF1EF;
         box-shadow: 0 16px 40px rgba(42, 24, 16, 0.18);
         transition: transform 0.35s ease, box-shadow 0.35s ease;
@@ -236,11 +236,11 @@
         column-gap: 40px;
         align-items: center;
         margin-top: 0;
-        padding: 28px 34px;
-        border-radius: 18px;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
         background: #FFF8F6;
-        border: 1px solid #EBD5D0;
-        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.1);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
     }
 
     .review-label {
@@ -329,7 +329,7 @@
 
     .project-tags li {
         padding: 6px 14px;
-        border-radius: 20px;
+        border-radius: var(--r-pill);
         background: rgba(158, 90, 99, 0.14);
         color: #2A1810;
         font-size: 0.78em;
@@ -341,7 +341,7 @@
         display: inline-block;
         margin-top: 26px;
         padding: 12px 24px;
-        border-radius: 26px;
+        border-radius: var(--r-pill);
         background: #8A4D57;
         color: #FAF1EF;
         font-weight: 600;
@@ -510,7 +510,7 @@
                         ("5", "design stages"),
                         ("4+", "engineering areas")
                     },
-                    Description: "I guided elementary students through hands-on STEM challenges, helping them move through the engineering design process from brainstorming and sketching to prototyping, testing, and redesigning. We built and tested boats for buoyancy and movement in water, experimented with paper airplanes and gliders, designed solutions for cleaning contaminated water, and constructed mini skate parks to explore motion and momentum. Students learned to test how a design performed, identify what wasn’t working, modify the prototype, and test again.",
+                    Description: "Guided elementary students through the engineering design process, from brainstorming and sketching to prototyping, testing, and redesigning. We built boats to explore buoyancy, experimented with paper airplanes and gliders to understand flight, designed solutions for cleaning contaminated water, and constructed mini skate parks to test motion and momentum. Each challenge turned a STEM concept into something students could build, test, and improve.",
                     Photo: "/images/camp-invention.jpg",
                     PhotoAlt: "Me with Camp Invention campers testing boat prototypes in a small pool",
                     PhotoCaption: "Teaching campers how to make a cool boat and testing our prototypes")
