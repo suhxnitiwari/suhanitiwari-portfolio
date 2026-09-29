@@ -977,7 +977,6 @@
     .music-duo.play-duo {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         align-items: start;
-        margin-bottom: 70px;
     }
 
     .music-col {
@@ -1063,6 +1062,50 @@
         font-style: italic;
         text-align: center;
         color: #9E5A63;
+    }
+
+    /* the fives row: On Repeat, Albums I Can't Leave and From the Vault, the same height side by side */
+    .music-fives {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        align-items: stretch;
+        margin-bottom: 70px;
+    }
+
+    .lab-slot { display: flex; min-width: 0; }
+    .lab-slot:empty { display: none; }
+    .lab-slot > .lab-card { flex: 1; margin: 0; }
+    .play-duo .lab-slot > .lab-card { flex: none; width: 100%; }
+
+    @@media (max-width: 1000px) {
+        .music-fives { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    /* Listening DNA is one card: the genre list on the left, the picked genre on the right */
+    .dna-combo-card { margin-bottom: 24px; }
+
+    .dna-combo {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+        gap: 40px;
+        align-items: stretch;
+    }
+
+    .dna-combo .genre-spot {
+        padding-left: 40px;
+        border-left: 1px solid #EBD5D0;
+    }
+
+    @@media (max-width: 900px) {
+        .dna-combo { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+        .dna-combo .genre-spot { padding: 28px 0 0; border-left: none; border-top: 1px solid #EBD5D0; }
+    }
+
+    /* the Spotify player sits beside the clock, so its cover stays a modest size */
+    .play-duo .now-art {
+        width: min(100%, 240px);
+        margin: 0 auto;
     }
 
     /* the genre card: the slice picked in Listening DNA, and which of my top artists it comes from */
@@ -1622,9 +1665,8 @@
         <p class="section-subtitle">live from my Spotify</p>
 
         <!-- A Pinterest board: three columns of pins in different heights -->
-        <!-- Each row is a pair of cards that go together:
-               the Universe and the artist you picked in it, Listening DNA and the genre you picked in it,
-               then what I'm playing now with my top five songs beside the Listening Clock -->
+        <!-- The music section, top to bottom: the Universe with the artist picked in it, one Listening DNA card,
+             the Spotify player and Song Title Words beside the Listening Clock, then the fives row -->
         <div class="music-duo universe-duo">
             <section class="music-card universe-card" aria-labelledby="universeTitle">
                 <h3 class="music-card-title" id="universeTitle">My Music Universe</h3>
@@ -1648,42 +1690,43 @@
             </section>
         </div>
 
-        <div class="music-duo dna-duo">
-            <section class="music-card dna-card" aria-labelledby="dnaTitle">
-                <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
-                <p class="music-card-sub">what my headphones are apparently made of</p>
+        <section class="music-card dna-card dna-combo-card" aria-labelledby="dnaTitle">
+            <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
+            <p class="music-card-sub">what my headphones are apparently made of</p>
+            <div class="dna-combo">
                 <div class="dna-section" id="dnaSection">
                     <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
                 </div>
-            </section>
-            <section class="music-card genre-card" aria-label="About the genre picked in my listening DNA">
-                <div class="genre-spot" id="genreSpot" aria-live="polite"><p class="music-loading">Loading...</p></div>
-            </section>
-        </div>
+                <div class="genre-spot" id="genreSpot" aria-live="polite" aria-label="About the genre picked in my listening DNA"><p class="music-loading">Loading...</p></div>
+            </div>
+        </section>
 
+        <!-- what I'm playing now and the words my song titles keep using, beside the Listening Clock -->
         <div class="music-duo play-duo">
             <div class="music-col">
                 <a class="now-card" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
-                <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
-                    <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
-                    <p class="music-card-sub">the five songs I can't stop playing right now</p>
-                    <ul class="songs-list" id="topSongsContainer">
-                        <li class="music-loading">Loading...</li>
-                    </ul>
-                </section>
+                <div class="lab-slot" id="labWords"></div>
             </div>
             <section class="music-card clock-card" aria-labelledby="clockTitle">
                 <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
-                <p class="music-card-sub">when I press play, from my last 50 songs</p>
+                <p class="music-card-sub" id="clockSub">when I pressed play recently</p>
                 <div class="clock-chart" id="listenClock" role="group" aria-label="Listening clock"><p class="music-loading">Loading...</p></div>
                 <p class="music-card-note" id="clockNote"></p>
             </section>
         </div>
 
-        <!-- a row under the board: Song Title Words, Albums I Can't Leave, From the Vault -->
-        <section class="music-lab" aria-label="More from my Spotify">
-            <div class="music-lab-grid" id="musicLab"><p class="music-loading">Loading...</p></div>
-        </section>
+        <!-- the fives row: my top 5 songs, top 5 albums and the 5 oldest songs I still play -->
+        <div class="music-fives" aria-label="My top fives">
+            <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
+                <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
+                <p class="music-card-sub">the five songs I can't stop playing right now</p>
+                <ul class="songs-list" id="topSongsContainer">
+                    <li class="music-loading">Loading...</li>
+                </ul>
+            </section>
+            <div class="lab-slot" id="labAlbums"><p class="music-loading">Loading...</p></div>
+            <div class="lab-slot" id="labVault"></div>
+        </div>
         <link rel="stylesheet" href="~/css/music-lab.css" asp-append-version="true" />
         <script src="~/js/music-lab.js" asp-append-version="true" defer></script>
 
@@ -1893,13 +1936,21 @@
         if (last && last.playedAt) showNowPlaying(last, false, timeAgo(new Date(last.playedAt)));
     }
 
-    function drawListeningClock(plays) {
+    function drawListeningClock(allPlays) {
         const chart = document.getElementById('listenClock');
+        // only the last 50 hours (Spotify shares my last 50 plays at most, so a very busy stretch can be cut short)
+        const since = Date.now() - 50 * 3600000;
+        const plays = allPlays.filter(p => p.playedAt && new Date(p.playedAt).getTime() >= since);
+        // say how far back the plays really reach, so the clock never claims more than it has
+        const oldest = Math.min(...plays.map(p => new Date(p.playedAt).getTime()));
+        const span = plays.length ? Math.max(1, Math.min(50, Math.ceil((Date.now() - oldest) / 3600000))) : 50;
+        const spanText = `the last ${span} hour${span === 1 ? '' : 's'}`;
+        document.getElementById('clockSub').textContent = `when I pressed play over ${spanText}`;
         const hourOf = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hourCycle: 'h23', timeZone: MUSIC_TIME_ZONE });
         const counts = new Array(24).fill(0);
         plays.forEach(play => { if (play.playedAt) counts[Number(hourOf.format(new Date(play.playedAt))) % 24]++; });
         const max = Math.max(...counts);
-        if (!max) { chart.innerHTML = '<p class="music-loading">No recent plays to show yet.</p>'; return; }
+        if (!max) { chart.innerHTML = '<p class="music-loading">Nothing played in the last 50 hours. Suspiciously quiet.</p>'; return; }
         const peak = counts.indexOf(max);
 
         // A plain 12-hour clock with an AM | PM switch: one half of the day at a time, one wedge per hour.
@@ -2007,7 +2058,7 @@
                     <div class="clock-detail-stats">
                         <span><b>${list.length}</b> ${list.length === 1 ? 'play' : 'plays'}</span>
                         <span><b>${minutes}</b> min</span>
-                        <span><b>${Math.round(list.length / total * 100)}%</b> of my last ${total}</span>
+                        <span><b>${Math.round(list.length / total * 100)}%</b> of ${spanText}</span>
                     </div>
                     ${topN > 1 ? `<p class="clock-detail-note">Mostly ${escapeHtml(topArtist)} (${topN} of ${list.length}).</p>` : ''}
                     <ul class="clock-detail-songs">${list.map(p => `
@@ -2019,7 +2070,7 @@
                             </a>
                         </li>`).join('')}
                     </ul>`
-                : `<p class="clock-detail-note">Nothing at ${hourName(h)} in my last ${total} plays. ${h >= 1 && h < 8 ? 'Asleep, probably.' : 'Busy doing other things.'}</p>`}`;
+                : `<p class="clock-detail-note">Nothing at ${hourName(h)} in ${spanText}. ${h >= 1 && h < 8 ? 'Asleep, probably.' : 'Busy doing other things.'}</p>`}`;
         };
 
         // the AM | PM switch: shows that half of the day and picks its busiest hour
@@ -2396,7 +2447,7 @@
         const names = ['About', 'Top 5 songs'];
         const showPage = () => {
             panel.querySelectorAll('.up-page').forEach(pg => pg.hidden = Number(pg.dataset.page) !== uv.cardPage);
-            panel.querySelector('.up-page-name').textContent = `${names[uv.cardPage]} · ${uv.cardPage + 1}/2`;
+            panel.querySelector('.up-page-name').textContent = names[uv.cardPage];
         };
         panel.querySelectorAll('.up-flip').forEach(b => b.addEventListener('click', () => {
             uv.cardPage = (uv.cardPage + 2 + Number(b.dataset.go)) % 2;

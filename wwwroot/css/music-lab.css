@@ -1,18 +1,7 @@
-/* Music extras (Favorites): Song Title Words, Albums I Can't Leave and From the Vault, in a row of pins */
+/* Music extras (Favorites): Song Title Words, Albums I Can't Leave and From the Vault */
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bebas+Neue&family=Bodoni+Moda:ital@1&family=Bungee&family=Bungee+Shade&family=Caveat:wght@600&family=Comic+Neue:wght@700&family=Cormorant+Garamond:ital,wght@1,300&family=Creepster&family=Dancing+Script&family=Fraunces&family=Great+Vibes&family=Homemade+Apple&family=Italiana&family=Josefin+Sans&family=Kalam&family=Lobster&family=Monoton&family=Orbitron&family=Pacifico&family=Permanent+Marker&family=Pinyon+Script&family=Playfair+Display&family=Racing+Sans+One&family=Righteous&family=Rubik+Burned&family=Rubik+Distressed&family=Rubik+Glitch&family=Rubik+Wet+Paint&family=Rye&family=Satisfy&family=Shrikhand&family=Special+Elite&family=Syne&family=Tangerine&display=swap');
-.music-lab {
-    margin: 0 0 70px;
-}
-
-.music-lab-grid {
-    columns: 3 320px;
-    column-gap: 24px;
-}
-
 .lab-card {
     position: relative;
-    break-inside: avoid;
-    margin: 0 0 24px;
     padding: 24px 26px;
     border-radius: 20px;
     background: #FFF8F6;

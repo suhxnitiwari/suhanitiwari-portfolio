@@ -1,21 +1,22 @@
-// Music extras (Favorites): the song title words, the albums I can't leave and the oldest songs I still play.
+// Music extras (Favorites): the song title words, the albums I can't leave and the oldest songs I still play,
+// each dropped into its own spot on the page (#labWords, #labAlbums, #labVault).
 // All of it comes from one call, /spotify/GetMusicLab, and is worked out here in the browser.
 (() => {
-    const root = document.getElementById('musicLab');
-    if (!root) return;
+    const slots = { albums: document.getElementById('labAlbums'), vault: document.getElementById('labVault'), words: document.getElementById('labWords') };
+    if (!slots.albums) return;
 
     const esc = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const year = t => parseInt((t.releaseDate || '').slice(0, 4), 10) || null;
     const key = t => t.id || `${t.name}|${t.artists[0]}`;
     const main = t => t.artists[0] || '';
 
-    const cards = [];
-    const card = (title, sub, body, extra = '') => cards.push(`
-            <article class="lab-card ${extra}">
+    // each card fills its own spot on the page
+    const card = (slot, title, sub, body) => slots[slot].innerHTML = `
+            <article class="lab-card">
                 <h4 class="lab-title">${esc(title)}</h4>
                 ${sub ? `<p class="lab-sub">${esc(sub)}</p>` : ''}
                 ${body}
-            </article>`);
+            </article>`;
 
     const list = items => `<ol class="lab-list">${items.map(i => `<li>${i}</li>`).join('')}</ol>`;
     const song = t => `<b>${esc(t.name)}</b> <span>${esc(t.artists.join(', '))}</span>`;
@@ -89,7 +90,7 @@
             const seen = new Set();
             all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); const k = t.album; if (!k) return; albums[k] = albums[k] || { n: 0, art: t.albumArt, artist: main(t) }; albums[k].n++; });
             const top = Object.entries(albums).sort((a, b) => b[1].n - a[1].n).slice(0, 5);
-            card('Albums I Can’t Leave', 'most songs across all my top lists',
+            card('albums', 'Albums I Can’t Leave', 'most songs across all my top lists',
                 `<ul class="lab-albums">${top.map(([n, a]) => `<li>${a.art ? `<img src="${esc(a.art)}" alt="" loading="lazy">` : ''}<span><b>${esc(n)}</b><span>${esc(a.artist)}, ${a.n} songs</span></span></li>`).join('')}</ul>`);
         }
 
@@ -97,7 +98,7 @@
         if (all.length) {
             const seen = new Set();
             const oldest = all.filter(t => year(t) && !seen.has(key(t)) && seen.add(key(t))).sort((a, b) => year(a) - year(b)).slice(0, 5);
-            card('From the Vault', 'the oldest songs still in my top lists', list(oldest.map(t => `${song(t)} <em>${year(t)}</em>`)));
+            card('vault', 'From the Vault', 'the oldest songs still in my top lists', list(oldest.map(t => `${song(t)} <em>${year(t)}</em>`)));
         }
 
         // Song title words
@@ -109,15 +110,18 @@
             const top = Object.entries(words).sort((a, b) => b[1] - a[1]).slice(0, 18);
             const max = top[0]?.[1] || 1;
             const fonts = fontsFor(top.map(([w]) => w));
-            card('Song Title Words', 'what my favorite song titles keep saying',
+            card('words', 'Song Title Words', 'what my favorite song titles keep saying',
                 `<p class="lab-cloud">${top.map(([w, n]) => `<span style="${fonts[w]} font-size:${0.85 + (n / max) * 1.3}em">${esc(w)}</span>`).join(' ')}</p>`);
         }
 
-        root.innerHTML = cards.join('');
     }
 
     fetch('/spotify/GetMusicLab')
         .then(r => r.ok ? r.json() : null)
-        .then(lab => lab ? build(lab) : root.innerHTML = '<p class="lab-sub">Spotify isn’t answering right now.</p>')
-        .catch(() => root.innerHTML = '<p class="lab-sub">Spotify isn’t answering right now.</p>');
+        .then(lab => lab ? build(lab) : quiet())
+        .catch(quiet);
+
+    function quiet() {
+        slots.albums.innerHTML = '<p class="lab-sub">Spotify isn’t answering right now.</p>';
+    }
 })();
