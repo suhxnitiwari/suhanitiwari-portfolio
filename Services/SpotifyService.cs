@@ -185,13 +185,16 @@ namespace Tiwari_Suhani_HW3.Services
                     int position = 1;
                     foreach (var track in items.EnumerateArray())
                     {
+                        var hasAlbum = track.TryGetProperty("album", out var album);
                         tracks.Add(new TopTrack
                         {
                             Position = position++,
                             Name = track.GetProperty("name").GetString(),
                             Artist = FirstName(track, "artists"),
-                            AlbumArt = track.TryGetProperty("album", out var album) ? FirstImageUrl(album) : "",
-                            SpotifyUrl = SpotifyLink(track)
+                            AlbumArt = hasAlbum ? FirstImageUrl(album) : "",
+                            SpotifyUrl = SpotifyLink(track),
+                            ReleaseYear = hasAlbum ? ReleaseYear(album) : null,
+                            Popularity = track.TryGetProperty("popularity", out var popularity) ? popularity.GetInt32() : 0
                         });
                     }
                 }
@@ -247,6 +250,66 @@ namespace Tiwari_Suhani_HW3.Services
             }
 
             return artists;
+        }
+
+        // The last few songs I played (Spotify gives up to 50), newest first, for the listening clock
+        public async Task<List<RecentPlay>> GetRecentlyPlayedAsync(string accessToken, int limit = 50)
+        {
+            var plays = new List<RecentPlay>();
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}/me/player/recently-played?limit={limit}");
+            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode) return plays;
+
+            var json = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync());
+            if (!json.TryGetProperty("items", out var items)) return plays;
+
+            foreach (var item in items.EnumerateArray())
+            {
+                if (!item.TryGetProperty("track", out var track)) continue;
+                plays.Add(new RecentPlay
+                {
+                    Name = track.GetProperty("name").GetString(),
+                    Artist = FirstName(track, "artists"),
+                    AlbumArt = track.TryGetProperty("album", out var album) ? FirstImageUrl(album) : "",
+                    SpotifyUrl = SpotifyLink(track),
+                    PlayedAt = item.TryGetProperty("played_at", out var at) && at.TryGetDateTime(out var when) ? when : null
+                });
+            }
+            return plays;
+        }
+
+        // What I'm listening to this very moment, or null when nothing is playing
+        public async Task<NowPlaying?> GetNowPlayingAsync(string accessToken)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}/me/player/currently-playing");
+            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.NoContent) return null;
+
+            var body = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(body)) return null;
+
+            var json = JsonSerializer.Deserialize<JsonElement>(body);
+            if (!json.TryGetProperty("item", out var track) || track.ValueKind != JsonValueKind.Object) return null;
+            var isPlaying = json.TryGetProperty("is_playing", out var playing) && playing.GetBoolean();
+            if (!isPlaying) return null;
+
+            return new NowPlaying
+            {
+                Name = track.GetProperty("name").GetString(),
+                Artist = FirstName(track, "artists"),
+                AlbumArt = track.TryGetProperty("album", out var album) ? FirstImageUrl(album) : "",
+                SpotifyUrl = SpotifyLink(track)
+            };
+        }
+
+        // "2019-06-21", "2019-06" or "2019" -> 2019
+        private static int? ReleaseYear(JsonElement album)
+        {
+            if (!album.TryGetProperty("release_date", out var date)) return null;
+            var text = date.GetString();
+            return text != null && text.Length >= 4 && int.TryParse(text.AsSpan(0, 4), out var year) ? year : null;
         }
 
         // Spotify has no "top album" endpoint, so pick the album that shows up most in my
@@ -400,6 +463,25 @@ namespace Tiwari_Suhani_HW3.Services
     public class TopTrack
     {
         public int Position { get; set; }
+        public string? Name { get; set; } = "";
+        public string? Artist { get; set; } = "";
+        public string? AlbumArt { get; set; } = "";
+        public string? SpotifyUrl { get; set; } = "";
+        public int? ReleaseYear { get; set; }
+        public int Popularity { get; set; }
+    }
+
+    public class RecentPlay
+    {
+        public string? Name { get; set; } = "";
+        public string? Artist { get; set; } = "";
+        public string? AlbumArt { get; set; } = "";
+        public string? SpotifyUrl { get; set; } = "";
+        public DateTime? PlayedAt { get; set; }
+    }
+
+    public class NowPlaying
+    {
         public string? Name { get; set; } = "";
         public string? Artist { get; set; } = "";
         public string? AlbumArt { get; set; } = "";

@@ -579,6 +579,8 @@
     <partial name="_Sitara" />
     <script src="~/js/sitara.js" asp-append-version="true"></script>
     <script src="~/js/sparkle.js" asp-append-version="true" defer></script>
+    @* Starts loading my Spotify music in the background so Favorites is ready when you get there *@
+    <script src="~/js/spotify-prefetch.js" asp-append-version="true" defer></script>
     <script>
         // Dropdowns (Favorites, Work): click to open, click anywhere else to close
         const dropdowns = document.querySelectorAll('.nav-dropdown');

@@ -39,7 +39,7 @@ namespace Tiwari_Suhani_HW3.Controllers
 
         // Return the saved copy if there is one; otherwise ask Spotify and save the answer.
         // Empty or failed results aren't saved, so a hiccup doesn't stick around for 12 hours.
-        private async Task<IActionResult> CachedSpotifyJson<T>(string key, Func<string, Task<T?>> load)
+        private async Task<IActionResult> CachedSpotifyJson<T>(string key, Func<string, Task<T?>> load, TimeSpan? lifetime = null)
         {
             if (_cache.TryGetValue(key, out T? saved) && saved != null)
             {
@@ -55,7 +55,7 @@ namespace Tiwari_Suhani_HW3.Controllers
             var data = await load(accessToken);
             if (data != null && !(data is System.Collections.ICollection { Count: 0 }))
             {
-                _cache.Set(key, data, SpotifyDataLifetime);
+                _cache.Set(key, data, lifetime ?? SpotifyDataLifetime);
             }
             return Json(data);
         }
@@ -137,6 +137,20 @@ namespace Tiwari_Suhani_HW3.Controllers
         public async Task<IActionResult> GetTopGenres(int limit = 5, string timeRange = "medium_term")
         {
             return await CachedSpotifyJson($"top-genres:{limit}:{timeRange}", async token => await _spotifyService.GetTopGenresAsync(token, limit, timeRange));
+        }
+
+        // My last 50 plays, for the listening clock. Kept for 10 minutes.
+        [HttpGet]
+        public async Task<IActionResult> GetRecentlyPlayed()
+        {
+            return await CachedSpotifyJson("recently-played", async token => await _spotifyService.GetRecentlyPlayedAsync(token), TimeSpan.FromMinutes(10));
+        }
+
+        // What I'm listening to right now (null when nothing is playing). Kept for 30 seconds.
+        [HttpGet]
+        public async Task<IActionResult> GetNowPlaying()
+        {
+            return await CachedSpotifyJson("now-playing", async token => await _spotifyService.GetNowPlayingAsync(token), TimeSpan.FromSeconds(30));
         }
 
         [HttpGet]
