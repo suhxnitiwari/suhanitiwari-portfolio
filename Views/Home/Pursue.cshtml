@@ -136,6 +136,52 @@
         color: #FAF1EF;
     }
 
+    /* RÉSUMÉ: the last stop, the download on the left and a preview on the right */
+    .career-resume {
+        padding: 80px 40px 100px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .resume-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+        gap: 56px;
+        align-items: center;
+    }
+
+    .resume-copy .career-section-title {
+        margin: 0;
+    }
+
+    .resume-copy .career-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .resume-preview {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        border-radius: 14px;
+        border: 6px solid #FFF8F6;
+        background: #FFFFFF;
+        box-shadow: 0 16px 40px rgba(42, 24, 16, 0.18);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .resume-preview:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 46px rgba(42, 24, 16, 0.24);
+    }
+
+    .resume-preview img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
     /* HOW I WORK, folded: a single calm bar until someone opens it */
     .work-fold {
         background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
@@ -423,18 +469,18 @@
 <section class="pursue-part career-resume" id="resume" aria-labelledby="resume-heading">
     <div class="career-wrap resume-wrap">
         <div class="resume-copy">
-            <p class="career-kicker">The one-page version</p>
             <h2 class="career-section-title" id="resume-heading">Résumé</h2>
-            <p class="resume-note">Everything on this page, on a single sheet you can keep.</p>
             <div class="career-actions">
                 <a class="career-btn primary" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">Download Tiwari_Suhani_Resume ↓</a>
                 <a class="career-btn" href="/resume" target="_blank" rel="noopener">Open in a new tab ↗</a>
                 <a class="career-btn" href="mailto:suhxnitiwari@gmail.com">Email me</a>
             </div>
         </div>
-        <object class="resume-preview" data="/resume.pdf#view=FitH&amp;toolbar=0" type="application/pdf" aria-label="My résumé">
-            <a class="career-btn primary" href="/resume/download">Download Tiwari_Suhani_Resume ↓</a>
-        </object>
+        @* A picture of page 1 (works in every browser, unlike an embedded PDF). When resume.pdf changes, remake it:
+           sips -s format png -Z 1400 wwwroot/resume.pdf --out wwwroot/images/resume-preview.png *@
+        <a class="resume-preview" href="/resume" target="_blank" rel="noopener" aria-label="Open my résumé">
+            <img src="/images/resume-preview.png" alt="First page of my résumé" width="1082" height="1400" loading="lazy">
+        </a>
     </div>
 </section>
 

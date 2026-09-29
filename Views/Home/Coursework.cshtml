@@ -107,18 +107,18 @@
         new { t = "Adoption", q = "Our team won’t use the new system.", p = new[] { 0, 1, 2 }, g = "the root cause, a working prototype and a cost-backed recommendation.",
               s = new[] {
                   new[] { "Find out why", "Talk to the people using it and find exactly where they get stuck.", "Discovery calls on ERP pain points with $20M–$200M companies at Oracle" },
-                  new[] { "Check the data", "Query usage and error data in SQL, then fix the data model or permissions behind the friction.", "SQL in MIS 325 · roles and authorization in MIS 333K" },
-                  new[] { "Price the fix", "Weigh fixing, retraining or replacing against the time being lost.", "Cost justification in MIS 375 · ERP implementation case in MIS 301" } } },
+                  new[] { "Check the data", "Query usage and error data in SQL, then fix the data model or permissions behind the friction.", "SQL in MIS 325, roles and authorization in MIS 333K" },
+                  new[] { "Price the fix", "Weigh fixing, retraining or replacing against the time being lost.", "Cost justification in MIS 375, ERP implementation case in MIS 301" } } },
         new { t = "AI", q = "Should we add AI to our product?", p = new[] { 2, 1, 0 }, g = "a go / no-go call, a working prototype and an evaluation rubric.",
               s = new[] {
-                  new[] { "Decide build, buy or skip", "Work out whether AI changes the product’s position or just adds cost.", "AI strategy in MIS 375 · go-to-market for an Azure AI product at Acacia" },
-                  new[] { "Prototype the feature", "Build it on the product’s own data, with structured output and error handling.", "The LLM feature in RideFlow · AI-enabled app in MIS 333K" },
+                  new[] { "Decide build, buy or skip", "Work out whether AI changes the product’s position or just adds cost.", "AI strategy in MIS 375, go-to-market for an Azure AI product at Acacia" },
+                  new[] { "Prototype the feature", "Build it on the product’s own data, with structured output and error handling.", "The LLM feature in RideFlow, AI-enabled app in MIS 333K" },
                   new[] { "Test it before users do", "Check outputs for accuracy, safety and reasoning before launch.", "1,000+ AI model outputs evaluated at Outlier" } } },
         new { t = "Data", q = "We have data everywhere and no answers.", p = new[] { 1, 2, 0 }, g = "one source of truth, a dashboard and a leadership readout.",
               s = new[] {
                   new[] { "Pull it together", "Design the schema and build an ETL pipeline into a cloud warehouse.", "ER modeling, ETL and Snowflake in MIS 325" },
                   new[] { "Pick the numbers that matter", "Find the few metrics leadership actually decides with.", "Executive KPIs turned into recommendations at Acacia" },
-                  new[] { "Make it readable", "Build a dashboard people open, and explain what changed.", "Power BI in MIS 301 · pandas in MIS 304" } } },
+                  new[] { "Make it readable", "Build a dashboard people open, and explain what changed.", "Power BI in MIS 301, pandas in MIS 304" } } },
         new { t = "Messaging", q = "Customers don’t get what our tech does.", p = new[] { 0, 2, 1 }, g = "positioning, accurate messaging and launch-ready copy.",
               s = new[] {
                   new[] { "Learn what buyers care about", "Research who’s buying, what worries them and the words they use.", "Market research and competitive analysis at Acacia" },
@@ -144,7 +144,7 @@
     var stackLayers = new (string Name, string Job, (string[] Tools, string What, string Where)[] Stacks)[]
     {
         ("Front end", "What people see and click", new[] {
-            (new[] { "Razor views", "Forms", "Validation", "Responsive UI" }, "Server-rendered pages. Validation rules live on the model and run in both the browser and the server.", "Bevo’s Tacos checkout forms · this website"),
+            (new[] { "Razor views", "Forms", "Validation", "Responsive UI" }, "Server-rendered pages. Validation rules live on the model and run in both the browser and the server.", "Bevo’s Tacos checkout forms, this website"),
             (new[] { "React", "Components", "State", "Routing", "Vite" }, "A single-page app. Components hold their own state, and routing swaps screens without reloading.", "RideFlow’s rider, driver and admin portals") }),
         ("Back end", "Where the business rules live", new[] {
             (new[] { "ASP.NET Core MVC", "Controllers", "C#" }, "Controllers take a request, apply the business rules and pick the view. The pricing logic sits in the model, not the page.", "Bevo’s Tacos: one Order class, two order types"),
@@ -153,24 +153,24 @@
             (new[] { "Entity Framework Core", "LINQ", "Azure SQL" }, "Tables described as C# classes and queried with LINQ instead of hand-written SQL.", "The team web app in MIS 333K"),
             (new[] { "PostgreSQL", "Sequelize ORM", "Full CRUD" }, "Four related tables, riders, drivers, rides and payments, held together by keys and constraints.", "RideFlow’s data model") }),
         ("Security", "Who can see and do what", new[] {
-            (new[] { "Users", "Roles", "Authorization", "Anti-forgery tokens" }, "Every account has a role and each page checks it. Forms are protected against forged requests.", "The team web app in MIS 333K · Bevo’s Tacos forms"),
+            (new[] { "Users", "Roles", "Authorization", "Anti-forgery tokens" }, "Every account has a role and each page checks it. Forms are protected against forged requests.", "The team web app in MIS 333K, Bevo’s Tacos forms"),
             (new[] { "Authentication", "Protected routes", "Row-level security" }, "Riders, drivers and admins each see and change only what their role allows, enforced on the server.", "RideFlow") }),
         ("Ship", "Getting it live", new[] {
-            (new[] { "GitHub", "GitHub Actions", "Docker", "Render" }, "Tests run on every push. This site runs in a Docker container on Render.", "This website · Bevo’s Tacos tests"),
+            (new[] { "GitHub", "GitHub Actions", "Docker", "Render" }, "Tests run on every push. This site runs in a Docker container on Render.", "This website, Bevo’s Tacos tests"),
             (new[] { "Render", "Separate front end and API" }, "The front end and the API are deployed separately and talk to each other in production.", "RideFlow’s live app") })
     };
 
     // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
     var misCan = new[]
     {
-        new MisCan("Build", "Full-stack web apps, from the database to the screen.", new[] { "C#", "ASP.NET Core MVC", "React" }, "MIS 333K · MIS 372T"),
-        new MisCan("Data", "Databases designed, queried and moved.", new[] { "SQL", "Data modeling", "ETL" }, "MIS 325 · MIS 333K"),
-        new MisCan("Secure", "Logins, roles and protected routes.", new[] { "Authentication", "Authorization", "Role-based access" }, "MIS 372T · MIS 333K · MIS 325"),
+        new MisCan("Build", "Full-stack web apps, from the database to the screen.", new[] { "C#", "ASP.NET Core MVC", "React" }, "MIS 333K, MIS 372T"),
+        new MisCan("Data", "Databases designed, queried and moved.", new[] { "SQL", "Data modeling", "ETL" }, "MIS 325, MIS 333K"),
+        new MisCan("Secure", "Logins, roles and protected routes.", new[] { "Authentication", "Authorization", "Role-based access" }, "MIS 372T, MIS 333K, MIS 325"),
         new MisCan("AI", "AI features inside real apps, and checks on what they output.", Array.Empty<string>(), "",
-            new[] { ("Use it", "LLMs and prompt engineering · MIS 304"), ("Feed it", "Embeddings and vector databases · MIS 325"),
-                    ("Build it", "AI features inside web apps · MIS 333K, 372T"), ("Judge it", "Whether AI is worth it · MIS 375") }),
-        new MisCan("Analyze", "Data turned into something a person can decide with.", new[] { "Python", "pandas", "Power BI" }, "MIS 304 · MIS 301 · MIS 325"),
-        new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT strategy", "Cost justification", "Go-to-market" }, "MIS 301 · MIS 375")
+            new[] { ("Use it", "LLMs and prompt engineering, MIS 304"), ("Feed it", "Embeddings and vector databases, MIS 325"),
+                    ("Build it", "AI features inside web apps, MIS 333K, 372T"), ("Judge it", "Whether AI is worth it, MIS 375") }),
+        new MisCan("Analyze", "Data turned into something a person can decide with.", new[] { "Python", "pandas", "Power BI" }, "MIS 304, MIS 301, MIS 325"),
+        new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT strategy", "Cost justification", "Go-to-market" }, "MIS 301, MIS 375")
     };
 
     // Overview: the nine subjects, in catalog order
@@ -495,7 +495,7 @@
                                 <p class="course-subtitle">@th.Subtitle</p>
                                 @foreach (var c in feeds)
                                 {
-                                    <p class="cx-lit" data-x="@c">@string.Join(" · ", crossovers[c].From.Where(f => f.Theme == i).Select(f => f.Course))</p>
+                                    <p class="cx-lit" data-x="@c">@string.Join(", ", crossovers[c].From.Where(f => f.Theme == i).Select(f => f.Course))</p>
                                 }
                             </div>
                             <div class="course-arrow">→</div>
@@ -672,7 +672,7 @@
                 <!-- 5. how I work: hand me a problem -->
                 <div class="mp-section" aria-labelledby="mp-problem">
                     <div class="mp-head">
-                        <p class="mp-eyebrow">People · Technology · Business</p>
+                        <p class="mp-eyebrow">People, Technology, Business</p>
                         <h3 class="mp-h2" id="mp-problem">Hand me a problem.</h3>
                         <p class="mp-lead">Most problems need all three corners. What changes is where I start. Pick one to see the order I’d work it, and where I’ve done it before.</p>
                     </div>
@@ -703,7 +703,7 @@
                     <div class="mp-stack-pick" role="group" aria-label="Pick a stack">
                         @for (var st = 0; st < stackNames.Length; st++)
                         {
-                            <button type="button" data-stack="@st" aria-pressed="@(st == 0 ? "true" : "false")">@stackNames[st].Item1 · @stackNames[st].Item2</button>
+                            <button type="button" data-stack="@st" aria-pressed="@(st == 0 ? "true" : "false")">@stackNames[st].Item1, @stackNames[st].Item2</button>
                         }
                     </div>
                     <div class="mp-stack-body">
@@ -732,7 +732,7 @@
                                 {
                                     var layer = stackLayers[l].Stacks[st];
                                     <div class="mp-layer-detail" data-layer="@l" data-stack="@st" hidden="@(l != 0 || st != 0)">
-                                        <p class="mp-eyebrow">Layer 0@(l + 1) · @stackLayers[l].Job</p>
+                                        <p class="mp-eyebrow">Layer 0@(l + 1): @stackLayers[l].Job</p>
                                         <h4>@stackLayers[l].Name</h4>
                                         <p class="mp-layer-what">@layer.What</p>
                                         <ul class="mp-layer-tools">@foreach (var tool in layer.Tools) { <li>@tool</li> }</ul>
@@ -1016,7 +1016,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     const tabForHash = h =>
         ['#mis', '#skills', '#projects'].includes(h) ? tabs[1] : h === '#marketing' ? tabs[2] : tabs[0];
     const show = tab => {
-        document.title = tab === tabs[0] ? baseTitle : `${tab.textContent.trim()} · ${baseTitle}`;
+        document.title = tab === tabs[0] ? baseTitle : `${tab.textContent.trim()} | ${baseTitle}`;
         tabs.forEach(t => {
             const on = t === tab;
             t.setAttribute('aria-selected', on);

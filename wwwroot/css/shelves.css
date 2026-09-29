@@ -145,6 +145,171 @@
 }
 
 /* Make > Traveling: a trip's card, one row per spot */
+/* Traveling: the next page of my travel journal, twice as wide as a trip card and just as tall.
+   Ruled cream paper, a red margin line, two strips of washi tape, a taped-in sketch of a plane
+   and a boarding pass to somewhere not decided yet. */
+.trip-journal {
+    container-type: inline-size;
+}
+
+.journal-page {
+    position: relative;
+    height: 150cqw;                     /* same 2:3 as the trip photos */
+    padding: 10% 8% 8% 14%;
+    border-radius: 3px 8px 8px 3px;
+    background:
+        linear-gradient(90deg, transparent 0 7.5%, rgba(214, 120, 120, 0.45) 7.5% calc(7.5% + 1.5px), transparent 0),
+        repeating-linear-gradient(180deg, transparent 0 25px, rgba(150, 170, 200, 0.28) 25px 26px),
+        #FFFBF4;
+    box-shadow: 0 6px 16px rgba(42, 24, 16, 0.14), inset 0 0 40px rgba(210, 180, 150, 0.18);
+    transform: rotate(-1deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4%;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trip-journal:hover .journal-page {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 0 14px 28px rgba(42, 24, 16, 0.2);
+}
+
+.journal-tape {
+    position: absolute;
+    top: -6px;
+    width: 22%;
+    height: 22px;
+    background: rgba(225, 160, 175, 0.55);
+    box-shadow: 0 1px 2px rgba(42, 24, 16, 0.08);
+}
+
+.journal-tape.left { left: 8%; transform: rotate(-6deg); }
+.journal-tape.right { right: 6%; transform: rotate(5deg); background: rgba(160, 190, 150, 0.5); }
+
+.journal-date {
+    margin: 0;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: clamp(0.72rem, 6cqw, 0.95rem);
+    color: #9E5A63;
+}
+
+/* the sketch, taped in like a photo */
+.journal-snap {
+    width: 78%;
+    margin: 0;
+    padding: 5px 5px 16px;
+    background: #FFFFFF;
+    box-shadow: 0 3px 8px rgba(42, 24, 16, 0.18);
+    transform: rotate(-3deg);
+}
+
+.journal-snap svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* the boarding pass: a main part and a stub, split by a dotted tear line */
+.journal-ticket {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    border-radius: 8px;
+    background: #FFF4EE;
+    border: 1px solid #E9CFC6;
+    box-shadow: 0 3px 8px rgba(42, 24, 16, 0.14);
+    transform: rotate(2.5deg);
+    font-size: clamp(0.5rem, 4.4cqw, 0.72rem);
+    color: #2A1810;
+    overflow: hidden;
+}
+
+.ticket-main {
+    padding: 8% 8% 8% 9%;
+}
+
+.ticket-stub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12% 10%;
+    border-left: 2px dotted #D9B8AE;
+    background: #F8E3DC;
+}
+
+.journal-ticket p { margin: 0; }
+
+.ticket-kicker {
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #8A4D57;
+}
+
+.ticket-route {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px !important;
+    font-family: Georgia, serif;
+    font-size: 1.9em;
+    color: #2A1810;
+}
+
+.ticket-plane {
+    font-size: 0.7em;
+    color: #8A4D57;
+}
+
+.ticket-meta {
+    display: grid;
+    gap: 3px;
+    margin: 6px 0 0;
+}
+
+.ticket-meta div {
+    display: flex;
+    gap: 6px;
+}
+
+.ticket-meta dt {
+    min-width: 5.2em;
+    font-weight: 700;
+    color: #7A6A64;
+}
+
+.ticket-meta dd {
+    margin: 0;
+}
+
+.ticket-gate {
+    margin-top: 2px !important;
+    font-family: Georgia, serif;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.ticket-barcode {
+    flex: 1;
+    width: 26px;
+    min-height: 34px;
+    margin-top: 8px;
+    background: repeating-linear-gradient(180deg, #2A1810 0 2px, transparent 2px 4px, #2A1810 4px 5px, transparent 5px 8px);
+    opacity: 0.8;
+}
+
+.journal-note {
+    margin: 0;
+    white-space: nowrap;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: clamp(0.68rem, 5.4cqw, 0.9rem);
+    color: #56634A;
+}
+
 .trip-card {
     width: min(640px, calc(100vw - 32px));
 }
@@ -287,117 +452,158 @@
     box-shadow: 0 14px 28px rgba(42, 24, 16, 0.22);
 }
 
-/* Make > Digital Art: a studio-portfolio grid. Three columns of different heights, each piece at its own
-   shape with soft rounded corners, and a quiet caption underneath (what it's from, the title, how it was made). */
-.folio {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
-    align-items: start;
+/* Make > Digital Art: one gallery wall of columns that slides sideways (‹ › or swipe).
+   A column holds one piece at full height, or two stacked pieces sharing its width. Each column's width is
+   worked out from its art (--n pieces, --inv = the sum of height / width) so every column is exactly
+   --wall-h tall: the wall is one rectangle and nothing is ever cropped. */
+.art-shelf {
+    --frame: 8px;          /* walnut */
+    --mat: 12px;           /* white mat */
+    --edge: calc(2 * (var(--frame) + var(--mat)));
+    --label: 34px;         /* the title under each piece */
+    --stack-gap: 26px;     /* between two stacked pieces */
+    --wall-h: clamp(440px, 72vh, 640px);
+    --cover-height: var(--wall-h);   /* centers the ‹ › arrows on the wall */
 }
 
-.folio-col {
+.gallery-wall-wrap {
+    margin-inline: calc(-1 * clamp(0px, (92vw - 1080px) / 2, 110px));
+}
+
+.gallery-wall {
+    display: flex;
+    align-items: flex-start;
+    gap: 34px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding: 44px 40px 56px;
+    border-radius: 14px;
+    background:
+        radial-gradient(ellipse 70% 55% at 50% 0%, rgba(255, 250, 244, 0.75) 0%, rgba(255, 250, 244, 0) 100%),
+        linear-gradient(180deg, #F1E4DE 0%, #E9D7D0 100%);
+    box-shadow: inset 0 -12px 0 #DCC6BE;   /* the baseboard */
+}
+
+.gallery-wall::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-wall:focus-visible {
+    outline: 2px solid #8A4D57;
+    outline-offset: 3px;
+}
+
+/* the shelf arrows sit on the wall's padding, so push them to its top edge */
+.gallery-wall-wrap .shelf-arrow {
+    top: calc(44px + var(--wall-h) / 2);
+}
+
+.gallery-wall-wrap .shelf-arrow.prev { left: 12px; }
+.gallery-wall-wrap .shelf-arrow.next { right: 12px; }
+
+.wall-col {
+    flex: none;
+    width: calc((var(--wall-h) - var(--n) * (var(--edge) + var(--label)) - (var(--n) - 1) * var(--stack-gap)) / var(--inv) + var(--edge));
+    height: var(--wall-h);
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    justify-content: space-between;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.folio-piece .art-open {
+.gallery-piece .art-open {
     display: flex;
     flex-direction: column;
     width: 100%;
-    text-align: left;
+    text-align: center;
 }
 
-.folio-frame {
+/* walnut frame, white mat on every piece */
+.gallery-piece .gallery-frame {
     display: block;
-    overflow: hidden;
-    border-radius: 16px;
-    background: #F1E4DE;
-    box-shadow: 0 1px 2px rgba(42, 24, 16, 0.08);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    padding: var(--mat);
+    border: var(--frame) solid #3B2A22;
+    background: #FFFDFB;
+    box-shadow:
+        inset 0 0 0 1px rgba(42, 24, 16, 0.08),
+        0 2px 3px rgba(42, 24, 16, 0.22),
+        0 16px 30px rgba(42, 24, 16, 0.2);
 }
 
-.folio-frame img {
+.gallery-piece .gallery-frame img {
     display: block;
     width: 100%;
     height: auto;
     aspect-ratio: var(--r);
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    object-fit: contain;
 }
 
-.folio-meta {
-    margin-top: 16px;
-    font-size: 0.72em;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #8C7A74;
+/* the title, the same under every piece (a fixed height, so the column math above holds) */
+.gallery-piece .gallery-label {
+    display: block;
+    height: var(--label);
+    padding-top: 12px;
+    line-height: 1.3;
+    white-space: nowrap;
 }
 
-.folio-title {
-    margin-top: 6px;
+.gallery-title {
     font-family: Georgia, serif;
-    font-size: 1.35em;
-    line-height: 1.2;
-    color: #2A1810;
+    font-style: italic;
+    font-size: 0.88em;
+    color: #5A3E36;
     transition: color 0.3s ease;
 }
 
-.folio-made {
-    margin-top: 6px;
-    font-size: 0.95em;
-    color: #7A6A64;
+/* ---- hover: the frame lifts ---- */
+.gallery-frame {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.folio-piece .art-open:hover .folio-frame {
+.gallery-piece .art-open:hover .gallery-frame {
     transform: translateY(-4px);
-    box-shadow: 0 18px 36px -14px rgba(42, 24, 16, 0.35);
+    box-shadow:
+        inset 0 0 0 1px rgba(42, 24, 16, 0.08),
+        0 4px 6px rgba(42, 24, 16, 0.2),
+        0 26px 44px rgba(42, 24, 16, 0.26);
 }
 
-.folio-piece .art-open:hover .folio-frame img {
-    transform: scale(1.03);
-}
-
-.folio-piece .art-open:hover .folio-title {
+.gallery-piece .art-open:hover .gallery-title {
     color: #8A4D57;
 }
 
-@media (max-width: 900px) {
-    .folio {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
-    }
-
-    /* two columns: the third column's pieces join the first two */
-    .folio-col:nth-child(3) {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
-        align-items: start;
-    }
+/* ---- tablets and phones: a shorter wall, slimmer frames ---- */
+@media (max-width: 1300px) {
+    .gallery-wall-wrap { margin-inline: 0; }
 }
 
-@media (max-width: 560px) {
-    .folio,
-    .folio-col:nth-child(3) {
-        grid-template-columns: 1fr;
+@media (max-width: 680px) {
+    .art-shelf {
+        --frame: 5px;
+        --mat: 7px;
+        --label: 28px;
+        --stack-gap: 18px;
+        --wall-h: 380px;
     }
 
-    .folio-col {
-        gap: 28px;
+    .gallery-wall {
+        gap: 22px;
+        padding: 26px 18px 34px;
     }
+
+    .gallery-wall-wrap .shelf-arrow { top: calc(26px + var(--wall-h) / 2); }
+
+    .gallery-piece .gallery-label { padding-top: 8px; }
+
+    .gallery-title { font-size: 0.78em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .folio-frame,
-    .folio-frame img,
-    .folio-title {
+    .gallery-frame,
+    .gallery-title {
         transition: none;
     }
 }

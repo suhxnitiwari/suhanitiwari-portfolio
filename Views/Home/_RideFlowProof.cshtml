@@ -120,7 +120,7 @@
                                     <button type="button" role="tab" aria-selected="false" aria-controls="mp-sql-3" tabindex="-1">procedure.sql</button>
                                 </div>
                             </div>
-<pre id="mp-sql-0" role="tabpanel" aria-label="schema.sql"><code><span class="c">-- HW 2 · PL/SQL deploy script, safe to re-run</span>
+<pre id="mp-sql-0" role="tabpanel" aria-label="schema.sql"><code><span class="c">-- HW 2: PL/SQL deploy script, safe to re-run</span>
 <span class="k">BEGIN</span>
   <span class="k">EXECUTE IMMEDIATE</span> <span class="n">'DROP TABLE Ride CASCADE CONSTRAINTS'</span>;
 <span class="k">EXCEPTION WHEN OTHERS THEN NULL</span>;
@@ -138,7 +138,7 @@
   <span class="k">CONSTRAINT</span> Ride_Final_Fare_Check
     <span class="k">CHECK</span> (Final_Fare = Initial_Fare - Discount_Amount)
 );</code></pre>
-<pre id="mp-sql-1" role="tabpanel" aria-label="rollup.sql" hidden><code><span class="c">-- HW 4 · low-rated rides, subtotaled by city and zip</span>
+<pre id="mp-sql-1" role="tabpanel" aria-label="rollup.sql" hidden><code><span class="c">-- HW 4: low-rated rides, subtotaled by city and zip</span>
 <span class="k">SELECT</span> r.city,
        r.zip,
        <span class="k">COUNT</span>(*) <span class="k">AS</span> low_rated_rides
@@ -151,7 +151,7 @@
 
 <span class="c">-- CUBE would total every combination;</span>
 <span class="c">-- ROLLUP keeps the city → zip hierarchy.</span></code></pre>
-<pre id="mp-sql-2" role="tabpanel" aria-label="ranking.sql" hidden><code><span class="c">-- HW 5 · Snowflake: top three driver ranks, ties kept</span>
+<pre id="mp-sql-2" role="tabpanel" aria-label="ranking.sql" hidden><code><span class="c">-- HW 5: Snowflake: top three driver ranks, ties kept</span>
 <span class="k">SELECT</span> first_name, last_name, rides_given, driver_rank
 <span class="k">FROM</span> (
   <span class="k">SELECT</span> first_name,
@@ -165,7 +165,7 @@
 
 <span class="c">-- Oracle used INSTR; Snowflake needed POSITION.</span>
 <span class="c">-- I submitted both versions.</span></code></pre>
-<pre id="mp-sql-3" role="tabpanel" aria-label="procedure.sql" hidden><code><span class="c">-- HW 6 · Snowflake procedure: insert, or roll back</span>
+<pre id="mp-sql-3" role="tabpanel" aria-label="procedure.sql" hidden><code><span class="c">-- HW 6: Snowflake procedure: insert, or roll back</span>
 <span class="k">CREATE OR REPLACE PROCEDURE</span> hw6.insert_rider(
     p_first_name <span class="k">VARCHAR</span>,
     p_last_name  <span class="k">VARCHAR</span>,

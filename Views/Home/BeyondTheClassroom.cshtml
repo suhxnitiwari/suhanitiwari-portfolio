@@ -80,13 +80,46 @@
         max-width: 400px;
     }
 
-    /* the book: photo top lines up with the title, reviews sit under the photo */
+    /* projects with numbers: photo and text share the first row (photo level with the title),
+       and the reviews card, if any, runs under both */
     .project.has-reviews {
         align-items: start;
+        row-gap: 48px;
     }
 
+    .project.has-reviews .project-text,
     .project.has-reviews .project-side {
+        grid-row: 1;
+    }
+
+    .project.has-reviews:nth-of-type(odd) .project-side { grid-column: 1; }
+    .project.has-reviews:nth-of-type(odd) .project-text { grid-column: 2; }
+    .project.has-reviews:nth-of-type(even) .project-text { grid-column: 1; }
+    .project.has-reviews:nth-of-type(even) .project-side { grid-column: 2; }
+
+    .project.has-reviews .review-carousel {
+        grid-row: 2;
+    }
+
+    /* the photo starts level with the title and ends level with the last line of text */
+    .project.has-reviews .project-side {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
         margin-top: 34px;
+    }
+
+    .project.has-reviews .project-photo {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project.has-reviews .project-photo img {
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        aspect-ratio: auto;
     }
 
     /* Every photo is the same upright 3:4 size, so the three rows match */
@@ -188,11 +221,6 @@
         color: #56634A;
     }
 
-    /* the donation takes the last two spots, so five numbers still fill the grid */
-    .project-stats div:nth-child(5):last-child {
-        grid-column: span 2;
-    }
-
     @@media (max-width: 520px) {
         .project-stats {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -200,9 +228,15 @@
     }
 
     /* reader reviews under the photo, one at a time */
+    /* reviews: one wide card under both columns, quote on the left and the arrows on the right */
     .review-carousel {
-        margin-top: 22px;
-        padding: 22px 24px 16px;
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 40px;
+        align-items: center;
+        margin-top: 0;
+        padding: 28px 34px;
         border-radius: 18px;
         background: #FFF8F6;
         border: 1px solid #EBD5D0;
@@ -210,6 +244,7 @@
     }
 
     .review-label {
+        grid-column: 1;
         margin: 0 0 10px;
         font-size: 0.72em;
         font-weight: 700;
@@ -219,15 +254,16 @@
     }
 
     .review-card {
+        grid-column: 1;
         margin: 0;
-        min-height: 7.2em;
+        min-height: 4.4em;
         animation: reviewIn 0.35s ease both;
     }
 
     .review-card p {
         margin: 0;
         font-family: Georgia, serif;
-        font-size: 1.05em;
+        font-size: 1.3em;
         font-style: italic;
         line-height: 1.55;
         color: #2A1810;
@@ -250,12 +286,11 @@
     }
 
     .review-nav {
+        grid-column: 2;
+        grid-row: 1 / span 2;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-top: 14px;
-        padding-top: 12px;
-        border-top: 1px solid #EBD5D0;
+        gap: 14px;
     }
 
     .review-nav button {
@@ -353,6 +388,34 @@
             margin-top: 0;
         }
 
+        .project.has-reviews .project-text,
+        .project.has-reviews .project-side,
+        .project.has-reviews .review-carousel {
+            grid-row: auto !important;
+            grid-column: 1 !important;
+        }
+
+        .project.has-reviews {
+            row-gap: 28px;
+        }
+
+        .project.has-reviews .project-photo img {
+            aspect-ratio: 3 / 4;
+        }
+
+        .review-carousel {
+            grid-template-columns: 1fr;
+            margin-top: 0;
+            padding: 22px 22px 18px;
+        }
+
+        .review-nav {
+            grid-column: 1;
+            grid-row: auto;
+            justify-content: space-between;
+            margin-top: 16px;
+        }
+
         .project h2 {
             font-size: 1.9em;
         }
@@ -377,7 +440,6 @@
             new[]
             {
                 new Initiative("Girls Who Code",
-                    Tagline: "Teaching girls to code before they could decide it wasn't for them.",
                     Tags: new[] { "Coding", "Web Development", "Mentorship" },
                     Role: "Founder & President",
                     Years: "Frisco, Texas, 2022 to 2024",
@@ -398,17 +460,17 @@
 
                 // My children's book (author + illustrator). Details from its Amazon listing.
                 new Initiative("Girls Can Be Engineers Too",
-                    Tagline: "Sometimes representation starts with a storybook.",
                     Tags: new[] { "Engineering", "Representation", "Early STEM" },
                     Role: "Author & Illustrator",
                     Years: "published October 10, 2023",
                     Stats: new[]
                     {
-                        ("280+", "copies in the first week"),
-                        ("1,000", "copies in the first month"),
-                        ("#1", "New Release in STEM Education"),
-                        ("5.0 ★", "rating on Amazon"),
-                        ("$4,194", "first-month profit, all donated to Dallas-Fort Worth libraries for early STEM education")
+                        ("280+", "copies sold in the first week"),
+                        ("1,000", "copies sold in the first month"),
+                        ("$4,194", "donated to Dallas-Fort Worth libraries for early STEM"),
+                        ("#1", "New Release in STEM Education in October 2023"),
+                        ("5.0 ★", "rating from every Amazon reviewer"),
+                        ("7", "strong female role models")
                     },
                     // Reader reviews from Amazon: paste the ones I like as ("the review", "who wrote it or where from")
                     Reviews: new[]
@@ -463,31 +525,6 @@
                                         <figcaption>@project.PhotoCaption</figcaption>
                                     }
                                 </figure>
-                                @if (project.Reviews is { Length: > 0 })
-                                {
-                                    <div class="review-carousel" aria-roledescription="carousel" aria-label="Reader reviews">
-                                        <p class="review-label">What readers say</p>
-                                        @for (var r = 0; r < project.Reviews.Length; r++)
-                                        {
-                                            var (quote, who) = project.Reviews[r];
-                                            <blockquote class="review-card" hidden="@(r != 0)">
-                                                <p>“@quote”</p>
-                                                @if (!string.IsNullOrEmpty(who))
-                                                {
-                                                    <cite>@who</cite>
-                                                }
-                                            </blockquote>
-                                        }
-                                        @if (project.Reviews.Length > 1)
-                                        {
-                                            <div class="review-nav">
-                                                <button type="button" class="review-prev" aria-label="Previous review">‹</button>
-                                                <span class="review-count" aria-live="polite">1 of @project.Reviews.Length</span>
-                                                <button type="button" class="review-next" aria-label="Next review">›</button>
-                                            </div>
-                                        }
-                                    </div>
-                                }
                             </div>
                         }
                         <div class="project-text">
@@ -531,6 +568,31 @@
                                 <a class="project-link" href="@project.Link" target="_blank" rel="noopener">@project.LinkText</a>
                             }
                         </div>
+                        @if (project.Reviews is { Length: > 0 })
+                        {
+                            <div class="review-carousel" aria-roledescription="carousel" aria-label="Reader reviews">
+                                <p class="review-label">What readers say</p>
+                                @for (var r = 0; r < project.Reviews.Length; r++)
+                                {
+                                    var (quote, who) = project.Reviews[r];
+                                    <blockquote class="review-card" hidden="@(r != 0)">
+                                        <p>“@quote”</p>
+                                        @if (!string.IsNullOrEmpty(who))
+                                        {
+                                            <cite>@who</cite>
+                                        }
+                                    </blockquote>
+                                }
+                                @if (project.Reviews.Length > 1)
+                                {
+                                    <div class="review-nav">
+                                        <button type="button" class="review-prev" aria-label="Previous review">‹</button>
+                                        <span class="review-count" aria-live="polite">1 of @project.Reviews.Length</span>
+                                        <button type="button" class="review-next" aria-label="Next review">›</button>
+                                    </div>
+                                }
+                            </div>
+                        }
                     </article>
                 }
             </section>

@@ -81,7 +81,7 @@
         out.appendChild(line('sat-row', ['b', plan.home], ['span', plan.sign_off]));
         const count = plan.stops.filter(s => s.name).length;
         out.appendChild(line('sat-foot', ['span',
-            `${count} stop${count === 1 ? '' : 's'} · ${plan.hours_out} hour${plan.hours_out === 1 ? '' : 's'} out · ${plan.driving} min of ${plan.walking ? 'walking' : 'driving'} · Saturday #${plan.seed}`]));
+            `${count} stop${count === 1 ? '' : 's'}, ${plan.hours_out} hour${plan.hours_out === 1 ? '' : 's'} out, ${plan.driving} min of ${plan.walking ? 'walking' : 'driving'}, Saturday #${plan.seed}`]));
     }
 
     // can't decide? pick everything at random, then plan it
