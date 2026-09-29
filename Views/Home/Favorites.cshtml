@@ -1007,46 +1007,34 @@
 
     }
     /* ===== WHAT I'M LISTENING TO: one compact dashboard ===== */
-    /* One bento grid, not a stack of identical boxes. Wide screens (12 columns):
-         Universe (7, two rows tall)  | On Repeat, a dark record sleeve (5, two rows tall)
-         Listening Clock (4)          | Music by Era, a wide timeline (8)
-         Listening DNA (7)            | Then vs. Now on sage (5)
-       The small and wide cards swap sides row to row, so the eye zigzags down the page. */
-    .music-bento {
+    /* A Pinterest board: three columns of pins in all different heights, each column stacking on its own.
+         left:   the Spotify player (tall), Music by Era
+         middle: My Music Universe (square), Listening DNA (donut over its legend)
+         right:  On Repeat (a dark record sleeve), Listening Clock, Then vs. Now
+       Tablets and phones get one column in reading order. */
+    .music-board {
         display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-areas:
-            "uni uni uni uni uni uni uni rep rep rep rep rep"
-            "uni uni uni uni uni uni uni rep rep rep rep rep"
-            "clk clk clk clk era era era era era era era era"
-            "dna dna dna dna dna dna dna thn thn thn thn thn";
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 24px;
+        align-items: start;
         margin-bottom: 70px;
     }
 
-    .universe-card { grid-area: uni; }
-    .repeat-card { grid-area: rep; }
-    .clock-card { grid-area: clk; }
-    .era-card { grid-area: era; }
-    .dna-card { grid-area: dna; }
-    .then-card { grid-area: thn; }
-
-    /* the universe grows to match On Repeat beside it */
-    .universe-card {
+    .music-col {
         display: flex;
         flex-direction: column;
+        gap: 24px;
+        min-width: 0;
     }
 
+    /* the universe is a square pin */
     .universe-card .universe {
-        flex: 1;
-        min-height: 420px;
-        aspect-ratio: auto;
+        aspect-ratio: 1 / 1;
+        min-height: 0;
     }
 
-    /* On Repeat: a dark mulberry sleeve, its five songs spread to fill the height */
+    /* On Repeat: a dark mulberry sleeve */
     .repeat-card {
-        display: flex;
-        flex-direction: column;
         background: linear-gradient(160deg, #6E3844 0%, #4A2530 100%) !important;
         border-color: #5A2C38 !important;
         box-shadow: 0 18px 40px rgba(74, 37, 48, 0.28) !important;
@@ -1054,14 +1042,6 @@
 
     .repeat-card .music-card-title { color: #FFF8F6; }
     .repeat-card .music-card-sub { color: #E8B9C2; }
-
-    .repeat-card .songs-list {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-    }
-
     .repeat-card .song-item { border-bottom-color: rgba(255, 248, 246, 0.14); }
     .repeat-card .song-item:hover { background: rgba(255, 248, 246, 0.08); }
     .repeat-card .song-rank { color: #F3C9A0; font-family: Georgia, serif; }
@@ -1069,29 +1049,22 @@
     .repeat-card .song-artist { color: #E3C9CE; }
     .repeat-card .music-loading { color: #E3C9CE; }
 
-    /* Listening Clock: the clock face is the whole card, centered */
-    .clock-card {
-        display: flex;
-        flex-direction: column;
+    /* Listening DNA in a narrow pin: the donut sits above its legend */
+    .dna-card .dna-section {
+        grid-template-columns: minmax(0, 1fr) !important;
+        justify-items: center;
+        gap: 18px !important;
     }
 
-    .clock-card .clock-chart {
-        flex: 1;
-        justify-content: center;
+    .dna-card .dna-chart {
+        width: min(220px, 70%) !important;
     }
 
-    /* Music by Era: the bars spread out to match the clock's height beside it */
-    .era-card {
-        display: flex;
-        flex-direction: column;
+    .dna-card .dna-section > :not(.dna-chart) {
+        width: 100%;
     }
 
-    .era-card .era-chart {
-        flex: 1;
-        align-content: space-around;
-    }
-
-    /* Then vs. Now: sage paper, so the bottom row has two colors, not two copies */
+    /* Then vs. Now: sage paper */
     .then-card {
         background: linear-gradient(160deg, #F1F3EA 0%, #E7EBDC 100%) !important;
         border-color: #D6DDC6 !important;
@@ -1099,25 +1072,23 @@
 
     .then-card .music-card-sub { color: #56634A; }
 
-    /* tablets: two columns, cards in reading order */
     @@media (max-width: 1100px) {
-        .music-bento {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            grid-template-areas:
-                "uni uni"
-                "rep clk"
-                "era era"
-                "dna dna"
-                "thn thn";
-        }
-    }
-
-    /* phones: one column */
-    @@media (max-width: 700px) {
-        .music-bento {
+        .music-board {
             grid-template-columns: minmax(0, 1fr);
-            grid-template-areas: "uni" "rep" "clk" "era" "dna" "thn";
+            max-width: 640px;
+            margin-inline: auto;
         }
+
+        .music-col { display: contents; }
+
+        /* reading order once it's one column */
+        .now-card { order: 1; }
+        .universe-card { order: 2; }
+        .repeat-card { order: 3; }
+        .clock-card { order: 4; }
+        .era-card { order: 5; }
+        .dna-card { order: 6; }
+        .then-card { order: 7; }
     }
 
     .music-card {
@@ -1249,92 +1220,67 @@
         padding: 18px 0;
     }
 
-    /* Now playing: a slim live strip */
-    .now-playing {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        width: fit-content;
-        max-width: 100%;
-        margin: 0 auto 24px;
-        padding: 10px 20px 10px 10px;
-        border-radius: 999px;
-        background: #FFF8F6;
-        border: 1px solid #EDD8D3;
-        box-shadow: 0 6px 18px rgba(158, 90, 99, 0.1);
-        color: #2A1810;
-        text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .now-playing:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 24px rgba(158, 90, 99, 0.18);
-        color: #2A1810;
-    }
-
-    /* the song as a vinyl record: grooves, a sheen, the album art as its center label and a spindle hole.
-       It spins while I'm listening and rests when it's only the last song played. */
-    .now-disc {
+    /* Now playing: a Spotify player pin. The album art, blurred, is the card's backdrop. */
+    .now-card {
         position: relative;
-        flex: none;
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        background:
-            conic-gradient(from 20deg, rgba(255, 255, 255, 0) 0deg, rgba(255, 255, 255, 0.16) 30deg, rgba(255, 255, 255, 0) 70deg,
-                           rgba(255, 255, 255, 0) 180deg, rgba(255, 255, 255, 0.12) 210deg, rgba(255, 255, 255, 0) 250deg),
-            repeating-radial-gradient(circle, #1B1412 0 1.5px, #2A201D 1.5px 3px);
-        box-shadow: 0 6px 14px rgba(30, 14, 12, 0.3), inset 0 0 0 2px #120C0B;
+        display: block;
+        overflow: hidden;
+        padding: 20px 22px 18px;
+        border-radius: 20px;
+        background: #211A1C;
+        color: #FFFFFF;
+        text-decoration: none;
+        box-shadow: 0 18px 40px rgba(33, 26, 28, 0.3);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .now-playing.live .now-disc {
-        animation: discSpin 3.2s linear infinite;
+    .now-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 24px 48px rgba(33, 26, 28, 0.36);
+        color: #FFFFFF;
     }
 
-    .now-disc img,
-    .now-disc .now-label {
+    .now-card:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 4px;
+    }
+
+    .now-backdrop {
         position: absolute;
-        inset: 30%;
-        width: 40%;
-        height: 40%;
-        border-radius: 50%;
-        object-fit: cover;
-        background: #8F4661;
+        inset: -40px;
+        background: var(--art, #3A2A2E) center / cover;
+        filter: blur(30px) brightness(0.5) saturate(1.15);
     }
 
-    /* the spindle hole */
-    .now-disc::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 5px;
-        height: 5px;
-        margin: -2.5px 0 0 -2.5px;
-        border-radius: 50%;
-        background: #FFF8F6;
+    .now-card > :not(.now-backdrop) {
+        position: relative;
     }
 
-    @@keyframes discSpin {
-        to { transform: rotate(360deg); }
+    .now-top {
+        display: grid;
+        grid-template-columns: 22px minmax(0, 1fr) 22px;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        text-align: center;
     }
 
-    .now-playing-label {
+    .now-status {
         display: flex;
+        justify-content: center;
         align-items: center;
         gap: 6px;
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 1.5px;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 1.4px;
         text-transform: uppercase;
-        color: #8F4661;
+        color: rgba(255, 255, 255, 0.7);
     }
 
-    .now-playing.live .now-playing-label::before {
+    .now-card.live .now-status::before {
         content: "";
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         background: #1DB954;
         animation: livePulse 1.6s ease-in-out infinite;
@@ -1345,15 +1291,147 @@
         50% { box-shadow: 0 0 0 6px rgba(29, 185, 84, 0); }
     }
 
-    .now-playing-song {
+    .now-album {
+        display: block;
+        margin-top: 2px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 0.9rem;
         font-weight: 700;
-        font-size: 0.95rem;
     }
 
-    .now-playing-artist {
-        font-size: 0.85rem;
-        color: #56634A;
+    .now-icon {
+        width: 22px;
+        height: 22px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
     }
+
+    .now-art {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 10px;
+        background: #3A2A2E;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    }
+
+    .now-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 20px 0 14px;
+    }
+
+    .now-meta > span:first-child {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .now-song {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 1.45rem;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+    }
+
+    .now-artist {
+        display: block;
+        margin-top: 2px;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.72);
+    }
+
+    /* the green "liked" check */
+    .now-liked {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #1DB954;
+        color: #121212;
+    }
+
+    .now-liked .now-icon { width: 16px; height: 16px; stroke-width: 3; }
+
+    .now-bar {
+        display: block;
+        position: relative;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.28);
+    }
+
+    .now-bar-fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: var(--p, 0%);
+        border-radius: 999px;
+        background: #FFFFFF;
+    }
+
+    .now-bar-fill::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -6px;
+        width: 12px;
+        height: 12px;
+        margin-top: -6px;
+        border-radius: 50%;
+        background: #FFFFFF;
+    }
+
+    .now-times {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
+        font-size: 0.72rem;
+        font-variant-numeric: tabular-nums;
+        color: rgba(255, 255, 255, 0.65);
+    }
+
+    .now-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 14px 0 16px;
+    }
+
+    .now-controls .now-icon { width: 24px; height: 24px; }
+    .now-controls .fill { fill: currentColor; stroke: none; }
+    .now-controls .on { color: #1DB954; }
+
+    .now-play {
+        display: grid;
+        place-items: center;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        color: #121212;
+    }
+
+    .now-device {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #1DB954;
+    }
+
+    .now-device .now-icon { width: 18px; height: 18px; }
 
     /* Listening Clock: a real clock face. Each hour has a cone from the center toward its number,
        split in two (AM on the left half, PM on the right); the fuller the cone, the more I listened then.
@@ -1502,10 +1580,6 @@
             gap: 32px;
         }
 
-        .universe-card .universe {
-            min-height: 560px;
-        }
-
         .music-card {
             padding: 30px 34px;
         }
@@ -1534,10 +1608,6 @@
         .era-row { font-size: 1rem; }
         .era-track { height: 14px; }
 
-        .now-disc { width: 76px; height: 76px; }
-        .now-playing-label { font-size: 0.8rem; }
-        .now-playing-song { font-size: 1.1rem; }
-        .now-playing-artist { font-size: 0.98rem; }
     }
 
     @@media (max-width: 820px) {
@@ -1560,14 +1630,10 @@
             padding: 18px 16px;
         }
 
-        .now-playing {
-            border-radius: 18px;
-        }
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .now-playing.live .now-playing-label::before,
-        .now-playing.live .now-disc {
+        .now-card.live .now-status::before {
             animation: none;
         }
     }
@@ -1579,64 +1645,65 @@
         <h2 class="section-title with-subtitle">What I'm Listening To</h2>
         <p class="section-subtitle">live from my Spotify</p>
 
-        <a class="now-playing" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
-
-        <div class="music-bento">
-            <section class="music-card universe-card" aria-labelledby="universeTitle">
-                <h3 class="music-card-title" id="universeTitle">My Music Universe</h3>
-                <p class="music-card-sub">the bigger the bubble, the more they've been living in my headphones</p>
-            <div class="universe" id="universe" tabindex="0"
-                 aria-label="Interactive map of my top 20 Spotify artists. Bigger bubbles are artists I listen to more. Drag to explore, use the zoom buttons, and select an artist for details.">
-                <div class="universe-world" id="universeWorld"></div>
-                <p class="universe-status" id="universeStatus">Loading...</p>
-                <span class="universe-hint" id="universeHint" aria-hidden="true">Click the universe to zoom, or keep scrolling</span>
-                <div class="universe-tag" id="universeTag" hidden></div>
-                <div class="universe-panel" id="universePanel" hidden></div>
-                <p class="snoop-remark" id="snoopRemark" role="status" aria-live="polite"></p>
-                <div class="universe-controls">
-                    <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
-                    <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
-                    <button type="button" data-zoom="reset" aria-label="Reset view">↺</button>
-                </div>
+        <!-- A Pinterest board: three columns of pins in different heights -->
+        <div class="music-board">
+            <div class="music-col">
+                <a class="now-card" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
+                <section class="music-card era-card" aria-labelledby="eraTitle">
+                    <h3 class="music-card-title" id="eraTitle">Music by Era</h3>
+                    <p class="music-card-sub">when my top 50 songs came out</p>
+                    <div class="era-chart" id="eraChart"><p class="music-loading">Loading...</p></div>
+                    <p class="music-card-note" id="eraNote"></p>
+                </section>
             </div>
-            </section>
-
-            <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
-                <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
-                <p class="music-card-sub">the five songs I can't stop playing right now</p>
-                <ul class="songs-list" id="topSongsContainer">
-                    <li class="music-loading">Loading...</li>
-                </ul>
-            </section>
-
-            <section class="music-card clock-card" aria-labelledby="clockTitle">
-                <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
-                <p class="music-card-sub">when I press play, from my last 50 songs</p>
-                <div class="clock-chart" id="listenClock" role="img" aria-label="Loading listening clock"><p class="music-loading">Loading...</p></div>
-                <p class="music-card-note" id="clockNote"></p>
-            </section>
-            <section class="music-card dna-card" aria-labelledby="dnaTitle">
-                <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
-                <p class="music-card-sub">what my headphones are apparently made of</p>
-                <div class="dna-section" id="dnaSection">
-                    <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
+            <div class="music-col">
+                <section class="music-card universe-card" aria-labelledby="universeTitle">
+                    <h3 class="music-card-title" id="universeTitle">My Music Universe</h3>
+                    <p class="music-card-sub">the bigger the bubble, the more they've been living in my headphones</p>
+                <div class="universe" id="universe" tabindex="0"
+                     aria-label="Interactive map of my top 20 Spotify artists. Bigger bubbles are artists I listen to more. Drag to explore, use the zoom buttons, and select an artist for details.">
+                    <div class="universe-world" id="universeWorld"></div>
+                    <p class="universe-status" id="universeStatus">Loading...</p>
+                    <span class="universe-hint" id="universeHint" aria-hidden="true">Click the universe to zoom, or keep scrolling</span>
+                    <div class="universe-tag" id="universeTag" hidden></div>
+                    <div class="universe-panel" id="universePanel" hidden></div>
+                    <p class="snoop-remark" id="snoopRemark" role="status" aria-live="polite"></p>
+                    <div class="universe-controls">
+                        <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+                        <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+                        <button type="button" data-zoom="reset" aria-label="Reset view">↺</button>
+                    </div>
                 </div>
-            </section>
-
-
-            <section class="music-card then-card" aria-labelledby="thenNowTitle">
-                <h3 class="music-card-title" id="thenNowTitle">Then vs. Now</h3>
-                <p class="music-card-sub">my top five artists, over time</p>
-                <div class="then-now" id="thenNow"><p class="music-loading">Loading...</p></div>
-                <p class="music-card-note" id="thenNowNote"></p>
-            </section>
-
-            <section class="music-card era-card" aria-labelledby="eraTitle">
-                <h3 class="music-card-title" id="eraTitle">Music by Era</h3>
-                <p class="music-card-sub">when my top 50 songs came out</p>
-                <div class="era-chart" id="eraChart"><p class="music-loading">Loading...</p></div>
-                <p class="music-card-note" id="eraNote"></p>
-            </section>
+                </section>
+                <section class="music-card dna-card" aria-labelledby="dnaTitle">
+                    <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
+                    <p class="music-card-sub">what my headphones are apparently made of</p>
+                    <div class="dna-section" id="dnaSection">
+                        <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
+                    </div>
+                </section>
+            </div>
+            <div class="music-col">
+                <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
+                    <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
+                    <p class="music-card-sub">the five songs I can't stop playing right now</p>
+                    <ul class="songs-list" id="topSongsContainer">
+                        <li class="music-loading">Loading...</li>
+                    </ul>
+                </section>
+                <section class="music-card clock-card" aria-labelledby="clockTitle">
+                    <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
+                    <p class="music-card-sub">when I press play, from my last 50 songs</p>
+                    <div class="clock-chart" id="listenClock" role="img" aria-label="Loading listening clock"><p class="music-loading">Loading...</p></div>
+                    <p class="music-card-note" id="clockNote"></p>
+                </section>
+                <section class="music-card then-card" aria-labelledby="thenNowTitle">
+                    <h3 class="music-card-title" id="thenNowTitle">Then vs. Now</h3>
+                    <p class="music-card-sub">my top five artists, over time</p>
+                    <div class="then-now" id="thenNow"><p class="music-loading">Loading...</p></div>
+                    <p class="music-card-note" id="thenNowNote"></p>
+                </section>
+            </div>
         </div>
 
         @* Current Album Obsession: hidden for now while I rethink its layout. To bring it back, delete the
@@ -1775,20 +1842,66 @@
         return `${days} day${days === 1 ? '' : 's'} ago`;
     }
 
+    // The player pin: built like Spotify's now playing screen. When I'm listening, the bar moves in real time
+    // (counted from when the server asked Spotify); otherwise it shows the last song I played, paused at the start.
+    const icon = path => `<svg class="now-icon" viewBox="0 0 24 24" aria-hidden="true">${path}</svg>`;
+    const clockTime = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+    let playerTimer = null;
+
     function showNowPlaying(song, live, when) {
-        const strip = document.getElementById('nowPlaying');
-        if (!song || !song.name) { strip.hidden = true; return; }
-        strip.href = song.spotifyUrl || 'https://open.spotify.com';
-        strip.classList.toggle('live', live);
-        strip.innerHTML = `
-            <span class="now-disc" aria-hidden="true">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : '<span class="now-label"></span>'}</span>
-            <span>
-                <span class="now-playing-label">${live ? 'Listening right now' : `Last played ${escapeHtml(when)}`}</span>
-                <span class="now-playing-song">${escapeHtml(song.name)}</span>
-                <span class="now-playing-artist"> by ${escapeHtml(song.artist)}</span>
-            </span>`;
-        strip.setAttribute('aria-label', `${live ? 'Listening right now' : 'Last played'}: ${song.name} by ${song.artist}. Opens Spotify.`);
-        strip.hidden = false;
+        const card = document.getElementById('nowPlaying');
+        clearInterval(playerTimer);
+        if (!song || !song.name) { card.hidden = true; return; }
+        card.href = song.spotifyUrl || 'https://open.spotify.com';
+        card.classList.toggle('live', live);
+        card.style.setProperty('--art', song.albumArt ? `url("${song.albumArt.replace(/"/g, '%22')}")` : 'none');
+        const duration = song.durationMs || 0;
+        card.innerHTML = `
+            <span class="now-backdrop" aria-hidden="true"></span>
+            <span class="now-top" aria-hidden="true">
+                ${icon('<path d="M6 9l6 6 6-6"/>')}
+                <span>
+                    <span class="now-status">${live ? 'Listening right now' : `Last played ${escapeHtml(when)}`}</span>
+                    <span class="now-album">${escapeHtml(song.album || song.artist)}</span>
+                </span>
+                ${icon('<circle cx="5" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="19" cy="12" r="1.3" fill="currentColor"/>')}
+            </span>
+            ${song.albumArt ? `<img class="now-art" src="${escapeHtml(song.albumArt)}" alt="">` : '<span class="now-art"></span>'}
+            <span class="now-meta">
+                <span>
+                    <span class="now-song">${escapeHtml(song.name)}</span>
+                    <span class="now-artist">${escapeHtml(song.artist)}</span>
+                </span>
+                <span class="now-liked" aria-hidden="true">${icon('<path d="M5 12.5l4.5 4.5L19 7.5"/>')}</span>
+            </span>
+            <span class="now-bar" aria-hidden="true"><span class="now-bar-fill"></span></span>
+            <span class="now-times" aria-hidden="true"><span class="now-elapsed">0:00</span><span>${duration ? clockTime(duration) : ''}</span></span>
+            <span class="now-controls" aria-hidden="true">
+                ${icon('<path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/>')}
+                ${icon('<path class="fill" d="M18 5v14L8 12z"/><path d="M6 5v14"/>')}
+                <span class="now-play">${live ? icon('<path class="fill" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>') : icon('<path class="fill" d="M8 5v14l11-7z"/>')}</span>
+                ${icon('<path class="fill" d="M6 5v14l10-7z"/><path d="M18 5v14"/>')}
+                <span class="on">${icon('<path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/>')}</span>
+            </span>
+            ${live ? `<span class="now-device" aria-hidden="true">${icon('<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3zM3 19a2 2 0 0 0 2 2h1v-6H3z"/>')}Suhani’s Headphones!</span>` : ''}`;
+        card.setAttribute('aria-label', `${live ? 'Listening right now' : 'Last played'}: ${song.name} by ${song.artist}. Opens Spotify.`);
+        card.hidden = false;
+
+        const fill = card.querySelector('.now-bar-fill');
+        const elapsed = card.querySelector('.now-elapsed');
+        const tick = () => {
+            let at = 0;
+            if (live && duration) {
+                const since = song.fetchedAt ? Date.now() - new Date(song.fetchedAt).getTime() : 0;
+                at = Math.min(duration, (song.progressMs || 0) + Math.max(0, since));
+            }
+            fill.style.setProperty('--p', duration ? `${(at / duration) * 100}%` : '0%');
+            elapsed.textContent = clockTime(at);
+            // the song ended: ask Spotify what's playing now
+            if (live && duration && at >= duration) { clearInterval(playerTimer); setTimeout(() => refreshNowPlaying(), 3000); }
+        };
+        tick();
+        if (live) playerTimer = setInterval(tick, 1000);
     }
 
     async function refreshNowPlaying(recent) {

@@ -382,10 +382,15 @@
         margin: 0 auto;
     }
 
+    /* the intro spans the same 1100px as every row below it; justified so both edges are straight lines */
     .about-intro {
-        max-width: 760px;
         margin: 0 auto 56px;
         text-align: center;
+    }
+
+    .about-intro p {
+        text-align: justify;
+        text-align-last: center;
     }
 
     .about-intro h2 {
@@ -532,15 +537,20 @@
         background: #F6E4E1;
         border: 1px solid #EBD5D0;
         box-shadow: 0 14px 32px rgba(158, 90, 99, 0.14);
-        transition: transform 0.3s ease;
     }
 
-    .about-story-photo.n0 { transform: rotate(1.5deg); }
-    .about-story-photo.n1 { transform: rotate(-1.5deg); }
-    .about-story-photo.n2 { transform: rotate(1deg); }
+    /* photos sit on the outer edge of their row (right, or left on flipped rows), never floating inside it */
+    .about-story-photo {
+        width: 100%;
+        max-width: 416px;   /* 520px tall at 4:5 */
+    }
 
-    .about-story-photo:hover {
-        transform: rotate(0);
+    .about-story:not(.flip) .about-story-photo {
+        justify-self: end;
+    }
+
+    .about-story.flip .about-story-photo {
+        justify-self: start;
     }
 
     .about-story-photo img {
@@ -720,10 +730,9 @@
     }
 
     /* one row of cards that scrolls sideways, with arrows on either side */
+    /* the cards run edge to edge; the arrows sit on the outer edges, half over the first and last card */
     .kn-carousel {
-        display: flex;
-        align-items: center;
-        gap: 14px;
+        position: relative;
     }
 
     .kn-cards {
@@ -732,7 +741,7 @@
         display: flex;
         gap: 24px;
         margin: 0;
-        padding: 8px 4px 20px;
+        padding: 8px 0 20px;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
@@ -748,7 +757,10 @@
     }
 
     .kn-arrow {
-        flex: 0 0 auto;
+        position: absolute;
+        top: calc(50% - 6px);
+        z-index: 1;
+        transform: translate(-50%, -50%);
         width: 44px;
         height: 44px;
         border-radius: 50%;
@@ -759,6 +771,14 @@
         line-height: 1;
         cursor: var(--cursor-hot, pointer);
         transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .kn-arrow.kn-next {
+        left: 100%;
+    }
+
+    .kn-arrow.kn-prev {
+        left: 0;
     }
 
     .kn-arrow:hover:not(:disabled) {
@@ -878,10 +898,6 @@
         .kn-arrow {
             width: 36px;
             height: 36px;
-        }
-
-        .kn-carousel {
-            gap: 8px;
         }
 
         .kn-card {
@@ -2178,7 +2194,7 @@
     }
 
     .type-container {
-        max-width: 900px;
+        max-width: 1100px;
         margin: 0 auto;
     }
 

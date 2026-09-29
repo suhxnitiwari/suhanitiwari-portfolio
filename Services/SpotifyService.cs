@@ -272,6 +272,8 @@ namespace Tiwari_Suhani_HW3.Services
                     Name = track.GetProperty("name").GetString(),
                     Artist = FirstName(track, "artists"),
                     AlbumArt = track.TryGetProperty("album", out var album) ? FirstImageUrl(album) : "",
+                    Album = album.ValueKind == JsonValueKind.Object && album.TryGetProperty("name", out var albumName) ? albumName.GetString() : "",
+                    DurationMs = track.TryGetProperty("duration_ms", out var length) ? length.GetInt32() : 0,
                     SpotifyUrl = SpotifyLink(track),
                     PlayedAt = item.TryGetProperty("played_at", out var at) && at.TryGetDateTime(out var when) ? when : null
                 });
@@ -300,7 +302,12 @@ namespace Tiwari_Suhani_HW3.Services
                 Name = track.GetProperty("name").GetString(),
                 Artist = FirstName(track, "artists"),
                 AlbumArt = track.TryGetProperty("album", out var album) ? FirstImageUrl(album) : "",
-                SpotifyUrl = SpotifyLink(track)
+                Album = album.ValueKind == JsonValueKind.Object && album.TryGetProperty("name", out var albumName) ? albumName.GetString() : "",
+                SpotifyUrl = SpotifyLink(track),
+                // the player card ticks the progress bar forward from here, so a cached answer still reads right
+                ProgressMs = json.TryGetProperty("progress_ms", out var progress) && progress.ValueKind == JsonValueKind.Number ? progress.GetInt32() : 0,
+                DurationMs = track.TryGetProperty("duration_ms", out var length) ? length.GetInt32() : 0,
+                FetchedAt = DateTime.UtcNow
             };
         }
 
@@ -547,6 +554,8 @@ namespace Tiwari_Suhani_HW3.Services
         public string? Artist { get; set; } = "";
         public string? AlbumArt { get; set; } = "";
         public string? SpotifyUrl { get; set; } = "";
+        public string? Album { get; set; } = "";
+        public int DurationMs { get; set; }
         public DateTime? PlayedAt { get; set; }
     }
 
@@ -556,6 +565,10 @@ namespace Tiwari_Suhani_HW3.Services
         public string? Artist { get; set; } = "";
         public string? AlbumArt { get; set; } = "";
         public string? SpotifyUrl { get; set; } = "";
+        public string? Album { get; set; } = "";
+        public int ProgressMs { get; set; }
+        public int DurationMs { get; set; }
+        public DateTime FetchedAt { get; set; }
     }
 
     // More about one artist for the Music Universe card: genres and hometown from MusicBrainz, a short bio from Wikipedia
