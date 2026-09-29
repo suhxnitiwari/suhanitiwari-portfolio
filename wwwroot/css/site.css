@@ -241,11 +241,14 @@ html {
 .shelf,
 .shelf-intro,
 .coursework-hero,
+.cw-tabs,
 .story-section {
     max-width: var(--page-width) !important;
 }
 
+/* the Coursework tabs sit in the same column as the heading above them */
 .coursework-hero,
+.cw-tabs,
 .story-section {
     margin-left: auto !important;
     margin-right: auto !important;

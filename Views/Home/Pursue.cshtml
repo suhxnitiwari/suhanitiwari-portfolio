@@ -158,7 +158,13 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 48px;
-        align-items: start;
+        align-items: stretch;   /* the text column runs as tall as the tiles */
+    }
+
+    /* the text column: paragraphs at the top, the rankings source pinned to the bottom so it ends level with Top 10 */
+    .mccombs-text {
+        display: flex;
+        flex-direction: column;
     }
 
     /* pull the first line up by its half-leading so the text starts level with the tiles' top edge */
@@ -222,6 +228,10 @@
     }
 
     .mccombs-source {
+        margin: auto 0 0 !important;
+        padding-top: 14px;
+        border-top: 1px solid #EBD5D0;
+        line-height: 1.4 !important;
         font-size: 0.8em !important;
         letter-spacing: 0.06em;
         color: #7A665F !important;
