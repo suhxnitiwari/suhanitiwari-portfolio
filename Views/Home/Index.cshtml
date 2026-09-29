@@ -138,7 +138,7 @@
         position: absolute;
         left: 2.6%;
         top: calc(38% + 10.5cqw);
-        max-width: 30%;
+        max-width: 44%;
         opacity: calc(1 - var(--p, 0) * 2.2);
         animation: coverFade 1.2s ease 1.5s backwards;
     }
@@ -153,8 +153,13 @@
         text-shadow: 0 1px 12px rgba(20, 8, 6, 0.55);
     }
 
-    .cover-tagline span {
+    .cover-tagline span,
+    .cover-tagline strong {
         display: block;
+    }
+
+    /* McCombs School of Business, UT Austin */
+    .cover-school {
         margin-bottom: 6px;
         font-family: system-ui, sans-serif;
         font-size: 0.62em;
@@ -165,48 +170,117 @@
         color: #FAF1EF;
     }
 
+    /* Management Information Systems: the line a recruiter reads first */
+    .cover-major {
+        font-family: Georgia, serif;
+        font-size: 1.45em;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.15;
+        white-space: nowrap;
+        color: #FFFFFF;
+    }
+
+    .cover-second {
+        margin-top: 4px;
+        font-size: 0.95em;
+    }
+
     .cover-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 14px;
     }
 
+    /* The two buttons a recruiter came for: big, bright, and asking to be clicked */
     .cover-btn {
-        padding: 11px 24px;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        overflow: hidden;
+        padding: 19px 36px;
         border-radius: 999px;
-        border: 1.5px solid rgba(255, 248, 246, 0.85);
-        background: rgba(30, 14, 12, 0.18);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        font-size: 0.85rem;
-        font-weight: 700;
+        border: 2px solid #FFF8F6;
+        background: rgba(255, 248, 246, 0.14);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        box-shadow: 0 8px 24px rgba(30, 14, 12, 0.28);
+        font-size: clamp(1rem, 1.2cqw, 1.25rem);
+        font-weight: 800;
         letter-spacing: 1.5px;
         text-transform: uppercase;
         text-decoration: none;
         white-space: nowrap;
         color: #FFF8F6;
-        transition: background 0.2s ease, color 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
     .cover-btn:hover {
-        background: rgba(255, 248, 246, 0.2);
-        color: #FFF8F6;
+        transform: translateY(-3px);
+        background: #FFF8F6;
+        color: #8F4661;
+        box-shadow: 0 14px 34px rgba(30, 14, 12, 0.38);
     }
 
+    /* the main one: solid mulberry with a soft glow */
     .cover-btn.primary {
-        background: #FFF8F6;
-        border-color: #FFF8F6;
-        color: #8A4D57;
+        background: #8F4661;
+        border-color: #8F4661;
+        color: #FFFFFF;
+        box-shadow: 0 8px 28px rgba(143, 70, 97, 0.55), 0 0 0 4px rgba(255, 248, 246, 0.18);
     }
 
     .cover-btn.primary:hover {
-        background: #F6E4E1;
-        color: #8A4D57;
+        background: #A0526F;
+        border-color: #A0526F;
+        color: #FFFFFF;
+        box-shadow: 0 16px 40px rgba(143, 70, 97, 0.7), 0 0 0 6px rgba(255, 248, 246, 0.25);
+    }
+
+    /* a light sheen sweeps across the main button every few seconds */
+    .cover-btn.primary::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -60%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 100%);
+        transform: skewX(-20deg);
+        animation: coverSheen 4.5s ease-in-out 3s infinite;
+        pointer-events: none;
+    }
+
+    @@keyframes coverSheen {
+        0% { left: -60%; }
+        25%, 100% { left: 130%; }
+    }
+
+    .cover-arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    .cover-btn:hover .cover-arrow {
+        transform: translateX(4px);
     }
 
     .cover-btn:focus-visible {
-        outline: 2px solid #FFF8F6;
+        outline: 3px solid #FFF8F6;
         outline-offset: 3px;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cover-btn,
+        .cover-arrow {
+            transition: none;
+        }
+
+        .cover-btn.primary::after {
+            animation: none;
+            display: none;
+        }
     }
 
     .cover-scroll {
@@ -253,9 +327,9 @@
             left: 4%;
         }
 
-        /* sits just above the tagline and the row of buttons (about 100px tall together) */
+        /* sits just above the tagline and the row of buttons (about 140px tall together) */
         .cover-name.right {
-            bottom: calc(4% + 112px);
+            bottom: calc(4% + 160px);
             right: 4%;
         }
 
@@ -271,7 +345,12 @@
 
         .cover-tagline {
             margin-bottom: 12px;
-            font-size: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .cover-major {
+            font-size: 1.35em;
+            white-space: normal;
         }
 
         /* the two buttons side by side, sized to fit a phone */
@@ -282,9 +361,11 @@
         }
 
         .cover-btn {
-            padding: 10px 8px;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
+            justify-content: center;
+            gap: 6px;
+            padding: 14px 10px;
+            font-size: 0.78rem;
+            letter-spacing: 0.8px;
             text-align: center;
             white-space: normal;
         }
@@ -2487,11 +2568,15 @@
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
     <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
     <div class="cover-intro">
-        <p class="cover-tagline"><span>MIS at McCombs, UT Austin</span>Psychology, marketing and product</p>
+        @* Readable in one glance: who I am (MIS major at McCombs) and the two things a recruiter came for *@
+        <p class="cover-tagline">
+            <span class="cover-school">McCombs School of Business, UT Austin</span>
+            <strong class="cover-major">Management Information Systems</strong>
+            <span class="cover-second">Marketing, psychology and product strategy</span>
+        </p>
         <div class="cover-actions">
-            @* just the two things a recruiter came for: my MIS work and my résumé *@
-            <a class="cover-btn primary" href="/home/pursue#mis">MIS</a>
-            <a class="cover-btn" href="/resume">Résumé</a>
+            <a class="cover-btn primary" href="/home/pursue#mis">See my MIS skills <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/resume">View my résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>
