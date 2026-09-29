@@ -350,6 +350,13 @@
         transition: background 0.25s ease, transform 0.25s ease;
     }
 
+    /* in the reviews card: the bottom right corner */
+    .review-carousel .project-link {
+        grid-column: 2;
+        justify-self: end;
+        margin-top: 18px;
+    }
+
     .project-link:hover {
         background: #9E5A63;
         color: #FAF1EF;
@@ -414,6 +421,10 @@
             grid-row: auto;
             justify-content: space-between;
             margin-top: 16px;
+        }
+
+        .review-carousel .project-link {
+            grid-column: 1;
         }
 
         .project h2 {
@@ -563,7 +574,8 @@
                                     }
                                 </ul>
                             }
-                            @if (!string.IsNullOrEmpty(project.Link))
+                            @* with reviews, the link sits in the reviews card's bottom corner instead *@
+                            @if (!string.IsNullOrEmpty(project.Link) && project.Reviews is not { Length: > 0 })
                             {
                                 <a class="project-link" href="@project.Link" target="_blank" rel="noopener">@project.LinkText</a>
                             }
@@ -590,6 +602,10 @@
                                         <span class="review-count" aria-live="polite">1 of @project.Reviews.Length</span>
                                         <button type="button" class="review-next" aria-label="Next review">›</button>
                                     </div>
+                                }
+                                @if (!string.IsNullOrEmpty(project.Link))
+                                {
+                                    <a class="project-link" href="@project.Link" target="_blank" rel="noopener">@project.LinkText</a>
                                 }
                             </div>
                         }

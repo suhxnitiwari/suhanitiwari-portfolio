@@ -65,8 +65,13 @@
         color: #2A1810;
     }
 
+    /* two lines, one idea each */
+    .career-lede span {
+        display: block;
+    }
+
     .career-lede {
-        max-width: 720px;
+        max-width: none;
         margin: 22px 0 0;
         font-family: Georgia, serif;
         font-size: clamp(1.15em, 2vw, 1.4em);
@@ -134,52 +139,6 @@
         background: #9E5A63;
         border-color: #9E5A63;
         color: #FAF1EF;
-    }
-
-    /* RÉSUMÉ: the last stop, the download on the left and a preview on the right */
-    .career-resume {
-        padding: 80px 40px 100px;
-        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
-        border-top: 1px solid #EBD5D0;
-    }
-
-    .resume-wrap {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-        gap: 56px;
-        align-items: center;
-    }
-
-    .resume-copy .career-section-title {
-        margin: 0;
-    }
-
-    .resume-copy .career-actions {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .resume-preview {
-        display: block;
-        width: 100%;
-        height: auto;
-        overflow: hidden;
-        border-radius: 14px;
-        border: 6px solid #FFF8F6;
-        background: #FFFFFF;
-        box-shadow: 0 16px 40px rgba(42, 24, 16, 0.18);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .resume-preview:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 22px 46px rgba(42, 24, 16, 0.24);
-    }
-
-    .resume-preview img {
-        display: block;
-        width: 100%;
-        height: auto;
     }
 
     /* HOW I WORK, folded: a single calm bar until someone opens it */
@@ -337,13 +296,8 @@
             gap: 20px;
         }
 
-        .job-list,
-        .resume-wrap {
+        .job-list {
             grid-template-columns: 1fr;
-        }
-
-        .career-resume {
-            padding: 56px 20px 70px;
         }
 
         .job {
@@ -383,7 +337,7 @@
             <div>
                 <p class="career-kicker">Hi, I’m</p>
                 <h1 class="career-name">Suhani Tiwari</h1>
-                <p class="career-lede">Technology only matters if people want to use it, and understanding people only matters if you can build something for them. So I study both.</p>
+                <p class="career-lede"><span>Technology only matters if people want to use it.</span> <span>Understanding people only matters if you can build for them.</span></p>
             </div>
             <img class="career-photo" src="/images/hero-suhani.jpg" alt="Suhani Tiwari" width="300" height="360" fetchpriority="high">
         </div>
@@ -391,11 +345,11 @@
         <dl class="career-facts">
             <div>
                 <dt>Majors</dt>
-                <dd>Management Information Systems and Psychology<span>UT Austin, GPA 3.5/4.0</span></dd>
+                <dd>MIS<br />Psychology<span>UT Austin, GPA 3.5/4.0</span></dd>
             </div>
             <div>
                 <dt>Minors</dt>
-                <dd>Marketing and Educational Psychology</dd>
+                <dd>Marketing<br />Educational Psychology</dd>
             </div>
             <div>
                 <dt>Most recent</dt>
@@ -465,23 +419,6 @@
 </section>
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
-</section>
-<section class="pursue-part career-resume" id="resume" aria-labelledby="resume-heading">
-    <div class="career-wrap resume-wrap">
-        <div class="resume-copy">
-            <h2 class="career-section-title" id="resume-heading">Résumé</h2>
-            <div class="career-actions">
-                <a class="career-btn primary" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">Download Tiwari_Suhani_Resume ↓</a>
-                <a class="career-btn" href="/resume" target="_blank" rel="noopener">Open in a new tab ↗</a>
-                <a class="career-btn" href="mailto:suhxnitiwari@gmail.com">Email me</a>
-            </div>
-        </div>
-        @* A picture of page 1 (works in every browser, unlike an embedded PDF). When resume.pdf changes, remake it:
-           sips -s format png -Z 1400 wwwroot/resume.pdf --out wwwroot/images/resume-preview.png *@
-        <a class="resume-preview" href="/resume" target="_blank" rel="noopener" aria-label="Open my résumé">
-            <img src="/images/resume-preview.png" alt="First page of my résumé" width="1082" height="1400" loading="lazy">
-        </a>
-    </div>
 </section>
 
 @{

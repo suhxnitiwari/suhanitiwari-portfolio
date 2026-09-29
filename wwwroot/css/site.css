@@ -113,3 +113,38 @@ html {
     0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
     100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 14px)) scale(0.3) rotate(var(--r, 90deg)); }
 }
+
+/* ONE title size and ONE subtitle size across the whole site.
+   Page views set their own sizes in <style> blocks that load after this file, so these win with !important.
+   Titles: a page or section's main heading. Subtitles: the headings that split a section up. */
+:root {
+    --title-size: 3rem;
+    --subtitle-size: 1.8rem;
+}
+
+.section-title,
+.career-section-title,
+.world-block-title,
+.coursework-hero h1,
+.beyond-hero h1,
+.honors-hero h1,
+.work-tests-hero h1,
+.work-fold-title {
+    font-size: var(--title-size) !important;
+}
+
+.shelf-title,
+.music-card-title,
+.course-title,
+.honors-group h2,
+.project-text h2,
+.type-header h2 {
+    font-size: var(--subtitle-size) !important;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --title-size: 2.25rem;
+        --subtitle-size: 1.5rem;
+    }
+}
