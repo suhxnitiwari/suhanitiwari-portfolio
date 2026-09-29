@@ -62,6 +62,24 @@ html {
     }
 }
 
+/* sparkle.js puts the sparkle and glitter in this see-through layer, which sits in the browser's
+   top layer so it stays in front of pop-up cards too */
+.fairy-layer,
+.fairy-layer:popover-open {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+    pointer-events: none;
+}
+.fairy-layer::backdrop { display: none; }
+
 /* the sparkle drawn by sparkle.js, following the mouse */
 .fairy-pointer {
     position: fixed;

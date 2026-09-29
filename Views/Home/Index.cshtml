@@ -357,6 +357,17 @@
         margin-bottom: 0;
     }
 
+    .about-mis-link {
+        font-weight: 700;
+        color: #D1167A;
+        text-decoration: none;
+    }
+
+    .about-mis-link:hover,
+    .about-mis-link:focus-visible {
+        text-decoration: underline;
+    }
+
     /* each story: text on one side, photo on the other; every second one swaps */
     .about-stories {
         display: flex;
@@ -2528,7 +2539,7 @@
             Proof: new[] { ("What I’ve built", "/home/coursework#projects"), ("My children’s book", "/home/beyondtheclassroom"), ("Art", "/home/make#art"), ("Writing", "/home/make#writing"), ("Baking", "/home/make#baking") }),
         (Num: "03", Title: "I tend to start things.",
             Paras: new[] {
-                "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 120+ students.",
+                "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 240+ girls.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
             Photo: (string?)"/images/girls-who-code-teaching.jpg", Alt: "Teaching a Girls Who Code session at the whiteboard while students follow along on laptops",
             Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("How I lead", "/home/howiwork#disc"), ("Leadership courses", "/home/coursework#leadership") })
@@ -2538,7 +2549,7 @@
     <div class="about-container">
         <div class="about-intro">
             <h2>Hi, I’m Suhani Tiwari.</h2>
-            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying Management Information Systems. My academic interests include psychology, marketing, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
+            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/pursue#mis">Management Information Systems</a>. My academic interests include psychology, marketing, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
         <h3 class="about-lead">The thing about me is...</h3>

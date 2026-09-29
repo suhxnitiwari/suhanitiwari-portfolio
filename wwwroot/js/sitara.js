@@ -18,28 +18,49 @@
 
     const mood = (name, line) => { face.src = img(name); status.textContent = line; };
 
-    function open() {
+    // The chat is saved for this tab, so it stays open and remembers the conversation
+    // as the visitor moves between pages. Closing the tab starts fresh.
+    const chat = {
+        load: () => { try { return JSON.parse(sessionStorage.getItem('sitaraChat')) || {}; } catch { return {}; } },
+        save: () => {
+            try {
+                sessionStorage.setItem('sitaraChat', JSON.stringify({ open: !panel.hidden, msgs, suggest, history, misses }));
+            } catch { }
+        }
+    };
+    const saved = chat.load();
+    const msgs = Array.isArray(saved.msgs) ? saved.msgs : [];     // [{ text, who, extra }]
+    let suggest = Array.isArray(saved.suggest) ? saved.suggest : [];
+
+    function open(focus = true) {
         root.classList.add('open');
         panel.hidden = false;
         launch.setAttribute('aria-expanded', 'true');
-        input.focus();
+        if (focus) input.focus();
+        chat.save();
     }
     function shut() {
         root.classList.remove('open');
         panel.hidden = true;
         launch.setAttribute('aria-expanded', 'false');
         launch.focus();
+        chat.save();
     }
     launch.addEventListener('click', open);
     close.addEventListener('click', shut);
     root.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) shut(); });
 
-    function add(text, who, extra) {
+    function add(text, who, extra, remember = true) {
         const el = document.createElement('div');
         el.className = `sitara-msg ${who}${extra ? ' ' + extra : ''}`;
         el.textContent = text;
         log.append(el);
         log.scrollTop = log.scrollHeight;
+        if (remember) {
+            msgs.push({ text, who, extra: extra || '' });
+            if (msgs.length > 60) msgs.splice(0, msgs.length - 60);
+            chat.save();
+        }
         return el;
     }
 
@@ -52,7 +73,9 @@
     };
     let busy = false;
     let asked = store.get();
-    let misses = 0;   // "I don't know" answers in a row; after three, Sitara offers a menu of things she does know
+    let misses = Number.isFinite(saved.misses) ? saved.misses : 0;   // "I don't know" answers in a row; after three, Sitara offers a menu of things she does know
+    // The last few questions and answers, sent along so Sitara can follow up without repeating herself
+    const history = Array.isArray(saved.history) ? saved.history : [];
 
     function outOfDust() {
         input.disabled = true;
@@ -62,12 +85,32 @@
         mood('tired', 'out of fairy dust for today ✦');
     }
     if (asked >= LIMIT) outOfDust();
+    // "Did you mean...?" options from Sitara, as buttons under her message; tapping one asks it
+    function offer(questions, remember = true) {
+        if (remember) { suggest = questions; chat.save(); }
+        const row = document.createElement('div');
+        row.className = 'sitara-suggest';
+        row.setAttribute('role', 'group');
+        row.setAttribute('aria-label', 'Did you mean');
+        questions.forEach(text => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = text;
+            b.addEventListener('click', () => ask(text));
+            row.append(b);
+        });
+        log.append(row);
+        log.scrollTop = log.scrollHeight;
+    }
+
     async function ask(question) {
         question = question.trim();
         if (!question || busy || asked >= LIMIT) return;
         busy = true;
         send.disabled = true;
         chips.hidden = true;
+        log.querySelectorAll('.sitara-suggest').forEach(row => row.remove());
+        suggest = [];
         add(question, 'me');
         input.value = '';
 
@@ -84,14 +127,26 @@
             const res = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: question, count: ++asked, misses })
+                body: JSON.stringify({ message: question, count: ++asked, misses, history: history.slice(-3) })
             });
             store.set(asked);
             const data = await res.json().catch(() => ({}));
             dots.remove();
             if (data.reply) {
-                misses = data.unknown ? misses + 1 : 0;
+                if (data.clarify) {
+                    // a clarifying question doesn't cost fairy dust
+                    asked = Math.max(0, asked - 1);
+                    store.set(asked);
+                } else {
+                    misses = data.unknown ? misses + 1 : 0;
+                }
                 add(data.reply, 'bot');
+                if (Array.isArray(data.suggest) && data.suggest.length) offer(data.suggest);
+                if (!data.clarify) {
+                    history.push({ q: question, a: data.reply });
+                    if (history.length > 6) history.shift();
+                }
+                chat.save();
                 mood('helpful', 'your guide to all things Suhani');
             } else {
                 add(data.error || 'Something went sideways. Try again in a moment. ✦', 'bot', 'oops');
@@ -114,6 +169,14 @@
             }
         }
     }
+
+    // Bring back this tab's conversation from earlier pages
+    if (msgs.length) {
+        chips.hidden = true;
+        msgs.forEach(m => add(m.text, m.who, m.extra, false));
+        if (suggest.length) offer(suggest, false);
+    }
+    if (saved.open) open(false);
 
     form.addEventListener('submit', e => { e.preventDefault(); ask(input.value); });
     chips.querySelectorAll('button').forEach(b => b.addEventListener('click', () => ask(b.textContent)));

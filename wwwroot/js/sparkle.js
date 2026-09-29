@@ -18,9 +18,36 @@
     const HOT_X = 13, HOT_Y = 15;   // where the click lands inside the 32x32 sparkle
     let x = 0, y = 0, queued = false, lastTarget = null, drawn = false;
 
+    // The sparkle and glitter live in their own see-through layer. Pop-up cards (showModal) open in the
+    // browser's top layer, above any z-index, so the layer joins that top layer too and steps back in
+    // front every time a card or popover opens. Older browsers without popovers just use the page.
+    const layer = document.createElement('div');
+    layer.className = 'fairy-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    layer.appendChild(pointer);
+    const onTop = 'showPopover' in HTMLElement.prototype;
+    if (onTop) layer.popover = 'manual';
+
+    const raise = () => {
+        if (!onTop || !layer.isConnected) return;
+        try {
+            if (layer.matches(':popover-open')) layer.hidePopover();
+            layer.showPopover();
+        } catch { /* not in the page yet */ }
+    };
+
+    // a card or popover just opened: bring the sparkle back in front of it
+    new MutationObserver(records => {
+        if (records.some(r => r.target !== layer && r.target.tagName === 'DIALOG' && r.target.open)) raise();
+    }).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ['open'] });
+    document.addEventListener('toggle', e => {
+        if (e.target !== layer && e.newState === 'open') raise();
+    }, true);
+
     // only hide the real cursor once both sparkles have loaded, so nobody is ever left without one
     Promise.all([...pointer.querySelectorAll('img')].map(img => img.decode())).then(() => {
-        document.body.appendChild(pointer);
+        document.body.appendChild(layer);
+        raise();
         document.documentElement.classList.add('fairy-cursor');
         drawn = true;
     }).catch(() => { /* keep the plain sparkle cursor images from the CSS */ });
@@ -75,7 +102,7 @@
             `--s:${size}px;--c:${COLORS[Math.floor(Math.random() * COLORS.length)]};` +
             `--dx:${(Math.random() * 2 - 1) * (12 + speed * 8)}px;--dy:${10 + Math.random() * (22 + speed * 10)}px;` +
             `--r:${Math.random() * 180 - 90}deg`;
-        document.body.appendChild(bit);
+        layer.appendChild(bit);
         alive++;
         bit.addEventListener('animationend', () => { bit.remove(); alive--; }, { once: true });
     }

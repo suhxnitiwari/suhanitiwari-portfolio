@@ -96,11 +96,100 @@
         margin-top: 12px;
     }
 
-    /* the why behind the degree: a warm little note before the rankings */
-    .edu-why {
+    /* the story: a big opening line, four numbered beats, then a hand-off to Coursework */
+    .edu-lead {
         max-width: 760px;
-        margin: 64px auto 72px;
-        padding: 34px 40px;
+        margin: 0 auto 56px;
+        font-family: Georgia, serif;
+        font-size: 2em;
+        line-height: 1.3;
+        text-align: center;
+        color: #2A1810;
+    }
+
+    .edu-story {
+        list-style: none;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .edu-beat {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 24px;
+        padding: 40px 0;
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .edu-num {
+        font-family: Georgia, serif;
+        font-size: 2.2em;
+        font-weight: 700;
+        line-height: 1;
+        color: #9E5A63;
+    }
+
+    .edu-beat h2 {
+        margin-bottom: 12px;
+        font-family: Georgia, serif;
+        font-size: 1.8em;
+        line-height: 1.2;
+        color: #2A1810;
+    }
+
+    .edu-beat p {
+        max-width: 680px;
+        font-size: 1.08em;
+        line-height: 1.75;
+        color: #3B2A24;
+    }
+
+    .edu-beat .degree-row {
+        justify-content: flex-start;
+        margin: 24px 0 0;
+    }
+
+    /* the one-line reason under each major and minor */
+    .degree-why {
+        display: block;
+        margin-top: 4px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 0.6em;
+        font-weight: 400;
+        font-style: italic;
+        opacity: 0.9;
+    }
+
+    /* the rankings, as supporting proof rather than the headline */
+    .edu-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        list-style: none;
+        margin: 22px 0 0;
+        padding: 0;
+    }
+
+    .edu-stats li {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        font-size: 0.9em;
+        color: #56634A;
+    }
+
+    .edu-stats b {
+        margin-right: 4px;
+        font-family: Georgia, serif;
+        color: #8A4D57;
+    }
+
+    .edu-next {
+        max-width: 760px;
+        margin: 24px auto 0;
+        padding: 40px 40px 36px;
         border-radius: 24px;
         background: radial-gradient(circle at 100% 0%, #F2CFD7 0, rgba(242, 207, 215, 0) 55%), #FFFBF9;
         border: 1px solid rgba(143, 70, 97, 0.16);
@@ -108,34 +197,47 @@
         text-align: center;
     }
 
-    .edu-why-lead {
-        margin-bottom: 14px;
-        font-family: Georgia, serif;
-        font-style: italic;
-        font-size: 1.6em;
-        color: #8F4661;
-    }
-
-    .edu-why p:not(.edu-why-lead) {
+    .edu-next p {
         font-size: 1.08em;
-        line-height: 1.75;
+        line-height: 1.7;
         color: #3B2A24;
     }
 
-    .edu-why em {
+    .edu-next .edu-next-q {
+        margin-bottom: 8px;
         font-family: Georgia, serif;
-        color: #8F4661;
+        font-size: 1.5em;
+        line-height: 1.35;
+        color: #2A1810;
     }
 
-    @@media (max-width: 700px) {
-        .edu-why {
-            margin: 40px auto 48px;
-            padding: 26px 22px;
-        }
+    .edu-next em { color: #8F4661; }
 
-        .edu-why-lead {
-            font-size: 1.3em;
-        }
+    .edu-next-link {
+        display: inline-block;
+        margin-top: 22px;
+        padding: 12px 26px;
+        border-radius: 999px;
+        background: #8F4661;
+        color: #FFF8F6;
+        font-size: 0.85em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .edu-next-link:hover { background: #7A3F4A; color: #FFF8F6; transform: translateY(2px); }
+    .edu-next-link:focus-visible { outline: 2px solid #8F4661; outline-offset: 3px; }
+
+    @@media (max-width: 700px) {
+        .edu-lead { font-size: 1.5em; margin-bottom: 36px; }
+        .edu-beat { grid-template-columns: 1fr; gap: 8px; padding: 30px 0; }
+        .edu-num { font-size: 1.6em; }
+        .edu-beat h2 { font-size: 1.5em; }
+        .edu-next { padding: 30px 22px; }
+        .edu-next .edu-next-q { font-size: 1.25em; }
     }
 
     /* McCombs by the numbers: vertical tabs on the left, what each one means to me on the right */
@@ -250,28 +352,67 @@
             <p class="school-line">The University of Texas at Austin</p>
         </div>
 
-        <!-- MAJORS & MINORS -->
-        <div class="degree-row">
-            <div class="degree-card majors">
-                <span class="degree-label">Majors</span>
-                <ul>
-                    <li>Management Information Systems</li>
-                    <li>Psychology</li>
-                </ul>
-            </div>
-            <div class="degree-card minors">
-                <span class="degree-label">Minors</span>
-                <ul>
-                    <li>Marketing</li>
-                    <li>Educational Psychology</li>
-                </ul>
-            </div>
-        </div>
+        <!-- THE STORY: how I got here, told in four beats, before any numbers -->
+        <p class="edu-lead">I didn’t set out to study four things. I kept following one question until it needed all four.</p>
 
-        <!-- the why behind the mix, before any numbers -->
-        <div class="edu-why">
-            <p class="edu-why-lead">On paper, my mix looks a little unexpected.</p>
-            <p>MIS so I can build things. Psychology so I understand the people using them. Marketing so I know why they’d care. And educational psychology because I can’t stop wondering how people learn. Together they all circle one question I love: <em>how do you make technology that feels human?</em> UT is where I get to chase it, usually fueled by a vanilla latte from Medici and a long afternoon in the Life Science Library. ✦</p>
+        <ol class="edu-story">
+            <li class="edu-beat">
+                <span class="edu-num">01</span>
+                <div>
+                    <h2>The new kid, ten times over</h2>
+                    <p>I changed schools ten times before I landed in Frisco for high school in 2020. Every new classroom meant learning, fast, how the people there thought, what they cared about and where I fit. Without meaning to, I was already studying people.</p>
+                </div>
+            </li>
+            <li class="edu-beat">
+                <span class="edu-num">02</span>
+                <div>
+                    <h2>Then I started building</h2>
+                    <p>I started Girls Who Code chapters at two middle schools and grew them to 240+ girls, wrote and illustrated a children’s book about women engineers, and taught K–6 campers at Camp Invention. Somewhere in there it clicked: technology only matters if people want to use it, and understanding people only matters if you can build something for them.</p>
+                </div>
+            </li>
+            <li class="edu-beat">
+                <span class="edu-num">03</span>
+                <div>
+                    <h2>So I stopped choosing</h2>
+                    <p>Instead of picking between the builder and the people-person, I built a degree that needs both.</p>
+                    <div class="degree-row">
+                        <div class="degree-card majors">
+                            <span class="degree-label">Majors</span>
+                            <ul>
+                                <li>Management Information Systems<span class="degree-why">so I can build things</span></li>
+                                <li>Psychology<span class="degree-why">so I understand the people using them</span></li>
+                            </ul>
+                        </div>
+                        <div class="degree-card minors">
+                            <span class="degree-label">Minors</span>
+                            <ul>
+                                <li>Marketing<span class="degree-why">so I know why they’d care</span></li>
+                                <li>Educational Psychology<span class="degree-why">because I can’t stop wondering how people learn</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="edu-beat">
+                <span class="edu-num">04</span>
+                <div>
+                    <h2>Why McCombs</h2>
+                    <p>If you want to learn to build technology for people, you go where it’s taught best. My major is ranked fourth in the country, from the same department behind the nation’s #1 graduate Information Systems program, with a top-five marketing program next door. The rankings got me in the door. The people, the professors who know your name and the long afternoons in the Life Science Library with a vanilla latte from Medici are why I stay. ✦</p>
+                    <ul class="edu-stats" aria-label="McCombs rankings, U.S. News &amp; World Report">
+                        <li><b>#4</b> MIS, undergrad</li>
+                        <li><b>#1</b> Information Systems, grad</li>
+                        <li><b>#5</b> Marketing, undergrad</li>
+                        <li><b>#6</b> Business school in the US</li>
+                    </ul>
+                </div>
+            </li>
+        </ol>
+
+        <!-- hand-off: ends on the question the Coursework intro picks up -->
+        <div class="edu-next">
+            <p class="edu-next-q">All four circle one question: <em>how do you make technology that feels human?</em></p>
+            <p>That question ended up choosing my classes for me.</p>
+            <a class="edu-next-link" href="/home/pursue#coursework">See my coursework <span aria-hidden="true">↓</span></a>
         </div>
 
         <!-- McCOMBS RANKINGS (U.S. News): hidden for now, remove "hidden" to bring it back -->
@@ -282,7 +423,7 @@
                 var ranks = new (string Num, string School, string Text, string Title, string Note)[]
                 {
                     ("#1", "Undergraduate", "Business School in Texas", "The best business school in the state I’ve called home since 2020.",
-                        "I moved to Frisco in middle school and have been a Texan ever since, so getting to study at the best business school in the state feels like a very good plot twist for the girl who changed schools ten times."),
+                        "I moved to Frisco for high school and have been a Texan ever since, so getting to study at the best business school in the state feels like a very good plot twist for the girl who changed schools ten times."),
                     ("#1", "Graduate program", "in Information Systems", "My major comes from a department at the very top of its field.",
                         "My MIS classes come out of the same McCombs department behind the country’s #1 graduate Information Systems program. It shows in how the classes are built: less memorizing, more <em>go build the real thing</em>, like RideFlow and the ride share database."),
                     ("#4", "Undergraduate", "in Management Information Systems", "My major, fourth in the country.",

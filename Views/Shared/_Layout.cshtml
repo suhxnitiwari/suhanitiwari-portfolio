@@ -465,16 +465,17 @@
         var currentPage = ViewContext.RouteData.Values["action"]?.ToString();
         string ActiveIf(string page) => currentPage == page ? "active" : "";
 
-        // Pursue, in story order: in the classroom (education, coursework, awards), then beyond it.
+        // Pursue, in story order: why I study what I do, what I've learned, what I've done with it,
+        // how I work with people, and finally the recognition that backs it all up.
         // The Pursue dropdown reads from this list.
         // Each item jumps to its section on the one long Pursue page.
         var pursue = new (string Page, string Url, string Name)[]
         {
             ("Education", "/home/pursue#education", "Education"),
             ("Coursework", "/home/pursue#coursework", "Coursework"),
-            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
             ("BeyondTheClassroom", "/home/pursue#beyond", "Beyond the Classroom"),
-            ("HowIWork", "/home/pursue#how-i-work", "How I Work")
+            ("HowIWork", "/home/pursue#how-i-work", "How I Work"),
+            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards")
         };
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
         var onPursue = currentPage == "Pursue" || pursueIndex >= 0;

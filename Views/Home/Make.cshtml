@@ -65,6 +65,30 @@
         font-size: 1.05em;
     }
 
+    /* Baking intro: a small title, the italic subtitle, then one paragraph above the cakes and treats */
+    .bake-intro {
+        max-width: 720px;
+        margin: -4px 0 24px;
+    }
+
+    .bake-intro-title {
+        margin: 0 0 12px;
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .bake-intro .bake-intro-sub {
+        margin: 0 0 10px;
+    }
+
+    .bake-intro-text {
+        margin: 0;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
     /* leave room for the sticky menu when jumping to #art / #writing / #baking */
     #art, #writing, #baking, #cooking, #traveling {
         scroll-margin-top: 90px;
@@ -192,8 +216,8 @@
                 "Italian chocolate + gelato. Get the gelato!! There are a few NYC locations, but the Bleecker Street one is perfect if you’re already wandering around the West Village."),
             new TripSpot("🥙", "Shuka", "Mediterranean, SoHo",
                 "Mediterranean in SoHo. Super cute, amazing for lunch/brunch/dinner, and very shareable. Get a bunch of dips + pita + mezze."),
-            new TripSpot("🇵🇸", "Ayat", "Palestinian food",
-                "Palestinian food!! Fresh pita, hummus, muhammara, falafel, shawarma, etc. The interiors are also really pretty."),
+            new TripSpot("🫒", "Ayah", "Mediterranean",
+                "Mediterranean food!! Fresh pita, hummus, muhammara, falafel, shawarma, etc. The interiors are also really pretty."),
             new TripSpot("🎨", "The Met", "Museum",
                 "THE museum to do in New York. It is absolutely massive, so don’t try to see everything. Pick a few sections you actually care about and wander."),
             new TripSpot("🇮🇳", "Musaafer", "Upscale Indian",
@@ -226,9 +250,9 @@
     // Cakes I've made: photos only, shown at the start of the Baking row and opened large like the art
     var cakes = new[]
     {
-        new Artwork("Lego Cake", "", "/images/baking/cake-lego.jpg"),
-        new Artwork("Solar System Cake", "", "/images/baking/cake-solar-system.jpg"),
-        new Artwork("Candy Crush Cake", "", "/images/baking/cake-candy-crush.jpg")
+        new Artwork("Lego Cake", "For my neighbor's son, built brick by candy brick.", "/images/baking/cake-lego.jpg"),
+        new Artwork("Solar System Cake", "For my friend's little brother, who is obsessed with space the way so many little boys are.", "/images/baking/cake-solar-system.jpg"),
+        new Artwork("Candy Crush Cake", "For my mom's birthday, inspired by her favorite game. Candy on the outside, rainbow on the inside.", "/images/baking/cake-candy-crush.jpg")
     };
 
     var bakes = new[]
@@ -350,6 +374,11 @@
             <div class="shelf" id="@id">
                 <div class="shelf-head">
                     <h3 class="shelf-title">@title</h3>
+                </div>
+                <div class="bake-intro">
+                    <h4 class="bake-intro-title">Where Code Meets Cake</h4>
+                    <p class="shelf-caption bake-intro-sub">Half science, half creative project, and always made for someone.</p>
+                    <p class="bake-intro-text">Baking feels a lot like coding: it’s technical and creative at once. Get the ratio of flour to fat to leavening wrong and the whole thing collapses, the same way one missing semicolon breaks a program. But once the structure is solid, the creative part is wide open. On a normal week that means banana bread, brownies, and far too many chocolate chip muffins. My favorite bakes, though, are made for someone: a Candy Crush cake for my mom’s birthday (her favorite game), a Lego cake for my neighbor’s son, and a Solar System cake for my friend’s space-obsessed little brother. Code runs on a screen, but a cake gets cut, shared, and eaten around a table.</p>
                 </div>
                 <div class="bake-split">
                     <div class="cake-viewer" aria-roledescription="carousel" aria-label="Cake gallery">
