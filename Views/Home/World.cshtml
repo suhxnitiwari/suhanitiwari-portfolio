@@ -565,6 +565,33 @@
         color: #56634A;
     }
 
+    /* chapter buttons on the map: jump between the parts of my life instead of one zoomed-out world */
+    .map-chapters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+        max-width: 320px;
+    }
+
+    .map-chapters button {
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid #EBD5D0;
+        background: rgba(250, 241, 239, 0.94);
+        box-shadow: 0 4px 14px rgba(42, 24, 16, 0.12);
+        font: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        color: #2A1810;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .map-chapters button:hover { background: #FFF8F6; }
+    .map-chapters button[aria-pressed="true"] { background: #8A4D57; border-color: #8A4D57; color: #FFF8F6; }
+    .map-chapters button:focus-visible { outline: 2px solid #2A1810; outline-offset: 2px; }
+
     .legend-dot {
         display: inline-block;
         margin-right: 7px;
@@ -1790,6 +1817,7 @@
 
         const select = async () => {
             showInPanel(marker, popupHTML(loc));
+            flyToPlace(loc.coords, loc.region);
             // Load the city's photo from Wikipedia the first time it's picked
             if (loc.photo !== undefined) return;
             loc.photo = null;
@@ -1837,7 +1865,7 @@
                 className: 'visit-label',
                 interactive: true
             });
-        const select = () => showInPanel(marker, `${place.photo ? `<img class="popup-photo" src="${place.photo}" style="object-position: ${place.photoPosition}" alt="My visit to ${place.name}">` : ''}<div class="popup-content"><div class="popup-title">${place.name}</div>${place.caption ? `<p class="popup-desc">${place.caption}</p>` : ''}<a href="/home/make#traveling">My favorite spots →</a></div>`);
+        const select = () => (flyToPlace(place.coords, 'United States'), showInPanel(marker, `${place.photo ? `<img class="popup-photo" src="${place.photo}" style="object-position: ${place.photoPosition}" alt="My visit to ${place.name}">` : ''}<div class="popup-content"><div class="popup-title">${place.name}</div>${place.caption ? `<p class="popup-desc">${place.caption}</p>` : ''}<a href="/home/make#traveling">My favorite spots →</a></div>`));
         marker.on('click', select);
         marker.getTooltip().on('click', select);
     });
@@ -1855,15 +1883,65 @@
     };
     key.addTo(map);
 
-    // Fit map to show all markers
-    const group = new L.featureGroup(locations.map(loc => L.marker(loc.coords)));
-    // Never zoom out further than the world filling the whole map box
+    // Chapters: the map opens zoomed in on one part of my life, and these buttons move between them.
+    // California and Texas share one chapter, along with the US cities I've visited.
+    const chapterOf = region => region === 'California' || region === 'Texas' ? 'United States' : region;
+    const chapters = [];
+    locations.forEach(loc => {
+        const name = chapterOf(loc.region);
+        let chapter = chapters.find(c => c.name === name);
+        if (!chapter) chapters.push(chapter = { name, points: [] });
+        chapter.points.push(loc.coords);
+    });
+    chapters.find(c => c.name === 'United States')?.points.push(...visited.map(v => v.coords));
+    chapters.push({ name: 'Whole journey', points: coordinates });
+
+    // Room around a view so no pin or city name is cut off: the far-left and far-right labels
+    // (Cupertino, Singapore) sit beside their pins, so the sides get extra space
+    const EDGE = L.point(130, 60);
+
+    // Never zoom out further than the world filling the map box, unless the whole journey needs it
     function limitZoomOut() {
-        map.setMinZoom(map.getBoundsZoom(worldBounds, true));
+        const journey = L.latLngBounds(coordinates);
+        map.setMinZoom(Math.min(map.getBoundsZoom(worldBounds, true), map.getBoundsZoom(journey, false, EDGE.multiplyBy(2))));
     }
     limitZoomOut();
     map.on('resize', limitZoomOut);
-    map.fitBounds(group.getBounds().pad(0.1));
+
+    let chapterButtons = [];
+    function showChapter(name, animate = true) {
+        const chapter = chapters.find(c => c.name === name);
+        const bounds = L.latLngBounds(chapter.points);
+        // a one-place chapter (Singapore) gets a city-level view instead of an endless zoom
+        const options = { padding: [EDGE.x, EDGE.y], maxZoom: chapter.points.length > 1 ? 7 : 9, animate, duration: 1.1 };
+        animate ? map.flyToBounds(bounds, options) : map.fitBounds(bounds, options);
+        markChapter(name);
+    }
+    function markChapter(name) {
+        chapterButtons.forEach(b => b.setAttribute('aria-pressed', b.dataset.chapter === name));
+    }
+    // clicking a place zooms in to it (never back out) and lights up its chapter
+    function flyToPlace(coords, region) {
+        map.flyTo(coords, Math.max(map.getZoom(), 6), { duration: 0.9 });
+        markChapter(chapterOf(region));
+    }
+
+    const chapterControl = L.control({ position: 'topright' });
+    chapterControl.onAdd = () => {
+        const div = L.DomUtil.create('div', 'map-chapters');
+        div.setAttribute('role', 'group');
+        div.setAttribute('aria-label', 'Show part of the map');
+        div.innerHTML = chapters.map(c => `<button type="button" data-chapter="${c.name}" aria-pressed="false">${c.name}</button>`).join('');
+        chapterButtons = [...div.querySelectorAll('button')];
+        chapterButtons.forEach(b => b.addEventListener('click', () => showChapter(b.dataset.chapter)));
+        L.DomEvent.disableClickPropagation(div);
+        L.DomEvent.disableScrollPropagation(div);
+        return div;
+    };
+    chapterControl.addTo(map);
+
+    // open where the story starts
+    showChapter(chapters[0].name, false);
 
     // The map's box changes size with the two-column layout (window resizes, stacking on
     // narrow screens), so tell Leaflet to re-measure whenever it does
