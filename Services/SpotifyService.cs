@@ -240,6 +240,7 @@ namespace Tiwari_Suhani_HW3.Services
                         artists.Add(new TopArtist
                         {
                             Position = position++,
+                            Id = artist.TryGetProperty("id", out var id) ? id.GetString() : "",
                             Name = artist.GetProperty("name").GetString(),
                             Image = imageUrl,
                             SpotifyUrl = SpotifyLink(artist),
@@ -250,6 +251,46 @@ namespace Tiwari_Suhani_HW3.Services
             }
 
             return artists;
+        }
+
+        // An artist's most popular songs, for artists none of whose songs are in my top 50.
+        // Spotify blocks its "artist top tracks" call for apps like mine, so this searches their songs
+        // instead (search results come back roughly by popularity) and keeps the ones that are really theirs.
+        public async Task<List<TopTrack>> GetArtistTopTracksAsync(string accessToken, string artistId, string artistName, int limit = 5)
+        {
+            var tracks = new List<TopTrack>();
+            var query = Uri.EscapeDataString($"artist:\"{artistName}\"");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}/search?q={query}&type=track&market=US&limit=10");
+            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode) return tracks;
+
+            var json = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync());
+            if (json.TryGetProperty("tracks", out var found) && found.TryGetProperty("items", out var items))
+            {
+                int position = 1;
+                var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var track in items.EnumerateArray())
+                {
+                    if (tracks.Count >= limit) break;
+                    // only songs this artist is on, and each song once (skip repeats from other albums)
+                    var theirs = track.TryGetProperty("artists", out var who)
+                        && who.EnumerateArray().Any(a => a.TryGetProperty("id", out var aid) && aid.GetString() == artistId);
+                    var name = track.GetProperty("name").GetString() ?? "";
+                    if (!theirs || !seen.Add(name)) continue;
+                    var hasAlbum = track.TryGetProperty("album", out var album);
+                    tracks.Add(new TopTrack
+                    {
+                        Position = position++,
+                        Name = track.GetProperty("name").GetString(),
+                        Artist = FirstName(track, "artists"),
+                        AlbumArt = hasAlbum ? FirstImageUrl(album) : "",
+                        SpotifyUrl = SpotifyLink(track)
+                    });
+                }
+            }
+            return tracks;
         }
 
         // The last few songs I played (Spotify gives up to 50), newest first, for the listening clock
@@ -799,6 +840,7 @@ namespace Tiwari_Suhani_HW3.Services
     public class TopArtist
     {
         public int Position { get; set; }
+        public string? Id { get; set; } = "";
         public string? Name { get; set; } = "";
         public string? Image { get; set; } = "";
         public string? SpotifyUrl { get; set; } = "";

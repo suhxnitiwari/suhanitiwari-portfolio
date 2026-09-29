@@ -133,6 +133,15 @@ namespace Tiwari_Suhani_HW3.Controllers
             return await CachedSpotifyJson($"top-artists:{limit}:{timeRange}", async token => await _spotifyService.GetTopArtistsAsync(token, limit, timeRange));
         }
 
+        // An artist's five most popular songs, found through Spotify search (ids are 22 letters and numbers)
+        [HttpGet]
+        public async Task<IActionResult> GetArtistTopTracks(string id, string name)
+        {
+            if (string.IsNullOrEmpty(id) || id.Length > 40 || !id.All(char.IsLetterOrDigit)) return BadRequest();
+            if (string.IsNullOrWhiteSpace(name) || name.Length > 100) return BadRequest();
+            return await CachedSpotifyJson($"artist-top-tracks:{id}", async token => await _spotifyService.GetArtistTopTracksAsync(token, id, name), TimeSpan.FromHours(12));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetTopGenres(int limit = 5, string timeRange = "medium_term")
         {

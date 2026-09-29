@@ -647,72 +647,6 @@
         padding: 60px 0;
     }
 
-    .dna-chart {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-    }
-
-    .dna-chart svg {
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-    }
-
-    .dna-slice {
-        cursor: var(--cursor-hot, pointer);
-        outline: none;
-        transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.25s ease;
-    }
-
-    /* When a genre is hovered or selected: it moves out a little, the others fade */
-    .dna-chart.focus .dna-slice.active {
-        transform: translate(var(--dx), var(--dy));
-    }
-
-    .dna-chart.focus .dna-slice:not(.active) {
-        opacity: 0.3;
-    }
-
-    .dna-center {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        text-align: center;
-    }
-
-    .dna-center-pct {
-        font-size: clamp(52px, 8vw, 84px);
-        font-weight: 700;
-        line-height: 1;
-        letter-spacing: -1px;
-        color: #2A1810;
-    }
-
-    .dna-center-name {
-        margin-top: 10px;
-        max-width: 55%;
-        font-size: 0.95em;
-        font-weight: 600;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #56634A;
-    }
-
-    .dna-center.swap .dna-center-pct,
-    .dna-center.swap .dna-center-name {
-        animation: dnaSwap 0.3s ease;
-    }
-
-    @@keyframes dnaSwap {
-        from { opacity: 0; transform: translateY(4px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
     .dna-legend {
         list-style: none;
         margin: 0;
@@ -795,14 +729,8 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .dna-slice,
         .dna-key {
             transition: none;
-        }
-
-        .dna-center.swap .dna-center-pct,
-        .dna-center.swap .dna-center-name {
-            animation: none;
         }
     }
 
@@ -1081,6 +1009,17 @@
         min-width: 0;
     }
 
+    /* the universe row: the artist card on the left, a wide rectangle of bubbles on the right */
+    .music-duo.universe-duo {
+        grid-template-columns: minmax(280px, 1fr) minmax(0, 2.1fr);
+    }
+
+    .universe-duo .artist-card { order: -1; }
+
+    .universe-duo .universe-card .universe {
+        aspect-ratio: 16 / 10;
+    }
+
     /* the artist card: what used to pop up inside the universe, now its own card beside it */
     .artist-card .universe-panel {
         position: static;
@@ -1159,26 +1098,28 @@
         min-height: 0;
     }
 
-    /* Listening DNA in a narrow pin: the donut sits above its legend */
+    /* Listening DNA: the genre list, which picks the genre shown in the card beside it */
     .dna-card .dna-section {
         grid-template-columns: minmax(0, 1fr) !important;
         justify-items: center;
         gap: 18px !important;
     }
 
-    .dna-card .dna-chart {
-        width: min(220px, 70%) !important;
-    }
-
-    .dna-card .dna-section > :not(.dna-chart) {
+    .dna-card .dna-section > * {
         width: 100%;
     }
 
     @@media (max-width: 900px) {
         .music-duo,
-        .music-duo.play-duo {
+        .music-duo.play-duo,
+        .music-duo.universe-duo {
             grid-template-columns: minmax(0, 1fr);
         }
+
+        .universe-duo .artist-card { order: 0; }
+
+        /* stacked, the universe goes back to a square */
+        .universe-duo .universe-card .universe { aspect-ratio: 1 / 1; }
     }
 
     .music-card {
@@ -1237,22 +1178,8 @@
         margin: 0;
     }
 
-    .music-card .dna-chart {
-        width: 100%;
-        margin-top: 4px;
-    }
 
-    .music-card .dna-center-pct {
-        font-size: 22px;
-        letter-spacing: 0;
-    }
 
-    .music-card .dna-center-name {
-        margin-top: 4px;
-        max-width: 70%;
-        font-size: 0.6rem;
-        letter-spacing: 1px;
-    }
 
     .music-card .dna-caption {
         margin: 0 0 6px;
@@ -1523,8 +1450,7 @@
 
     .clock-num {
         font-family: Georgia, serif;
-        font-size: 11px;
-        letter-spacing: 0.04em;
+        font-size: 13px;
         fill: #5A3E36;
         text-anchor: middle;
         dominant-baseline: central;
@@ -1540,26 +1466,30 @@
     .clock-pin { fill: #2A1810; }
     .clock-pin-dot { fill: #FFFBFA; }
 
-    .clock-legend {
-        display: flex;
-        gap: 16px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        font-size: 0.75rem;
-        color: #7A6A64;
+    /* AM | PM: one half of the day on the clock at a time */
+    .clock-switch {
+        display: inline-flex;
+        padding: 3px;
+        border-radius: 999px;
+        background: #F5E7E3;
     }
 
-    .clock-legend li::before {
-        content: "";
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin-right: 6px;
-        border-radius: 3px;
-        vertical-align: -1px;
-        background: var(--c);
+    .clock-switch button {
+        padding: 5px 18px;
+        border: none;
+        border-radius: 999px;
+        background: none;
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #7A6A64;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
     }
+
+    .clock-switch button[aria-pressed="true"] { background: #8F4661; color: #FFF8F6; }
+    .clock-switch button:focus-visible { outline: 2px solid #2A1810; outline-offset: 2px; }
 
     .clock-hint {
         margin: -4px 0 0;
@@ -1631,14 +1561,13 @@
         .music-card-note { margin-top: 18px; font-size: 1.05rem; }
 
         .music-card .dna-section { grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: center; }
-        .music-card .dna-center-pct { font-size: 38px; }
-        .music-card .dna-center-name { font-size: 0.72rem; }
+
+
         .music-card .dna-caption { font-size: 1rem; }
         .music-card .dna-legend li .dna-key { font-size: 1rem; }
         .music-card .dna-note { font-size: 0.8rem; }
 
         .clock-face { max-width: 340px; }
-        .clock-legend { font-size: 0.85rem; }
 
     }
 
@@ -1805,7 +1734,7 @@
 
     function savedSpotify() {
         try {
-            const saved = JSON.parse(sessionStorage.getItem('spotifyPrefetch.v2'));
+            const saved = JSON.parse(sessionStorage.getItem('spotifyPrefetch.v3'));
             return saved && Date.now() - saved.at < 30 * 60 * 1000 ? saved : { at: Date.now() };
         } catch { return { at: Date.now() }; }
     }
@@ -1821,7 +1750,7 @@
             try {
                 const store = savedSpotify();
                 store[name] = data;
-                sessionStorage.setItem('spotifyPrefetch.v2', JSON.stringify(store));
+                sessionStorage.setItem('spotifyPrefetch.v3', JSON.stringify(store));
             } catch { }
         }
         return Array.isArray(data) ? data : [];
@@ -1960,8 +1889,9 @@
         if (!max) { chart.innerHTML = '<p class="music-loading">No recent plays to show yet.</p>'; return; }
         const peak = counts.indexOf(max);
 
-        // a clock face in a 240 x 240 box: cones reach from the center (a small hub) out to 84 at the busiest hour
-        const C = 120, HUB = 12, FULL = 84, HALF = 13;   // HALF = degrees each side of an hour's line
+        // A plain 12-hour clock with an AM | PM switch: one half of the day at a time, one wedge per hour.
+        // Wedges reach from the center (a small hub) out to 84 at my busiest hour of the whole day.
+        const C = 120, HUB = 12, FULL = 84, HALF = 14;   // HALF = degrees each side of an hour's line
         const pt = (deg, r) => {
             const a = (deg - 90) * Math.PI / 180;
             return `${(C + r * Math.cos(a)).toFixed(1)} ${(C + r * Math.sin(a)).toFixed(1)}`;
@@ -1969,38 +1899,59 @@
         const wedge = (from, to, r) => `M ${pt(from, HUB)} L ${pt(from, r)} A ${r} ${r} 0 0 1 ${pt(to, r)} L ${pt(to, HUB)} A ${HUB} ${HUB} 0 0 0 ${pt(from, HUB)} Z`;
         const hourName = h => `${((h + 11) % 12) + 1} ${h < 12 ? 'AM' : 'PM'}`;
         const plural = n => `${n} play${n === 1 ? '' : 's'}`;
+        const reach = n => HUB + 4 + (FULL - HUB - 4) * n / max;
 
-        let svg = `<circle class="clock-rim" cx="${C}" cy="${C}" r="116" />`;
+        let rim = `<circle class="clock-rim" cx="${C}" cy="${C}" r="116" />`;
         for (let m = 0; m < 60; m++) {
             const major = m % 5 === 0;
-            svg += `<line class="clock-tick${major ? ' major' : ''}" x1="${pt(m * 6, major ? 107 : 110).split(' ')[0]}" y1="${pt(m * 6, major ? 107 : 110).split(' ')[1]}" x2="${pt(m * 6, 114).split(' ')[0]}" y2="${pt(m * 6, 114).split(' ')[1]}" />`;
+            const [x1, y1] = pt(m * 6, major ? 107 : 110).split(' '), [x2, y2] = pt(m * 6, 114).split(' ');
+            rim += `<line class="clock-tick${major ? ' major' : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
         }
         for (let d = 0; d < 12; d++) {
-            const angle = d * 30;               // d = 0 is 12 o'clock
-            const reach = n => HUB + 4 + (FULL - HUB - 4) * n / max;
-            // each hour line is two clickable slots: the AM half on the left, the PM half on the right
-            [[d, angle - HALF, angle, 'am'], [d + 12, angle, angle + HALF, 'pm']].forEach(([h, from, to, half]) => {
-                svg += `<g class="clock-slot" data-hour="${h}" tabindex="0" role="button" aria-label="${hourName(h)}: ${plural(counts[h])}">
-                    <path class="clock-track" d="${wedge(from, to, FULL)}" />
-                    ${counts[h] ? `<path class="clock-cone ${half}" d="${wedge(from, to, reach(counts[h]))}" />` : ''}
-                </g>`;
-            });
-            const [x, y] = pt(angle, 97).split(' ');
-            // Roman numerals, like a real clock face, so the hour marks don't read as play counts
-            const ROMAN = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
-            svg += `<text class="clock-num" data-num="${d}" x="${x}" y="${y}">${ROMAN[d]}</text>`;
+            const [x, y] = pt(d * 30, 97).split(' ');
+            rim += `<text class="clock-num" data-num="${d}" x="${x}" y="${y}">${d || 12}</text>`;
         }
-        svg += `<line class="clock-hand" x1="${C}" y1="${C}" x2="${C}" y2="${C - 58}" />`;
-        svg += `<circle class="clock-pin" cx="${C}" cy="${C}" r="6" /><circle class="clock-pin-dot" cx="${C}" cy="${C}" r="2" />`;
 
         chart.innerHTML = `
-            <svg class="clock-face" viewBox="0 0 240 240">${svg}</svg>
-            <ul class="clock-legend">
-                <li style="--c: #D9A3AD">AM, left of each numeral</li>
-                <li style="--c: #8F4661">PM, right of each numeral</li>
-            </ul>
+            <div class="clock-switch" role="group" aria-label="Morning or afternoon and night">
+                <button type="button" data-half="am">AM</button>
+                <button type="button" data-half="pm">PM</button>
+            </div>
+            <svg class="clock-face" viewBox="0 0 240 240">
+                ${rim}
+                <g class="clock-hours"></g>
+                <line class="clock-hand" x1="${C}" y1="${C}" x2="${C}" y2="${C - 58}" />
+                <circle class="clock-pin" cx="${C}" cy="${C}" r="6" /><circle class="clock-pin-dot" cx="${C}" cy="${C}" r="2" />
+            </svg>
             <p class="clock-hint">tap an hour to see what I played</p>
             <div class="clock-detail" aria-live="polite"></div>`;
+
+        // draws the twelve hours of one half of the day
+        let half = peak < 12 ? 'am' : 'pm';
+        const drawHalf = () => {
+            const base = half === 'pm' ? 12 : 0;
+            chart.querySelector('.clock-hours').innerHTML = Array.from({ length: 12 }, (_, d) => {
+                const h = base + d, angle = d * 30;
+                return `<g class="clock-slot" data-hour="${h}" tabindex="0" role="button" aria-label="${hourName(h)}: ${plural(counts[h])}">
+                    <path class="clock-track" d="${wedge(angle - HALF, angle + HALF, FULL)}" />
+                    ${counts[h] ? `<path class="clock-cone ${half}" d="${wedge(angle - HALF, angle + HALF, reach(counts[h]))}" />` : ''}
+                </g>`;
+            }).join('');
+            chart.querySelectorAll('.clock-switch button').forEach(b => b.setAttribute('aria-pressed', b.dataset.half === half));
+            chart.querySelectorAll('.clock-slot').forEach(slot => {
+                const h = Number(slot.dataset.hour);
+                slot.addEventListener('click', () => select(h));
+                slot.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(h); }
+                    // arrow keys walk the clock an hour at a time, crossing into the other half of the day
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        select((h + (e.key === 'ArrowRight' ? 1 : 23)) % 24);
+                        chart.querySelector(`.clock-slot[data-hour="${selectedHour}"]`)?.focus();
+                    }
+                });
+            });
+        };
 
         // clicking an hour: swing the hand there and show what I played in that hour
         const byHour = Array.from({ length: 24 }, () => []);
@@ -2011,7 +1962,11 @@
         const detail = chart.querySelector('.clock-detail');
         let turned = (peak % 12) * 30;
 
+        let selectedHour = peak;
         const select = h => {
+            selectedHour = h;
+            const wanted = h < 12 ? 'am' : 'pm';
+            if (wanted !== half) { half = wanted; drawHalf(); }
             chart.querySelectorAll('.clock-slot').forEach(slot => {
                 const on = Number(slot.dataset.hour) === h;
                 slot.classList.toggle('selected', on);
@@ -2054,20 +2009,13 @@
                 : `<p class="clock-detail-note">Nothing at ${hourName(h)} in my last ${total} plays. ${h >= 1 && h < 8 ? 'Asleep, probably.' : 'Busy doing other things.'}</p>`}`;
         };
 
-        chart.querySelectorAll('.clock-slot').forEach(slot => {
-            const h = Number(slot.dataset.hour);
-            slot.addEventListener('click', () => select(h));
-            slot.addEventListener('keydown', e => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(h); }
-                // arrow keys walk the clock an hour at a time
-                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    const next = (h + (e.key === 'ArrowRight' ? 1 : 23)) % 24;
-                    chart.querySelector(`.clock-slot[data-hour="${next}"]`).focus();
-                    select(next);
-                }
-            });
-        });
+        // the AM | PM switch: shows that half of the day and picks its busiest hour
+        chart.querySelectorAll('.clock-switch button').forEach(b => b.addEventListener('click', () => {
+            const base = b.dataset.half === 'pm' ? 12 : 0;
+            const part = counts.slice(base, base + 12);
+            select(base + part.indexOf(Math.max(...part)));
+        }));
+        drawHalf();
         select(peak);
 
         const peakText = hourName(peak);
@@ -2109,7 +2057,7 @@
     const GAP = 6;                    // space between bubbles (≈6–10px on screen at the default zoom)
 
     const uv = {
-        artists: [], songs: [], nodes: [], month: [], allTime: [], info: {},
+        artists: [], songs: [], nodes: [], month: [], allTime: [], info: {}, popular: {},
         k: 1, tx: 0, ty: 0, homeK: 1, homeTx: 0, homeTy: 0, minK: 0.3, maxK: 3,
         bounds: null, selected: -1, hovered: -1, width: 0, anim: 0, raf: 0
     };
@@ -2131,7 +2079,8 @@
     // Then every bubble is pulled toward the center over and over while collisions push
     // overlapping bubbles apart, so the cluster settles dense and roughly round, with the
     // small bubbles falling into the gaps between the big ones.
-    function packUniverse(radii) {
+    // aspect = the box's width / height: in a wide box the cluster spreads sideways to fill it
+    function packUniverse(radii, aspect = 1) {
         const random = seededRandom(20060306);
         const deg = d => d * Math.PI / 180;
         // Screen directions (y points down): lower-right, lower-left, upper-right, upper-left
@@ -2152,7 +2101,7 @@
                 distance = radii[0] + radii[1] * 2 + r;
             }
             angle += (random() - 0.5) * deg(20);                // a little irregularity
-            return { x: Math.cos(angle) * distance, y: Math.sin(angle) * distance, r };
+            return { x: Math.cos(angle) * distance * aspect, y: Math.sin(angle) * distance, r };
         });
 
         const separate = () => {
@@ -2178,7 +2127,7 @@
             const gravity = 0.06 * (1 - step / 400) + 0.01;
             nodes.forEach((n, i) => {
                 if (i === 0) return;
-                n.x -= n.x * gravity;
+                n.x -= n.x * gravity / (aspect * aspect);   // pulled in less from the sides of a wide box
                 n.y -= n.y * gravity;
             });
             for (let pass = 0; pass < 3; pass++) separate();
@@ -2202,7 +2151,7 @@
         const height = view.clientHeight;
         uv.width = width;
 
-        const circles = packUniverse(uv.artists.map((_, i) => RANK_DIAMETERS[i] / 2));
+        const circles = packUniverse(uv.artists.map((_, i) => RANK_DIAMETERS[i] / 2), Math.max(1, width / height));
         uv.bounds = {
             minX: Math.min(...circles.map(c => c.x - c.r)), maxX: Math.max(...circles.map(c => c.x + c.r)),
             minY: Math.min(...circles.map(c => c.y - c.r)), maxY: Math.max(...circles.map(c => c.y + c.r))
@@ -2242,19 +2191,20 @@
     // in that any of the top 5 gets cut off. Some of the smallest artists sit past the edges.
     function computeHomeView(width, height) {
         const b = uv.bounds;
+        // fit the width and height separately, so a wide box is filled edge to edge
+        const fit = Math.min(width / (b.maxX - b.minX), height / (b.maxY - b.minY));
         const size = Math.min(width, height);
-        const span = Math.max(b.maxX - b.minX, b.maxY - b.minY);
         const top = uv.nodes.slice(0, 5);
         const t = {
             minX: Math.min(...top.map(n => n.x - n.r)), maxX: Math.max(...top.map(n => n.x + n.r)),
             minY: Math.min(...top.map(n => n.y - n.r)), maxY: Math.max(...top.map(n => n.y + n.r))
         };
         const margin = size * 0.02;
-        const fitTop5 = (size - margin * 2) / Math.max(t.maxX - t.minX, t.maxY - t.minY);
+        const fitTop5 = Math.min((width - margin * 2) / (t.maxX - t.minX), (height - margin * 2) / (t.maxY - t.minY));
 
-        const k = Math.min(size / (span * 0.88), fitTop5);
+        const k = Math.min(fit / 0.88, fitTop5);
         uv.homeK = k;
-        uv.minK = (size / span) * 0.8;      // zoomed out: whole universe with room around it
+        uv.minK = fit * 0.8;      // zoomed out: whole universe with room around it
         uv.maxK = k * 3.2;
 
         // Center on the whole cluster, then nudge just enough to keep the top 5 inside
@@ -2429,13 +2379,35 @@
                 <p class="up-label">What I play most</p>
                 <ol class="up-songs">
                     ${songs.slice(0, 5).map(song => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>#${song.position}</em></a></li>`).join('')}
-                </ol>` : ''}
+                </ol>` : `<div data-slot="popular"></div>`}
             <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open their Spotify profile ↗</a>
             <p class="up-hint">${uv.selected === index ? 'Pick another bubble, or click empty space to go back to my #1.' : 'Pick any bubble in the universe to meet them.'}</p>`;
         panel.classList.remove('swap');
         void panel.offsetWidth;   // restart the fade
         panel.classList.add('swap');
         fillArtistInfo(a.name, panel);
+        if (!songs.length) fillPopularSongs(a, panel);
+    }
+
+    // None of their songs are in my top 50: show their five most popular songs on Spotify instead
+    async function fillPopularSongs(a, panel) {
+        if (!a.id) return;
+        let songs = uv.popular[a.id];
+        if (!songs) {
+            try {
+                const res = await fetch(`/spotify/GetArtistTopTracks?id=${encodeURIComponent(a.id)}&name=${encodeURIComponent(a.name)}`);
+                songs = res.ok ? await res.json() : [];
+            } catch { songs = []; }
+            uv.popular[a.id] = songs;
+        }
+        const slot = panel.querySelector('[data-slot="popular"]');
+        // the visitor may have picked someone else while this loaded
+        if (!slot || !songs.length || panel.querySelector('.up-name')?.textContent !== a.name) return;
+        slot.innerHTML = `
+            <p class="up-label">Their most popular songs</p>
+            <ol class="up-songs">
+                ${songs.map((song, i) => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>${i + 1}</em></a></li>`).join('')}
+            </ol>`;
     }
 
     // Genres, hometown and a two-sentence bio (MusicBrainz and Wikipedia via /spotify/GetArtistInfo), kept per visit
@@ -2668,7 +2640,7 @@
                            <li>${photoOf(name) ? `<img src="${escapeHtml(photoOf(name))}" alt="">` : '<i></i>'}<span>${escapeHtml(name)}</span><em>${rankOf(name)}</em></li>`).join('')}
                        </ul>`
                     : ''}
-            <p class="gs-hint">Hover or click a slice to see another genre.</p>`;
+            <p class="gs-hint">Hover or click a genre to see another.</p>`;
         box.classList.remove('swap');
         void box.offsetWidth;   // restart the fade
         box.classList.add('swap');
@@ -2688,34 +2660,10 @@
         if (rest >= 0.5) {
             slices.push({ name: 'Everything Else', percent: Math.round(rest * 10) / 10, color: DNA_OTHER });
         }
-        const total = slices.reduce((sum, s) => sum + s.percent, 0);
         const pct = value => `${Math.round(value)}%`;
 
-        // Donut geometry (SVG units). A small angle gap separates the slices.
-        const C = 200, R = 182, r = 120, pad = 0.012, push = 12;
-        const point = (radius, angle) => `${C + radius * Math.cos(angle)} ${C + radius * Math.sin(angle)}`;
-        let angle = -Math.PI / 2;
-        const paths = slices.map((s, i) => {
-            const sweep = (s.percent / total) * Math.PI * 2;
-            const a0 = angle + pad, a1 = angle + sweep - pad;
-            const mid = angle + sweep / 2;
-            angle += sweep;
-            const large = a1 - a0 > Math.PI ? 1 : 0;
-            const d = `M ${point(R, a0)} A ${R} ${R} 0 ${large} 1 ${point(R, a1)} L ${point(r, a1)} A ${r} ${r} 0 ${large} 0 ${point(r, a0)} Z`;
-            return `<path class="dna-slice" data-i="${i}" d="${d}" fill="${s.color}"
-                          style="--dx: ${(Math.cos(mid) * push).toFixed(2)}px; --dy: ${(Math.sin(mid) * push).toFixed(2)}px;">
-                        <title>${escapeHtml(s.name)}: ${s.percent}%</title>
-                    </path>`;
-        }).join('');
-
+        // The genre list; hovering or clicking a genre shows it in the genre card beside this one
         section.innerHTML = `
-            <div class="dna-chart">
-                <svg viewBox="0 0 400 400" role="img" aria-label="Genre share: ${slices.map(s => `${escapeHtml(s.name)} ${pct(s.percent)}`).join(', ')}">${paths}</svg>
-                <div class="dna-center" aria-live="polite">
-                    <span class="dna-center-pct"></span>
-                    <span class="dna-center-name"></span>
-                </div>
-            </div>
             <div>
                 <p class="dna-caption">Mostly pop in different fonts. The Hindi, Punjabi, and occasional Spanish song diversify the portfolio.</p>
                 <ul class="dna-legend">
@@ -2729,36 +2677,26 @@
                 <p class="dna-note">Genre tags from MusicBrainz for my top 10 Spotify artists, weighted by how high each artist ranks.</p>
             </div>`;
 
-        const chart = section.querySelector('.dna-chart');
         const legend = section.querySelector('.dna-legend');
-        const center = section.querySelector('.dna-center');
         let hovered = -1, selected = -1, shown = -1;
 
-        // Center shows the hovered genre, else the selected one, else my #1
+        // The genre card shows the hovered genre, else the selected one, else my #1
         const render = () => {
             const active = hovered >= 0 ? hovered : selected;
-            const focus = active >= 0;
-            chart.classList.toggle('focus', focus);
-            legend.classList.toggle('focus', focus);
-            section.querySelectorAll('[data-i]').forEach(el => {
+            legend.classList.toggle('focus', active >= 0);
+            section.querySelectorAll('.dna-key').forEach(el => {
                 const i = Number(el.dataset.i);
                 el.classList.toggle('active', i === active);
-                if (el.classList.contains('dna-key')) el.setAttribute('aria-pressed', i === selected);
+                el.setAttribute('aria-pressed', i === selected);
             });
-
-            const i = focus ? active : 0;
+            const i = active >= 0 ? active : 0;
             if (i !== shown) {
                 shown = i;
-                center.querySelector('.dna-center-pct').textContent = pct(slices[i].percent);
-                center.querySelector('.dna-center-name').textContent = slices[i].name;
-                center.classList.remove('swap');
-                void center.offsetWidth;   // restart the fade
-                center.classList.add('swap');
                 showGenreSpot(slices, i);
             }
         };
 
-        section.querySelectorAll('.dna-slice, .dna-key').forEach(el => {
+        section.querySelectorAll('.dna-key').forEach(el => {
             const i = Number(el.dataset.i);
             el.addEventListener('mouseenter', () => { hovered = i; render(); });
             el.addEventListener('mouseleave', () => { hovered = -1; render(); });
@@ -2771,9 +2709,9 @@
             });
         });
 
-        // Clicking anywhere outside the chart and legend clears the selection
+        // Clicking anywhere outside the list clears the selection
         document.addEventListener('click', event => {
-            if (selected >= 0 && !event.target.closest('.dna-chart, .dna-legend')) {
+            if (selected >= 0 && !event.target.closest('.dna-legend')) {
                 selected = -1;
                 render();
             }
