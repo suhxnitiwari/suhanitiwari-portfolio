@@ -320,10 +320,34 @@
     color: #6B4A5A;
 }
 
+/* ===== the cycle and its detail card side by side: diagram on the left, a tall card on the right ===== */
+.mis-cycle-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+}
+
+.mis-cycle-row .mis-diagram {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.mis-cycle-row .mis-legend {
+    justify-content: flex-start;
+}
+
+/* stack them again only on small tablets and phones */
+@media (max-width: 760px) {
+    .mis-cycle-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+}
+
 /* ===== the detail card ===== */
 .mis-details {
-    max-width: 900px;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .mis-detail {

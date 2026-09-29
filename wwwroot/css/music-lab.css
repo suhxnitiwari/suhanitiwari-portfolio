@@ -1,5 +1,5 @@
 /* Music extras (Favorites): Song Title Words, Albums I Can't Leave and From the Vault, in a row of pins */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bodoni+Moda:ital@1&family=Caveat:wght@600&family=Cormorant+Garamond:ital,wght@1,300&family=Italiana&family=Pacifico&family=Permanent+Marker&family=Pinyon+Script&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Amatic+SC&family=Bebas+Neue&family=Bodoni+Moda:ital@1&family=Bungee&family=Bungee+Shade&family=Caveat:wght@600&family=Comic+Neue:wght@700&family=Cormorant+Garamond:ital,wght@1,300&family=Creepster&family=Dancing+Script&family=Fraunces&family=Great+Vibes&family=Homemade+Apple&family=Italiana&family=Josefin+Sans&family=Kalam&family=Lobster&family=Monoton&family=Orbitron&family=Pacifico&family=Permanent+Marker&family=Pinyon+Script&family=Playfair+Display&family=Racing+Sans+One&family=Righteous&family=Rubik+Burned&family=Rubik+Distressed&family=Rubik+Glitch&family=Rubik+Wet+Paint&family=Rye&family=Satisfy&family=Shrikhand&family=Special+Elite&family=Syne&family=Tangerine&display=swap');
 .music-lab {
     margin: 0 0 70px;
 }
@@ -95,14 +95,5 @@
 
 .lab-cloud span { display: inline-block; margin: 0 0.14em; line-height: 1.25; }
 
-/* title words: the font says what the word means */
-.lab-cloud .w-plain { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; color: #2A1810; }
-.lab-cloud .w-love  { font-family: 'Pinyon Script', cursive; font-size-adjust: 0.45; color: #B0566A; }                 /* romantic script */
-.lab-cloud .w-angry { font-family: 'Permanent Marker', cursive; color: #7A2E3B; transform: rotate(-3deg); }           /* scrawled in marker */
-.lab-cloud .w-sad   { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 300; color: #8C9BAE; letter-spacing: 0.04em; }   /* thin, faded blue */
-.lab-cloud .w-move  { font-family: 'Bebas Neue', sans-serif; font-style: italic; letter-spacing: 0.06em; color: #56634A; }   /* tall and leaning forward */
-.lab-cloud .w-time  { font-family: 'Special Elite', monospace; color: #5A3E36; }                                        /* typewritten, like a memory */
-.lab-cloud .w-dream { font-family: 'Italiana', serif; letter-spacing: 0.08em; color: #9A7B4F; }                         /* airy and golden */
-.lab-cloud .w-fun   { font-family: 'Pacifico', cursive; font-size-adjust: 0.5; color: #D0708A; }                        /* bubbly pink */
-.lab-cloud .w-body  { font-family: 'Caveat', cursive; color: #8A4D57; }                                                  /* handwritten, personal */
+/* title words: each word's own font is set inline by music-lab.js (WORD_FONTS) */
 

@@ -512,6 +512,7 @@ namespace Tiwari_Suhani_HW3.Services
             const int artistCount = 10;
             var artists = await GetTopArtistsAsync(accessToken, artistCount, timeRange);
             var scores = new Dictionary<string, int>();
+            var whoPlaysIt = new Dictionary<string, List<string>>();   // genre -> my top artists tagged with it, in rank order
 
             foreach (var artist in artists)
             {
@@ -521,6 +522,8 @@ namespace Tiwari_Suhani_HW3.Services
                 foreach (var genre in await GetArtistGenresAsync(artist.Name))
                 {
                     scores[genre] = scores.GetValueOrDefault(genre) + weight;
+                    if (!whoPlaysIt.ContainsKey(genre)) whoPlaysIt[genre] = new List<string>();
+                    whoPlaysIt[genre].Add(artist.Name);
                 }
             }
 
@@ -530,7 +533,7 @@ namespace Tiwari_Suhani_HW3.Services
             return scores
                 .OrderByDescending(pair => pair.Value)
                 .Take(limit)
-                .Select(pair => new GenreShare { Name = pair.Key, Percent = Math.Round(100.0 * pair.Value / total, 1) })
+                .Select(pair => new GenreShare { Name = pair.Key, Percent = Math.Round(100.0 * pair.Value / total, 1), Artists = whoPlaysIt[pair.Key] })
                 .ToList();
         }
 
@@ -806,6 +809,7 @@ namespace Tiwari_Suhani_HW3.Services
     {
         public string Name { get; set; } = "";
         public double Percent { get; set; }
+        public List<string> Artists { get; set; } = new();   // which of my top artists carry this genre
     }
 
     public class TopAlbum

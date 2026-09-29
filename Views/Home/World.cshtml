@@ -568,21 +568,21 @@
     /* chapter buttons on the map: jump between the parts of my life instead of one zoomed-out world */
     .map-chapters {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 6px;
-        max-width: 320px;
+        flex-wrap: nowrap;
+        gap: 4px;
     }
 
     .map-chapters button {
-        padding: 6px 12px;
+        padding: 4px 10px;
+        white-space: nowrap;
         border-radius: 999px;
         border: 1px solid #EBD5D0;
         background: rgba(250, 241, 239, 0.94);
         box-shadow: 0 4px 14px rgba(42, 24, 16, 0.12);
         font: inherit;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
+        line-height: 1.4;
         color: #2A1810;
         cursor: pointer;
         transition: background 0.2s ease, color 0.2s ease;
@@ -1883,10 +1883,10 @@
     };
     key.addTo(map);
 
-    // Chapters: the map opens zoomed in on one part of my life, and these buttons move between them.
+    // Chapters: the map opens on the whole journey, and these buttons zoom to one part of my life.
     // California and Texas share one chapter, along with the US cities I've visited.
     const chapterOf = region => region === 'California' || region === 'Texas' ? 'United States' : region;
-    const chapters = [];
+    const chapters = [{ name: 'World', points: coordinates }];   // every place at once, the default
     locations.forEach(loc => {
         const name = chapterOf(loc.region);
         let chapter = chapters.find(c => c.name === name);
@@ -1894,7 +1894,6 @@
         chapter.points.push(loc.coords);
     });
     chapters.find(c => c.name === 'United States')?.points.push(...visited.map(v => v.coords));
-    chapters.push({ name: 'Whole journey', points: coordinates });
 
     // Room around a view so no pin or city name is cut off: the far-left and far-right labels
     // (Cupertino, Singapore) sit beside their pins, so the sides get extra space
@@ -1912,17 +1911,17 @@
     function showChapter(name, animate = true) {
         const chapter = chapters.find(c => c.name === name);
         const bounds = L.latLngBounds(chapter.points);
-        // a one-place chapter (Singapore) gets a city-level view instead of an endless zoom
-        const options = { padding: [EDGE.x, EDGE.y], maxZoom: chapter.points.length > 1 ? 7 : 9, animate, duration: 1.1 };
+        // never closer than country level; a one-place chapter (Singapore) shows the region around it
+        const options = { padding: [EDGE.x, EDGE.y], maxZoom: chapter.points.length > 1 ? 4 : 5, animate, duration: 1.1 };
         animate ? map.flyToBounds(bounds, options) : map.fitBounds(bounds, options);
         markChapter(name);
     }
     function markChapter(name) {
         chapterButtons.forEach(b => b.setAttribute('aria-pressed', b.dataset.chapter === name));
     }
-    // clicking a place zooms in to it (never back out) and lights up its chapter
+    // clicking a place brings it to the middle (zooming in a little from the whole-world view) and lights up its chapter
     function flyToPlace(coords, region) {
-        map.flyTo(coords, Math.max(map.getZoom(), 6), { duration: 0.9 });
+        map.flyTo(coords, Math.max(map.getZoom(), 4), { duration: 0.9 });
         markChapter(chapterOf(region));
     }
 
@@ -1940,8 +1939,8 @@
     };
     chapterControl.addTo(map);
 
-    // open where the story starts
-    showChapter(chapters[0].name, false);
+    // open on the whole world, every place in view
+    showChapter('World', false);
 
     // The map's box changes size with the two-column layout (window resizes, stacking on
     // narrow screens), so tell Leaflet to re-measure whenever it does

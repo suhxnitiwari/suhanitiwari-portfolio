@@ -935,16 +935,141 @@
         }
 
     }
-    /* ===== WHAT I'M LISTENING TO: one compact dashboard ===== */
-    /* A Pinterest board: three columns of pins in all different heights, each column stacking on its own.
-         left:   the Spotify player (listening right now), Listening DNA (donut over its legend)
-         middle: My Music Universe (square)
-         right:  the Listening Clock (click an hour)
+    /* ===== ON REPEAT: my top five songs ===== */
+    .songs-list {
+        list-style: none;
+    }
+
+    .song-item {
+        display: flex;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid #EBD5D0;
+        transition: all 0.3s ease;
+    }
+
+    .song-item:last-child {
+        border-bottom: none;
+    }
+
+    .song-item:hover {
+        background: #F5E5E1;
+        padding-left: 10px;
+    }
+
+    .song-rank {
+        font-size: 1.5em;
+        font-weight: 900;
+        color: #9E5A63;
+        width: 40px;
+        margin-right: 20px;
+    }
+
+    .song-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
+        margin-right: 20px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5em;
+        overflow: hidden;
+        object-fit: cover;
+    }
+
+    .song-info {
+        flex: 1;
+    }
+
+    .song-name {
+        font-weight: 700;
+        font-size: 1em;
+        color: #2A1810;
+        margin-bottom: 5px;
+    }
+
+    .song-artist {
+        font-size: 0.9em;
+        color: #56634A;
+    }
+
+    /* On Repeat: a dark mulberry sleeve */
+    .repeat-card {
+        background: linear-gradient(160deg, #6E3844 0%, #4A2530 100%) !important;
+        border-color: #5A2C38 !important;
+        box-shadow: 0 18px 40px rgba(74, 37, 48, 0.28) !important;
+    }
+
+    .repeat-card .music-card-title { color: #FFF8F6; }
+    .repeat-card .music-card-sub { color: #E8B9C2; }
+    .repeat-card .song-item { border-bottom-color: rgba(255, 248, 246, 0.14); }
+    .repeat-card .song-item:hover { background: rgba(255, 248, 246, 0.08); }
+    .repeat-card .song-rank { color: #F3C9A0; font-family: Georgia, serif; }
+    .repeat-card .song-name { color: #FFF8F6; }
+    .repeat-card .song-artist { color: #E3C9CE; }
+    .repeat-card .music-loading { color: #E3C9CE; }
+
+    /* On Repeat: one tidy line per song */
+    .music-card .songs-list {
+        margin: 0;
+        padding: 0;
+    }
+
+    .music-card .song-item {
+        padding: 8px 6px;
+        border-radius: 10px;
+    }
+
+    .music-card .song-item:hover {
+        padding-left: 10px;
+    }
+
+    .music-card .song-rank {
+        width: 26px;
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .music-card .song-image {
+        width: 44px;
+        height: 44px;
+        margin-right: 12px;
+    }
+
+    .music-card .song-name {
+        margin-bottom: 2px;
+        font-size: 0.95rem;
+    }
+
+    .music-card .song-artist {
+        font-size: 0.82rem;
+    }
+
+    @@media (min-width: 821px) {
+        .music-card .song-rank { width: 34px; font-size: 1.25rem; }
+        .music-card .song-image { width: 56px; height: 56px; }
+        .music-card .song-name { font-size: 1.1rem; }
+        .music-card .song-artist { font-size: 0.95rem; }
+    }
+
+    /* ===== WHAT I'M LISTENING TO: pairs of cards that go together ===== */
+    /* Universe + the artist picked in it, Listening DNA + the genre picked in it,
+       then the Spotify player and On Repeat beside the Listening Clock.
        Tablets and phones get one column in reading order. */
-    .music-board {
+    .music-duo {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
         gap: 24px;
+        align-items: stretch;
+        margin-bottom: 24px;
+    }
+
+    .music-duo.play-duo {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         align-items: start;
         margin-bottom: 70px;
     }
@@ -955,6 +1080,78 @@
         gap: 24px;
         min-width: 0;
     }
+
+    /* the artist card: what used to pop up inside the universe, now its own card beside it */
+    .artist-card .universe-panel {
+        position: static;
+        width: auto;
+        max-height: none;
+        overflow: visible;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        animation: none;
+    }
+
+    .artist-card .universe-panel.swap,
+    .genre-spot.swap { animation: panelIn 0.3s ease; }
+
+    .artist-card .up-head { padding-right: 0; margin-bottom: 18px; }
+    .artist-card .up-photo { width: 96px; height: 96px; box-shadow: 0 8px 20px rgba(42, 24, 16, 0.18); }
+    .artist-card .up-name { font-size: 1.9em; }
+    .artist-card .up-numbers { margin-bottom: 16px; }
+
+    .up-hint {
+        margin: 12px 0 0;
+        font-size: 0.78em;
+        font-style: italic;
+        text-align: center;
+        color: #9E5A63;
+    }
+
+    /* the genre card: the slice picked in Listening DNA, and which of my top artists it comes from */
+    .genre-spot {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        height: 100%;
+    }
+
+    .gs-eyebrow {
+        margin: 0;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .gs-name {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 2.4em;
+        font-weight: 800;
+        line-height: 1.05;
+        color: #2A1810;
+    }
+
+    .gs-share { display: flex; align-items: baseline; gap: 10px; margin: 0; color: #56634A; font-size: 0.9em; }
+    .gs-share b { font-family: Georgia, serif; font-size: 2.2em; color: var(--genre); }
+
+    .gs-bar { height: 10px; border-radius: 999px; background: #F1E3DF; overflow: hidden; }
+    .gs-bar span { display: block; height: 100%; border-radius: inherit; background: var(--genre); transition: width 0.5s ease; }
+
+    .gs-label { margin: 6px 0 0; font-size: 0.75em; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #56634A; }
+
+    .gs-artists { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .gs-artists li { display: flex; align-items: center; gap: 12px; font-size: 0.95em; color: #2A1810; }
+    .gs-artists img, .gs-artists i { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #F1E3DF; flex-shrink: 0; }
+    .gs-artists em { margin-left: auto; font-style: normal; font-size: 0.85em; color: #9E5A63; }
+
+    .gs-text { margin: 0; font-size: 0.95em; line-height: 1.6; color: #3B2A24; }
+    .gs-hint { margin: auto 0 0; font-size: 0.78em; font-style: italic; color: #9E5A63; }
 
     /* the universe is a square pin */
     .universe-card .universe {
@@ -977,20 +1174,11 @@
         width: 100%;
     }
 
-    @@media (max-width: 1100px) {
-        .music-board {
+    @@media (max-width: 900px) {
+        .music-duo,
+        .music-duo.play-duo {
             grid-template-columns: minmax(0, 1fr);
-            max-width: 640px;
-            margin-inline: auto;
         }
-
-        .music-col { display: contents; }
-
-        /* reading order once it's one column */
-        .now-card { order: 1; }
-        .universe-card { order: 2; }
-        .clock-card { order: 3; }
-        .dna-card { order: 4; }
     }
 
     .music-card {
@@ -1335,7 +1523,8 @@
 
     .clock-num {
         font-family: Georgia, serif;
-        font-size: 13px;
+        font-size: 11px;
+        letter-spacing: 0.04em;
         fill: #5A3E36;
         text-anchor: middle;
         dominant-baseline: central;
@@ -1489,28 +1678,19 @@
         <p class="section-subtitle">live from my Spotify</p>
 
         <!-- A Pinterest board: three columns of pins in different heights -->
-        <div class="music-board">
-            <div class="music-col">
-                <a class="now-card" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
-                <section class="music-card dna-card" aria-labelledby="dnaTitle">
-                    <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
-                    <p class="music-card-sub">what my headphones are apparently made of</p>
-                    <div class="dna-section" id="dnaSection">
-                        <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
-                    </div>
-                </section>
-            </div>
-            <div class="music-col">
-                <section class="music-card universe-card" aria-labelledby="universeTitle">
-                    <h3 class="music-card-title" id="universeTitle">My Music Universe</h3>
-                    <p class="music-card-sub">the bigger the bubble, the more they've been living in my headphones</p>
+        <!-- Each row is a pair of cards that go together:
+               the Universe and the artist you picked in it, Listening DNA and the genre you picked in it,
+               then what I'm playing now with my top five songs beside the Listening Clock -->
+        <div class="music-duo universe-duo">
+            <section class="music-card universe-card" aria-labelledby="universeTitle">
+                <h3 class="music-card-title" id="universeTitle">My Music Universe</h3>
+                <p class="music-card-sub">the bigger the bubble, the more they've been living in my headphones</p>
                 <div class="universe" id="universe" tabindex="0"
-                     aria-label="Interactive map of my top 20 Spotify artists. Bigger bubbles are artists I listen to more. Drag to explore, use the zoom buttons, and select an artist for details.">
+                     aria-label="Interactive map of my top 20 Spotify artists. Bigger bubbles are artists I listen to more. Drag to explore, use the zoom buttons, and select an artist to read about them in the card beside it.">
                     <div class="universe-world" id="universeWorld"></div>
                     <p class="universe-status" id="universeStatus">Loading...</p>
                     <span class="universe-hint" id="universeHint" aria-hidden="true">Click the universe to zoom, or keep scrolling</span>
                     <div class="universe-tag" id="universeTag" hidden></div>
-                    <div class="universe-panel" id="universePanel" hidden></div>
                     <p class="snoop-remark" id="snoopRemark" role="status" aria-live="polite"></p>
                     <div class="universe-controls">
                         <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
@@ -1518,16 +1698,42 @@
                         <button type="button" data-zoom="reset" aria-label="Reset view">↺</button>
                     </div>
                 </div>
-                </section>
-            </div>
+            </section>
+            <section class="music-card artist-card" aria-label="About the artist picked in my music universe">
+                <div class="universe-panel" id="universePanel" aria-live="polite"><p class="music-loading">Loading...</p></div>
+            </section>
+        </div>
+
+        <div class="music-duo dna-duo">
+            <section class="music-card dna-card" aria-labelledby="dnaTitle">
+                <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
+                <p class="music-card-sub">what my headphones are apparently made of</p>
+                <div class="dna-section" id="dnaSection">
+                    <p class="dna-loading" id="dnaStatus">Loading... (the first load takes a few seconds)</p>
+                </div>
+            </section>
+            <section class="music-card genre-card" aria-label="About the genre picked in my listening DNA">
+                <div class="genre-spot" id="genreSpot" aria-live="polite"><p class="music-loading">Loading...</p></div>
+            </section>
+        </div>
+
+        <div class="music-duo play-duo">
             <div class="music-col">
-                <section class="music-card clock-card" aria-labelledby="clockTitle">
-                    <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
-                    <p class="music-card-sub">when I press play, from my last 50 songs</p>
-                    <div class="clock-chart" id="listenClock" role="group" aria-label="Listening clock"><p class="music-loading">Loading...</p></div>
-                    <p class="music-card-note" id="clockNote"></p>
+                <a class="now-card" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
+                <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
+                    <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
+                    <p class="music-card-sub">the five songs I can't stop playing right now</p>
+                    <ul class="songs-list" id="topSongsContainer">
+                        <li class="music-loading">Loading...</li>
+                    </ul>
                 </section>
             </div>
+            <section class="music-card clock-card" aria-labelledby="clockTitle">
+                <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
+                <p class="music-card-sub">when I press play, from my last 50 songs</p>
+                <div class="clock-chart" id="listenClock" role="group" aria-label="Listening clock"><p class="music-loading">Loading...</p></div>
+                <p class="music-card-note" id="clockNote"></p>
+            </section>
         </div>
 
         <!-- a row under the board: Song Title Words, Albums I Can't Leave, From the Vault -->
@@ -1582,6 +1788,7 @@
     function showNotConnected() {
         const connect = `Spotify isn't connected yet. <a href="/spotify/login" style="color: #9E5A63; font-weight: 700;">Connect Spotify →</a>`;
         document.getElementById('universeStatus').innerHTML = connect;
+        document.getElementById('topSongsContainer').innerHTML = `<li class="music-loading">${connect}</li>`;
         document.getElementById('dnaSection').innerHTML = `<p class="dna-loading">${connect}</p>`;
     }
 
@@ -1598,7 +1805,7 @@
 
     function savedSpotify() {
         try {
-            const saved = JSON.parse(sessionStorage.getItem('spotifyPrefetch'));
+            const saved = JSON.parse(sessionStorage.getItem('spotifyPrefetch.v2'));
             return saved && Date.now() - saved.at < 30 * 60 * 1000 ? saved : { at: Date.now() };
         } catch { return { at: Date.now() }; }
     }
@@ -1614,7 +1821,7 @@
             try {
                 const store = savedSpotify();
                 store[name] = data;
-                sessionStorage.setItem('spotifyPrefetch', JSON.stringify(store));
+                sessionStorage.setItem('spotifyPrefetch.v2', JSON.stringify(store));
             } catch { }
         }
         return Array.isArray(data) ? data : [];
@@ -1628,8 +1835,11 @@
         const genresPart = spotifyPart('genres');
 
         try {
-            // Top 50 songs: they feed the artist details in the universe
+            // Top 50 songs: the first 5 are "On Repeat", and all 50 feed the artist details in the universe
             const songs = await songsPart;
+            if (songs.length > 0) {
+                displayTopSongs(songs.slice(0, 5));
+            }
 
             const artists = await artistsPart;
             if (artists.length > 0) {
@@ -1776,7 +1986,9 @@
                 </g>`;
             });
             const [x, y] = pt(angle, 97).split(' ');
-            svg += `<text class="clock-num" data-num="${d}" x="${x}" y="${y}">${d || 12}</text>`;
+            // Roman numerals, like a real clock face, so the hour marks don't read as play counts
+            const ROMAN = ['XII', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+            svg += `<text class="clock-num" data-num="${d}" x="${x}" y="${y}">${ROMAN[d]}</text>`;
         }
         svg += `<line class="clock-hand" x1="${C}" y1="${C}" x2="${C}" y2="${C - 58}" />`;
         svg += `<circle class="clock-pin" cx="${C}" cy="${C}" r="6" /><circle class="clock-pin-dot" cx="${C}" cy="${C}" r="2" />`;
@@ -1784,8 +1996,8 @@
         chart.innerHTML = `
             <svg class="clock-face" viewBox="0 0 240 240">${svg}</svg>
             <ul class="clock-legend">
-                <li style="--c: #D9A3AD">AM</li>
-                <li style="--c: #8F4661">PM</li>
+                <li style="--c: #D9A3AD">AM, left of each numeral</li>
+                <li style="--c: #8F4661">PM, right of each numeral</li>
             </ul>
             <p class="clock-hint">tap an hour to see what I played</p>
             <div class="clock-detail" aria-live="polite"></div>`;
@@ -2169,6 +2381,7 @@
         setTimeout(() => remark.classList.remove('show'), 3000);
     }
 
+    // Clicking a bubble highlights it (and its neighbors) and fills the artist card beside the universe
     function selectArtist(index) {
         uv.selected = index;
         // Ariana is my all-time favorite
@@ -2184,18 +2397,22 @@
             el.classList.toggle('selected', node.index === index);
             el.classList.toggle('near', gap < sel.r * 0.8);
         });
+        showArtistCard(index);
+    }
 
+    // The artist card: everything about one artist. With nothing picked it shows my #1.
+    function showArtistCard(index) {
+        const sel = uv.nodes[index];
         const a = sel.artist;
         const panel = document.getElementById('universePanel');
         const rankIn = list => { const i = (list || []).findIndex(x => x.name === a.name); return i < 0 ? '' : `#${i + 1}`; };
         const month = rankIn(uv.month), allTime = rankIn(uv.allTime);
         const songs = sel.theirSongs || [];
         panel.innerHTML = `
-            <button type="button" class="up-close" aria-label="Close details">×</button>
             <div class="up-head">
                 ${a.image ? `<img class="up-photo" src="${escapeHtml(a.image)}" alt="">` : ''}
                 <div>
-                    <div class="up-rank">${tierLabel(index)} artist</div>
+                    <div class="up-rank">${uv.selected === index ? tierLabel(index) + ' artist' : 'My #1 artist'}</div>
                     <div class="up-name">${escapeHtml(a.name)}</div>
                     <div class="up-from" data-slot="from"></div>
                 </div>
@@ -2211,12 +2428,14 @@
             ${songs.length ? `
                 <p class="up-label">What I play most</p>
                 <ol class="up-songs">
-                    ${songs.slice(0, 4).map(song => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>#${song.position}</em></a></li>`).join('')}
+                    ${songs.slice(0, 5).map(song => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>#${song.position}</em></a></li>`).join('')}
                 </ol>` : ''}
-            <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open their Spotify profile ↗</a>`;
-        panel.hidden = false;
+            <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open their Spotify profile ↗</a>
+            <p class="up-hint">${uv.selected === index ? 'Pick another bubble, or click empty space to go back to my #1.' : 'Pick any bubble in the universe to meet them.'}</p>`;
+        panel.classList.remove('swap');
+        void panel.offsetWidth;   // restart the fade
+        panel.classList.add('swap');
         fillArtistInfo(a.name, panel);
-        panel.querySelector('.up-close').addEventListener('click', clearSelection);
     }
 
     // Genres, hometown and a two-sentence bio (MusicBrainz and Wikipedia via /spotify/GetArtistInfo), kept per visit
@@ -2230,7 +2449,7 @@
             uv.info[name] = info;
         }
         // the visitor may have picked someone else while this loaded
-        if (panel.hidden || !panel.querySelector('.up-name') || panel.querySelector('.up-name').textContent !== name) return;
+        if (!panel.querySelector('.up-name') || panel.querySelector('.up-name').textContent !== name) return;
         const slot = key => panel.querySelector(`[data-slot="${key}"]`);
         const from = [info.from ? `From ${escapeHtml(info.from)}` : '', info.formed ? `formed ${escapeHtml(info.formed)}` : ''].filter(Boolean).join(', ');
         slot('from').textContent = '';
@@ -2245,7 +2464,7 @@
         uv.selected = -1;
         document.getElementById('universe').classList.remove('has-selection');
         document.querySelectorAll('.ub.selected, .ub.near').forEach(el => el.classList.remove('selected', 'near'));
-        document.getElementById('universePanel').hidden = true;
+        if (uv.nodes && uv.nodes.length) showArtistCard(0);
     }
 
     // ---- Mouse, trackpad and touch ----
@@ -2428,6 +2647,33 @@
             .replace(/R&b/g, 'R&B');
     }
 
+    // The genre card beside Listening DNA: the genre in the middle of the donut, and who it comes from
+    function showGenreSpot(slices, i) {
+        const box = document.getElementById('genreSpot');
+        const g = slices[i];
+        const other = g.name === 'Everything Else';
+        const photoOf = name => ((uv.artists || []).find(a => a.name === name) || {}).image;
+        const rankOf = name => { const a = (uv.artists || []).find(x => x.name === name); return a ? `#${a.position}` : ''; };
+        box.style.setProperty('--genre', other ? '#B89A9F' : g.color);
+        box.innerHTML = `
+            <p class="gs-eyebrow">${other ? 'The rest of the mix' : `My #${i + 1} genre`}</p>
+            <h4 class="gs-name">${escapeHtml(g.name)}</h4>
+            <p class="gs-share"><b>${Math.round(g.percent)}%</b> of my listening DNA</p>
+            <div class="gs-bar" aria-hidden="true"><span style="width: ${Math.min(100, g.percent)}%"></span></div>
+            ${other
+                ? `<p class="gs-text">Every genre outside my top five, from the smaller tags on my top artists.</p>`
+                : g.artists.length
+                    ? `<p class="gs-label">Where it comes from</p>
+                       <ul class="gs-artists">${g.artists.slice(0, 6).map(name => `
+                           <li>${photoOf(name) ? `<img src="${escapeHtml(photoOf(name))}" alt="">` : '<i></i>'}<span>${escapeHtml(name)}</span><em>${rankOf(name)}</em></li>`).join('')}
+                       </ul>`
+                    : ''}
+            <p class="gs-hint">Hover or click a slice to see another genre.</p>`;
+        box.classList.remove('swap');
+        void box.offsetWidth;   // restart the fade
+        box.classList.add('swap');
+    }
+
     function displayListeningDna(genres) {
         const section = document.getElementById('dnaSection');
         if (genres.length === 0) {
@@ -2437,7 +2683,7 @@
 
         // Real shares from the genre endpoint, biggest first; whatever's left is "everything else" (always last)
         const sorted = [...genres].sort((a, b) => b.percent - a.percent);
-        const slices = sorted.map((g, i) => ({ name: genreLabel(g.name), percent: g.percent, color: DNA_COLORS[i % DNA_COLORS.length] }));
+        const slices = sorted.map((g, i) => ({ name: genreLabel(g.name), percent: g.percent, color: DNA_COLORS[i % DNA_COLORS.length], artists: g.artists || [] }));
         const rest = 100 - sorted.reduce((sum, g) => sum + g.percent, 0);
         if (rest >= 0.5) {
             slices.push({ name: 'Everything Else', percent: Math.round(rest * 10) / 10, color: DNA_OTHER });
@@ -2508,6 +2754,7 @@
                 center.classList.remove('swap');
                 void center.offsetWidth;   // restart the fade
                 center.classList.add('swap');
+                showGenreSpot(slices, i);
             }
         };
 
@@ -2533,6 +2780,27 @@
         });
 
         render();
+    }
+
+    function displayTopSongs(songs) {
+        const container = document.getElementById('topSongsContainer');
+        container.innerHTML = songs.map(song => `
+            <li class="song-item" data-url="${escapeHtml(song.spotifyUrl)}" style="cursor: var(--cursor-hot, pointer);">
+                <div class="song-rank">#${song.position}</div>
+                <div class="song-image">
+                    ${song.albumArt
+                        ? `<img src="${escapeHtml(song.albumArt)}" alt="${escapeHtml(song.name)}" style="width: 100%; height: 100%; object-fit: cover;">`
+                        : ''}
+                </div>
+                <div class="song-info">
+                    <div class="song-name">${escapeHtml(song.name)}</div>
+                    <div class="song-artist">${escapeHtml(song.artist)}</div>
+                </div>
+            </li>
+        `).join('');
+        container.querySelectorAll('.song-item').forEach(item => {
+            item.addEventListener('click', () => { if (item.dataset.url) window.open(item.dataset.url, '_blank', 'noopener'); });
+        });
     }
 
     // Optional: my own words about an album, shown under the stats. Key = album name on Spotify.

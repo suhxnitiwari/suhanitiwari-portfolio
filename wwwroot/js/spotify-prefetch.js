@@ -5,7 +5,7 @@
 (() => {
     if (location.pathname.toLowerCase().startsWith('/home/favorites')) return;   // Favorites loads it itself
 
-    const KEY = 'spotifyPrefetch';
+    const KEY = 'spotifyPrefetch.v2';
     const FRESH = 30 * 60 * 1000;
     const URLS = {
         artists: '/spotify/GetTopArtists?limit=20',

@@ -554,6 +554,9 @@
                     <p class="mp-eyebrow">How the curriculum built that range</p>
                     <h3 class="mp-h2">One major. Four levels of the same problem.</h3>
                 </div>
+                <!-- the cycle on the left, the picked step's card on the right, in one row -->
+                <div class="mis-cycle-row">
+                <div class="mis-cycle-left">
                 <div class="mis-chart">
                 <div class="mis-diagram">
                     <svg viewBox="0 0 600 470" aria-hidden="true">
@@ -608,6 +611,7 @@
                     <li>@Html.Raw(clockIcon)Coming Spring 2027</li>
                     <li>Tap any step to explore</li>
                 </ul>
+                </div>
 
                 <!-- one detail card per step; on phones each sits under its own step card (an accordion) -->
                 <div class="mis-details">
@@ -664,6 +668,7 @@
                             <p class="mis-footer"><svg class="mis-icon" viewBox="0 0 24 24" aria-hidden="true">@Html.Raw(MisIcons["loop"])</svg>@step.Footer</p>
                         </section>
                     }
+                </div>
                 </div>
 
                 <!-- 4. proof: RideFlow (Views/Home/_RideFlowProof.cshtml) -->

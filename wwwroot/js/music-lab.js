@@ -20,23 +20,61 @@
     const list = items => `<ol class="lab-list">${items.map(i => `<li>${i}</li>`).join('')}</ol>`;
     const song = t => `<b>${esc(t.name)}</b> <span>${esc(t.artists.join(', '))}</span>`;
 
-    // Song title words: every word is set in a font that feels like what it means.
-    // A word that fits none of these moods stays in the site's own serif.
-    const MOODS = {
-        'w-love': 'love lover loving heart kiss hold baby darling sweetheart honey forever angel crush adore mine yours babe romance',
-        'w-angry': 'hate bad dead drop break stupid kill wrong hurt mad crazy fight liar cruel bitch fire burn war revenge villain poison toxic',
-        'w-sad': 'sorry cry tears alone lonely lost goodbye miss cold blue broken sad empty ghost gone without bleed rain lie leave',
-        'w-move': 'run hills down fast drive dance fly fall move jump high ride go wild shake up away',
-        'w-time': 'one last time never again yesterday tomorrow always until before after still years summer forget remember back',
-        'w-dream': 'dream dreams night stars star moon sky heaven light sun gold glow paradise wish magic midnight',
-        'w-fun': 'party girl girls boy boys fun sugar candy pink espresso song sing music radio good pretty cute',
-        'w-body': 'hands hand eyes lips skin body face touch mouth feel breathe',
+    // Song title words: every word gets its own font, picked for what that word means, and no font is used twice.
+    // [font, color, extra style]
+    const WORD_FONTS = {
+        bad:    ["'Rubik Glitch'", '#7A2E3B'],                           // glitched, something's off
+        love:   ["'Great Vibes'", '#B0566A'],                            // romantic script
+        run:    ["'Racing Sans One'", '#56634A', 'font-style: italic'],  // built for speed
+        better: ["'Abril Fatface'", '#2A1810'],                          // confident, levelled up
+        kiss:   ["'Pinyon Script'", '#C2607A'],                          // a light, flirty script
+        hills:  ["'Rye'", '#6B7F5E'],                                    // wide open country
+        hate:   ["'Permanent Marker'", '#7A2E3B', 'transform: rotate(-4deg)'],   // scrawled angrily
+        drop:   ["'Rubik Wet Paint'", '#8A4D57'],                        // literally dripping
+        dead:   ["'Creepster'", '#4A2530'],                              // horror-movie title
+        break:  ["'Rubik Distressed'", '#8F4661'],                       // cracked and worn
+        hands:  ["'Caveat'", '#8A4D57'],                                 // written by hand
+        one:    ["'Monoton'", '#9E5A63'],                                // a single neon line
+        last:   ["'Cormorant Garamond'", '#8C9BAE', 'font-style: italic; font-weight: 300'],   // thin and fading
+        time:   ["'Orbitron'", '#5A3E36'],                               // a digital clock
+        stupid: ["'Comic Neue'", '#9E5A63', 'font-weight: 700'],         // the silliest font there is
+        song:   ["'Pacifico'", '#D0708A'],                               // bubbly and sing-song
+        heart:  ["'Lobster'", '#A3475C'],                                // big and warm
+        down:   ["'Bebas Neue'", '#56634A', 'display: inline-block; transform: translateY(0.18em)'],   // sinking below the line
     };
-    const MOOD_OF = {};
-    Object.entries(MOODS).forEach(([mood, words]) => words.split(' ').forEach(w => MOOD_OF[w] ??= mood));
-    // try the word as it is, then without an ending (kisses → kiss, breaking → break, loved → love)
-    const wordFont = w => [w, w.replace(/es$/, ''), w.replace(/s$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/ed$/, ''), w.replace(/d$/, '')]
-        .map(form => MOOD_OF[form]).find(Boolean) || 'w-plain';
+    // a word that isn't listed above takes the first unused font from its mood, then from the spares
+    const MOOD_WORDS = {
+        love: 'lover loving hold baby darling sweetheart honey forever angel crush adore mine yours babe romance',
+        angry: 'bitch fire burn war revenge villain poison toxic kill wrong hurt mad crazy fight liar cruel',
+        sad: 'sorry cry tears alone lonely lost goodbye miss cold blue broken sad empty ghost gone without rain leave',
+        move: 'fast drive dance fly fall move jump high ride go wild shake away',
+        dream: 'dream dreams night stars star moon sky heaven light sun gold glow paradise wish magic midnight',
+    };
+    const MOOD_FONTS = {
+        love: ["'Satisfy'", "'Dancing Script'"],
+        angry: ["'Rubik Burned'", "'Bungee'"],
+        sad: ["'Homemade Apple'", "'Special Elite'"],
+        move: ["'Righteous'", "'Bungee Shade'"],
+        dream: ["'Italiana'", "'Tangerine'"],
+    };
+    const SPARE_FONTS = ["'Bodoni Moda'", "'Playfair Display'", "'Shrikhand'", "'Amatic SC'", "'Kalam'", "'Josefin Sans'", "'Fraunces'", "'Syne'"];
+    const SPARE_COLORS = ['#2A1810', '#8A4D57', '#56634A', '#9E5A63', '#5A3E36'];
+    const stems = w => [w, w.replace(/es$/, ''), w.replace(/s$/, ''), w.replace(/ing$/, ''), w.replace(/ing$/, 'e'), w.replace(/ed$/, ''), w.replace(/d$/, '')];
+    function fontsFor(words) {
+        const used = new Set();
+        const pick = list => { const f = list.find(x => !used.has(x)); if (f) used.add(f); return f; };
+        const style = ([font, color, extra = '']) => `font-family: ${font}, Georgia, serif; color: ${color}; ${extra}`;
+        // listed words first, so they always get their own font
+        const out = {};
+        words.forEach(w => { const hit = stems(w).find(f => WORD_FONTS[f]); if (hit && !used.has(WORD_FONTS[hit][0])) { used.add(WORD_FONTS[hit][0]); out[w] = style(WORD_FONTS[hit]); } });
+        words.forEach((w, i) => {
+            if (out[w]) return;
+            const mood = Object.keys(MOOD_WORDS).find(m => stems(w).some(f => MOOD_WORDS[m].split(' ').includes(f)));
+            const font = (mood && pick(MOOD_FONTS[mood])) || pick(SPARE_FONTS) || 'Georgia';
+            out[w] = style([font, SPARE_COLORS[i % SPARE_COLORS.length]]);
+        });
+        return out;
+    }
 
     function build(lab) {
         const tracks = lab.topTracks || {};
@@ -50,7 +88,7 @@
             const albums = {};
             const seen = new Set();
             all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); const k = t.album; if (!k) return; albums[k] = albums[k] || { n: 0, art: t.albumArt, artist: main(t) }; albums[k].n++; });
-            const top = Object.entries(albums).sort((a, b) => b[1].n - a[1].n).slice(0, 4);
+            const top = Object.entries(albums).sort((a, b) => b[1].n - a[1].n).slice(0, 5);
             card('Albums I Can’t Leave', 'most songs across all my top lists',
                 `<ul class="lab-albums">${top.map(([n, a]) => `<li>${a.art ? `<img src="${esc(a.art)}" alt="" loading="lazy">` : ''}<span><b>${esc(n)}</b><span>${esc(a.artist)}, ${a.n} songs</span></span></li>`).join('')}</ul>`);
         }
@@ -70,8 +108,9 @@
             all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); t.name.toLowerCase().replace(/\(.*?\)|-.*$/g, '').replace(/[^a-z' ]/g, ' ').split(/\s+/).forEach(w => { w = w.replace(/'/g, ''); if (w.length > 2 && !skip.has(w)) words[w] = (words[w] || 0) + 1; }); });
             const top = Object.entries(words).sort((a, b) => b[1] - a[1]).slice(0, 18);
             const max = top[0]?.[1] || 1;
+            const fonts = fontsFor(top.map(([w]) => w));
             card('Song Title Words', 'what my favorite song titles keep saying',
-                `<p class="lab-cloud">${top.map(([w, n]) => `<span class="${wordFont(w)}" style="font-size:${0.85 + (n / max) * 1.3}em">${esc(w)}</span>`).join(' ')}</p>`);
+                `<p class="lab-cloud">${top.map(([w, n]) => `<span style="${fonts[w]} font-size:${0.85 + (n / max) * 1.3}em">${esc(w)}</span>`).join(' ')}</p>`);
         }
 
         root.innerHTML = cards.join('');
