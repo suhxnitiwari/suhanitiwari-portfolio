@@ -10,14 +10,18 @@
         <label>Mood
             <select name="mood">
                 <option value="everything">Surprise me</option>
-                <option value="cozy">Cozy</option>
-                <option value="creative">Creative</option>
-                <option value="foodie">Foodie</option>
+                <option value="treat-yourself">Treat yourself</option>
+                <option value="adventurous">Adventurous</option>
                 <option value="productive">Productive</option>
-                <option value="lazy">Lazy</option>
+                <option value="social">Social</option>
+                <option value="day-in">Day in</option>
+                <option value="cozy">Cozy &amp; creative</option>
             </select>
         </label>
-        <button type="submit">Plan my Saturday ✦</button>
+        <div class="sat-actions">
+            <button type="submit">Plan my Saturday ✦</button>
+            <button type="button" class="sat-random">🎲 Just pick for me</button>
+        </div>
     </form>
     <div class="sat-out" aria-live="polite">
         <p class="sat-status">Pick your times and hit plan. My Python code runs right here in your browser, and every click is a different Saturday.</p>
