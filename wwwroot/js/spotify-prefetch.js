@@ -11,8 +11,6 @@
         artists: '/spotify/GetTopArtists?limit=20',
         songs: '/spotify/GetTopTracks?limit=50',
         genres: '/spotify/GetTopGenres?limit=5',
-        artistsShort: '/spotify/GetTopArtists?limit=5&timeRange=short_term',
-        artistsLong: '/spotify/GetTopArtists?limit=5&timeRange=long_term',
         recent: '/spotify/GetRecentlyPlayed'
     };
 
