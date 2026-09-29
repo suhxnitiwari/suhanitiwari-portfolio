@@ -1706,6 +1706,17 @@
             </div>
         </div>
 
+        <!-- MUSIC LAB: every chart Spotify's data allows, numbered so I can pick which to keep -->
+        <section class="music-lab" aria-labelledby="musicLabTitle">
+            <div class="music-lab-head">
+                <h3 class="music-card-title" id="musicLabTitle">Music Lab</h3>
+                <p class="music-card-sub">every chart Spotify still lets me make</p>
+            </div>
+            <div class="music-lab-grid" id="musicLab"><p class="music-loading">Loading...</p></div>
+        </section>
+        <link rel="stylesheet" href="~/css/music-lab.css" asp-append-version="true" />
+        <script src="~/js/music-lab.js" asp-append-version="true" defer></script>
+
         @* Current Album Obsession: hidden for now while I rethink its layout. To bring it back, delete the
            comment markers around this block and put fetch('/spotify/GetTopAlbum') back in loadSpotifyData.
         <!-- WHAT I'M OBSESSED WITH -->

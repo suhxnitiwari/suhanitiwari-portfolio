@@ -166,6 +166,13 @@ namespace Tiwari_Suhani_HW3.Controllers
             return Json(info);
         }
 
+        // Music Lab: everything Spotify will share, for the page to chart. Kept for an hour.
+        [HttpGet]
+        public async Task<IActionResult> GetMusicLab()
+        {
+            return await CachedSpotifyJson("music-lab", async token => await _spotifyService.GetMusicLabAsync(token), TimeSpan.FromHours(1));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetTopAlbum(string timeRange = "medium_term")
         {

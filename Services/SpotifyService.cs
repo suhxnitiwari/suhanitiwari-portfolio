@@ -282,6 +282,140 @@ namespace Tiwari_Suhani_HW3.Services
         }
 
         // What I'm listening to this very moment, or null when nothing is playing
+        // ===== Music Lab: every kind of data Spotify will give me, gathered in one go =====
+        // Nothing is charted here; the page builds the charts. Status records what each Spotify call answered
+        // (200 = data, 403 = Spotify no longer shares it with apps like mine), so a locked chart can say so.
+        public async Task<MusicLab> GetMusicLabAsync(string accessToken)
+        {
+            var lab = new MusicLab();
+
+            async Task<JsonElement?> Get(string key, string path)
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}{path}");
+                request.Headers.Add("Authorization", $"Bearer {accessToken}");
+                var response = await _httpClient.SendAsync(request);
+                lab.Status[key] = (int)response.StatusCode;
+                if (!response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.NoContent) return null;
+                var body = await response.Content.ReadAsStringAsync();
+                return string.IsNullOrWhiteSpace(body) ? null : JsonSerializer.Deserialize<JsonElement>(body);
+            }
+
+            static string Str(JsonElement e, string name) =>
+                e.TryGetProperty(name, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() ?? "" : "";
+            static int Int(JsonElement e, string name) =>
+                e.TryGetProperty(name, out var v) && v.ValueKind == JsonValueKind.Number ? v.GetInt32() : 0;
+            static List<string> Names(JsonElement e, string list) =>
+                e.TryGetProperty(list, out var arr) && arr.ValueKind == JsonValueKind.Array
+                    ? arr.EnumerateArray().Select(a => Str(a, "name")).ToList() : new();
+
+            LabTrack Track(JsonElement t)
+            {
+                var hasAlbum = t.TryGetProperty("album", out var album) && album.ValueKind == JsonValueKind.Object;
+                return new LabTrack
+                {
+                    Id = Str(t, "id"),
+                    Name = Str(t, "name"),
+                    Artists = Names(t, "artists"),
+                    Album = hasAlbum ? Str(album, "name") : "",
+                    AlbumType = hasAlbum ? Str(album, "album_type") : "",
+                    AlbumArt = hasAlbum ? FirstImageUrl(album) : "",
+                    ReleaseDate = hasAlbum ? Str(album, "release_date") : "",
+                    AlbumTracks = hasAlbum ? Int(album, "total_tracks") : 0,
+                    TrackNumber = Int(t, "track_number"),
+                    DurationMs = Int(t, "duration_ms"),
+                    Popularity = Int(t, "popularity"),
+                    Explicit = t.TryGetProperty("explicit", out var x) && x.ValueKind == JsonValueKind.True,
+                    Url = SpotifyLink(t)
+                };
+            }
+
+            foreach (var range in new[] { "short_term", "medium_term", "long_term" })
+            {
+                var tracks = await Get($"top-tracks:{range}", $"/me/top/tracks?limit=50&time_range={range}");
+                lab.TopTracks[range] = tracks is { } tj && tj.TryGetProperty("items", out var ti)
+                    ? ti.EnumerateArray().Select(Track).ToList() : new();
+
+                var artists = await Get($"top-artists:{range}", $"/me/top/artists?limit=50&time_range={range}");
+                lab.TopArtists[range] = artists is { } aj && aj.TryGetProperty("items", out var ai)
+                    ? ai.EnumerateArray().Select(a => new LabArtist
+                    {
+                        Id = Str(a, "id"),
+                        Name = Str(a, "name"),
+                        Image = FirstImageUrl(a),
+                        Popularity = Int(a, "popularity"),
+                        Followers = a.TryGetProperty("followers", out var f) ? Int(f, "total") : 0,
+                        Genres = a.TryGetProperty("genres", out var g) && g.ValueKind == JsonValueKind.Array
+                            ? g.EnumerateArray().Select(x => x.GetString() ?? "").ToList() : new(),
+                        Url = SpotifyLink(a)
+                    }).ToList() : new();
+            }
+
+            var recent = await Get("recently-played", "/me/player/recently-played?limit=50");
+            if (recent is { } rj && rj.TryGetProperty("items", out var ri))
+            {
+                foreach (var item in ri.EnumerateArray())
+                {
+                    if (!item.TryGetProperty("track", out var t)) continue;
+                    lab.Recent.Add(new LabPlay
+                    {
+                        Track = Track(t),
+                        PlayedAt = item.TryGetProperty("played_at", out var at) && at.TryGetDateTime(out var when) ? when : null,
+                        Context = item.TryGetProperty("context", out var c) && c.ValueKind == JsonValueKind.Object ? Str(c, "type") : ""
+                    });
+                }
+            }
+
+            if (await Get("me", "/me") is { } me)
+            {
+                lab.Profile = new LabProfile
+                {
+                    Country = Str(me, "country"),
+                    Plan = Str(me, "product"),
+                    Followers = me.TryGetProperty("followers", out var f) ? Int(f, "total") : 0
+                };
+            }
+
+            if (await Get("player", "/me/player") is { } player)
+            {
+                var device = player.TryGetProperty("device", out var d) && d.ValueKind == JsonValueKind.Object ? d : default;
+                lab.Player = new LabPlayer
+                {
+                    Device = device.ValueKind == JsonValueKind.Object ? Str(device, "name") : "",
+                    DeviceType = device.ValueKind == JsonValueKind.Object ? Str(device, "type") : "",
+                    Volume = device.ValueKind == JsonValueKind.Object ? Int(device, "volume_percent") : 0,
+                    Shuffle = player.TryGetProperty("shuffle_state", out var sh) && sh.ValueKind == JsonValueKind.True,
+                    Repeat = Str(player, "repeat_state"),
+                    Playing = player.TryGetProperty("is_playing", out var ip) && ip.ValueKind == JsonValueKind.True,
+                    Context = player.TryGetProperty("context", out var pc) && pc.ValueKind == JsonValueKind.Object ? Str(pc, "type") : ""
+                };
+            }
+
+            // Mood data (energy, happiness, tempo...). Spotify switched this off for newer apps in late 2024; try anyway.
+            var ids = lab.TopTracks["medium_term"].Select(t => t.Id).Where(id => id != "").Take(50).ToList();
+            if (ids.Count > 0 && await Get("audio-features", $"/audio-features?ids={string.Join(',', ids)}") is { } af
+                && af.TryGetProperty("audio_features", out var list))
+            {
+                foreach (var f in list.EnumerateArray())
+                {
+                    if (f.ValueKind != JsonValueKind.Object) continue;
+                    double D(string name) => f.TryGetProperty(name, out var v) && v.ValueKind == JsonValueKind.Number ? v.GetDouble() : 0;
+                    lab.Features.Add(new LabFeatures
+                    {
+                        Id = Str(f, "id"),
+                        Energy = D("energy"), Valence = D("valence"), Danceability = D("danceability"),
+                        Acousticness = D("acousticness"), Instrumentalness = D("instrumentalness"),
+                        Speechiness = D("speechiness"), Tempo = D("tempo"), Mode = (int)D("mode"), Key = (int)D("key")
+                    });
+                }
+            }
+
+            // Related artists for my #1: also switched off for newer apps; try anyway
+            var topArtistId = lab.TopArtists["medium_term"].FirstOrDefault()?.Id;
+            if (!string.IsNullOrEmpty(topArtistId)) await Get("related-artists", $"/artists/{topArtistId}/related-artists");
+
+            return lab;
+        }
+
         public async Task<NowPlaying?> GetNowPlayingAsync(string accessToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{ApiUrl}/me/player/currently-playing");
@@ -557,6 +691,84 @@ namespace Tiwari_Suhani_HW3.Services
         public string? Album { get; set; } = "";
         public int DurationMs { get; set; }
         public DateTime? PlayedAt { get; set; }
+    }
+
+    public class MusicLab
+    {
+        public Dictionary<string, int> Status { get; set; } = new();
+        public Dictionary<string, List<LabTrack>> TopTracks { get; set; } = new();
+        public Dictionary<string, List<LabArtist>> TopArtists { get; set; } = new();
+        public List<LabPlay> Recent { get; set; } = new();
+        public LabProfile? Profile { get; set; }
+        public LabPlayer? Player { get; set; }
+        public List<LabFeatures> Features { get; set; } = new();
+    }
+
+    public class LabTrack
+    {
+        public string Id { get; set; } = "";
+        public string Name { get; set; } = "";
+        public List<string> Artists { get; set; } = new();
+        public string Album { get; set; } = "";
+        public string AlbumType { get; set; } = "";
+        public string AlbumArt { get; set; } = "";
+        public string ReleaseDate { get; set; } = "";
+        public int AlbumTracks { get; set; }
+        public int TrackNumber { get; set; }
+        public int DurationMs { get; set; }
+        public int Popularity { get; set; }
+        public bool Explicit { get; set; }
+        public string Url { get; set; } = "";
+    }
+
+    public class LabArtist
+    {
+        public string Id { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string Image { get; set; } = "";
+        public int Popularity { get; set; }
+        public int Followers { get; set; }
+        public List<string> Genres { get; set; } = new();
+        public string Url { get; set; } = "";
+    }
+
+    public class LabPlay
+    {
+        public LabTrack Track { get; set; } = new();
+        public DateTime? PlayedAt { get; set; }
+        public string Context { get; set; } = "";
+    }
+
+    public class LabProfile
+    {
+        public string Country { get; set; } = "";
+        public string Plan { get; set; } = "";
+        public int Followers { get; set; }
+    }
+
+    public class LabPlayer
+    {
+        public string Device { get; set; } = "";
+        public string DeviceType { get; set; } = "";
+        public int Volume { get; set; }
+        public bool Shuffle { get; set; }
+        public string Repeat { get; set; } = "";
+        public bool Playing { get; set; }
+        public string Context { get; set; } = "";
+    }
+
+    public class LabFeatures
+    {
+        public string Id { get; set; } = "";
+        public double Energy { get; set; }
+        public double Valence { get; set; }
+        public double Danceability { get; set; }
+        public double Acousticness { get; set; }
+        public double Instrumentalness { get; set; }
+        public double Speechiness { get; set; }
+        public double Tempo { get; set; }
+        public int Mode { get; set; }
+        public int Key { get; set; }
     }
 
     public class NowPlaying

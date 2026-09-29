@@ -129,6 +129,13 @@
         transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
+    button.career-btn {
+        background: none;
+        font-family: inherit;
+        line-height: normal;
+        cursor: var(--cursor-hot, pointer);
+    }
+
     .career-btn.primary {
         background: #8A4D57;
         color: #FAF1EF;
@@ -141,78 +148,6 @@
         color: #FAF1EF;
     }
 
-    /* HOW I WORK, folded: a single calm bar until someone opens it */
-    .work-fold {
-        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
-        border-top: 1px solid #EBD5D0;
-        border-bottom: 1px solid #EBD5D0;
-    }
-
-    .work-fold > summary {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 24px;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 44px 40px;
-        list-style: none;
-        cursor: var(--cursor-hot, pointer);
-    }
-
-    .work-fold > summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .work-fold-text {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .work-fold-title {
-        margin-top: 6px;
-        font-family: Georgia, serif;
-        font-size: 2.2em;
-        font-weight: 700;
-        color: #2A1810;
-    }
-
-    .work-fold-sub {
-        margin-top: 6px;
-        color: #56634A;
-    }
-
-    .work-fold-btn {
-        flex: none;
-        padding: 12px 26px;
-        border-radius: 999px;
-        border: 1.5px solid #8A4D57;
-        font-weight: 600;
-        color: #8A4D57;
-        transition: background 0.2s ease, color 0.2s ease;
-    }
-
-    .work-fold-btn .when-closed::after { content: " ↓"; }
-    .work-fold-btn .when-open::after { content: " ↑"; }
-    .work-fold-btn .when-open,
-    .work-fold[open] .work-fold-btn .when-closed { display: none; }
-    .work-fold[open] .work-fold-btn .when-open { display: inline; }
-
-    .work-fold > summary:hover .work-fold-btn {
-        background: #8A4D57;
-        color: #FAF1EF;
-    }
-
-    .work-fold > summary:focus-visible {
-        outline: 2px solid #8A4D57;
-        outline-offset: -6px;
-    }
-
-    /* the section's own big heading would repeat the bar's */
-    .work-fold .work-tests-hero {
-        display: none;
-    }
-
     /* McCOMBS AT A GLANCE: the rankings on the left, what they mean to me on the right */
     .career-mccombs {
         padding: 72px 40px 0;
@@ -223,7 +158,17 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 48px;
-        align-items: center;
+        align-items: start;
+    }
+
+    /* pull the first line up by its half-leading so the text starts level with the tiles' top edge */
+    .mccombs-text p:first-child {
+        margin-top: -0.4em;
+    }
+
+    .mccombs-source a {
+        color: inherit;
+        text-underline-offset: 3px;
     }
 
     .mccombs-stats {
@@ -293,18 +238,6 @@
         .career-mccombs {
             padding: 48px 20px 0;
         }
-    }
-
-    /* the small résumé button that closes the page, under How I Work */
-    .pursue-end {
-        display: flex;
-        justify-content: center;
-        padding: 8px 40px 72px;
-    }
-
-    .pursue-end .career-btn {
-        padding: 9px 18px;
-        font-size: 0.85em;
     }
 
     /* EXPERIENCE: one card per role */
@@ -397,12 +330,6 @@
         .job {
             padding: 24px 22px;
         }
-
-        .work-fold > summary {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 32px 20px;
-        }
     }
 </style>
 
@@ -439,7 +366,7 @@
         <dl class="career-facts">
             <div>
                 <dt>Majors</dt>
-                <dd>Management Information Systems<br />Psychology<span>UT Austin</span></dd>
+                <dd>Management Information Systems<br />Psychology</dd>
             </div>
             <div>
                 <dt>GPA</dt>
@@ -461,8 +388,9 @@
 
         <div class="career-actions">
             <a class="career-btn primary" href="/resume">View my résumé ↗</a>
-            <a class="career-btn" href="mailto:suhxnitiwari@gmail.com">Email me</a>
-            <a class="career-btn" href="https://www.linkedin.com/in/suhxnitiwari/" target="_blank" rel="noopener">LinkedIn ↗</a>
+            @* these two copy to the clipboard instead of opening anything *@
+            <button type="button" class="career-btn career-copy" data-copy="suhxnitiwari@gmail.com" data-done="Email copied ✓">Email me</button>
+            <button type="button" class="career-btn career-copy" data-copy="https://www.linkedin.com/in/suhxnitiwari/" data-done="LinkedIn copied ✓">LinkedIn</button>
         </div>
 
     </div>
@@ -477,12 +405,12 @@
                 <li><b>#4</b><span>Management Information Systems, my major</span></li>
                 <li><b>#5</b><span>Marketing, my minor</span></li>
                 <li><b>#6</b><span>Undergraduate business school in the US</span></li>
-                <li><b>10</b><span>BBA programs ranked in the top ten</span></li>
+                <li><b>Top 10</b><span>Ten of our BBA programs rank here</span></li>
             </ul>
             <div class="mccombs-text">
                 <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <em>go build the real thing</em>.</p>
                 <p>Marketing sits right next door, so the psychology of why people choose what they choose is never far from the code. The rankings got me in the door. The people, the professors who know your name and classmates who push each other, are why I stay.</p>
-                <p class="mccombs-source">Rankings: U.S. News &amp; World Report</p>
+                <p class="mccombs-source">Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
             </div>
         </div>
     </div>
@@ -524,23 +452,8 @@
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
-@* How I Work is folded shut by default: it's there for anyone curious, one click away *@
 <section class="pursue-part" id="how-i-work" aria-label="How I work">
-    <details class="work-fold" id="workFold">
-        <summary>
-            <span class="work-fold-text">
-                <span class="career-kicker">For the curious</span>
-                <span class="work-fold-title">How I Work</span>
-                <span class="work-fold-sub">My DISC, CliftonStrengths and RIASEC results, and what they look like day to day.</span>
-            </span>
-            <span class="work-fold-btn" aria-hidden="true"><span class="when-closed">Open</span><span class="when-open">Close</span></span>
-        </summary>
-        @await Html.PartialAsync("HowIWork")
-    </details>
-    @* the page ends on a small way to the full résumé *@
-    <div class="pursue-end">
-        <a class="career-btn" href="/resume">View my résumé ↗</a>
-    </div>
+    @await Html.PartialAsync("HowIWork")
 </section>
 
 @{
@@ -549,19 +462,22 @@
 }
 
 <script>
-    // Opening a link to How I Work (the Pursue menu, #disc and so on) unfolds it first
-    (() => {
-        const fold = document.getElementById('workFold');
-        const openFor = () => {
-            const id = location.hash.slice(1);
-            if (!id) return;
-            const target = document.getElementById(id);
-            if (target && (target.id === 'how-i-work' || fold.contains(target))) {
-                fold.open = true;
-                requestAnimationFrame(() => target.scrollIntoView());
+    // Email me and LinkedIn copy to the clipboard, and say so for a moment
+    document.querySelectorAll('.career-copy').forEach(btn => {
+        const label = btn.textContent;
+        btn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(btn.dataset.copy);
+            } catch {
+                const box = Object.assign(document.createElement('textarea'), { value: btn.dataset.copy });
+                document.body.append(box);
+                box.select();
+                document.execCommand('copy');
+                box.remove();
             }
-        };
-        openFor();
-        window.addEventListener('hashchange', openFor);
-    })();
+            btn.textContent = btn.dataset.done;
+            clearTimeout(btn._reset);
+            btn._reset = setTimeout(() => btn.textContent = label, 2000);
+        });
+    });
 </script>
