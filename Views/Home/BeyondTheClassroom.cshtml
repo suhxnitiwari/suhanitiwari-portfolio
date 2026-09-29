@@ -9,7 +9,11 @@
     public record Initiative(string Name, string Tagline = "", string[]? Tags = null,
                              string Role = "", string Years = "", string Description = "",
                              string Link = "", string LinkText = "Learn more",
-                             string Photo = "", string PhotoAlt = "", string PhotoCaption = "");
+                             string Photo = "", string PhotoAlt = "", string PhotoCaption = "",
+                             (string Number, string Label)[]? Stats = null,
+                             (string Quote, string Who)[]? Reviews = null);
+
+    // Stats = big numbers with a short label (shown as a row); Reviews = reader quotes (shown once there are any)
 
     // One area of work outside class (like Early STEM Education): its number, title, intro line and projects
     public record Area(string Number, string Title, string Intro, Initiative[] Initiatives);
@@ -143,6 +147,67 @@
         color: #2A1810;
     }
 
+    /* the book's numbers: big serif figures with a small label, two by two */
+    .project-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 22px 0 0;
+    }
+
+    .project-stats div {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+    }
+
+    .project-stats dt {
+        font-family: Georgia, serif;
+        font-size: 1.7em;
+        font-weight: 700;
+        line-height: 1.1;
+        color: #8A4D57;
+    }
+
+    .project-stats dd {
+        margin: 4px 0 0;
+        font-size: 0.8em;
+        line-height: 1.4;
+        color: #56634A;
+    }
+
+    .project-reviews {
+        display: grid;
+        gap: 12px;
+        margin: 18px 0 0;
+    }
+
+    .project-reviews blockquote {
+        margin: 0;
+        padding: 2px 0 2px 16px;
+        border-left: 3px solid #C9969E;
+    }
+
+    .project-reviews p {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-style: italic;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .project-reviews cite {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.78em;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
     .project-tags {
         list-style: none;
         display: flex;
@@ -245,8 +310,22 @@
                     Tagline: "Sometimes representation starts with a storybook.",
                     Tags: new[] { "Engineering", "Representation", "Early STEM" },
                     Role: "Author & Illustrator",
-                    Years: "2023",
-                    Description: "My children's book, written and illustrated by me. It introduces young readers to seven women engineers from different backgrounds and fields, from aerospace to biomedical to computer engineering.",
+                    Years: "published October 10, 2023",
+                    Stats: new[]
+                    {
+                        ("280+", "copies sold in the first week"),
+                        ("1,000", "copies sold in the first month"),
+                        ("#1", "New Release in STEM Education, October 2023"),
+                        ("5.0 ★", "average rating on Amazon")
+                    },
+                    // Reader reviews from Amazon: paste the ones I like as ("the review", "who wrote it or where from")
+                    Reviews: new[]
+                    {
+                        ("An inspiring book and a must read for all aspiring engineers.", "Vivek, verified purchase"),
+                        ("The drawings are detailed and have their own unique art style, and the book explores different fields that could potentially be interesting to girls in STEM.", "Ray, Amazon review"),
+                        ("I bought it today and started reading it out of curiosity. I could not stop till I reached the last page.", "A dad of a young girl, Amazon review")
+                    },
+                    Description: "My children's book, written and illustrated by me. It introduces young readers to seven women engineers from different backgrounds and fields, from aerospace to biomedical to computer engineering. I donated all the profit from the first month's 1,000 copies, $4,194, to libraries in Dallas-Fort Worth to invest in early STEM education.",
                     Link: "https://www.amazon.com/dp/B0CKXVLJ23",
                     LinkText: "Get the book on Amazon ↗",
                     Photo: "/images/amaira-reading-book.jpg",
@@ -306,6 +385,33 @@
                             @if (!string.IsNullOrEmpty(project.Description))
                             {
                                 <p class="project-description">@project.Description</p>
+                            }
+                            @if (project.Stats is { Length: > 0 })
+                            {
+                                <dl class="project-stats">
+                                    @foreach (var (number, label) in project.Stats)
+                                    {
+                                        <div>
+                                            <dt>@number</dt>
+                                            <dd>@label</dd>
+                                        </div>
+                                    }
+                                </dl>
+                            }
+                            @if (project.Reviews is { Length: > 0 })
+                            {
+                                <div class="project-reviews">
+                                    @foreach (var (quote, who) in project.Reviews)
+                                    {
+                                        <blockquote>
+                                            <p>“@quote”</p>
+                                            @if (!string.IsNullOrEmpty(who))
+                                            {
+                                                <cite>@who</cite>
+                                            }
+                                        </blockquote>
+                                    }
+                                </div>
                             }
                             @if (project.Tags is { Length: > 0 })
                             {

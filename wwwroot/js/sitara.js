@@ -39,16 +39,18 @@
         if (focus) input.focus();
         chat.save();
     }
-    function shut() {
+    // Focus goes back to the button only for keyboard users (Escape), so mouse users
+    // don't see a focus ring around "Ask Sitara" after closing the chat
+    function shut(fromKeyboard = false) {
         root.classList.remove('open');
         panel.hidden = true;
         launch.setAttribute('aria-expanded', 'false');
-        launch.focus();
+        if (fromKeyboard) launch.focus();
         chat.save();
     }
     launch.addEventListener('click', open);
-    close.addEventListener('click', shut);
-    root.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) shut(); });
+    close.addEventListener('click', e => shut(e.detail === 0));   // detail 0 = pressed with the keyboard
+    root.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) shut(true); });
 
     function add(text, who, extra, remember = true) {
         const el = document.createElement('div');

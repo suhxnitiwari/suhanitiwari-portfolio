@@ -189,72 +189,47 @@
     .cover-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 14px;
+        gap: 12px;
     }
 
-    /* The two buttons a recruiter came for: big, bright, and asking to be clicked */
+    /* The two buttons a recruiter came for: clear and easy to spot, without the fuss */
     .cover-btn {
-        position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        overflow: hidden;
-        padding: 19px 36px;
+        gap: 8px;
+        padding: 14px 28px;
         border-radius: 999px;
-        border: 2px solid #FFF8F6;
-        background: rgba(255, 248, 246, 0.14);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        box-shadow: 0 8px 24px rgba(30, 14, 12, 0.28);
-        font-size: clamp(1rem, 1.2cqw, 1.25rem);
-        font-weight: 800;
+        border: 1.5px solid rgba(255, 248, 246, 0.9);
+        background: rgba(30, 14, 12, 0.18);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        font-size: clamp(0.9rem, 1cqw, 1rem);
+        font-weight: 700;
         letter-spacing: 1.5px;
         text-transform: uppercase;
         text-decoration: none;
         white-space: nowrap;
         color: #FFF8F6;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
     .cover-btn:hover {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
         background: #FFF8F6;
         color: #8F4661;
-        box-shadow: 0 14px 34px rgba(30, 14, 12, 0.38);
     }
 
-    /* the main one: solid mulberry with a soft glow */
+    /* the main one: solid mulberry */
     .cover-btn.primary {
         background: #8F4661;
         border-color: #8F4661;
         color: #FFFFFF;
-        box-shadow: 0 8px 28px rgba(143, 70, 97, 0.55), 0 0 0 4px rgba(255, 248, 246, 0.18);
     }
 
     .cover-btn.primary:hover {
         background: #A0526F;
         border-color: #A0526F;
         color: #FFFFFF;
-        box-shadow: 0 16px 40px rgba(143, 70, 97, 0.7), 0 0 0 6px rgba(255, 248, 246, 0.25);
-    }
-
-    /* a light sheen sweeps across the main button every few seconds */
-    .cover-btn.primary::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -60%;
-        width: 40%;
-        height: 100%;
-        background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 100%);
-        transform: skewX(-20deg);
-        animation: coverSheen 4.5s ease-in-out 3s infinite;
-        pointer-events: none;
-    }
-
-    @@keyframes coverSheen {
-        0% { left: -60%; }
-        25%, 100% { left: 130%; }
     }
 
     .cover-arrow {
@@ -263,11 +238,11 @@
     }
 
     .cover-btn:hover .cover-arrow {
-        transform: translateX(4px);
+        transform: translateX(3px);
     }
 
     .cover-btn:focus-visible {
-        outline: 3px solid #FFF8F6;
+        outline: 2px solid #FFF8F6;
         outline-offset: 3px;
     }
 
@@ -275,11 +250,6 @@
         .cover-btn,
         .cover-arrow {
             transition: none;
-        }
-
-        .cover-btn.primary::after {
-            animation: none;
-            display: none;
         }
     }
 
@@ -438,6 +408,7 @@
         margin-bottom: 0;
     }
 
+    /* MIS and marketing in my intro, colored and linked to their Coursework tabs */
     .about-mis-link {
         font-weight: 700;
         color: #D1167A;
@@ -1408,75 +1379,20 @@
         margin: 60px 0;
     }
 
-    /* ===== BIG FIVE: letters riding a wave drawn in fine lines ===== */
+    /* ===== BIG FIVE: five satin circles in a row, sized by score (same finish as my strengths) ===== */
     .ocean {
-        position: relative;
-        height: 360px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: clamp(14px, 3vw, 40px);
         max-width: 900px;
-        margin: 10px auto 0;
-    }
-
-    .ocean-wave {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-    }
-
-    .ocean-line,
-    .ocean-echo,
-    .ocean-section {
-        fill: none;
-        stroke: #C9969E;
-        stroke-linecap: round;
-        vector-effect: non-scaling-stroke;
-    }
-
-    .ocean-line,
-    .ocean-echo {
-        stroke-dasharray: 1;
-        stroke-dashoffset: 1;
-    }
-
-    .ocean-line {
-        stroke-width: 2;
-        opacity: 0.7;
-    }
-
-    /* thinner copies of the line underneath, each fainter than the last, like water lines */
-    .ocean-echo {
-        stroke-width: 1.25;
-        opacity: calc(0.42 - var(--e) * 0.12);
-        animation: oceanDrift 7s ease-in-out infinite alternate;
-        animation-delay: calc(var(--e) * -2.3s);
-    }
-
-    .ocean.in .ocean-line,
-    .ocean.in .ocean-echo {
-        stroke-dashoffset: 0;
-        transition: stroke-dashoffset 2.4s cubic-bezier(0.45, 0, 0.25, 1);
-    }
-
-    .ocean.in .ocean-echo {
-        transition-delay: calc(0.25s + var(--e) * 0.2s);
-    }
-
-    @@keyframes oceanDrift {
-        from { transform: translateX(-6px); }
-        to { transform: translateX(6px); }
-    }
-
-    .ocean-section {
-        stroke: #8A4D57;
-        stroke-width: 2.5;
-        opacity: 0;
-        transition: opacity 0.35s ease;
+        margin: 24px auto 0;
     }
 
     .ocean-node {
-        position: absolute;
-        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         padding: 0;
         border: none;
         background: none;
@@ -1484,9 +1400,9 @@
         color: inherit;
         cursor: var(--cursor-hot, pointer);
         opacity: 0;
-        translate: 0 22px;
-        transition: opacity 0.9s ease, translate 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-        transition-delay: calc(0.35s + var(--i) * 0.14s);
+        translate: 0 18px;
+        transition: opacity 0.8s ease, translate 1s cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: calc(0.1s + var(--i) * 0.12s);
     }
 
     .ocean.in .ocean-node {
@@ -1494,33 +1410,20 @@
         translate: 0 0;
     }
 
-    /* after the entrance, fading between states is quick and undelayed */
     .ocean.settled .ocean-node {
         transition: opacity 0.3s ease;
     }
 
-    .ocean-bob {
+    /* every circle gets a slot as tall as the biggest one, so the names line up underneath */
+    .ocean-slot {
         display: flex;
-        flex-direction: column;
         align-items: center;
-    }
-
-    /* a barely-there swell that travels O → N, about 9s per cycle */
-    .ocean.settled .ocean-bob {
-        animation: oceanSwell 9s ease-in-out infinite;
-        animation-delay: calc(var(--i) * -1.2s);
-    }
-
-    .ocean.has-selection .ocean-bob {
-        animation-play-state: paused;
-    }
-
-    @@keyframes oceanSwell {
-        0%, 100% { transform: translateY(-6px); }
-        50% { transform: translateY(6px); }
+        justify-content: center;
+        height: var(--max);
     }
 
     .ocean-circle {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1528,69 +1431,78 @@
         width: var(--d);
         height: var(--d);
         border-radius: 50%;
-        background: radial-gradient(circle at 30% 20%, #E3B7BC 0%, #9E5A63 52%, #8A4D57 100%);
+        background:
+            radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 55%),
+            radial-gradient(circle at 70% 85%, rgba(30, 14, 12, 0.16) 0%, rgba(30, 14, 12, 0) 60%),
+            var(--c);
         color: #FAF1EF;
-        box-shadow: inset 0 2px 3px #FAF1EF99, 0 8px 22px rgba(158, 90, 99, 0.2);
-        transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+        box-shadow: 0 10px 24px -8px rgba(74, 36, 42, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease, opacity 0.35s ease;
+    }
+
+    /* a fine inner ring, like a pressed seal */
+    .ocean-circle::after {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        border-radius: 50%;
+        border: 1px solid rgba(250, 241, 239, 0.35);
+        pointer-events: none;
     }
 
     .ocean-letter {
-        font-family: Georgia, serif;
-        font-size: calc(var(--d) * 0.36);
-        font-weight: 700;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: calc(var(--d) * 0.4);
+        font-weight: 500;
         line-height: 1;
     }
 
     .ocean-score {
         margin-top: 4px;
-        font-size: calc(var(--d) * 0.14);
+        font-size: calc(var(--d) * 0.13);
         font-weight: 700;
-        letter-spacing: 1px;
+        letter-spacing: 1.5px;
         opacity: 0.9;
     }
 
     .ocean-name {
-        margin-top: 10px;
-        font-size: 0.72em;
+        margin-top: 14px;
+        max-width: 120px;
+        font-size: 0.7em;
         font-weight: 700;
         letter-spacing: 1.5px;
+        line-height: 1.4;
+        text-align: center;
         text-transform: uppercase;
-        white-space: nowrap;
         color: #56634A;
-        opacity: 0.6;
-        transition: opacity 0.3s ease, color 0.3s ease;
+        transition: color 0.3s ease, opacity 0.3s ease;
     }
 
-    /* hover: that letter grows a touch, its stretch of wave brightens, the rest step back */
-    /* dimmed letters stay solid (so the line never shows through), just softer */
+    /* hover and click: that letter lifts, the others step back */
     .ocean.settled.hovering .ocean-node:not(.hovered):not(.selected) .ocean-circle,
     .ocean.settled.has-selection:not(.hovering) .ocean-node:not(.selected) .ocean-circle {
-        background: linear-gradient(150deg, #EBD5D0 0%, #C9969E 100%);
-        box-shadow: none;
+        opacity: 0.5;
+        filter: saturate(0.7);
     }
 
     .ocean.settled.hovering .ocean-node:not(.hovered):not(.selected) .ocean-name,
     .ocean.settled.has-selection:not(.hovering) .ocean-node:not(.selected) .ocean-name {
-        opacity: 0.35;
+        opacity: 0.45;
     }
 
     .ocean-node.hovered .ocean-circle {
-        transform: scale(1.06);
+        transform: translateY(-4px) scale(1.04);
+        box-shadow: 0 16px 30px -10px rgba(74, 36, 42, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
 
     .ocean-node.selected .ocean-circle {
-        transform: scale(1.12);
-        box-shadow: 0 12px 30px rgba(138, 77, 87, 0.32);
+        transform: translateY(-4px) scale(1.08);
+        box-shadow: 0 0 0 4px #FAF1EF, 0 0 0 5px var(--c), 0 18px 32px -10px rgba(74, 36, 42, 0.5);
     }
 
     .ocean-node.hovered .ocean-name,
     .ocean-node.selected .ocean-name {
-        opacity: 1;
         color: #2A1810;
-    }
-
-    .ocean-section.lit {
-        opacity: 0.8;
     }
 
     .ocean-node:focus-visible {
@@ -1599,13 +1511,13 @@
 
     .ocean-node:focus-visible .ocean-circle {
         outline: 2px solid #8A4D57;
-        outline-offset: 4px;
+        outline-offset: 6px;
     }
 
-    /* the chosen trait, opened up below the wave */
+    /* the chosen trait, opened up below the circles */
     .ocean-detail {
         max-width: 640px;
-        margin: 8px auto 0;
+        margin: 28px auto 0;
         text-align: center;
     }
 
@@ -1631,7 +1543,7 @@
         color: #2A1810;
     }
 
-    /* the trait in words: set like a magazine pull-quote, drifting on a second, looser wave */
+    /* the trait in words: set like a magazine pull-quote, in mixed type */
     .ocean-words {
         list-style: none;
         display: flex;
@@ -1763,20 +1675,27 @@
         font-weight: 700;
     }
 
-    /* phones: same swell, smaller circles, names only for the chosen letter */
+    /* phones: smaller circles, names only for the chosen letter */
     @@media (max-width: 700px) {
         .ocean {
-            height: 230px;
-            width: 88%;
+            gap: 8px;
+        }
+
+        .ocean-slot {
+            height: calc(var(--max) * 0.5);
         }
 
         .ocean-circle {
-            width: calc(var(--d) * 0.52);
-            height: calc(var(--d) * 0.52);
+            width: calc(var(--d) * 0.5);
+            height: calc(var(--d) * 0.5);
+        }
+
+        .ocean-circle::after {
+            inset: 4px;
         }
 
         .ocean-letter {
-            font-size: calc(var(--d) * 0.2);
+            font-size: calc(var(--d) * 0.21);
         }
 
         .ocean-score {
@@ -1799,18 +1718,10 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .ocean-node,
-        .ocean-line,
-        .ocean-echo {
+        .ocean-node {
             transition: none !important;
             opacity: 1;
             translate: 0 0;
-            stroke-dashoffset: 0;
-        }
-
-        .ocean-echo,
-        .ocean-bob {
-            animation: none !important;
         }
 
         .ocean-word {
@@ -1955,6 +1866,109 @@
         font-family: Georgia, serif;
     }
 
+    /* the birth chart wheel under the card */
+    .sky-wheel {
+        margin: 26px auto 0;
+        max-width: 360px;
+        text-align: center;
+    }
+
+    .sky-wheel svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+    }
+
+    .wheel-edge {
+        fill: none;
+        stroke: #C9969E;
+        stroke-width: 1;
+    }
+
+    .sky-wheel svg > circle:first-child {
+        fill: #FFF8F6;
+    }
+
+    .wheel-inner {
+        fill: none;
+        stroke: #EBD5D0;
+        stroke-width: 1;
+    }
+
+    .wheel-sign {
+        font-size: 15px;
+        fill: #9E5A63;
+        text-anchor: middle;
+        dominant-baseline: central;
+    }
+
+    .wheel-aspect {
+        stroke-width: 1;
+        opacity: 0.55;
+    }
+
+    .wheel-aspect.easy { stroke: #7F9A6B; }
+    .wheel-aspect.tense { stroke: #C27B8A; }
+
+    .wheel-asc {
+        stroke: #8A4D57;
+        stroke-width: 1.5;
+    }
+
+    .wheel-tick {
+        stroke: #8A4D57;
+        stroke-width: 1.5;
+    }
+
+    .wheel-planet {
+        cursor: var(--cursor-hot, pointer);
+        outline: none;
+    }
+
+    .wheel-planet circle {
+        fill: #FFF8F6;
+        stroke: #C9969E;
+        stroke-width: 1;
+        transition: fill 0.2s ease, stroke 0.2s ease;
+    }
+
+    .wheel-planet text {
+        font-size: 14px;
+        fill: #8A4D57;
+        text-anchor: middle;
+        dominant-baseline: central;
+        pointer-events: none;
+    }
+
+    .wheel-planet .wheel-asc-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .wheel-planet:hover circle,
+    .wheel-planet:focus-visible circle {
+        stroke: #8A4D57;
+        fill: #F5E0DB;
+    }
+
+    .wheel-planet.active circle {
+        fill: #8A4D57;
+        stroke: #8A4D57;
+    }
+
+    .wheel-planet.active text {
+        fill: #FAF1EF;
+    }
+
+    .sky-wheel figcaption {
+        margin-top: 10px;
+        font-size: 0.8em;
+        font-style: italic;
+        color: #56634A;
+    }
+
     .stars-wrong {
         margin-top: 40px;
         padding: 30px 32px;
@@ -2037,7 +2051,7 @@
         opacity: 1;
     }
 
-    .via-circle.active circle {
+    .via-circle.active .via-fill {
         opacity: 1;
         stroke: #FAF1EF;
         stroke-width: 8;
@@ -2077,10 +2091,10 @@
         opacity: 0.85;
     }
 
-    .via-core circle {
-        fill: #FAF1EF;
+    .via-core .via-fill {
+        fill: url(#viaCore);
         stroke: #8A4D57;
-        stroke-width: 4;
+        stroke-width: 3;
     }
 
     .via-core text {
@@ -2088,14 +2102,19 @@
     }
 
     .via-core-name {
-        font-family: Georgia, serif;
-        font-size: 44px;
-        font-weight: 700;
+        font-family: 'Bodoni Moda', Didot, 'Bodoni 72', Georgia, serif;
+        font-size: 62px;
+        font-style: italic;
+        font-weight: 400;
+        letter-spacing: -0.5px;
     }
 
     .via-core-sub {
-        font-size: 22px;
-        font-style: italic;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        fill: #56634A !important;
     }
 
     .via-card {
@@ -2634,7 +2653,7 @@
     <div class="about-container">
         <div class="about-intro">
             <h2>Hi, I’m Suhani Tiwari.</h2>
-            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/pursue#mis">Management Information Systems</a>. My academic interests include psychology, marketing, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
+            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/pursue#mis">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/pursue#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
         <h3 class="about-lead">The thing about me is...</h3>
@@ -3257,27 +3276,10 @@
                     ShowFacets: false)
             };
 
-            // The wave is only a design motif: each letter sits on a gentle swell (up, down, up, down).
-            // Heights don't mean anything; size does. Coordinates are in a 1000 x 300 box.
-            double[] waveX = { 100, 300, 500, 700, 900 };
-            double[] waveY = { 155, 90, 165, 95, 150 };
+            // Circle size follows the score; each trait borrows a color from the rest of the page
+            string[] oceanColors = { "#9E5A63", "#56634A", "#C27B8A", "#7F9A6B", "#8A4D57" };
             int lowScore = ocean.Min(t => t.Score), highScore = ocean.Max(t => t.Score);
-            double Diameter(int score) => highScore == lowScore ? 110 : 90 + (score - lowScore) * 35.0 / (highScore - lowScore);
-
-            // One smooth curve through all five points (Catmull-Rom turned into Bezier curves),
-            // starting a little before O and ending a little after N.
-            var pts = new List<(double X, double Y)> { (0, 170) };
-            for (var i = 0; i < 5; i++) pts.Add((waveX[i], waveY[i]));
-            pts.Add((1000, 150));
-            string Seg(int i)
-            {
-                var p0 = pts[Math.Max(i - 1, 0)]; var p1 = pts[i]; var p2 = pts[i + 1]; var p3 = pts[Math.Min(i + 2, pts.Count - 1)];
-                string f(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
-                return $"C {f(p1.X + (p2.X - p0.X) / 6)} {f(p1.Y + (p2.Y - p0.Y) / 6)} {f(p2.X - (p3.X - p1.X) / 6)} {f(p2.Y - (p3.Y - p1.Y) / 6)} {f(p2.X)} {f(p2.Y)}";
-            }
-            var wavePath = $"M {pts[0].X} {pts[0].Y} " + string.Join(" ", Enumerable.Range(0, pts.Count - 1).Select(Seg));
-            // the stretch of wave on either side of each letter, brightened on hover
-            string SectionPath(int node) => $"M {pts[node - 1].X} {pts[node - 1].Y} {Seg(node - 1)} {Seg(node)}";
+            double Diameter(int score) => highScore == lowScore ? 120 : 100 + (score - lowScore) * 30.0 / (highScore - lowScore);
         }
         <div class="test-panel" id="test-ocean" role="tabpanel" aria-labelledby="tab-ocean" hidden>
             <div class="type-header">
@@ -3285,33 +3287,20 @@
                 <p>The Big Five, one letter at a time</p>
             </div>
 
-            <div class="ocean" id="ocean">
-                <svg class="ocean-wave" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
-                    @for (var e = 0; e < 3; e++)
-                    {
-                        <g transform="translate(0 @(16 * (e + 1)))">
-                            <path class="ocean-echo" d="@wavePath" pathLength="1" style="--e: @e;" />
-                        </g>
-                    }
-                    <path class="ocean-line" d="@wavePath" pathLength="1" />
-                    @for (var i = 0; i < ocean.Length; i++)
-                    {
-                        <path class="ocean-section" data-letter="@ocean[i].Letter" d="@SectionPath(i + 1)" />
-                    }
-                </svg>
+            <div class="ocean" id="ocean" style="--max: @(Math.Round(Diameter(highScore)))px;">
                 @for (var i = 0; i < ocean.Length; i++)
                 {
                     var t = ocean[i];
                     <button type="button" class="ocean-node" data-letter="@t.Letter" aria-pressed="false"
                             aria-label="@t.Name, @t.Score"
-                            style="left: @(waveX[i] / 10)%; top: @((waveY[i] / 3).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture))%; --d: @(Math.Round(Diameter(t.Score)))px; --i: @i;">
-                        <span class="ocean-bob">
+                            style="--d: @(Math.Round(Diameter(t.Score)))px; --c: @oceanColors[i]; --i: @i;">
+                        <span class="ocean-slot">
                             <span class="ocean-circle">
                                 <span class="ocean-letter">@t.Letter</span>
                                 <span class="ocean-score">@t.Score</span>
                             </span>
-                            <span class="ocean-name">@t.Name</span>
                         </span>
+                        <span class="ocean-name">@t.Name</span>
                     </button>
                 }
             </div>
@@ -3377,6 +3366,24 @@
             </div>
             <div class="via-layout">
                 <svg class="via-diagram" viewBox="50 50 900 900" role="group" aria-label="My top 6 character strengths">
+                    <defs>
+                        <!-- a soft light from the top left and a little shade at the bottom right, so the circles have some body -->
+                        <radialGradient id="viaSheen" cx="0.32" cy="0.26" r="0.7">
+                            <stop offset="0" stop-color="#fff" stop-opacity="0.26" />
+                            <stop offset="0.6" stop-color="#fff" stop-opacity="0" />
+                        </radialGradient>
+                        <radialGradient id="viaShade" cx="0.7" cy="0.86" r="0.62">
+                            <stop offset="0" stop-color="#1E0E0C" stop-opacity="0.18" />
+                            <stop offset="1" stop-color="#1E0E0C" stop-opacity="0" />
+                        </radialGradient>
+                        <radialGradient id="viaCore" cx="0.38" cy="0.3" r="0.8">
+                            <stop offset="0" stop-color="#FFFBFA" />
+                            <stop offset="1" stop-color="#F3DCD7" />
+                        </radialGradient>
+                        <filter id="viaShadow" x="-30%" y="-30%" width="160%" height="170%">
+                            <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A242A" flood-opacity="0.28" />
+                        </filter>
+                    </defs>
                     @for (var i = 0; i < strengths.Length; i++)
                     {
                         var (key, name, virtue, _, _, color) = strengths[i];
@@ -3385,7 +3392,10 @@
                         var cy = Math.Round(500 + 290 * Math.Sin(angle));
                         var words = name.Split(' ');
                         <g class="via-circle" role="button" tabindex="0" data-key="@key" aria-label="#@(i + 1) @name">
-                            <circle cx="@cx" cy="@cy" r="140" fill="@color" />
+                            <circle class="via-fill" cx="@cx" cy="@cy" r="140" fill="@color" filter="url(#viaShadow)" />
+                            <circle cx="@cx" cy="@cy" r="140" fill="url(#viaSheen)" />
+                            <circle cx="@cx" cy="@cy" r="140" fill="url(#viaShade)" />
+                            <circle cx="@cx" cy="@cy" r="128" fill="none" stroke="#FAF1EF" stroke-opacity="0.35" stroke-width="1.5" />
                             <text x="@cx" y="@(cy - 34)" class="via-rank">#@(i + 1)</text>
                             @if (words.Length > 2)
                             {
@@ -3400,9 +3410,10 @@
                         </g>
                     }
                     <g class="via-circle via-core" role="button" tabindex="0" data-key="together" aria-label="How they work together">
-                        <circle cx="500" cy="500" r="120" />
-                        <text x="500" y="494" class="via-core-name">Suhani</text>
-                        <text x="500" y="534" class="via-core-sub">all together</text>
+                        <circle class="via-fill" cx="500" cy="500" r="120" filter="url(#viaShadow)" />
+                        <circle cx="500" cy="500" r="108" fill="none" stroke="#C9969E" stroke-width="1.5" />
+                        <text x="500" y="506" class="via-core-name">Suhani</text>
+                        <text x="500" y="546" class="via-core-sub">all together</text>
                     </g>
                 </svg>
 
@@ -3455,6 +3466,42 @@
                     "Transformation comes through learning, travel, faith and philosophy: beliefs that get questioned, deepened and rebuilt over time.", "")
             };
 
+            // The wheel under the card: every placement at its real degree, Ascendant on the left like a printed chart
+            string[] signNames = { "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces" };
+            string[] signGlyphs = { "♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓" };
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            double Lon(string line)
+            {
+                var m = System.Text.RegularExpressions.Regex.Match(line, @"in (\w+), (\d+)°(\d+)′");
+                return Array.IndexOf(signNames, m.Groups[1].Value) * 30 + int.Parse(m.Groups[2].Value) + int.Parse(m.Groups[3].Value) / 60.0;
+            }
+            var ascLon = Lon(sky[2].Item5);
+            string Pt(double lon, double r, char axis)
+            {
+                var a = (180 + lon - ascLon) * Math.PI / 180;
+                return (axis == 'x' ? 200 + r * Math.Cos(a) : 200 - r * Math.Sin(a)).ToString("0.#", inv);
+            }
+            var planets = sky.Where(p => p.Item1 != "rising").Select(p => (Key: p.Item1, Name: p.Item4, Glyph: p.Item3, Lon: Lon(p.Item5))).ToArray();
+            // nudge glyphs that sit on top of each other apart (the tick on the ring stays at the true degree)
+            var order = planets.OrderBy(p => p.Lon).ToArray();
+            var shown = order.Select(p => p.Lon).ToArray();
+            for (var pass = 0; pass < 30; pass++)
+                for (var i = 0; i < shown.Length; i++)
+                {
+                    var j = (i + 1) % shown.Length;
+                    var gap = ((shown[j] - shown[i]) % 360 + 360) % 360;
+                    if (gap < 13) { shown[i] -= (13 - gap) / 2; shown[j] += (13 - gap) / 2; }
+                }
+            // major aspects as fine lines across the middle: easy ones in sage, tense ones in rose
+            var aspects = new List<(double A, double B, bool Easy)>();
+            for (var i = 0; i < planets.Length; i++)
+                for (var j = i + 1; j < planets.Length; j++)
+                {
+                    var d = Math.Abs(planets[i].Lon - planets[j].Lon); d = Math.Min(d, 360 - d);
+                    foreach (var (angle, orb, easy) in new[] { (60.0, 4.0, true), (120.0, 6.0, true), (90.0, 6.0, false), (180.0, 6.0, false) })
+                        if (Math.Abs(d - angle) <= orb) aspects.Add((planets[i].Lon, planets[j].Lon, easy));
+                }
+
             // THE STARS GOT THIS ONE WRONG: (apparently…, me however…, real-life receipt). Shows only once it has entries.
             var starsWrong = Array.Empty<(string Claim, string Reality, string Receipt)>();
         }
@@ -3500,6 +3547,42 @@
                             }
                         </article>
                     }
+
+                    <figure class="sky-wheel">
+                        <svg viewBox="0 0 400 400" role="group" aria-label="My birth chart">
+                            <circle cx="200" cy="200" r="196" class="wheel-edge" />
+                            <circle cx="200" cy="200" r="162" class="wheel-edge" />
+                            <circle cx="200" cy="200" r="112" class="wheel-inner" />
+                            @for (var z = 0; z < 12; z++)
+                            {
+<g>
+                                <line x1="@Pt(z * 30, 162, 'x')" y1="@Pt(z * 30, 162, 'y')" x2="@Pt(z * 30, 196, 'x')" y2="@Pt(z * 30, 196, 'y')" class="wheel-edge" />
+                                <text x="@Pt(z * 30 + 15, 179, 'x')" y="@Pt(z * 30 + 15, 179, 'y')" class="wheel-sign">@(signGlyphs[z] + "\uFE0E")<title>@signNames[z]</title></text>
+                                </g>
+                            }
+                            @foreach (var (a1, b1, easy) in aspects)
+                            {
+                                <line x1="@Pt(a1, 112, 'x')" y1="@Pt(a1, 112, 'y')" x2="@Pt(b1, 112, 'x')" y2="@Pt(b1, 112, 'y')" class="wheel-aspect @(easy ? "easy" : "tense")" />
+                            }
+                            <line x1="@Pt(ascLon, 112, 'x')" y1="@Pt(ascLon, 112, 'y')" x2="@Pt(ascLon, 162, 'x')" y2="@Pt(ascLon, 162, 'y')" class="wheel-asc" />
+                            <g class="wheel-planet" role="button" tabindex="0" data-key="rising" aria-label="Taurus Rising">
+                                <circle cx="@Pt(ascLon, 130, 'x')" cy="@Pt(ascLon, 130, 'y')" r="15" />
+                                <text x="@Pt(ascLon, 130, 'x')" y="@Pt(ascLon, 130, 'y')" class="wheel-asc-label">ASC</text>
+                            </g>
+                            @for (var i = 0; i < order.Length; i++)
+                            {
+                                var pl = order[i];
+                                <g>
+                                <line x1="@Pt(pl.Lon, 162, 'x')" y1="@Pt(pl.Lon, 162, 'y')" x2="@Pt(pl.Lon, 152, 'x')" y2="@Pt(pl.Lon, 152, 'y')" class="wheel-tick" />
+                                <g class="wheel-planet @(pl.Key == "sun" ? "active" : "")" role="button" tabindex="0" data-key="@pl.Key" aria-label="@pl.Name">
+                                    <circle cx="@Pt(shown[i], 134, 'x')" cy="@Pt(shown[i], 134, 'y')" r="13" />
+                                    <text x="@Pt(shown[i], 134, 'x')" y="@Pt(shown[i], 134, 'y')">@pl.Glyph</text>
+                                </g>
+                                </g>
+                            }
+                        </svg>
+                        <figcaption>My birth chart. Tap a planet to read it.</figcaption>
+                    </figure>
                 </div>
             </div>
 
@@ -3548,21 +3631,19 @@
             });
         });
 
-        // Big Five: the wave draws itself the first time it's seen; hover and click pick a letter
+        // Big Five: the circles rise in the first time they're seen; hover and click pick a letter
         const ocean = document.getElementById('ocean');
         if (ocean) {
             const nodes = [...ocean.querySelectorAll('.ocean-node')];
-            const sections = [...ocean.querySelectorAll('.ocean-section')];
             const oceanCards = [...document.querySelectorAll('.ocean-card')];
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const light = letter => sections.forEach(s => s.classList.toggle('lit', s.dataset.letter === letter));
             const start = () => {
                 if (ocean.classList.contains('in')) return;
                 ocean.classList.add('in');
-                // once everything has floated into place, switch to the quiet swell
-                setTimeout(() => ocean.classList.add('settled'), reduce ? 0 : 2600);
+                // once everything has floated into place, hover and click fade quickly
+                setTimeout(() => ocean.classList.add('settled'), reduce ? 0 : 1700);
             };
-            // also start when the Big Five tab is opened while the wave is already on screen
+            // also start when the Big Five tab is opened while the circles are already on screen
             document.getElementById('tab-ocean').addEventListener('click', () => requestAnimationFrame(() => {
                 const r = ocean.getBoundingClientRect();
                 if (r.top < window.innerHeight && r.bottom > 0) start();
@@ -3594,12 +3675,10 @@
                 node.addEventListener('mouseenter', () => {
                     ocean.classList.add('hovering');
                     node.classList.add('hovered');
-                    light(node.dataset.letter);
                 });
                 node.addEventListener('mouseleave', () => {
                     ocean.classList.remove('hovering');
                     node.classList.remove('hovered');
-                    light(selected);
                 });
                 node.addEventListener('click', () => {
                     selected = selected === node.dataset.letter ? null : node.dataset.letter;
@@ -3609,7 +3688,6 @@
                         n.setAttribute('aria-pressed', on);
                     });
                     ocean.classList.toggle('has-selection', !!selected);
-                    light(selected);
                     oceanCards.forEach(c => c.hidden = c.dataset.letter !== selected);
                     if (selected && window.matchMedia('(max-width: 800px)').matches) {
                         document.querySelector('.ocean-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -3621,18 +3699,27 @@
         // Celestial: clicking a placement shows its card
         const skyItems = [...document.querySelectorAll('.sky-item')];
         const skyCards = [...document.querySelectorAll('.sky-card')];
-        skyItems.forEach(item => item.addEventListener('click', () => {
+        const wheelPlanets = [...document.querySelectorAll('.wheel-planet')];
+        const showSky = (key, fromWheel) => {
             skyItems.forEach(i => {
-                const on = i === item;
+                const on = i.dataset.key === key;
                 i.classList.toggle('active', on);
                 i.setAttribute('aria-pressed', on);
             });
-            skyCards.forEach(card => card.hidden = card.dataset.key !== item.dataset.key);
+            wheelPlanets.forEach(p => p.classList.toggle('active', p.dataset.key === key));
+            skyCards.forEach(card => card.hidden = card.dataset.key !== key);
             // on phones the card sits below the list, so bring it into view
-            if (window.matchMedia('(max-width: 800px)').matches) {
+            if (!fromWheel && window.matchMedia('(max-width: 800px)').matches) {
                 document.querySelector('.sky-detail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
-        }));
+        };
+        skyItems.forEach(item => item.addEventListener('click', () => showSky(item.dataset.key, false)));
+        wheelPlanets.forEach(p => {
+            p.addEventListener('click', () => showSky(p.dataset.key, true));
+            p.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSky(p.dataset.key, true); }
+            });
+        });
 
         // VIA: clicking a circle shows that strength's card (the center shows how they fit together)
         const diagram = document.querySelector('.via-diagram');
