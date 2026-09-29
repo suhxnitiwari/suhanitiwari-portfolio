@@ -459,12 +459,12 @@
 
         <!-- Overview (all nine themes), my MIS major, or my marketing projects -->
         <div class="cw-tabs" role="tablist" aria-label="Coursework view">
-            <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="true">Overview</button>
-            <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="false" tabindex="-1">MIS Major</button>
+            <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="true">MIS Major</button>
             <button type="button" class="cw-tab" role="tab" id="cw-tab-mk" aria-controls="cw-mk" aria-selected="false" tabindex="-1">Marketing Minor</button>
+            <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="false" tabindex="-1">Overview</button>
         </div>
 
-        <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview">
+        <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview" hidden>
         <!-- six ways the subjects work together: picking one lights up the cards that feed it -->
         <div class="cx">
             <p class="cx-intro">On paper, my classes look scattered across nine departments and four schools. In practice, they keep answering the same question: how do people think, and how do you build things that work for them? Psychology and education taught me how people learn and decide. Marketing and advertising taught me how to reach them. MIS, analytics and economics taught me how to build and measure what they need. The humanities taught me how to explain all of it.</p>
@@ -513,7 +513,7 @@
         <script type="application/json" id="cwThemes">@Json.Serialize(themes.Select(t => new { t.Name, t.Courses }))</script>
         </div>
 
-        <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis" hidden>
+        <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis">
             <section class="mis mp" aria-labelledby="mis-heading">
                 <!-- 1. who I am in one screen -->
                 <header class="mp-hero">
@@ -1011,12 +1011,18 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
 (() => {
     const tabs = [...document.querySelectorAll('.cw-tab')];
     // each tab has its own address and title, so a view can be shared and the back button moves between tabs
-    const hashFor = { 'cw-tab-overview': '', 'cw-tab-mis': '#mis', 'cw-tab-mk': '#marketing' };
+    // MIS Major is the default tab; #mis still works for links from the home page
+    const byId = id => tabs.find(t => t.id === id);
+    const misTab = byId('cw-tab-mis');
+    const hashFor = { 'cw-tab-mis': '#mis', 'cw-tab-mk': '#marketing', 'cw-tab-overview': '#overview' };
     const baseTitle = document.title;
     const tabForHash = h =>
-        ['#mis', '#skills', '#projects'].includes(h) ? tabs[1] : h === '#marketing' ? tabs[2] : tabs[0];
+        h === '#marketing' ? byId('cw-tab-mk')
+            // Overview, and the theme links that pick a crossover on it (from the home page)
+            : ['#overview', '#human-behavior', '#persuasion', '#storytelling', '#decision-making', '#leadership', '#innovation'].includes(h) ? byId('cw-tab-overview')
+            : misTab;
     const show = tab => {
-        document.title = tab === tabs[0] ? baseTitle : `${tab.textContent.trim()} | ${baseTitle}`;
+        document.title = tab === misTab ? baseTitle : `${tab.textContent.trim()} | ${baseTitle}`;
         tabs.forEach(t => {
             const on = t === tab;
             t.setAttribute('aria-selected', on);
