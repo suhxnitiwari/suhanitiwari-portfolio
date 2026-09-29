@@ -1455,10 +1455,17 @@
     .clock-tick { stroke: #D9BDB6; stroke-width: 1; }
     .clock-tick.major { stroke: #B98A92; stroke-width: 1.6; }
     .clock-track { fill: #F5E7E3; }
-    .clock-cone { transition: opacity 0.2s ease; }
+    .clock-cone { transition: opacity 0.2s ease; pointer-events: none; }
     .clock-cone.am { fill: #D9A3AD; }
     .clock-cone.pm { fill: #8F4661; }
-    .clock-cone:hover { opacity: 0.75; }
+
+    /* every half hour-slot is clickable; the picked one gets an outline */
+    .clock-slot { cursor: pointer; outline: none; }
+    .clock-slot .clock-track { transition: fill 0.2s ease; stroke: transparent; stroke-width: 1.5; }
+    .clock-slot:hover .clock-track { fill: #EFD9D4; }
+    .clock-slot:hover .clock-cone { opacity: 0.8; }
+    .clock-slot.selected .clock-track { fill: #EBCFCB; stroke: #8F4661; }
+    .clock-slot:focus-visible .clock-track { stroke: #2A1810; stroke-dasharray: 3 2; }
 
     .clock-num {
         font-family: Georgia, serif;
@@ -1469,7 +1476,12 @@
     }
 
     .clock-num.peak { font-weight: 700; fill: #8F4661; }
-    .clock-hand { stroke: #2A1810; stroke-width: 3; stroke-linecap: round; }
+    .clock-hand {
+        stroke: #2A1810; stroke-width: 3; stroke-linecap: round; pointer-events: none;
+        transform-box: view-box; transform-origin: 120px 120px;
+        transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    .clock-pin, .clock-pin-dot, .clock-num { pointer-events: none; }
     .clock-pin { fill: #2A1810; }
     .clock-pin-dot { fill: #FFFBFA; }
 
@@ -1493,6 +1505,61 @@
         vertical-align: -1px;
         background: var(--c);
     }
+
+    .clock-hint {
+        margin: -4px 0 0;
+        font-size: 0.72rem;
+        font-style: italic;
+        color: #A08A84;
+    }
+
+    /* the picked hour's details, under the clock */
+    .clock-detail {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #F8EEEB;
+        animation: clockDetailIn 0.3s ease;
+    }
+
+    @keyframes clockDetailIn { from { opacity: 0; transform: translateY(4px); } }
+
+    .clock-detail-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .clock-detail-head b { font-family: Georgia, serif; font-size: 1.35rem; color: #8F4661; }
+    .clock-detail-head span { font-size: 0.75rem; color: #7A6A64; }
+
+    .clock-detail-stats { display: flex; gap: 14px; flex-wrap: wrap; margin: 8px 0 0; font-size: 0.78rem; color: #7A6A64; }
+    .clock-detail-stats b { font-family: Georgia, serif; font-size: 1rem; color: #2A1810; }
+
+    .clock-detail-note { margin: 8px 0 0; font-size: 0.82rem; color: #56634A; }
+
+    .clock-detail-songs {
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 6px;
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    .clock-detail-songs a {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 4px;
+        border-radius: 8px;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .clock-detail-songs a:hover { background: #FFFBFA; }
+    .clock-detail-songs img, .clock-detail-songs i { width: 34px; height: 34px; border-radius: 5px; object-fit: cover; background: #EBD5D0; }
+    .clock-detail-songs span span, .clock-detail-songs b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .clock-detail-songs b { font-size: 0.85rem; color: #2A1810; }
+    .clock-detail-songs span span { font-size: 0.74rem; color: #7A6A64; }
+    .clock-detail-songs em { font-size: 0.7rem; font-style: normal; color: #A08A84; white-space: nowrap; }
 
     /* Then vs. Now: three short columns */
     .then-now {
@@ -1694,7 +1761,7 @@
                 <section class="music-card clock-card" aria-labelledby="clockTitle">
                     <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
                     <p class="music-card-sub">when I press play, from my last 50 songs</p>
-                    <div class="clock-chart" id="listenClock" role="img" aria-label="Loading listening clock"><p class="music-loading">Loading...</p></div>
+                    <div class="clock-chart" id="listenClock" role="group" aria-label="Listening clock"><p class="music-loading">Loading...</p></div>
                     <p class="music-card-note" id="clockNote"></p>
                 </section>
                 <section class="music-card then-card" aria-labelledby="thenNowTitle">
@@ -1951,28 +2018,100 @@
         }
         for (let d = 0; d < 12; d++) {
             const angle = d * 30;               // d = 0 is 12 o'clock
-            const am = counts[d], pm = counts[d + 12];
             const reach = n => HUB + 4 + (FULL - HUB - 4) * n / max;
-            svg += `<path class="clock-track" d="${wedge(angle - HALF, angle + HALF, FULL)}" />`;
-            if (am) svg += `<path class="clock-cone am" d="${wedge(angle - HALF, angle, reach(am))}"><title>${hourName(d)}: ${plural(am)}</title></path>`;
-            if (pm) svg += `<path class="clock-cone pm" d="${wedge(angle, angle + HALF, reach(pm))}"><title>${hourName(d + 12)}: ${plural(pm)}</title></path>`;
+            // each hour line is two clickable slots: the AM half on the left, the PM half on the right
+            [[d, angle - HALF, angle, 'am'], [d + 12, angle, angle + HALF, 'pm']].forEach(([h, from, to, half]) => {
+                svg += `<g class="clock-slot" data-hour="${h}" tabindex="0" role="button" aria-label="${hourName(h)}: ${plural(counts[h])}">
+                    <path class="clock-track" d="${wedge(from, to, FULL)}" />
+                    ${counts[h] ? `<path class="clock-cone ${half}" d="${wedge(from, to, reach(counts[h]))}" />` : ''}
+                </g>`;
+            });
             const [x, y] = pt(angle, 97).split(' ');
-            svg += `<text class="clock-num${peak % 12 === d ? ' peak' : ''}" x="${x}" y="${y}">${d || 12}</text>`;
+            svg += `<text class="clock-num" data-num="${d}" x="${x}" y="${y}">${d || 12}</text>`;
         }
-        const [hx, hy] = pt((peak % 12) * 30, 58).split(' ');
-        svg += `<line class="clock-hand" x1="${C}" y1="${C}" x2="${hx}" y2="${hy}" />`;
+        svg += `<line class="clock-hand" x1="${C}" y1="${C}" x2="${C}" y2="${C - 58}" />`;
         svg += `<circle class="clock-pin" cx="${C}" cy="${C}" r="6" /><circle class="clock-pin-dot" cx="${C}" cy="${C}" r="2" />`;
 
         chart.innerHTML = `
-            <svg class="clock-face" viewBox="0 0 240 240" aria-hidden="true">${svg}</svg>
+            <svg class="clock-face" viewBox="0 0 240 240">${svg}</svg>
             <ul class="clock-legend">
                 <li style="--c: #D9A3AD">AM</li>
                 <li style="--c: #8F4661">PM</li>
-            </ul>`;
+            </ul>
+            <p class="clock-hint">tap an hour to see what I played</p>
+            <div class="clock-detail" aria-live="polite"></div>`;
+
+        // clicking an hour: swing the hand there and show what I played in that hour
+        const byHour = Array.from({ length: 24 }, () => []);
+        plays.forEach(play => { if (play.playedAt) byHour[Number(hourOf.format(new Date(play.playedAt))) % 24].push(play); });
+        const dayTime = new Intl.DateTimeFormat('en-US', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: MUSIC_TIME_ZONE });
+        const total = plays.filter(p => p.playedAt).length;
+        const hand = chart.querySelector('.clock-hand');
+        const detail = chart.querySelector('.clock-detail');
+        let turned = (peak % 12) * 30;
+
+        const select = h => {
+            chart.querySelectorAll('.clock-slot').forEach(slot => {
+                const on = Number(slot.dataset.hour) === h;
+                slot.classList.toggle('selected', on);
+                slot.setAttribute('aria-pressed', on);
+            });
+            chart.querySelectorAll('.clock-num').forEach(num => num.classList.toggle('peak', Number(num.dataset.num) === h % 12));
+            // turn the shortest way round
+            const target = (h % 12) * 30;
+            turned += ((target - turned) % 360 + 540) % 360 - 180;
+            hand.style.transform = `rotate(${turned}deg)`;
+
+            const list = byHour[h].slice().sort((a, b) => new Date(b.playedAt) - new Date(a.playedAt));
+            const minutes = Math.round(list.reduce((a, p) => a + (p.durationMs || 0), 0) / 60000);
+            const artists = {};
+            list.forEach(p => { const a = (p.artist || '').split(',')[0].trim(); if (a) artists[a] = (artists[a] || 0) + 1; });
+            const [topArtist, topN] = Object.entries(artists).sort((a, b) => b[1] - a[1])[0] || [];
+            const end = `${((h + 11) % 12) + 1}:59 ${h < 12 ? 'AM' : 'PM'}`;
+
+            detail.innerHTML = `
+                <div class="clock-detail-head">
+                    <b>${hourName(h)}</b>
+                    <span>${hourName(h).replace(' ', ':00 ')} to ${end}${h === peak ? ' · my busiest hour' : ''}</span>
+                </div>
+                ${list.length ? `
+                    <div class="clock-detail-stats">
+                        <span><b>${list.length}</b> ${list.length === 1 ? 'play' : 'plays'}</span>
+                        <span><b>${minutes}</b> min</span>
+                        <span><b>${Math.round(list.length / total * 100)}%</b> of my last ${total}</span>
+                    </div>
+                    ${topN > 1 ? `<p class="clock-detail-note">Mostly ${escapeHtml(topArtist)} (${topN} of ${list.length}).</p>` : ''}
+                    <ul class="clock-detail-songs">${list.map(p => `
+                        <li>
+                            <a href="${escapeHtml(p.spotifyUrl || 'https://open.spotify.com')}" target="_blank" rel="noopener">
+                                ${p.albumArt ? `<img src="${escapeHtml(p.albumArt)}" alt="" loading="lazy">` : '<i></i>'}
+                                <span><b>${escapeHtml(p.name)}</b><span>${escapeHtml(p.artist)}</span></span>
+                                <em>${dayTime.format(new Date(p.playedAt))}</em>
+                            </a>
+                        </li>`).join('')}
+                    </ul>`
+                : `<p class="clock-detail-note">Nothing at ${hourName(h)} in my last ${total} plays. ${h >= 1 && h < 8 ? 'Asleep, probably.' : 'Busy doing other things.'}</p>`}`;
+        };
+
+        chart.querySelectorAll('.clock-slot').forEach(slot => {
+            const h = Number(slot.dataset.hour);
+            slot.addEventListener('click', () => select(h));
+            slot.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(h); }
+                // arrow keys walk the clock an hour at a time
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const next = (h + (e.key === 'ArrowRight' ? 1 : 23)) % 24;
+                    chart.querySelector(`.clock-slot[data-hour="${next}"]`).focus();
+                    select(next);
+                }
+            });
+        });
+        select(peak);
 
         const peakText = hourName(peak);
         const vibe = peak >= 20 || peak < 4 ? 'Night owl, confirmed.' : peak < 12 ? 'Morning person? Apparently.' : peak < 17 ? 'Afternoon soundtrack.' : 'Evening wind-down.';
-        chart.setAttribute('aria-label', `A clock of my recent listening. Most of it happens around ${peakText}`);
+        chart.setAttribute('aria-label', `A clock of my recent listening. Most of it happens around ${peakText}. Pick an hour to see what I played.`);
         document.getElementById('clockNote').textContent = `Busiest around ${peakText}. ${vibe} ✦`;
     }
 
