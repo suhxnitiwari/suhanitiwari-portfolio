@@ -70,8 +70,23 @@
         margin-top: 60px;
     }
 
-    .project:nth-of-type(even) .project-photo {
+    .project:nth-of-type(even) .project-side {
         order: 2;
+    }
+
+    .project-side {
+        justify-self: center;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    /* the book: photo top lines up with the title, reviews sit under the photo */
+    .project.has-reviews {
+        align-items: start;
+    }
+
+    .project.has-reviews .project-side {
+        margin-top: 34px;
     }
 
     /* Every photo is the same upright 3:4 size, so the three rows match */
@@ -147,65 +162,125 @@
         color: #2A1810;
     }
 
-    /* the book's numbers: big serif figures with a small label, two by two */
+    /* the book's numbers: one quiet row of figures between two hairlines */
     .project-stats {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-        margin: 22px 0 0;
-    }
-
-    .project-stats div {
-        padding: 14px 16px;
-        border-radius: 14px;
-        background: #FFF8F6;
-        border: 1px solid #EBD5D0;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px 16px;
+        margin: 24px 0 0;
+        padding: 18px 0;
+        border-top: 1px solid #EBD5D0;
+        border-bottom: 1px solid #EBD5D0;
     }
 
     .project-stats dt {
         font-family: Georgia, serif;
-        font-size: 1.7em;
+        font-size: 1.55em;
         font-weight: 700;
         line-height: 1.1;
         color: #8A4D57;
     }
 
     .project-stats dd {
-        margin: 4px 0 0;
-        font-size: 0.8em;
+        margin: 6px 0 0;
+        font-size: 0.76em;
         line-height: 1.4;
         color: #56634A;
     }
 
-    .project-reviews {
-        display: grid;
-        gap: 12px;
-        margin: 18px 0 0;
+    /* the donation takes the last two spots, so five numbers still fill the grid */
+    .project-stats div:nth-child(5):last-child {
+        grid-column: span 2;
     }
 
-    .project-reviews blockquote {
+    @@media (max-width: 520px) {
+        .project-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    /* reader reviews under the photo, one at a time */
+    .review-carousel {
+        margin-top: 22px;
+        padding: 22px 24px 16px;
+        border-radius: 18px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.1);
+    }
+
+    .review-label {
+        margin: 0 0 10px;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .review-card {
         margin: 0;
-        padding: 2px 0 2px 16px;
-        border-left: 3px solid #C9969E;
+        min-height: 7.2em;
+        animation: reviewIn 0.35s ease both;
     }
 
-    .project-reviews p {
+    .review-card p {
         margin: 0;
         font-family: Georgia, serif;
+        font-size: 1.05em;
         font-style: italic;
-        line-height: 1.6;
+        line-height: 1.55;
         color: #2A1810;
     }
 
-    .project-reviews cite {
+    .review-card cite {
         display: block;
-        margin-top: 4px;
-        font-size: 0.78em;
+        margin-top: 10px;
+        font-size: 0.75em;
         font-style: normal;
         font-weight: 700;
         letter-spacing: 1px;
         text-transform: uppercase;
-        color: #9E5A63;
+        color: #56634A;
+    }
+
+    @@keyframes reviewIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .review-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .review-nav button {
+        width: 34px;
+        height: 34px;
+        border: 1px solid #C9969E;
+        border-radius: 50%;
+        background: transparent;
+        font-size: 1.2em;
+        line-height: 1;
+        color: #8A4D57;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .review-nav button:hover {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .review-count {
+        font-size: 0.8em;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: #56634A;
     }
 
     .project-tags {
@@ -266,12 +341,16 @@
             padding: 50px 0;
         }
 
-        .project:nth-of-type(even) .project-photo {
+        .project:nth-of-type(even) .project-side {
             order: 0;
         }
 
-        .project-photo {
+        .project-side {
             max-width: 340px;
+        }
+
+        .project.has-reviews .project-side {
+            margin-top: 0;
         }
 
         .project h2 {
@@ -300,6 +379,18 @@
                 new Initiative("Girls Who Code",
                     Tagline: "Teaching girls to code before they could decide it wasn't for them.",
                     Tags: new[] { "Coding", "Web Development", "Mentorship" },
+                    Role: "Founder & President",
+                    Years: "Frisco, Texas, 2022 to 2024",
+                    Description: "In 9th grade I was one of three girls in AP Computer Science Principles, and instead of banding together, we competed for the A. So I started Girls Who Code chapters at two middle schools to reach girls earlier and give them a community. I wrote my own curriculum from Frisco ISD, College Board and Girls Who Code material, and every girl built 10 Python and web projects.",
+                    Stats: new[]
+                    {
+                        ("240+", "girls taught over two years"),
+                        ("2", "middle school chapters I founded"),
+                        ("4", "sixteen-week sessions a year"),
+                        ("100%", "of my students scored 3 or higher on the AP CS exam"),
+                        ("75%", "scored a 4 or 5"),
+                        ("15%", "rise in girls signing up for AP CS at the feeder high school")
+                    },
                     // cropped from girls-who-code.jpg to frame me teaching
                     Photo: "/images/girls-who-code-teaching.jpg",
                     PhotoAlt: "Me leading a Girls Who Code session",
@@ -313,10 +404,11 @@
                     Years: "published October 10, 2023",
                     Stats: new[]
                     {
-                        ("280+", "copies sold in the first week"),
-                        ("1,000", "copies sold in the first month"),
-                        ("#1", "New Release in STEM Education, October 2023"),
-                        ("5.0 ★", "average rating on Amazon")
+                        ("280+", "copies in the first week"),
+                        ("1,000", "copies in the first month"),
+                        ("#1", "New Release in STEM Education"),
+                        ("5.0 ★", "rating on Amazon"),
+                        ("$4,194", "first-month profit, all donated to Dallas-Fort Worth libraries for early STEM education")
                     },
                     // Reader reviews from Amazon: paste the ones I like as ("the review", "who wrote it or where from")
                     Reviews: new[]
@@ -325,7 +417,7 @@
                         ("The drawings are detailed and have their own unique art style, and the book explores different fields that could potentially be interesting to girls in STEM.", "Ray, Amazon review"),
                         ("I bought it today and started reading it out of curiosity. I could not stop till I reached the last page.", "A dad of a young girl, Amazon review")
                     },
-                    Description: "My children's book, written and illustrated by me. It introduces young readers to seven women engineers from different backgrounds and fields, from aerospace to biomedical to computer engineering. I donated all the profit from the first month's 1,000 copies, $4,194, to libraries in Dallas-Fort Worth to invest in early STEM education.",
+                    Description: "Every bedtime story I read my little sister was about princesses, fairies and dolls. Never real women. So at 17, I wrote and illustrated the book I wished she had: seven women engineers from different backgrounds, from aerospace to biomedical to computer engineering, and the first one is named after her.",
                     Link: "https://www.amazon.com/dp/B0CKXVLJ23",
                     LinkText: "Get the book on Amazon ↗",
                     Photo: "/images/amaira-reading-book.jpg",
@@ -360,16 +452,43 @@
                 {
                     var project = area.Initiatives[i];
                     var meta = string.Join(", ", new[] { project.Role, project.Years }.Where(part => !string.IsNullOrEmpty(part)));
-                    <article class="project">
+                    <article class="project @(project.Reviews is { Length: > 0 } || project.Stats is { Length: > 0 } ? "has-reviews" : "")">
                         @if (!string.IsNullOrEmpty(project.Photo))
                         {
-                            <figure class="project-photo">
-                                <img src="@project.Photo" alt="@(string.IsNullOrEmpty(project.PhotoAlt) ? project.Name : project.PhotoAlt)" loading="lazy">
-                                @if (!string.IsNullOrEmpty(project.PhotoCaption))
+                            <div class="project-side">
+                                <figure class="project-photo">
+                                    <img src="@project.Photo" alt="@(string.IsNullOrEmpty(project.PhotoAlt) ? project.Name : project.PhotoAlt)" loading="lazy">
+                                    @if (!string.IsNullOrEmpty(project.PhotoCaption))
+                                    {
+                                        <figcaption>@project.PhotoCaption</figcaption>
+                                    }
+                                </figure>
+                                @if (project.Reviews is { Length: > 0 })
                                 {
-                                    <figcaption>@project.PhotoCaption</figcaption>
+                                    <div class="review-carousel" aria-roledescription="carousel" aria-label="Reader reviews">
+                                        <p class="review-label">What readers say</p>
+                                        @for (var r = 0; r < project.Reviews.Length; r++)
+                                        {
+                                            var (quote, who) = project.Reviews[r];
+                                            <blockquote class="review-card" hidden="@(r != 0)">
+                                                <p>“@quote”</p>
+                                                @if (!string.IsNullOrEmpty(who))
+                                                {
+                                                    <cite>@who</cite>
+                                                }
+                                            </blockquote>
+                                        }
+                                        @if (project.Reviews.Length > 1)
+                                        {
+                                            <div class="review-nav">
+                                                <button type="button" class="review-prev" aria-label="Previous review">‹</button>
+                                                <span class="review-count" aria-live="polite">1 of @project.Reviews.Length</span>
+                                                <button type="button" class="review-next" aria-label="Next review">›</button>
+                                            </div>
+                                        }
+                                    </div>
                                 }
-                            </figure>
+                            </div>
                         }
                         <div class="project-text">
                             <span class="project-num">@((i + 1).ToString("00"))</span>
@@ -398,21 +517,6 @@
                                     }
                                 </dl>
                             }
-                            @if (project.Reviews is { Length: > 0 })
-                            {
-                                <div class="project-reviews">
-                                    @foreach (var (quote, who) in project.Reviews)
-                                    {
-                                        <blockquote>
-                                            <p>“@quote”</p>
-                                            @if (!string.IsNullOrEmpty(who))
-                                            {
-                                                <cite>@who</cite>
-                                            }
-                                        </blockquote>
-                                    }
-                                </div>
-                            }
                             @if (project.Tags is { Length: > 0 })
                             {
                                 <ul class="project-tags">
@@ -433,3 +537,20 @@
         }
     </div>
 </div>
+
+<script>
+    // Reader reviews: ‹ and › step through them one at a time
+    document.querySelectorAll('.review-carousel').forEach(box => {
+        const cards = [...box.querySelectorAll('.review-card')];
+        const count = box.querySelector('.review-count');
+        if (!count) return;
+        let at = 0;
+        const show = step => {
+            at = (at + step + cards.length) % cards.length;
+            cards.forEach((c, i) => c.hidden = i !== at);
+            count.textContent = `${at + 1} of ${cards.length}`;
+        };
+        box.querySelector('.review-prev').addEventListener('click', () => show(-1));
+        box.querySelector('.review-next').addEventListener('click', () => show(1));
+    });
+</script>

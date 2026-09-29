@@ -27,7 +27,7 @@
     }
 
     .listen-container {
-        max-width: 1200px;
+        max-width: 1440px;
         margin: 0 auto;
     }
 
@@ -347,7 +347,10 @@
         top: 16px;
         right: 16px;
         z-index: 30;
-        width: 270px;
+        width: min(340px, calc(100% - 32px));
+        max-height: calc(100% - 32px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
         background: #FAF1EF;
         border: 1px solid #EDD8D3;
         border-radius: 20px;
@@ -406,6 +409,127 @@
         font-weight: 700;
         color: #2A1810;
         line-height: 1.2;
+    }
+
+    .up-from {
+        margin-top: 2px;
+        font-size: 0.8em;
+        color: #56634A;
+    }
+
+    .up-numbers {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        margin: 0 0 14px;
+        padding: 12px 0;
+        border-top: 1px solid #EDD8D3;
+        border-bottom: 1px solid #EDD8D3;
+        text-align: center;
+    }
+
+    .up-numbers dt {
+        font-family: Georgia, serif;
+        font-size: 1.25em;
+        font-weight: 700;
+        color: #8A4D57;
+    }
+
+    .up-numbers dd {
+        margin: 2px 0 0;
+        font-size: 0.66em;
+        line-height: 1.3;
+        color: #7A6A64;
+    }
+
+    .up-genres {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .up-genres:empty { display: none; }
+
+    .up-genres span {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(158, 90, 99, 0.12);
+        font-size: 0.74em;
+        font-weight: 600;
+        text-transform: capitalize;
+        color: #2A1810;
+    }
+
+    .up-about {
+        margin: 0 0 14px;
+        font-family: Georgia, serif;
+        font-size: 0.88em;
+        line-height: 1.55;
+        color: #2A1810;
+    }
+
+    .up-about:empty { display: none; }
+
+    .up-about a {
+        font-family: system-ui, sans-serif;
+        font-size: 0.85em;
+        font-weight: 600;
+        color: #8A4D57;
+    }
+
+    .up-loading {
+        font-style: italic;
+        color: #9C8A84;
+    }
+
+    .up-label {
+        margin: 0 0 6px;
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .up-songs {
+        margin: 0 0 16px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .up-songs a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0;
+        font-size: 0.86em;
+        color: #2A1810;
+        text-decoration: none;
+    }
+
+    .up-songs a:hover span { color: #8A4D57; }
+
+    .up-songs img {
+        width: 30px;
+        height: 30px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    .up-songs span {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 600;
+    }
+
+    .up-songs em {
+        font-style: normal;
+        font-size: 0.85em;
+        color: #9C8A84;
     }
 
     .up-stats {
@@ -907,9 +1031,22 @@
         gap: 24px;
     }
 
+    /* On Repeat stands as tall as the universe, so its five songs spread out to fill it */
+    .music-side > .music-card {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .music-side .songs-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
     .music-stats {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 24px;
         margin: 24px 0 70px;
     }
@@ -1067,11 +1204,51 @@
         color: #2A1810;
     }
 
-    .now-playing img {
-        width: 44px;
-        height: 44px;
+    /* the song as a vinyl record: grooves, a sheen, the album art as its center label and a spindle hole.
+       It spins while I'm listening and rests when it's only the last song played. */
+    .now-disc {
+        position: relative;
+        flex: none;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background:
+            conic-gradient(from 20deg, rgba(255, 255, 255, 0) 0deg, rgba(255, 255, 255, 0.16) 30deg, rgba(255, 255, 255, 0) 70deg,
+                           rgba(255, 255, 255, 0) 180deg, rgba(255, 255, 255, 0.12) 210deg, rgba(255, 255, 255, 0) 250deg),
+            repeating-radial-gradient(circle, #1B1412 0 1.5px, #2A201D 1.5px 3px);
+        box-shadow: 0 6px 14px rgba(30, 14, 12, 0.3), inset 0 0 0 2px #120C0B;
+    }
+
+    .now-playing.live .now-disc {
+        animation: discSpin 3.2s linear infinite;
+    }
+
+    .now-disc img,
+    .now-disc .now-label {
+        position: absolute;
+        inset: 30%;
+        width: 40%;
+        height: 40%;
         border-radius: 50%;
         object-fit: cover;
+        background: #8F4661;
+    }
+
+    /* the spindle hole */
+    .now-disc::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        margin: -2.5px 0 0 -2.5px;
+        border-radius: 50%;
+        background: #FFF8F6;
+    }
+
+    @@keyframes discSpin {
+        to { transform: rotate(360deg); }
     }
 
     .now-playing-label {
@@ -1109,35 +1286,65 @@
         color: #56634A;
     }
 
-    /* Listening Clock: 24 bars, midnight to midnight */
+    /* Listening Clock: a real clock face. Each hour has a cone from the center toward its number,
+       split in two (AM on the left half, PM on the right); the fuller the cone, the more I listened then.
+       The hour hand points at my busiest hour. */
     .clock-chart {
-        display: grid;
-        grid-template-columns: repeat(24, minmax(0, 1fr));
-        align-items: end;
-        gap: 3px;
-        height: 120px;
-        padding-bottom: 20px;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
 
-    .clock-bar {
-        position: relative;
-        min-height: 3px;
-        border-radius: 4px 4px 2px 2px;
-        background: #EBD5D0;
+    .clock-face {
+        display: block;
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        overflow: visible;
     }
 
-    .clock-bar.has { background: #C98B97; }
-    .clock-bar.peak { background: #8F4661; }
+    .clock-rim { fill: #FFFBFA; stroke: #EBD5D0; stroke-width: 1.5; }
+    .clock-tick { stroke: #D9BDB6; stroke-width: 1; }
+    .clock-tick.major { stroke: #B98A92; stroke-width: 1.6; }
+    .clock-track { fill: #F5E7E3; }
+    .clock-cone { transition: opacity 0.2s ease; }
+    .clock-cone.am { fill: #D9A3AD; }
+    .clock-cone.pm { fill: #8F4661; }
+    .clock-cone:hover { opacity: 0.75; }
 
-    .clock-bar span {
-        position: absolute;
-        top: calc(100% + 5px);
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.66rem;
-        color: #8C7A74;
-        white-space: nowrap;
+    .clock-num {
+        font-family: Georgia, serif;
+        font-size: 13px;
+        fill: #5A3E36;
+        text-anchor: middle;
+        dominant-baseline: central;
+    }
+
+    .clock-num.peak { font-weight: 700; fill: #8F4661; }
+    .clock-hand { stroke: #2A1810; stroke-width: 3; stroke-linecap: round; }
+    .clock-pin { fill: #2A1810; }
+    .clock-pin-dot { fill: #FFFBFA; }
+
+    .clock-legend {
+        display: flex;
+        gap: 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.75rem;
+        color: #7A6A64;
+    }
+
+    .clock-legend li::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 6px;
+        border-radius: 3px;
+        vertical-align: -1px;
+        background: var(--c);
     }
 
     /* Then vs. Now: three short columns */
@@ -1220,14 +1427,54 @@
         color: #8F4661;
     }
 
-    @@media (max-width: 1000px) {
-        .music-stats {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* Desktop: the listening dashboard at full size, so every number is easy to read */
+    @@media (min-width: 821px) {
+        .music-grid,
+        .music-stats,
+        .music-side {
+            gap: 32px;
         }
 
-        .music-stats > :last-child {
-            grid-column: 1 / -1;
+        .music-stats {
+            margin-top: 32px;
         }
+
+        .universe-card .universe {
+            min-height: 560px;
+        }
+
+        .music-card {
+            padding: 30px 34px;
+        }
+
+        .music-card-title { font-size: 1.75rem; }
+        .music-card-sub { margin: 6px 0 22px; font-size: 1rem; }
+        .music-card-note { margin-top: 18px; font-size: 1.05rem; }
+
+        .music-card .song-rank { width: 34px; font-size: 1.25rem; }
+        .music-card .song-image { width: 56px; height: 56px; }
+        .music-card .song-name { font-size: 1.1rem; }
+        .music-card .song-artist { font-size: 0.95rem; }
+
+        .music-card .dna-chart { width: 200px; }
+        .music-card .dna-center-pct { font-size: 38px; }
+        .music-card .dna-center-name { font-size: 0.72rem; }
+        .music-card .dna-caption { font-size: 1rem; }
+        .music-card .dna-legend li .dna-key { font-size: 1rem; }
+        .music-card .dna-note { font-size: 0.8rem; }
+
+        .clock-face { max-width: 340px; }
+        .clock-legend { font-size: 0.85rem; }
+
+        .then-now h4 { font-size: 0.8rem; }
+        .then-now li { font-size: 1rem; }
+        .era-row { font-size: 1rem; }
+        .era-track { height: 14px; }
+
+        .now-disc { width: 76px; height: 76px; }
+        .now-playing-label { font-size: 0.8rem; }
+        .now-playing-song { font-size: 1.1rem; }
+        .now-playing-artist { font-size: 0.98rem; }
     }
 
     @@media (max-width: 820px) {
@@ -1243,9 +1490,6 @@
             aspect-ratio: 1 / 1;
         }
 
-        .music-stats > :last-child {
-            grid-column: auto;
-        }
     }
 
     @@media (max-width: 480px) {
@@ -1264,7 +1508,8 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .now-playing.live .now-playing-label::before {
+        .now-playing.live .now-playing-label::before,
+        .now-playing.live .now-disc {
             animation: none;
         }
     }
@@ -1307,17 +1552,17 @@
                     </ul>
                 </section>
 
-                <section class="music-card" aria-labelledby="clockTitle">
-                    <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
-                    <p class="music-card-sub">when I press play, from my last 50 songs</p>
-                    <div class="clock-chart" id="listenClock" role="img" aria-label="Loading listening clock"><p class="music-loading">Loading...</p></div>
-                    <p class="music-card-note" id="clockNote"></p>
-                </section>
 
             </div>
         </div>
 
         <div class="music-stats">
+            <section class="music-card" aria-labelledby="clockTitle">
+                <h3 class="music-card-title" id="clockTitle">Listening Clock</h3>
+                <p class="music-card-sub">when I press play, from my last 50 songs</p>
+                <div class="clock-chart" id="listenClock" role="img" aria-label="Loading listening clock"><p class="music-loading">Loading...</p></div>
+                <p class="music-card-note" id="clockNote"></p>
+            </section>
             <section class="music-card" aria-labelledby="dnaTitle">
                 <h3 class="music-card-title" id="dnaTitle">Listening DNA</h3>
                 <p class="music-card-sub">what my headphones are apparently made of</p>
@@ -1484,7 +1729,7 @@
         strip.href = song.spotifyUrl || 'https://open.spotify.com';
         strip.classList.toggle('live', live);
         strip.innerHTML = `
-            ${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}
+            <span class="now-disc" aria-hidden="true">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : '<span class="now-label"></span>'}</span>
             <span>
                 <span class="now-playing-label">${live ? 'Listening right now' : `Last played ${escapeHtml(when)}`}</span>
                 <span class="now-playing-song">${escapeHtml(song.name)}</span>
@@ -1511,17 +1756,47 @@
         plays.forEach(play => { if (play.playedAt) counts[Number(hourOf.format(new Date(play.playedAt))) % 24]++; });
         const max = Math.max(...counts);
         if (!max) { chart.innerHTML = '<p class="music-loading">No recent plays to show yet.</p>'; return; }
-
-        const label = h => h === 0 ? '12a' : h === 6 ? '6a' : h === 12 ? '12p' : h === 18 ? '6p' : '';
         const peak = counts.indexOf(max);
-        chart.innerHTML = counts.map((n, h) => `
-            <div class="clock-bar${n ? ' has' : ''}${h === peak ? ' peak' : ''}" style="height: ${Math.max(3, (n / max) * 100)}%" title="${n} plays around ${((h + 11) % 12) + 1} ${h < 12 ? 'AM' : 'PM'}">
-                ${label(h) ? `<span>${label(h)}</span>` : ''}
-            </div>`).join('');
 
-        const peakText = `${((peak + 11) % 12) + 1} ${peak < 12 ? 'AM' : 'PM'}`;
+        // a clock face in a 240 x 240 box: cones reach from the center (a small hub) out to 84 at the busiest hour
+        const C = 120, HUB = 12, FULL = 84, HALF = 13;   // HALF = degrees each side of an hour's line
+        const pt = (deg, r) => {
+            const a = (deg - 90) * Math.PI / 180;
+            return `${(C + r * Math.cos(a)).toFixed(1)} ${(C + r * Math.sin(a)).toFixed(1)}`;
+        };
+        const wedge = (from, to, r) => `M ${pt(from, HUB)} L ${pt(from, r)} A ${r} ${r} 0 0 1 ${pt(to, r)} L ${pt(to, HUB)} A ${HUB} ${HUB} 0 0 0 ${pt(from, HUB)} Z`;
+        const hourName = h => `${((h + 11) % 12) + 1} ${h < 12 ? 'AM' : 'PM'}`;
+        const plural = n => `${n} play${n === 1 ? '' : 's'}`;
+
+        let svg = `<circle class="clock-rim" cx="${C}" cy="${C}" r="116" />`;
+        for (let m = 0; m < 60; m++) {
+            const major = m % 5 === 0;
+            svg += `<line class="clock-tick${major ? ' major' : ''}" x1="${pt(m * 6, major ? 107 : 110).split(' ')[0]}" y1="${pt(m * 6, major ? 107 : 110).split(' ')[1]}" x2="${pt(m * 6, 114).split(' ')[0]}" y2="${pt(m * 6, 114).split(' ')[1]}" />`;
+        }
+        for (let d = 0; d < 12; d++) {
+            const angle = d * 30;               // d = 0 is 12 o'clock
+            const am = counts[d], pm = counts[d + 12];
+            const reach = n => HUB + 4 + (FULL - HUB - 4) * n / max;
+            svg += `<path class="clock-track" d="${wedge(angle - HALF, angle + HALF, FULL)}" />`;
+            if (am) svg += `<path class="clock-cone am" d="${wedge(angle - HALF, angle, reach(am))}"><title>${hourName(d)}: ${plural(am)}</title></path>`;
+            if (pm) svg += `<path class="clock-cone pm" d="${wedge(angle, angle + HALF, reach(pm))}"><title>${hourName(d + 12)}: ${plural(pm)}</title></path>`;
+            const [x, y] = pt(angle, 97).split(' ');
+            svg += `<text class="clock-num${peak % 12 === d ? ' peak' : ''}" x="${x}" y="${y}">${d || 12}</text>`;
+        }
+        const [hx, hy] = pt((peak % 12) * 30, 58).split(' ');
+        svg += `<line class="clock-hand" x1="${C}" y1="${C}" x2="${hx}" y2="${hy}" />`;
+        svg += `<circle class="clock-pin" cx="${C}" cy="${C}" r="6" /><circle class="clock-pin-dot" cx="${C}" cy="${C}" r="2" />`;
+
+        chart.innerHTML = `
+            <svg class="clock-face" viewBox="0 0 240 240" aria-hidden="true">${svg}</svg>
+            <ul class="clock-legend">
+                <li style="--c: #D9A3AD">AM</li>
+                <li style="--c: #8F4661">PM</li>
+            </ul>`;
+
+        const peakText = hourName(peak);
         const vibe = peak >= 20 || peak < 4 ? 'Night owl, confirmed.' : peak < 12 ? 'Morning person? Apparently.' : peak < 17 ? 'Afternoon soundtrack.' : 'Evening wind-down.';
-        chart.setAttribute('aria-label', `Most of my recent listening happens around ${peakText}`);
+        chart.setAttribute('aria-label', `A clock of my recent listening. Most of it happens around ${peakText}`);
         document.getElementById('clockNote').textContent = `Busiest around ${peakText}. ${vibe} ✦`;
     }
 
@@ -1586,7 +1861,11 @@
         });
 
         Promise.all([safe('artistsShort'), safe('artists'), safe('artistsLong')])
-            .then(([month, sixMonths, allTime]) => drawThenVsNow(month, sixMonths, allTime));
+            .then(([month, sixMonths, allTime]) => {
+                uv.month = month || [];
+                uv.allTime = allTime || [];
+                drawThenVsNow(month, sixMonths, allTime);
+            });
 
         safe('songs').then(drawMusicByEra);
     }
@@ -1606,7 +1885,7 @@
     const GAP = 6;                    // space between bubbles (≈6–10px on screen at the default zoom)
 
     const uv = {
-        artists: [], songs: [], nodes: [],
+        artists: [], songs: [], nodes: [], month: [], allTime: [], info: {},
         k: 1, tx: 0, ty: 0, homeK: 1, homeTx: 0, homeTy: 0, minK: 0.3, maxK: 3,
         bounds: null, selected: -1, hovered: -1, width: 0, anim: 0, raf: 0
     };
@@ -1708,8 +1987,8 @@
         // Their highest song in my top 50, if they have one
         uv.nodes = circles.map((c, i) => {
             const artist = uv.artists[i];
-            const theirSongs = songs.filter(song => song.artist === artist.name);
-            return { ...c, index: i, artist, topSong: theirSongs[0] || null };
+            const theirSongs = songs.filter(song => (song.artist || '').split(', ').includes(artist.name));
+            return { ...c, index: i, artist, theirSongs, topSong: theirSongs[0] || null };
         });
 
         document.getElementById('universeWorld').innerHTML = uv.nodes.map(node => {
@@ -1897,21 +2176,58 @@
 
         const a = sel.artist;
         const panel = document.getElementById('universePanel');
+        const rankIn = list => { const i = (list || []).findIndex(x => x.name === a.name); return i < 0 ? '' : `#${i + 1}`; };
+        const month = rankIn(uv.month), allTime = rankIn(uv.allTime);
+        const songs = sel.theirSongs || [];
         panel.innerHTML = `
             <button type="button" class="up-close" aria-label="Close details">×</button>
             <div class="up-head">
                 ${a.image ? `<img class="up-photo" src="${escapeHtml(a.image)}" alt="">` : ''}
                 <div>
-                    <div class="up-rank">#${a.position}, ${tierLabel(index)}</div>
+                    <div class="up-rank">${tierLabel(index)} artist</div>
                     <div class="up-name">${escapeHtml(a.name)}</div>
+                    <div class="up-from" data-slot="from"></div>
                 </div>
             </div>
-            <ul class="up-stats">
-                ${sel.topSong ? `<li>Top song: <strong>${escapeHtml(sel.topSong.name)}</strong> (#${sel.topSong.position} in my top 50)</li>` : ''}
-            </ul>
-            <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open in Spotify ↗</a>`;
+            <dl class="up-numbers">
+                <div><dt>#${a.position}</dt><dd>last 6 months</dd></div>
+                <div><dt>${month || 'New'}</dt><dd>${month ? 'this month' : 'not top 5 this month'}</dd></div>
+                <div><dt>${allTime || 'Rising'}</dt><dd>${allTime ? 'all time' : 'not top 5 all time yet'}</dd></div>
+                <div><dt>${songs.length}</dt><dd>of my top 50 songs</dd></div>
+            </dl>
+            <div class="up-genres" data-slot="genres"></div>
+            <p class="up-about" data-slot="about"><span class="up-loading">Looking them up…</span></p>
+            ${songs.length ? `
+                <p class="up-label">What I play most</p>
+                <ol class="up-songs">
+                    ${songs.slice(0, 4).map(song => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>#${song.position}</em></a></li>`).join('')}
+                </ol>` : ''}
+            <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open their Spotify profile ↗</a>`;
         panel.hidden = false;
+        fillArtistInfo(a.name, panel);
         panel.querySelector('.up-close').addEventListener('click', clearSelection);
+    }
+
+    // Genres, hometown and a two-sentence bio (MusicBrainz and Wikipedia via /spotify/GetArtistInfo), kept per visit
+    async function fillArtistInfo(name, panel) {
+        let info = uv.info[name];
+        if (!info) {
+            try {
+                const res = await fetch(`/spotify/GetArtistInfo?name=${encodeURIComponent(name)}`);
+                info = res.ok ? await res.json() : {};
+            } catch { info = {}; }
+            uv.info[name] = info;
+        }
+        // the visitor may have picked someone else while this loaded
+        if (panel.hidden || !panel.querySelector('.up-name') || panel.querySelector('.up-name').textContent !== name) return;
+        const slot = key => panel.querySelector(`[data-slot="${key}"]`);
+        const from = [info.from ? `From ${escapeHtml(info.from)}` : '', info.formed ? `formed ${escapeHtml(info.formed)}` : ''].filter(Boolean).join(', ');
+        slot('from').textContent = '';
+        slot('from').innerHTML = from;
+        slot('genres').innerHTML = (info.genres || []).map(g => `<span>${escapeHtml(g)}</span>`).join('');
+        slot('about').innerHTML = info.about
+            ? `${escapeHtml(info.about)} ${info.aboutUrl ? `<a href="${escapeHtml(info.aboutUrl)}" target="_blank" rel="noopener">More ↗</a>` : ''}`
+            : '';
     }
 
     function clearSelection() {
@@ -2069,6 +2385,20 @@
                 }
             }, 200);
         });
+
+        // The box also grows taller once the cards beside it finish loading (the clock, On Repeat).
+        // If nobody has panned or zoomed yet, re-center the universe in the new space.
+        new ResizeObserver(() => {
+            if (!uv.nodes.length) return;
+            const atHome = Math.abs(uv.k - uv.homeK) < 1e-6 && Math.abs(uv.tx - uv.homeTx) < 0.5 && Math.abs(uv.ty - uv.homeTy) < 0.5;
+            computeHomeView(view.clientWidth, view.clientHeight);
+            if (atHome) {
+                uv.k = uv.homeK;
+                uv.tx = uv.homeTx;
+                uv.ty = uv.homeTy;
+                applyView();
+            }
+        }).observe(view);
     })();
 
     // =====================================================================

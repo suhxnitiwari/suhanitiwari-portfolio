@@ -6,6 +6,393 @@
     .pursue-part { scroll-margin-top: 70px; }
 </style>
 
+<!-- Bodoni Moda (the font for my name), same local files as the home page -->
+<style>
+    @@font-face {
+      font-family: 'Bodoni Moda';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(/fonts/bodoni-moda-latin-normal.woff2) format('woff2');
+    }
+
+    /* ===== CAREER INTRO: who I am, the facts a recruiter scans for, then where to jump ===== */
+    .career-intro {
+        padding: 72px 40px 64px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .career-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .career-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 48px;
+        align-items: center;
+    }
+
+    /* a portrait in an arch, cropped to my face and shoulders */
+    .career-photo {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 5 / 6;
+        object-fit: cover;
+        object-position: 50% 32%;
+        border-radius: 999px 999px 22px 22px;
+        box-shadow: 0 16px 34px -12px rgba(74, 36, 42, 0.4);
+    }
+
+    .career-kicker {
+        margin: 0;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .career-name {
+        margin: 10px 0 0;
+        font-family: 'Bodoni Moda', Didot, 'Bodoni 72', Georgia, serif;
+        font-size: clamp(2.8em, 7vw, 5.2em);
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: #2A1810;
+    }
+
+    .career-lede {
+        max-width: 720px;
+        margin: 22px 0 0;
+        font-family: Georgia, serif;
+        font-size: clamp(1.15em, 2vw, 1.4em);
+        font-style: italic;
+        line-height: 1.5;
+        color: #2A1810;
+    }
+
+    /* the scan-in-five-seconds facts, like the header of a case study */
+    .career-facts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+        margin: 40px 0 0;
+        padding: 26px 0;
+        border-top: 1px solid #EBD5D0;
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .career-facts dt {
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .career-facts dd {
+        margin: 8px 0 0;
+        line-height: 1.5;
+        color: #2A1810;
+    }
+
+    .career-facts dd span {
+        display: block;
+        font-size: 0.88em;
+        color: #56634A;
+    }
+
+    .career-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 30px 0 0;
+    }
+
+    .career-btn {
+        padding: 13px 26px;
+        border-radius: 999px;
+        border: 1.5px solid #8A4D57;
+        font-weight: 600;
+        font-size: 0.95em;
+        color: #8A4D57;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .career-btn.primary {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .career-btn:hover {
+        transform: translateY(-2px);
+        background: #9E5A63;
+        border-color: #9E5A63;
+        color: #FAF1EF;
+    }
+
+    /* in this page: the table of contents */
+    .career-toc {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 10px;
+        margin: 34px 0 0;
+    }
+
+    .career-toc-label {
+        margin-right: 6px;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .career-toc a {
+        padding: 7px 15px;
+        border-radius: 999px;
+        background: rgba(158, 90, 99, 0.12);
+        font-size: 0.85em;
+        font-weight: 600;
+        color: #2A1810;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .career-toc a:hover {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    /* RÉSUMÉ: the last stop, with a preview and the download */
+    .career-resume {
+        padding: 80px 40px 100px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .resume-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: 56px;
+        align-items: center;
+    }
+
+    .resume-copy .career-section-title {
+        margin: 10px 0 0;
+    }
+
+    .resume-note {
+        margin: 14px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        font-style: italic;
+        color: #2A1810;
+    }
+
+    .resume-preview {
+        width: 100%;
+        aspect-ratio: 8.5 / 11;
+        border-radius: 14px;
+        border: 6px solid #FFF8F6;
+        background: #FFF8F6;
+        box-shadow: 0 16px 40px rgba(42, 24, 16, 0.18);
+    }
+
+    /* EXPERIENCE: one card per role */
+    .career-experience {
+        padding: 72px 40px 24px;
+        background: #FAF1EF;
+    }
+
+    .career-section-title {
+        margin: 0 0 28px;
+        font-family: Georgia, serif;
+        font-size: 2.4em;
+        color: #2A1810;
+    }
+
+    .job-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+
+    .job {
+        padding: 30px 32px;
+        border-radius: 22px;
+        background: #FFF8F6;
+        border: 1px solid #EBD5D0;
+        box-shadow: 0 10px 26px rgba(158, 90, 99, 0.1);
+    }
+
+    .job-when {
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .job h3 {
+        margin: 8px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.5em;
+        color: #2A1810;
+    }
+
+    .job-where {
+        margin: 4px 0 0;
+        font-weight: 600;
+        color: #56634A;
+    }
+
+    .job ul {
+        margin: 18px 0 0;
+        padding-left: 18px;
+        line-height: 1.65;
+        color: #2A1810;
+    }
+
+    .job li + li {
+        margin-top: 8px;
+    }
+
+    .job li::marker {
+        color: #C9969E;
+    }
+
+    @@media (max-width: 800px) {
+        .career-intro,
+        .career-experience {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .career-intro {
+            padding-top: 48px;
+        }
+
+        .career-facts {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .career-top {
+            grid-template-columns: minmax(0, 1fr) 120px;
+            gap: 20px;
+        }
+
+        .job-list,
+        .resume-wrap {
+            grid-template-columns: 1fr;
+        }
+
+        .career-resume {
+            padding: 56px 20px 70px;
+        }
+
+        .job {
+            padding: 24px 22px;
+        }
+    }
+</style>
+
+@{
+    // The roles, most recent first (same facts Sitara uses)
+    var jobs = new[]
+    {
+        ("May to August 2026", "ERP Consultant Intern", "Oracle, Austin, Texas", new[]
+        {
+            "Completed Oracle’s 12-week Enterprise Sales Development program, building skills in consultative selling and ERP technology.",
+            "Prospected $20M to $200M enterprises through outbound calls and strategic account planning to build an ERP sales pipeline.",
+            "Led discovery calls to uncover prospects’ business needs and align them with Oracle NetSuite, a cloud-based ERP."
+        }),
+        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors, Denver, Colorado (remote)", new[]
+        {
+            "Supported 4 client engagements across market research, competitive analysis and strategic recommendations.",
+            "Built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product through pricing and competitor analysis.",
+            "Worked on AI strategy and AI governance, and rebuilt Acacia’s website positioning and messaging."
+        })
+    };
+}
+
+<header class="career-intro" id="top">
+    <div class="career-wrap">
+        <div class="career-top">
+            <div>
+                <p class="career-kicker">Hi, I’m</p>
+                <h1 class="career-name">Suhani Tiwari</h1>
+                <p class="career-lede">Technology only matters if people want to use it, and understanding people only matters if you can build something for them. So I study both.</p>
+            </div>
+            <img class="career-photo" src="/images/hero-suhani.jpg" alt="Suhani Tiwari" width="300" height="360" fetchpriority="high">
+        </div>
+
+        <dl class="career-facts">
+            <div>
+                <dt>Studying</dt>
+                <dd>Management Information Systems<span>McCombs School of Business, UT Austin</span></dd>
+            </div>
+            <div>
+                <dt>Alongside</dt>
+                <dd>Psychology and Marketing<span>plus Educational Psychology</span></dd>
+            </div>
+            <div>
+                <dt>Most recently</dt>
+                <dd>ERP Consultant Intern<span>Oracle, summer 2026</span></dd>
+            </div>
+            <div>
+                <dt>Based in</dt>
+                <dd>Austin, Texas<span>US citizen</span></dd>
+            </div>
+        </dl>
+
+        <div class="career-actions">
+            <a class="career-btn primary" href="/resume">View my résumé ↗</a>
+            <a class="career-btn" href="mailto:suhxnitiwari@gmail.com">Email me</a>
+            <a class="career-btn" href="https://www.linkedin.com/in/suhxnitiwari/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+
+        <nav class="career-toc" aria-label="On this page">
+            <span class="career-toc-label">On this page</span>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+            <a href="#coursework">Coursework and projects</a>
+            <a href="#beyond">Beyond the classroom</a>
+            <a href="#how-i-work">How I work</a>
+            <a href="#awards">Awards</a>
+            <a href="#resume">Résumé</a>
+        </nav>
+    </div>
+</header>
+
+<section class="pursue-part career-experience" id="experience" aria-labelledby="experience-heading">
+    <div class="career-wrap">
+        <h2 class="career-section-title" id="experience-heading">Experience</h2>
+        <div class="job-list">
+            @foreach (var (when, title, where, points) in jobs)
+            {
+                <article class="job">
+                    <span class="job-when">@when</span>
+                    <h3>@title</h3>
+                    <p class="job-where">@where</p>
+                    <ul>
+                        @foreach (var point in points)
+                        {
+                            <li>@point</li>
+                        }
+                    </ul>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
 <section class="pursue-part" id="education" aria-label="Education">
     @await Html.PartialAsync("Education")
 </section>
@@ -21,8 +408,25 @@
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
+<section class="pursue-part career-resume" id="resume" aria-labelledby="resume-heading">
+    <div class="career-wrap resume-wrap">
+        <div class="resume-copy">
+            <p class="career-kicker">The one-page version</p>
+            <h2 class="career-section-title" id="resume-heading">Résumé</h2>
+            <p class="resume-note">Everything on this page, on a single sheet you can keep.</p>
+            <div class="career-actions">
+                <a class="career-btn primary" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">Download Tiwari_Suhani_Resume ↓</a>
+                <a class="career-btn" href="/resume" target="_blank" rel="noopener">Open in a new tab ↗</a>
+                <a class="career-btn" href="mailto:suhxnitiwari@gmail.com">Email me</a>
+            </div>
+        </div>
+        <object class="resume-preview" data="/resume.pdf#view=FitH&amp;toolbar=0" type="application/pdf" aria-label="My résumé">
+            <a class="career-btn primary" href="/resume/download">Download Tiwari_Suhani_Resume ↓</a>
+        </object>
+    </div>
+</section>
 
 @{
     // set last: each section sets its own title while it renders
-    ViewData["Title"] = "Pursue";
+    ViewData["Title"] = Context.Request.Path.StartsWithSegments("/career") ? "Career" : "Pursue";
 }

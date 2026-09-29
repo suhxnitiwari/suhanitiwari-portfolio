@@ -458,6 +458,76 @@ namespace Tiwari_Suhani_HW3.Services
             }
         }
 
+        // Genres, hometown and (for bands) the year they formed, from MusicBrainz; the first two sentences of
+        // the artist's Wikipedia summary as a short "about". Wikipedia and MusicBrainz are both free and need no key.
+        public async Task<ArtistInfo> GetArtistInfoAsync(string artistName)
+        {
+            var info = new ArtistInfo { Genres = await GetArtistGenresAsync(artistName) };
+
+            await MusicBrainzLock.WaitAsync();
+            try
+            {
+                var wait = _lastMusicBrainzCall.AddMilliseconds(1100) - DateTime.UtcNow;
+                if (wait > TimeSpan.Zero) await Task.Delay(wait);
+                _lastMusicBrainzCall = DateTime.UtcNow;
+
+                var query = Uri.EscapeDataString($"artist:\"{artistName}\"");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"https://musicbrainz.org/ws/2/artist/?query={query}&fmt=json&limit=1");
+                request.Headers.Add("User-Agent", "SuhaniPersonalSite/1.0 ( https://suhanitiwari.com )");
+                var response = await _httpClient.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync());
+                    if (json.TryGetProperty("artists", out var results) && results.GetArrayLength() > 0)
+                    {
+                        var artist = results[0];
+                        string? AreaName(string key) =>
+                            artist.TryGetProperty(key, out var area) && area.ValueKind == JsonValueKind.Object && area.TryGetProperty("name", out var n) ? n.GetString() : null;
+                        info.From = AreaName("begin-area") ?? AreaName("area");
+                        var isGroup = artist.TryGetProperty("type", out var type) && type.GetString() == "Group";
+                        if (isGroup && artist.TryGetProperty("life-span", out var span) && span.TryGetProperty("begin", out var begin) && begin.GetString() is { Length: >= 4 } year)
+                        {
+                            info.Formed = year[..4];
+                        }
+                    }
+                }
+            }
+            catch (HttpRequestException) { }
+            finally
+            {
+                MusicBrainzLock.Release();
+            }
+
+            // Wikipedia: try the plain name, then the usual music disambiguations
+            var music = new[] { "singer", "musician", "band", "rapper", "songwriter", "group", "producer", "duo" };
+            foreach (var title in new[] { artistName, $"{artistName} (singer)", $"{artistName} (musician)", $"{artistName} (band)", $"{artistName} (rapper)" })
+            {
+                try
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, $"https://en.wikipedia.org/api/rest_v1/page/summary/{Uri.EscapeDataString(title.Replace(' ', '_'))}");
+                    request.Headers.Add("User-Agent", "SuhaniPersonalSite/1.0 ( https://suhanitiwari.com )");
+                    var response = await _httpClient.SendAsync(request);
+                    if (!response.IsSuccessStatusCode) continue;
+                    var json = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync());
+                    if (json.TryGetProperty("type", out var kind) && kind.GetString() == "disambiguation") continue;
+                    var description = json.TryGetProperty("description", out var d) ? d.GetString() ?? "" : "";
+                    var extract = json.TryGetProperty("extract", out var e) ? e.GetString() ?? "" : "";
+                    if (!music.Any(word => description.Contains(word, StringComparison.OrdinalIgnoreCase) || extract.Contains(word, StringComparison.OrdinalIgnoreCase))) continue;
+
+                    var sentences = System.Text.RegularExpressions.Regex.Split(extract, @"(?<=[.!?])\s+(?=[A-Z])");
+                    info.About = string.Join(" ", sentences.Take(2)).Trim();
+                    if (json.TryGetProperty("content_urls", out var urls) && urls.TryGetProperty("desktop", out var desk) && desk.TryGetProperty("page", out var page))
+                    {
+                        info.AboutUrl = page.GetString();
+                    }
+                    break;
+                }
+                catch (HttpRequestException) { }
+            }
+
+            return info;
+        }
+
     }
 
     public class TopTrack
@@ -486,6 +556,16 @@ namespace Tiwari_Suhani_HW3.Services
         public string? Artist { get; set; } = "";
         public string? AlbumArt { get; set; } = "";
         public string? SpotifyUrl { get; set; } = "";
+    }
+
+    // More about one artist for the Music Universe card: genres and hometown from MusicBrainz, a short bio from Wikipedia
+    public class ArtistInfo
+    {
+        public List<string> Genres { get; set; } = new();
+        public string? From { get; set; }
+        public string? Formed { get; set; }
+        public string? About { get; set; }
+        public string? AboutUrl { get; set; }
     }
 
     public class TopArtist

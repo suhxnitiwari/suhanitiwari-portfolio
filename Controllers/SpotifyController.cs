@@ -153,6 +153,19 @@ namespace Tiwari_Suhani_HW3.Controllers
             return await CachedSpotifyJson("now-playing", async token => await _spotifyService.GetNowPlayingAsync(token), TimeSpan.FromSeconds(30));
         }
 
+        // More about one artist in my Music Universe (no Spotify login needed). Kept for a week.
+        [HttpGet]
+        public async Task<IActionResult> GetArtistInfo(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.Length > 100) return BadRequest();
+            var info = await _cache.GetOrCreateAsync($"artist-info:{name.ToLowerInvariant()}", entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);
+                return _spotifyService.GetArtistInfoAsync(name);
+            });
+            return Json(info);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetTopAlbum(string timeRange = "medium_term")
         {

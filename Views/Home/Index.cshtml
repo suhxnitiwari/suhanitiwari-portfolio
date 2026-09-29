@@ -137,14 +137,14 @@
     .cover-intro {
         position: absolute;
         left: 2.6%;
-        top: calc(38% + 10.5cqw);
+        top: calc(38% + 12.5cqw);
         max-width: 44%;
         opacity: calc(1 - var(--p, 0) * 2.2);
         animation: coverFade 1.2s ease 1.5s backwards;
     }
 
     .cover-tagline {
-        margin: 0 0 18px;
+        margin: 0 0 clamp(30px, 3.4cqw, 52px);
         font-family: Georgia, serif;
         font-size: clamp(1rem, 1.55cqw, 1.45rem);
         font-style: italic;
@@ -160,7 +160,7 @@
 
     /* McCombs School of Business, UT Austin */
     .cover-school {
-        margin-bottom: 6px;
+        margin-bottom: clamp(12px, 1.3cqw, 20px);
         font-family: system-ui, sans-serif;
         font-size: 0.62em;
         font-style: normal;
@@ -176,20 +176,20 @@
         font-size: 1.45em;
         font-style: normal;
         font-weight: 700;
-        line-height: 1.15;
+        line-height: 1.2;
         white-space: nowrap;
         color: #FFFFFF;
     }
 
     .cover-second {
-        margin-top: 4px;
+        margin-top: clamp(10px, 1.1cqw, 18px);
         font-size: 0.95em;
     }
 
     .cover-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 18px;
     }
 
     /* The two buttons a recruiter came for: clear and easy to spot, without the fuss */
@@ -299,7 +299,7 @@
 
         /* sits just above the tagline and the row of buttons (about 140px tall together) */
         .cover-name.right {
-            bottom: calc(4% + 160px);
+            bottom: calc(4% + 190px);
             right: 4%;
         }
 
@@ -314,7 +314,7 @@
         }
 
         .cover-tagline {
-            margin-bottom: 12px;
+            margin-bottom: 22px;
             font-size: 0.95rem;
         }
 
@@ -327,7 +327,7 @@
         .cover-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
         }
 
         .cover-btn {

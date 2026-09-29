@@ -471,14 +471,16 @@
         // Each item jumps to its section on the one long Pursue page.
         var pursue = new (string Page, string Url, string Name)[]
         {
+            ("Experience", "/home/pursue#experience", "Experience"),
             ("Education", "/home/pursue#education", "Education"),
             ("Coursework", "/home/pursue#coursework", "Coursework"),
             ("BeyondTheClassroom", "/home/pursue#beyond", "Beyond the Classroom"),
             ("HowIWork", "/home/pursue#how-i-work", "How I Work"),
-            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards")
+            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
+            ("ResumeSection", "/home/pursue#resume", "Résumé")
         };
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
-        var onPursue = currentPage == "Pursue" || pursueIndex >= 0;
+        var onPursue = currentPage == "Pursue" || currentPage == "Career" || pursueIndex >= 0;
     }
     <nav class="navbar navbar-expand-md" id="top">
         <div class="navbar-container">

@@ -37,6 +37,10 @@ public class HomeController : Controller
         return View();
     }
 
+    // /career: the one link to send a recruiter. Same page as Pursue, which opens with who I am and my experience
+    [Route("career")]
+    public IActionResult Career() => View("Pursue");
+
     public IActionResult ScholarshipsAndAwards()
     {
         return View();
@@ -60,6 +64,15 @@ public class HomeController : Controller
             return Redirect("/resume.pdf");
         }
         return View();
+    }
+
+    // suhanitiwari.com/resume/download: the PDF saved as Tiwari_Suhani_Resume.pdf
+    [Route("resume/download")]
+    public IActionResult ResumeDownload([FromServices] IWebHostEnvironment environment)
+    {
+        var path = Path.Combine(environment.WebRootPath, "resume.pdf");
+        if (!System.IO.File.Exists(path)) return Redirect("/resume");
+        return PhysicalFile(path, "application/pdf", "Tiwari_Suhani_Resume.pdf");
     }
 
     public IActionResult Make()

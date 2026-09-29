@@ -163,15 +163,13 @@
     var softlyIBelong = new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg", 0.931);
     var inheritedLight = new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg", 0.883);
 
-    // The headliners (What I Carry, Keeping the Light) get columns of their own; Getting Ready was made to sit under In Full Bloom
-    var artWall = new[]
+    // The gallery: three columns of different heights, like a studio portfolio. Each piece keeps its own shape.
+    // Getting Ready was made to sit under In Full Bloom, so they share a column.
+    var artColumns = new[]
     {
-        new[] { oldAndNew, betweenTwoWorlds },
-        new[] { whatICarry },
-        new[] { wovenTogether },
-        new[] { inFullBloom, gettingReady },
-        new[] { keepingTheLight },
-        new[] { softlyIBelong, inheritedLight }
+        new[] { whatICarry, wovenTogether, softlyIBelong },
+        new[] { keepingTheLight, oldAndNew, inheritedLight },
+        new[] { inFullBloom, gettingReady, betweenTwoWorlds }
     };
 
     // Writing: my published pieces (opening lines copied from each piece)
@@ -300,32 +298,21 @@
 }
 @{
     // Baking and Cooking share one layout; `offset` points each card at its spot in the combined recipe list
-    // One piece on the Digital Art wall. Every piece gets the walnut frame, white mat and a small title underneath.
-    // --r (the art's width / height) sizes the piece so everything in its row shares one height.
-    void RenderArtPiece(Artwork art, string style)
+    // One piece in the Digital Art gallery: the art at its own shape, then a small line, the title and how it was made
+    void RenderArtPiece(Artwork art)
     {
         var ratio = art.Ratio.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        <li class="gallery-piece gallery-@style" style="--r: @ratio">
+        <li class="folio-piece">
             <button type="button" class="art-open" data-image="@art.Image" data-title="@art.Title" data-idea="@art.Idea"
                     aria-label="View @art.Title larger">
-                <span class="gallery-frame">
+                <span class="folio-frame" style="--r: @ratio">
                     <img src="@art.Image" alt="@art.Title" loading="lazy" draggable="false">
                 </span>
-                <span class="gallery-label">
-                    <span class="gallery-title">@art.Title</span>
-                </span>
+                <span class="folio-meta">AP 2-D Art and Design</span>
+                <span class="folio-title">@art.Title</span>
+                <span class="folio-made">Drawn in Procreate.</span>
             </button>
         </li>
-    }
-
-    // One column of the wall. --n = how many pieces, --inv = the sum of height / width, which is all CSS needs
-    // to work out the width that makes this column exactly as tall as the wall.
-    void RenderArtColumn(Artwork[] pieces)
-    {
-        var inv = pieces.Sum(a => 1 / a.Ratio).ToString("0.####", System.Globalization.CultureInfo.InvariantCulture);
-        <ul class="wall-col" style="--n: @pieces.Length; --inv: @inv">
-            @foreach (var art in pieces) { RenderArtPiece(art, "framed"); }
-        </ul>
     }
 
     void RenderRecipeShelf(string id, string title, Recipe[] recipes, int offset, string? emptyNote = null, Artwork[]? gallery = null)
@@ -464,17 +451,18 @@
             <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create.</p>
         </div>
 
-        <!-- Digital Art: one gallery wall that slides sideways; each piece opens large -->
+        <!-- Digital Art: a three-column portfolio; each piece opens large -->
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
                 <h3 class="shelf-title">Digital Art</h3>
             </div>
-            <div class="shelf-rail-wrap gallery-wall-wrap">
-                <button type="button" class="shelf-arrow prev" aria-label="Slide the Digital Art wall left">‹</button>
-                <div class="gallery-wall" role="group" aria-label="Digital Art" tabindex="0">
-                    @foreach (var column in artWall) { RenderArtColumn(column); }
-                </div>
-                <button type="button" class="shelf-arrow next" aria-label="Slide the Digital Art wall right">›</button>
+            <div class="folio" role="group" aria-label="Digital Art">
+                @foreach (var column in artColumns)
+                {
+                    <ul class="folio-col">
+                        @foreach (var art in column) { RenderArtPiece(art); }
+                    </ul>
+                }
             </div>
         </div>
         <hr class="shelf-divider">
