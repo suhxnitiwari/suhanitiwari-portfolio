@@ -16,7 +16,7 @@
 
                     <!-- RideFlow -->
                     <div class="mp-proj" id="mp-proj-0" role="tabpanel" aria-labelledby="mp-rideflow">
-                    <div class="mp-proof">
+                    <div class="mp-proof mp-proof-fill">
                         <div>
                             <div class="mp-browser">
                                 <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -24,7 +24,26 @@
                                     <iframe data-src="https://rideflow-frontend.onrender.com/" title="RideFlow, the live app" tabindex="-1"></iframe>
                                 </div>
                             </div>
-                            <div class="mp-erd mp-erd-mini">
+                        </div>
+                        <div>
+                            <h3 id="mp-rideflow">RideFlow</h3>
+                            <p class="mp-proof-sub">A full-stack rideshare platform for riders, drivers and administrators, built solo in a course designed for teams. Riders request rides, drivers accept and complete them, and admins run the platform, with fares and payment records underneath.</p>
+                            <ul class="mp-facts three">
+                                <li><b>3</b><span>USER ROLES</span></li>
+                                <li><b>4</b><span>DATA TABLES</span></li>
+                                <li><b>33</b><span>AUTOMATED TESTS</span></li>
+                            </ul>
+                            <ul class="mp-proof-list">
+                                <li>The full ride lifecycle, from request to accept to pickup to completion, with the fare billed automatically at the end and a printable receipt</li>
+                                <li>Row-level security enforced on the server: riders, drivers and admins each see and change only what their role allows</li>
+                                <li>An AI feature that prompts an LLM with RideFlow’s own data, plus a context-based chatbot</li>
+                            </ul>
+                            <div class="mp-links">
+                                <a class="mp-link solid" href="https://rideflow-frontend.onrender.com/" target="_blank" rel="noopener">Open the live app ↗</a>
+                                <a class="mp-link" href="https://github.com/suhxnitiwari/ridemanagement" target="_blank" rel="noopener">View the code ↗</a>
+                            </div>
+                        </div>
+                            <div class="mp-erd mp-erd-mini mp-erd-row">
                                 <div>
                                     <p class="mp-eyebrow">Before the interface came the system</p>
                                     <h4>Business rules had to become relationships.</h4>
@@ -45,26 +64,6 @@
                                     </g>
                                 </svg>
                             </div>
-                        </div>
-                        <div>
-                            <span class="mp-coded">Built by me</span>
-                            <h3 id="mp-rideflow">RideFlow</h3>
-                            <p class="mp-proof-sub">A full-stack rideshare platform for riders, drivers and administrators, built solo in a course designed for teams. Riders request rides, drivers accept and complete them, and admins run the platform, with fares and payment records underneath.</p>
-                            <ul class="mp-facts three">
-                                <li><b>3</b><span>USER ROLES</span></li>
-                                <li><b>4</b><span>DATA TABLES</span></li>
-                                <li><b>33</b><span>AUTOMATED TESTS</span></li>
-                            </ul>
-                            <ul class="mp-proof-list">
-                                <li>The full ride lifecycle, from request to accept to pickup to completion, with the fare billed automatically at the end and a printable receipt</li>
-                                <li>Row-level security enforced on the server: riders, drivers and admins each see and change only what their role allows</li>
-                                <li>An AI feature that prompts an LLM with RideFlow’s own data, plus a context-based chatbot</li>
-                            </ul>
-                            <div class="mp-links">
-                                <a class="mp-link solid" href="https://rideflow-frontend.onrender.com/" target="_blank" rel="noopener">Open the live app ↗</a>
-                                <a class="mp-link" href="https://github.com/suhxnitiwari/ridemanagement" target="_blank" rel="noopener">View the code ↗</a>
-                            </div>
-                        </div>
                     </div>
                     </div>
 
@@ -87,7 +86,6 @@
                             </div>
                         </div>
                         <div>
-                            <span class="mp-coded">Built by me</span>
                             <h3 id="mp-bevos">Bevo’s Tacos</h3>
                             <p class="mp-proof-sub">A checkout system for an Austin food truck. One abstract Order class, two kinds of customers: walk-up orders pay sales tax, and catering orders pay a delivery fee with free-delivery rules. Built in C# first, then ported to JavaScript to run live.</p>
                             <ul class="mp-facts">
@@ -187,7 +185,6 @@
 <span class="k">END</span>;</code></pre>
                         </div>
                         <div>
-                            <span class="mp-coded">Built by me</span>
                             <h3 id="mp-rideshare-db">Ride Share Database</h3>
                             <p class="mp-proof-sub">Where RideFlow started. An eight-table schema I designed from scratch, deployed with a PL/SQL script, then queried and automated in both Oracle and Snowflake.</p>
                             <ul class="mp-facts">
@@ -212,7 +209,6 @@
                     <div class="mp-proof">
                         @await Html.PartialAsync("_SaturdayPlanner")
                         <div>
-                            <span class="mp-coded">Built by me</span>
                             <h3 id="mp-saturday">Saturday in Austin</h3>
                             <p class="mp-proof-sub">200 Austin spots, turned into a Python app that plans the perfect Saturday for your mood: a Domain day, a Greenbelt hike, café hopping, game day at Victory Lap or a day in with pizza and a movie from my own shelf. No car or a rainy day? It plans around that too.</p>
                             <ul class="mp-facts">
@@ -239,15 +235,31 @@
                     <div class="mp-proj" id="mp-proj-4" role="tabpanel" aria-labelledby="mp-portfolio" hidden>
                     <div class="mp-proof">
                         <div>
-                            <div class="mp-browser">
-                                <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-                                <div class="mp-browser-view mp-browser-shot">
-                                    <img src="/images/hero-suhani.jpg" alt="The Hello page of suhanitiwari.com" loading="lazy">
+                            <!-- three real pages of the site: Hello large, then Favorites and World side by side -->
+                            <div class="mp-site-shots">
+                                <div class="mp-browser">
+                                    <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Hello</em></div>
+                                    <div class="mp-browser-view mp-browser-shot">
+                                        <img src="/images/projects/website/home.jpg" alt="The Hello page of suhanitiwari.com: my name across a café photo, with Skills, Projects and Résumé buttons" loading="lazy">
+                                    </div>
+                                </div>
+                                <div class="mp-site-pair">
+                                    <div class="mp-browser">
+                                        <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Favorites</em></div>
+                                        <div class="mp-browser-view mp-browser-shot">
+                                            <img src="/images/projects/website/fav.jpg" alt="The Favorites page: my live Spotify music universe, with my #1 artist beside it" loading="lazy">
+                                        </div>
+                                    </div>
+                                    <div class="mp-browser">
+                                        <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>World</em></div>
+                                        <div class="mp-browser-view mp-browser-shot">
+                                            <img src="/images/projects/website/world.jpg" alt="The World page: an interactive map of every place I have lived" loading="lazy">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <span class="mp-coded">Built by me</span>
                             <h3 id="mp-portfolio">This Website</h3>
                             <p class="mp-proof-sub">The site you’re on. A full-stack ASP.NET Core MVC app that pulls my live Spotify listening, looks up every artist, and comes with its own AI guide, Sitara.</p>
                             <ul class="mp-facts">

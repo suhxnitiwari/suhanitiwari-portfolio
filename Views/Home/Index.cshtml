@@ -1153,37 +1153,25 @@
         text-align: left;
     }
 
-    .quiz-head {
+    .quiz-top {
         display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 24px;
-        background: #8A4D57;
-        color: #FFF8F6;
-    }
-
-    .quiz-badge {
-        padding: 4px 12px;
-        border-radius: var(--r-pill);
-        background: #FFF8F6;
-        font-size: 0.72em;
-        font-weight: 800;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #8A4D57;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 20px 24px 0;
     }
 
     .quiz-count {
-        flex: 1;
-        font-size: 0.78em;
+        font-size: 0.75em;
         font-weight: 700;
         letter-spacing: 2px;
         text-transform: uppercase;
+        color: #9E5A63;
     }
 
     .quiz-tally {
         font-family: Georgia, serif;
         font-size: 1.05em;
+        color: #8A4D57;
     }
 
     /* one step per question: grey until answered, sage when right, rose when wrong */
@@ -1192,7 +1180,7 @@
         grid-template-columns: repeat(10, 1fr);
         gap: 5px;
         margin: 0;
-        padding: 14px 24px 0;
+        padding: 10px 24px 0;
         list-style: none;
     }
 
@@ -1207,122 +1195,98 @@
     .quiz-steps li.right { background: #7F9A6B; }
     .quiz-steps li.wrong { background: #C27B8A; }
 
-    .quiz-start,
     .quiz-play,
     .quiz-result {
-        padding: 22px 24px 24px;
-    }
-
-    .quiz-start-title {
-        margin: 0;
-        font-family: Georgia, serif;
-        font-size: 1.5em;
-        font-weight: 700;
-        line-height: 1.25;
-        color: #2A1810;
-    }
-
-    .quiz-start-sub {
-        margin: 8px 0 18px;
-        line-height: 1.5;
-        color: #56634A;
-    }
-
-    .quiz-go {
-        padding: 13px 28px;
-        border-radius: var(--r-pill);
-        border: none;
-        background: #8A4D57;
-        font: inherit;
-        font-weight: 700;
-        color: #FFF8F6;
-        cursor: var(--cursor-hot, pointer);
-        transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .quiz-go:hover {
-        transform: translateY(-2px);
-        background: #9E5A63;
-    }
-
-    .quiz-go:focus-visible {
-        outline: 2px solid #8A4D57;
-        outline-offset: 3px;
+        padding: 18px 24px 24px;
     }
 
     .quiz-qnum {
-        margin: 0;
-        font-size: 0.75em;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #9E5A63;
+        display: none;
     }
 
-    /* the actual question, big: "Coffee or Tea?" */
+    /* the question, big and centered: "Coffee or Tea?" */
     .quiz-question {
-        margin: 4px 0 16px;
+        margin: 0 0 18px;
         font-family: Georgia, serif;
-        font-size: 1.7em;
+        font-size: 1.9em;
         font-weight: 700;
         line-height: 1.2;
+        text-align: center;
         color: #2A1810;
     }
 
+    /* this or that: two big tiles side by side, an "or" between them */
     .quiz-options {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    /* answers are rows with a colored letter block, like a real multiple-choice quiz */
-    .quiz-option {
         position: relative;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        width: 100%;
-        padding: 8px 16px 8px 8px;
-        border-radius: var(--r-inset, 14px);
-        border: 1.5px solid #D9B8B3;
-        background: #FFFFFF;
-        font-family: Georgia, serif;
-        font-size: 1.2em;
-        text-align: left;
-        color: #2A1810;
-        cursor: var(--cursor-hot, pointer);
-        transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.3s ease, transform 0.2s ease;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
     }
 
-    .quiz-option::before {
-        content: attr(data-letter);
-        flex: none;
+    .quiz-options.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .quiz-or {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+        width: 44px;
+        height: 44px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
         background: #8A4D57;
-        font-family: system-ui, sans-serif;
-        font-size: 0.8em;
-        font-weight: 800;
+        box-shadow: 0 0 0 5px #FFF8F6;
+        font-family: Georgia, serif;
+        font-style: italic;
         color: #FFF8F6;
+        pointer-events: none;
     }
 
-    .quiz-option[data-letter="B"]::before { background: #56634A; }
-    .quiz-option[data-letter="C"]::before { background: #B08A3E; }
+    .quiz-options.three .quiz-or {
+        display: none;
+    }
+
+    .quiz-option {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 170px;
+        padding: 18px 14px;
+        border-radius: var(--r-card);
+        border: 1.5px solid #E2C6C0;
+        background: #FFFFFF;
+        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.06);
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        font-weight: 700;
+        color: #2A1810;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .quiz-emoji {
+        font-size: 2.4em;
+        line-height: 1;
+    }
 
     .quiz-option:hover:not(:disabled) {
-        border-color: #9E5A63;
-        background: #F6E4E1;
-        transform: translateX(4px);
+        border-color: #8A4D57;
+        transform: translateY(-4px);
+        box-shadow: 0 14px 26px rgba(42, 24, 16, 0.12);
     }
 
     /* Correct! or Nope, right under the answers */
     .quiz-result-chip {
-        display: inline-block;
-        margin: 14px 0 0;
+        display: table;
+        margin: 16px auto 0;
         padding: 4px 14px;
         border-radius: var(--r-pill);
         font-size: 0.78em;
@@ -1345,10 +1309,6 @@
         color: #8A4D57;
     }
 
-    .quiz-option.picked::before {
-        background: #FFF8F6;
-        color: #8A4D57;
-    }
 
     .quiz-end-actions {
         display: flex;
@@ -1391,7 +1351,9 @@
     }
 
     .quiz-mark {
-        margin-left: auto;
+        position: absolute;
+        top: 10px;
+        right: 14px;
         font-family: system-ui, sans-serif;
         font-weight: 700;
     }
@@ -1400,6 +1362,7 @@
         min-height: 1.6em;
         line-height: 1.55;
         margin: 10px 0 0;
+        text-align: center;
         font-style: italic;
         color: #56634A;
         opacity: 0;
@@ -3201,18 +3164,12 @@
                      data-leaders="@Json.Serialize(quizLeaders.Select(l => new { name = l.Item1, score = l.Item2 })).ToString()" hidden>
                     <div class="quiz-card">
                         <!-- a quiz sheet: the header band, one step per question, then the question -->
-                        <div class="quiz-head">
-                            <span class="quiz-badge">Quiz ✦</span>
-                            <span class="quiz-count" aria-live="polite">10 questions</span>
+                        <div class="quiz-top">
+                            <span class="quiz-count" aria-live="polite"></span>
                             <span class="quiz-tally" aria-live="polite">Score 0</span>
                         </div>
                         <ol class="quiz-steps" aria-hidden="true"></ol>
-                        <div class="quiz-start">
-                            <p class="quiz-start-title">Ten this-or-thats. Guess what I’d pick.</p>
-                            <p class="quiz-start-sub">One point for every right answer. Top scores make the leaderboard.</p>
-                            <button type="button" class="quiz-go">Start the quiz <span aria-hidden="true">→</span></button>
-                        </div>
-                        <div class="quiz-play" hidden>
+                        <div class="quiz-play">
                             <p class="quiz-qnum"></p>
                             <p class="quiz-question"></p>
                             <div class="quiz-options" role="group" aria-label="Your guess"></div>
@@ -3280,7 +3237,13 @@
         const verdicts = JSON.parse(quiz.dataset.verdicts);
         const $ = sel => quiz.querySelector(sel);
         const options = $('.quiz-options'), line = $('.quiz-line'), reveal = $('.quiz-reveal'), next = $('.quiz-next');
-        const play = $('.quiz-play'), result = $('.quiz-result'), start = $('.quiz-start'), chip = $('.quiz-result-chip');
+        const play = $('.quiz-play'), result = $('.quiz-result'), chip = $('.quiz-result-chip');
+        // a picture for every option, so each question reads like a real this-or-that
+        const EMOJI = { 'Coffee': '☕', 'Tea': '🍵', 'Sunrise': '🌅', 'Sunset': '🌇', 'Beach': '🏖️', 'Mountains': '🏔️',
+            'Sweet': '🍰', 'Savory': '🧀', 'Morning': '☀️', 'Night': '🌙', 'Books': '📚', 'Movies': '🎬', 'Rom-Com': '💕',
+            'Horror': '👻', 'City': '🏙️', 'Country': '🌾', 'Dogs': '🐶', 'Cats': '🐱', 'Road Trip': '🚗', 'Flight': '✈️',
+            'Neither?': '🤔', 'Lake house': '🏡' };
+        const tile = c => `<span class="quiz-emoji" aria-hidden="true">${EMOJI[c] || '✦'}</span><span class="quiz-label">${c}</span>`;
         const steps = $('.quiz-steps');
         steps.innerHTML = questions.map(() => '<li></li>').join('');
         const step = i => steps.children[i];
@@ -3306,7 +3269,8 @@
             const choices = curveball(q) ? [q.a, q.b, 'Neither?'] : [q.a, q.b];
             options.classList.toggle('three', choices.length === 3);
             options.innerHTML = choices.map((c, n) =>
-                `<button type="button" class="quiz-option" data-choice="${n}" data-letter="${'ABC'[n]}">${c}</button>`).join('');
+                `<button type="button" class="quiz-option" data-choice="${n}" data-value="${c}">${tile(c)}</button>`).join('') +
+                '<span class="quiz-or" aria-hidden="true">or</span>';
             options.querySelectorAll('.quiz-option').forEach(btn => btn.addEventListener('click', () => guess(btn)));
             line.textContent = '';
             line.classList.remove('show');
@@ -3320,13 +3284,13 @@
             const q = questions[current];
             const buttons = [...options.querySelectorAll('.quiz-option')];
             // the right answer: my pick, or "Neither?" on a curveball card
-            const right = curveball(q) ? buttons[2] : buttons.find(b => b.textContent === q.pick);
+            const right = curveball(q) ? buttons[2] : buttons.find(b => b.dataset.value === q.pick);
             const correct = btn === right;
             if (correct) score++;
             $('.quiz-tally').textContent = `Score ${score}`;
             buttons.forEach(b => b.disabled = true);
             right.classList.add('picked');
-            if (curveball(q)) right.textContent = q.pick;
+            if (curveball(q)) right.innerHTML = tile(q.pick);
             btn.classList.add('chosen');
             btn.insertAdjacentHTML('beforeend', `<span class="quiz-mark" aria-hidden="true">${correct ? '✓' : '✗'}</span>`);
             // what I say back depends on what you guessed; a curveball also reveals the real answer
@@ -3418,13 +3382,7 @@
             show(0);
             options.querySelector('.quiz-option').focus({ preventScroll: true });
         });
-        // the start screen first, so it reads as a quiz before the first question
-        $('.quiz-go').addEventListener('click', () => {
-            start.hidden = true;
-            play.hidden = false;
-            show(0);
-            options.querySelector('.quiz-option').focus({ preventScroll: true });
-        });
+        show(0);
     })();
 
     // "View more…" under If you know me... opens If I were a... and The Duality of a Woman; the button at its bottom closes it again

@@ -455,6 +455,11 @@
         cursor: var(--cursor-hot, pointer);
     }
 
+    .role-pop-close:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 2px;
+    }
+
     .role-pop-close:hover {
         background: #EFD3CD;
     }
@@ -517,7 +522,7 @@
         display: grid;
         grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
         gap: 48px;
-        align-items: center;
+        align-items: stretch;   /* the quote card runs corner to corner: top of the kicker to the last line */
     }
 
     .why-wrap .career-section-title {
@@ -531,15 +536,26 @@
     }
 
     /* the quotes I live by, one at a time, in their own card */
+    .why-wrap p:not(.career-kicker):last-child {
+        margin-bottom: 0;
+    }
+
     .why-quotes {
+        display: flex;
+        flex-direction: column;
         padding: var(--pad-card);
         border-radius: var(--r-card);
         background: #FFF8F6;
         border: var(--card-border);
+        border-top: 4px solid #8A4D57;
         box-shadow: var(--shadow-card);
     }
 
     .why-quote-slide {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         margin: 0;
         min-height: 190px;
         animation: whyIn 0.4s ease both;
@@ -577,7 +593,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 12px;
+        margin-top: auto;
+        padding-top: 18px;
+        border-top: 1px solid #EBD5D0;
     }
 
     .why-quote-nav button.why-arrow {
@@ -640,6 +658,52 @@
     .career-experience {
         padding: 72px 40px 24px;
         background: #FAF1EF;
+    }
+
+    /* Projects title on the left, the SuhaniCoded button in the corner */
+    .projects-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .coded-btn {
+        flex: none;
+        padding: 8px 18px;
+        border-radius: var(--r-pill);
+        border: 1.5px solid #8A4D57;
+        background: transparent;
+        font-family: Georgia, serif;
+        font-size: 1rem;
+        font-style: italic;
+        color: #8A4D57;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .coded-btn:hover {
+        background: #8A4D57;
+        color: #FFF8F6;
+    }
+
+    .coded-btn:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    .coded-title {
+        margin: 6px 0 10px;
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        color: #2A1810;
+    }
+
+    .coded-lede {
+        margin: 0;
+        line-height: 1.6;
+        color: #3B2A24;
     }
 
     /* PROJECTS: right after Experience, so recruiters see what I built early */
@@ -773,11 +837,11 @@
             "Prospected $20M to $200M enterprises through outbound calls and strategic account planning to build an ERP sales pipeline.",
             "Led discovery calls to uncover prospects’ business needs and align them with Oracle NetSuite, a cloud-based ERP."
         }),
-        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors", "Denver, Colorado (remote)", "40%", "more website traffic from messaging I redesigned", new[]
+        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors", "Denver, Colorado (remote)", "20%", "more website traffic from messaging I redesigned", new[]
         {
             "Conducted market research and competitive analysis across client consulting engagements, including Barry Manufacturing.",
             "Built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product through pricing and competitor analysis.",
-            "Drove 40% growth in website traffic and 37% in LinkedIn visits by redesigning messaging for Acacia’s AI and cloud services."
+            "Drove 20% growth in website traffic and 27% in LinkedIn visits by redesigning messaging for Acacia’s AI and cloud services."
         })
     };
 }
@@ -827,7 +891,7 @@
                 {
                     ("pmm", "Product Marketing Manager", "I turn technical products into stories people actually care about.",
                         new[] {
-                            "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 40% more website traffic and 37% more LinkedIn visits.",
+                            "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 20% more website traffic and 27% more LinkedIn visits.",
                             "I built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, from pricing to competitor analysis.",
                             "My children’s book sold 1,000 copies in its first month and hit #1 New Release in STEM Education." },
                         "See my marketing projects", "/home/pursue#marketing"),
@@ -906,10 +970,6 @@
         </div>
             <div class="why-quotes" role="region" aria-roledescription="carousel" aria-label="Quotes I live by">
                 <figure class="why-quote-slide">
-                    <blockquote>Technology is in everything. The best of it has a little poetry in it too.</blockquote>
-                    <figcaption>Me</figcaption>
-                </figure>
-                <figure class="why-quote-slide" hidden>
                     <blockquote>It’s technology married with liberal arts, married with the humanities, that yields us the results that make our heart sing.</blockquote>
                     <figcaption>Steve Jobs</figcaption>
                 </figure>
@@ -924,6 +984,10 @@
                 <figure class="why-quote-slide" hidden>
                     <blockquote>You can’t use up creativity. The more you use, the more you have.</blockquote>
                     <figcaption>Maya Angelou</figcaption>
+                </figure>
+                <figure class="why-quote-slide" hidden>
+                    <blockquote>People ignore design that ignores people.</blockquote>
+                    <figcaption>Frank Chimero</figcaption>
                 </figure>
                 <div class="why-quote-nav">
                     <button type="button" class="why-arrow" data-go="-1" aria-label="Previous quote">‹</button>
@@ -963,8 +1027,19 @@
 <link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
 <section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
     <div class="career-wrap mp">
-        <h2 class="career-section-title" id="projects-heading">Projects</h2>
+        <div class="projects-head">
+            <h2 class="career-section-title" id="projects-heading">Projects</h2>
+            <button type="button" class="coded-btn" aria-haspopup="dialog">SuhaniCoded<span aria-hidden="true">™</span></button>
+        </div>
         <partial name="_RideFlowProof" />
+
+        @* SuhaniCoded: coded by Suhani, and something only Suhani would do *@
+        <dialog class="role-pop coded-pop" aria-labelledby="coded-title">
+            <button type="button" class="role-pop-close" aria-label="Close">×</button>
+            <p class="role-card-label">What SuhaniCoded means</p>
+            <h3 class="coded-title" id="coded-title">Coded by Suhani. And something only Suhani would do.</h3>
+            <p class="coded-lede">Every project here was coded by me, and every one is something only I would do: built around the people using it, structured before it’s styled, owned start to finish, and finished with the little extras nobody asked for but everybody notices.</p>
+        </dialog>
     </div>
 </section>
 
@@ -1055,6 +1130,18 @@
             btn._reset = setTimeout(() => btn.textContent = label, 2000);
         });
     });
+</script>
+
+<script>
+    // SuhaniCoded: the button in the Projects corner opens what it means
+    (() => {
+        const btn = document.querySelector('.coded-btn');
+        const pop = document.querySelector('.coded-pop');
+        if (!btn || !pop) return;
+        btn.addEventListener('click', () => pop.showModal());
+        pop.querySelector('.role-pop-close').addEventListener('click', () => pop.close());
+        pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
+    })();
 </script>
 
 <script>

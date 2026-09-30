@@ -31,11 +31,11 @@
     color: var(--choc);
     margin: 12px 0 0;
 }
-.mp-lead { color: var(--muted); font-size: 17px; line-height: 1.65; margin: 14px 0 0; max-width: 640px; }
+.mp-lead { color: var(--muted); font-size: 17px; line-height: 1.65; margin: 14px 0 0; }
 .mp-head { margin-bottom: 44px; }
 
 /* hero */
-.mp-hero { max-width: 900px; margin: 10px 0 100px; }
+.mp-hero { margin: 10px 0 100px; }
 .mp-hero h2 {
     font-family: var(--serif);
     font-weight: 400;
@@ -52,7 +52,7 @@
     color: var(--mul);
     margin: 0 0 22px;
 }
-.mp-hook { font-size: 18px; line-height: 1.7; color: var(--ink); max-width: 680px; margin: 0; }
+.mp-hook { font-size: 18px; line-height: 1.7; color: var(--ink); margin: 0; }
 
 /* what I can do */
 .mp-caps {
@@ -99,6 +99,17 @@
 .mp-browser-view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #fff; }
 .mp-browser-view iframe { position: absolute; top: 0; left: 0; width: 250%; height: 250%; border: 0; transform: scale(0.4); transform-origin: 0 0; }
 .mp-browser-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
+/* RideFlow: the live app stretches to the height of the text beside it, and the data model runs full width below both */
+.mp-proof-fill { align-items: stretch; }
+.mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) { display: flex; flex-direction: column; }
+.mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) > .mp-browser { flex: 1; display: flex; flex-direction: column; }
+.mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) .mp-browser-view { flex: 1; aspect-ratio: auto; min-height: 320px; }
+/* This Website: one big page on top, two smaller ones below */
+.mp-site-shots { display: grid; gap: 16px; }
+.mp-site-shots > .mp-browser .mp-browser-view { aspect-ratio: 16 / 9; }
+.mp-site-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.mp-site-pair .mp-browser-view { aspect-ratio: 16 / 10; }
+.mp-site-shots .mp-browser-shot img { object-position: 50% 0; }
 /* projects: ‹ project names › above one slide at a time */
 .mp-proj-nav { display: flex; align-items: center; gap: 12px; margin: 0 0 40px; }
 /* one line of tabs; when they don't all fit, the row scrolls and ‹ › appear at its far left and far right */
@@ -106,7 +117,7 @@
 .mp-proj-tabs::-webkit-scrollbar { display: none; }
 .mp-proj-tabs button { flex: none; white-space: nowrap; }
 /* the same pills as the Coursework tabs: uppercase, spaced out, left-aligned */
-.mp-proj-tabs button { font: inherit; font-size: 0.85em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 11px 26px; border-radius: var(--r-pill); border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #2A1810; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.mp-proj-tabs button { font: inherit; font-size: 0.85em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 11px 20px; border-radius: var(--r-pill); border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #2A1810; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
 .mp-proj-tabs button:hover { border-color: var(--mul); }
 .mp-proj-tabs button[aria-selected="true"] { background: #8F4661; border-color: #8F4661; color: #FFF8F6; }
 .mp-proj-arrow { display: none; flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #8F4661; font-size: 20px; line-height: 1; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, color 0.2s ease; }
@@ -135,8 +146,6 @@
 .mp-facts.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .mp-proof h3 { font-family: var(--serif); font-weight: 400; font-size: 52px; color: var(--choc); margin: 10px 0 10px; }
 /* a little signature badge above each project I built */
-.mp-coded { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: var(--r-pill); background: #F6DDE3; color: #8F4661; font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-.mp-coded::before { content: "✦"; font-size: 12px; letter-spacing: 0; }
 .mp-proof-sub { font-size: 17.5px; line-height: 1.6; color: var(--muted); margin: 0 0 26px; }
 .mp-facts { list-style: none; padding: 0; margin: 0 0 26px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .mp-facts li { border-top: 2px solid var(--mul); padding-top: 10px; }
@@ -157,6 +166,11 @@
 .mp-erd-mini .mp-eyebrow { font-size: 10px; }
 .mp-erd-mini h4 { font-size: 19px; margin: 6px 0 8px; }
 .mp-erd-mini p { font-size: 12.5px; line-height: 1.55; }
+/* full width, so it reads at normal size: the story on the left, the model on the right */
+.mp-proof-fill { row-gap: 32px; }
+.mp-erd.mp-erd-row { grid-column: 1 / -1; margin-top: 0; padding: var(--pad-card); gap: 48px; align-items: center; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.mp-erd-row h4 { font-size: 24px; }
+.mp-erd-row p { font-size: 15px; line-height: 1.65; }
 .mp-built { margin-top: 22px; display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; background: #FFF8F6; border: var(--card-border); border-radius: var(--r-card); padding: var(--pad-card-sm); font-size: 15px; color: var(--muted);
  box-shadow: var(--shadow-card);
 }

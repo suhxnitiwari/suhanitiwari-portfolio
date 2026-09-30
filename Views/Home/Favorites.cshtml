@@ -1712,49 +1712,51 @@
     }
 
     .fav-thesis p:not(.fav-kicker) {
-        max-width: 760px;
         margin: 0;
         font-size: 1.1em;
         line-height: 1.7;
         color: #2A1810;
     }
 
-    /* Listen, Watch, Read: what each one says about me */
+    /* Listen, Watch, Read: three columns under a thin rule, the label small, the meaning in serif */
     .fav-trio {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 18px 0 0;
-        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 32px;
+        margin: 28px 0 0;
+        padding: 18px 0 0;
+        border-top: 1px solid #D9B8B3;
         list-style: none;
     }
 
     .fav-trio a {
-        display: inline-flex;
-        gap: 8px;
-        padding: 8px 16px;
-        border-radius: var(--r-pill);
-        border: 1.5px solid #D9B8B3;
-        background: #FFF8F6;
-        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
         text-decoration: none;
         color: #2A1810;
     }
 
     .fav-trio a b {
-        color: #8A4D57;
-        letter-spacing: 1.5px;
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
         text-transform: uppercase;
-        font-size: 0.85em;
+        color: #9E5A63;
     }
 
-    .fav-trio a:hover {
-        border-color: #8A4D57;
+    .fav-trio a span {
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        font-style: italic;
+    }
+
+    .fav-trio a:hover span {
+        color: #8A4D57;
     }
 
     /* the one-line thesis under each section title */
     .fav-claim {
-        max-width: 760px;
         margin: -30px 0 40px;
         font-size: 1.05em;
         line-height: 1.7;
@@ -1868,13 +1870,11 @@
         color: #2A1810;
     }
 
-    .fav-type-end {
-        margin: 28px 0 0;
-        font-family: Georgia, serif;
-        font-size: 1.4em;
-        font-style: italic;
-        line-height: 1.45;
-        color: #2A1810;
+    .fav-type-sub {
+        margin: -14px 0 24px;
+        font-size: 1.05em;
+        line-height: 1.7;
+        color: #56634A;
     }
 
     @@media (max-width: 800px) {
@@ -1882,8 +1882,13 @@
             font-size: 2.2em;
         }
 
-        .fav-type-grid {
+        .fav-type-grid,
+        .fav-trio {
             grid-template-columns: 1fr;
+        }
+
+        .fav-trio {
+            gap: 16px;
         }
 
         .fav-claim {
@@ -1900,9 +1905,9 @@
             <h1>Apparently, I have a type.</h1>
             <p>What I listen to, watch and read looks all over the place until you zoom out. Then the same things keep showing up: people, relationships, ambition, reinvention, curiosity, and a very strong preference for a happy ending.</p>
             <ul class="fav-trio">
-                <li><a href="#listen"><b>Listen</b>how I feel</a></li>
-                <li><a href="#watch"><b>Watch</b>how I understand people</a></li>
-                <li><a href="#read"><b>Read</b>how I figure things out</a></li>
+                <li><a href="#listen"><b>Listen</b><span>How I feel →</span></a></li>
+                <li><a href="#watch"><b>Watch</b><span>How I understand people →</span></a></li>
+                <li><a href="#read"><b>Read</b><span>How I figure things out →</span></a></li>
             </ul>
         </header>
 
@@ -3458,6 +3463,7 @@
         <!-- the pattern across all three -->
         <section class="fav-type" aria-labelledby="fav-type-title">
             <h2 id="fav-type-title">So apparently, I have a type.</h2>
+            <p class="fav-type-sub">Different medium, same obsessions: people, why they do what they do, what they make, and what makes something worth coming back to.</p>
             <ul class="fav-type-grid">
                 <li>
                     <h3>People</h3>
@@ -3475,7 +3481,6 @@
                     <p>I don’t come back to things just because they’re “good.” I come back to things that make me feel something.</p>
                 </li>
             </ul>
-            <p class="fav-type-end">Different medium, same obsessions: people, why they do what they do, what they make, and what makes something worth coming back to.</p>
         </section>
     </div>
 </section>

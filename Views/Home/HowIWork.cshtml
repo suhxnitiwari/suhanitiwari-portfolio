@@ -317,10 +317,27 @@
 
     /* ===== RIASEC: my three Holland letters, each with its score ===== */
     .riasec-letters {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        margin: 0 0 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .riasec-letters .riasec-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .riasec-letters .riasec-card h3 {
+        margin-top: 0;
+    }
+
+    /* the letter circles stay perfect circles, whatever the text beside them does */
+    .riasec-letters .riasec-letter {
+        flex: 0 0 56px;
+        width: 56px;
+        height: 56px;
+        font-size: 1.7em;
     }
 
     .riasec-card {
@@ -745,6 +762,16 @@
             var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "A Real Challenge" };
             // from the report's Communication Style section (not job titles, so no role is ruled out)
             var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive and action-oriented" };
+            // How it shows up at work: one situation per card, each drawn from a trait or strength in my report above
+            var discAtWork = new[]
+            {
+                ("When a project stalls", "Decisive", "I’m the one who gets it moving. I size up the options quickly, pick the best path, and start, instead of waiting for perfect information."),
+                ("In a group project", "Leadership and Vision", "I set the goal, see the big picture, and keep everyone pointed at the same finish line."),
+                ("On a tight deadline", "Resilience Under Pressure", "High stakes make me sharper, not quieter. A real deadline is where I focus best."),
+                ("When something breaks", "Problem Solving", "I’d rather find the problem and fix it before anyone notices than explain it later."),
+                ("With my own work", "Self-Reliant", "I own it from start to finish. If my name is on it, I follow it all the way through."),
+                ("Where I’m still growing", "Sensitive and Direct", "My feedback can come in sharp bullet points. I’m learning to soften the delivery without losing the point.")
+            };
             // what those motivators and that style mean for a team (drawn from the lines above, not new claims)
             var discWorkingWithMe = new[] { "Give me ownership of the outcome", "Share the goal, then trust me with the how", "Bring me the hard problem first" };
 
@@ -795,31 +822,21 @@
                     <ul class="disc-pills stack soft">@foreach (var w in discWorkingWithMe) { <li>@w</li> }</ul>
                 </div>
             </div>
-            @* the full report, for anyone who wants the detail *@
-            <details class="disc-more">
-                <summary>See my full DISC report</summary>
-            <div class="disc-grid">
-                <div class="disc-block">
-                    <h4>Core Traits</h4>
-                    <ul class="disc-list">
-                        @foreach (var (name, text) in discTraits)
-                        {
-                            <li><strong>@name</strong><span>@text</span></li>
-                        }
-                    </ul>
-                </div>
-                <div class="disc-block">
-                    <h4>Strengths</h4>
-                    <ul class="disc-list">
-                        @foreach (var (name, text) in discStrengths)
-                        {
-                            <li><strong>@name</strong><span>@text</span></li>
-                        }
-                    </ul>
-                </div>
-            </div>
+            @* how it shows up at work: six situations, one card each *@
+            <h4 class="disc-series-title">How it shows up at work</h4>
+            <ol class="disc-series">
+                @for (var i = 0; i < discAtWork.Length; i++)
+                {
+                    var (when, from, how) = discAtWork[i];
+                    <li>
+                        <span class="disc-series-n">0@(i + 1)</span>
+                        <p class="disc-series-when">@when</p>
+                        <p class="disc-series-how">@how</p>
+                        <p class="disc-series-from">@from</p>
+                    </li>
+                }
+            </ol>
 
-            </details>
         </div>
 
         <div class="test-panel" id="test-clifton" role="tabpanel" aria-labelledby="tab-clifton" hidden>
@@ -939,37 +956,20 @@
                 <figcaption>Strongly Artistic, with Social, Enterprising and Realistic close behind. My three letters are in mulberry.</figcaption>
             </figure>
 
-            @* beside the hexagon: the same six scores as a ranked list, my three letters on top *@
-            <div class="riasec-rank">
-                <h4>All six, ranked</h4>
-                <ol>
-                    @foreach (var (letter, name, score) in hexagon.OrderByDescending(h => h.Item3))
-                    {
-                        var mine = myCode.Contains(letter);
-                        <li class="@(mine ? "mine" : "")">
-                            <span class="rank-letter">@letter</span>
-                            <span class="rank-name">@name</span>
-                            <span class="rank-score">@score.ToString("0")</span>
-                            <span class="rank-bar" aria-hidden="true"><span style="width: @(score.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></span></span>
-                        </li>
-                    }
-                </ol>
-                <p class="rank-note">My Holland code is my top three: <b>A</b>rtistic, <b>S</b>ocial, <b>E</b>nterprising.</p>
-            </div>
-            </div>
-
+            @* beside the hexagon: what my three letters mean (the scores are already on the hexagon) *@
             <div class="riasec-letters">
                 @foreach (var (letter, name, dimension, score, line) in riasec)
                 {
                     <div class="riasec-card">
                         <span class="riasec-letter">@letter</span>
-                        <h3>@name</h3>
-                        <p class="riasec-dimension">@dimension</p>
-                        <p class="riasec-score">@score.ToString("0")</p>
-                        <span class="riasec-bar" aria-hidden="true"><span style="width: @(score.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture))%"></span></span>
-                        <p class="riasec-line">@line</p>
+                        <div>
+                            <h3>@name</h3>
+                            <p class="riasec-dimension">@dimension</p>
+                            <p class="riasec-line">@line</p>
+                        </div>
                     </div>
                 }
+            </div>
             </div>
 
             <div class="disc-grid riasec-grid">

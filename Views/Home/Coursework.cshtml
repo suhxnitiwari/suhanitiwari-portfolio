@@ -863,7 +863,8 @@ document.querySelectorAll('.mp-projects').forEach(root => {
     };
     // ‹ › only show when the tabs don't fit on one line
     const nav = root.querySelector('.mp-proj-nav');
-    const fits = () => { const row = root.querySelector('.mp-proj-tabs'); nav && nav.classList.toggle('overflows', row.scrollWidth > row.clientWidth + 2); };
+    // measure with the arrows hidden, or the arrows themselves would make the row look too narrow
+    const fits = () => { const row = root.querySelector('.mp-proj-tabs'); if (!nav) return; nav.classList.remove('overflows'); nav.classList.toggle('overflows', row.scrollWidth > row.clientWidth + 2); };
     if (nav) { new ResizeObserver(fits).observe(nav); fits(); }
     tabs.forEach((t, n) => {
         t.addEventListener('click', () => show(n));
