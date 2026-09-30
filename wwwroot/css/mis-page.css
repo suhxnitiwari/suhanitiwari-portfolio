@@ -86,6 +86,9 @@
 
 /* RideFlow */
 .mp-proof { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 52px; align-items: start; }
+/* the story leads (what it is, what I built, the proof), and the screenshot backs it up on the right */
+.mp-projects .mp-proof { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.mp-projects .mp-proof > div:has(> h3) { order: -1; }
 .mp-browser { background: #fff; border: 1px solid var(--line); border-radius: var(--r-card); overflow: hidden; box-shadow: 0 30px 60px -35px rgba(42, 24, 16, 0.4); }
 .mp-browser-bar { display: flex; gap: 7px; padding: 12px 14px; background: #F5E5E1; border-bottom: 1px solid var(--line); }
 .mp-browser-bar span { width: 10px; height: 10px; border-radius: 50%; background: rgba(143, 70, 97, 0.3); }
@@ -200,27 +203,8 @@
 
 /* two stacks */
 /* the interactive stack: layers on the left, the picked layer's card on the right */
-.mp-stack-pick { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; }
-.mp-stack-pick button { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 20px; border-radius: var(--r-pill); border: 1.5px solid #D9B8B3; background: #FFF8F6; color: var(--mul); cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
-.mp-stack-pick button:hover { border-color: var(--mul); }
-.mp-stack-pick button[aria-pressed="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; }
-.mp-stack-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; align-items: start; }
-.mp-layers { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.mp-layer { width: 100%; display: flex; align-items: center; gap: 14px; padding: 18px 22px; border-radius: var(--r-inset); border: 1px solid var(--line); background: var(--ivory); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease; }
-.mp-layer:hover { transform: translateX(6px); }
-.mp-layer[aria-pressed="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; transform: translateX(12px); }
-.mp-layer-n { font-size: 11px; letter-spacing: 0.14em; opacity: 0.7; width: 22px; }
-.mp-layer-name { flex: 1; font-family: var(--serif); font-size: 21px; }
-.mp-layer-tool { font-size: 13px; opacity: 0.75; }
-.mp-layer:focus-visible, .mp-stack-pick button:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
-.mp-layer-card { background: #FFF8F6; border: var(--card-border); border-radius: var(--r-card); padding: var(--pad-card); min-height: 300px; position: sticky; top: 24px;
  box-shadow: var(--shadow-card);
 }
-.mp-layer-card h4 { font-family: var(--serif); font-weight: 400; font-size: 34px; color: var(--choc); margin: 8px 0 12px; }
-.mp-layer-what { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0 0 18px; }
-.mp-layer-tools { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.mp-layer-tools li { font-size: 13px; padding: 5px 13px; border-radius: var(--r-pill); background: #F0DCD7; color: #5A2E3C; }
-.mp-pipe-note { margin: 18px 0 0; font-size: 14.5px; color: var(--muted); }
 
 /* closing quote */
 .mp-close { background: var(--plum); border-radius: var(--r-card); padding: 90px 40px; text-align: center; margin: 40px 0 0; }
@@ -238,12 +222,10 @@
     .mp-thesis { font-size: 23px; }
     .mp-h2 { font-size: 33px; }
     .mp-proof, .mp-erd, .mp-erd-mini, .mp-tri { grid-template-columns: 1fr; gap: 32px; }
+    .mp-projects .mp-proof { grid-template-columns: 1fr; }
     .mp-proof h3 { font-size: 40px; }
     .mp-tri-fig { min-height: 0; }
     .mp-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .mp-stack-body { grid-template-columns: 1fr; gap: 24px; }
-    .mp-layer-card { position: static; min-height: 0; padding: 24px 22px; }
-    .mp-layer-card h4 { font-size: 28px; }
     .mp-close blockquote { font-size: 26px; }
     .mp-close { padding: 60px 24px; }
 }

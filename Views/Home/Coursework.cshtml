@@ -138,28 +138,6 @@
         ("Strategy", "The strategy", "I can tell whether it’s worth building at all, and make the business case.", new[] { "MIS 375" })
     };
 
-    // The interactive stack: five layers, each described for both stacks I've built with.
-    // Per stack: (tools, what the layer does there)
-    var stackNames = new[] { (".NET", "MIS 333K"), ("JavaScript", "MIS 372T") };
-    var stackLayers = new (string Name, string Job, (string[] Tools, string What)[] Stacks)[]
-    {
-        ("Front end", "What people see and click", new[] {
-            (new[] { "Razor views", "Forms", "Validation", "Responsive UI" }, "Server-rendered pages. Validation rules live on the model and run in both the browser and the server."),
-            (new[] { "React", "Components", "State", "Routing", "Vite" }, "A single-page app. Components hold their own state, and routing swaps screens without reloading.") }),
-        ("Back end", "Where the business rules live", new[] {
-            (new[] { "ASP.NET Core MVC", "Controllers", "C#" }, "Controllers take a request, apply the business rules and pick the view. The pricing logic sits in the model, not the page."),
-            (new[] { "Node.js", "Express", "REST APIs", "Middleware" }, "Express routes expose a REST API, and middleware checks who’s asking before any route runs.") }),
-        ("Data", "Where information is stored", new[] {
-            (new[] { "Entity Framework Core", "LINQ", "Azure SQL" }, "Tables described as C# classes and queried with LINQ instead of hand-written SQL."),
-            (new[] { "PostgreSQL", "Sequelize ORM", "Full CRUD" }, "Four related tables, riders, drivers, rides and payments, held together by keys and constraints.") }),
-        ("Security", "Who can see and do what", new[] {
-            (new[] { "Users", "Roles", "Authorization", "Anti-forgery tokens" }, "Every account has a role and each page checks it. Forms are protected against forged requests."),
-            (new[] { "Authentication", "Protected routes", "Row-level security" }, "Riders, drivers and admins each see and change only what their role allows, enforced on the server.") }),
-        ("Ship", "Getting it live", new[] {
-            (new[] { "GitHub", "Docker", "Render" }, "This site runs in a Docker container on Render, and every push to GitHub puts the new version live."),
-            (new[] { "Render", "Separate front end and API" }, "The front end and the API are deployed separately and talk to each other in production.") })
-    };
-
     // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
     var misCan = new[]
     {
@@ -697,56 +675,6 @@
                     </div>
                     <script type="application/json" id="mpProblems">@Json.Serialize(misProblems)</script>
                 </div>
-
-                <!-- 6. technical depth: an interactive stack. Pick a stack, click a layer, or send a request through it -->
-                <div class="mp-section mp-stack" aria-labelledby="mp-stacks">
-                    <div class="mp-head">
-                        <p class="mp-eyebrow">From blank repo to working application</p>
-                        <h3 class="mp-h2" id="mp-stacks">I know how the layers connect,<br />in two different stacks.</h3>
-                        <p class="mp-lead">Click a layer to see what’s inside.</p>
-                    </div>
-                    <div class="mp-stack-pick" role="group" aria-label="Pick a stack">
-                        @for (var st = 0; st < stackNames.Length; st++)
-                        {
-                            <button type="button" data-stack="@st" aria-pressed="@(st == 0 ? "true" : "false")">@stackNames[st].Item1, @stackNames[st].Item2</button>
-                        }
-                    </div>
-                    <div class="mp-stack-body">
-                        <div>
-                            <ol class="mp-layers">
-                                @for (var l = 0; l < stackLayers.Length; l++)
-                                {
-                                    <li>
-                                        <button type="button" class="mp-layer" data-layer="@l" aria-pressed="@(l == 0 ? "true" : "false")" aria-controls="mp-layer-card">
-                                            <span class="mp-layer-n">0@(l + 1)</span>
-                                            <span class="mp-layer-name">@stackLayers[l].Name</span>
-                                            @for (var st = 0; st < stackNames.Length; st++)
-                                            {
-                                                <span class="mp-layer-tool" data-stack="@st" hidden="@(st != 0)">@stackLayers[l].Stacks[st].Tools[0]</span>
-                                            }
-                                        </button>
-                                    </li>
-                                }
-                            </ol>
-                        </div>
-                        <div class="mp-layer-card" id="mp-layer-card" aria-live="polite">
-                            @for (var l = 0; l < stackLayers.Length; l++)
-                            {
-                                for (var st = 0; st < stackNames.Length; st++)
-                                {
-                                    var layer = stackLayers[l].Stacks[st];
-                                    <div class="mp-layer-detail" data-layer="@l" data-stack="@st" hidden="@(l != 0 || st != 0)">
-                                        <p class="mp-eyebrow">Layer 0@(l + 1): @stackLayers[l].Job</p>
-                                        <h4>@stackLayers[l].Name</h4>
-                                        <p class="mp-layer-what">@layer.What</p>
-                                        <ul class="mp-layer-tools">@foreach (var tool in layer.Tools) { <li>@tool</li> }</ul>
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
-                    <p class="mp-pipe-note">Same layers, two ecosystems. Once you understand how a request travels from the screen to the database and back, a new framework is mostly new syntax.</p>
-                </div>
             </section>
 
             <!-- one course, opened from its chip on the diagram -->
@@ -768,8 +696,8 @@
 
                 <!-- The zoom lens -->
                 <section class="story-section reveal" aria-labelledby="zoom-heading">
-                    <h2 class="story-heading" id="zoom-heading">MIS taught me to zoom in and out.</h2>
-                    <p class="story-sub">I can talk to the engineer and the executive in the same meeting. Slide from a line of code out to the strategy to see what I bring at each level.</p>
+                    <h2 class="story-heading" id="zoom-heading">From one line of code to the business case behind it.</h2>
+                    <p class="story-sub">I can talk to the engineer and the executive in the same meeting. Slide to see what I bring at each level.</p>
                     <div class="zoom">
                         <div class="zoom-lens" aria-hidden="true">
                             @for (var z = zoomStops.Length - 1; z >= 0; z--)
@@ -909,24 +837,6 @@
         });
     });
     show(0);
-})();
-
-// The stack: pick .NET or JavaScript, click a layer to see inside it, or watch a request go down to the data and back up
-(() => {
-    const root = document.querySelector('.mp-stack');
-    if (!root) return;
-    const picks = [...root.querySelectorAll('.mp-stack-pick button')];
-    const layers = [...root.querySelectorAll('.mp-layer')];
-    let stack = 0, layer = 0;
-    const show = () => {
-        picks.forEach((b, i) => b.setAttribute('aria-pressed', i === stack));
-        layers.forEach((b, i) => b.setAttribute('aria-pressed', i === layer));
-        root.querySelectorAll('.mp-layer-tool').forEach(t => t.hidden = +t.dataset.stack !== stack);
-        root.querySelectorAll('.mp-layer-detail').forEach(d => d.hidden = +d.dataset.stack !== stack || +d.dataset.layer !== layer);
-    };
-    picks.forEach((b, i) => b.addEventListener('click', () => { stack = i; show(); }));
-    layers.forEach((b, i) => b.addEventListener('click', () => { layer = i; show(); }));
-    show();
 })();
 
 // Project carousels (MIS and Marketing): ‹ › and the project names show one project at a time (arrow keys work on the names too)

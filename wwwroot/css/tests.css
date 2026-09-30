@@ -164,6 +164,42 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* core traits and strengths fold away under one line; the practical cards show first */
+.disc-more {
+    margin: 4px 0 0;
+}
+
+.disc-more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    border-radius: var(--r-pill);
+    border: 1.5px solid #8A4D57;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #8A4D57;
+    list-style: none;
+    cursor: var(--cursor-hot, pointer);
+}
+
+.disc-more summary::-webkit-details-marker {
+    display: none;
+}
+
+.disc-more summary::after {
+    content: "+";
+    font-size: 1.1em;
+}
+
+.disc-more[open] summary::after {
+    content: "\2212";
+}
+
+.disc-more[open] summary {
+    margin-bottom: 20px;
+}
+
 .disc-block {
     padding: var(--pad-card-sm);
     border-radius: var(--r-card);

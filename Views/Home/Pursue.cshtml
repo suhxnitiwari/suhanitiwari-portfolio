@@ -187,7 +187,33 @@
         list-style: none;
     }
 
+    /* each ranking is a card that flips over to show how it connects to me */
     .mccombs-stats li {
+        perspective: 1000px;
+    }
+
+    .mccombs-flip {
+        position: relative;
+        display: grid;
+        width: 100%;
+        height: 100%;
+        min-height: 128px;
+        padding: 0;
+        border: none;
+        background: none;
+        font: inherit;
+        text-align: left;
+        cursor: var(--cursor-hot, pointer);
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+    }
+
+    .mccombs-flip[aria-pressed="true"] {
+        transform: rotateY(180deg);
+    }
+
+    .mccombs-face {
+        grid-area: 1 / 1;
         display: flex;
         flex-direction: column;
         gap: 6px;
@@ -196,6 +222,46 @@
         background: #FFF8F6;
         border: var(--card-border);
         box-shadow: var(--shadow-card);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .mccombs-face.back {
+        justify-content: center;
+        background: #8A4D57;
+        border-color: #8A4D57;
+        transform: rotateY(180deg);
+    }
+
+    .mccombs-face.back em {
+        font-size: 0.68rem;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #F5E0DB;
+    }
+
+    .mccombs-face.back span {
+        font-size: 0.92em;
+        line-height: 1.45;
+        color: #FFF8F6;
+    }
+
+    .mccombs-flip:hover .mccombs-face.front {
+        border-color: #C9969E;
+    }
+
+    .mccombs-flip:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 4px;
+        border-radius: var(--r-card);
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .mccombs-flip {
+            transition: none;
+        }
     }
 
     /* the fifth tile spans the row so the grid ends flush */
@@ -203,14 +269,14 @@
         grid-column: 1 / -1;
     }
 
-    .mccombs-stats b {
+    .mccombs-face.front b {
         font-family: Georgia, serif;
         font-size: 2.2em;
         line-height: 1;
         color: #8A4D57;
     }
 
-    .mccombs-stats span {
+    .mccombs-face.front span {
         font-size: 0.95em;
         line-height: 1.4;
         color: #3B2A24;
@@ -266,7 +332,7 @@
         }
     }
 
-    /* THE WORK I'M LOOKING FOR: one clear card right under the facts */
+    /* WHERE I'M HEADED: one clear card right under the facts */
     .career-seeking {
         margin: 18px 0 0;
         padding: var(--pad-card-sm);
@@ -602,50 +668,73 @@
         color: #2A1810;
     }
 
+    /* Experience gets the most room on the page: one open row per role, the company set large,
+       a headline number, then the bullets. Rules between rows instead of cards. */
     .job-list {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 24px;
+        display: flex;
+        flex-direction: column;
+        border-top: 2px solid #2A1810;
     }
 
     .job {
-        padding: var(--pad-card);
-        border-radius: var(--r-card);
-        background: #FFF8F6;
-        border: var(--card-border);
-        box-shadow: var(--shadow-card);
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+        gap: 48px;
+        padding: 34px 0;
+        border-bottom: 1px solid #E2C6C0;
     }
 
-    .job-when {
-        font-size: 0.75em;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #9E5A63;
+    .job-company {
+        margin: 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 2.6rem;
+        line-height: 1.05;
+        color: #8A4D57;
     }
 
     .job h3 {
-        margin: 8px 0 0;
+        margin: 10px 0 0;
         font-family: Georgia, serif;
-        font-size: 1.5em;
+        font-size: 1.3em;
         color: #2A1810;
     }
 
     .job-where {
-        margin: 4px 0 0;
-        font-weight: 600;
+        margin: 6px 0 0;
+        font-size: 0.9em;
+        line-height: 1.5;
         color: #56634A;
     }
 
+    .job-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin: 20px 0 0;
+    }
+
+    .job-stat b {
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        color: #2A1810;
+    }
+
+    .job-stat span {
+        font-size: 0.85em;
+        line-height: 1.35;
+        color: #7A665F;
+    }
+
     .job ul {
-        margin: 18px 0 0;
+        margin: 0;
         padding-left: 18px;
-        line-height: 1.65;
+        font-size: 1.05em;
+        line-height: 1.7;
         color: #2A1810;
     }
 
     .job li + li {
-        margin-top: 8px;
+        margin-top: 12px;
     }
 
     .job li::marker {
@@ -673,12 +762,14 @@
             gap: 20px;
         }
 
-        .job-list {
+        .job {
             grid-template-columns: 1fr;
+            gap: 18px;
+            padding: 26px 0;
         }
 
-        .job {
-            padding: 24px 22px;
+        .job-company {
+            font-size: 2.1rem;
         }
     }
 </style>
@@ -687,13 +778,13 @@
     // The roles, most recent first (same facts Sitara uses)
     var jobs = new[]
     {
-        ("May to August 2026", "ERP Consultant Intern", "Oracle, Austin, Texas", new[]
+        ("May to August 2026", "ERP Consultant Intern", "Oracle", "Austin, Texas", "$20M to $200M", "the size of the companies I prospected", new[]
         {
             "Completed Oracle’s 12-week Enterprise Sales Development program, building skills in consultative selling and ERP technology.",
             "Prospected $20M to $200M enterprises through outbound calls and strategic account planning to build an ERP sales pipeline.",
             "Led discovery calls to uncover prospects’ business needs and align them with Oracle NetSuite, a cloud-based ERP."
         }),
-        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors, Denver, Colorado (remote)", new[]
+        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors", "Denver, Colorado (remote)", "40%", "more website traffic from messaging I redesigned", new[]
         {
             "Conducted market research and competitive analysis across client consulting engagements, including Barry Manufacturing.",
             "Built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product through pricing and competitor analysis.",
@@ -727,7 +818,7 @@
                 <dd>3.5/4.0<span>McCombs</span></dd>
             </div>
             <div>
-                <dt>Most recent</dt>
+                <dt>Experience</dt>
                 <dd>ERP Consultant Intern<span>Oracle, summer 2026</span></dd>
             </div>
             <div>
@@ -738,7 +829,7 @@
 
         @* what I'm looking for: the kind of work and the fields it lives in, so nobody has to guess *@
         <section class="career-seeking" aria-labelledby="seeking-heading">
-            <p class="career-seeking-label">The work I’m a good fit for</p>
+            <p class="career-seeking-label">Where I’m headed</p>
             <h2 class="career-seeking-title" id="seeking-heading">Work where technology meets people.</h2>
             <p class="career-seeking-text">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
             @{
@@ -814,63 +905,6 @@
     </div>
 </header>
 
-<section class="pursue-part career-mccombs" id="mccombs" aria-labelledby="mccombs-heading">
-    <div class="career-wrap">
-        <h2 class="career-section-title" id="mccombs-heading">McCombs at a Glance</h2>
-        <div class="mccombs-grid">
-            <ul class="mccombs-stats" aria-label="McCombs rankings, U.S. News &amp; World Report">
-                <li><b>#1</b><span>Graduate Information Systems program in the US</span></li>
-                <li><b>#4</b><span>Management Information Systems, my major</span></li>
-                <li><b>#5</b><span>Marketing, my minor</span></li>
-                <li><b>#6</b><span>Undergraduate business school in the US</span></li>
-                <li><b>Top 10</b><span>Ten of our BBA programs rank here</span></li>
-            </ul>
-            <div class="mccombs-text">
-                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="#projects"><em>go build the real thing</em></a>.</p>
-                <p>Marketing sits right next door, so the psychology of why people choose what they choose is never far from the code. The rankings got me in the door. The people, the professors who know your name and classmates who push each other, are why I stay.</p>
-                <p>So far that’s meant a full-stack rideshare app, a database I designed and deployed in Oracle and Snowflake, and a Python planner that runs right in your browser. Every one of them is in my projects below, live and clickable.</p>
-                <p class="mccombs-source">Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="pursue-part career-experience" id="experience" aria-labelledby="experience-heading">
-    <div class="career-wrap">
-        <h2 class="career-section-title" id="experience-heading">Experience</h2>
-        <div class="job-list">
-            @foreach (var (when, title, where, points) in jobs)
-            {
-                <article class="job">
-                    <span class="job-when">@when</span>
-                    <h3>@title</h3>
-                    <p class="job-where">@where</p>
-                    <ul>
-                        @foreach (var point in points)
-                        {
-                            <li>@point</li>
-                        }
-                    </ul>
-                </article>
-            }
-        </div>
-    </div>
-</section>
-
-<!-- PROJECTS: what I built, one project at a time (Views/Home/_RideFlowProof.cshtml) -->
-<link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
-<section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
-    <div class="career-wrap mp">
-        <h2 class="career-section-title" id="projects-heading">Projects</h2>
-        <partial name="_RideFlowProof" />
-    </div>
-</section>
-
-@* Education is off the page for now while I rework it. To bring it back, restore:
-<section class="pursue-part" id="education" aria-label="Education">
-    @await Html.PartialAsync("Education")
-</section>
-*@
 @* Why MIS: the question everyone asks a girl who reads, writes and paints *@
 <section class="pursue-part career-why" id="why-mis" aria-labelledby="why-mis-heading">
     <div class="career-wrap why-wrap">
@@ -912,6 +946,91 @@
         </div>
     </div>
 </section>
+
+<section class="pursue-part career-experience" id="experience" aria-labelledby="experience-heading">
+    <div class="career-wrap">
+        <h2 class="career-section-title" id="experience-heading">Experience</h2>
+        <div class="job-list">
+            @foreach (var (when, title, company, place, stat, statLabel, points) in jobs)
+            {
+                <article class="job">
+                    <div class="job-side">
+                        <p class="job-company">@company</p>
+                        <h3>@title</h3>
+                        <p class="job-where">@when<br />@place</p>
+                        <p class="job-stat"><b>@stat</b><span>@statLabel</span></p>
+                    </div>
+                    <ul>
+                        @foreach (var point in points)
+                        {
+                            <li>@point</li>
+                        }
+                    </ul>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS: what I built, one project at a time (Views/Home/_RideFlowProof.cshtml) -->
+<link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
+<section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
+    <div class="career-wrap mp">
+        <h2 class="career-section-title" id="projects-heading">Projects</h2>
+        <partial name="_RideFlowProof" />
+    </div>
+</section>
+
+@* Education is off the page for now while I rework it. To bring it back, restore:
+<section class="pursue-part" id="education" aria-label="Education">
+    @await Html.PartialAsync("Education")
+</section>
+*@
+<section class="pursue-part career-mccombs" id="mccombs" aria-labelledby="mccombs-heading">
+    <div class="career-wrap">
+        <h2 class="career-section-title" id="mccombs-heading">McCombs at a Glance</h2>
+        <div class="mccombs-grid">
+            <ul class="mccombs-stats" aria-label="McCombs rankings, U.S. News &amp; World Report">
+                <li>
+                    <button type="button" class="mccombs-flip" aria-pressed="false">
+                        <span class="mccombs-face front"><b>#1</b><span>Graduate Information Systems program in the US</span></span>
+                        <span class="mccombs-face back"><em>What it means for me</em><span>The professors who teach my undergrad MIS classes teach in that graduate program too. I learn from the same people.</span></span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="mccombs-flip" aria-pressed="false">
+                        <span class="mccombs-face front"><b>#4</b><span>Management Information Systems, my major</span></span>
+                        <span class="mccombs-face back"><em>What it means for me</em><span>It’s where I learned to build: full-stack apps, databases and AI features, not just the vocabulary.</span></span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="mccombs-flip" aria-pressed="false">
+                        <span class="mccombs-face front"><b>#5</b><span>Marketing, my minor</span></span>
+                        <span class="mccombs-face back"><em>What it means for me</em><span>It’s where my Starbucks and Owala strategy work came from: the why behind what people buy.</span></span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="mccombs-flip" aria-pressed="false">
+                        <span class="mccombs-face front"><b>#6</b><span>Undergraduate business school in the US</span></span>
+                        <span class="mccombs-face back"><em>What it means for me</em><span>It gives my tech the business side: what it costs, what it’s worth, and whether to build it at all.</span></span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="mccombs-flip" aria-pressed="false">
+                        <span class="mccombs-face front"><b>Top 10</b><span>Ten of our BBA programs rank here</span></span>
+                        <span class="mccombs-face back"><em>What it means for me</em><span>My team projects pair me with top-ranked finance, accounting and marketing students, so they run like a real company.</span></span>
+                    </button>
+                </li>
+            </ul>
+            <div class="mccombs-text">
+                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="#projects"><em>go build the real thing</em></a>.</p>
+                <p>Marketing sits right next door, so the psychology of why people choose what they choose is never far from the code. The rankings got me in the door. The people, the professors who know your name and classmates who push each other, are why I stay.</p>
+                <p>So far that’s meant a full-stack rideshare app, a database I designed and deployed in Oracle and Snowflake, and a Python planner that runs right in your browser. Every one of them is in my projects above, live and clickable.</p>
+                <p class="mccombs-source">Tap a ranking to see what it means for me. Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="pursue-part" id="coursework" aria-label="Coursework">
     @await Html.PartialAsync("Coursework")
 </section>
@@ -949,6 +1068,12 @@
             btn._reset = setTimeout(() => btn.textContent = label, 2000);
         });
     });
+</script>
+
+<script>
+    // McCombs rankings: tap one to flip it over and see what it means for me; tap again to flip back
+    document.querySelectorAll('.mccombs-flip').forEach(card => card.addEventListener('click', () =>
+        card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') !== 'true')));
 </script>
 
 <script>

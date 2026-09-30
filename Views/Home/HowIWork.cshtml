@@ -731,7 +731,7 @@
             {
                 ("Assertive and Confident", "Rarely hesitates when confronted with challenges and is eager to take charge."),
                 ("Goal-Oriented", "Sets ambitious goals and works diligently toward achieving them."),
-                ("Competitive", "Views challenges as opportunities to prove myself."),
+                ("Challenge-Driven", "Views challenges as opportunities to prove myself."),
                 ("Decisive", "Analyzes situations rapidly, identifies the best course of action, and implements it with minimal hesitation."),
                 ("Self-Reliant", "Takes ownership of my work from start to finish.")
             };
@@ -742,7 +742,7 @@
                 ("Strategic Thinking", "Focuses on what truly matters and eliminates distractions or obstacles."),
                 ("Problem Solving", "Identifies and fixes problems before others even notice them.")
             };
-            var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
+            var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "A Real Challenge" };
             // from the report's Communication Style section (not job titles, so no role is ruled out)
             var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive and action-oriented" };
             // what those motivators and that style mean for a team (drawn from the lines above, not new claims)
@@ -780,6 +780,24 @@
                 </div>
             </div>
 
+            @* what working with me is like: shown first *@
+            <div class="disc-grid thirds">
+                <div class="disc-block">
+                    <h4>Motivators</h4>
+                    <ul class="disc-pills stack">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
+                </div>
+                <div class="disc-block">
+                    <h4>How I Communicate</h4>
+                    <ul class="disc-pills stack">@foreach (var c in discCommunication) { <li>@c</li> }</ul>
+                </div>
+                <div class="disc-block">
+                    <h4>Working With Me</h4>
+                    <ul class="disc-pills stack soft">@foreach (var w in discWorkingWithMe) { <li>@w</li> }</ul>
+                </div>
+            </div>
+            @* the full report, for anyone who wants the detail *@
+            <details class="disc-more">
+                <summary>See my full DISC report</summary>
             <div class="disc-grid">
                 <div class="disc-block">
                     <h4>Core Traits</h4>
@@ -801,21 +819,7 @@
                 </div>
             </div>
 
-            @* three cards, three lines each *@
-            <div class="disc-grid thirds">
-                <div class="disc-block">
-                    <h4>Motivators</h4>
-                    <ul class="disc-pills stack">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
-                </div>
-                <div class="disc-block">
-                    <h4>How I Communicate</h4>
-                    <ul class="disc-pills stack">@foreach (var c in discCommunication) { <li>@c</li> }</ul>
-                </div>
-                <div class="disc-block">
-                    <h4>Working With Me</h4>
-                    <ul class="disc-pills stack soft">@foreach (var w in discWorkingWithMe) { <li>@w</li> }</ul>
-                </div>
-            </div>
+            </details>
         </div>
 
         <div class="test-panel" id="test-clifton" role="tabpanel" aria-labelledby="tab-clifton" hidden>

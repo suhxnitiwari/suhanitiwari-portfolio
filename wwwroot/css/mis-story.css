@@ -500,12 +500,13 @@
 }
 
 /* ===== The zoom lens ===== */
+/* the closing statement of Coursework: kept compact, a small lens beside the slider */
 .zoom {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: 220px minmax(0, 1fr);
     align-items: center;
-    gap: 40px;
-    padding: var(--pad-card);
+    gap: 36px;
+    padding: var(--pad-card-sm);
     border-radius: var(--r-card);
     border: var(--card-border);
     background: #FFF8F6;
@@ -515,7 +516,7 @@
 .zoom-lens {
     position: relative;
     width: 100%;
-    max-width: 340px;
+    max-width: 220px;
     aspect-ratio: 1;
     margin: 0 auto;
 }
