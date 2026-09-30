@@ -491,20 +491,20 @@
         var currentPage = ViewContext.RouteData.Values["action"]?.ToString();
         string ActiveIf(string page) => currentPage == page ? "active" : "";
 
-        // Pursue, in story order: why I study what I do, what I've learned, what I've done with it,
-        // how I work with people, and finally the recognition that backs it all up.
+        // Pursue, in recruiter order: proof first (experience, projects, leadership, awards), then the why,
+        // McCombs, coursework, and how I work with people last.
         // The Pursue dropdown reads from this list.
         // Each item jumps to its section on the one long Pursue page.
         var pursue = new (string Page, string Url, string Name)[]
         {
             // same order as the sections on the Pursue page, top to bottom
-            ("WhyMis", "/home/pursue#why-mis", "Why MIS"),
             ("Experience", "/home/pursue#experience", "Experience"),
             ("Projects", "/home/pursue#projects", "Projects"),
-            ("McCombs", "/home/pursue#mccombs", "McCombs at a Glance"),
-            ("Coursework", "/home/pursue#coursework", "Coursework"),
             ("BeyondTheClassroom", "/home/pursue#beyond", "Beyond the Classroom"),
             ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
+            ("WhyMis", "/home/pursue#why-mis", "Why MIS"),
+            ("McCombs", "/home/pursue#mccombs", "McCombs at a Glance"),
+            ("Coursework", "/home/pursue#coursework", "Coursework"),
             ("HowIWork", "/home/pursue#how-i-work", "How I Work")
         };
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
@@ -536,7 +536,7 @@
                     </li>
                     <li class="nav-item nav-dropdown" id="makeNav">
                         <a href="/home/make" class="nav-link @ActiveIf("Make")" style="display: flex; align-items: center; gap: 4px;">
-                            Curate<span class="nav-arrow">▼</span>
+                            Make<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
                             <a href="/home/make#made" class="dropdown-item-custom">Things I Made</a>
@@ -621,7 +621,7 @@
     @* Starts loading my Spotify music in the background so Favorites is ready when you get there *@
     <script src="~/js/spotify-prefetch.js" asp-append-version="true" defer></script>
     <script>
-        // Dropdowns (Favorites, Curate, Pursue). Clicking the name goes to the top of that page;
+        // Dropdowns (Favorites, Make, Pursue). Clicking the name goes to the top of that page;
         // the menu opens on hover. On touch screens (no hover) the first tap opens the menu and a
         // second tap on the name goes to the page.
         const dropdowns = document.querySelectorAll('.nav-dropdown');
