@@ -825,6 +825,26 @@
         margin: 12px 0 14px;
     }
 
+    /* the link to my Saturday in Austin planner, at the far right of the tab row */
+    .spots-plan {
+        margin-left: auto;
+        align-self: center;
+        padding: 9px 18px;
+        border-radius: var(--r-pill);
+        background: #8A4D57;
+        font-size: 0.9em;
+        font-weight: 700;
+        color: #FFF8F6;
+        text-decoration: none;
+        transition: background 0.2s ease;
+    }
+
+    .spots-plan:hover,
+    .spots-plan:focus-visible {
+        background: #6E3A43;
+        color: #FFF8F6;
+    }
+
     .spots-tab {
         display: inline-flex;
         align-items: baseline;
@@ -1651,6 +1671,8 @@
                     @tab.Label <span class="spots-tab-count">@tab.Spots.Length.ToString("00")</span>
                 </button>
             }
+            @* my favorite spots, turned into a whole day: the planner I built *@
+            <a class="spots-plan" href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Plan your Saturday in Austin <span aria-hidden="true">↗</span></a>
         </div>
 
         <div class="spots-map campus">
