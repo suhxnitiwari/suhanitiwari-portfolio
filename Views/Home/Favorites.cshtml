@@ -2733,7 +2733,7 @@
                 ${songs.length ? `
                     <p class="up-label">What I play most</p>
                     <ol class="up-songs">
-                        ${songs.slice(0, 5).map(song => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>#${song.position}</em></a></li>`).join('')}
+                        ${songs.slice(0, 5).map(song => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img loading="lazy" src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>#${song.position}</em></a></li>`).join('')}
                     </ol>` : `<div data-slot="popular"><p class="up-label">Their most popular songs</p><p class="up-loading">Looking them up…</p></div>`}
             </div>
             <a class="up-open" href="${escapeHtml(a.spotifyUrl)}" target="_blank" rel="noopener">Open their Spotify profile ↗</a>
@@ -2774,7 +2774,7 @@
         slot.innerHTML = `
             <p class="up-label">Their most popular songs</p>
             <ol class="up-songs">
-                ${songs.map((song, i) => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>${i + 1}</em></a></li>`).join('')}
+                ${songs.map((song, i) => `<li><a href="${escapeHtml(song.spotifyUrl || a.spotifyUrl)}" target="_blank" rel="noopener">${song.albumArt ? `<img loading="lazy" src="${escapeHtml(song.albumArt)}" alt="">` : ''}<span>${escapeHtml(song.name)}</span><em>${i + 1}</em></a></li>`).join('')}
             </ol>`;
     }
 
@@ -3009,7 +3009,7 @@
             ${artists.length
                     ? `<p class="gs-label">Where it comes from</p>
                        <ul class="gs-artists">${artists.slice(0, 6).map(name => `
-                           <li>${photoOf(name) ? `<img src="${escapeHtml(photoOf(name))}" alt="">` : '<i></i>'}<span>${escapeHtml(name)}</span><em>${rankOf(name)}</em></li>`).join('')}
+                           <li>${photoOf(name) ? `<img loading="lazy" src="${escapeHtml(photoOf(name))}" alt="">` : '<i></i>'}<span>${escapeHtml(name)}</span><em>${rankOf(name)}</em></li>`).join('')}
                        </ul>`
                     : ''}
             <p class="gs-hint">Hover or click a genre to see another.</p>`;
@@ -3160,7 +3160,7 @@
         if (album.albumArt) {
             document.getElementById('albumArt').innerHTML = `
                 <a href="${escapeHtml(album.spotifyUrl)}" target="_blank">
-                    <img src="${escapeHtml(album.albumArt)}" alt="${escapeHtml(album.name)} cover"
+                    <img loading="lazy" src="${escapeHtml(album.albumArt)}" alt="${escapeHtml(album.name)} cover"
                          style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
                 </a>`;
         }

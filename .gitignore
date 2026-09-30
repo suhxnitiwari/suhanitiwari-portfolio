@@ -14,3 +14,6 @@ spotify-token.json
 
 # temporary test page
 wwwroot/_t.html
+
+# leftover temp files from the file system
+.fuse_hidden*

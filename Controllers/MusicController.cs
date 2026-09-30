@@ -13,11 +13,13 @@ namespace Tiwari_Suhani_HW3.Controllers
     {
         private readonly IHttpClientFactory _http;
         private readonly IMemoryCache _cache;
+        private readonly ILogger<MusicController> _logger;
 
-        public MusicController(IHttpClientFactory http, IMemoryCache cache)
+        public MusicController(IHttpClientFactory http, IMemoryCache cache, ILogger<MusicController> logger)
         {
             _http = http;
             _cache = cache;
+            _logger = logger;
         }
 
         public record Preview(string PreviewUrl, string TrackUrl);
@@ -62,7 +64,10 @@ namespace Tiwari_Suhani_HW3.Controllers
                     return new Preview(p.GetString() ?? "", url);
                 }
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "iTunes preview lookup failed for {Title} by {Artist}", title, artist);
+            }
             return null;
         }
 

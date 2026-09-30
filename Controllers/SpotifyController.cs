@@ -17,7 +17,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _cache;
         private readonly IWebHostEnvironment _environment;
-        private readonly string _tokenFilePath = "spotify-token.json";
+        private readonly string _tokenFilePath;
 
         // My top artists/songs/genres change slowly, so each result is kept for 12 hours:
         // every visitor in that window gets the saved copy, and only the first visit after it
@@ -30,6 +30,8 @@ namespace Tiwari_Suhani_HW3.Controllers
             _configuration = configuration;
             _cache = cache;
             _environment = environment;
+            // next to the project files, whichever folder the app was started from
+            _tokenFilePath = Path.Combine(environment.ContentRootPath, "spotify-token.json");
         }
 
         // Connecting a Spotify account replaces whose music the site shows, so on the live site it's
@@ -175,11 +177,15 @@ namespace Tiwari_Suhani_HW3.Controllers
         public async Task<IActionResult> GetArtistInfo(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || name.Length > 100) return BadRequest();
-            var info = await _cache.GetOrCreateAsync($"artist-info:{name.ToLowerInvariant()}", entry =>
+            // a lookup that found nothing is only kept for an hour, so a hiccup doesn't hide an artist all week
+            var key = $"artist-info:{name.ToLowerInvariant()}";
+            if (_cache.TryGetValue(key, out ArtistInfo? info) && info != null)
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(7);
-                return _spotifyService.GetArtistInfoAsync(name);
-            });
+                return Json(info);
+            }
+            info = await _spotifyService.GetArtistInfoAsync(name);
+            var foundSomething = info.Genres.Count > 0 || info.From != null || info.Formed != null || info.About != null;
+            _cache.Set(key, info, foundSomething ? TimeSpan.FromDays(7) : TimeSpan.FromHours(1));
             return Json(info);
         }
 
