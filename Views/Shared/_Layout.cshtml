@@ -231,20 +231,6 @@
             font-weight: 500;
         }
 
-        /* sub-items under Coursework: indented, smaller, with a thin line down the left */
-        .dropdown-item-custom.dropdown-sub {
-            margin-left: 52px;
-            padding: 6px 14px;
-            border-left: 1.5px solid #EBD5D0;
-            font-size: 0.76em;
-            letter-spacing: 1px;
-            color: #56634A;
-        }
-
-        .dropdown-item-custom.dropdown-sub:hover {
-            padding-left: 20px;
-        }
-
         .dropdown-item-custom:hover {
             background: #F5E5E1;
             color: #9E5A63;
@@ -544,9 +530,6 @@
                                 @if (pursue[i].Page == "Coursework")
                                 {
                                     @* the three Coursework tabs, one tap away *@
-                                    <a href="/home/pursue#overview" class="dropdown-item-custom dropdown-sub">Overview</a>
-                                    <a href="/home/pursue#mis" class="dropdown-item-custom dropdown-sub">MIS Major</a>
-                                    <a href="/home/pursue#marketing" class="dropdown-item-custom dropdown-sub">Marketing Minor</a>
                                 }
                             }
                         </div>

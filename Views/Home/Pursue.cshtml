@@ -331,11 +331,6 @@
         transform: translateY(-2px);
     }
 
-    .career-seeking.has-role .role-tag:not([aria-selected="true"]) {
-        background: transparent;
-        color: #8A4D57;
-    }
-
     .role-tag:focus-visible {
         outline: 2px solid #8A4D57;
         outline-offset: 3px;
@@ -348,22 +343,54 @@
         color: #9C8A84;
     }
 
-    .career-seeking.has-role .role-hint {
-        display: none;
+    /* the "why I fit" card pops up over the page instead of pushing it down */
+    .role-pop {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        height: fit-content;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        width: min(620px, calc(100vw - 32px));
+        padding: 30px 32px 28px;
+        border: none;
+        border-top: 4px solid #8A4D57;
+        border-radius: var(--r-card, 20px);
+        background: #FFF8F6;
+        box-shadow: 0 24px 60px rgba(42, 24, 16, 0.25);
     }
 
-    .role-card {
-        margin-top: 16px;
-        padding: 18px 20px;
-        border-radius: var(--r-inset, 14px);
-        background: #FAF1EF;
-        border-left: 3px solid #8A4D57;
-        animation: roleIn 0.3s ease both;
+    .role-pop[open] {
+        animation: roleIn 0.25s ease both;
+    }
+
+    .role-pop::backdrop {
+        background: rgba(42, 24, 16, 0.35);
+        backdrop-filter: blur(3px);
     }
 
     @@keyframes roleIn {
-        from { opacity: 0; transform: translateY(6px); }
+        from { opacity: 0; transform: translateY(10px) scale(0.98); }
         to { opacity: 1; transform: none; }
+    }
+
+    .role-pop-close {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 50%;
+        background: #F5E0DB;
+        font-size: 1.3rem;
+        line-height: 1;
+        color: #8A4D57;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .role-pop-close:hover {
+        background: #EFD3CD;
     }
 
     .role-card-label {
@@ -641,7 +668,7 @@
 
         @* what I'm looking for: the kind of work and the fields it lives in, so nobody has to guess *@
         <section class="career-seeking" aria-labelledby="seeking-heading">
-            <p class="career-seeking-label">The work I’m looking for</p>
+            <p class="career-seeking-label">The work I’m a good fit for</p>
             <h2 class="career-seeking-title" id="seeking-heading">Work where technology meets people.</h2>
             <p class="career-seeking-text">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
             @{
@@ -664,7 +691,7 @@
                         new[] {
                             "My Owala Marathon Series turns a water bottle into a collectible record of achievement.",
                             "I repositioned Acacia Advisors’ messaging, and I’ve written, illustrated and published a children’s book.",
-                            "Artistic is my top RIASEC score (92), and my AP 2-D Art and Design portfolio scored a 5." },
+                            "My AP 2-D Art and Design portfolio scored a 5 and won a VASE award and a Scholastic Art Award." },
                         "See my Owala and Starbucks work", "/home/pursue#marketing"),
                     ("tech", "Technology Consultant", "I help businesses choose and adopt the right systems.",
                         new[] {
@@ -676,20 +703,22 @@
                         new[] {
                             "At Acacia Advisors, I did market research, competitive analysis and strategic recommendations for client engagements.",
                             "My strategy decks lead with the answer, back every number with a source and end with a plan.",
-                            "Communication is one of my top CliftonStrengths, and my DISC style is Dominance: decisive and focused on outcomes." },
+                            "Leading Girls Who Code sessions taught me to make a hard idea simple for any room." },
                         "See how I work through a problem", "/home/pursue#coursework")
                 };
             }
-            <ul class="career-seeking-fields" role="tablist" aria-label="Roles I’m looking for">
+            <ul class="career-seeking-fields" aria-label="Roles I’m a good fit for">
                 @foreach (var (key, title, _, _, _, _) in roles)
                 {
-                    <li><button type="button" class="role-tag" role="tab" aria-selected="false" aria-controls="role-@key" data-role="@key">@title</button></li>
+                    <li><button type="button" class="role-tag" aria-haspopup="dialog" data-role="@key">@title</button></li>
                 }
             </ul>
             <p class="role-hint">Tap a role to see why I’m a fit.</p>
+            <dialog class="role-pop" aria-label="Why I fit">
+                <button type="button" class="role-pop-close" aria-label="Close">×</button>
             @foreach (var (key, title, pitch, points, linkText, link) in roles)
             {
-                <div class="role-card" id="role-@key" role="tabpanel" hidden>
+                <div class="role-card" id="role-@key" hidden>
                     <p class="role-card-label">Why I fit: @title</p>
                     <p class="role-card-pitch">@pitch</p>
                     <ul>
@@ -701,6 +730,7 @@
                     <a class="role-card-link" href="@link">@linkText →</a>
                 </div>
             }
+            </dialog>
         </section>
 
         <div class="career-actions">
@@ -829,18 +859,19 @@
 </script>
 
 <script>
-    // The roles in "The work I'm looking for": tap one to see why I fit it; tap it again to close
+    // The roles in "The work I'm a good fit for": tap one and its "why I fit" card pops up
     (() => {
         const box = document.querySelector('.career-seeking');
-        if (!box) return;
-        const tags = [...box.querySelectorAll('.role-tag')];
-        const cards = [...box.querySelectorAll('.role-card')];
-        let open = null;
-        tags.forEach(tag => tag.addEventListener('click', () => {
-            open = open === tag.dataset.role ? null : tag.dataset.role;
-            tags.forEach(t => t.setAttribute('aria-selected', t.dataset.role === open));
-            cards.forEach(c => c.hidden = c.id !== `role-${open}`);
-            box.classList.toggle('has-role', open !== null);
+        const pop = box && box.querySelector('.role-pop');
+        if (!pop) return;
+        const cards = [...pop.querySelectorAll('.role-card')];
+        box.querySelectorAll('.role-tag').forEach(tag => tag.addEventListener('click', () => {
+            cards.forEach(c => c.hidden = c.id !== `role-${tag.dataset.role}`);
+            pop.showModal();
         }));
+        pop.querySelector('.role-pop-close').addEventListener('click', () => pop.close());
+        // tapping outside the card (on the dimmed page) closes it; so does following its link
+        pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
+        pop.querySelectorAll('.role-card-link').forEach(a => a.addEventListener('click', () => pop.close()));
     })();
 </script>
