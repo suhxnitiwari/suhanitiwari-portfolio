@@ -1,6 +1,12 @@
-@* Pursue: every Pursue page stacked into one long page, in the order a recruiter needs it:
+@* Work and Study share this view (ViewData["Part"]). Work, in the order a recruiter needs it: experience, projects,
+   leadership, awards and how I work. Study: why MIS, why McCombs and coursework. Old notes follow.
+   Pursue: every Pursue page stacked into one long page, in the order a recruiter needs it:
    proof first (experience, projects, leadership, awards), then why I study what I do, McCombs, coursework, and how I work (closed until a viewer opens it). Each section is the same view that also
    works on its own address (/home/education and so on), so deep links from elsewhere keep working. *@
+@{
+    // which half of the page this is: Work or Study
+    var isWork = (ViewData["Part"] as string ?? "work") == "work";
+}
 <style>
     /* land each section just below the sticky navbar when jumping from the Pursue menu */
     .pursue-part { scroll-margin-top: 70px; }
@@ -912,6 +918,8 @@
     };
 }
 
+@if (isWork)
+{
 <header class="career-intro" id="top">
     <div class="career-wrap">
         <h1 class="visually-hidden">Suhani Tiwari: work and study</h1>
@@ -953,31 +961,31 @@
                             "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 20% more website traffic and 27% more LinkedIn visits.",
                             "I built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, from pricing to competitor analysis.",
                             "My children’s book sold 1,000 copies in its first month and hit #1 New Release in STEM Education." },
-                        "See my marketing projects", "/home/pursue#marketing"),
+                        "See my marketing projects", "/home/study#marketing"),
                     ("pm", "Product Manager", "I sit where users, technology and the business meet, and I can build.",
                         new[] {
                             "I built RideFlow, a full-stack rideshare app, from the data model to the screen.",
                             "In my Starbucks app strategy, I prioritized features with RICE scoring and picked one metric to manage to.",
                             "I also built this website, with three live APIs and Sitara, an AI guide I wrote the guardrails for." },
-                        "See what I’ve built", "/home/pursue#projects"),
+                        "See what I’ve built", "/home/work#projects"),
                     ("brand", "Brand Strategist", "I think in identity: what a brand means to the person holding it.",
                         new[] {
                             "My Owala Marathon Series turns a water bottle into a collectible record of achievement.",
                             "I repositioned Acacia Advisors’ messaging, and I’ve written, illustrated and published a children’s book.",
                             "My art portfolio on cultural identity won a VASE award and a Scholastic Art Award." },
-                        "See my Owala and Starbucks work", "/home/pursue#marketing"),
+                        "See my Owala and Starbucks work", "/home/study#marketing"),
                     ("tech", "Technology Consultant", "I help businesses choose and adopt the right systems.",
                         new[] {
                             "At Oracle, I led discovery calls with $20M to $200M companies and matched their needs to Oracle NetSuite, a cloud ERP.",
                             "At Acacia Advisors, I worked on AI strategy and built the go-to-market for a $1M Microsoft Azure AI product.",
                             "I designed a database and deployed it in both Oracle and Snowflake, so I know what adopting a system really takes." },
-                        "See my experience", "/home/pursue#experience"),
+                        "See my experience", "/home/work#experience"),
                     ("mc", "Management Consultant", "Give me a messy problem; I’ll structure it and bring a recommendation.",
                         new[] {
                             "At Acacia Advisors, I did market research, competitive analysis and strategic recommendations for client engagements.",
                             "My strategy decks lead with the answer, back every number with a source and end with a plan.",
                             "Leading Girls Who Code sessions taught me to make a hard idea simple for any room." },
-                        "See how I work through a problem", "/home/pursue#coursework")
+                        "See how I work through a problem", "/home/study#coursework")
                 };
             }
             <ul class="career-seeking-fields" aria-label="Roles I’m a good fit for">
@@ -1068,6 +1076,22 @@
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
+@* HOW I WORK: DISC, CliftonStrengths and RIASEC, closed until a viewer taps to open it.
+   The Pursue menu's "How I Work" link (#how-i-work) opens it too. *@
+<section class="pursue-part hiw-fold" id="how-i-work" aria-label="How I work">
+    <button type="button" class="hiw-toggle hiw-open" aria-expanded="false" aria-controls="hiwBody">
+        <span class="hiw-toggle-title">How I Work…</span>
+        <span class="hiw-toggle-sub">My DISC style, CliftonStrengths and RIASEC</span>
+    </button>
+    <div class="hiw-body" id="hiwBody" hidden>
+        @await Html.PartialAsync("HowIWork")
+        <button type="button" class="hiw-toggle hiw-close" aria-controls="hiwBody">Close How I Work</button>
+    </div>
+</section>
+}
+else
+{
+<h1 class="visually-hidden">Suhani Tiwari: study</h1>
 @* WHY: two tabs sharing one spot, like Coursework. Why MIS is open first; #mccombs links open Why McCombs *@
 <section class="pursue-part career-why" id="why-mis" aria-labelledby="why-heading">
     <span class="why-anchor" id="mccombs"></span>
@@ -1148,7 +1172,7 @@
                 </li>
             </ul>
             <div class="mccombs-text">
-                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="#projects"><em>go build the real thing</em></a>.</p>
+                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="/home/work#projects"><em>go build the real thing</em></a>.</p>
                 <p><a class="mccombs-build" href="#marketing"><b>Marketing</b></a> sits right next door, so the psychology of why people choose what they choose is never far from the code. The rankings got me in the door. The people, the professors who know your name and classmates who push each other, are why I stay.</p>
                 <p>So far that’s meant a full-stack rideshare app, a database I designed and deployed in Oracle and Snowflake, and a Python planner that runs right in your browser. Every one of them is in my projects above, live and clickable.</p>
                 <p class="mccombs-source">Tap a ranking to see what it means for me. Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
@@ -1167,23 +1191,19 @@
     @await Html.PartialAsync("Coursework")
 </section>
 
-@* HOW I WORK: DISC, CliftonStrengths and RIASEC, closed until a viewer taps to open it.
-   The Pursue menu's "How I Work" link (#how-i-work) opens it too. *@
-<section class="pursue-part hiw-fold" id="how-i-work" aria-label="How I work">
-    <button type="button" class="hiw-toggle hiw-open" aria-expanded="false" aria-controls="hiwBody">
-        <span class="hiw-toggle-title">How I Work…</span>
-        <span class="hiw-toggle-sub">My DISC style, CliftonStrengths and RIASEC</span>
-    </button>
-    <div class="hiw-body" id="hiwBody" hidden>
-        @await Html.PartialAsync("HowIWork")
-        <button type="button" class="hiw-toggle hiw-close" aria-controls="hiwBody">Close How I Work</button>
-    </div>
-</section>
+}
 
 @{
     // set last: each section sets its own title while it renders
-    ViewData["Title"] = Context.Request.Path.StartsWithSegments("/career") ? "Career" : "Pursue";
+    ViewData["Title"] = isWork ? "Work" : "Study";
 }
+
+<script>
+    // Old links like /home/study#coursework or #mis: those sections live on Study now
+    if (@(isWork ? "true" : "false") && ['#why-mis', '#mccombs', '#coursework', '#overview', '#mis', '#marketing', '#human-behavior', '#persuasion', '#storytelling', '#decision-making', '#leadership', '#innovation'].includes(location.hash)) {
+        location.replace('/home/study' + location.hash);
+    }
+</script>
 
 <script>
     // Email me and LinkedIn copy to the clipboard, and say so for a moment

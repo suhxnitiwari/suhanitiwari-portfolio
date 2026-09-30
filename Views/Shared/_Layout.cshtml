@@ -498,16 +498,16 @@
         var pursue = new (string Page, string Url, string Name)[]
         {
             // same order as the sections on the Pursue page, top to bottom
-            ("Experience", "/home/pursue#experience", "Experience"),
-            ("Projects", "/home/pursue#projects", "Projects"),
-            ("BeyondTheClassroom", "/home/pursue#beyond", "Beyond the Classroom"),
-            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
-            ("WhyMis", "/home/pursue#why-mis", "Why MIS"),
-            ("McCombs", "/home/pursue#mccombs", "Why McCombs"),
-            ("Coursework", "/home/pursue#overview", "Coursework"),
-            ("MisMajor", "/home/pursue#mis", "MIS Major"),
-            ("MarketingMinor", "/home/pursue#marketing", "Marketing Minor"),
-            ("HowIWork", "/home/pursue#how-i-work", "How I Work")
+            ("Experience", "/home/work#experience", "Experience"),
+            ("Projects", "/home/work#projects", "Projects"),
+            ("BeyondTheClassroom", "/home/work#beyond", "Beyond the Classroom"),
+            ("ScholarshipsAndAwards", "/home/work#awards", "Scholarships & Awards"),
+            ("WhyMis", "/home/study#why-mis", "Why MIS"),
+            ("McCombs", "/home/study#mccombs", "Why McCombs"),
+            ("Coursework", "/home/study#overview", "Coursework"),
+            ("MisMajor", "/home/study#mis", "MIS Major"),
+            ("MarketingMinor", "/home/study#marketing", "Marketing Minor"),
+            ("HowIWork", "/home/work#how-i-work", "How I Work")
         };
         // The Pursue page gets two menu headers so no dropdown has more than five items:
         // Work (what I've done) and Study (what I'm learning and why). Nothing is dropped, only regrouped.
@@ -531,7 +531,7 @@
                 <ul class="nav-links">
                     <li class="nav-item"><a href="/" class="nav-link @ActiveIf("Index")">Hello</a></li>
                     <li class="nav-item nav-dropdown" id="workNav">
-                        <a href="/home/pursue#experience" class="nav-link @(onPursue && work.Any(p => p.Page == currentPage) || (work == work && (currentPage == "Pursue" || currentPage == "Career")) ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="/home/work" class="nav-link @(currentPage == "Work" || currentPage == "Pursue" ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
                             Work<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
@@ -542,7 +542,7 @@
                         </div>
                     </li>
                     <li class="nav-item nav-dropdown" id="studyNav">
-                        <a href="/home/pursue#why-mis" class="nav-link @(onPursue && study.Any(p => p.Page == currentPage) || (study == work && (currentPage == "Pursue" || currentPage == "Career")) ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="/home/study" class="nav-link @(currentPage == "Study" ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
                             Study<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">

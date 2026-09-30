@@ -31,15 +31,30 @@ public class HomeController : Controller
         return View();
     }
 
-    // Pursue: all five Pursue pages stacked on one page you can keep scrolling through
-    public IActionResult Pursue()
+    // Work: what I've done (experience, projects, leadership, awards, how I work)
+    public IActionResult Work()
     {
-        return View();
+        ViewData["Part"] = "work";
+        return View("Pursue");
     }
 
-    // /career: the one link to send a recruiter. Same page as Pursue, which opens with who I am and my experience
+    // Study: what I'm learning and why (why MIS, why McCombs, coursework)
+    public IActionResult Study()
+    {
+        ViewData["Part"] = "study";
+        return View("Pursue");
+    }
+
+    // The old one-page Pursue address still works: it shows Work, and a Study link (#coursework, #mis...) hops to Study
+    public IActionResult Pursue()
+    {
+        ViewData["Part"] = "work";
+        return View("Pursue");
+    }
+
+    // /career: the one link to send a recruiter, the Work page
     [Route("career")]
-    public IActionResult Career() => View("Pursue");
+    public IActionResult Career() => Redirect("/home/work");
 
     public IActionResult ScholarshipsAndAwards()
     {
@@ -58,11 +73,11 @@ public class HomeController : Controller
 
     // suhanitiwari.com/mis: how I define the MIS major, opened straight to the MIS Major tab of Coursework
     [Route("mis")]
-    public IActionResult Mis() => Redirect("/home/pursue#mis");
+    public IActionResult Mis() => Redirect("/home/study#mis");
 
     // suhanitiwari.com/projects: straight to the things I've built
     [Route("projects")]
-    public IActionResult Projects() => Redirect("/home/pursue#projects");
+    public IActionResult Projects() => Redirect("/home/work#projects");
 
     [Route("resume")]
     public IActionResult Resume([FromServices] IWebHostEnvironment environment)
