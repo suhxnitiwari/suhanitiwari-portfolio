@@ -2718,17 +2718,21 @@
         const other = g.name === 'Everything Else';
         const photoOf = name => ((uv.artists || []).find(a => a.name === name) || {}).image;
         const rankOf = name => { const a = (uv.artists || []).find(x => x.name === name); return a ? `#${a.position}` : ''; };
+        // Everything Else comes from the top 10 artists who aren't counted in any of the five named genres
+        const named = new Set(slices.flatMap(s => s.artists || []));
+        const artists = other
+            ? (uv.artists || []).slice(0, 10).map(a => a.name).filter(name => !named.has(name))
+            : g.artists;
         box.style.setProperty('--genre', other ? '#B89A9F' : g.color);
         box.innerHTML = `
             <p class="gs-eyebrow">${other ? 'The rest of the mix' : `My #${i + 1} genre`}</p>
             <h4 class="gs-name">${escapeHtml(g.name)}</h4>
             <p class="gs-share"><b>${Math.round(g.percent)}%</b> of my listening DNA</p>
             <div class="gs-bar" aria-hidden="true"><span style="width: ${Math.min(100, g.percent)}%"></span></div>
-            ${other
-                ? `<p class="gs-text">Every genre outside my top five, from the smaller tags on my top artists.</p>`
-                : g.artists.length
+            ${other ? `<p class="gs-text">Every genre outside my top five: the Hindi and Punjabi songs, and the smaller tags on my top artists.</p>` : ''}
+            ${artists.length
                     ? `<p class="gs-label">Where it comes from</p>
-                       <ul class="gs-artists">${g.artists.slice(0, 6).map(name => `
+                       <ul class="gs-artists">${artists.slice(0, 6).map(name => `
                            <li>${photoOf(name) ? `<img src="${escapeHtml(photoOf(name))}" alt="">` : '<i></i>'}<span>${escapeHtml(name)}</span><em>${rankOf(name)}</em></li>`).join('')}
                        </ul>`
                     : ''}

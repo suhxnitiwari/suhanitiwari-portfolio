@@ -160,6 +160,10 @@
     grid-template-columns: 1fr 2fr;
 }
 
+.disc-grid.thirds {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .disc-block {
     padding: var(--pad-card-sm);
     border-radius: var(--r-card);
@@ -220,6 +224,12 @@
     color: #2A1810;
 }
 
+/* one item per line */
+.disc-pills.stack {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 .disc-pills.soft li {
     background: rgba(86, 99, 74, 0.13);
 }
@@ -237,7 +247,8 @@
     }
 
     .disc-grid,
-    .disc-grid.two-one {
+    .disc-grid.two-one,
+    .disc-grid.thirds {
         grid-template-columns: 1fr;
     }
 }

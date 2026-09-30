@@ -186,10 +186,11 @@
         font-size: 0.95em;
     }
 
+    /* Skills, Projects, Résumé: always one row */
     .cover-actions {
         display: flex;
-        flex-wrap: wrap;
-        gap: 18px;
+        flex-wrap: nowrap;
+        gap: 14px;
     }
 
     /* The two buttons a recruiter came for: clear and easy to spot, without the fuss */
@@ -326,8 +327,8 @@
         /* the two buttons side by side, sized to fit a phone */
         .cover-actions {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
         }
 
         .cover-btn {
@@ -2611,9 +2612,9 @@
             <span class="cover-second">Marketing, psychology and product strategy</span>
         </p>
         <div class="cover-actions">
-            <a class="cover-btn primary" href="/home/pursue#mis">See my MIS skills <span class="cover-arrow" aria-hidden="true">→</span></a>
-            <a class="cover-btn" href="/home/pursue#projects">See my projects <span class="cover-arrow" aria-hidden="true">→</span></a>
-            <a class="cover-btn" href="/resume">View my résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
+            <a class="cover-btn primary" href="/home/pursue#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/home/pursue#projects" aria-label="See my projects">Projects <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/resume" aria-label="View my résumé">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>

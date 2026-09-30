@@ -634,7 +634,9 @@
             };
             var discMotivators = new[] { "Ownership and Autonomy", "Recognition and Achievement", "Challenges and Competition" };
             // from the report's Communication Style section (not job titles, so no role is ruled out)
-            var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive", "Action-oriented" };
+            var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive and action-oriented" };
+            // what those motivators and that style mean for a team (drawn from the lines above, not new claims)
+            var discWorkingWithMe = new[] { "Give me ownership of the outcome", "Share the goal, then trust me with the how", "Bring me the hard problem first" };
 
             // The DISC wheel: D top-left, I top-right, S bottom-right, C bottom-left; mine is filled in.
             var discQuadrants = new[]
@@ -689,14 +691,19 @@
                 </div>
             </div>
 
-            <div class="disc-grid two-one">
+            @* three cards, three lines each *@
+            <div class="disc-grid thirds">
                 <div class="disc-block">
                     <h4>Motivators</h4>
-                    <ul class="disc-pills">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
+                    <ul class="disc-pills stack">@foreach (var m in discMotivators) { <li>@m</li> }</ul>
                 </div>
                 <div class="disc-block">
                     <h4>How I Communicate</h4>
-                    <ul class="disc-pills">@foreach (var c in discCommunication) { <li>@c</li> }</ul>
+                    <ul class="disc-pills stack">@foreach (var c in discCommunication) { <li>@c</li> }</ul>
+                </div>
+                <div class="disc-block">
+                    <h4>Working With Me</h4>
+                    <ul class="disc-pills stack soft">@foreach (var w in discWorkingWithMe) { <li>@w</li> }</ul>
                 </div>
             </div>
         </div>

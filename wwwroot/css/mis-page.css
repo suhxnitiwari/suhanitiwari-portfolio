@@ -174,6 +174,17 @@
 .mp-step-d { font-size: 14.5px; color: var(--muted); line-height: 1.5; margin: 0; }
 .mp-step-r { font-size: 13px; font-style: italic; color: var(--ink); margin: 6px 0 0; }
 .mp-step-r::before { content: "✓  "; color: var(--mul); font-style: normal; font-weight: 700; }
+/* the triangle's corners are buttons: tap one to light up its step in the card */
+.mp-corner { cursor: var(--cursor-hot, pointer); outline: none; }
+.mp-corner rect, .mp-corner > circle:not(.mp-corner-halo) { transition: stroke-width 0.2s ease; }
+.mp-corner-halo { opacity: 0; transition: opacity 0.2s ease; }
+.mp-corner:hover .mp-corner-halo, .mp-corner:focus-visible .mp-corner-halo { opacity: 0.12; }
+.mp-corner.on .mp-corner-halo { opacity: 0.2; }
+.mp-corner:hover rect, .mp-corner.on rect { stroke-opacity: 1; stroke-width: 2.4; }
+.mp-corner:focus-visible rect { stroke-width: 3; }
+.mp-step { transition: opacity 0.25s ease, background 0.25s ease; }
+.mp-tri-body.has-focus .mp-step:not(.lit) { opacity: 0.35; }
+.mp-step.lit { background: rgba(143, 70, 97, 0.06); margin: 0 -14px; padding-left: 14px; padding-right: 14px; border-radius: var(--r-small, 8px); }
 .mp-get { border-top: 1px solid var(--line); padding-top: 14px; margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .mp-get b { color: var(--choc); font-weight: 600; }
 

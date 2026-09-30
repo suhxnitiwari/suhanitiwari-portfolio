@@ -678,7 +678,7 @@
                     <div class="mp-head">
                         <p class="mp-eyebrow">People, Technology, Business</p>
                         <h3 class="mp-h2" id="mp-problem">Hand me a problem.</h3>
-                        <p class="mp-lead">Most problems need all three corners. What changes is where I start. Pick one to see the order I’d work it, and where I’ve done it before.</p>
+                        <p class="mp-lead">Most problems need all three corners. What changes is where I start. Pick one to see the order I’d work it, then tap a corner to see that step and where I’ve done it before.</p>
                     </div>
                     <div class="mp-tabs" role="tablist" aria-label="Pick a problem"></div>
                     <div class="mp-tri">
@@ -850,21 +850,44 @@
     tabs.innerHTML = problems.map((pr, i) => `<button type="button" role="tab" aria-selected="false" data-i="${i}">${esc(pr.t)}</button>`).join('');
     const buttons = [...tabs.querySelectorAll('button')];
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let focused = null;   // the corner someone tapped, or null for all three
+
+    // Tapping a corner lights up that corner and its step in the card; tapping it again shows all three
+    function focusCorner(k) {
+        focused = focused === k ? null : k;
+        nodes.querySelectorAll('.mp-corner').forEach(g => {
+            const on = +g.dataset.k === focused;
+            g.classList.toggle('on', on);
+            g.setAttribute('aria-pressed', on);
+        });
+        body.classList.toggle('has-focus', focused !== null);
+        body.querySelectorAll('.mp-step').forEach(st => st.classList.toggle('lit', +st.dataset.k === focused));
+        const lit = body.querySelector('.mp-step.lit');
+        if (lit && matchMedia('(max-width: 900px)').matches) lit.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    }
 
     function show(i) {
+        focused = null;
+        body.classList.remove('has-focus');
         const pr = problems[i];
         buttons.forEach((b, n) => { b.setAttribute('aria-selected', n === i); b.tabIndex = n === i ? 0 : -1; });
         path.innerHTML = [0, 1].map(j => `<path d="${seg(corners[pr.p[j]], corners[pr.p[j + 1]])}" stroke="#8F4661" stroke-width="2.4" fill="none" marker-end="url(#mp-arrow)" />`).join('');
         nodes.innerHTML = corners.map((v, k) => {
             const order = pr.p.indexOf(k) + 1, first = order === 1, w = v.n.length * 9 + 44;
-            return `<circle cx="${v.x}" cy="${v.y}" r="${first ? 11 : 8}" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-width="2.4" />` +
+            return `<g class="mp-corner" data-k="${k}" role="button" tabindex="0" aria-pressed="false" aria-label="${v.n}: step ${order}">` +
+                `<circle class="mp-corner-halo" cx="${v.x}" cy="${v.y}" r="20" fill="${v.c}" />` +
+                `<circle cx="${v.x}" cy="${v.y}" r="${first ? 11 : 8}" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-width="2.4" />` +
                 `<rect x="${v.x - w / 2}" y="${v.ly - 17}" width="${w}" height="34" rx="17" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-opacity="${first ? 1 : 0.45}" />` +
                 `<text x="${v.x - 10}" y="${v.ly + 5}" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" letter-spacing="2" fill="${first ? '#fff' : v.c}">${v.n}</text>` +
-                `<text x="${v.x + w / 2 - 16}" y="${v.ly + 5.5}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${first ? '#fff' : v.c}">${order}</text>`;
+                `<text x="${v.x + w / 2 - 16}" y="${v.ly + 5.5}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${first ? '#fff' : v.c}">${order}</text></g>`;
         }).join('');
+        nodes.querySelectorAll('.mp-corner').forEach(g => {
+            g.addEventListener('click', () => focusCorner(+g.dataset.k));
+            g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); focusCorner(+g.dataset.k); } });
+        });
         const fill = () => {
             body.innerHTML = `<p class="mp-eyebrow">The problem</p><p class="mp-q">“${esc(pr.q)}”</p>` +
-                pr.p.map((k, j) => `<div class="mp-step"><div class="mp-step-n" style="background:${corners[k].c}">${j + 1}</div><div>` +
+                pr.p.map((k, j) => `<div class="mp-step" data-k="${k}"><div class="mp-step-n" style="background:${corners[k].c}">${j + 1}</div><div>` +
                     `<p class="mp-step-c" style="color:${corners[k].c}">${corners[k].n}</p><p class="mp-step-t">${esc(pr.s[j][0])}</p>` +
                     `<p class="mp-step-d">${esc(pr.s[j][1])}</p><p class="mp-step-r">${esc(pr.s[j][2])}</p></div></div>`).join('') +
                 `<p class="mp-get"><b>You walk away with</b> ${esc(pr.g)}</p>`;
