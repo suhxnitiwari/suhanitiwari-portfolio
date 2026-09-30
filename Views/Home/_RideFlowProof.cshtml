@@ -32,18 +32,18 @@
                         </div>
                         <div>
                             <h3 id="mp-rideflow">RideFlow</h3>
-                            <p class="mp-proof-sub">A full-stack rideshare platform for riders, drivers and administrators, built solo in a course designed for teams. Riders request rides, drivers accept and complete them, and admins run the platform, with fares and payment records underneath.</p>
+                            <p class="mp-proof-sub">A full-stack rideshare app for riders, drivers and admins, built solo in a course designed for teams.</p>
                             <ul class="mp-proof-list">
-                                <li>The full ride lifecycle, from request to accept to pickup to completion, with the fare billed automatically at the end and a printable receipt</li>
-                                <li>Row-level security enforced on the server: riders, drivers and admins each see and change only what their role allows</li>
-                                <li>An AI feature that prompts an LLM with RideFlow’s own data, plus a context-based chatbot</li>
+                                <li>The full ride, from request to receipt, billed automatically</li>
+                                <li>Each role sees only what it should, enforced on the server</li>
+                                <li>An AI feature and chatbot built on the app’s own data</li>
                             </ul>
                             <div class="mp-links">
                                 <a class="mp-link solid" href="https://rideflow-frontend.onrender.com/" target="_blank" rel="noopener">Open the live app ↗</a>
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/ridemanagement" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
                         </div>
-                            <div class="mp-erd mp-erd-mini mp-erd-row">
+                        <div class="mp-erd mp-erd-mini mp-erd-row">
                                 <div>
                                     <p class="mp-eyebrow">Before the interface came the system</p>
                                     <h4>Business rules had to become relationships.</h4>
@@ -87,7 +87,7 @@
                         </div>
                         <div>
                             <h3 id="mp-bevos">Bevo’s Tacos</h3>
-                            <p class="mp-proof-sub">A checkout system for an Austin food truck. One abstract Order class, two kinds of customers: walk-up orders pay sales tax, and catering orders pay a delivery fee with free-delivery rules. Built in C# first, then ported to JavaScript to run live.</p>
+                            <p class="mp-proof-sub">A checkout system for an Austin food truck, built in C# first, then rebuilt as a live web app.</p>
                             <ul class="mp-facts">
                                 <li><b>2</b><span>ORDER TYPES</span></li>
                                 <li><b>13</b><span>MENU ITEMS</span></li>
@@ -95,14 +95,22 @@
                                 <li><b>62</b><span>UNIT TESTS</span></li>
                             </ul>
                             <ul class="mp-proof-list">
-                                <li>Inheritance and the template method pattern: the base class prices every order the same way, and each subclass adds only its own charges</li>
-                                <li>A full menu with add-ons, a kitchen board that moves orders from New to Complete, and a sales dashboard with CSV export</li>
-                                <li>24 xUnit tests for the C# version and 38 JavaScript tests that run before every deploy</li>
+                                <li>One Order class, two kinds of customers, each with its own charges</li>
+                                <li>Menu, kitchen board and sales dashboard with CSV export</li>
+                                <li>62 unit tests across the C# and web versions</li>
                             </ul>
                             <div class="mp-links">
                                 <a class="mp-link solid" href="https://suhxnitiwari.github.io/Bevo_Taco-Checkout/" target="_blank" rel="noopener">Open the live app ↗</a>
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/Bevo_Taco-Checkout" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
+                        </div>
+                        <div class="mp-erd mp-erd-mini mp-erd-row">
+                            <div>
+                                <p class="mp-eyebrow">One idea, written once</p>
+                                <h4>Two kinds of customers, one Order class.</h4>
+                                <p>Every order is priced the same way: add up the items, then add the extras. The base Order class does that once. A walk-up order only adds its sales tax; a catering order only adds its delivery fee, free over $1,000. Change the pricing in one place and both follow.</p>
+                            </div>
+                            <svg viewBox="0 0 560 210" role="img" aria-label="Inheritance: an Order class with two subclasses, Walk-up order adding sales tax and Catering order adding a delivery fee"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="200" y="14" width="160" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="280.0" y="45" fill="#fff">Order</text><rect x="40" y="146" width="200" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="140.0" y="177">Walk-up order</text><rect x="320" y="146" width="200" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="420.0" y="177">Catering order</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M280,64 L280,100 L140,100 L140,146" /><path d="M280,100 L420,100 L420,146" /></g><g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2"><text x="140" y="130">+ SALES TAX</text><text x="420" y="130">+ DELIVERY FEE</text><text x="280" y="92">ITEMS + EXTRAS</text></g></svg>
                         </div>
                     </div>
                     </div>
@@ -186,7 +194,7 @@
                         </div>
                         <div>
                             <h3 id="mp-rideshare-db">Ride Share Database</h3>
-                            <p class="mp-proof-sub">Where RideFlow started. An eight-table schema I designed from scratch, deployed with a PL/SQL script, then queried and automated in both Oracle and Snowflake.</p>
+                            <p class="mp-proof-sub">Where RideFlow started: an eight-table database I designed, deployed and queried in Oracle and Snowflake.</p>
                             <ul class="mp-facts">
                                 <li><b>8</b><span>TABLES</span></li>
                                 <li><b>9</b><span>FOREIGN KEYS</span></li>
@@ -194,12 +202,18 @@
                                 <li><b>9</b><span>INDEXES</span></li>
                             </ul>
                             <ul class="mp-proof-list">
-                                <li>Business rules live in the schema, not the app: fares must equal initial minus discount, trips must end after they start, and each driver gets one bank account</li>
-                                <li>Re-runnable PL/SQL deploy script, with seven sequences feeding primary keys as column defaults</li>
-                                <li>Every foreign key indexed, plus two lookups I chose for the queries that run most: ride request time, and vehicle make and model</li>
-                                <li>Analytics with ROLLUP subtotals, HAVING, correlated and inline subqueries, CASE tiers, and DENSE_RANK and ROW_NUMBER window functions</li>
-                                <li>Snowflake Scripting: a stored procedure that commits or rolls back, cursors that return result sets, and a user-defined function for ride counts</li>
+                                <li>Business rules enforced by the database itself</li>
+                                <li>Analytics with subtotals, rankings and window functions</li>
+                                <li>Snowflake procedures that commit or roll back safely</li>
                             </ul>
+                        </div>
+                        <div class="mp-erd mp-erd-mini mp-erd-row">
+                            <div>
+                                <p class="mp-eyebrow">Rules that can’t be broken</p>
+                                <h4>The database refuses bad data before the app ever sees it.</h4>
+                                <p>Instead of trusting every screen to check the math, the table itself does: a fare has to equal the price minus the discount, and a trip has to end after it starts. Anything that breaks a rule never gets saved.</p>
+                            </div>
+                            <svg viewBox="0 0 560 210" role="img" aria-label="A check rule: a fare of 20 minus 5 equals 15 is saved, a fare of 20 minus 5 equals 18 is rejected"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="20" y="30" width="230" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="135.0" y="61">$20 − $5 = $15</text><rect x="20" y="130" width="230" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="135.0" y="161">$20 − $5 = $18</text><rect x="330" y="80" width="210" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="435.0" y="111" fill="#fff">fare = price − discount</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M250,55 C290,55 290,105 330,105" /><path d="M250,155 C290,155 290,105 330,105" /></g><g font-family="system-ui,sans-serif" font-size="13" font-weight="700" letter-spacing="1.2" text-anchor="start"><text x="30" y="98" fill="#56634A">SAVED ✓</text><text x="30" y="198" fill="#9E5A63">REJECTED ✗</text></g></svg>
                         </div>
                     </div>
                     </div>
@@ -207,26 +221,52 @@
                     <!-- Saturday in Austin: my Python planner, running in the visitor's browser through Pyodide -->
                     <div class="mp-proj" id="mp-proj-3" role="tabpanel" aria-labelledby="mp-saturday" hidden>
                     <div class="mp-proof">
-                        @await Html.PartialAsync("_SaturdayPlanner")
+                        @* the whole Saturday in Austin site as a slide deck: Plan is live and clickable, the other pages are screenshots *@
+                        <div>
+                            <div class="mp-browser sat-deck">
+                                <div class="mp-browser-bar"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+                                    <div class="sat-tabs" role="tablist" aria-label="Saturday in Austin pages">
+                                        <button type="button" role="tab" aria-selected="true" data-p="0">Plan <small>live</small></button>
+                                        <button type="button" role="tab" aria-selected="false" data-p="1">Austin</button>
+                                        <button type="button" role="tab" aria-selected="false" data-p="2">The Editor</button>
+                                        <button type="button" role="tab" aria-selected="false" data-p="3">The Method</button>
+                                    </div>
+                                </div>
+                                <div class="mp-browser-view sat-view">
+                                    <div class="sat-page" data-p="0"><iframe data-live="https://suhxnitiwari.github.io/saturday-in-austin/" title="Saturday in Austin, the live Plan page"></iframe></div>
+                                    <div class="sat-page" data-p="1" hidden><img src="/images/projects/saturday/austin.jpg" alt="The Austin page: today's weather, a map of the neighborhoods, and Austin by the numbers" loading="lazy"></div>
+                                    <div class="sat-page" data-p="2" hidden><img src="/images/projects/saturday/editor.jpg" alt="The Editor page: my letter to the reader, my picks, and the rules the planner follows" loading="lazy"></div>
+                                    <div class="sat-page" data-p="3" hidden><img src="/images/projects/saturday/method.jpg" alt="The Method page: how the planner turns Austin into a graph and picks the day" loading="lazy"></div>
+                                    <button type="button" class="sat-step prev" data-go="-1" aria-label="Previous page">‹</button>
+                                    <button type="button" class="sat-step next" data-go="1" aria-label="Next page">›</button>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <h3 id="mp-saturday">Saturday in Austin</h3>
-                            <p class="mp-proof-sub">200 Austin spots, turned into a Python app that plans the perfect Saturday for your mood: a Domain day, a Greenbelt hike, café hopping, game day at Victory Lap or a day in with pizza and a movie from my own shelf. No car or a rainy day? It plans around that too.</p>
+                            <p class="mp-proof-sub">208 Austin places, turned into a Python app that plans your perfect Saturday.</p>
                             <ul class="mp-facts">
-                                <li><b>200</b><span>AUSTIN SPOTS</span></li>
-                                <li><b>8</b><span>MOODS</span></li>
-                                <li><b>49</b><span>AUTOMATED TESTS</span></li>
+                                <li><b>208</b><span>AUSTIN PLACES</span></li>
+                                <li><b>14</b><span>NEIGHBORHOODS</span></li>
+                                <li><b>10</b><span>SATURDAY MOODS</span></li>
                             </ul>
                             <ul class="mp-proof-list">
-                                <li>Austin as a weighted graph, with Dijkstra's algorithm finding the fastest drive between neighborhoods</li>
-                                <li>Dynamic programming finds the happiest day in milliseconds, where trying every order of 15 spots would mean over a trillion options</li>
-                                <li>A weighted lottery (sampling without replacement) makes every run different while favorites come up more often</li>
-                                <li>Real rules: brunch in the morning, a real meal at mealtimes, never two hikes in a row, home before bed, and each mood with its own</li>
-                                <li>Tested against a brute-force search that tries every possible order, on 40 random days</li>
+                                <li>Plans around your time, budget, rides, weather and must-sees</li>
+                                <li>Finds the fastest route between neighborhoods</li>
+                                <li>Picks the best day out of over a trillion possible orders</li>
                             </ul>
                             <div class="mp-links">
                                 <a class="mp-link solid" href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Open the live app ↗</a>
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/saturday-in-austin" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
+                        </div>
+                        <div class="mp-erd mp-erd-mini mp-erd-row">
+                            <div>
+                                <p class="mp-eyebrow">Austin is dots and lines</p>
+                                <h4>The fastest way through town is a maze with minutes on it.</h4>
+                                <p>Every neighborhood is a dot, and every road between them is a line with its drive time. To get from West Campus to South Congress, the planner adds up the minutes on each path and takes the smallest. That’s Dijkstra’s shortest-path algorithm.</p>
+                            </div>
+                            <svg viewBox="0 0 560 210" role="img" aria-label="A graph: West Campus to Downtown is 8 minutes, Downtown to South Congress is 7, so the fastest route is 15 minutes; the direct road is 18"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="20" y="20" width="160" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="100.0" y="51">West Campus</text><rect x="200" y="120" width="160" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="280.0" y="151" fill="#fff">Downtown</text><rect x="380" y="20" width="160" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="460.0" y="51">South Congress</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M180,45 L380,45" stroke-dasharray="5 5" /></g><g stroke="#8F4661" stroke-width="3" fill="none"><path d="M100,70 L230,120" /><path d="M330,120 L460,70" /></g><g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2"><text x="150" y="112">8 MIN</text><text x="410" y="112">7 MIN</text><text x="280" y="36">18 MIN DIRECT</text><text x="280" y="200">8 + 7 = 15, THE FASTEST</text></g></svg>
                         </div>
                     </div>
                     </div>
@@ -261,20 +301,58 @@
                         </div>
                         <div>
                             <h3 id="mp-portfolio">This Website</h3>
-                            <p class="mp-proof-sub">The site you’re on. A full-stack ASP.NET Core MVC app that pulls my live Spotify listening, looks up every artist, and comes with its own AI guide, Sitara.</p>
+                            <p class="mp-proof-sub">The site you’re on: live Spotify data, an interactive map of my life, and Sitara, my AI guide.</p>
                             <ul class="mp-facts">
                                 <li><b>3</b><span>LIVE APIS</span></li>
                                 <li><b>12h</b><span>API CACHE</span></li>
                                 <li><b>1</b><span>AI GUIDE</span></li>
                             </ul>
                             <ul class="mp-proof-list">
-                                <li>Spotify Web API with an OAuth 2.0 login, plus MusicBrainz and Wikipedia for each artist’s genres, hometown and bio</li>
-                                <li>Server-side caching (12 hours for top charts, 30 seconds for what’s playing now) so the page stays fast and inside API limits</li>
-                                <li>Sitara, an AI chatbot on a Cloudflare Worker, answers questions about me from a knowledge base I wrote, with privacy rules built in</li>
-                                <li>Secrets kept out of the code, and every push to GitHub deploys a Docker container on Render</li>
-                                <li>A Python trip planner running right in the browser, a pan-and-zoom music universe, and a design system with one set of card and heading rules</li>
+                                <li>Three live APIs, cached so every page stays fast</li>
+                                <li>An AI chatbot with privacy rules I wrote</li>
+                                <li>Every push to GitHub deploys the site automatically</li>
                             </ul>
+                        </div>
+                        <div class="mp-erd mp-erd-mini mp-erd-row">
+                            <div>
+                                <p class="mp-eyebrow">Why the page stays fast</p>
+                                <h4>Ask once, remember the answer.</h4>
+                                <p>Spotify only lets a site ask so many times. So the first visit asks, and the server remembers the answer: for 12 hours for my top charts, and 30 seconds for what I’m playing now. Everyone after that gets it instantly.</p>
+                            </div>
+                            <svg viewBox="0 0 560 210" role="img" aria-label="Caching: a visitor asks the site; the first time the site asks Spotify and saves the answer, after that the saved answer comes back instantly"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="20" y="80" width="130" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="85.0" y="111">Visitor</text><rect x="215" y="80" width="130" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="280.0" y="111" fill="#fff">My site</text><rect x="410" y="80" width="130" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="475.0" y="111">Spotify</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M150,105 L215,105" /><path d="M345,97 L410,97" stroke-dasharray="5 5" /><path d="M280,80 C280,30 330,30 330,60" /></g><g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2"><text x="378" y="88">FIRST TIME</text><text x="310" y="24">SAVED 12 HOURS</text><text x="182" y="150">EVERY VISIT</text><text x="280" y="200">SECOND VISIT: INSTANT, NO SPOTIFY CALL</text></g></svg>
                         </div>
                     </div>
                     </div>
                 </div>
+
+<style>
+/* Saturday in Austin: the site's pages as a deck inside one browser window */
+.sat-deck .mp-browser-bar { display: flex; align-items: center; gap: 6px; }
+.sat-tabs { display: flex; gap: 4px; margin-left: 10px; overflow-x: auto; scrollbar-width: none; }
+.sat-tabs button { flex: none; padding: 3px 10px; border-radius: 999px; border: 1px solid #E2C6C0; background: #FFF8F6; font: inherit; font-size: 11px; font-weight: 600; color: var(--choc); cursor: pointer; white-space: nowrap; }
+.sat-tabs button[aria-selected="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; }
+.sat-tabs small { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+.sat-page { position: absolute; inset: 0; }
+.sat-page[hidden] { display: none; }
+.sat-page img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.sat-step { position: absolute; top: 50%; z-index: 2; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; border: 1px solid #E2C6C0; background: rgba(255, 248, 246, 0.95); font-size: 18px; line-height: 1; color: var(--mul); cursor: pointer; box-shadow: 0 4px 12px rgba(42, 24, 16, 0.18); }
+.sat-step.prev { left: 10px; }
+.sat-step.next { right: 10px; }
+</style>
+
+<script>
+    // Saturday in Austin deck: the tabs and ‹ › flip between the site's pages
+    (() => {
+        const deck = document.querySelector('.sat-deck');
+        if (!deck) return;
+        const tabs = [...deck.querySelectorAll('.sat-tabs button')], pages = [...deck.querySelectorAll('.sat-page')];
+        let at = 0;
+        const go = i => {
+            at = (i + pages.length) % pages.length;
+            tabs.forEach((t, n) => t.setAttribute('aria-selected', n === at));
+            pages.forEach((p, n) => p.hidden = n !== at);
+        };
+        tabs.forEach((t, n) => t.addEventListener('click', () => go(n)));
+        deck.querySelectorAll('.sat-step').forEach(b => b.addEventListener('click', () => go(at + +b.dataset.go)));
+    })();
+</script>
