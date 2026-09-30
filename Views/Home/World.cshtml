@@ -170,11 +170,13 @@
         color: #9E5A63;
     }
 
+    /* every card sits in the same cell, so the box is always as tall as the longest one and never changes size */
     .build-cards {
-        display: flex;
+        display: grid;
     }
 
     .build-card {
+        grid-area: 1 / 1;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -187,8 +189,9 @@
         animation: buildIn 0.35s ease both;
     }
 
-    .build-card[hidden] {
-        display: none;
+    .build-card.is-off {
+        visibility: hidden;
+        animation: none;
     }
 
     @@keyframes buildIn {
@@ -1696,28 +1699,28 @@
                     <p class="build-proof"><b>Where I’m already starting</b>I started Girls Who Code chapters at two middle schools and wrote a children’s book about women engineers.</p>
                     <a class="build-link" href="/home/pursue#beyond">Beyond the Classroom →</a>
                 </article>
-                <article class="build-card" id="build-1" hidden>
+                <article class="build-card is-off" id="build-1" aria-hidden="true">
                     <span class="build-card-n">02</span>
                     <h3>The humanities deserve a future.</h3>
                     <p class="build-why">As technology gets more powerful, understanding people matters more, not less. I want psychology, history, literature, art and philosophy treated as essential ways of understanding what we build and why.</p>
                     <p class="build-proof"><b>Where I’m already starting</b>It’s why I chose MIS without leaving the humanities behind.</p>
                     <a class="build-link" href="/home/pursue#why-mis">Why MIS →</a>
                 </article>
-                <article class="build-card" id="build-2" hidden>
+                <article class="build-card is-off" id="build-2" aria-hidden="true">
                     <span class="build-card-n">03</span>
                     <h3>Curiosity shouldn’t expire.</h3>
                     <p class="build-why">Children get to ask endless questions, make things and change their minds about what fascinates them. I don’t think adulthood should require becoming less interested in the world.</p>
                     <p class="build-proof"><b>Where I’m already starting</b>At Camp Invention, I helped kids build and test their own inventions.</p>
                     <a class="build-link" href="/home/pursue#beyond">Camp Invention →</a>
                 </article>
-                <article class="build-card" id="build-3" hidden>
+                <article class="build-card is-off" id="build-3" aria-hidden="true">
                     <span class="build-card-n">04</span>
                     <h3>Tradition can make room for choice.</h3>
                     <p class="build-why">I want to carry forward what I love about where I come from without believing that honoring the past requires recreating it exactly.</p>
                     <p class="build-proof"><b>Where I’m already starting</b>My art portfolio on cultural identity is about exactly this.</p>
                     <a class="build-link" href="/home/make">My art →</a>
                 </article>
-                <article class="build-card" id="build-4" hidden>
+                <article class="build-card is-off" id="build-4" aria-hidden="true">
                     <span class="build-card-n">05</span>
                     <h3>Education should expand your world.</h3>
                     <p class="build-why">Education shouldn’t just prepare you for a job. It should introduce you to people, places, disciplines and possibilities you didn’t know enough to imagine for yourself.</p>
@@ -1736,7 +1739,7 @@
         const picks = [...document.querySelectorAll('.build-pick')];
         picks.forEach(btn => btn.addEventListener('click', () => {
             picks.forEach(b => b.setAttribute('aria-pressed', b === btn));
-            document.querySelectorAll('.build-card').forEach(c => c.hidden = c.id !== btn.getAttribute('aria-controls'));
+            document.querySelectorAll('.build-card').forEach(c => { const off = c.id !== btn.getAttribute('aria-controls'); c.classList.toggle('is-off', off); c.setAttribute('aria-hidden', off); });
         }));
     })();
 </script>
