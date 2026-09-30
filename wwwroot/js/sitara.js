@@ -145,7 +145,8 @@
                 add(data.reply, 'bot');
                 if (Array.isArray(data.suggest) && data.suggest.length) offer(data.suggest);
                 if (!data.clarify) {
-                    history.push({ q: question, a: data.reply });
+                    // sig proves the answer really came from Sitara when it goes back as history
+                    history.push({ q: question, a: data.reply, sig: data.sig });
                     if (history.length > 6) history.shift();
                 }
                 chat.save();

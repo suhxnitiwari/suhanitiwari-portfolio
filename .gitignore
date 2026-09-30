@@ -17,3 +17,6 @@ wwwroot/_t.html
 
 # leftover temp files from the file system
 .fuse_hidden*
+
+# Sitara's Cloudflare Worker (has friends' details), pasted into Cloudflare, never published here
+sitara-worker.js

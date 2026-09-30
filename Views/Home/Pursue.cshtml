@@ -1,9 +1,33 @@
 @* Pursue: every Pursue page stacked into one long page, in the order a recruiter needs it:
-   proof first (experience, projects, leadership, awards), then why I study what I do, McCombs, coursework and how I work. Each section is the same view that also
+   proof first (experience, projects, leadership, awards), then why I study what I do, McCombs, coursework, and how I work (closed until a viewer opens it). Each section is the same view that also
    works on its own address (/home/education and so on), so deep links from elsewhere keep working. *@
 <style>
     /* land each section just below the sticky navbar when jumping from the Pursue menu */
     .pursue-part { scroll-margin-top: 70px; }
+
+    /* How I Work stays closed until a viewer asks for it: one pill to open, one at the bottom to close */
+    .hiw-fold { padding: 10px 16px 60px; text-align: center; }
+    .hiw-toggle {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 12px 28px;
+        border-radius: 999px;
+        border: 1px solid #EBD5D0;
+        background: #FFF8F6;
+        font-family: Georgia, serif;
+        color: #9E5A63;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease;
+    }
+    .hiw-toggle:hover { background: #F6E4E1; }
+    .hiw-toggle:focus-visible { outline: 2px solid #9E5A63; outline-offset: 3px; }
+    .hiw-toggle[hidden] { display: none; }
+    .hiw-toggle-title { font-size: 1.15em; font-style: italic; }
+    .hiw-toggle-sub { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.8em; color: #7A665F; }
+    .hiw-body { text-align: left; }
+    .hiw-close { margin-top: 30px; font-size: 1.05em; font-style: italic; }
 </style>
 
 @* Bodoni Moda (the font for my name), same local files as the home page *@
@@ -1149,8 +1173,18 @@
 <section class="pursue-part" id="coursework" aria-label="Coursework">
     @await Html.PartialAsync("Coursework")
 </section>
-<section class="pursue-part" id="how-i-work" aria-label="How I work">
-    @await Html.PartialAsync("HowIWork")
+
+@* HOW I WORK: DISC, CliftonStrengths and RIASEC, closed until a viewer taps to open it.
+   The Pursue menu's "How I Work" link (#how-i-work) opens it too. *@
+<section class="pursue-part hiw-fold" id="how-i-work" aria-label="How I work">
+    <button type="button" class="hiw-toggle hiw-open" aria-expanded="false" aria-controls="hiwBody">
+        <span class="hiw-toggle-title">How I Work…</span>
+        <span class="hiw-toggle-sub">My DISC style, CliftonStrengths and RIASEC</span>
+    </button>
+    <div class="hiw-body" id="hiwBody" hidden>
+        @await Html.PartialAsync("HowIWork")
+        <button type="button" class="hiw-toggle hiw-close" aria-controls="hiwBody">Close How I Work</button>
+    </div>
 </section>
 
 @{
@@ -1177,6 +1211,33 @@
             btn._reset = setTimeout(() => btn.textContent = label, 2000);
         });
     });
+</script>
+
+<script>
+    // How I Work: closed until the viewer opens it (or arrives from the menu's #how-i-work link)
+    (() => {
+        const open = document.querySelector('.hiw-open');
+        const close = document.querySelector('.hiw-close');
+        const body = document.getElementById('hiwBody');
+        if (!open || !close || !body) return;
+        const show = () => {
+            body.hidden = false;
+            open.hidden = true;
+            open.setAttribute('aria-expanded', true);
+            window.dispatchEvent(new Event('resize'));   // its tabs and cards were measured while hidden
+        };
+        open.addEventListener('click', show);
+        close.addEventListener('click', () => {
+            body.hidden = true;
+            open.hidden = false;
+            open.setAttribute('aria-expanded', false);
+            open.scrollIntoView({ block: 'center' });   // back to the button, not somewhere further down
+            open.focus({ preventScroll: true });
+        });
+        const fromHash = () => { if (location.hash === '#how-i-work') show(); };
+        fromHash();
+        window.addEventListener('hashchange', fromHash);
+    })();
 </script>
 
 <script>

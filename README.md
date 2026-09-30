@@ -25,7 +25,6 @@ This site brings together my work, education, projects, interests and personalit
 - ASP.NET Core MVC (.NET 10) and C#
 - JavaScript, HTML and CSS (no front-end framework)
 - Spotify Web API, MusicBrainz API and Wikipedia API
-- Leaflet and OpenStreetMap
 - Docker, deployed on Render
 
 ## What I built
@@ -56,14 +55,6 @@ The **Listen** section shows my real top artists as a zoomable "music universe,"
 
 ![The zoom lens slider](docs/screenshots/zoom-lens.jpg)
 
-**Pieces of Me puzzle.** A jigsaw generated in JavaScript. Each piece is an SVG path with tabs and blanks, clipped to rounded corners and outlined on its own layer so a selected piece is highlighted in full. Labels are shifted away from the blanks and scaled so words never spill out of a piece.
-
-![The Pieces of Me puzzle](docs/screenshots/puzzle.jpg)
-
-**Places That Shaped Me.** A **Leaflet** map of every city I've lived in, joined in order. Each popup loads a photo of the city from the **Wikipedia API** the first time it opens.
-
-![The Leaflet map of places I've lived](docs/screenshots/world-map.jpg)
-
 **How I Work.** My RIASEC results drawn as a real hexagon chart, computed from my scores, plus CliftonStrengths shown as slides.
 
 ![RIASEC hexagon chart](docs/screenshots/riasec.jpg)
@@ -71,10 +62,6 @@ The **Listen** section shows my real top artists as a zoomable "music universe,"
 **Shelves and pop-up cards.** One set of reusable horizontal rows with drag-to-scroll, arrow buttons, keyboard support and "See all." They power the Watch, Read and Make pages. Clicking a card opens a native `<dialog>` for a recipe, a piece of artwork, a video or a trip.
 
 ![A trip card opened from the Traveling shelf](docs/screenshots/trip-card.jpg)
-
-**Custom maps.** The backgrounds behind my favorite spots on campus and around Austin are drawn from OpenStreetMap tiles and recolored to match the site's palette.
-
-![Favorite spots on a custom campus map](docs/screenshots/spots.jpg)
 
 ### Accessible and responsive
 
@@ -105,7 +92,7 @@ Views/
   Home/                  one Razor view per page, with its content as data at the top
   Shared/_Layout.cshtml  navigation, footer and shared styles
 wwwroot/
-  css/  js/  images/     shared styles and scripts, photos, artwork and map backgrounds
+  css/  js/  images/     shared styles and scripts, photos and artwork
 docs/                    README screenshots and the repository preview image
 Dockerfile               builds and runs the site on Render
 ```
