@@ -272,19 +272,44 @@
 }
 
 .disc-series-how {
-    font-family: Georgia, serif;
-    font-size: 1.08em;
     line-height: 1.55;
-    color: #FFF8F6;
+    color: #3B2A24;
 }
 
 .disc-series-from {
-    margin-top: 6px;
+    margin-top: auto;
+    padding-top: 6px;
     font-size: 0.7em;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
+    color: #56634A;
+}
+
+/* the back: a real scenario and what came of it */
+.disc-face.back {
+    justify-content: flex-start;
+    gap: 4px;
+}
+
+.disc-back-label {
+    font-size: 0.68em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     color: #F5E0DB;
+}
+
+.disc-back-text {
+    margin-bottom: 8px;
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: #FFF8F6;
+}
+
+.disc-back-text.result {
+    font-family: Georgia, serif;
+    font-size: 1.05em;
 }
 
 @media (prefers-reduced-motion: reduce) {

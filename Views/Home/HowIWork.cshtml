@@ -763,14 +763,21 @@
             // from the report's Communication Style section (not job titles, so no role is ruled out)
             var discCommunication = new[] { "Clear and to the point", "Focused on outcomes", "Persuasive and action-oriented" };
             // How it shows up at work: one situation per card, each drawn from a trait or strength in my report above
+            // front: the situation and how I handle it; back: a real scenario from my experience and what came of it
             var discAtWork = new[]
             {
-                ("When a project stalls", "Decisive", "I’m the one who gets it moving. I size up the options quickly, pick the best path, and start, instead of waiting for perfect information."),
-                ("In a group project", "Leadership and Vision", "I set the goal, see the big picture, and keep everyone pointed at the same finish line."),
-                ("On a tight deadline", "Resilience Under Pressure", "High stakes make me sharper, not quieter. A real deadline is where I focus best."),
-                ("When something breaks", "Problem Solving", "I’d rather find the problem and fix it before anyone notices than explain it later."),
-                ("With my own work", "Self-Reliant", "I own it from start to finish. If my name is on it, I follow it all the way through."),
-                ("Where I’m still growing", "Sensitive and Direct", "My feedback can come in sharp bullet points. I’m learning to soften the delivery without losing the point.")
+                ("When a project stalls", "Decisive", "I size up the options quickly, pick the best path, and start, instead of waiting for perfect information.",
+                    "At Acacia Advisors, the messaging for their AI and cloud services wasn’t bringing people in.", "I redesigned it: 20% more website traffic and 27% more LinkedIn visits."),
+                ("In a group project", "Leadership and Vision", "I set the goal, see the big picture, and keep everyone pointed at the same finish line.",
+                    "Two middle schools, and no coding club for girls at either one.", "I started Girls Who Code chapters at both and grew them to 240+ girls."),
+                ("On a tight deadline", "Resilience Under Pressure", "High stakes make me sharper, not quieter. A real deadline is where I focus best.",
+                    "Oracle’s 12-week Enterprise Sales Development program, with a pipeline to build from scratch.", "I was leading discovery calls with $20M to $200M companies."),
+                ("When something breaks", "Problem Solving", "I’d rather find the problem and fix it before anyone notices than explain it later.",
+                    "In RideFlow, one wrong fare or a rider seeing another rider’s trip would break trust.", "33 automated tests check it every time, before anyone sees a thing."),
+                ("With my own work", "Self-Reliant", "I own it from start to finish. If my name is on it, I follow it all the way through.",
+                    "A full-stack app course built for teams.", "I built RideFlow solo: three user roles, four tables, live online."),
+                ("Where I’m still growing", "Sensitive and Direct", "My feedback can come in sharp bullet points. I’m learning to soften the delivery without losing the point.",
+                    "Leading sessions and teams where everyone takes feedback differently.", "I start with what’s working, then get to the point.")
             };
             // what those motivators and that style mean for a team (drawn from the lines above, not new claims)
             var discWorkingWithMe = new[] { "Give me ownership of the outcome", "Share the goal, then trust me with the how", "Bring me the hard problem first" };
@@ -827,16 +834,20 @@
             <ol class="disc-series">
                 @for (var i = 0; i < discAtWork.Length; i++)
                 {
-                    var (when, from, how) = discAtWork[i];
+                    var (when, from, how, scenario, result) = discAtWork[i];
                     <li>
                         <button type="button" class="disc-flip" aria-pressed="false">
                             <span class="disc-face front">
                                 <span class="disc-series-n">0@(i + 1)</span>
                                 <span class="disc-series-when">@when</span>
-                            </span>
-                            <span class="disc-face back">
                                 <span class="disc-series-how">@how</span>
                                 <span class="disc-series-from">@from</span>
+                            </span>
+                            <span class="disc-face back">
+                                <span class="disc-back-label">The scenario</span>
+                                <span class="disc-back-text">@scenario</span>
+                                <span class="disc-back-label">The result</span>
+                                <span class="disc-back-text result">@result</span>
                             </span>
                         </button>
                     </li>
