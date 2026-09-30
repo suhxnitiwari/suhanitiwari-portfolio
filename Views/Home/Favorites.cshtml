@@ -1742,93 +1742,6 @@
         color: #2A1810;
     }
 
-    .fav-art {
-        position: relative;
-        display: block;
-        height: 210px;
-        margin-bottom: 14px;
-        border-radius: var(--r-card);
-        border: var(--card-border);
-        background: #FFF8F6;
-        box-shadow: var(--shadow-card);
-        overflow: hidden;
-        transition: transform 0.3s ease;
-    }
-
-    .fav-trio a:hover .fav-art {
-        transform: translateY(-4px);
-    }
-
-    /* Listen: a record, spinning slowly */
-    .fav-vinyl {
-        background: linear-gradient(155deg, #F8E7E3 0%, #EFD2CF 100%);
-    }
-
-    .fav-vinyl .fav-disc {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 170px;
-        height: 170px;
-        margin: -85px 0 0 -85px;
-        border-radius: 50%;
-        background:
-            radial-gradient(circle, #8A4D57 0 22px, #FFF8F6 23px 25px, transparent 26px),
-            repeating-radial-gradient(circle, #2A1810 0 2px, #3B2A24 3px 4px);
-        box-shadow: 0 14px 28px rgba(42, 24, 16, 0.3);
-        animation: favSpin 9s linear infinite;
-    }
-
-    @@keyframes favSpin {
-        to { transform: rotate(360deg); }
-    }
-
-    /* Listen: my top three album covers from Spotify, with the record sliding out from behind */
-    .fav-albums .fav-disc {
-        left: 58%;
-    }
-
-    .fav-albums img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 132px;
-        height: 132px;
-        margin: -66px 0 0 -66px;
-        object-fit: cover;
-        border-radius: 6px;
-        box-shadow: 0 10px 22px rgba(42, 24, 16, 0.3);
-        transition: transform 0.3s ease;
-    }
-
-    .fav-albums img:nth-of-type(1) { transform: translateX(-78px) rotate(-8deg) scale(0.9); }
-    .fav-albums img:nth-of-type(2) { transform: translateX(78px) rotate(8deg) scale(0.9); }
-    .fav-albums img:nth-of-type(3) { transform: translateX(-12px); z-index: 1; }
-    .fav-albums.has-covers .fav-disc { left: 60%; }
-    .fav-trio a:hover .fav-albums img:nth-of-type(1) { transform: translateX(-92px) rotate(-11deg) scale(0.9); }
-    .fav-trio a:hover .fav-albums img:nth-of-type(2) { transform: translateX(92px) rotate(11deg) scale(0.9); }
-
-    /* Watch and Read: three covers fanned out */
-    .fav-fan img {
-        position: absolute;
-        left: 50%;
-        top: 22px;
-        width: 108px;
-        height: 162px;
-        margin-left: -54px;
-        object-fit: cover;
-        border-radius: var(--r-small, 8px);
-        box-shadow: 0 10px 22px rgba(42, 24, 16, 0.25);
-        transition: transform 0.3s ease;
-    }
-
-    .fav-fan img:nth-child(1) { transform: translateX(-70px) rotate(-8deg); }
-    .fav-fan img:nth-child(2) { transform: translateX(70px) rotate(8deg); }
-    .fav-fan img:nth-child(3) { transform: translateY(-6px); }
-
-    .fav-trio a:hover .fav-fan img:nth-child(1) { transform: translateX(-84px) rotate(-11deg); }
-    .fav-trio a:hover .fav-fan img:nth-child(2) { transform: translateX(84px) rotate(11deg); }
-
     .fav-trio a b {
         font-size: 0.72em;
         font-weight: 700;
@@ -1850,12 +1763,6 @@
 
     .fav-trio a:hover .fav-how {
         color: #8A4D57;
-    }
-
-    @@media (prefers-reduced-motion: reduce) {
-        .fav-vinyl .fav-disc {
-            animation: none;
-        }
     }
 
     /* the one-line thesis under each section title */
@@ -2010,7 +1917,6 @@
             <ul class="fav-trio">
                 <li>
                     <a href="#listen-music">
-                        <span class="fav-art fav-vinyl fav-albums" aria-hidden="true"><span class="fav-disc"></span></span>
                         <b>Listen</b>
                         <span class="fav-how">How I feel →</span>
                         <span class="fav-why">Big feelings, dramatic lyrics, and songs I replay until they’re attached to a moment.</span>
@@ -2018,11 +1924,6 @@
                 </li>
                 <li>
                     <a href="#watch">
-                        <span class="fav-art fav-fan" aria-hidden="true">
-                            <img src="/images/posters/modern-family.jpg" alt="" loading="lazy">
-                            <img src="/images/posters/jane-the-virgin.jpg" alt="" loading="lazy">
-                            <img src="/images/posters/gossip-girl.jpg" alt="" loading="lazy">
-                        </span>
                         <b>Watch</b>
                         <span class="fav-how">How I understand people →</span>
                         <span class="fav-why">Ensemble casts, messy relationships, and a guaranteed happy ending.</span>
@@ -2030,11 +1931,6 @@
                 </li>
                 <li>
                     <a href="#read">
-                        <span class="fav-art fav-fan" aria-hidden="true">
-                            <img src="/images/covers/the-design-of-everyday-things.jpg" alt="" loading="lazy">
-                            <img src="/images/covers/atomic-habits.jpg" alt="" loading="lazy">
-                            <img src="/images/covers/the-hating-game.jpg" alt="" loading="lazy">
-                        </span>
                         <b>Read</b>
                         <span class="fav-how">How I figure things out →</span>
                         <span class="fav-why">Business, behavior and rom-coms, taking turns explaining the world.</span>
@@ -2042,19 +1938,6 @@
                 </li>
             </ul>
         </header>
-
-        <script>
-            // Listen card: my three most-played albums right now, fanned like the posters and books beside it
-            fetch('/spotify/GetMusicLab').then(r => r.ok ? r.json() : null).then(data => {
-                const tracks = data?.topTracks?.short_term || data?.topTracks?.medium_term || [];
-                const seen = new Set(), covers = [];
-                for (const t of tracks) { if (t.albumArt && !seen.has(t.album)) { seen.add(t.album); covers.push(t.albumArt); } if (covers.length === 3) break; }
-                const art = document.querySelector('.fav-albums');
-                if (!art || covers.length < 3) return;
-                art.insertAdjacentHTML('beforeend', covers.map(src => `<img src="${src}" alt="" loading="lazy">`).join(''));
-                art.classList.add('has-covers');
-            }).catch(() => {});
-        </script>
 
         <!-- MY MUSIC: one compact dashboard, live from my Spotify -->
         <h2 class="section-title with-subtitle" id="listen-music">What I'm Listening To</h2>
