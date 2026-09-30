@@ -1687,13 +1687,228 @@
             animation: none;
         }
     }
+
+    /* ===== THE THREAD: one idea runs through the whole page ===== */
+    .fav-thesis {
+        max-width: var(--page-width, 1100px);
+        margin: 0 auto 64px;
+    }
+
+    .fav-kicker {
+        margin: 0 0 8px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .fav-thesis h1 {
+        margin: 0 0 14px;
+        font-family: Georgia, serif;
+        font-size: 3em;
+        font-weight: 800;
+        color: #2A1810;
+    }
+
+    .fav-thesis p:not(.fav-kicker) {
+        max-width: 760px;
+        margin: 0;
+        font-size: 1.1em;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
+    /* Listen, Watch, Read: what each one says about me */
+    .fav-trio {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .fav-trio a {
+        display: inline-flex;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: var(--r-pill);
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        font-weight: 600;
+        text-decoration: none;
+        color: #2A1810;
+    }
+
+    .fav-trio a b {
+        color: #8A4D57;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-size: 0.85em;
+    }
+
+    .fav-trio a:hover {
+        border-color: #8A4D57;
+    }
+
+    /* the one-line thesis under each section title */
+    .fav-claim {
+        max-width: 760px;
+        margin: -30px 0 40px;
+        font-size: 1.05em;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
+    .fav-claim strong {
+        display: block;
+        margin-bottom: 4px;
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        font-style: italic;
+        color: #8A4D57;
+    }
+
+    /* in Watch and Read the title sits in a shelf intro with its own spacing */
+    .shelf-intro .fav-claim {
+        margin: 14px 0 8px;
+    }
+
+    /* the takeaway at the end of a section: what it all adds up to */
+    .fav-takeaway {
+        margin: 36px 0 0;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
+        border-left: 4px solid #8A4D57;
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+    }
+
+    .fav-takeaway p {
+        margin: 0;
+        line-height: 1.7;
+        color: #2A1810;
+    }
+
+    .fav-takeaway .fav-kicker + p {
+        margin-bottom: 10px;
+        font-family: Georgia, serif;
+        font-size: 1.5em;
+        line-height: 1.3;
+    }
+
+    /* Read: each shelf answers a question */
+    .fav-q {
+        margin: 0 0 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .fav-q b {
+        margin-right: 10px;
+        color: #2A1810;
+    }
+
+    /* SO APPARENTLY, I HAVE A TYPE: people, making, feeling */
+    .fav-type {
+        margin: 64px 0 0;
+        padding-top: 48px;
+        border-top: 2px solid #2A1810;
+    }
+
+    .fav-type h2 {
+        margin: 0 0 24px;
+        font-family: Georgia, serif;
+        font-size: 2.5em;
+        font-weight: 800;
+        color: #2A1810;
+    }
+
+    .fav-type-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .fav-type-grid li {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: var(--pad-card-sm);
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+    }
+
+    .fav-type-grid h3 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 1.6em;
+        color: #8A4D57;
+    }
+
+    .fav-type-from {
+        margin: 0;
+        font-size: 0.85em;
+        font-weight: 600;
+        color: #56634A;
+    }
+
+    .fav-type-grid p:last-child {
+        margin: 0;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .fav-type-end {
+        margin: 28px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-style: italic;
+        line-height: 1.45;
+        color: #2A1810;
+    }
+
+    @@media (max-width: 800px) {
+        .fav-thesis h1 {
+            font-size: 2.2em;
+        }
+
+        .fav-type-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .fav-claim {
+            margin-top: -20px;
+        }
+    }
 </style>
 
 <div class="listen-section" id="listen">
     <div class="listen-container">
+        <!-- the thread through the whole page: these aren't rankings, they're patterns -->
+        <header class="fav-thesis">
+            <p class="fav-kicker">Favorites</p>
+            <h1>Apparently, I have a type.</h1>
+            <p>What I listen to, watch and read looks all over the place until you zoom out. Then the same things keep showing up: people, relationships, ambition, reinvention, curiosity, and a very strong preference for a happy ending.</p>
+            <ul class="fav-trio">
+                <li><a href="#listen"><b>Listen</b>how I feel</a></li>
+                <li><a href="#watch"><b>Watch</b>how I understand people</a></li>
+                <li><a href="#read"><b>Read</b>how I figure things out</a></li>
+            </ul>
+        </header>
+
         <!-- MY MUSIC: one compact dashboard, live from my Spotify -->
         <h2 class="section-title with-subtitle">What I'm Listening To</h2>
-        <p class="section-subtitle">live from my Spotify</p>
+        <p class="section-subtitle">I listen by feeling, not by genre. Live from my Spotify.</p>
 
         <!-- A Pinterest board: three columns of pins in different heights -->
         <!-- The music section, top to bottom: the Universe with the artist picked in it, one Listening DNA card,
@@ -1758,6 +1973,13 @@
             <div class="lab-slot" id="labAlbums"><p class="music-loading">Loading...</p></div>
             <div class="lab-slot" id="labVault"></div>
         </div>
+
+        <!-- what all of the above adds up to -->
+        <aside class="fav-takeaway">
+            <p class="fav-kicker">What my Spotify knows about me</p>
+            <p>I don’t listen by genre. I listen by feeling.</p>
+            <p>Pop takes up most of the data, but the pattern underneath is bigger: big feelings, dramatic lyrics, and songs I replay until they’re attached to a specific version of my life. Hindi and Punjabi songs keep culture in the mix, and old favorites almost never disappear. It’s less a taste profile than a very over-documented emotional archive.</p>
+        </aside>
         <link rel="stylesheet" href="~/css/music-lab.css" asp-append-version="true" />
         <script src="~/js/music-lab.js" asp-append-version="true" defer></script>
 
@@ -3044,43 +3266,8 @@
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
             <h2 class="section-title">Watch</h2>
+            <p class="fav-claim"><strong>I watch people more than plots.</strong>My favorite shows have too many characters, overlapping relationships and at least three people making questionable decisions at once. Give me an ensemble cast, complicated friendships, family drama, and enough episodes to get emotionally attached.</p>
         </div>
-        @{
-            // Inspiration: talks and videos. Thumbnails from YouTube (Dweck's photo from TED's talk page), saved in wwwroot/images/videos.
-            var inspiration = new[]
-            {
-                new Video("Change Your Mindset, Change the Game", "Alia Crum, TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg", "Psychology"),
-                new Video("You Aren’t at the Mercy of Your Emotions: Your Brain Creates Them", "Lisa Feldman Barrett, TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg", "Psychology"),
-                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn, TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg", "Education"),
-                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag, TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg", "Education"),
-                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker, TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg", "Education"),
-                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh, TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg", "Creativity"),
-                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut, TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg", "Creativity"),
-                new Video("The Power of Believing That You Can Improve", "Carol Dweck, TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg", "Growth"),
-                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth, TED", "H14bBuluwB8", "/images/videos/grit.jpg", "Growth"),
-                new Video("How Every Child Can Thrive by Five", "Molly Wright, TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg", "Growth"),
-                new Video("What Makes a Good Life?", "Robert Waldinger, TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg", "Meaning"),
-                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith, TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg", "Meaning")
-            };
-        }
-        @{
-            // Topic buttons in order. Business & Brands shows "coming soon" until its talks are added above.
-            var inspirationTopics = new[] { "Psychology", "Education", "Creativity", "Growth", "Meaning", "Business & Brands" };
-            // "Why I value…" cards: add a line for a topic and its card appears first when that topic is picked
-            // Drafted from my own words elsewhere on the site (home page intro, "The thing about me is…", Duality); edit freely.
-            var inspirationWhy = new Dictionary<string, string>
-            {
-                ["Psychology"] = "I want to know why people do what they do: why we feel what we feel, choose what we choose, and keep coming back. One innocent question can become a 45-minute investigation, and these talks are where it usually starts.",
-                ["Education"] = "I started Girls Who Code chapters at two middle schools and grew them to 240+ girls. Ever since, I’ve been hooked on how people learn, and what makes learning actually stick.",
-                ["Creativity"] = "I’m happiest taking something from “wait, what if…” to something you can actually see, use, or experience. These talks are about exactly that.",
-                ["Growth"] = "I’d rather temporarily suck at something interesting than only do things I already know how to do. These are the talks I go back to when being a beginner feels hard.",
-                ["Meaning"] = "I care about my relationships more than almost anything. These talks ask what actually makes a life good, and the answer keeps coming back to people.",
-                ["Business & Brands"] = "This is where psychology meets my major: what makes people choose a product, connect with a brand, and keep coming back to it."
-            };
-            RenderVideoShelf("Inspiration", inspiration, inspirationTopics,
-                "Some people have comfort shows. I have comfort TED talks.", inspirationWhy);
-        }
-        <hr class="shelf-divider">
         @{
             // Edit these lists to change your favorites: (title, small line under the title, cover image).
             // These are collections, not rankings: add or remove as many as you like, in any order.
@@ -3107,13 +3294,13 @@
                 new ShelfItem("Desperate Housewives", "2004–2012", "/images/posters/desperate-housewives.jpg")
             };
 
-            RenderShelf("Romance Movies That I'm In Love With", romComs,
-                "For nights when I’m feeling a little delusional, hopelessly romantic, and in need of a reminder that things have a way of working out.");
+            RenderShelf("Shows I Rewatch on Repeat", comfortShows,
+                "For sad days, lazy days, and the days I feel like a hopeless couch-potato blob. These always make me a little happier.");
         }
         <hr class="shelf-divider">
         @{
-            RenderShelf("Shows I Rewatch on Repeat", comfortShows,
-                "For sad days, lazy days, and the days I feel like a hopeless couch-potato blob. These always make me a little happier.");
+            RenderShelf("Romance Movies That I'm In Love With", romComs,
+                "And apparently, I need romance to end well. For nights when I’m feeling a little delusional, hopelessly romantic, and in need of a reminder that things have a way of working out.");
 
             // Shows I liked, but not enough to rewatch forever
             var otherShows = new[]
@@ -3149,6 +3336,43 @@
 
         }
 
+        <hr class="shelf-divider">
+        @{
+            // Inspiration: talks and videos. Thumbnails from YouTube (Dweck's photo from TED's talk page), saved in wwwroot/images/videos.
+            var inspiration = new[]
+            {
+                new Video("Change Your Mindset, Change the Game", "Alia Crum, TEDx", "0tqq66zwa7g", "/images/videos/change-your-mindset.jpg", "Psychology"),
+                new Video("You Aren’t at the Mercy of Your Emotions: Your Brain Creates Them", "Lisa Feldman Barrett, TED", "0gks6ceq4eQ", "/images/videos/your-brain-creates-emotions.jpg", "Psychology"),
+                new Video("How to Make Learning as Addictive as Social Media", "Luis von Ahn, TED", "P6FORpg0KVo", "/images/videos/learning-as-addictive.jpg", "Education"),
+                new Video("How to Make Students (and Teachers) Want to Go to School", "Michele Freitag, TEDx", "MBYlRmUurJ8", "/images/videos/students-want-to-go-to-school.jpg", "Education"),
+                new Video("Education Reimagined: Student-Led Learning", "Catlin Tucker, TEDx", "NTHBdIeV-8o", "/images/videos/student-led-learning.jpg", "Education"),
+                new Video("Creativity in the Classroom (in 5 Minutes or Less!)", "Catherine Thimmesh, TEDx", "nASvIgSOCxw", "/images/videos/creativity-in-the-classroom.jpg", "Creativity"),
+                new Video("How to Design a Library That Makes Kids Want to Read", "Michael Bierut, TED", "YsA_JTeHJ6A", "/images/videos/library-kids-want-to-read.jpg", "Creativity"),
+                new Video("The Power of Believing That You Can Improve", "Carol Dweck, TED", "_X0mgOOSpLU", "/images/videos/power-of-believing.jpg", "Growth"),
+                new Video("Grit: The Power of Passion and Perseverance", "Angela Lee Duckworth, TED", "H14bBuluwB8", "/images/videos/grit.jpg", "Growth"),
+                new Video("How Every Child Can Thrive by Five", "Molly Wright, TED", "aISXCw0Pi94", "/images/videos/thrive-by-five.jpg", "Growth"),
+                new Video("What Makes a Good Life?", "Robert Waldinger, TED", "8KkKuTCFvzI", "/images/videos/what-makes-a-good-life.jpg", "Meaning"),
+                new Video("There’s More to Life Than Being Happy", "Emily Esfahani Smith, TED", "y9Trdafp83U", "/images/videos/more-to-life-than-being-happy.jpg", "Meaning")
+            };
+        }
+        @{
+            // Topic buttons in order. Business & Brands shows "coming soon" until its talks are added above.
+            var inspirationTopics = new[] { "Psychology", "Education", "Creativity", "Growth", "Meaning", "Business & Brands" };
+            // "Why I value…" cards: add a line for a topic and its card appears first when that topic is picked
+            // Drafted from my own words elsewhere on the site (home page intro, "The thing about me is…", Duality); edit freely.
+            var inspirationWhy = new Dictionary<string, string>
+            {
+                ["Psychology"] = "I want to know why people do what they do: why we feel what we feel, choose what we choose, and keep coming back. One innocent question can become a 45-minute investigation, and these talks are where it usually starts.",
+                ["Education"] = "I started Girls Who Code chapters at two middle schools and grew them to 240+ girls. Ever since, I’ve been hooked on how people learn, and what makes learning actually stick.",
+                ["Creativity"] = "I’m happiest taking something from “wait, what if…” to something you can actually see, use, or experience. These talks are about exactly that.",
+                ["Growth"] = "I’d rather temporarily suck at something interesting than only do things I already know how to do. These are the talks I go back to when being a beginner feels hard.",
+                ["Meaning"] = "I care about my relationships more than almost anything. These talks ask what actually makes a life good, and the answer keeps coming back to people.",
+                ["Business & Brands"] = "This is where psychology meets my major: what makes people choose a product, connect with a brand, and keep coming back to it."
+            };
+            RenderVideoShelf("Inspiration", inspiration, inspirationTopics,
+                "Some people have comfort shows. I have comfort TED talks.", inspirationWhy);
+        }
+
         <!-- the rest of Watch stays tucked away until "View more awesome recs" is clicked -->
         <div class="watch-more" id="watchMore" hidden>
         <hr class="shelf-divider">
@@ -3170,6 +3394,7 @@
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
             <h2 class="section-title">What I'm Reading</h2>
+            <p class="fav-claim"><strong>I read to figure things out.</strong>Sometimes it’s why a product works. Sometimes it’s why people work. Sometimes it’s why I keep doing something I know I shouldn’t. My bookshelf is business, behavior and rom-coms taking turns explaining the world to me.</p>
         </div>
         @{
             // Business books. Covers from Open Library (English editions), saved in wwwroot/images/covers.
@@ -3189,6 +3414,7 @@
                 new ShelfItem("Influence", "Robert Cialdini", "/images/covers/influence.jpg")
             };
         }
+        <p class="fav-q"><b>01</b>How things work</p>
         @{ RenderShelf("Books Behind the Business", business); }
         <hr class="shelf-divider">
         @{
@@ -3212,6 +3438,7 @@
                 new ShelfItem("The Love Hypothesis", "Ali Hazelwood", "/images/covers/the-love-hypothesis.jpg")
             };
 
+            @:<p class="fav-q"><b>02</b>How people work</p>
             RenderShelf("Books I’ll Never Shut Up About", books);
 
             // Self-help: same shelf, (title, author, cover image). Add more any time.
@@ -3225,7 +3452,31 @@
             };
         }
         <hr class="shelf-divider">
+        <p class="fav-q"><b>03</b>How I want to live</p>
         @{ RenderShelf("Books That Actually Changed How I Live", selfHelp); }
+
+        <!-- the pattern across all three -->
+        <section class="fav-type" aria-labelledby="fav-type-title">
+            <h2 id="fav-type-title">So apparently, I have a type.</h2>
+            <ul class="fav-type-grid">
+                <li>
+                    <h3>People</h3>
+                    <p class="fav-type-from">Rom-coms, ensemble shows, psychology books, emotionally specific lyrics</p>
+                    <p>I’m endlessly interested in why people choose each other, misunderstand each other, and change.</p>
+                </li>
+                <li>
+                    <h3>Making</h3>
+                    <p class="fav-type-from">Product books, creativity talks, whole discographies</p>
+                    <p>I like seeing how something goes from an idea to a thing people care about.</p>
+                </li>
+                <li>
+                    <h3>Feeling</h3>
+                    <p class="fav-type-from">Nostalgic songs, comfort shows, happy endings, books I reread</p>
+                    <p>I don’t come back to things just because they’re “good.” I come back to things that make me feel something.</p>
+                </li>
+            </ul>
+            <p class="fav-type-end">Different medium, same obsessions: people, why they do what they do, what they make, and what makes something worth coming back to.</p>
+        </section>
     </div>
 </section>
 

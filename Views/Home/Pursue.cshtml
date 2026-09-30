@@ -530,32 +530,18 @@
         color: #2A1810;
     }
 
-    /* a photo of me with the quotes rotating over its bottom edge */
-    .why-photo {
-        position: relative;
-        align-self: stretch;
-        min-height: 540px;
-        margin: 0;
-        border-radius: 140px 140px var(--r-card, 20px) var(--r-card, 20px);
-        overflow: hidden;
-        background: url(/images/why-mis-suhani.jpg) 50% 22% / cover no-repeat;
-        box-shadow: var(--shadow-card);
-    }
-
+    /* the quotes I live by, one at a time, in their own card */
     .why-quotes {
-        position: absolute;
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        padding: 20px 22px 16px;
-        border-radius: var(--r-inset, 14px);
-        background: rgba(255, 248, 246, 0.94);
-        backdrop-filter: blur(6px);
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
+        background: #FFF8F6;
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
     }
 
     .why-quote-slide {
         margin: 0;
-        min-height: 116px;
+        min-height: 190px;
         animation: whyIn 0.4s ease both;
     }
 
@@ -571,9 +557,9 @@
     .why-quote-slide blockquote {
         margin: 0;
         font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-size: 1.25rem;
+        font-size: 1.75rem;
         font-style: italic;
-        line-height: 1.35;
+        line-height: 1.3;
         color: #8A4D57;
     }
 
@@ -604,6 +590,12 @@
         line-height: 1;
         color: #8A4D57;
         cursor: var(--cursor-hot, pointer);
+    }
+
+    .why-quote-nav button.why-arrow:focus-visible,
+    .why-dots button:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
     }
 
     .why-quote-nav button.why-arrow:hover {
@@ -642,9 +634,6 @@
             gap: 24px;
         }
 
-        .why-photo {
-            min-height: 560px;
-        }
     }
 
     /* EXPERIENCE: one card per role */
@@ -915,7 +904,6 @@
             <p>But the more I made, the more I noticed technology was already inside everything I loved: the tools I draw with, the apps that put stories in my hands, the playlist that finds a song before I know I want it. Someone had to understand people to build those things well.</p>
             <p>That’s what MIS is to me. It’s the major for people who care as much about <em>why</em> someone uses a product as <em>how</em> it’s built. I didn’t leave the humanities behind. I brought them with me.</p>
         </div>
-        <div class="why-photo">
             <div class="why-quotes" role="region" aria-roledescription="carousel" aria-label="Quotes I live by">
                 <figure class="why-quote-slide">
                     <blockquote>Technology is in everything. The best of it has a little poetry in it too.</blockquote>
@@ -943,7 +931,6 @@
                     <button type="button" class="why-arrow" data-go="1" aria-label="Next quote">›</button>
                 </div>
             </div>
-        </div>
     </div>
 </section>
 

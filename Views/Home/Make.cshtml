@@ -364,9 +364,10 @@
         var spare = (3 - recipes.Length % 3) % 3;
             <div class="shelf" id="@id">
                 <div class="shelf-head">
+                    <p class="make-q">What if I followed the recipe, then didn’t?</p>
                     <h2 class="shelf-title">@title</h2>
                 </div>
-                <p class="shelf-caption bake-intro">Baking is basically coding with better snacks. It’s technical: get the flour-to-butter ratio wrong and you don’t get a cake, you get sludge, the same way one missing semicolon breaks a whole program. But once the structure is right, it’s pure creativity: the flavors, the colors, the decorating, and all the little details nobody asked for but everybody notices.</p>
+                <p class="shelf-caption bake-intro">Baking is basically coding with better snacks. Get the flour-to-butter ratio wrong and you don’t get a cake, you get sludge. Follow the structure, then have fun with the flavor, color and decorating.</p>
                 <div class="bake-split">
                     <div class="cake-viewer" aria-roledescription="carousel" aria-label="Cake gallery">
                         <h3 class="bake-group-label">Cake Gallery</h3>
@@ -434,15 +435,52 @@
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
             <h1 class="section-title">Make</h1>
-            <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create.</p>
+            <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create. Every single thing on this page started the same way: “wait, what if…?”</p>
         </div>
+
+        <!-- Things I made because I wanted them to exist: the book leads, the two builds beside it -->
+        <div class="shelf made-shelf" id="made">
+            <div class="shelf-head">
+                <p class="make-q">What if it existed?</p>
+                <h2 class="shelf-title">Things I Made Because I Wanted Them to Exist</h2>
+            </div>
+            <div class="made-grid">
+                <a class="made-card made-feature" href="/home/pursue#beyond">
+                    <img src="/images/childrens-book-reader.jpg" alt="A young reader holding a copy of Girls Can Be Engineers, Too!" loading="lazy">
+                    <span class="made-body">
+                        <span class="made-kind">Children’s book</span>
+                        <span class="made-title">Girls Can Be Engineers, Too!</span>
+                        <span class="made-line">Bedtime stories for Amaira were all princesses. So I wrote and illustrated one about real women engineers.</span>
+                        <span class="made-go">See the book →</span>
+                    </span>
+                </a>
+                <a class="made-card" href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">
+                    <span class="made-body">
+                        <span class="made-kind">Python app</span>
+                        <span class="made-title">Saturday in Austin</span>
+                        <span class="made-line">Python meets an unnecessarily opinionated Saturday. 200 Austin spots, one perfect day for your mood.</span>
+                        <span class="made-go">Plan your Saturday ↗</span>
+                    </span>
+                </a>
+                <a class="made-card" href="/">
+                    <span class="made-body">
+                        <span class="made-kind">Website</span>
+                        <span class="made-title">This Website</span>
+                        <span class="made-line">Apparently a résumé wasn’t enough. Live music, a map of my life, a quiz, and Sitara, the AI guide.</span>
+                        <span class="made-go">Start from the top →</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <hr class="shelf-divider">
 
         <!-- Digital Art: one gallery wall that slides sideways; each piece opens large -->
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
+                <p class="make-q">What if I painted where I’m from?</p>
                 <h2 class="shelf-title">Digital Art</h2>
             </div>
-            <p class="shelf-caption art-caption">Not to brag or anything, but my AP 2-D Art and Design portfolio got a 5, a VASE award and a Scholastic Art Award. (Totally not bragging.) My investigation was about cultural identity: growing up across the world and getting to call two amazing cultures my own.</p>
+            <p class="shelf-caption art-caption">My AP 2-D Art and Design portfolio was about cultural identity: growing up across the world and getting to call two cultures my own. Not to brag, but it earned a 5, a VASE award and a Scholastic Art Award.</p>
             <div class="shelf-rail-wrap gallery-wall-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Slide the Digital Art wall left">‹</button>
                 <div class="gallery-wall" role="group" aria-label="Digital Art" tabindex="0">
@@ -455,15 +493,31 @@
 
         <div class="shelf writing-shelf" id="writing">
             <div class="shelf-head">
+                <p class="make-q">What if I wrote it down?</p>
                 <h2 class="shelf-title">Writing</h2>
-                @if (writing.Length > 4)
+                @if (writing.Length + 1 > 4)
                 {
-                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@writing.Length">See all @writing.Length →</button>
+                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@(writing.Length + 1)">See all @(writing.Length + 1) →</button>
                 }
             </div>
             <div class="shelf-rail-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Scroll Writing left">‹</button>
                 <ul class="shelf-rail" tabindex="0" aria-label="Writing">
+                    <li class="shelf-item">
+                        <a class="writing-card" href="https://www.amazon.com/dp/B0CKXVLJ23" target="_blank" rel="noopener" draggable="false"
+                           aria-label="View Girls Can Be Engineers, Too! (opens in a new tab)">
+                            <div class="shelf-cover writing-cover writing-book">
+                                <span class="writing-kind">Children’s book</span>
+                                <span class="writing-opening">
+                                    <span>Girls Can Be</span>
+                                    <span>Engineers, Too!</span>
+                                </span>
+                                <span class="writing-read">View the book ↗</span>
+                            </div>
+                            <span class="shelf-item-title">Girls Can Be Engineers, Too!</span>
+                            <span class="shelf-item-meta">Children’s book, 2023</span>
+                        </a>
+                    </li>
                     @foreach (var piece in writing)
                     {
                         <li class="shelf-item">
@@ -502,21 +556,22 @@
 
         <div class="shelf" id="traveling">
             <div class="shelf-head">
-                <h2 class="shelf-title">Traveling</h2>
+                <p class="make-q">What if I planned the perfect trip?</p>
+                <h2 class="shelf-title">Itineraries</h2>
             </div>
-            <p class="shelf-caption">Currently awaiting some more money to go travel somewhere. Travel is loading…</p>
+            <p class="shelf-caption">Places make me, me. I go looking for the art and culture in every city, like wandering Little Italy in New York or staring up at Chicago’s beautiful architecture. And I travel like I do most things: with a plan. Here are my city edits, the spots I’d send you to.</p>
             <div class="travel-loading" role="img" aria-label="Travel is loading"><span></span></div>
             @if (trips.Length > 0)
             {
             <div class="shelf-rail-wrap">
-                <button type="button" class="shelf-arrow prev" aria-label="Scroll Traveling left">‹</button>
-                <ul class="shelf-rail" tabindex="0" aria-label="Traveling">
+                <button type="button" class="shelf-arrow prev" aria-label="Scroll Itineraries left">‹</button>
+                <ul class="shelf-rail" tabindex="0" aria-label="Itineraries">
                     @for (var t = 0; t < trips.Length; t++)
                     {
                         var trip = trips[t];
                         var spotCount = trip.Spots?.Length ?? 0;
                         <li class="shelf-item">
-                            <button type="button" class="bake-open trip-open" data-trip="trip-@t" aria-haspopup="dialog" aria-label="See my @trip.City spots">
+                            <button type="button" class="bake-open trip-open" data-trip="trip-@t" aria-haspopup="dialog" aria-label="Open my @trip.City edit">
                             <div class="shelf-cover bake-cover">
                                 @if (!string.IsNullOrEmpty(trip.Photo))
                                 {
@@ -528,8 +583,8 @@
                                 }
                             </div>
                             </button>
-                            <p class="shelf-item-title">@trip.City</p>
-                            <p class="shelf-item-meta">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : spotCount > 0 ? $"{spotCount} spots I’ve been to" : "spots coming soon")</p>
+                            <p class="shelf-item-title">My @trip.City Edit</p>
+                            <p class="shelf-item-meta">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : spotCount > 0 ? $"the {spotCount} spots I’d send you to" : "spots coming soon")</p>
                         </li>
                     }
                     @* The next page of the travel journal: still blank, with a sketch of a plane and a ticket to somewhere *@
@@ -584,7 +639,7 @@
                         <p class="shelf-item-meta">this page is still blank</p>
                     </li>
                 </ul>
-                <button type="button" class="shelf-arrow next" aria-label="Scroll Traveling right">›</button>
+                <button type="button" class="shelf-arrow next" aria-label="Scroll Itineraries right">›</button>
             </div>
             }
         </div>
