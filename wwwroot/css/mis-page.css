@@ -103,13 +103,19 @@
 .mp-proof-fill { align-items: stretch; }
 .mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) { display: flex; flex-direction: column; }
 .mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) > .mp-browser { flex: 1; display: flex; flex-direction: column; }
-.mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) .mp-browser-view { flex: 1; aspect-ratio: auto; min-height: 320px; }
+.mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) .mp-browser-view { flex: 1; aspect-ratio: 16 / 10; }
+.mp-proof-fill > div:not(:has(> h3)):not(.mp-erd) > .mp-facts { margin: 24px 0 0; }
+/* the text column: title level with the window's top, buttons level with the stats' bottom */
+.mp-proof-fill > div:has(> h3) { display: flex; flex-direction: column; }
+.mp-proof-fill > div:has(> h3) > h3 { margin-top: 0; }
+.mp-proof-fill > div:has(> h3) > .mp-links { margin-top: auto; padding-top: 20px; }
 /* This Website: one big page on top, two smaller ones below */
 .mp-site-shots { display: grid; gap: 16px; }
 .mp-site-shots > .mp-browser .mp-browser-view { aspect-ratio: 16 / 9; }
 .mp-site-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .mp-site-pair .mp-browser-view { aspect-ratio: 16 / 10; }
-.mp-site-shots .mp-browser-shot img { object-position: 50% 0; }
+/* the windows are the live pages: the big one at a laptop's width, the small ones scaled further so they stay desktop layouts */
+.mp-site-pair .mp-browser-view iframe { width: 400%; height: 400%; transform: scale(0.25); }
 /* projects: ‹ project names › above one slide at a time */
 .mp-proj-nav { display: flex; align-items: center; gap: 12px; margin: 0 0 40px; }
 /* one line of tabs; when they don't all fit, the row scrolls and ‹ › appear at its far left and far right */

@@ -526,7 +526,19 @@
     }
 
     .why-wrap .career-section-title {
-        margin: 8px 0 16px;
+        margin: 0 0 10px;
+    }
+
+    /* the question under the title: the subtitle, in mulberry serif */
+    .why-question {
+        margin: 0 0 18px !important;
+        font-family: Georgia, serif;
+        font-size: 1.12rem;
+        font-style: italic;
+        font-weight: 700;
+        line-height: 1.35 !important;
+        white-space: nowrap;   /* one line, always (it wraps again on phones) */
+        color: #8A4D57 !important;
     }
 
     .why-wrap p:not(.career-kicker) {
@@ -650,6 +662,10 @@
         .why-wrap {
             grid-template-columns: 1fr;
             gap: 24px;
+        }
+
+        .why-question {
+            white-space: normal;
         }
 
     }
@@ -968,8 +984,8 @@
 <section class="pursue-part career-why" id="why-mis" aria-labelledby="why-mis-heading">
     <div class="career-wrap why-wrap">
         <div>
-            <p class="career-kicker">Why MIS</p>
-            <h2 class="career-section-title" id="why-mis-heading">So why not English, Design, Studio Art, or Music Performance?</h2>
+            <h2 class="career-section-title" id="why-mis-heading">Why MIS</h2>
+            <p class="why-question">So why not English, Design, Studio Art, or Music Performance?</p>
             <p>I read constantly, I write, I love playing instruments, and I’ve been making art for as long as I can remember. And no, I’m not the next Ada Lovelace.</p>
             <p>But the more I made, the more I noticed technology was already inside everything I loved: the tools I draw with, the apps that put stories in my hands, the playlist that finds a song before I know I want it. Someone had to understand people to build those things well.</p>
             <p>That’s what MIS is to me. It’s the major for people who care as much about <em>why</em> someone uses a product as <em>how</em> it’s built. I didn’t leave the humanities behind. I brought them with me.</p>

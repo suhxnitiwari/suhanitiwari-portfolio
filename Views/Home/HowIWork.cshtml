@@ -829,10 +829,17 @@
                 {
                     var (when, from, how) = discAtWork[i];
                     <li>
-                        <span class="disc-series-n">0@(i + 1)</span>
-                        <p class="disc-series-when">@when</p>
-                        <p class="disc-series-how">@how</p>
-                        <p class="disc-series-from">@from</p>
+                        <button type="button" class="disc-flip" aria-pressed="false">
+                            <span class="disc-face front">
+                                <span class="disc-series-n">0@(i + 1)</span>
+                                <span class="disc-series-when">@when</span>
+                                <span class="disc-series-tap">Tap to see how I handle it ↻</span>
+                            </span>
+                            <span class="disc-face back">
+                                <span class="disc-series-how">@how</span>
+                                <span class="disc-series-from">@from</span>
+                            </span>
+                        </button>
                     </li>
                 }
             </ol>
@@ -1045,4 +1052,10 @@
             requestAnimationFrame(() => document.querySelector('.test-tabs').scrollIntoView({ behavior: 'instant', block: 'start' }));
         }
     })();
+</script>
+
+<script>
+    // How it shows up at work: tap a card to flip it over; tap again to flip back
+    document.querySelectorAll('.disc-flip').forEach(card => card.addEventListener('click', () =>
+        card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') !== 'true')));
 </script>

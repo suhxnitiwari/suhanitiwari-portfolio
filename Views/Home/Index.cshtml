@@ -1604,96 +1604,119 @@
         margin: 60px 0;
     }
 
-    /* ===== BIG FIVE: five satin circles in a row, sized by score (same finish as my strengths) ===== */
+    /* ===== BIG FIVE: one wave, rising and dipping with each score ===== */
     .ocean {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: clamp(14px, 3vw, 40px);
-        max-width: 900px;
-        margin: 24px auto 0;
+        position: relative;
+        height: 300px;
+        margin: 28px 0 0;
     }
 
+    .wave-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .wave-fill {
+        fill: url(#waveWater);
+    }
+
+    .wave-line,
+    .wave-echo {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+        stroke-linecap: round;
+    }
+
+    .wave-line {
+        stroke: #8A4D57;
+        stroke-width: 3;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+    }
+
+    .wave-echo {
+        stroke: #C9969E;
+        stroke-width: 1.5;
+        opacity: 0.6;
+    }
+
+    /* the wave draws itself in the first time it's seen */
+    .ocean.in .wave-line {
+        stroke-dashoffset: 0;
+        transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .wave-axis {
+        stroke: #EBD5D0;
+        stroke-width: 1;
+        vector-effect: non-scaling-stroke;
+    }
+
+    /* each crest or dip is a button: a dot on the wave, the letter and score above it, the name on the floor */
     .ocean-node {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 20%;
         padding: 0;
         border: none;
         background: none;
         font: inherit;
         color: inherit;
         cursor: var(--cursor-hot, pointer);
-        opacity: 0;
-        translate: 0 18px;
-        transition: opacity 0.8s ease, translate 1s cubic-bezier(0.22, 1, 0.36, 1);
-        transition-delay: calc(0.1s + var(--i) * 0.12s);
+        transform: translateX(-50%);
     }
 
-    .ocean.in .ocean-node {
-        opacity: 1;
-        translate: 0 0;
+    .wave-dot {
+        position: absolute;
+        left: 50%;
+        top: var(--y);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 3px solid #FFF8F6;
+        background: #8A4D57;
+        box-shadow: 0 0 0 1.5px #8A4D57;
+        transform: translate(-50%, -50%);
+        transition: transform 0.25s ease;
     }
 
-    .ocean.settled .ocean-node {
-        transition: opacity 0.3s ease;
-    }
-
-    /* every circle gets a slot as tall as the biggest one, so the names line up underneath */
-    .ocean-slot {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: var(--max);
-    }
-
-    .ocean-circle {
-        position: relative;
+    .wave-label {
+        position: absolute;
+        left: 50%;
+        top: calc(var(--y) - 78px);
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        width: var(--d);
-        height: var(--d);
-        border-radius: 50%;
-        background:
-            radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 55%),
-            radial-gradient(circle at 70% 85%, rgba(30, 14, 12, 0.16) 0%, rgba(30, 14, 12, 0) 60%),
-            var(--c);
-        color: #FAF1EF;
-        box-shadow: 0 10px 24px -8px rgba(74, 36, 42, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-        transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease, opacity 0.35s ease;
+        transform: translateX(-50%);
+        white-space: nowrap;
     }
 
-    /* a fine inner ring, like a pressed seal */
-    .ocean-circle::after {
-        content: "";
-        position: absolute;
-        inset: 7px;
-        border-radius: 50%;
-        border: 1px solid rgba(250, 241, 239, 0.35);
-        pointer-events: none;
-    }
-
-    .ocean-letter {
-        font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-size: calc(var(--d) * 0.4);
-        font-weight: 500;
-        line-height: 1;
-    }
-
-    .ocean-score {
-        margin-top: 4px;
-        font-size: calc(var(--d) * 0.13);
+    .wave-letter {
+        font-family: Georgia, serif;
+        font-size: 2.2em;
         font-weight: 700;
-        letter-spacing: 1.5px;
-        opacity: 0.9;
+        line-height: 1;
+        color: #2A1810;
+    }
+
+    .wave-score {
+        margin-top: 4px;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #9E5A63;
     }
 
     .ocean-name {
-        margin-top: 14px;
-        max-width: 120px;
-        font-size: 0.7em;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        font-size: 0.68em;
         font-weight: 700;
         letter-spacing: 1.5px;
         line-height: 1.4;
@@ -1703,38 +1726,26 @@
         transition: color 0.3s ease, opacity 0.3s ease;
     }
 
-    /* hover and click: that letter lifts, the others step back */
-    .ocean.settled.hovering .ocean-node:not(.hovered):not(.selected) .ocean-circle,
-    .ocean.settled.has-selection:not(.hovering) .ocean-node:not(.selected) .ocean-circle {
-        opacity: 0.5;
-        filter: saturate(0.7);
+    .ocean-node:hover .wave-dot,
+    .ocean-node.selected .wave-dot {
+        transform: translate(-50%, -50%) scale(1.35);
     }
 
-    .ocean.settled.hovering .ocean-node:not(.hovered):not(.selected) .ocean-name,
-    .ocean.settled.has-selection:not(.hovering) .ocean-node:not(.selected) .ocean-name {
-        opacity: 0.45;
-    }
-
-    .ocean-node.hovered .ocean-circle {
-        transform: translateY(-4px) scale(1.04);
-        box-shadow: 0 16px 30px -10px rgba(74, 36, 42, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
-    .ocean-node.selected .ocean-circle {
-        transform: translateY(-4px) scale(1.08);
-        box-shadow: 0 0 0 4px #FAF1EF, 0 0 0 5px var(--c), 0 18px 32px -10px rgba(74, 36, 42, 0.5);
-    }
-
-    .ocean-node.hovered .ocean-name,
+    .ocean-node.selected .wave-letter,
     .ocean-node.selected .ocean-name {
-        color: #2A1810;
+        color: #8A4D57;
+    }
+
+    .ocean.has-selection .ocean-node:not(.selected) .wave-label,
+    .ocean.has-selection .ocean-node:not(.selected) .ocean-name {
+        opacity: 0.5;
     }
 
     .ocean-node:focus-visible {
         outline: none;
     }
 
-    .ocean-node:focus-visible .ocean-circle {
+    .ocean-node:focus-visible .wave-letter {
         outline: 2px solid #8A4D57;
         outline-offset: 6px;
     }
@@ -1900,32 +1911,14 @@
         font-weight: 700;
     }
 
-    /* phones: smaller circles, names only for the chosen letter */
+    /* phones: a shorter wave, names only for the chosen letter */
     @@media (max-width: 700px) {
         .ocean {
-            gap: 8px;
+            height: 240px;
         }
 
-        .ocean-slot {
-            height: calc(var(--max) * 0.5);
-        }
-
-        .ocean-circle {
-            width: calc(var(--d) * 0.5);
-            height: calc(var(--d) * 0.5);
-        }
-
-        .ocean-circle::after {
-            inset: 4px;
-        }
-
-        .ocean-letter {
-            font-size: calc(var(--d) * 0.21);
-        }
-
-        .ocean-score {
-            margin-top: 2px;
-            font-size: calc(var(--d) * 0.085);
+        .wave-letter {
+            font-size: 1.6em;
         }
 
         .ocean-name {
@@ -1943,10 +1936,8 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .ocean-node {
-            transition: none !important;
-            opacity: 1;
-            translate: 0 0;
+        .ocean.in .wave-line {
+            transition: none;
         }
 
         .ocean-word {
@@ -2240,106 +2231,71 @@
         }
     }
 
-    /* VIA: circle diagram beside a detail card */
-    /* wider than the Myers-Briggs cards (up to 1240px), with most of it going to the circles */
+    /* VIA: my six strengths as a ranked list with rules between them, the picked one's card beside it */
     .via-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 40px;
-        align-items: center;
-        width: min(1240px, calc(100vw - 48px));
-        margin-left: 50%;
-        transform: translateX(-50%);
+        align-items: stretch;
     }
 
-    .via-diagram {
+    .via-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-top: 2px solid #2A1810;
+    }
+
+    .via-row {
+        display: grid;
+        grid-template-columns: 44px 1fr auto;
+        align-items: baseline;
+        gap: 12px;
         width: 100%;
-        height: auto;
-        overflow: visible;
-    }
-
-    .via-circle {
+        padding: 16px 12px 16px 14px;
+        border: none;
+        border-bottom: 1px solid #E2C6C0;
+        border-left: 4px solid transparent;
+        background: none;
+        font: inherit;
+        text-align: left;
+        color: #2A1810;
         cursor: var(--cursor-hot, pointer);
-        outline: none;
+        transition: background 0.2s ease, border-color 0.2s ease;
     }
 
-    .via-circle circle {
-        opacity: 0.9;
-        transform-box: fill-box;
-        transform-origin: center;
-        transition: transform 0.3s ease, opacity 0.3s ease;
+    .via-row:hover {
+        background: rgba(255, 248, 246, 0.7);
     }
 
-    .via-circle:hover circle,
-    .via-circle:focus-visible circle {
-        transform: scale(1.05);
-        opacity: 1;
+    .via-row[aria-pressed="true"] {
+        border-left-color: var(--c, #8A4D57);
+        background: #FFF8F6;
     }
 
-    .via-circle.active .via-fill {
-        opacity: 1;
-        stroke: #FAF1EF;
-        stroke-width: 8;
+    .via-row:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: -2px;
     }
 
-    .via-diagram.has-active .via-circle:not(.active) circle {
-        opacity: 0.55;
-    }
-
-    .via-circle text {
-        text-anchor: middle;
-        fill: #FAF1EF;
-        pointer-events: none;
-    }
-
-    .via-rank {
-        font-size: 30px;
-        font-weight: 700;
-        opacity: 0.85;
-    }
-
-    .via-name {
+    .via-row-n {
         font-family: Georgia, serif;
-        font-size: 40px;
+        font-size: 1.1em;
+        color: var(--c, #8A4D57);
+    }
+
+    .via-row-name {
+        font-family: Georgia, serif;
+        font-size: 1.45em;
         font-weight: 700;
     }
 
-    .via-name.small {
-        font-size: 36px;
-    }
-
-    .via-virtue {
-        font-size: 19px;
+    .via-row-virtue {
+        font-size: 0.7em;
         font-weight: 700;
         letter-spacing: 2px;
         text-transform: uppercase;
-        opacity: 0.85;
-    }
-
-    .via-core .via-fill {
-        fill: url(#viaCore);
-        stroke: #8A4D57;
-        stroke-width: 3;
-    }
-
-    .via-core text {
-        fill: #8A4D57;
-    }
-
-    .via-core-name {
-        font-family: 'Bodoni Moda', Didot, 'Bodoni 72', Georgia, serif;
-        font-size: 62px;
-        font-style: italic;
-        font-weight: 400;
-        letter-spacing: -0.5px;
-    }
-
-    .via-core-sub {
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        fill: #56634A !important;
+        color: #56634A;
     }
 
     .via-card {
@@ -2387,14 +2343,6 @@
         .via-layout {
             grid-template-columns: 1fr;
             gap: 20px;
-            width: 100%;
-            margin-left: 0;
-            transform: none;
-        }
-
-        .via-diagram {
-            max-width: 560px;
-            margin: 0 auto;
         }
 
         .via-card {
@@ -3557,10 +3505,6 @@
                     ShowFacets: false)
             };
 
-            // Circle size follows the score; each trait borrows a color from the rest of the page
-            string[] oceanColors = { "#9E5A63", "#56634A", "#C27B8A", "#7F9A6B", "#8A4D57" };
-            int lowScore = ocean.Min(t => t.Score), highScore = ocean.Max(t => t.Score);
-            double Diameter(int score) => highScore == lowScore ? 120 : 100 + (score - lowScore) * 30.0 / (highScore - lowScore);
         }
         <div class="test-panel" id="test-ocean" role="tabpanel" aria-labelledby="tab-ocean" hidden>
             <div class="type-header">
@@ -3568,19 +3512,46 @@
                 <p>The Big Five, one letter at a time</p>
             </div>
 
-            <div class="ocean" id="ocean" style="--max: @(Math.Round(Diameter(highScore)))px;">
+            @{
+                // the wave: each score sets how high its point sits (50 at the floor, 100 at the top), smoothed into one curve
+                double WaveY(int score) => 250 - (score - 50) * 4.2;
+                var wx = new[] { 100.0, 300, 500, 700, 900 };
+                var wy = ocean.Select(t => WaveY(t.Score)).ToArray();
+                var pts = new List<(double X, double Y)> { (0, (wy[0] + 250) / 2) };
+                for (var k = 0; k < 5; k++) pts.Add((wx[k], wy[k]));
+                pts.Add((1000, (wy[4] + 250) / 2));
+                string F(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
+                string Curve(double dy)
+                {
+                    var d = $"M{F(pts[0].X)},{F(pts[0].Y + dy)}";
+                    for (var k = 0; k < pts.Count - 1; k++)
+                    {
+                        var p0 = pts[Math.Max(k - 1, 0)]; var p1 = pts[k]; var p2 = pts[k + 1]; var p3 = pts[Math.Min(k + 2, pts.Count - 1)];
+                        d += $" C{F(p1.X + (p2.X - p0.X) / 6)},{F(p1.Y + (p2.Y - p0.Y) / 6 + dy)} {F(p2.X - (p3.X - p1.X) / 6)},{F(p2.Y - (p3.Y - p1.Y) / 6 + dy)} {F(p2.X)},{F(p2.Y + dy)}";
+                    }
+                    return d;
+                }
+            }
+            <div class="ocean" id="ocean">
+                <svg class="wave-svg" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="waveWater" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#C27B8A" stop-opacity="0.28" />
+                            <stop offset="1" stop-color="#C27B8A" stop-opacity="0" />
+                        </linearGradient>
+                    </defs>
+                    <line class="wave-axis" x1="0" y1="262" x2="1000" y2="262" />
+                    <path class="wave-fill" d="@Curve(0) L1000,262 L0,262 Z" />
+                    <path class="wave-echo" d="@Curve(16)" />
+                    <path class="wave-line" d="@Curve(0)" pathLength="1" />
+                </svg>
                 @for (var i = 0; i < ocean.Length; i++)
                 {
                     var t = ocean[i];
-                    <button type="button" class="ocean-node" data-letter="@t.Letter" aria-pressed="false"
-                            aria-label="@t.Name, @t.Score"
-                            style="--d: @(Math.Round(Diameter(t.Score)))px; --c: @oceanColors[i]; --i: @i;">
-                        <span class="ocean-slot">
-                            <span class="ocean-circle">
-                                <span class="ocean-letter">@t.Letter</span>
-                                <span class="ocean-score">@t.Score</span>
-                            </span>
-                        </span>
+                    <button type="button" class="ocean-node" data-letter="@t.Letter" aria-pressed="false" aria-label="@t.Name, @t.Score"
+                            style="left: @(i * 20 + 10)%; --y: @(F(wy[i] / 3))%;">
+                        <span class="wave-label"><span class="wave-letter">@t.Letter</span><span class="wave-score">@t.Score</span></span>
+                        <span class="wave-dot"></span>
                         <span class="ocean-name">@t.Name</span>
                     </button>
                 }
@@ -3646,57 +3617,26 @@
                 <h2>My Top 6 Strengths</h2>
             </div>
             <div class="via-layout">
-                <svg class="via-diagram" viewBox="50 50 900 900" role="group" aria-label="My top 6 character strengths">
-                    <defs>
-                        <!-- a soft light from the top left and a little shade at the bottom right, so the circles have some body -->
-                        <radialGradient id="viaSheen" cx="0.32" cy="0.26" r="0.7">
-                            <stop offset="0" stop-color="#fff" stop-opacity="0.26" />
-                            <stop offset="0.6" stop-color="#fff" stop-opacity="0" />
-                        </radialGradient>
-                        <radialGradient id="viaShade" cx="0.7" cy="0.86" r="0.62">
-                            <stop offset="0" stop-color="#1E0E0C" stop-opacity="0.18" />
-                            <stop offset="1" stop-color="#1E0E0C" stop-opacity="0" />
-                        </radialGradient>
-                        <radialGradient id="viaCore" cx="0.38" cy="0.3" r="0.8">
-                            <stop offset="0" stop-color="#FFFBFA" />
-                            <stop offset="1" stop-color="#F3DCD7" />
-                        </radialGradient>
-                        <filter id="viaShadow" x="-30%" y="-30%" width="160%" height="170%">
-                            <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A242A" flood-opacity="0.28" />
-                        </filter>
-                    </defs>
+                <ol class="via-list" aria-label="My top 6 character strengths">
                     @for (var i = 0; i < strengths.Length; i++)
                     {
                         var (key, name, virtue, _, _, color) = strengths[i];
-                        var angle = (-90 + i * 60) * Math.PI / 180;
-                        var cx = Math.Round(500 + 290 * Math.Cos(angle));
-                        var cy = Math.Round(500 + 290 * Math.Sin(angle));
-                        var words = name.Split(' ');
-                        <g class="via-circle" role="button" tabindex="0" data-key="@key" aria-label="#@(i + 1) @name">
-                            <circle class="via-fill" cx="@cx" cy="@cy" r="140" fill="@color" filter="url(#viaShadow)" />
-                            <circle cx="@cx" cy="@cy" r="140" fill="url(#viaSheen)" />
-                            <circle cx="@cx" cy="@cy" r="140" fill="url(#viaShade)" />
-                            <circle cx="@cx" cy="@cy" r="128" fill="none" stroke="#FAF1EF" stroke-opacity="0.35" stroke-width="1.5" />
-                            <text x="@cx" y="@(cy - 34)" class="via-rank">#@(i + 1)</text>
-                            @if (words.Length > 2)
-                            {
-                                @:<text x="@cx" y="@(cy + 6)" class="via-name small">@(words[0] + " " + words[1])</text>
-                                @:<text x="@cx" y="@(cy + 40)" class="via-name small">@words[2]</text>
-                            }
-                            else
-                            {
-                                @:<text x="@cx" y="@(cy + 16)" class="via-name">@name</text>
-                            }
-                            <text x="@cx" y="@(cy + (words.Length > 2 ? 76 : 56))" class="via-virtue">@virtue</text>
-                        </g>
+                        <li>
+                            <button type="button" class="via-row" data-key="@key" aria-pressed="false" style="--c: @color;">
+                                <span class="via-row-n">0@(i + 1)</span>
+                                <span class="via-row-name">@name</span>
+                                <span class="via-row-virtue">@virtue</span>
+                            </button>
+                        </li>
                     }
-                    <g class="via-circle via-core" role="button" tabindex="0" data-key="together" aria-label="How they work together">
-                        <circle class="via-fill" cx="500" cy="500" r="120" filter="url(#viaShadow)" />
-                        <circle cx="500" cy="500" r="108" fill="none" stroke="#C9969E" stroke-width="1.5" />
-                        <text x="500" y="506" class="via-core-name">Suhani</text>
-                        <text x="500" y="546" class="via-core-sub">all together</text>
-                    </g>
-                </svg>
+                    <li>
+                        <button type="button" class="via-row via-row-all" data-key="together" aria-pressed="true">
+                            <span class="via-row-n">✦</span>
+                            <span class="via-row-name">All together</span>
+                            <span class="via-row-virtue">How they fit</span>
+                        </button>
+                    </li>
+                </ol>
 
                 <div class="via-detail" aria-live="polite">
                     @foreach (var (key, name, virtue, definition, mine, _) in strengths)
@@ -3922,8 +3862,7 @@
             const start = () => {
                 if (ocean.classList.contains('in')) return;
                 ocean.classList.add('in');
-                // once everything has floated into place, hover and click fade quickly
-                setTimeout(() => ocean.classList.add('settled'), reduce ? 0 : 1700);
+                setTimeout(() => ocean.classList.add('settled'), reduce ? 0 : 1600);
             };
             // also start when the Big Five tab is opened while the circles are already on screen
             document.getElementById('tab-ocean').addEventListener('click', () => requestAnimationFrame(() => {
@@ -4003,21 +3942,13 @@
             });
         });
 
-        // VIA: clicking a circle shows that strength's card (the center shows how they fit together)
-        const diagram = document.querySelector('.via-diagram');
-        const circles = [...document.querySelectorAll('.via-circle')];
+        // VIA: clicking a strength shows its card ("All together" shows how they fit)
+        const viaRows = [...document.querySelectorAll('.via-row')];
         const cards = [...document.querySelectorAll('.via-card')];
-        const select = key => {
-            circles.forEach(c => c.classList.toggle('active', c.dataset.key === key && key !== 'together'));
-            diagram.classList.toggle('has-active', key !== 'together');
-            cards.forEach(c => c.hidden = c.dataset.key !== key);
-        };
-        circles.forEach(circle => {
-            circle.addEventListener('click', () => select(circle.dataset.key));
-            circle.addEventListener('keydown', e => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(circle.dataset.key); }
-            });
-        });
+        viaRows.forEach(row => row.addEventListener('click', () => {
+            viaRows.forEach(r => r.setAttribute('aria-pressed', r === row));
+            cards.forEach(c => c.hidden = c.dataset.key !== row.dataset.key);
+        }));
     })();
 
     // Letter cards: click to open or close (each on its own)

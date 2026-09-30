@@ -1718,13 +1718,24 @@
         color: #2A1810;
     }
 
-    /* Listen, Watch, Read: three columns under a thin rule, the label small, the meaning in serif */
+    /* the intro fills the first screen: the thesis on top, then Listen, Watch, Read as three open columns with a picture each */
+    .fav-thesis {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: calc(100vh - 150px);
+    }
+
+    #listen-music {
+        scroll-margin-top: 100px;
+    }
+
     .fav-trio {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 32px;
-        margin: 28px 0 0;
-        padding: 18px 0 0;
+        margin: 36px 0 0;
+        padding: 28px 0 0;
         border-top: 1px solid #D9B8B3;
         list-style: none;
     }
@@ -1732,10 +1743,72 @@
     .fav-trio a {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
         text-decoration: none;
         color: #2A1810;
     }
+
+    .fav-art {
+        position: relative;
+        display: block;
+        height: 210px;
+        margin-bottom: 14px;
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .fav-trio a:hover .fav-art {
+        transform: translateY(-4px);
+    }
+
+    /* Listen: a record, spinning slowly */
+    .fav-vinyl {
+        background: linear-gradient(155deg, #F8E7E3 0%, #EFD2CF 100%);
+    }
+
+    .fav-vinyl span {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 170px;
+        height: 170px;
+        margin: -85px 0 0 -85px;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle, #8A4D57 0 22px, #FFF8F6 23px 25px, transparent 26px),
+            repeating-radial-gradient(circle, #2A1810 0 2px, #3B2A24 3px 4px);
+        box-shadow: 0 14px 28px rgba(42, 24, 16, 0.3);
+        animation: favSpin 9s linear infinite;
+    }
+
+    @@keyframes favSpin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Watch and Read: three covers fanned out */
+    .fav-fan img {
+        position: absolute;
+        left: 50%;
+        top: 22px;
+        width: 108px;
+        height: 162px;
+        margin-left: -54px;
+        object-fit: cover;
+        border-radius: var(--r-small, 8px);
+        box-shadow: 0 10px 22px rgba(42, 24, 16, 0.25);
+        transition: transform 0.3s ease;
+    }
+
+    .fav-fan img:nth-child(1) { transform: translateX(-70px) rotate(-8deg); }
+    .fav-fan img:nth-child(2) { transform: translateX(70px) rotate(8deg); }
+    .fav-fan img:nth-child(3) { transform: translateY(-6px); }
+
+    .fav-trio a:hover .fav-fan img:nth-child(1) { transform: translateX(-84px) rotate(-11deg); }
+    .fav-trio a:hover .fav-fan img:nth-child(2) { transform: translateX(84px) rotate(11deg); }
 
     .fav-trio a b {
         font-size: 0.72em;
@@ -1745,14 +1818,25 @@
         color: #9E5A63;
     }
 
-    .fav-trio a span {
+    .fav-how {
         font-family: Georgia, serif;
-        font-size: 1.3em;
+        font-size: 1.35em;
         font-style: italic;
     }
 
-    .fav-trio a:hover span {
+    .fav-why {
+        line-height: 1.6;
+        color: #56634A;
+    }
+
+    .fav-trio a:hover .fav-how {
         color: #8A4D57;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .fav-vinyl span {
+            animation: none;
+        }
     }
 
     /* the one-line thesis under each section title */
@@ -1905,14 +1989,43 @@
             <h1>Apparently, I have a type.</h1>
             <p>What I listen to, watch and read looks all over the place until you zoom out. Then the same things keep showing up: people, relationships, ambition, reinvention, curiosity, and a very strong preference for a happy ending.</p>
             <ul class="fav-trio">
-                <li><a href="#listen"><b>Listen</b><span>How I feel →</span></a></li>
-                <li><a href="#watch"><b>Watch</b><span>How I understand people →</span></a></li>
-                <li><a href="#read"><b>Read</b><span>How I figure things out →</span></a></li>
+                <li>
+                    <a href="#listen-music">
+                        <span class="fav-art fav-vinyl" aria-hidden="true"><span></span></span>
+                        <b>Listen</b>
+                        <span class="fav-how">How I feel →</span>
+                        <span class="fav-why">Big feelings, dramatic lyrics, and songs I replay until they’re attached to a moment.</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#watch">
+                        <span class="fav-art fav-fan" aria-hidden="true">
+                            <img src="/images/posters/modern-family.jpg" alt="" loading="lazy">
+                            <img src="/images/posters/jane-the-virgin.jpg" alt="" loading="lazy">
+                            <img src="/images/posters/gossip-girl.jpg" alt="" loading="lazy">
+                        </span>
+                        <b>Watch</b>
+                        <span class="fav-how">How I understand people →</span>
+                        <span class="fav-why">Ensemble casts, messy relationships, and a guaranteed happy ending.</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#read">
+                        <span class="fav-art fav-fan" aria-hidden="true">
+                            <img src="/images/covers/the-design-of-everyday-things.jpg" alt="" loading="lazy">
+                            <img src="/images/covers/atomic-habits.jpg" alt="" loading="lazy">
+                            <img src="/images/covers/the-hating-game.jpg" alt="" loading="lazy">
+                        </span>
+                        <b>Read</b>
+                        <span class="fav-how">How I figure things out →</span>
+                        <span class="fav-why">Business, behavior and rom-coms, taking turns explaining the world.</span>
+                    </a>
+                </li>
             </ul>
         </header>
 
         <!-- MY MUSIC: one compact dashboard, live from my Spotify -->
-        <h2 class="section-title with-subtitle">What I'm Listening To</h2>
+        <h2 class="section-title with-subtitle" id="listen-music">What I'm Listening To</h2>
         <p class="section-subtitle">I listen by feeling, not by genre. Live from my Spotify.</p>
 
         <!-- A Pinterest board: three columns of pins in different heights -->
@@ -3444,7 +3557,8 @@
             };
 
             @:<p class="fav-q"><b>02</b>How people work</p>
-            RenderShelf("Books I’ll Never Shut Up About", books);
+            RenderShelf("Books I’ll Never Shut Up About", books,
+                "Enemies to lovers, fake dating, one very inconvenient wedding. I know exactly how every one of these ends, and I still can’t put them down. They’re the reason I believe in banter, happy endings, and people who figure themselves out a little late. Ask me about any of them at your own risk.");
 
             // Self-help: same shelf, (title, author, cover image). Add more any time.
             var selfHelp = new[]
@@ -3458,7 +3572,8 @@
         }
         <hr class="shelf-divider">
         <p class="fav-q"><b>03</b>How I want to live</p>
-        @{ RenderShelf("Books That Actually Changed How I Live", selfHelp); }
+        @{ RenderShelf("Books That Actually Changed How I Live", selfHelp,
+            "These are the ones that stuck. Atomic Habits is why I trust systems more than motivation. The Let Them Theory talked me out of overthinking what everyone else is doing. How to Win Friends and Influence People is basically why I remember your coffee order. And Ikigai keeps me asking what all of it is actually for."); }
 
         <!-- the pattern across all three -->
         <section class="fav-type" aria-labelledby="fav-type-title">

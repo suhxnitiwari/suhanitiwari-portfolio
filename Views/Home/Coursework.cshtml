@@ -242,11 +242,13 @@
         color: #56634A;
     }
 
+    /* same grid as the six MIS cards: the 1100px column, three across, 22px gaps */
     .courses-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
-        margin-bottom: 80px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+        max-width: var(--page-width, 1100px);
+        margin: 0 auto 80px;
     }
 
     /* The card itself is just a see-through frame; its color lives on the front and back
@@ -254,7 +256,7 @@
     .course-card {
         --card-bg: linear-gradient(135deg, #9E5A63 0%, #56634A 100%);
         position: relative;
-        aspect-ratio: 1;
+        aspect-ratio: 352 / 376;   /* the same shape as the MIS cards */
         border-radius: var(--r-card);
         overflow: visible;
         cursor: var(--cursor-hot, pointer);
@@ -287,7 +289,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding: 40px;
+        padding: var(--pad-card-sm);
         border-radius: var(--r-card);
     }
 
@@ -341,7 +343,7 @@
     }
 
     .course-number {
-        font-size: 2.5em;
+        font-size: 1.6em;
         font-weight: 800;
         opacity: 0.9;
         font-family: Georgia, serif;
@@ -355,7 +357,7 @@
     }
 
     .course-title {
-        font-size: 1.8em;
+        font-size: 1.5em;
         font-weight: 700;
         margin-bottom: 12px;
         line-height: 1.3;
@@ -853,6 +855,8 @@ document.querySelectorAll('.mp-projects').forEach(root => {
             s.hidden = n !== current;
             s.classList.toggle('entering', n === current && !reduce);
         });
+        // the This Website windows are the site itself, so they only load once that slide is opened
+        slides[current].querySelectorAll('iframe[data-live]').forEach(f => { f.src = f.dataset.live; f.removeAttribute('data-live'); });
         if (focus) tabs[current].focus();
         // keep the chosen tab in view when the row scrolls
         const row = tabs[current].parentElement;
