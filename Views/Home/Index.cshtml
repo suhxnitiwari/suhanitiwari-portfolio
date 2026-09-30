@@ -1616,6 +1616,33 @@
         color: #56634A;
     }
 
+    @* A small link out to the full personality site; clicks don't open or close the fold *@
+    .pfold-more {
+        align-self: flex-start;
+        margin-top: 10px;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 0.95rem;
+        color: #8A4D57;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(138, 77, 87, 0.35);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .pfold-more span {
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    .pfold-more:hover {
+        color: #9E5A63;
+        border-color: #9E5A63;
+    }
+
+    .pfold-more:hover span {
+        transform: translateX(3px);
+    }
+
     .pfold-btn {
         flex: none;
         padding: 12px 26px;
@@ -3399,6 +3426,7 @@
                 <span class="pfold-kicker">For the curious</span>
                 <span class="pfold-title">Personality</span>
                 <span class="pfold-sub">Myers-Briggs, the Big Five, my VIA character strengths and a little astrology.</span>
+                <a class="pfold-more" href="https://suhxnitiwari.github.io/suhani-personality/" target="_blank" rel="noopener">Read more: ten tests, one interactive portrait <span aria-hidden="true">→</span></a>
             </span>
             <span class="pfold-btn" aria-hidden="true"><span class="when-closed">Open</span><span class="when-open">Close</span></span>
         </summary>
