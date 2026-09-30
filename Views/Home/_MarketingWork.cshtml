@@ -33,7 +33,7 @@
         ("Study-optimized store finder", 3656)
     };
     var riceMax = rice.Max(r => r.Score);
-    var share = new (string Brand, int Pct)[] { ("Starbucks", 48), ("Dunkin", 24), ("Other chains", 19), ("McDonald’s", 6), ("Dutch Bros", 3) };
+    var share = new (string Brand, int Pct)[] { ("Starbucks", 48), ("Every other U.S. coffee shop", 52) };   // Technomic, 2025
     string Pct(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
 }
 <section class="mis mp mk" aria-labelledby="mk-heading">
@@ -61,19 +61,19 @@
                         @Html.Raw(Top(sbuxSections, 0, "Starbucks: App &amp; loyalty strategy"))
                         <h4 class="mk-h">Starbucks can grow by turning its app from a checkout tool into <em>a daily ritual</em>.</h4>
                         <ol class="mk-scr">
-                            <li><span>the situation</span><p>Starbucks leads North American coffee with <b>48%</b> of coffee-shop spending, and Rewards members already drive <b>59%</b> of sales.</p></li>
-                            <li><span>the catch</span><p>Yet about <b>70%</b> of transactions still happen outside the app, and people use it to pay, not to discover or plan.</p></li>
+                            <li><span>the situation</span><p>Starbucks takes <b>48%</b> of U.S. coffee-shop spending, and Rewards members already drive <b>58%</b> of U.S. store sales.</p></li>
+                            <li><span>the catch</span><p>Yet <b>69%</b> of transactions still aren’t mobile orders, and people use it to pay, not to discover or plan.</p></li>
                             <li><span>the fix</span><p>Build habit-forming features first (customization profiles, smart filtering, recurring orders) and manage to one metric: <b>Weekly Active Ritual Orders per User</b>.</p></li>
                         </ol>
-                        @Html.Raw(Foot("Statista; Starbucks company data; author analysis", 1, 7))
+                        @Html.Raw(Foot("Technomic (2025); Starbucks Q4 FY25 investor dashboard; author analysis", 1, 7))
                     </div>
 
                     <div class="mk-slide" data-title="The gap" hidden>
                         @Html.Raw(Top(sbuxSections, 1, "Starbucks: App &amp; loyalty strategy"))
-                        <h4 class="mk-h">Starbucks holds nearly half the market, but its app captures only <em>about 3 in 10</em> transactions.</h4>
+                        <h4 class="mk-h">Starbucks takes nearly half of U.S. coffee-shop spending, but only <em>about 3 in 10</em> orders are placed ahead in the app.</h4>
                         <div class="mk-split">
                             <figure class="mk-exhibit">
-                                <figcaption>Exhibit 1: North American coffee-shop market share, %</figcaption>
+                                <figcaption>Exhibit 1: Share of U.S. coffee-shop spending, %</figcaption>
                                 <ol class="mk-hbars">
                                     @foreach (var (brand, pct) in share)
                                     {
@@ -85,13 +85,13 @@
                                 <p class="mk-exlabel">The app today</p>
                                 <ul class="mk-kpis">
                                     <li><b>31%</b>of transactions are mobile orders</li>
-                                    <li><b>59%</b>of sales come from Rewards members</li>
-                                    <li><b>3×</b>more spent by members than non-members</li>
+                                    <li><b>58%</b>of U.S. store sales come from Rewards members</li>
+                                    <li><b>35M+</b>active Rewards members, an all-time high</li>
                                 </ul>
                                 <p class="mk-sowhat"><b>So what</b>The growth isn’t new customers. It’s moving visits Starbucks already has into the app.</p>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Statista; Starbucks company data", 2, 7))
+                        @Html.Raw(Foot("Technomic (2025); Starbucks Q4 FY25 investor dashboard", 2, 7))
                     </div>
 
                     <div class="mk-slide" data-title="Opportunities" hidden>
@@ -222,11 +222,11 @@
                         @Html.Raw(Top(owalaSections, 0, "Owala: The Marathon Series"))
                         <h4 class="mk-h">Owala can turn one-time buyers into <em>collectors</em> by selling bottles runners earn at the finish line.</h4>
                         <ol class="mk-scr">
-                            <li><span>the situation</span><p>Owala grew sales <b>400%</b> in 2024 on color drops and viral moments, but gives customers no reason to buy a second bottle.</p></li>
-                            <li><span>the catch</span><p><b>71%</b> of drinkware buyers never repurchase, and rivals retain customers through identity (Stanley, Hydro Flask) or an ecosystem (YETI).</p></li>
+                            <li><span>the situation</span><p>Owala’s monthly unit sales rose <b>400%+</b> in eight months of 2024 on color drops and viral moments, but gives customers no reason to buy a second bottle.</p></li>
+                            <li><span>the catch</span><p>The category is cooling (growth fell from <b>38%</b> to <b>14%</b> in a year), and rivals retain customers through identity (Stanley, Hydro Flask) or an ecosystem (YETI).</p></li>
                             <li><span>the fix</span><p>Launch the <b>Race Series</b>: city-exclusive, engraved bottles sold at marathons. Pilot at three to five races and measure repeat purchase.</p></li>
                         </ol>
-                        @Html.Raw(Foot("Latterly (Ogle, 2025); Fortune Business Insights; author analysis", 1, 7))
+                        @Html.Raw(Foot("Particl (2024); Circana via Modern Retail (2025); author analysis", 1, 7))
                     </div>
 
                     <div class="mk-slide" data-title="Root causes" hidden>
@@ -246,13 +246,13 @@
                         @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
                         <h4 class="mk-h">The category is large, but <em>repeat buying</em>, not reach, is the constraint.</h4>
                         <ul class="mk-numbers">
-                            <li><b>$14.2B</b><span>global drinkware market by 2032</span></li>
-                            <li class="hi"><b>71%</b><span>of drinkware buyers never repurchase</span></li>
-                            <li><b>400%</b><span>Owala’s 2024 sales growth, with no system to sustain it</span></li>
-                            <li><b>32M+</b><span>U.S. race finishers a year: an audience that commemorates achievement</span></li>
+                            <li><b>$15.6B</b><span>global reusable water bottle market by 2032</span></li>
+                            <li class="hi"><b>14%</b><span>insulated drinkware growth in 2024, down from 38% in 2023</span></li>
+                            <li><b>400%+</b><span>rise in Owala’s monthly unit sales, January to August 2024</span></li>
+                            <li><b>30K+</b><span>runners at the 2026 Austin Marathon, from all 50 states and 50 countries</span></li>
                         </ul>
                         <p class="mk-sowhat inline"><b>So what</b>Owala doesn’t need more first-time buyers. It needs a reason for existing fans to buy again.</p>
-                        @Html.Raw(Foot("Fortune Business Insights; Latterly (Ogle, 2025); Running USA", 3, 7))
+                        @Html.Raw(Foot("Fortune Business Insights; Circana via Modern Retail (2025); Particl (2024); Austin Marathon (2026)", 3, 7))
                     </div>
 
                     <div class="mk-slide" data-title="Positioning" hidden>
@@ -313,7 +313,7 @@
                         <h4 class="mk-h">A small premium and finish-line pop-ups turn the bottle into <em>a keepsake</em>.</h4>
                         <div class="mk-ps">
                             <div><h5>Product</h5><p>The iconic 40oz FreeSip, redesigned for each race city and engraved on site.</p><p class="mk-why-p">A keepsake that opens the fitness market</p></div>
-                            <div><h5>Price</h5><p><b class="mk-price">$39.99 → $49.99</b>Cost-plus for design and engraving; YETI charges $6 just to engrave.</p><p class="mk-why-p">Signals exclusivity, keeps the .99 feel of a deal</p></div>
+                            <div><h5>Price</h5><p><b class="mk-price">$39.99 → $49.99</b>The 40oz FreeSip lists at $39.99; $10 more covers city art and engraving.</p><p class="mk-why-p">Signals exclusivity, keeps the .99 feel of a deal</p></div>
                             <div><h5>Place</h5><p>Pre-order on the marathon sign-up site, then pick up at a finish-line pop-up.</p><p class="mk-why-p">Pre-orders size demand; the finish line is peak emotion</p></div>
                             <div><h5>Promotion</h5><p>Paid social and local running micro-influencers before each race, then shared finish-line photos.</p><p class="mk-why-p">Collectors sharing cities turn paid reach into earned buzz</p></div>
                         </div>

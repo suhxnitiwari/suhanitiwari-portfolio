@@ -603,6 +603,8 @@
                     e.preventDefault();
                     dropdown.classList.remove('expanded');
                     history.replaceState(null, '', link.pathname);
+                    // let the page reset to its defaults (Coursework goes back to MIS Major)
+                    window.dispatchEvent(new Event('nav:top'));
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });

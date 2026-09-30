@@ -1,11 +1,7 @@
 @* Projects section on Pursue (rendered from Pursue.cshtml, right after Experience).
    One slide per project; ‹ › and the project names switch between them. *@
                 <!-- 4. proof: my projects, one slide each -->
-                <div class="mp-section mp-projects" id="project-list" role="region" aria-roledescription="carousel" aria-labelledby="mp-proof-title">
-                    <div class="mp-head">
-                        <p class="mp-eyebrow">Proof, not promises</p>
-                        <h3 class="mp-h2" id="mp-proof-title">Built: Suhani-Coded™</h3>
-                    </div>
+                <div class="mp-section mp-projects" id="project-list" role="region" aria-roledescription="carousel" aria-label="Projects">
                     <div class="mp-proj-nav">
                         <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
                         <div class="mp-proj-tabs" role="tablist" aria-label="Choose a project">
@@ -13,6 +9,7 @@
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-1" data-i="1" tabindex="-1">Object-Oriented Programming</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-2" data-i="2" tabindex="-1">Database Design</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-3" data-i="3" tabindex="-1">Algorithms in Python</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-4" data-i="4" tabindex="-1">Web Development</button>
                         </div>
                         <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
                     </div>
@@ -233,6 +230,40 @@
                             <div class="mp-links">
                                 <a class="mp-link solid" href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Open the live app ↗</a>
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/saturday-in-austin" target="_blank" rel="noopener">View the code ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- This website: the portfolio itself -->
+                    <div class="mp-proj" id="mp-proj-4" role="tabpanel" aria-labelledby="mp-portfolio" hidden>
+                    <div class="mp-proof">
+                        <div>
+                            <div class="mp-browser">
+                                <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <div class="mp-browser-view mp-browser-shot">
+                                    <img src="/images/hero-suhani.jpg" alt="The Hello page of suhanitiwari.com" loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="mp-coded">Suhani Coded™</span>
+                            <h3 id="mp-portfolio">This Website</h3>
+                            <p class="mp-proof-sub">The site you’re on. A full-stack ASP.NET Core MVC app that pulls my live Spotify listening, looks up every artist, and comes with its own AI guide, Sitara.</p>
+                            <ul class="mp-facts">
+                                <li><b>3</b><span>LIVE APIS</span></li>
+                                <li><b>12h</b><span>API CACHE</span></li>
+                                <li><b>1</b><span>AI GUIDE</span></li>
+                            </ul>
+                            <ul class="mp-proof-list">
+                                <li>Spotify Web API with an OAuth 2.0 login, plus MusicBrainz and Wikipedia for each artist’s genres, hometown and bio</li>
+                                <li>Server-side caching (12 hours for top charts, 30 seconds for what’s playing now) so the page stays fast and inside API limits</li>
+                                <li>Sitara, an AI chatbot on a Cloudflare Worker, answers questions about me from a knowledge base I wrote, with privacy rules built in</li>
+                                <li>Secrets kept out of the code, and every push to GitHub deploys a Docker container on Render</li>
+                                <li>A Python trip planner running right in the browser, a pan-and-zoom music universe, and a design system with one set of card and heading rules</li>
+                            </ul>
+                            <div class="mp-links">
+                                <a class="mp-link solid" href="/" target="_blank" rel="noopener">Open the site ↗</a>
                             </div>
                         </div>
                     </div>

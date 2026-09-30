@@ -95,13 +95,15 @@
 .mp-browser-stack .mp-browser-view { aspect-ratio: 2 / 1; }
 .mp-browser-view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #fff; }
 .mp-browser-view iframe { position: absolute; top: 0; left: 0; width: 250%; height: 250%; border: 0; transform: scale(0.4); transform-origin: 0 0; }
+.mp-browser-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
 /* projects: ‹ project names › above one slide at a time */
-.mp-proj-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 0 0 40px; }
-.mp-proj-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.mp-proj-tabs button { font: inherit; font-size: 14px; font-weight: 600; padding: 9px 20px; border-radius: var(--r-pill); border: 1.5px solid #D9B8B3; background: #FFF8F6; color: var(--mul); cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.mp-proj-nav { display: flex; align-items: center; justify-content: flex-start; gap: 12px; margin: 0 0 40px; }
+.mp-proj-tabs { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 12px; }
+/* the same pills as the Coursework tabs: uppercase, spaced out, left-aligned */
+.mp-proj-tabs button { font: inherit; font-size: 0.85em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 11px 26px; border-radius: var(--r-pill); border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #2A1810; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
 .mp-proj-tabs button:hover { border-color: var(--mul); }
-.mp-proj-tabs button[aria-selected="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; }
-.mp-proj-arrow { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(143, 70, 97, 0.35); background: var(--ivory); color: var(--mul); font-size: 22px; line-height: 1; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, color 0.2s ease; }
+.mp-proj-tabs button[aria-selected="true"] { background: #8F4661; border-color: #8F4661; color: #FFF8F6; }
+.mp-proj-arrow { display: none; }
 .mp-proj-arrow:hover { background: var(--mul); color: #FFF8F6; }
 .mp-proj-tabs button:focus-visible, .mp-proj-arrow:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
 .mp-proj.entering { animation: mp-proj-in 0.35s ease; }
