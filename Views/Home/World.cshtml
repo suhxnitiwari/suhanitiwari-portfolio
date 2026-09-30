@@ -114,13 +114,14 @@
         align-items: stretch;
     }
 
+    /* the five principles as a ruled list (lines, not boxes), stretched to the card's height */
     .build-list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
         margin: 0;
         padding: 0;
         list-style: none;
+        border-top: 2px solid #2A1810;
     }
 
     .build-list li {
@@ -133,31 +134,32 @@
         align-items: center;
         gap: 16px;
         width: 100%;
-        padding: 16px 20px;
-        border-radius: var(--r-card);
-        border: var(--card-border);
-        background: #FFF8F6;
+        padding: 12px 14px 12px 12px;
+        border: none;
+        border-bottom: 1px solid #E2C6C0;
+        border-left: 4px solid transparent;
+        background: none;
         font-family: Georgia, serif;
         font-size: 1.15em;
         text-align: left;
         color: #2A1810;
         cursor: var(--cursor-hot, pointer);
-        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .build-pick:hover {
-        transform: translateX(4px);
+        background: rgba(255, 248, 246, 0.7);
     }
 
     .build-pick[aria-pressed="true"] {
-        background: #8A4D57;
-        border-color: #8A4D57;
-        color: #FFF8F6;
+        border-left-color: #8A4D57;
+        background: #FFF8F6;
+        color: #8A4D57;
     }
 
     .build-pick:focus-visible {
         outline: 2px solid #8A4D57;
-        outline-offset: 3px;
+        outline-offset: -2px;
     }
 
     .build-n {
@@ -166,10 +168,6 @@
         font-weight: 700;
         letter-spacing: 2px;
         color: #9E5A63;
-    }
-
-    .build-pick[aria-pressed="true"] .build-n {
-        color: #F5E0DB;
     }
 
     .build-cards {
