@@ -855,7 +855,7 @@ document.querySelectorAll('.mp-projects').forEach(root => {
             s.hidden = n !== current;
             s.classList.toggle('entering', n === current && !reduce);
         });
-        // the This Website windows are the site itself, so they only load once that slide is opened
+        // live previews marked data-live (Saturday in Austin, Personality Site) only load once their slide is opened
         slides[current].querySelectorAll('iframe[data-live]').forEach(f => { f.src = f.dataset.live; f.removeAttribute('data-live'); });
         if (focus) tabs[current].focus();
         // keep the chosen tab in view when the row scrolls
