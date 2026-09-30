@@ -223,7 +223,10 @@
     }
     .z-world .postcard figcaption { font-size: 1rem; text-align: center; }
 
-    .zine-credits { margin-top: 18px; font-size: 0.72rem; line-height: 1.5; color: #8C7A72; }
+    .zine-credits { margin-top: 14px; font-size: 0.72rem; line-height: 1.5; color: #8C7A72; }
+    .zine-credits summary { display: inline; list-style: none; cursor: pointer; opacity: 0.75; }
+    .zine-credits summary::-webkit-details-marker { display: none; }
+    .zine-credits p { margin: 6px 0 0; color: inherit; line-height: 1.5; }
     .zine-credits a, .zine-credits a:visited { color: inherit; }
 
     @@media (max-width: 800px) {
@@ -1772,12 +1775,10 @@
                 </div>
             </div>
         </div>
-        <p class="zine-credits">
-            Photos via Wikimedia Commons, cropped and warmed: books by <a href="https://commons.wikimedia.org/wiki/File:A_pile_of_books_(29767858348).jpg" target="_blank" rel="noopener">freestocks.org</a> (CC0);
+        <details class="zine-credits"><summary>Photo credits</summary><p>books by <a href="https://commons.wikimedia.org/wiki/File:A_pile_of_books_(29767858348).jpg" target="_blank" rel="noopener">freestocks.org</a> (CC0);
             museum by <a href="https://commons.wikimedia.org/wiki/File:Admiration_en_group(i)e.jpg" target="_blank" rel="noopener">Nben54</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>);
             Barog station by <a href="https://commons.wikimedia.org/wiki/File:BarogRailwayStation_Barog_HP_PICT0342.jpg" target="_blank" rel="noopener">RajakumarDhaamodharan</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>);
-            Alhambra watercolor by <a href="https://commons.wikimedia.org/wiki/File:Courtyard_of_Lions,_Alhambra,_Spain,_watercolor_by_Sally_Wickham_Mollomo.jpg" target="_blank" rel="noopener">Sally Wickham Mollomo</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>).
-        </p>
+            Alhambra watercolor by <a href="https://commons.wikimedia.org/wiki/File:Courtyard_of_Lions,_Alhambra,_Spain,_watercolor_by_Sally_Wickham_Mollomo.jpg" target="_blank" rel="noopener">Sally Wickham Mollomo</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>). Via Wikimedia Commons, cropped and warmed.</p></details>
         </div>
     </div>
 </div>
