@@ -441,7 +441,7 @@
     .about-story {
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
-        align-items: start;
+        align-items: stretch;   /* the photo is cropped to exactly the height of the text beside it */
         gap: 64px;
     }
 
@@ -537,8 +537,7 @@
 
     .about-story-photo {
         margin: 0;
-        aspect-ratio: 4 / 5;
-        max-height: 520px;
+        height: 100%;
         border-radius: var(--r-card);
         overflow: hidden;
         background: #F6E4E1;
@@ -549,7 +548,7 @@
     /* photos sit on the outer edge of their row (right, or left on flipped rows), never floating inside it */
     .about-story-photo {
         width: 100%;
-        max-width: 416px;   /* 520px tall at 4:5 */
+        max-width: 416px;
     }
 
     .about-story:not(.flip) .about-story-photo {
@@ -560,11 +559,19 @@
         justify-self: start;
     }
 
+    /* the photo never sets the row's height: it fills whatever the text beside it needs */
+    .about-story-photo {
+        position: relative;
+    }
+
     .about-story-photo img {
+        position: absolute;
+        inset: 0;
         display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center 30%;
     }
 
     .about-photo-soon {
@@ -616,9 +623,12 @@
             font-size: 1.02em;
         }
 
+        /* stacked on phones, so the photo keeps its own shape */
         .about-story-photo {
             max-width: 380px;
             width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 5;
             margin: 0 auto;
         }
     }
@@ -1272,9 +1282,28 @@
         transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .quiz-emoji {
-        font-size: 2.4em;
-        line-height: 1;
+    /* the drawings: thin mulberry lines, white on the picked tile */
+    .quiz-icon {
+        width: 58px;
+        height: 58px;
+        fill: none;
+        stroke: #8A4D57;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .quiz-icon .fill {
+        fill: #8A4D57;
+        stroke: none;
+    }
+
+    .quiz-option.picked .quiz-icon {
+        stroke: #FFF8F6;
+    }
+
+    .quiz-option.picked .quiz-icon .fill {
+        fill: #FFF8F6;
     }
 
     .quiz-option:hover:not(:disabled) {
@@ -1393,6 +1422,12 @@
 
     .quiz-reveal strong {
         color: #8A4D57;
+    }
+
+    /* Next sits on the right, where the eye goes after reading */
+    .quiz-next {
+        display: block;
+        margin-left: auto;
     }
 
     .quiz-btn {
@@ -3186,12 +3221,33 @@
         const $ = sel => quiz.querySelector(sel);
         const options = $('.quiz-options'), line = $('.quiz-line'), reveal = $('.quiz-reveal'), next = $('.quiz-next');
         const play = $('.quiz-play'), result = $('.quiz-result'), chip = $('.quiz-result-chip');
-        // a picture for every option, so each question reads like a real this-or-that
-        const EMOJI = { 'Coffee': '☕', 'Tea': '🍵', 'Sunrise': '🌅', 'Sunset': '🌇', 'Beach': '🏖️', 'Mountains': '🏔️',
-            'Sweet': '🍰', 'Savory': '🧀', 'Morning': '☀️', 'Night': '🌙', 'Books': '📚', 'Movies': '🎬', 'Rom-Com': '💕',
-            'Horror': '👻', 'City': '🏙️', 'Country': '🌾', 'Dogs': '🐶', 'Cats': '🐱', 'Road Trip': '🚗', 'Flight': '✈️',
-            'Neither?': '🤔', 'Lake house': '🏡' };
-        const tile = c => `<span class="quiz-emoji" aria-hidden="true">${EMOJI[c] || '✦'}</span><span class="quiz-label">${c}</span>`;
+        // a small line drawing for every option, drawn in the page's mulberry (no emoji)
+        const dot = (x, y, r = 1.6) => `<circle cx="${x}" cy="${y}" r="${r}" class="fill"/>`;
+        const ICONS = {
+            'Coffee': '<circle cx="22" cy="30" r="12"/><circle cx="22" cy="30" r="9"/><path d="M34 26h3a4 4 0 0 1 0 8h-3"/><path d="M22 35s-5-3-5-6a2.5 2.5 0 0 1 5-1 2.5 2.5 0 0 1 5 1c0 3-5 6-5 6z"/><path d="M17 6c-2 2 2 4 0 7M23 4c-2 2 2 4 0 7M29 6c-2 2 2 4 0 7"/>',
+            'Tea': '<path d="M14 18h20l-3.5 24h-13z"/><path d="M14.6 23h18.8"/><path d="M20 27l.8 11M24 27v11M28 27l-.8 11"/><path d="M20 5c-2 2 2 4 0 7M27 4c-2 2 2 4 0 7"/>',
+            'Sunrise': '<path d="M4 32h40"/><path d="M14.5 32a9.5 9.5 0 0 1 19 0"/><path d="M24 11v6M12.5 16.5l4 4M35.5 16.5l-4 4M7 24.5h5M36 24.5h5"/><path d="M11 37h26M16 42h16"/><path d="M33 9q2-2 4 0q2-2 4 0"/>',
+            'Sunset': '<path d="M4 30h40"/><path d="M16.5 30a7.5 7.5 0 0 1 15 0"/><path d="M7 19h15M27 15.5h13M11 23.5h8"/><path d="M17 35h14M20 39h8M22.5 43h3"/>',
+            'Beach': '<path d="M8 20a16 12 0 0 1 32 0q-4-3-8 0q-4-3-8 0q-4-3-8 0q-4-3-8 0z"/><path d="M24 20v18"/><path d="M4 41q4-3 8 0t8 0t8 0t8 0t8 0"/>',
+            'Mountains': '<path d="M4 40L18 14l9 14 5-8 12 20z"/><path d="M13.2 22.5l2.3 2 2.5-2.5 2.5 2.5 2.1-1.8"/>',
+            'Sweet': '<path d="M13 26h22l-3 14H16z"/><path d="M20 26l1 14M28 26l-1 14"/><path d="M12 26c-2-6 4-9 7-8 1-5 9-5 10 0 3-1 9 2 7 8z"/>' + dot(24, 11, 2),
+            'Savory': '<path d="M24 43L8 13q16-8 32 0z"/><path d="M9.8 16.4q14.2-6.6 28.4 0"/><circle cx="19.5" cy="21" r="2.8"/><circle cx="29" cy="22.5" r="2.5"/><circle cx="24" cy="31" r="2.3"/>',
+            'Morning': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 35v5M8 24h5M35 24h5M13 13l3 3M32 32l3 3M35 13l-3 3M16 32l-3 3"/>',
+            'Night': '<path d="M29 8a15 15 0 1 0 11 25A12 12 0 0 1 29 8z"/><path d="M38 9l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>',
+            'Books': '<path d="M24 14v27"/><path d="M24 14c-5-3-12-4-18-3v27c6-1 13 0 18 3"/><path d="M24 14c5-3 12-4 18-3v27c-6-1-13 0-18 3"/><path d="M10 18.5h9M10 23.5h9M10 28.5h6M29 18.5h9M29 23.5h9M29 28.5h6"/><path d="M34 10.5v9l2-2 2 2v-9.5"/>',
+            'Movies': '<path d="M8 20h32v20H8z"/><path d="M8 13h32v7H8z"/><path d="M15 13l-3 7M23 13l-3 7M31 13l-3 7M39 13l-3 7"/>',
+            'Rom-Com': '<path d="M22 40s-14-8-14-17a7 7 0 0 1 14-3 7 7 0 0 1 14 3c0 9-14 17-14 17z"/><path d="M38 8c-1.5 0-3 1.2-3 3 0 3 5 5 5 5s5-2 5-5c0-1.8-1.5-3-3-3-1 0-1.6.6-2 1.2-.4-.6-1-1.2-2-1.2z"/>',
+            'Horror': '<path d="M12 42V22a12 12 0 0 1 24 0v20l-4-3-4 3-4-3-4 3-4-3z"/>' + dot(20, 22) + dot(28, 22),
+            'City': '<path d="M4 42h40"/><path d="M8 42V24h8v18M16 42V12h10v30M26 42V18h8v24M34 42V28h8v14"/><path d="M20 18h2M20 24h2M20 30h2M30 24h1M30 30h1"/>',
+            'Country': '<path d="M4 42h40"/><path d="M8 42V25l10-8 10 8v17"/><path d="M14 42v-9h8v9M14 33l8 9M22 33l-8 9"/><path d="M16 25h4v3.5h-4z"/><path d="M31 42V22a4.5 4.5 0 0 1 9 0v20"/><path d="M31 28.5h9M31 35h9"/>',
+            'Dogs': '<path d="M15 20a9 9 0 0 1 18 0v9a9 9 0 0 1-18 0z"/><path d="M15 18c-4 0-6 6-4 12 2-1 4-4 4-8M33 18c4 0 6 6 4 12-2-1-4-4-4-8"/><path d="M22 31h4l-2 2z"/>' + dot(20, 25) + dot(28, 25),
+            'Cats': '<path d="M12 18l6 5h12l6-5v16a12 9 0 0 1-24 0z"/><path d="M22 31h4l-2 2z"/><path d="M6 30h7M6 34h7M35 30h7M35 34h7"/>' + dot(19, 27) + dot(29, 27),
+            'Road Trip': '<path d="M5 33v-6l5-8h21l7 8h5v6z"/><path d="M13 19v8M22 19v8"/><circle cx="14" cy="34" r="4"/><circle cx="35" cy="34" r="4"/>',
+            'Flight': '<path d="M6 27l30-6c4-.8 7 1 7 3s-3 3.8-7 3z"/><path d="M19 25l7-12h4l-3 10M20 29l5 11h4l-3-12M9 26l-3-6h3l5 5"/>',
+            'Neither?': '<circle cx="24" cy="24" r="17"/><path d="M19 19a5 5 0 1 1 7 4.5c-1.5.7-2 2-2 3.5v1"/>' + dot(24, 33, 1.8),
+            'Lake house': '<path d="M14 28V19l10-8 10 8v9z"/><path d="M22 28v-5h4v5"/><path d="M6 34q4-3 8 0t8 0t8 0t8 0t8 0M10 41q4-3 8 0t8 0t8 0t8 0"/>'
+        };
+        const tile = c => `<svg class="quiz-icon" viewBox="0 0 48 48" aria-hidden="true">${ICONS[c] || ICONS['Neither?']}</svg><span class="quiz-label">${c}</span>`;
         const steps = $('.quiz-steps');
         steps.innerHTML = questions.map(() => '<li></li>').join('');
         const step = i => steps.children[i];
