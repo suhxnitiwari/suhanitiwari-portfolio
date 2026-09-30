@@ -9,7 +9,7 @@
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-1" data-i="1" tabindex="-1">Checkout System</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-2" data-i="2" tabindex="-1">Data &amp; Databases</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-3" data-i="3" tabindex="-1">Python Planner</button>
-                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-4" data-i="4" tabindex="-1">This Website</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-4" data-i="4" tabindex="-1">Portfolio</button>
                         </div>
                         <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
                     </div>
@@ -43,27 +43,14 @@
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/ridemanagement" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
                         </div>
-                        <div class="mp-erd mp-erd-mini mp-erd-row">
-                                <div>
-                                    <p class="mp-eyebrow">Before the interface came the system</p>
-                                    <h4>Business rules had to become relationships.</h4>
-                                    <p>A rider can take many rides. A driver completes many rides, but a ride has no driver until someone accepts it. A payment is created only when a ride is completed, or as a small fee if a rider cancels after a driver accepts. Those rules had to become tables, keys and constraints before they could become screens.</p>
-                                </div>
-                                <svg viewBox="0 0 560 210" role="img" aria-label="Data model: riders and drivers each have many rides; each ride has at most one payment">
-                                    <g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle">
-                                        <rect x="10" y="20" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="75" y="54">Rider</text>
-                                        <rect x="10" y="134" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="75" y="168">Driver</text>
-                                        <rect x="215" y="77" width="130" height="56" rx="12" fill="#8F4661" /><text x="280" y="111" fill="#fff">Ride</text>
-                                        <rect x="420" y="77" width="130" height="56" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="485" y="111">Payment</text>
-                                    </g>
-                                    <g stroke="#A9788A" stroke-width="1.8" fill="none">
-                                        <path d="M140,48 C180,48 180,95 215,95" /><path d="M140,162 C180,162 180,115 215,115" /><path d="M345,105 L420,105" />
-                                    </g>
-                                    <g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">
-                                        <text x="178" y="60">1 : MANY</text><text x="178" y="160">1 : MANY</text><text x="382" y="96">1 : 0..1</text>
-                                    </g>
-                                </svg>
+                        <div class="mp-method one">
+                            <div class="mp-method-cell">
+                                <svg viewBox="0 0 300 150" role="img" aria-label="Rider and Driver each have many Rides; each Ride has at most one Payment"><rect x="8" y="18" width="80" height="32" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="48.0" y="38.5" font-family="Georgia,serif" font-size="13" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">Rider</text><rect x="8" y="100" width="80" height="32" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="48.0" y="120.5" font-family="Georgia,serif" font-size="13" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">Driver</text><rect x="112" y="59" width="76" height="32" rx="8" fill="#8F4661" stroke="#8F4661" stroke-width="1.4"/><text x="150.0" y="79.5" font-family="Georgia,serif" font-size="13" font-weight="400" fill="#fff" text-anchor="middle" letter-spacing="0">Ride</text><rect x="212" y="59" width="80" height="32" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="252.0" y="79.5" font-family="Georgia,serif" font-size="13" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">Payment</text><path d="M88,34 C100,34 100,70 112,70" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M88,116 C100,116 100,80 112,80" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M188,75 L212,75" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><text x="100" y="52" font-family="system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">1 : MANY</text><text x="100" y="108" font-family="system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">1 : MANY</text><text x="200" y="68" font-family="system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">0..1</text></svg>
+                                <h4>Rules become relationships</h4>
+                                <p>A rider takes many rides, a ride gets at most one driver, and a payment only exists once the ride is done. The rules became tables and keys first.</p>
+                                <p class="mp-tech">Entity-relationship modeling</p>
                             </div>
+                        </div>
                     </div>
                     </div>
 
@@ -104,13 +91,13 @@
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/Bevo_Taco-Checkout" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
                         </div>
-                        <div class="mp-erd mp-erd-mini mp-erd-row">
-                            <div>
-                                <p class="mp-eyebrow">One idea, written once</p>
-                                <h4>Two kinds of customers, one Order class.</h4>
-                                <p>Every order is priced the same way: add up the items, then add the extras. The base Order class does that once. A walk-up order only adds its sales tax; a catering order only adds its delivery fee, free over $1,000. Change the pricing in one place and both follow.</p>
+                        <div class="mp-method one">
+                            <div class="mp-method-cell">
+                                <svg viewBox="0 0 300 150" role="img" aria-label="The total formula is fixed; each order type fills in its own extras"><rect x="40" y="12" width="220" height="34" rx="8" fill="#8F4661" stroke="#8F4661" stroke-width="1.4"/><text x="150.0" y="33.5" font-family="Georgia,serif" font-size="12.5" font-weight="400" fill="#fff" text-anchor="middle" letter-spacing="0">total = items + extras()</text><rect x="8" y="100" width="130" height="34" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="73.0" y="121.5" font-family="Georgia,serif" font-size="12" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">extras = tax</text><rect x="162" y="100" width="130" height="34" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="227.0" y="121.5" font-family="Georgia,serif" font-size="12" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">extras = delivery</text><path d="M110,46 L73,100" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M190,46 L227,100" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><text x="227" y="148" font-family="system-ui,sans-serif" font-size="10" font-weight="400" fill="#8F4661" text-anchor="middle" letter-spacing="0">free over $1,000</text></svg>
+                                <h4>Same recipe, different extras</h4>
+                                <p>The total is always items plus extras. Walk-up fills in sales tax; catering fills in a delivery fee that’s free over $1,000.</p>
+                                <p class="mp-tech">Template method pattern</p>
                             </div>
-                            <svg viewBox="0 0 560 210" role="img" aria-label="Inheritance: an Order class with two subclasses, Walk-up order adding sales tax and Catering order adding a delivery fee"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="200" y="14" width="160" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="280.0" y="45" fill="#fff">Order</text><rect x="40" y="146" width="200" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="140.0" y="177">Walk-up order</text><rect x="320" y="146" width="200" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="420.0" y="177">Catering order</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M280,64 L280,100 L140,100 L140,146" /><path d="M280,100 L420,100 L420,146" /></g><g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2"><text x="140" y="130">+ SALES TAX</text><text x="420" y="130">+ DELIVERY FEE</text><text x="280" y="92">ITEMS + EXTRAS</text></g></svg>
                         </div>
                     </div>
                     </div>
@@ -207,13 +194,13 @@
                                 <li>Snowflake procedures that commit or roll back safely</li>
                             </ul>
                         </div>
-                        <div class="mp-erd mp-erd-mini mp-erd-row">
-                            <div>
-                                <p class="mp-eyebrow">Rules that can’t be broken</p>
-                                <h4>The database refuses bad data before the app ever sees it.</h4>
-                                <p>Instead of trusting every screen to check the math, the table itself does: a fare has to equal the price minus the discount, and a trip has to end after it starts. Anything that breaks a rule never gets saved.</p>
+                        <div class="mp-method one">
+                            <div class="mp-method-cell">
+                                <svg viewBox="0 0 300 150" role="img" aria-label="Ranks 1, 2, 2, 3 for scores 98, 95, 95, 90"><text x="40" y="24" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#8F4661" text-anchor="middle" letter-spacing="0">1</text><rect x="64" y="12" width="170" height="16" rx="3" fill="#8F4661"/><text x="260" y="25" font-family="system-ui,sans-serif" font-size="11" font-weight="400" fill="#2A1810" text-anchor="start" letter-spacing="0">98</text><text x="40" y="54" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#8F4661" text-anchor="middle" letter-spacing="0">2</text><rect x="64" y="42" width="150" height="16" rx="3" fill="#D9B8B3"/><text x="240" y="55" font-family="system-ui,sans-serif" font-size="11" font-weight="400" fill="#2A1810" text-anchor="start" letter-spacing="0">95</text><text x="40" y="84" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#8F4661" text-anchor="middle" letter-spacing="0">2</text><rect x="64" y="72" width="150" height="16" rx="3" fill="#D9B8B3"/><text x="240" y="85" font-family="system-ui,sans-serif" font-size="11" font-weight="400" fill="#2A1810" text-anchor="start" letter-spacing="0">95</text><text x="40" y="114" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#8F4661" text-anchor="middle" letter-spacing="0">3</text><rect x="64" y="102" width="120" height="16" rx="3" fill="#D9B8B3"/><text x="210" y="115" font-family="system-ui,sans-serif" font-size="11" font-weight="400" fill="#2A1810" text-anchor="start" letter-spacing="0">90</text><text x="240" y="146" font-family="system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#7A665F" text-anchor="middle" letter-spacing="0">DENSE_RANK</text></svg>
+                                <h4>Ranking without losing ties</h4>
+                                <p>To rank drivers by rides, two with the same count share a place, and the next one is still third, not fourth.</p>
+                                <p class="mp-tech">Window functions</p>
                             </div>
-                            <svg viewBox="0 0 560 210" role="img" aria-label="A check rule: a fare of 20 minus 5 equals 15 is saved, a fare of 20 minus 5 equals 18 is rejected"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="20" y="30" width="230" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="135.0" y="61">$20 − $5 = $15</text><rect x="20" y="130" width="230" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="135.0" y="161">$20 − $5 = $18</text><rect x="330" y="80" width="210" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="435.0" y="111" fill="#fff">fare = price − discount</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M250,55 C290,55 290,105 330,105" /><path d="M250,155 C290,155 290,105 330,105" /></g><g font-family="system-ui,sans-serif" font-size="13" font-weight="700" letter-spacing="1.2" text-anchor="start"><text x="30" y="98" fill="#56634A">SAVED ✓</text><text x="30" y="198" fill="#9E5A63">REJECTED ✗</text></g></svg>
                         </div>
                     </div>
                     </div>
@@ -260,13 +247,13 @@
                                 <a class="mp-link" href="https://github.com/suhxnitiwari/saturday-in-austin" target="_blank" rel="noopener">View the code ↗</a>
                             </div>
                         </div>
-                        <div class="mp-erd mp-erd-mini mp-erd-row">
-                            <div>
-                                <p class="mp-eyebrow">Austin is dots and lines</p>
-                                <h4>The fastest way through town is a maze with minutes on it.</h4>
-                                <p>Every neighborhood is a dot, and every road between them is a line with its drive time. To get from West Campus to South Congress, the planner adds up the minutes on each path and takes the smallest. That’s Dijkstra’s shortest-path algorithm.</p>
+                        <div class="mp-method one">
+                            <div class="mp-method-cell">
+                                <svg viewBox="0 0 300 150" role="img" aria-label="Paths branch from home; a worse path to the same place is dropped"><circle cx="30" cy="76" r="8" fill="#2A1810" stroke="#2A1810" stroke-width="1.8"/><path d="M38,76 L110,30" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M38,76 L110,76" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M38,76 L110,122" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><circle cx="110" cy="30" r="6" fill="#fff" stroke="#2A1810" stroke-width="1.8"/><circle cx="110" cy="76" r="6" fill="#fff" stroke="#2A1810" stroke-width="1.8"/><circle cx="110" cy="122" r="6" fill="#fff" stroke="#2A1810" stroke-width="1.8"/><path d="M116,30 L190,20" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M116,30 L190,60" fill="none" stroke="#8F4661" stroke-width="3" stroke-linecap="round"/><path d="M116,122 L190,112" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M116,122 L190,140" fill="none" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><path d="M116,76 L190,60" fill="none" stroke="#C9A9A4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/><circle cx="190" cy="60" r="7" fill="#8F4661" stroke="#8F4661" stroke-width="1.8"/><path d="M197,60 L262,60" fill="none" stroke="#8F4661" stroke-width="3" stroke-linecap="round"/><circle cx="262" cy="60" r="6" fill="#fff" stroke="#2A1810" stroke-width="1.8"/><text x="150" y="82" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#8F4661" text-anchor="middle" letter-spacing="0">✗</text><text x="30" y="100" font-family="system-ui,sans-serif" font-size="9.5" font-weight="700" fill="#7A665F" text-anchor="middle" letter-spacing="1.2">HOME</text></svg>
+                                <h4>Building the day, one stop at a time</h4>
+                                <p>It grows every possible day one stop at a time, and when two days end up in the same place having done the same things, it keeps only the better one.</p>
+                                <p class="mp-tech">Bitmask dynamic programming</p>
                             </div>
-                            <svg viewBox="0 0 560 210" role="img" aria-label="A graph: West Campus to Downtown is 8 minutes, Downtown to South Congress is 7, so the fastest route is 15 minutes; the direct road is 18"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="20" y="20" width="160" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="100.0" y="51">West Campus</text><rect x="200" y="120" width="160" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="280.0" y="151" fill="#fff">Downtown</text><rect x="380" y="20" width="160" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="460.0" y="51">South Congress</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M180,45 L380,45" stroke-dasharray="5 5" /></g><g stroke="#8F4661" stroke-width="3" fill="none"><path d="M100,70 L230,120" /><path d="M330,120 L460,70" /></g><g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2"><text x="150" y="112">8 MIN</text><text x="410" y="112">7 MIN</text><text x="280" y="36">18 MIN DIRECT</text><text x="280" y="200">8 + 7 = 15, THE FASTEST</text></g></svg>
                         </div>
                     </div>
                     </div>
@@ -300,7 +287,7 @@
                             </div>
                         </div>
                         <div>
-                            <h3 id="mp-portfolio">This Website</h3>
+                            <h3 id="mp-portfolio">Portfolio</h3>
                             <p class="mp-proof-sub">The site you’re on: live Spotify data, an interactive map of my life, and Sitara, my AI guide.</p>
                             <ul class="mp-facts">
                                 <li><b>3</b><span>LIVE APIS</span></li>
@@ -313,19 +300,40 @@
                                 <li>Every push to GitHub deploys the site automatically</li>
                             </ul>
                         </div>
-                        <div class="mp-erd mp-erd-mini mp-erd-row">
-                            <div>
-                                <p class="mp-eyebrow">Why the page stays fast</p>
-                                <h4>Ask once, remember the answer.</h4>
-                                <p>Spotify only lets a site ask so many times. So the first visit asks, and the server remembers the answer: for 12 hours for my top charts, and 30 seconds for what I’m playing now. Everyone after that gets it instantly.</p>
+                        <div class="mp-method one">
+                            <div class="mp-method-cell">
+                                <svg viewBox="0 0 300 150" role="img" aria-label="You log in with Spotify, which gives the site a limited key, never your password"><rect x="6" y="58" width="70" height="34" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="41.0" y="79.5" font-family="Georgia,serif" font-size="12" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">Me</text><path d="M76,75 L112,75" fill="none" stroke="#8F4661" stroke-width="2" stroke-linecap="round"/><rect x="112" y="58" width="78" height="34" rx="8" fill="#8F4661" stroke="#8F4661" stroke-width="1.4"/><text x="151.0" y="79.5" font-family="Georgia,serif" font-size="12" font-weight="400" fill="#fff" text-anchor="middle" letter-spacing="0">Spotify</text><path d="M190,75 L226,75" fill="none" stroke="#8F4661" stroke-width="2" stroke-linecap="round"/><rect x="226" y="58" width="68" height="34" rx="8" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="260.0" y="79.5" font-family="Georgia,serif" font-size="12" font-weight="400" fill="#2A1810" text-anchor="middle" letter-spacing="0">Site</text><text x="208" y="48" font-family="system-ui,sans-serif" font-size="11" font-weight="700" fill="#8F4661" text-anchor="middle" letter-spacing="1.2">A KEY</text><text x="150" y="120" font-family="system-ui,sans-serif" font-size="10.5" font-weight="700" fill="#56634A" text-anchor="middle" letter-spacing="0">no password shared</text></svg>
+                                <h4>Log in without sharing a password</h4>
+                                <p>Spotify hands my site a limited key instead of my password, and the key only opens what the site needs: what I’m listening to.</p>
+                                <p class="mp-tech">OAuth 2.0</p>
                             </div>
-                            <svg viewBox="0 0 560 210" role="img" aria-label="Caching: a visitor asks the site; the first time the site asks Spotify and saves the answer, after that the saved answer comes back instantly"><g font-family="Georgia,serif" font-size="17" fill="#2A1810" text-anchor="middle"><rect x="20" y="80" width="130" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="85.0" y="111">Visitor</text><rect x="215" y="80" width="130" height="50" rx="12" fill="#8F4661" stroke="#8F4661" /><text x="280.0" y="111" fill="#fff">My site</text><rect x="410" y="80" width="130" height="50" rx="12" fill="#FFFBF9" stroke="#8F4661" /><text x="475.0" y="111">Spotify</text></g><g stroke="#A9788A" stroke-width="1.8" fill="none"><path d="M150,105 L215,105" /><path d="M345,97 L410,97" stroke-dasharray="5 5" /><path d="M280,80 C280,30 330,30 330,60" /></g><g font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle" letter-spacing="1.2"><text x="378" y="88">FIRST TIME</text><text x="310" y="24">SAVED 12 HOURS</text><text x="182" y="150">EVERY VISIT</text><text x="280" y="200">SECOND VISIT: INSTANT, NO SPOTIFY CALL</text></g></svg>
                         </div>
                     </div>
                     </div>
                 </div>
 
 <style>
+/* each project's method: three ideas in a row, each with a small diagram, a plain-English title, and the technical name */
+.mp-method { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid #2A1810; border-bottom: 1px solid #E2C6C0; }
+.mp-method-cell { display: flex; flex-direction: column; padding: 22px 24px 20px; border-right: 1px solid #E2C6C0; }
+.mp-method-cell:first-child { padding-left: 0; }
+.mp-method-cell:last-child { border-right: none; padding-right: 0; }
+.mp-method-cell svg { width: 100%; height: 150px; margin-bottom: 12px; }
+.mp-method-cell h4 { margin: 0 0 6px; font-family: Georgia, serif; font-size: 22px; font-weight: 400; line-height: 1.2; color: #2A1810; }
+.mp-method-cell p { margin: 0; font-size: 14.5px; line-height: 1.6; color: #3B2A24; }
+.mp-method-cell .mp-tech { margin-top: auto; padding-top: 12px; font-family: Georgia, serif; font-size: 18px; font-style: italic; color: #8F4661; }
+.mp-method.one { grid-template-columns: 1fr; }
+.mp-method.one .mp-method-cell { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: auto auto 1fr; column-gap: 48px; align-items: start; padding: 26px 0 24px; }
+.mp-method.one .mp-method-cell svg { grid-row: 1 / 4; height: 220px; margin: 0; align-self: center; }
+.mp-method.one .mp-method-cell h4 { font-size: 26px; }
+.mp-method.one .mp-method-cell .mp-tech { margin-top: 0; padding-top: 14px; font-size: 20px; }
+@@media (max-width: 800px) {
+    .mp-method { grid-template-columns: 1fr; }
+    .mp-method.one .mp-method-cell { display: flex; }
+    .mp-method.one .mp-method-cell svg { height: 180px; margin-bottom: 12px; }
+    .mp-method-cell, .mp-method-cell:first-child, .mp-method-cell:last-child { padding: 20px 0; border-right: none; border-bottom: 1px solid #E2C6C0; }
+}
+
 /* Saturday in Austin: the site's pages as a deck inside one browser window */
 .sat-deck .mp-browser-bar { display: flex; align-items: center; gap: 6px; }
 .sat-tabs { display: flex; gap: 4px; margin-left: 10px; overflow-x: auto; scrollbar-width: none; }
