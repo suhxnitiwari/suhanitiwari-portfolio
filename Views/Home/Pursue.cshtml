@@ -150,11 +150,6 @@
     }
 
     /* McCOMBS AT A GLANCE: the rankings on the left, what they mean to me on the right */
-    .career-mccombs {
-        padding: 72px 40px 0;
-        background: #FAF1EF;
-    }
-
     .mccombs-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -329,9 +324,6 @@
     }
 
     @@media (max-width: 768px) {
-        .career-mccombs {
-            padding: 48px 20px 0;
-        }
     }
 
     /* WHERE I'M HEADED: one clear card right under the facts */
@@ -512,6 +504,32 @@
         font-size: 0.85em;
         font-weight: 600;
         color: #FAF1EF;
+    }
+
+    /* THE WHY: Why MIS and Why McCombs share one section, switched by pill tabs like Coursework's */
+    .why-anchor { display: block; scroll-margin-top: 70px; }
+    .why-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 36px; }
+    .why-tab {
+        padding: 11px 26px;
+        border-radius: var(--r-pill, 999px);
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        color: #2A1810;
+        font: inherit;
+        font-size: 0.85em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .why-tab:hover { border-color: #8F4661; }
+    .why-tab[aria-selected="true"] { background: #8F4661; border-color: #8F4661; color: #FFF8F6; }
+    .why-tab:focus-visible { outline: 2px solid #8F4661; outline-offset: 3px; }
+    .why-panel[hidden] { display: none; }
+    @@media (max-width: 600px) {
+        .why-tabs { gap: 8px; }
+        .why-tab { padding: 9px 14px; font-size: 0.72em; letter-spacing: 1px; }
     }
 
     /* WHY MIS: the story on the left, one line to remember on the right */
@@ -1033,11 +1051,18 @@
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
-@* Why MIS: the question everyone asks a girl who reads, writes and paints *@
-<section class="pursue-part career-why" id="why-mis" aria-labelledby="why-mis-heading">
-    <div class="career-wrap why-wrap">
+@* WHY: two tabs sharing one spot, like Coursework. Why MIS is open first; #mccombs links open Why McCombs *@
+<section class="pursue-part career-why" id="why-mis" aria-labelledby="why-heading">
+    <span class="why-anchor" id="mccombs"></span>
+    <div class="career-wrap">
+        <h2 class="career-section-title" id="why-heading">The Why</h2>
+        <div class="why-tabs" role="tablist" aria-label="Why">
+            <button type="button" class="why-tab" role="tab" id="why-tab-mis" aria-controls="why-panel-mis" aria-selected="true">Why MIS</button>
+            <button type="button" class="why-tab" role="tab" id="why-tab-mccombs" aria-controls="why-panel-mccombs" aria-selected="false" tabindex="-1">Why McCombs</button>
+        </div>
+    </div>
+    <div class="career-wrap why-wrap why-panel" id="why-panel-mis" role="tabpanel" aria-labelledby="why-tab-mis">
         <div>
-            <h2 class="career-section-title" id="why-mis-heading">Why MIS</h2>
             <p class="why-question">So why not English, Design, Studio Art, or Music Performance?</p>
             <p>I read constantly, I write, I love playing instruments, and I’ve been making art for as long as I can remember. And no, I’m not the next Ada Lovelace.</p>
             <p>But the more I made, the more I noticed technology was already inside everything I loved: the tools I draw with, the apps that put stories in my hands, the playlist that finds a song before I know I want it. Someone had to understand people to build those things well.</p>
@@ -1071,16 +1096,7 @@
                 </div>
             </div>
     </div>
-</section>
-
-@* Education is off the page for now while I rework it. To bring it back, restore:
-<section class="pursue-part" id="education" aria-label="Education">
-    @await Html.PartialAsync("Education")
-</section>
-*@
-<section class="pursue-part career-mccombs" id="mccombs" aria-labelledby="mccombs-heading">
-    <div class="career-wrap">
-        <h2 class="career-section-title" id="mccombs-heading">McCombs at a Glance</h2>
+    <div class="career-wrap why-panel" id="why-panel-mccombs" role="tabpanel" aria-labelledby="why-tab-mccombs" hidden>
         <div class="mccombs-grid">
             <ul class="mccombs-stats" aria-label="McCombs rankings, U.S. News &amp; World Report">
                 <li>
@@ -1123,6 +1139,13 @@
         </div>
     </div>
 </section>
+
+@* Education is off the page for now while I rework it. To bring it back, restore:
+<section class="pursue-part" id="education" aria-label="Education">
+    @await Html.PartialAsync("Education")
+</section>
+*@
+
 <section class="pursue-part" id="coursework" aria-label="Coursework">
     @await Html.PartialAsync("Coursework")
 </section>
@@ -1211,5 +1234,31 @@
         // tapping outside the card (on the dimmed page) closes it; so does following its link
         pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
         pop.querySelectorAll('.role-card-link').forEach(a => a.addEventListener('click', () => pop.close()));
+    })();
+</script>
+<script>
+    // The Why: switch between Why MIS and Why McCombs (click or arrow keys); #mccombs opens Why McCombs
+    (() => {
+        const tabs = [...document.querySelectorAll('.why-tab')];
+        if (!tabs.length) return;
+        const pick = tab => {
+            tabs.forEach(t => {
+                const on = t === tab;
+                t.setAttribute('aria-selected', on);
+                t.tabIndex = on ? 0 : -1;
+                document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+            });
+        };
+        tabs.forEach((t, i) => {
+            t.addEventListener('click', () => pick(t));
+            t.addEventListener('keydown', e => {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+                const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+                pick(next); next.focus();
+            });
+        });
+        const fromHash = () => { if (location.hash === '#mccombs') pick(tabs[1]); else if (location.hash === '#why-mis') pick(tabs[0]); };
+        fromHash();
+        window.addEventListener('hashchange', fromHash);
     })();
 </script>
