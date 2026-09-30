@@ -1,6 +1,6 @@
 @* Projects section on Pursue (rendered from Pursue.cshtml, right after Experience).
    One slide per project; ‹ › and the project names switch between them. *@
-                <!-- 4. proof: my projects, one slide each -->
+                @* 4. proof: my projects, one slide each *@
                 <div class="mp-section mp-projects" id="project-list" role="region" aria-roledescription="carousel" aria-label="Projects">
                     <div class="mp-proj-nav">
                         <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
@@ -14,7 +14,7 @@
                         <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
                     </div>
 
-                    <!-- RideFlow -->
+                    @* RideFlow *@
                     <div class="mp-proj" id="mp-proj-0" role="tabpanel" aria-labelledby="mp-rideflow">
                     <div class="mp-proof mp-proof-fill">
                         <div>
@@ -52,10 +52,10 @@
                     </div>
                     </div>
 
-                    <!-- Bevo's Tacos -->
+                    @* Bevo's Tacos *@
                     <div class="mp-proj" id="mp-proj-1" role="tabpanel" aria-labelledby="mp-bevos" hidden>
                     <div class="mp-proof">
-                        <!-- two live pages, stacked: the welcome screen, then a catering order with its delivery rules -->
+                        @* two live pages, stacked: the welcome screen, then a catering order with its delivery rules *@
                         <div class="mp-browser-stack">
                             <div class="mp-browser">
                                 <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Home</em></div>
@@ -98,7 +98,7 @@
                     </div>
                     </div>
 
-                    <!-- MIS 325 ride share database: my own scripts (HW 2 schema, HW 4 ROLLUP, HW 5 Snowflake ranking, HW 6 procedure), one file per tab -->
+                    @* MIS 325 ride share database: my own scripts (HW 2 schema, HW 4 ROLLUP, HW 5 Snowflake ranking, HW 6 procedure), one file per tab *@
                     <div class="mp-proj" id="mp-proj-2" role="tabpanel" aria-labelledby="mp-rideshare-db" hidden>
                     <div class="mp-proof">
                         <div class="mp-code">
@@ -199,7 +199,7 @@
                     </div>
                     </div>
 
-                    <!-- Saturday in Austin: my Python planner, running in the visitor's browser through Pyodide -->
+                    @* Saturday in Austin: my Python planner, running in the visitor's browser through Pyodide *@
                     <div class="mp-proj" id="mp-proj-3" role="tabpanel" aria-labelledby="mp-saturday" hidden>
                     <div class="mp-proof">
                         @* the whole Saturday in Austin site as a slide deck: Plan is live and clickable, the other pages are screenshots *@
@@ -252,11 +252,11 @@
                     </div>
                     </div>
 
-                    <!-- This website: the portfolio itself -->
+                    @* This website: the portfolio itself *@
                     <div class="mp-proj" id="mp-proj-4" role="tabpanel" aria-labelledby="mp-portfolio" hidden>
                     <div class="mp-proof">
                         <div>
-                            <!-- three real pages of the site: Hello large, then Favorites and World side by side -->
+                            @* three real pages of the site: Hello large, then Favorites and World side by side *@
                             <div class="mp-site-shots">
                                 <div class="mp-browser">
                                     <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span><em>Hello</em></div>

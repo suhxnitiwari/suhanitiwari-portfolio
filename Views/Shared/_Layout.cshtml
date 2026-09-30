@@ -17,7 +17,7 @@
     <meta property="og:image:alt" content="The front page of suhanitiwari.com: Suhani Tiwari in a sunlit café, studying Management Information Systems at McCombs, UT Austin" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://suhanitiwari.com/images/social-card-5.jpg" />
-    <!-- Bootswatch "Pulse" theme (Bootstrap 5.3.3), saved locally in wwwroot/css; site.css keeps my own colors on top -->
+    @* Bootswatch "Pulse" theme (Bootstrap 5.3.3), saved locally in wwwroot/css; site.css keeps my own colors on top *@
     <link rel="stylesheet" href="~/css/bootswatch.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/sitara.css" asp-append-version="true" />
@@ -512,7 +512,7 @@
         <div class="navbar-container">
             <a href="/" class="navbar-brand">Suhani</a>
 
-            <!-- Phone menu button (Bootstrap collapse), hidden on bigger screens -->
+            @* Phone menu button (Bootstrap collapse), hidden on bigger screens *@
             <button class="navbar-toggler nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
                     aria-controls="navMenu" aria-expanded="false" aria-label="Open menu">
                 <span></span><span></span><span></span>
@@ -565,12 +565,12 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    @* Main Content *@
     <main role="main">
         @RenderBody()
     </main>
 
-    <!-- Footer on every page -->
+    @* Footer on every page *@
     <footer class="contact-footer">
         <div class="contact-container">
             <div class="contact-lead">

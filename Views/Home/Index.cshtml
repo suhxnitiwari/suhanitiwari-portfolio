@@ -2767,8 +2767,8 @@
 </style>
 <link rel="stylesheet" href="~/css/tests.css" asp-append-version="true" />
 
-<!-- HERO: my name, split around me -->
-<!-- Bodoni Moda (the font for my name) stored locally in wwwroot/fonts, Latin letters only -->
+@* HERO: my name, split around me *@
+@* Bodoni Moda (the font for my name) stored locally in wwwroot/fonts, Latin letters only *@
 <link rel="preload" href="/fonts/bodoni-moda-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
     @@font-face {
@@ -2840,7 +2840,7 @@
     })();
 </script>
 
-<!-- ABOUT: my own words -->
+@* ABOUT: my own words *@
 @{
     // My age, worked out from my birthday (March 6, 2006) so it updates on its own every year
     var birthday = new DateTime(2006, 3, 6);
@@ -2916,7 +2916,7 @@
     </div>
 </section>
 
-<!-- IF YOU KNOW ME, YOU KNOW... -->
+@* IF YOU KNOW ME, YOU KNOW... *@
 @{
     // Flip cards: (front, back). Add or remove freely.
     var knowMe = new[]
@@ -2957,9 +2957,9 @@
     </div>
 </section>
 
-<!-- VIEW MORE: If I were a... and The Duality of a Woman stay tucked away until "View more…" is clicked -->
+@* VIEW MORE: If I were a... and The Duality of a Woman stay tucked away until "View more…" is clicked *@
 <div class="more-about-me" id="moreAboutMe" hidden>
-<!-- IF I WERE A... -->
+@* IF I WERE A... *@
 @{
     // (category, answer, aspect of me, note). Add or remove freely.
     // A card with no note yet has no back, so it doesn't flip until one is added.
@@ -3012,7 +3012,7 @@
         </div>
     </div>
 </section>
-<!-- THE DUALITY OF A WOMAN -->
+@* THE DUALITY OF A WOMAN *@
 @{
     // This or That (inside View more, under Duality): (this, that, which one I pick (or something else entirely), optional line). Add or remove freely.
     // How Well Do You Know Me?: (option A, option B, my pick, what you see if you guessed right,
@@ -3139,19 +3139,19 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
-        <!-- the paragraph wraps up Duality and sets up the quiz beside it (stacks on phones) -->
+        @* the paragraph wraps up Duality and sets up the quiz beside it (stacks on phones) *@
         <div class="duality-row">
             <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
             <div class="quiz-col">
                 <h3 class="tot-title">How Well Do You Know Me?</h3>
                 <p class="kn-hint">This or that? Guess my pick.</p>
 
-                <!-- the quiz (built by the script below); the grid underneath is the no-JavaScript version -->
+                @* the quiz (built by the script below); the grid underneath is the no-JavaScript version *@
                 <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, right = t.Item4, wrongA = t.Item5, wrongB = t.Item6, reveal = t.Item7 })).ToString()"
                      data-verdicts="@Json.Serialize(quizVerdicts).ToString()"
                      data-leaders="@Json.Serialize(quizLeaders.Select(l => new { name = l.Item1, score = l.Item2 })).ToString()" hidden>
                     <div class="quiz-card">
-                        <!-- a quiz sheet: the header band, one step per question, then the question -->
+                        @* a quiz sheet: the header band, one step per question, then the question *@
                         <div class="quiz-top">
                             <span class="quiz-count" aria-live="polite"></span>
                             <span class="quiz-tally" aria-live="polite">Score 0</span>
@@ -3452,7 +3452,7 @@
     });
 </script>
 
-<!-- PERSONALITY: ESFJ-T -->
+@* PERSONALITY: ESFJ-T *@
 @{
     // My personality test results: (letter, name, percent, what it means for me)
     var letters = new[]
@@ -4022,7 +4022,7 @@
     });
 </script>
 
-<!-- CTA -->
+@* CTA *@
 <section class="cta-section page-fill">
     <h2>Where to go next</h2>
     <div class="cta-links">

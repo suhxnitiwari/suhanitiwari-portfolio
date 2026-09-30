@@ -424,7 +424,7 @@
     }
 </style>
 
-<!-- phone/tablet styles load after the page styles so they win -->
+@* phone/tablet styles load after the page styles so they win *@
 <link rel="stylesheet" href="/css/coursework-responsive.css">
 <link rel="stylesheet" href="~/css/mis-cycle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
@@ -433,12 +433,12 @@
 
 <div class="coursework-section page-fill">
     <div class="coursework-container">
-        <!-- HERO -->
+        @* HERO *@
         <div class="coursework-hero">
             <h1>Coursework</h1>
         </div>
 
-        <!-- Overview (all nine themes), my MIS major, or my marketing projects -->
+        @* Overview (all nine themes), my MIS major, or my marketing projects *@
         <div class="cw-tabs" role="tablist" aria-label="Coursework view">
             <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="false" tabindex="-1">Overview</button>
             <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="true">MIS Major</button>
@@ -446,7 +446,7 @@
         </div>
 
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview" hidden>
-        <!-- six ways the subjects work together: picking one lights up the cards that feed it -->
+        @* six ways the subjects work together: picking one lights up the cards that feed it *@
         <div class="cx">
             <p class="cx-intro">On paper, my classes look scattered across nine departments and four schools. In practice, they keep answering the same question: how do people think, and how do you build things that work for them? Psychology and education taught me how people learn and decide. Marketing and advertising taught me how to reach them. MIS, analytics and economics taught me how to build and measure what they need. The humanities taught me how to explain all of it.</p>
             <p class="cx-heading" id="cx-heading">Nine subjects. Six ways they work together.</p>
@@ -461,7 +461,7 @@
             </p>
         </div>
 
-        <!-- COURSES GRID: tap a card to flip it, then View More for the whole list -->
+        @* COURSES GRID: tap a card to flip it, then View More for the whole list *@
         <div class="courses-grid">
             @for (var i = 0; i < themes.Length; i++)
             {
@@ -496,13 +496,13 @@
 
         <div class="cw-panel" id="cw-mis" role="tabpanel" aria-labelledby="cw-tab-mis">
             <section class="mis mp" aria-labelledby="mis-heading">
-                <!-- 1. who I am in one screen -->
+                @* 1. who I am in one screen *@
                 <header class="mp-hero">
                     <h2 id="mis-heading">I studied MIS.<br />Here’s what that means for you.</h2>
                     <p class="mp-thesis">I learn enough technology to <em>build it</em>, enough business to know <em>why we’re building it</em>, and enough about people to make sure what we build <em>actually works for them</em>.</p>
                 </header>
 
-                <!-- 2. what I can do (the home page's "What I can do" button lands here) -->
+                @* 2. what I can do (the home page's "What I can do" button lands here) *@
                 <div class="mp-section" id="skills" style="scroll-margin-top:100px" aria-labelledby="mp-can-title">
                     <div class="mp-head">
                         <p class="mp-eyebrow">From classroom to capability</p>
@@ -530,12 +530,12 @@
                     </ol>
                 </div>
 
-                <!-- 3. how the major builds it: the cycle -->
+                @* 3. how the major builds it: the cycle *@
                 <div class="mp-head">
                     <p class="mp-eyebrow">How the curriculum built that range</p>
                     <h3 class="mp-h2">One major. Four levels of the same problem.</h3>
                 </div>
-                <!-- the cycle on the left, the picked step's card on the right, in one row -->
+                @* the cycle on the left, the picked step's card on the right, in one row *@
                 <div class="mis-cycle-row">
                 <div class="mis-cycle-left">
                 <div class="mis-chart">
@@ -594,7 +594,7 @@
                 </ul>
                 </div>
 
-                <!-- one detail card per step; on phones each sits under its own step card (an accordion) -->
+                @* one detail card per step; on phones each sits under its own step card (an accordion) *@
                 <div class="mis-details">
                     @for (var i = 0; i < misSteps.Length; i++)
                     {
@@ -652,9 +652,9 @@
                 </div>
                 </div>
 
-                <!-- 4. my projects moved to their own Projects section on Pursue, right after Experience (Views/Home/_RideFlowProof.cshtml) -->
+                @* 4. my projects moved to their own Projects section on Pursue, right after Experience (Views/Home/_RideFlowProof.cshtml) *@
 
-                <!-- 5. how I work: hand me a problem -->
+                @* 5. how I work: hand me a problem *@
                 <div class="mp-section" aria-labelledby="mp-problem">
                     <div class="mp-head">
                         <p class="mp-eyebrow">People, Technology, Business</p>
@@ -679,7 +679,7 @@
                 </div>
             </section>
 
-            <!-- one course, opened from its chip on the diagram -->
+            @* one course, opened from its chip on the diagram *@
             <dialog class="mis-course-dialog" id="misCourse" aria-labelledby="misCourseTitle"
                     data-courses="@Json.Serialize(misSteps.SelectMany(st => st.Courses.Select(c => new { code = c.Code, name = c.Name, skills = c.Skills, elective = c.Elective, coming = c.Coming, professor = c.Professor, question = c.Question, caps = c.Capabilities ?? Array.Empty<MisCapability>(), step = st.Title, color = st.Color }))).ToString()">
                 <button type="button" class="mis-dialog-close" aria-label="Close">&times;</button>
@@ -693,10 +693,10 @@
                 <div class="mis-caps" hidden></div>
             </dialog>
 
-            <!-- ===== the story around the cycle ===== -->
+            @* ===== the story around the cycle ===== *@
             <div class="story">
 
-                <!-- The zoom lens -->
+                @* The zoom lens *@
                 <section class="story-section reveal" aria-labelledby="zoom-heading">
                     <h2 class="story-heading" id="zoom-heading">From one line of code to the business case behind it.</h2>
                     <p class="story-sub">I can talk to the engineer and the executive in the same meeting. Slide to see what I bring at each level.</p>
@@ -748,7 +748,7 @@
     </div>
 </div>
 
-<!-- Course Modal -->
+@* Course Modal *@
 <div id="courseModal" class="course-modal">
     <div class="course-modal-content">
         <button class="modal-close" onclick="closeCourseModal()">&times;</button>

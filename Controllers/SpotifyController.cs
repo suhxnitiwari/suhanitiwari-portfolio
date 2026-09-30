@@ -34,6 +34,11 @@ namespace Tiwari_Suhani_HW3.Controllers
 
         // Connecting a Spotify account replaces whose music the site shows, so on the live site it's
         // switched off: only works on my laptop, or live if I set Spotify__AllowConnect=true for a moment.
+        // Only the values Spotify actually accepts, so nobody can fill the cache with made-up requests
+        private static readonly string[] TimeRanges = { "short_term", "medium_term", "long_term" };
+        private static string SafeRange(string timeRange) => TimeRanges.Contains(timeRange) ? timeRange : "medium_term";
+        private static int SafeLimit(int limit) => Math.Clamp(limit, 1, 50);
+
         private bool CanConnect() =>
             _environment.IsDevelopment() || _configuration.GetValue<bool>("Spotify:AllowConnect");
 
@@ -124,12 +129,14 @@ namespace Tiwari_Suhani_HW3.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTopTracks(int limit = 10, string timeRange = "medium_term")
         {
+            limit = SafeLimit(limit); timeRange = SafeRange(timeRange);
             return await CachedSpotifyJson($"top-tracks:{limit}:{timeRange}", async token => await _spotifyService.GetTopTracksAsync(token, limit, timeRange));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetTopArtists(int limit = 10, string timeRange = "medium_term")
         {
+            limit = SafeLimit(limit); timeRange = SafeRange(timeRange);
             return await CachedSpotifyJson($"top-artists:{limit}:{timeRange}", async token => await _spotifyService.GetTopArtistsAsync(token, limit, timeRange));
         }
 
@@ -145,6 +152,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTopGenres(int limit = 5, string timeRange = "medium_term")
         {
+            limit = SafeLimit(limit); timeRange = SafeRange(timeRange);
             return await CachedSpotifyJson($"top-genres:{limit}:{timeRange}", async token => await _spotifyService.GetTopGenresAsync(token, limit, timeRange));
         }
 
@@ -185,6 +193,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTopAlbum(string timeRange = "medium_term")
         {
+            timeRange = SafeRange(timeRange);
             return await CachedSpotifyJson($"top-album:{timeRange}", async token => await _spotifyService.GetTopAlbumAsync(token, timeRange));
         }
     }

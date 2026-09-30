@@ -1909,7 +1909,7 @@
 
 <div class="listen-section" id="listen">
     <div class="listen-container">
-        <!-- the thread through the whole page: these aren't rankings, they're patterns -->
+        @* the thread through the whole page: these aren't rankings, they're patterns *@
         <header class="fav-thesis">
             <p class="fav-kicker">Favorites</p>
             <h1>Apparently, I have a type.</h1>
@@ -1939,13 +1939,13 @@
             </ul>
         </header>
 
-        <!-- MY MUSIC: one compact dashboard, live from my Spotify -->
+        @* MY MUSIC: one compact dashboard, live from my Spotify *@
         <h2 class="section-title with-subtitle" id="listen-music">What I'm Listening To</h2>
         <p class="section-subtitle">I listen by feeling, not by genre. Live from my Spotify.</p>
 
-        <!-- A Pinterest board: three columns of pins in different heights -->
-        <!-- The music section, top to bottom: the Universe with the artist picked in it, one Listening DNA card,
-             the Spotify player and Song Title Words beside the Listening Clock, then the fives row -->
+        @* A Pinterest board: three columns of pins in different heights *@
+        @* The music section, top to bottom: the Universe with the artist picked in it, one Listening DNA card,
+             the Spotify player and Song Title Words beside the Listening Clock, then the fives row *@
         <div class="music-duo universe-duo">
             <section class="music-card universe-card" aria-labelledby="universeTitle">
                 <h3 class="music-card-title" id="universeTitle">My Music Universe</h3>
@@ -1980,7 +1980,7 @@
             </div>
         </section>
 
-        <!-- what I'm playing now and the words my song titles keep using, beside the Listening Clock -->
+        @* what I'm playing now and the words my song titles keep using, beside the Listening Clock *@
         <div class="music-duo play-duo">
             <div class="music-col">
                 <a class="now-card" id="nowPlaying" target="_blank" rel="noopener" hidden></a>
@@ -1994,7 +1994,7 @@
             </section>
         </div>
 
-        <!-- the fives row: my top 5 songs, top 5 albums and the 5 oldest songs I still play -->
+        @* the fives row: my top 5 songs, top 5 albums and the 5 oldest songs I still play *@
         <div class="music-fives" aria-label="My top fives">
             <section class="music-card repeat-card" aria-labelledby="onRepeatTitle">
                 <h3 class="music-card-title" id="onRepeatTitle">On Repeat</h3>
@@ -2007,7 +2007,7 @@
             <div class="lab-slot" id="labVault"></div>
         </div>
 
-        <!-- what all of the above adds up to -->
+        @* what all of the above adds up to *@
         <aside class="fav-takeaway">
             <p class="fav-kicker">What my Spotify knows about me</p>
             <p>I don’t listen by genre. I listen by feeling.</p>
@@ -3294,7 +3294,7 @@
     }
 }
 
-<!-- WATCH SECTION -->
+@* WATCH SECTION *@
 <section id="watch" class="listen-section shelf-section" style="background: linear-gradient(135deg, #F7EAE6 0%, #FAF1EF 100%);">
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
@@ -3406,7 +3406,7 @@
                 "Some people have comfort shows. I have comfort TED talks.", inspirationWhy);
         }
 
-        <!-- the rest of Watch stays tucked away until "View more awesome recs" is clicked -->
+        @* the rest of Watch stays tucked away until "View more awesome recs" is clicked *@
         <div class="watch-more" id="watchMore" hidden>
         <hr class="shelf-divider">
         @{ RenderShelf("The Desi Edit", desiEdit); }
@@ -3422,7 +3422,7 @@
     </div>
 </section>
 
-<!-- READ SECTION -->
+@* READ SECTION *@
 <section id="read" class="listen-section shelf-section page-fill" style="background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);">
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
@@ -3490,7 +3490,7 @@
         @{ RenderShelf("Books That Actually Changed How I Live", selfHelp,
             "Atomic Habits made me trust systems, Let Them ended my overthinking, and Carnegie is why I remember your coffee order."); }
 
-        <!-- the pattern across all three -->
+        @* the pattern across all three *@
         <section class="fav-type" aria-labelledby="fav-type-title">
             <h2 id="fav-type-title">So apparently, I have a type.</h2>
             <p class="fav-type-sub">Different medium, same obsessions: people, why they do what they do, what they make, and what makes something worth coming back to.</p>
@@ -3515,7 +3515,7 @@
     </div>
 </section>
 
-<!-- Video player (one dialog; the video loads when a card is clicked and stops when it closes) -->
+@* Video player (one dialog; the video loads when a card is clicked and stops when it closes) *@
 <dialog class="recipe-card video-card" id="videoCard" aria-labelledby="videoTitle">
     <button type="button" class="recipe-close" aria-label="Close video">×</button>
     <div class="video-frame" id="videoFrame"></div>
