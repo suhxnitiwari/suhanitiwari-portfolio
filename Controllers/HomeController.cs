@@ -98,14 +98,7 @@ public class HomeController : Controller
         return View();
     }
 
-    // World is hidden for now (a secret). The page and all its code stay saved in Views/Home/World.cshtml,
-    // but /home/world shows "not found" until this is true again (and the menu link is put back in _Layout).
-    private static readonly bool ShowWorld = false;
-
-    public IActionResult World()
-    {
-        return ShowWorld ? View() : NotFound();
-    }
+    // World moved out into its own project: github.com/suhxnitiwari/suhani-world
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
