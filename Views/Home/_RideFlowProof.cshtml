@@ -8,8 +8,9 @@
                             <button type="button" role="tab" aria-selected="true" aria-controls="mp-proj-0" data-i="0">Rideshare App</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-1" data-i="1" tabindex="-1">Checkout System</button>
                             <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-2" data-i="2" tabindex="-1">Data &amp; Databases</button>
-                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-3" data-i="3" tabindex="-1">Python Planner</button>
-                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-4" data-i="4" tabindex="-1">Portfolio</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-5" data-i="3" tabindex="-1">Spotify Data</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-3" data-i="4" tabindex="-1">Python Planner</button>
+                            <button type="button" role="tab" aria-selected="false" aria-controls="mp-proj-4" data-i="5" tabindex="-1">Portfolio</button>
                         </div>
                         <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
                     </div>
@@ -199,6 +200,43 @@
                     </div>
                     </div>
 
+                    @* Listening History: my Spotify data project *@
+                    <div class="mp-proj" id="mp-proj-5" role="tabpanel" aria-labelledby="mp-listening" hidden>
+                    <div class="mp-proof mp-proof-fill">
+                        <div>
+                            <div class="mp-browser">
+                                <div class="mp-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+                                <div class="mp-browser-view" style="background: #FAF1EF url('/images/projects/listening/app.jpg') center top / cover no-repeat;">
+                                    <iframe data-src="https://listening-history.onrender.com/" title="Listening History, the live app" tabindex="-1"></iframe>
+                                </div>
+                            </div>
+                            <ul class="mp-facts three">
+                                <li><b>182K</b><span>PLAYS CLEANED</span></li>
+                                <li><b>6</b><span>TABLES</span></li>
+                                <li><b>7</b><span>SQL VIEWS</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 id="mp-listening">Listening History</h3>
+                            <p class="mp-proof-sub">Four years of my Spotify listening, turned into a data warehouse I can ask anything in SQL.</p>
+                            <ul class="mp-proof-list">
+                                <li>A Python pipeline cleans every play in two seconds</li>
+                                <li>A star schema in PostgreSQL, read by a read-only user</li>
+                                <li>A live app to scrub months and guess my stats</li>
+                            </ul>
+                            <div class="mp-concept">
+                                <svg viewBox="0 0 300 120" role="img" aria-label="April 1, 2 and 3 minus their row numbers 1, 2 and 3 all give March 31, so they form one streak; April 5 minus 4 gives April 1, a new streak"><rect x="4" y="6" width="52" height="22" rx="6" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="30.0" y="21" font-family="Georgia,serif" font-size="11" fill="#2A1810" text-anchor="middle">Apr 1</text><text x="84" y="21" font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle">minus 1</text><path d="M110,17 L124,17" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><rect x="126" y="6" width="60" height="22" rx="6" fill="#8F4661" stroke="#8F4661" stroke-width="1.4"/><text x="156.0" y="21" font-family="Georgia,serif" font-size="11" fill="#fff" text-anchor="middle">Mar 31</text><rect x="4" y="34" width="52" height="22" rx="6" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="30.0" y="49" font-family="Georgia,serif" font-size="11" fill="#2A1810" text-anchor="middle">Apr 2</text><text x="84" y="49" font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle">minus 2</text><path d="M110,45 L124,45" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><rect x="126" y="34" width="60" height="22" rx="6" fill="#8F4661" stroke="#8F4661" stroke-width="1.4"/><text x="156.0" y="49" font-family="Georgia,serif" font-size="11" fill="#fff" text-anchor="middle">Mar 31</text><rect x="4" y="62" width="52" height="22" rx="6" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="30.0" y="77" font-family="Georgia,serif" font-size="11" fill="#2A1810" text-anchor="middle">Apr 3</text><text x="84" y="77" font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle">minus 3</text><path d="M110,73 L124,73" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><rect x="126" y="62" width="60" height="22" rx="6" fill="#8F4661" stroke="#8F4661" stroke-width="1.4"/><text x="156.0" y="77" font-family="Georgia,serif" font-size="11" fill="#fff" text-anchor="middle">Mar 31</text><rect x="4" y="90" width="52" height="22" rx="6" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="30.0" y="105" font-family="Georgia,serif" font-size="11" fill="#2A1810" text-anchor="middle">Apr 5</text><text x="84" y="105" font-family="system-ui,sans-serif" font-size="11" fill="#7A665F" text-anchor="middle">minus 4</text><path d="M110,101 L124,101" stroke="#C9A9A4" stroke-width="1.6" stroke-linecap="round"/><rect x="126" y="90" width="60" height="22" rx="6" fill="#FFFBF9" stroke="#8F4661" stroke-width="1.4"/><text x="156.0" y="105" font-family="Georgia,serif" font-size="11" fill="#2A1810" text-anchor="middle">Apr 1</text><path d="M194,9 L202,9 L202,81 L194,81" fill="none" stroke="#8F4661" stroke-width="1.6"/><text x="210" y="42" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#7A665F" letter-spacing="1.1">SAME NUMBER</text><text x="210" y="56" font-family="system-ui,sans-serif" font-size="9" font-weight="700" fill="#8F4661" letter-spacing="1.1">= ONE STREAK</text></svg>
+                                <h4>Finding a streak</h4>
+                                <p>On days in a row, the date minus a row number stays the same, so every day of a streak shares one number. That’s how SQL found my 21 days of one song.</p>
+                                <p class="mp-tech">Window functions: gaps and islands</p>
+                            </div>
+                            <div class="mp-links">
+                                <a class="mp-link solid" href="https://listening-history.onrender.com/" target="_blank" rel="noopener">Open the live app ↗</a>
+                                <a class="mp-link" href="https://github.com/suhxnitiwari/listening-history" target="_blank" rel="noopener">View the code ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                     @* Saturday in Austin: my Python planner, running in the visitor's browser through Pyodide *@
                     <div class="mp-proj" id="mp-proj-3" role="tabpanel" aria-labelledby="mp-saturday" hidden>
                     <div class="mp-proof">
