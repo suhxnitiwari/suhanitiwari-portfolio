@@ -432,10 +432,11 @@
         gap: 80px;
     }
 
+    /* text starts level with the top of its photo, so there's no gap above the number */
     .about-story {
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
-        align-items: center;
+        align-items: start;
         gap: 64px;
     }
 
@@ -2675,7 +2676,6 @@
             <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/pursue#mis">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/pursue#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
-        <h3 class="about-lead">The thing about me is...</h3>
         <div class="about-stories">
             @for (var i = 0; i < aboutPoints.Length; i++)
             {
