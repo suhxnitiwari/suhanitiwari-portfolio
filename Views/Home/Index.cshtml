@@ -151,7 +151,7 @@
     .cover-tagline {
         margin: 0 0 clamp(30px, 3.4cqw, 52px);
         font-family: Georgia, serif;
-        font-size: clamp(1rem, 1.55cqw, 1.45rem);
+        font-size: clamp(1.2rem, 1.85cqw, 1.75rem);
         font-style: italic;
         line-height: 1.35;
         color: #FFFFFF;
@@ -203,13 +203,13 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 14px 28px;
+        padding: 17px 34px;
         border-radius: var(--r-pill);
-        border: 1.5px solid rgba(255, 248, 246, 0.9);
+        border: 2px solid rgba(255, 248, 246, 0.9);
         background: rgba(30, 14, 12, 0.18);
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
-        font-size: clamp(0.9rem, 1cqw, 1rem);
+        font-size: clamp(1rem, 1.2cqw, 1.2rem);
         font-weight: 700;
         letter-spacing: 1.5px;
         text-transform: uppercase;
@@ -379,7 +379,7 @@
     }
 
     .about-section {
-        padding: 90px 40px 80px;
+        padding: 70px 40px 60px;
         background: #FAF1EF;
     }
 
@@ -390,7 +390,7 @@
 
     /* the intro spans the same 1100px as every row below it; justified so both edges are straight lines, like every other block on the site */
     .about-intro {
-        margin: 0 auto 56px;
+        margin: 0 auto 44px;
     }
 
     .about-intro p {
@@ -434,7 +434,7 @@
     .about-stories {
         display: flex;
         flex-direction: column;
-        gap: 80px;
+        gap: 56px;
     }
 
     /* text starts level with the top of its photo, so there's no gap above the number */
@@ -516,7 +516,7 @@
     }
 
     .about-story h3 {
-        margin: 14px 0 18px;
+        margin: 12px 0 16px;
         font-family: Georgia, serif;
         font-size: 2.2em;
         font-weight: 800;
@@ -713,7 +713,7 @@
 
     /* ===== IF YOU KNOW ME, YOU KNOW...: little flip cards, gently tilted ===== */
     .know-me {
-        padding: 10px 40px 90px;
+        padding: 10px 40px 60px;
         background: #FAF1EF;
     }
 
@@ -2813,12 +2813,12 @@
         (Num: "01", Title: "I understand people.",
             Paras: new[] {
                 "I’m fascinated by why people choose what they choose: what makes an idea resonate, a product stick, or a brand mean something.",
-                "That curiosity is basically where psychology, marketing, and business collide for me." },
+                "That curiosity is why I study psychology and marketing alongside MIS, and why my work keeps ending up centered on users, customers and behavior." },
             Photo: (string?)"/images/friends-coffee.jpg", Alt: "Me and three friends smiling at a Starbucks, each holding a coffee",
             Proof: new[] { ("Marketing projects", "/home/coursework#marketing"), ("Psychology courses", "/home/coursework#human-behavior"), ("How I work", "/home/howiwork#strengths") }),
         (Num: "02", Title: "I make things.",
             Paras: new[] {
-                "Websites. Art. Brand projects. A children’s book. Random ideas that probably did not need to become full-fledged projects but somehow did.",
+                "Websites. Products. A children’s book. Things that probably did not need to become full-fledged projects but somehow did.",
                 "I like taking something from “wait, what if…” to something you can actually see, use, or experience." },
             Photo: (string?)"/images/childrens-book-reader.jpg", Alt: "A young reader smiling and holding a copy of Girls Can Be Engineers, Too! by Suhani Tiwari",
             Proof: new[] { ("What I’ve built", "/home/pursue#projects"), ("My children’s book", "/home/beyondtheclassroom"), ("Things I make", "/home/make") }),
@@ -2833,7 +2833,7 @@
 <section class="about-section" id="about">
     <div class="about-container">
         <div class="about-intro">
-            <h2>Hi, I’m Suhani Tiwari.</h2>
+            <h2>People are usually where I start.</h2>
             <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/pursue#mis">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/pursue#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
@@ -3962,23 +3962,23 @@
     <div class="cta-links">
         <a href="/home/pursue#projects" class="cta-link">
             <span class="cta-label">Projects <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Real things I built, live and clickable.</span>
+            <span class="cta-desc">Things I built to solve a problem.</span>
         </a>
         <a href="/home/world" class="cta-link">
             <span class="cta-label">World <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">The people and places that made me, me.</span>
+            <span class="cta-desc">The people and places that shaped me.</span>
         </a>
         <a href="/home/favorites" class="cta-link">
             <span class="cta-label">Favorites <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Things I love enough to put on the internet.</span>
+            <span class="cta-desc">What I read, watch, listen to and keep coming back to.</span>
         </a>
         <a href="/home/make" class="cta-link">
             <span class="cta-label">Curate <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Things I made and would like you to admire.</span>
+            <span class="cta-desc">Art, writing and things I made because I wanted them to exist.</span>
         </a>
-        <a href="/resume" class="cta-link" target="_blank" rel="noopener">
-            <span class="cta-label">Résumé <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Credentials you’re more than welcome to verify.</span>
+        <a href="/home/pursue" class="cta-link">
+            <span class="cta-label">Pursue <span class="cta-arrow" aria-hidden="true">→</span></span>
+            <span class="cta-desc">Work, coursework and where I’m headed.</span>
         </a>
     </div>
 </section>
