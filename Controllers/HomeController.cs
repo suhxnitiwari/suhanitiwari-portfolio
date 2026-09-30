@@ -56,6 +56,10 @@ public class HomeController : Controller
     [Route("quiz")]
     public IActionResult Quiz() => Redirect("/#quiz");
 
+    // suhanitiwari.com/mis: how I define the MIS major, opened straight to the MIS Major tab of Coursework
+    [Route("mis")]
+    public IActionResult Mis() => Redirect("/home/pursue#mis");
+
     [Route("resume")]
     public IActionResult Resume([FromServices] IWebHostEnvironment environment)
     {
