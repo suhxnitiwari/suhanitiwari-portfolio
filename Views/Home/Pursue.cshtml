@@ -464,40 +464,106 @@
         color: #2A1810;
     }
 
-    .why-quote {
+    /* a photo of me with the quotes rotating over its bottom edge */
+    .why-photo {
+        position: relative;
+        align-self: stretch;
+        min-height: 540px;
         margin: 0;
-        padding: var(--pad-card);
-        border-radius: var(--r-card);
-        background: #FFF8F6;
-        border: var(--card-border);
+        border-radius: 140px 140px var(--r-card, 20px) var(--r-card, 20px);
+        overflow: hidden;
+        background: url(/images/why-mis-suhani.jpg) 50% 22% / cover no-repeat;
         box-shadow: var(--shadow-card);
     }
 
-    .why-quote blockquote {
+    .why-quotes {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        padding: 20px 22px 16px;
+        border-radius: var(--r-inset, 14px);
+        background: rgba(255, 248, 246, 0.94);
+        backdrop-filter: blur(6px);
+    }
+
+    .why-quote-slide {
+        margin: 0;
+        min-height: 116px;
+        animation: whyIn 0.4s ease both;
+    }
+
+    .why-quote-slide[hidden] {
+        display: none;
+    }
+
+    @@keyframes whyIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .why-quote-slide blockquote {
         margin: 0;
         font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-size: 1.75rem;
+        font-size: 1.25rem;
         font-style: italic;
-        line-height: 1.3;
+        line-height: 1.35;
         color: #8A4D57;
     }
 
-    .why-loves {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 20px 0 0;
-        padding: 0;
-        list-style: none;
+    .why-quote-slide figcaption {
+        margin-top: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #56634A;
     }
 
-    .why-loves li {
-        padding: 6px 14px;
-        border-radius: var(--r-pill);
-        background: rgba(138, 77, 87, 0.12);
-        font-size: 0.85em;
-        font-weight: 600;
-        color: #2A1810;
+    /* ‹ on the far left, › on the far right, dots between */
+    .why-quote-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+    }
+
+    .why-quote-nav button.why-arrow {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        font-size: 18px;
+        line-height: 1;
+        color: #8A4D57;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .why-quote-nav button.why-arrow:hover {
+        background: #8A4D57;
+        color: #FFF8F6;
+    }
+
+    .why-dots {
+        display: flex;
+        gap: 8px;
+    }
+
+    .why-dots button {
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: #E2C6C0;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .why-dots button[aria-current="true"] {
+        width: 22px;
+        border-radius: var(--r-pill, 999px);
+        background: #8A4D57;
     }
 
     @@media (max-width: 800px) {
@@ -508,6 +574,10 @@
         .why-wrap {
             grid-template-columns: 1fr;
             gap: 24px;
+        }
+
+        .why-photo {
+            min-height: 560px;
         }
     }
 
@@ -811,12 +881,35 @@
             <p>But the more I made, the more I noticed technology was already inside everything I loved: the tools I draw with, the apps that put stories in my hands, the playlist that finds a song before I know I want it. Someone had to understand people to build those things well.</p>
             <p>That’s what MIS is to me. It’s the major for people who care as much about <em>why</em> someone uses a product as <em>how</em> it’s built. I didn’t leave the humanities behind. I brought them with me.</p>
         </div>
-        <figure class="why-quote">
-            <blockquote>Technology is in everything. The best of it has a little poetry in it too.</blockquote>
-            <ul class="why-loves" aria-label="What I bring with me">
-                <li>Reading</li><li>Writing</li><li>Art</li><li>Music</li><li>Psychology</li>
-            </ul>
-        </figure>
+        <div class="why-photo">
+            <div class="why-quotes" role="region" aria-roledescription="carousel" aria-label="Quotes I live by">
+                <figure class="why-quote-slide">
+                    <blockquote>Technology is in everything. The best of it has a little poetry in it too.</blockquote>
+                    <figcaption>Me</figcaption>
+                </figure>
+                <figure class="why-quote-slide" hidden>
+                    <blockquote>It’s technology married with liberal arts, married with the humanities, that yields us the results that make our heart sing.</blockquote>
+                    <figcaption>Steve Jobs</figcaption>
+                </figure>
+                <figure class="why-quote-slide" hidden>
+                    <blockquote>The Analytical Engine weaves algebraical patterns just as the Jacquard loom weaves flowers and leaves.</blockquote>
+                    <figcaption>Ada Lovelace</figcaption>
+                </figure>
+                <figure class="why-quote-slide" hidden>
+                    <blockquote>The arts and sciences are avatars of human creativity.</blockquote>
+                    <figcaption>Mae Jemison</figcaption>
+                </figure>
+                <figure class="why-quote-slide" hidden>
+                    <blockquote>You can’t use up creativity. The more you use, the more you have.</blockquote>
+                    <figcaption>Maya Angelou</figcaption>
+                </figure>
+                <div class="why-quote-nav">
+                    <button type="button" class="why-arrow" data-go="-1" aria-label="Previous quote">‹</button>
+                    <div class="why-dots"><button type="button" aria-label="Quote 1" aria-current="true"></button><button type="button" aria-label="Quote 2"></button><button type="button" aria-label="Quote 3"></button><button type="button" aria-label="Quote 4"></button><button type="button" aria-label="Quote 5"></button></div>
+                    <button type="button" class="why-arrow" data-go="1" aria-label="Next quote">›</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <section class="pursue-part" id="coursework" aria-label="Coursework">
@@ -856,6 +949,28 @@
             btn._reset = setTimeout(() => btn.textContent = label, 2000);
         });
     });
+</script>
+
+<script>
+    // Why MIS quotes: ‹ › and the dots switch quotes; they turn on their own every 7 seconds unless you're reading one
+    (() => {
+        const box = document.querySelector('.why-quotes');
+        if (!box) return;
+        const slides = [...box.querySelectorAll('.why-quote-slide')];
+        const dots = [...box.querySelectorAll('.why-dots button')];
+        let i = 0, timer;
+        const show = n => {
+            i = (n + slides.length) % slides.length;
+            slides.forEach((s, k) => s.hidden = k !== i);
+            dots.forEach((d, k) => d.setAttribute('aria-current', k === i));
+        };
+        box.querySelectorAll('.why-arrow').forEach(b => b.addEventListener('click', () => show(i + +b.dataset.go)));
+        dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
+        const play = () => { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(() => show(i + 1), 7000); };
+        box.addEventListener('mouseenter', () => clearInterval(timer));
+        box.addEventListener('mouseleave', play);
+        play();
+    })();
 </script>
 
 <script>

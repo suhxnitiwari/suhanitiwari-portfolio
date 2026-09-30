@@ -98,15 +98,15 @@
 .mp-browser-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
 /* projects: ‹ project names › above one slide at a time */
 .mp-proj-nav { display: flex; align-items: center; gap: 12px; margin: 0 0 40px; }
-/* one line of tabs; when they don't all fit, the row scrolls and ‹ › appear at its right end */
-.mp-proj-tabs { display: flex; flex-wrap: nowrap; gap: 12px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
+/* one line of tabs; when they don't all fit, the row scrolls and ‹ › appear at its far left and far right */
+.mp-proj-tabs { display: flex; flex-wrap: nowrap; gap: 12px; flex: 1; min-width: 0; padding: 4px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
 .mp-proj-tabs::-webkit-scrollbar { display: none; }
 .mp-proj-tabs button { flex: none; white-space: nowrap; }
 /* the same pills as the Coursework tabs: uppercase, spaced out, left-aligned */
 .mp-proj-tabs button { font: inherit; font-size: 0.85em; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 11px 26px; border-radius: var(--r-pill); border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #2A1810; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
 .mp-proj-tabs button:hover { border-color: var(--mul); }
 .mp-proj-tabs button[aria-selected="true"] { background: #8F4661; border-color: #8F4661; color: #FFF8F6; }
-.mp-proj-arrow { display: none; order: 2; flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #8F4661; font-size: 20px; line-height: 1; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, color 0.2s ease; }
+.mp-proj-arrow { display: none; flex: none; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #8F4661; font-size: 20px; line-height: 1; cursor: var(--cursor-hot, pointer); transition: background 0.2s ease, color 0.2s ease; }
 .mp-proj-nav.overflows .mp-proj-arrow { display: block; }
 .mp-proj-arrow:hover { background: var(--mul); color: #FFF8F6; }
 .mp-proj-tabs button:focus-visible, .mp-proj-arrow:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
@@ -188,6 +188,10 @@
 .mp-corner.on .mp-corner-halo { opacity: 0.2; }
 .mp-corner:hover rect, .mp-corner.on rect { stroke-opacity: 1; stroke-width: 2.4; }
 .mp-corner:focus-visible rect { stroke-width: 3; }
+/* nothing starts filled in; a corner fills only once you tap it */
+.mp-corner rect, .mp-corner > circle:not(.mp-corner-halo), .mp-corner text { transition: fill 0.2s ease, stroke-width 0.2s ease; }
+.mp-corner.on rect, .mp-corner.on > circle:not(.mp-corner-halo) { fill: var(--c); }
+.mp-corner.on text { fill: #fff; }
 .mp-step { transition: opacity 0.25s ease, background 0.25s ease; }
 .mp-tri-body.has-focus .mp-step:not(.lit) { opacity: 0.35; }
 .mp-step.lit { background: rgba(143, 70, 97, 0.06); margin: 0 -14px; padding-left: 14px; padding-right: 14px; border-radius: var(--r-small, 8px); }
@@ -205,13 +209,10 @@
 .mp-layer { width: 100%; display: flex; align-items: center; gap: 14px; padding: 18px 22px; border-radius: var(--r-inset); border: 1px solid var(--line); background: var(--ivory); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease; }
 .mp-layer:hover { transform: translateX(6px); }
 .mp-layer[aria-pressed="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; transform: translateX(12px); }
-.mp-layer.ping { box-shadow: 0 0 0 4px #E9C9D3; }
 .mp-layer-n { font-size: 11px; letter-spacing: 0.14em; opacity: 0.7; width: 22px; }
 .mp-layer-name { flex: 1; font-family: var(--serif); font-size: 21px; }
 .mp-layer-tool { font-size: 13px; opacity: 0.75; }
-.mp-layer:focus-visible, .mp-stack-pick button:focus-visible, .mp-stack-run:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
-.mp-stack-run { margin-top: 16px; font: inherit; font-size: 14px; font-weight: 600; padding: 9px 20px; border-radius: var(--r-pill); border: 1.5px solid var(--mul); background: transparent; color: var(--mul); cursor: pointer; }
-.mp-stack-run:hover { background: rgba(143, 70, 97, 0.08); }
+.mp-layer:focus-visible, .mp-stack-pick button:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
 .mp-layer-card { background: #FFF8F6; border: var(--card-border); border-radius: var(--r-card); padding: var(--pad-card); min-height: 300px; position: sticky; top: 24px;
  box-shadow: var(--shadow-card);
 }
@@ -219,8 +220,6 @@
 .mp-layer-what { font-size: 16px; line-height: 1.65; color: var(--ink); margin: 0 0 18px; }
 .mp-layer-tools { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .mp-layer-tools li { font-size: 13px; padding: 5px 13px; border-radius: var(--r-pill); background: #F0DCD7; color: #5A2E3C; }
-.mp-layer-where { margin: 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
-.mp-layer-where b { color: var(--mul); font-weight: 600; margin-right: 6px; }
 .mp-pipe-note { margin: 18px 0 0; font-size: 14.5px; color: var(--muted); }
 
 /* closing quote */

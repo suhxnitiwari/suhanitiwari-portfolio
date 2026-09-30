@@ -625,9 +625,23 @@
 }
 
 .zoom-label {
-    margin: 4px 0 18px;
+    margin: 4px 0 10px;
     font-family: Georgia, serif;
     font-size: 2em;
+    color: #2A1810;
+}
+
+/* what I bring at this level: the point of the whole slider */
+.zoom-value {
+    margin: 0 0 22px;
+    padding: 12px 16px;
+    border-left: 3px solid #8A4D57;
+    border-radius: 0 var(--r-small, 8px) var(--r-small, 8px) 0;
+    background: #F5E0DB;
+    font-family: Georgia, serif;
+    font-size: 1.12em;
+    font-style: italic;
+    line-height: 1.45;
     color: #2A1810;
 }
 

@@ -127,37 +127,37 @@
     };
 
     // The zoom lens: from a line of code out to the strategy, and the course that trained each level
-    var zoomStops = new (string Short, string Label, string[] Courses)[]
+    var zoomStops = new (string Short, string Label, string Value, string[] Courses)[]
     {
-        ("Code", "A line of code", new[] { "MIS 304" }),
-        ("Query", "A SQL query", new[] { "MIS 325" }),
-        ("Feature", "An app feature", new[] { "MIS 333K" }),
-        ("User", "The user", new[] { "MIS 333K" }),
-        ("Workflow", "The workflow", new[] { "MIS 301" }),
-        ("Org", "The organization", new[] { "MIS 301", "MIS 375" }),
-        ("Strategy", "The strategy", new[] { "MIS 375" })
+        ("Code", "A line of code", "I can read a developer’s code, follow the logic and write my own.", new[] { "MIS 304" }),
+        ("Query", "A SQL query", "I pull the answer out of the data myself instead of waiting on a report.", new[] { "MIS 325" }),
+        ("Feature", "An app feature", "I’ve built features end to end, so I know what a request really costs to make.", new[] { "MIS 333K" }),
+        ("User", "The user", "I design for how people actually behave, not how the spec assumes they will.", new[] { "MIS 333K" }),
+        ("Workflow", "The workflow", "I map how work moves between people and systems, and find where it breaks.", new[] { "MIS 301" }),
+        ("Org", "The organization", "I see how one system change ripples through every team that touches it.", new[] { "MIS 301", "MIS 375" }),
+        ("Strategy", "The strategy", "I can tell whether it’s worth building at all, and make the business case.", new[] { "MIS 375" })
     };
 
     // The interactive stack: five layers, each described for both stacks I've built with.
-    // Per stack: (tools, what the layer does there, where I used it)
+    // Per stack: (tools, what the layer does there)
     var stackNames = new[] { (".NET", "MIS 333K"), ("JavaScript", "MIS 372T") };
-    var stackLayers = new (string Name, string Job, (string[] Tools, string What, string Where)[] Stacks)[]
+    var stackLayers = new (string Name, string Job, (string[] Tools, string What)[] Stacks)[]
     {
         ("Front end", "What people see and click", new[] {
-            (new[] { "Razor views", "Forms", "Validation", "Responsive UI" }, "Server-rendered pages. Validation rules live on the model and run in both the browser and the server.", "Bevo’s Tacos checkout forms, this website"),
-            (new[] { "React", "Components", "State", "Routing", "Vite" }, "A single-page app. Components hold their own state, and routing swaps screens without reloading.", "RideFlow’s rider, driver and admin portals") }),
+            (new[] { "Razor views", "Forms", "Validation", "Responsive UI" }, "Server-rendered pages. Validation rules live on the model and run in both the browser and the server."),
+            (new[] { "React", "Components", "State", "Routing", "Vite" }, "A single-page app. Components hold their own state, and routing swaps screens without reloading.") }),
         ("Back end", "Where the business rules live", new[] {
-            (new[] { "ASP.NET Core MVC", "Controllers", "C#" }, "Controllers take a request, apply the business rules and pick the view. The pricing logic sits in the model, not the page.", "Bevo’s Tacos: one Order class, two order types"),
-            (new[] { "Node.js", "Express", "REST APIs", "Middleware" }, "Express routes expose a REST API, and middleware checks who’s asking before any route runs.", "RideFlow: request, accept, complete and bill a ride") }),
+            (new[] { "ASP.NET Core MVC", "Controllers", "C#" }, "Controllers take a request, apply the business rules and pick the view. The pricing logic sits in the model, not the page."),
+            (new[] { "Node.js", "Express", "REST APIs", "Middleware" }, "Express routes expose a REST API, and middleware checks who’s asking before any route runs.") }),
         ("Data", "Where information is stored", new[] {
-            (new[] { "Entity Framework Core", "LINQ", "Azure SQL" }, "Tables described as C# classes and queried with LINQ instead of hand-written SQL.", "The team web app in MIS 333K"),
-            (new[] { "PostgreSQL", "Sequelize ORM", "Full CRUD" }, "Four related tables, riders, drivers, rides and payments, held together by keys and constraints.", "RideFlow’s data model") }),
+            (new[] { "Entity Framework Core", "LINQ", "Azure SQL" }, "Tables described as C# classes and queried with LINQ instead of hand-written SQL."),
+            (new[] { "PostgreSQL", "Sequelize ORM", "Full CRUD" }, "Four related tables, riders, drivers, rides and payments, held together by keys and constraints.") }),
         ("Security", "Who can see and do what", new[] {
-            (new[] { "Users", "Roles", "Authorization", "Anti-forgery tokens" }, "Every account has a role and each page checks it. Forms are protected against forged requests.", "The team web app in MIS 333K, Bevo’s Tacos forms"),
-            (new[] { "Authentication", "Protected routes", "Row-level security" }, "Riders, drivers and admins each see and change only what their role allows, enforced on the server.", "RideFlow") }),
+            (new[] { "Users", "Roles", "Authorization", "Anti-forgery tokens" }, "Every account has a role and each page checks it. Forms are protected against forged requests."),
+            (new[] { "Authentication", "Protected routes", "Row-level security" }, "Riders, drivers and admins each see and change only what their role allows, enforced on the server.") }),
         ("Ship", "Getting it live", new[] {
-            (new[] { "GitHub", "GitHub Actions", "Docker", "Render" }, "Bevo’s Tacos ran its tests on every push with GitHub Actions. This site runs in a Docker container on Render.", "Bevo’s Tacos tests, this website on Render"),
-            (new[] { "Render", "Separate front end and API" }, "The front end and the API are deployed separately and talk to each other in production.", "RideFlow’s live app") })
+            (new[] { "GitHub", "Docker", "Render" }, "This site runs in a Docker container on Render, and every push to GitHub puts the new version live."),
+            (new[] { "Render", "Separate front end and API" }, "The front end and the API are deployed separately and talk to each other in production.") })
     };
 
     // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
@@ -728,7 +728,6 @@
                                     </li>
                                 }
                             </ol>
-                            <button type="button" class="mp-stack-run">Send a request through ↓</button>
                         </div>
                         <div class="mp-layer-card" id="mp-layer-card" aria-live="polite">
                             @for (var l = 0; l < stackLayers.Length; l++)
@@ -741,7 +740,6 @@
                                         <h4>@stackLayers[l].Name</h4>
                                         <p class="mp-layer-what">@layer.What</p>
                                         <ul class="mp-layer-tools">@foreach (var tool in layer.Tools) { <li>@tool</li> }</ul>
-                                        <p class="mp-layer-where"><b>Used in</b> @layer.Where</p>
                                     </div>
                                 }
                             }
@@ -771,7 +769,7 @@
                 <!-- The zoom lens -->
                 <section class="story-section reveal" aria-labelledby="zoom-heading">
                     <h2 class="story-heading" id="zoom-heading">MIS taught me to zoom in and out.</h2>
-                    <p class="story-sub">From a line of code out to the strategy, and the course that trained each level.</p>
+                    <p class="story-sub">I can talk to the engineer and the executive in the same meeting. Slide from a line of code out to the strategy to see what I bring at each level.</p>
                     <div class="zoom">
                         <div class="zoom-lens" aria-hidden="true">
                             @for (var z = zoomStops.Length - 1; z >= 0; z--)
@@ -793,6 +791,7 @@
                                 <div class="zoom-stop" data-stop="@z" @(z == 0 ? "" : "hidden") aria-live="polite">
                                     <p class="zoom-level">Zoom level @(z + 1) of @zoomStops.Length</p>
                                     <h3 class="zoom-label">@zoomStops[z].Label</h3>
+                                    <p class="zoom-value">@zoomStops[z].Value</p>
                                     <p class="zoom-trained">Trained in</p>
                                     <ul class="zoom-courses">
                                         @foreach (var code in zoomStops[z].Courses)
@@ -874,13 +873,13 @@
         buttons.forEach((b, n) => { b.setAttribute('aria-selected', n === i); b.tabIndex = n === i ? 0 : -1; });
         path.innerHTML = [0, 1].map(j => `<path d="${seg(corners[pr.p[j]], corners[pr.p[j + 1]])}" stroke="#8F4661" stroke-width="2.4" fill="none" marker-end="url(#mp-arrow)" />`).join('');
         nodes.innerHTML = corners.map((v, k) => {
-            const order = pr.p.indexOf(k) + 1, first = order === 1, w = v.n.length * 9 + 44;
-            return `<g class="mp-corner" data-k="${k}" role="button" tabindex="0" aria-pressed="false" aria-label="${v.n}: step ${order}">` +
+            const order = pr.p.indexOf(k) + 1, w = v.n.length * 9 + 44;
+            return `<g class="mp-corner" style="--c:${v.c}" data-k="${k}" role="button" tabindex="0" aria-pressed="false" aria-label="${v.n}: step ${order}">` +
                 `<circle class="mp-corner-halo" cx="${v.x}" cy="${v.y}" r="20" fill="${v.c}" />` +
-                `<circle cx="${v.x}" cy="${v.y}" r="${first ? 11 : 8}" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-width="2.4" />` +
-                `<rect x="${v.x - w / 2}" y="${v.ly - 17}" width="${w}" height="34" rx="17" fill="${first ? v.c : '#FFFBF9'}" stroke="${v.c}" stroke-opacity="${first ? 1 : 0.45}" />` +
-                `<text x="${v.x - 10}" y="${v.ly + 5}" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" letter-spacing="2" fill="${first ? '#fff' : v.c}">${v.n}</text>` +
-                `<text x="${v.x + w / 2 - 16}" y="${v.ly + 5.5}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${first ? '#fff' : v.c}">${order}</text></g>`;
+                `<circle cx="${v.x}" cy="${v.y}" r="8" fill="#FFFBF9" stroke="${v.c}" stroke-width="2.4" />` +
+                `<rect x="${v.x - w / 2}" y="${v.ly - 17}" width="${w}" height="34" rx="17" fill="#FFFBF9" stroke="${v.c}" stroke-opacity="0.45" />` +
+                `<text x="${v.x - 10}" y="${v.ly + 5}" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" letter-spacing="2" fill="${v.c}">${v.n}</text>` +
+                `<text x="${v.x + w / 2 - 16}" y="${v.ly + 5.5}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${v.c}">${order}</text></g>`;
         }).join('');
         nodes.querySelectorAll('.mp-corner').forEach(g => {
             g.addEventListener('click', () => focusCorner(+g.dataset.k));
@@ -918,7 +917,7 @@
     if (!root) return;
     const picks = [...root.querySelectorAll('.mp-stack-pick button')];
     const layers = [...root.querySelectorAll('.mp-layer')];
-    let stack = 0, layer = 0, timer = null;
+    let stack = 0, layer = 0;
     const show = () => {
         picks.forEach((b, i) => b.setAttribute('aria-pressed', i === stack));
         layers.forEach((b, i) => b.setAttribute('aria-pressed', i === layer));
@@ -927,17 +926,6 @@
     };
     picks.forEach((b, i) => b.addEventListener('click', () => { stack = i; show(); }));
     layers.forEach((b, i) => b.addEventListener('click', () => { layer = i; show(); }));
-    // front end → back end → data, then the answer comes back up (Security and Ship aren't on a request's path)
-    root.querySelector('.mp-stack-run').addEventListener('click', () => {
-        clearInterval(timer);
-        const path = [0, 1, 2, 1, 0];
-        let step = 0;
-        timer = setInterval(() => {
-            layers.forEach(b => b.classList.remove('ping'));
-            if (step === path.length) { clearInterval(timer); return; }
-            layers[path[step++]].classList.add('ping');
-        }, 420);
-    });
     show();
 })();
 
