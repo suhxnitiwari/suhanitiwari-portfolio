@@ -124,9 +124,9 @@ html {
    Sub        headings inside a section (story rows, projects, awards, places): Georgia 1.35rem, weight 700
    The big display name (Hello cover, Pursue intro) is the brand and stays as it is.
    Corners    four sizes only, one per role:
-              --r-card  20px   every card and panel that sits on the page
-              --r-inset 14px   a panel, photo or box inside a card
-              --r-small  8px   thumbnails, covers, small tiles and inputs
+              --r-card  10px   every card and panel that sits on the page
+              --r-inset  8px   a panel, photo or box inside a card
+              --r-small  6px   thumbnails, covers, small tiles and inputs
               --r-pill         buttons, tabs, chips and labels
               (deliberate shapes stay: the arched portrait, paper journal pages, book spines, the Polaroid, thin bars,
               and the marketing slide decks, whose corners scale with the slide)
@@ -134,12 +134,13 @@ html {
               --pad-card-sm for small grid cards, --pad-card for large panels */
 :root {
     --page-width: 1100px;
-    --r-card: 20px;
-    --r-inset: 14px;
-    --r-small: 8px;
+    --r-card: 10px;
+    --r-inset: 8px;
+    --r-small: 6px;
     --r-pill: 999px;
-    /* one resting shadow for every card, a soft rose one */
-    --shadow-card: 0 8px 24px rgba(158, 90, 99, 0.08);
+    /* one resting shadow for every card: barely there, so cards sit flat on the page instead of floating
+       (tighter corners and a light shadow keep the site from looking like a template) */
+    --shadow-card: 0 1px 3px rgba(42, 24, 16, 0.06);
     --card-border: 1px solid #EBD5D0;
     /* two card sizes: small grid cards and large panels */
     --pad-card-sm: 22px 24px;

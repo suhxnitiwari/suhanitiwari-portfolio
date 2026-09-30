@@ -743,7 +743,9 @@
         @{
             // My DISC profile (BlossomUp). Wording taken from my report.
             var discType = "Dominance";
-            var discSummary = "Assertive, results-driven, and motivated by ownership and impact. I thrive in challenging situations and like to move things forward in both my personal and professional life.";
+            // the spin: lead with what D looks like at work, then name it, so "Dominance" never reads as combative
+            var discHeadline = "I drive things to done.";
+            var discSummary = "D stands for Dominance, which sounds scarier than it is. At work it means I’m results-driven and motivated by ownership and impact: give me a hard problem and I’ll move it forward.";
             var discTraits = new[]
             {
                 ("Assertive and Confident", "Rarely hesitates when confronted with challenges and is eager to take charge."),
@@ -808,8 +810,8 @@
                     <circle cx="120" cy="120" r="110" class="disc-ring" />
                 </svg>
                 <div class="disc-intro">
-                    <p class="disc-kicker">My DISC style</p>
-                    <h3>@discType</h3>
+                    <p class="disc-kicker">My DISC style: D</p>
+                    <h3>@discHeadline</h3>
                     <p>@discSummary</p>
                 </div>
             </div>

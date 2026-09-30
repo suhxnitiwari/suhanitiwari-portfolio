@@ -133,132 +133,6 @@
     }
 
 
-    /* Tagline and two buttons, tucked under SUHANI over the darker flowers (clear of my face) */
-    .cover-intro {
-        position: absolute;
-        left: 2.6%;
-        top: calc(38% + 12.5cqw);
-        max-width: 44%;
-        animation: coverFade 1.2s ease 1.5s backwards;
-    }
-
-    /* as you scroll, the tagline fades; the Skills, Projects and Résumé buttons never fade,
-       so they're the last thing you see of the cover */
-    .cover-intro .cover-tagline {
-        opacity: calc(1 - var(--p, 0) * 2.2);
-    }
-
-    .cover-tagline {
-        margin: 0 0 clamp(30px, 3.4cqw, 52px);
-        font-family: Georgia, serif;
-        font-size: clamp(1.2rem, 1.85cqw, 1.75rem);
-        font-style: italic;
-        line-height: 1.35;
-        color: #FFFFFF;
-        text-shadow: 0 1px 12px rgba(20, 8, 6, 0.55);
-    }
-
-    .cover-tagline span,
-    .cover-tagline strong {
-        display: block;
-    }
-
-    /* McCombs School of Business, UT Austin */
-    .cover-school {
-        margin-bottom: clamp(12px, 1.3cqw, 20px);
-        font-family: system-ui, sans-serif;
-        font-size: 0.62em;
-        font-style: normal;
-        font-weight: 700;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        color: #FAF1EF;
-    }
-
-    /* Management Information Systems: the line a recruiter reads first */
-    .cover-major {
-        font-family: Georgia, serif;
-        font-size: 1.45em;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 1.2;
-        white-space: nowrap;
-        color: #FFFFFF;
-    }
-
-    .cover-second {
-        margin-top: clamp(10px, 1.1cqw, 18px);
-        font-size: 0.95em;
-    }
-
-    /* Skills, Projects, Résumé: always one row */
-    .cover-actions {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 14px;
-    }
-
-    /* The two buttons a recruiter came for: clear and easy to spot, without the fuss */
-    .cover-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 17px 34px;
-        border-radius: var(--r-pill);
-        border: 2px solid rgba(255, 248, 246, 0.9);
-        background: rgba(30, 14, 12, 0.18);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        font-size: clamp(1rem, 1.2cqw, 1.2rem);
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        text-decoration: none;
-        white-space: nowrap;
-        color: #FFF8F6;
-        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
-    }
-
-    .cover-btn:hover {
-        transform: translateY(-2px);
-        background: #FFF8F6;
-        color: #8F4661;
-    }
-
-    /* the main one: solid mulberry */
-    .cover-btn.primary {
-        background: #8F4661;
-        border-color: #8F4661;
-        color: #FFFFFF;
-    }
-
-    .cover-btn.primary:hover {
-        background: #A0526F;
-        border-color: #A0526F;
-        color: #FFFFFF;
-    }
-
-    .cover-arrow {
-        display: inline-block;
-        transition: transform 0.2s ease;
-    }
-
-    .cover-btn:hover .cover-arrow {
-        transform: translateX(3px);
-    }
-
-    .cover-btn:focus-visible {
-        outline: 2px solid #FFF8F6;
-        outline-offset: 3px;
-    }
-
-    @@media (prefers-reduced-motion: reduce) {
-        .cover-btn,
-        .cover-arrow {
-            transition: none;
-        }
-    }
-
     .cover-scroll {
         position: absolute;
         left: 50%;
@@ -303,47 +177,9 @@
             left: 4%;
         }
 
-        /* sits just above the tagline and the row of buttons (about 140px tall together) */
         .cover-name.right {
-            bottom: calc(4% + 190px);
+            bottom: 6%;
             right: 4%;
-        }
-
-        /* phones: tagline and buttons across the bottom, where the scroll hint was */
-        .cover-intro {
-            left: 5%;
-            right: 5%;
-            top: auto;
-            bottom: 4%;
-            max-width: none;
-            text-align: center;
-        }
-
-        .cover-tagline {
-            margin-bottom: 22px;
-            font-size: 0.95rem;
-        }
-
-        .cover-major {
-            font-size: 1.35em;
-            white-space: normal;
-        }
-
-        /* the two buttons side by side, sized to fit a phone */
-        .cover-actions {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-        }
-
-        .cover-btn {
-            justify-content: center;
-            gap: 6px;
-            padding: 14px 10px;
-            font-size: 0.78rem;
-            letter-spacing: 0.8px;
-            text-align: center;
-            white-space: normal;
         }
 
         .cover-scroll {
@@ -366,8 +202,7 @@
         }
 
         .cover-name .ch,
-        .cover-scroll,
-        .cover-intro {
+        .cover-scroll {
             animation: none;
         }
     }
@@ -2639,100 +2474,6 @@
         }
     }
 
-    /* ===== CTA SECTION ===== */
-    .cta-section {
-        background: #FAF1EF;
-        padding: 52px 60px 60px;
-        text-align: center;
-    }
-
-    .cta-section h2 {
-        font-size: 2.5em;
-        font-weight: 800;
-        color: #2A1810;
-        margin-bottom: 24px;
-        font-family: Georgia, serif;
-    }
-
-    /* four places to go: label + arrow on top, a one-liner underneath */
-    .cta-links {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-
-    .cta-link {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: var(--pad-card-sm);
-        border-radius: var(--r-card);
-        background: #FFF8F6;
-        border: var(--card-border);
-        text-align: left;
-        text-decoration: none;
-        color: #2A1810;
-        transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
-        box-shadow: var(--shadow-card);
-    }
-
-    .cta-link:hover,
-    .cta-link:focus-visible {
-        transform: translateY(-4px);
-        background: #9E5A63;
-        border-color: #9E5A63;
-        color: #FFF8F6;
-    }
-
-    .cta-label {
-        font-size: 0.92em;
-        font-weight: 700;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        color: #9E5A63;
-        transition: color 0.3s ease;
-    }
-
-    .cta-link:hover .cta-label,
-    .cta-link:focus-visible .cta-label {
-        color: #FFF8F6;
-    }
-
-    .cta-arrow {
-        display: inline-block;
-        transition: transform 0.3s ease;
-    }
-
-    .cta-link:hover .cta-arrow {
-        transform: translateX(5px);
-    }
-
-    .cta-desc {
-        font-family: Georgia, serif;
-        font-size: 1.02em;
-        line-height: 1.45;
-    }
-
-    @@media (prefers-reduced-motion: reduce) {
-        .cta-link,
-        .cta-arrow {
-            transition: none;
-        }
-    }
-
-    @@media (max-width: 1000px) {
-        .cta-links {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @@media (max-width: 520px) {
-        .cta-links {
-            grid-template-columns: 1fr;
-        }
-    }
 
     @@media (max-width: 768px) {
         .type-section {
@@ -2800,19 +2541,6 @@
     <h1 class="visually-hidden">Suhani Tiwari</h1>
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
     <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
-    <div class="cover-intro">
-        @* Readable in one glance: who I am (MIS major at McCombs) and the two things a recruiter came for *@
-        <p class="cover-tagline">
-            <span class="cover-school">McCombs School of Business, UT Austin</span>
-            <strong class="cover-major">Management Information Systems</strong>
-            <span class="cover-second">Marketing, psychology and product strategy</span>
-        </p>
-        <div class="cover-actions">
-            <a class="cover-btn primary" href="/home/pursue#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
-            <a class="cover-btn" href="/home/pursue#projects" aria-label="See my projects">Projects <span class="cover-arrow" aria-hidden="true">→</span></a>
-            <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
-        </div>
-    </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>
 </section>
 
@@ -2822,17 +2550,9 @@
     (function () {
         const hero = document.querySelector('.cover-hero');
         if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        const intro = hero.querySelector('.cover-intro');
-        const actions = hero.querySelector('.cover-actions');
         const update = () => {
             const progress = Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight));
             hero.style.setProperty('--p', progress.toFixed(4));
-            // the Skills, Projects and Résumé buttons ride down with the page, staying put on screen,
-            // until they reach the bottom edge of the photo; then they leave with it, last of all
-            if (actions) {
-                const room = hero.offsetHeight - (actions.offsetTop + intro.offsetTop + actions.offsetHeight) - 18;
-                actions.style.transform = `translateY(${Math.max(0, Math.min(window.scrollY, room))}px)`;
-            }
         };
         window.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', update);
@@ -2875,7 +2595,7 @@
 <section class="about-section" id="about">
     <div class="about-container">
         <div class="about-intro">
-            <h2>People are usually where I start.</h2>
+            <h2>Hi, I’m Suhani.</h2>
             <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/pursue#mis">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/pursue#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
@@ -4022,29 +3742,4 @@
     });
 </script>
 
-@* CTA *@
-<section class="cta-section page-fill">
-    <h2>Where to go next</h2>
-    <div class="cta-links">
-        <a href="/home/pursue#projects" class="cta-link">
-            <span class="cta-label">Projects <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Things I built to solve a problem.</span>
-        </a>
-        <a href="/home/world" class="cta-link">
-            <span class="cta-label">World <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">The people and places that shaped me.</span>
-        </a>
-        <a href="/home/favorites" class="cta-link">
-            <span class="cta-label">Favorites <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">What I read, watch, listen to and keep coming back to.</span>
-        </a>
-        <a href="/home/make" class="cta-link">
-            <span class="cta-label">Curate <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Art, writing and things I made because I wanted them to exist.</span>
-        </a>
-        <a href="/home/pursue" class="cta-link">
-            <span class="cta-label">Pursue <span class="cta-arrow" aria-hidden="true">→</span></span>
-            <span class="cta-desc">Work, coursework and where I’m headed.</span>
-        </a>
-    </div>
-</section>
+
