@@ -60,6 +60,10 @@ public class HomeController : Controller
     [Route("mis")]
     public IActionResult Mis() => Redirect("/home/pursue#mis");
 
+    // suhanitiwari.com/projects: straight to the things I've built
+    [Route("projects")]
+    public IActionResult Projects() => Redirect("/home/pursue#projects");
+
     [Route("resume")]
     public IActionResult Resume([FromServices] IWebHostEnvironment environment)
     {
