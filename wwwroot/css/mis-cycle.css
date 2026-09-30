@@ -652,8 +652,17 @@
 
 /* ===== phones: a list of the four steps; tapping one opens its detail underneath ===== */
 @media (max-width: 499px) {
+    /* Overview, MIS Major and Marketing Minor fit one row on a phone instead of pushing the page sideways */
     .cw-tabs {
         margin-top: -16px;
+        gap: 6px;
+    }
+
+    .cw-tab {
+        padding: 9px 11px;
+        font-size: 0.7em;
+        letter-spacing: 1px;
+        white-space: nowrap;
     }
 
     .mis-intro h2 {

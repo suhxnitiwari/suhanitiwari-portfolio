@@ -398,6 +398,23 @@
         text-align-last: left;
     }
 
+    /* phones: a narrow column can't justify without big gaps between words, so it reads left-aligned;
+       the "See it in" links wrap onto a second row instead of squeezing their words onto two lines */
+    @@media (max-width: 600px) {
+        .about-intro p {
+            text-align: left;
+        }
+
+        .about-proof {
+            flex-wrap: wrap;
+        }
+
+        .about-proof a {
+            white-space: nowrap;
+            font-size: 0.85em;
+        }
+    }
+
     .about-intro h2 {
         margin: 0 0 22px;
         font-family: Georgia, serif;
