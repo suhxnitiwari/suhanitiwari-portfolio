@@ -3,12 +3,10 @@
    and a source line with page number on every slide. Slides scale with the stage (container query units);
    on phones they stack at their natural height. *@
 @functions {
-    // Storyline tracker across the top of a slide: every section, with the current one marked; each one jumps to its section
+    // Top of a slide: just the deck's name. The numbered row under the slide is the only slide menu
+    // (a second one up here said the same thing twice)
     static string Top(string[] sections, int current, string brand) =>
-        "<div class=\"mk-top\"><ol class=\"mk-track\">" +
-        string.Concat(sections.Select((s, i) =>
-            $"<li{(i == current ? " class=\"on\"" : "")}><button type=\"button\" data-sec=\"{i}\"{(i == current ? " aria-current=\"step\"" : "")}>{s}</button></li>")) +
-        $"</ol><span class=\"mk-brandtag\">{brand}</span></div>";
+        $"<div class=\"mk-top\"><span class=\"mk-brandtag\">{brand}</span></div>";
 
     // Footer: source on the left, page number on the right
     static string Foot(string source, int page, int total) =>
@@ -52,7 +50,7 @@
             <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
         </div>
 
-        <!-- ===================== Starbucks ===================== -->
+        @* ===================== Starbucks ===================== *@
         <div class="mp-proj mk-sbux" id="mk-proj-0" role="tabpanel" aria-labelledby="mk-title-0">
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Starbucks slides">
                 <div class="mk-stage">
@@ -88,7 +86,7 @@
                                     <li><b>58%</b>of U.S. store sales come from Rewards members</li>
                                     <li><b>35M+</b>active Rewards members, an all-time high</li>
                                 </ul>
-                                <p class="mk-sowhat"><b>So what</b>The growth isn’t new customers. It’s moving visits Starbucks already has into the app.</p>
+                                <p class="mk-sowhat"><b>Key takeaway</b>The growth isn’t new customers. It’s moving visits Starbucks already has into the app.</p>
                             </div>
                         </div>
                         @Html.Raw(Foot("Technomic (2025); Starbucks Q4 FY25 investor dashboard", 2, 7))
@@ -137,7 +135,7 @@
                                 }
                             </ol>
                         </figure>
-                        <p class="mk-sowhat inline"><b>So what</b>The three highest scorers all build habits: they make the next order faster than the last.</p>
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>The three highest scorers all build habits: they make the next order faster than the last.</p>
                         @Html.Raw(Foot("RICE scoring, author analysis", 4, 7))
                     </div>
 
@@ -159,15 +157,104 @@
                     <div class="mk-slide" data-title="Prototype" hidden>
                         @Html.Raw(Top(sbuxSections, 4, "Starbucks: App &amp; loyalty strategy"))
                         <h4 class="mk-h">The prototype puts context-aware recommendations <em>one tap</em> from ordering.</h4>
-                        <div class="mk-proto">
-                            <ol class="mk-callouts">
-                                <li><b>Context-aware picks</b>Drinks matched to temperature, time of day and events nearby, like an ACL-weekend pick</li>
-                                <li><b>“Set the vibe” filters</b>Cravings, chill-to-hot and indulgent-to-light instead of scrolling a full menu</li>
-                                <li><b>One-tap order</b>Every recommendation goes straight to checkout, cutting friction at the moment of decision</li>
-                            </ol>
-                            <img src="/images/projects/starbucks/prototype-ai-recs.jpg" alt="Two prototype app screens: AI drink picks such as an ACL Weekend Pick and a Hot Day Essential, and a Set the vibe filter panel" width="860" height="1000" loading="lazy" decoding="async">
+                        @* my original prototype as three connected phones: set the vibe, the picks update live, then make it a ritual *@
+                        <div class="sb-trio">
+                            <figure class="sb-shot">
+                                <div class="sb-phone" aria-label="Screen 1: Set the vibe">
+                                    <div class="sb-screen">
+                                        <div class="sb-status"><b>9:41</b><span>Austin</span></div>
+                                        <div class="sb-view sb-vibe">
+                                            <p class="sb-title">Set the vibe</p>
+                                            <p class="sb-sub">Tell us what you’re feeling right now</p>
+                                            <div class="sb-block">
+                                                <p class="sb-h">I’m craving</p>
+                                                <div class="sb-chips" data-group="crave">
+                                                    <button type="button" data-v="energy">Energy</button>
+                                                    <button type="button" data-v="refreshing" aria-pressed="true">Refreshing</button>
+                                                    <button type="button" data-v="sweet">Sweet</button>
+                                                    <button type="button" data-v="comfort">Comfort</button>
+                                                    <button type="button" data-v="light">Light</button>
+                                                    <button type="button" data-v="treat">Treat yourself</button>
+                                                </div>
+                                            </div>
+                                            <div class="sb-block">
+                                                <p class="sb-h">Today feels like <em class="sb-weather">Sunny, 80°</em></p>
+                                                <input type="range" class="sb-range" data-k="heat" min="0" max="100" value="80" aria-label="Chill to hot">
+                                                <p class="sb-ends"><span>Chill</span><span>Hot</span></p>
+                                            </div>
+                                            <div class="sb-block">
+                                                <p class="sb-h">Happening near you</p>
+                                                <div class="sb-chips one" data-group="event">
+                                                    <button type="button" data-v="acl" aria-pressed="true">ACL weekend</button>
+                                                    <button type="button" data-v="concert">Zara Larsson concert</button>
+                                                    <button type="button" data-v="ut">UT game day</button>
+                                                    <button type="button" data-v="study">Study mode</button>
+                                                    <button type="button" data-v="shop">Shopping day</button>
+                                                </div>
+                                            </div>
+                                            <div class="sb-block">
+                                                <p class="sb-h">How are you feeling?</p>
+                                                <input type="range" class="sb-range" data-k="light" min="0" max="100" value="60" aria-label="Indulgent to light">
+                                                <p class="sb-ends"><span>Indulgent</span><span>Light</span></p>
+                                            </div>
+                                        </div>
+                                        <nav class="sb-nav" aria-hidden="true"><span class="on">Home</span><span>Scan</span><span>Order</span><span>Gift</span><span>Rewards</span></nav>
+                                    </div>
+                                </div>
+                                <figcaption><i>1</i>Set the vibe</figcaption>
+                            </figure>
+                            <figure class="sb-shot">
+                                <div class="sb-phone" aria-label="Screen 2: Your picks">
+                                    <div class="sb-screen">
+                                        <div class="sb-status"><b>9:41</b><span class="sb-temp">80°</span></div>
+                                        <div class="sb-view">
+                                            <p class="sb-title">Find your next favorite</p>
+                                            <p class="sb-sub">AI picks, updated as your vibe changes</p>
+                                            <ul class="sb-picks" aria-live="polite"></ul>
+                                            <p class="sb-fine">Tailored to your preferences, past orders, the weather and what’s happening nearby.</p>
+                                        </div>
+                                        <nav class="sb-nav" aria-hidden="true"><span class="on">Home</span><span>Scan</span><span>Order</span><span>Gift</span><span>Rewards</span></nav>
+                                    </div>
+                                </div>
+                                <figcaption><i>2</i>Get your picks</figcaption>
+                            </figure>
+                            <figure class="sb-shot">
+                                <div class="sb-phone" aria-label="Screen 3: Make it a ritual">
+                                    <div class="sb-screen">
+                                        <div class="sb-status"><b>9:41</b><span>Rewards</span></div>
+                                        <div class="sb-view">
+                                            <p class="sb-title">Make it a ritual</p>
+                                            <p class="sb-sub">Your usual, ready before you are</p>
+                                            <div class="sb-block sb-usual">
+                                                <p class="sb-h">Your usual</p>
+                                                <p class="sb-usual-name">Vanilla Latte</p>
+                                                <div class="sb-chips" data-group="mods">
+                                                    <button type="button" aria-pressed="true">Oat milk</button>
+                                                    <button type="button">Extra shot</button>
+                                                    <button type="button">Less sweet</button>
+                                                    <button type="button" aria-pressed="true">Hot</button>
+                                                </div>
+                                            </div>
+                                            <div class="sb-block">
+                                                <p class="sb-h">Repeat it every</p>
+                                                <div class="sb-days" data-group="days">
+                                                    <button type="button" aria-pressed="true">M</button><button type="button">T</button><button type="button" aria-pressed="true">W</button><button type="button">T</button><button type="button" aria-pressed="true">F</button>
+                                                </div>
+                                                <p class="sb-h sb-ready">Ready at <em>8:15 a.m., Guadalupe St.</em></p>
+                                            </div>
+                                            <div class="sb-waro">
+                                                <b class="sb-waro-n">3</b>
+                                                <span>ritual orders a week<br><small>that’s the WARO we manage to</small></span>
+                                            </div>
+                                            <button type="button" class="sb-apply sb-save">Save my ritual</button>
+                                        </div>
+                                        <nav class="sb-nav" aria-hidden="true"><span class="on">Home</span><span>Scan</span><span>Order</span><span>Gift</span><span>Rewards</span></nav>
+                                    </div>
+                                </div>
+                                <figcaption><i>3</i>Make it a ritual</figcaption>
+                            </figure>
                         </div>
-                        @Html.Raw(Foot("Author prototype (Canva)", 6, 7))
+                        @Html.Raw(Foot("Author prototype, rebuilt in code; tap a mood", 6, 7))
                     </div>
 
                     <div class="mk-slide" data-title="North star" hidden>
@@ -193,10 +280,13 @@
                         @Html.Raw(Foot("Product metrics framework, author analysis", 7, 7))
                     </div>
 
+                </div>
+                @* ‹ › sit beside the slide menu, outside the slide, so they never cover what's on it *@
+                <div class="mk-nav-row">
                     <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+                    <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
                     <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
                 </div>
-                <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
             </div>
 
             <div class="mk-info">
@@ -213,7 +303,7 @@
             </div>
         </div>
 
-        <!-- ===================== Owala ===================== -->
+        @* ===================== Owala ===================== *@
         <div class="mp-proj mk-owala" id="mk-proj-1" role="tabpanel" aria-labelledby="mk-title-1" hidden>
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Owala slides">
                 <div class="mk-stage">
@@ -238,7 +328,7 @@
                             <div><i>3</i><h5>No ecosystem</h5><p>No collection, progression or community pulls customers back.</p></div>
                             <div><i>4</i><h5>No identity</h5><p>Stylish and useful, but not tied to routine, achievement or meaning.</p></div>
                         </div>
-                        <p class="mk-sowhat inline"><b>So what</b>Without a reason to come back, Owala risks becoming a trend rather than a brand.</p>
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>Without a reason to come back, Owala risks becoming a trend rather than a brand.</p>
                         @Html.Raw(Foot("Author analysis", 2, 7))
                     </div>
 
@@ -251,7 +341,7 @@
                             <li><b>400%+</b><span>rise in Owala’s monthly unit sales, January to August 2024</span></li>
                             <li><b>30K+</b><span>runners at the 2026 Austin Marathon, from all 50 states and 50 countries</span></li>
                         </ul>
-                        <p class="mk-sowhat inline"><b>So what</b>Owala doesn’t need more first-time buyers. It needs a reason for existing fans to buy again.</p>
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>Owala doesn’t need more first-time buyers. It needs a reason for existing fans to buy again.</p>
                         @Html.Raw(Foot("Fortune Business Insights; Circana via Modern Retail (2025); Particl (2024); Austin Marathon (2026)", 3, 7))
                     </div>
 
@@ -287,7 +377,7 @@
                                     <li><b>YETI</b>premium durability and a broad product ecosystem</li>
                                     <li><b>CamelBak</b>functional necessity for athletes</li>
                                 </ul>
-                                <p class="mk-sowhat"><b>So what</b>The open space is high identity plus emotional value, and achievement can own it.</p>
+                                <p class="mk-sowhat"><b>Key takeaway</b>The open space is high identity plus emotional value, and achievement can own it.</p>
                             </div>
                         </div>
                         @Html.Raw(Foot("Author analysis", 4, 7))
@@ -303,7 +393,22 @@
                                 <li><b>Race weekend only</b>Limited quantities create urgency and exclusivity</li>
                                 <li><b>Collect the cities</b>“Which races have you run?” becomes the reason to come back</li>
                             </ol>
-                            <img class="dark" src="/images/projects/owala/race-series-bottles.jpg" alt="Three Austin Marathon race-edition Owala bottles for 2026, 2027 and 2028, each engraved with a name and a faster finish time" width="1000" height="914" loading="lazy" decoding="async">
+                            @* build your own race bottle: pick a city, type a name and a finish time, and it's engraved live *@
+                            <div class="ow-build">
+                                <figure class="ow-hero" aria-live="polite">
+                                    <img class="ow-hero-img" src="/images/projects/owala/bottles/austin.webp" alt="The Austin Marathon race-edition Owala bottle">
+                                    <span class="ow-eng-time">4:12:36</span>
+                                    <span class="ow-eng-name" title="Tap to engrave your name">YOUR NAME</span>
+                                </figure>
+                                <div class="ow-controls">
+                                    <label class="ow-label" for="owName">Engrave your name</label>
+                                    <input id="owName" class="ow-input ow-nudge" maxlength="12" placeholder="Type your name to engrave it" autocomplete="off">
+                                    <label class="ow-label" for="owTime">Your finish time</label>
+                                    <input id="owTime" class="ow-input" maxlength="8" placeholder="4:12:36" autocomplete="off" inputmode="numeric" pattern="[0-9:]*">
+                                    <p class="ow-label">Pick your race <span class="ow-count">1 of 8 collected</span></p>
+                                    <div class="ow-lineup" role="group" aria-label="Race city"><button type="button" data-city="austin" aria-pressed="true" aria-label="Austin"><img src="/images/projects/owala/bottles/austin.webp" alt="" loading="lazy"></button><button type="button" data-city="nyc" aria-pressed="false" aria-label="New York"><img src="/images/projects/owala/bottles/nyc.webp" alt="" loading="lazy"></button><button type="button" data-city="sf" aria-pressed="false" aria-label="San Francisco"><img src="/images/projects/owala/bottles/sf.webp" alt="" loading="lazy"></button><button type="button" data-city="neworleans" aria-pressed="false" aria-label="New Orleans"><img src="/images/projects/owala/bottles/neworleans.webp" alt="" loading="lazy"></button><button type="button" data-city="boston" aria-pressed="false" aria-label="Boston"><img src="/images/projects/owala/bottles/boston.webp" alt="" loading="lazy"></button><button type="button" data-city="seattle" aria-pressed="false" aria-label="Seattle"><img src="/images/projects/owala/bottles/seattle.webp" alt="" loading="lazy"></button><button type="button" data-city="miami" aria-pressed="false" aria-label="Miami"><img src="/images/projects/owala/bottles/miami.webp" alt="" loading="lazy"></button><button type="button" data-city="lasvegas" aria-pressed="false" aria-label="Las Vegas"><img src="/images/projects/owala/bottles/lasvegas.webp" alt="" loading="lazy"></button></div>
+                                </div>
+                            </div>
                         </div>
                         @Html.Raw(Foot("Author concept and design", 5, 7))
                     </div>
@@ -349,10 +454,13 @@
                         @Html.Raw(Foot("Author analysis", 7, 7))
                     </div>
 
+                </div>
+                @* ‹ › sit beside the slide menu, outside the slide, so they never cover what's on it *@
+                <div class="mk-nav-row">
                     <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+                    <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
                     <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
                 </div>
-                <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
             </div>
 
             <div class="mk-info">
@@ -370,3 +478,115 @@
         </div>
     </div>
 </section>
+
+<script>
+    // Starbucks prototype: three connected screens. Change the vibe on the first and the picks on the second update live;
+    // the third saves a ritual and counts the weekly ritual orders (the WARO metric from the deck)
+    (() => {
+        const trio = document.querySelector('.sb-trio');
+        if (!trio) return;
+        const POOL = [
+            { n: 'Iced Brown Sugar Oatmilk Shaken Espresso', why: 'Smooth, strong, not too sweet', c: '#B98A5E', iced: true, t: ['energy', 'light'] },
+            { n: 'Cold Brew', why: 'Zero fuss, all energy', c: '#4A2C1D', iced: true, t: ['energy', 'light'] },
+            { n: 'Strawberry Açaí Lemonade', why: 'Cooling, light, and actually refreshing', c: '#D9536F', iced: true, t: ['refreshing', 'light'] },
+            { n: 'Iced Matcha Latte', why: 'Refreshing, and easy on the sugar', c: '#9DBF7A', iced: true, t: ['refreshing', 'light', 'energy'] },
+            { n: 'Pink Drink', why: 'Fruity, creamy, very photogenic', c: '#F2A7B8', iced: true, t: ['refreshing', 'sweet'] },
+            { n: 'Iced Caramel Macchiato', why: 'Your new favorite, based on your taste', c: '#C9955C', iced: true, t: ['sweet', 'energy'] },
+            { n: 'Caramel Ribbon Crunch Frappuccino', why: 'Dessert, but make it a drink', c: '#D7B08A', iced: true, t: ['sweet', 'treat'] },
+            { n: 'White Chocolate Mocha', why: 'A treat-yourself afternoon', c: '#E8D3B9', iced: false, t: ['sweet', 'treat', 'comfort'] },
+            { n: 'Vanilla Latte', why: 'The one you order every morning', c: '#D8B894', iced: false, t: ['comfort', 'energy'] },
+            { n: 'Chai Tea Latte', why: 'Warm spice, very cozy', c: '#C79A6B', iced: false, t: ['comfort', 'sweet'] }];
+        const EVENTS = {
+            acl: { h: 'ACL Weekend Pick', why: 'Sabrina’s go-to before the show', btn: 'Order Sabrina’s Pick', name: 'Sabrina’s Pick' },
+            concert: { h: 'Concert Night Pick', why: 'Something to sip in line before Zara Larsson' },
+            ut: { h: 'Game Day Pick', why: 'Fuel for a long day at DKR' },
+            study: { h: 'Study Session Fuel', why: 'For the long night at the library' },
+            shop: { h: 'Shopping Day Sip', why: 'Easy to carry from store to store' }};
+        const HEADS = { refreshing: 'Hot Day Essential', sweet: 'Feeling Sweet?', energy: 'Need a Boost?', comfort: 'Cozy Pick', light: 'Light and Easy', treat: 'Treat Yourself' };
+        const cup = d => d.iced
+            ? `<svg viewBox="0 0 40 48" aria-hidden="true"><path d="M26 2l-4 8" class="sb-straw"/><path d="M6 10h28l-1 4H7z" class="sb-lid"/><path d="M8 14h24l-3 30H11z" fill="${d.c}"/><path d="M9 20h22" class="sb-ice"/><circle cx="20" cy="31" r="3.2" class="sb-logo"/></svg>`
+            : `<svg viewBox="0 0 40 48" aria-hidden="true"><path d="M8 8h24l-1 5H9z" class="sb-lid"/><path d="M9.5 13h21l-2.5 31h-16z" fill="#FFFFFF" stroke="#D4E9E2"/><path d="M11 24h18l-.8 9H11.8z" fill="${d.c}"/><circle cx="20" cy="38.5" r="2.4" class="sb-logo"/></svg>`;
+        const confirm = btn => {
+            const was = btn.textContent;
+            btn.textContent = 'Added ✓';
+            btn.classList.add('done');
+            setTimeout(() => { btn.textContent = was; btn.classList.remove('done'); }, 1600);
+        };
+        const heat = trio.querySelector('[data-k="heat"]'), light = trio.querySelector('[data-k="light"]'), list = trio.querySelector('.sb-picks');
+        const render = () => {
+            const craves = [...trio.querySelectorAll('[data-group="crave"] [aria-pressed="true"]')].map(b => b.dataset.v);
+            const ev = trio.querySelector('[data-group="event"] [aria-pressed="true"]')?.dataset.v;
+            const h = heat.value / 100, l = light.value / 100;
+            trio.querySelectorAll('.sb-weather').forEach(w => w.textContent = h > 0.66 ? 'Sunny, 80°' : h > 0.33 ? 'Mild, 68°' : 'Chilly, 52°');
+            trio.querySelectorAll('.sb-temp').forEach(w => w.textContent = h > 0.66 ? '80°' : h > 0.33 ? '68°' : '52°');
+            const score = d => d.t.filter(t => craves.includes(t)).length * 2 + (d.iced ? h : 1 - h) * 1.5
+                + (d.t.includes('light') ? l : 0) + (d.t.includes('treat') ? 1 - l : 0) + (ev === 'study' && d.t.includes('energy') ? 1 : 0);
+            const ranked = POOL.map(d => ({ d, s: score(d) })).sort((a, b) => b.s - a.s).map(x => x.d);
+            const e = EVENTS[ev];
+            const headFor = d => HEADS[d.t.find(t => craves.includes(t)) || d.t[0]];
+            const rows = [];
+            if (e) rows.push(`<li class="hero"><p class="sb-tag">Trending near you</p>${cup(ranked[0])}<div><b>${e.h}</b><span>${e.why}</span><em>${e.name || ranked[0].n}</em></div><button type="button" class="sb-order">${e.btn || 'Order'}</button></li>`);
+            (e ? ranked.slice(1, 3) : ranked.slice(0, 3)).forEach(d => rows.push(`<li>${cup(d)}<div><b>${headFor(d)}</b><span>${d.why}</span><em>${d.n}</em></div><button type="button" class="sb-order">Order</button></li>`));
+            list.innerHTML = rows.join('');
+            list.querySelectorAll('.sb-order').forEach(btn => btn.addEventListener('click', () => confirm(btn)));
+        };
+        // chips: many can be on, except groups marked .one (the event)
+        trio.querySelectorAll('.sb-chips, .sb-days').forEach(group => group.querySelectorAll('button').forEach(btn => {
+            if (!btn.hasAttribute('aria-pressed')) btn.setAttribute('aria-pressed', 'false');
+            btn.addEventListener('click', () => {
+                const on = btn.getAttribute('aria-pressed') !== 'true';
+                if (group.classList.contains('one')) group.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', 'false'));
+                btn.setAttribute('aria-pressed', on);
+                if (group.dataset.group === 'days') waro();
+                else render();
+            });
+        }));
+        [heat, light].forEach(r => r.addEventListener('input', render));
+        const waro = () => trio.querySelector('.sb-waro-n').textContent = trio.querySelectorAll('[data-group="days"] [aria-pressed="true"]').length;
+        const save = trio.querySelector('.sb-save');
+        save.addEventListener('click', () => {
+            save.textContent = 'Ritual saved ✓';
+            save.classList.add('done');
+            setTimeout(() => { save.textContent = 'Save my ritual'; save.classList.remove('done'); }, 1800);
+        });
+        render();
+        waro();
+    })();
+
+    // Owala Race Series: tap a bottle in the lineup to pick your race; your name and time are engraved on it as you type,
+    // and every city you pick gets collected
+    (() => {
+        const build = document.querySelector('.ow-build');
+        if (!build) return;
+        const hero = build.querySelector('.ow-hero-img'), picks = [...build.querySelectorAll('.ow-lineup button')];
+        const got = new Set(['austin']);
+        picks.forEach(b => b.addEventListener('click', () => {
+            picks.forEach(p => p.setAttribute('aria-pressed', p === b));
+            hero.src = b.querySelector('img').src;
+            hero.alt = `The ${b.getAttribute('aria-label')} Marathon race-edition Owala bottle`;
+            got.add(b.dataset.city);
+            b.classList.add('got');
+            build.querySelector('.ow-count').textContent = `${got.size} of 8 collected`;
+        }));
+        picks[0].classList.add('got');
+        const name = build.querySelector('.ow-eng-name'), time = build.querySelector('.ow-eng-time');
+        // the name shrinks until it fits across the bottle, however long it is
+        const fit = () => {
+            name.style.fontSize = '';
+            let size = parseFloat(getComputedStyle(name).fontSize);
+            while (name.scrollWidth > name.clientWidth && size > 8) name.style.fontSize = `${--size}px`;
+        };
+        build.querySelector('#owName').addEventListener('input', e => { name.textContent = e.target.value.trim() || 'YOUR NAME'; e.target.classList.remove('ow-nudge'); fit(); });
+        // tapping the name on the bottle takes you to the box to type yours
+        name.addEventListener('click', () => build.querySelector('#owName').focus());
+        // finish time: numbers only, and the colons go in for you (41236 becomes 4:12:36)
+        build.querySelector('#owTime').addEventListener('input', e => {
+            const d = e.target.value.replace(/\D/g, '').slice(0, 6);
+            const t = d.length > 4 ? `${d.slice(0, -4)}:${d.slice(-4, -2)}:${d.slice(-2)}` : d.length > 2 ? `${d.slice(0, -2)}:${d.slice(-2)}` : d;
+            e.target.value = t;
+            time.textContent = t || '4:12:36';
+        });
+        fit();
+        new ResizeObserver(fit).observe(build);
+    })();
+</script>
