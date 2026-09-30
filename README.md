@@ -2,6 +2,10 @@
 
 **My corner of the internet, built from scratch.**
 
+## Ownership
+
+© 2026 Suhani Tiwari. **All rights reserved.** This is my original work. The code is public so you can see how I build, not so you can reuse it: copying, reusing or republishing any part of it, including for a portfolio or a class assignment, is not permitted without my written permission. See [LICENSE](LICENSE).
+
 A full-stack personal portfolio exploring where technology, business and people meet, along with everything else I'm curious about.
 
 **→ Live at [suhanitiwari.com](https://suhanitiwari.com)**
