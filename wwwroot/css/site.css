@@ -9,7 +9,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #9E5A63;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #7E3F4A;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -140,8 +140,8 @@ html {
     --r-pill: 999px;
     /* one resting shadow for every card: barely there, so cards sit flat on the page instead of floating
        (tighter corners and a light shadow keep the site from looking like a template) */
-    --shadow-card: 0 1px 3px rgba(42, 24, 16, 0.06);
-    --card-border: 1px solid #EBD5D0;
+    --shadow-card: 0 1px 3px rgba(30, 16, 10, 0.10);
+    --card-border: 1px solid #DCBDB6;
     /* two card sizes: small grid cards and large panels */
     --pad-card-sm: 22px 24px;
     --pad-card: 30px 32px;
@@ -169,7 +169,7 @@ html {
     line-height: 1.15 !important;
     letter-spacing: normal !important;
     text-align: left !important;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 /* Section */
@@ -192,7 +192,7 @@ html {
     letter-spacing: normal !important;
     text-transform: none !important;
     text-align: left !important;
-    color: #2A1810 !important;
+    color: #1E100A !important;
 }
 
 /* Sub */

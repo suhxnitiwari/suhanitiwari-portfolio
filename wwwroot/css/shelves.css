@@ -14,7 +14,7 @@
 }
 
 .bake-open:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 4px;
 }
 
@@ -28,7 +28,7 @@
 .bake-whisk {
     width: 38%;
     fill: none;
-    stroke: #9E5A63;
+    stroke: #7E3F4A;
     stroke-width: 1.3;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -48,7 +48,7 @@
     border: none;
     border-radius: var(--r-card);
     background: #FFF8F6;
-    color: #2A1810;
+    color: #1E100A;
     box-shadow: 0 30px 80px rgba(42, 24, 16, 0.3);
     overflow: auto;
 }
@@ -77,7 +77,7 @@
     border: none;
     border-radius: 50%;
     background: rgba(250, 241, 239, 0.92);
-    color: #2A1810;
+    color: #1E100A;
     font-size: 1.5em;
     line-height: 1;
     cursor: var(--cursor-hot, pointer);
@@ -85,7 +85,7 @@
 
 /* keep the focus ring on the close button in the site's rose, not the browser's blue */
 .recipe-close:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 2px;
 }
 
@@ -121,7 +121,7 @@
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .recipe-body > h2,
@@ -129,20 +129,20 @@
     margin: 4px 0 6px;
     font-family: Georgia, serif;
     font-size: 2em;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .recipe-line {
     margin: 0;
     font-style: italic;
-    color: #56634A;
+    color: #3F4A34;
 }
 
 .recipe-meta {
     margin: 12px 0 0;
     font-size: 0.85em;
     font-weight: 600;
-    color: #8A4D57;
+    color: #733642;
 }
 
 /* Make > Traveling: a trip's card, one row per spot */
@@ -194,7 +194,7 @@
     font-family: Georgia, serif;
     font-style: italic;
     font-size: clamp(0.72rem, 6cqw, 0.95rem);
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 /* the sketch, taped in like a photo */
@@ -223,7 +223,7 @@
     box-shadow: 0 3px 8px rgba(42, 24, 16, 0.14);
     transform: rotate(2.5deg);
     font-size: clamp(0.5rem, 4.4cqw, 0.72rem);
-    color: #2A1810;
+    color: #1E100A;
     overflow: hidden;
 }
 
@@ -247,7 +247,7 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #8A4D57;
+    color: #733642;
 }
 
 .ticket-route {
@@ -257,12 +257,12 @@
     margin-top: 4px !important;
     font-family: Georgia, serif;
     font-size: 1.9em;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .ticket-plane {
     font-size: 0.7em;
-    color: #8A4D57;
+    color: #733642;
 }
 
 .ticket-meta {
@@ -298,7 +298,7 @@
     width: 26px;
     min-height: 34px;
     margin-top: 8px;
-    background: repeating-linear-gradient(180deg, #2A1810 0 2px, transparent 2px 4px, #2A1810 4px 5px, transparent 5px 8px);
+    background: repeating-linear-gradient(180deg, #1E100A 0 2px, transparent 2px 4px, #1E100A 4px 5px, transparent 5px 8px);
     opacity: 0.8;
 }
 
@@ -308,7 +308,7 @@
     font-family: Georgia, serif;
     font-style: italic;
     font-size: clamp(0.68rem, 5.4cqw, 0.9rem);
-    color: #56634A;
+    color: #3F4A34;
 }
 
 .trip-card {
@@ -350,7 +350,7 @@
     margin: 0;
     font-family: Georgia, serif;
     font-size: 1.15em;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .trip-must {
@@ -358,7 +358,7 @@
     margin-left: 6px;
     padding: 2px 9px;
     border-radius: var(--r-pill);
-    background: #8A4D57;
+    background: #733642;
     color: #FFF8F6;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 0.6em;
@@ -444,7 +444,7 @@
 }
 
 .art-open:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 4px;
 }
 
@@ -491,7 +491,7 @@
 }
 
 .gallery-wall:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 3px;
 }
 
@@ -573,7 +573,7 @@
 }
 
 .gallery-piece .art-open:hover .gallery-title {
-    color: #8A4D57;
+    color: #733642;
 }
 
 /* ---- tablets and phones: a shorter wall, slimmer frames ---- */
@@ -638,7 +638,7 @@
     padding: 22px 20px 18px;
     background: #FFF8F6;
     border: 1px solid #EBD5D0;
-    border-top: 4px solid #9E5A63;
+    border-top: 4px solid #7E3F4A;
 }
 
 .writing-kind {
@@ -646,7 +646,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .writing-dedication {
@@ -654,7 +654,7 @@
     font-family: Georgia, serif;
     font-size: 0.8em;
     font-style: italic;
-    color: #56634A;
+    color: #3F4A34;
 }
 
 .writing-opening {
@@ -666,7 +666,7 @@
     font-size: 0.98em;
     font-style: italic;
     line-height: 1.45;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 /* each card links to the piece on GirlSpring */
@@ -686,7 +686,7 @@
 }
 
 .writing-card:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 4px;
 }
 
@@ -699,7 +699,7 @@
     margin-top: auto;
     font-size: 0.75em;
     font-weight: 600;
-    color: #8A4D57;
+    color: #733642;
 }
 
 /* phones: wider pages so the opening lines have room */
@@ -732,9 +732,9 @@
 .watch-more-btn {
     padding: 14px 32px;
     border-radius: var(--r-pill);
-    border: 1.5px solid #8A4D57;
+    border: 1.5px solid #733642;
     background: #FFF8F6;
-    color: #2A1810;
+    color: #1E100A;
     font: inherit;
     font-size: 0.95em;
     font-weight: 700;
@@ -744,13 +744,13 @@
 }
 
 .watch-more-btn:hover {
-    background: #8A4D57;
+    background: #733642;
     color: #FAF1EF;
     transform: translateY(-2px);
 }
 
 .watch-more-btn:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 3px;
 }
 
@@ -768,7 +768,7 @@
     border-radius: var(--r-pill);
     border: 1.5px solid #D9B8B3;
     background: #FFF8F6;
-    color: #2A1810;
+    color: #1E100A;
     font: inherit;
     font-size: 0.82em;
     font-weight: 600;
@@ -778,17 +778,17 @@
 }
 
 .video-topic-btn:hover {
-    border-color: #9E5A63;
+    border-color: #7E3F4A;
 }
 
 .video-topic-btn[aria-pressed="true"] {
-    background: #8A4D57;
-    border-color: #8A4D57;
+    background: #733642;
+    border-color: #733642;
     color: #FAF1EF;
 }
 
 .video-topic-btn:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 3px;
 }
 
@@ -799,7 +799,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .video-open .video-topic + .shelf-item-title {
@@ -816,7 +816,7 @@
     min-height: 100%;
     padding: 22px 22px;
     border-radius: var(--r-card);
-    background: linear-gradient(150deg, #9E5A63 0%, #7E4550 100%);
+    background: linear-gradient(150deg, #7E3F4A 0%, #7E4550 100%);
     color: #FFF8F6;
     box-shadow: 0 10px 24px rgba(138, 77, 87, 0.18);
 }
@@ -849,11 +849,11 @@
     background: #FFF8F6;
     border: 1.5px dashed #D9B8B3;
     box-shadow: none;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .soon-card .why-kicker {
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .soon-card p {
@@ -915,7 +915,7 @@
 }
 
 .video-open:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 4px;
 }
 
@@ -939,7 +939,7 @@
     top: 17px;
     border-style: solid;
     border-width: 11px 0 11px 17px;
-    border-color: transparent transparent transparent #8A4D57;
+    border-color: transparent transparent transparent #733642;
 }
 
 .video-open:hover .video-play,
@@ -955,7 +955,7 @@
 
 .video-frame {
     aspect-ratio: 16 / 9;
-    background: #2A1810;
+    background: #1E100A;
 }
 
 .video-frame iframe {
@@ -980,7 +980,7 @@
     background: #F5E0DB;
     font-family: Georgia, serif;
     font-style: italic;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .recipe-columns[hidden] {
@@ -998,7 +998,7 @@
     margin: 0 0 10px;
     font-family: Georgia, serif;
     font-size: 1.15em;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .recipe-columns ul,
@@ -1006,15 +1006,15 @@
     margin: 0;
     padding-left: 20px;
     line-height: 1.8;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .recipe-columns ul li::marker {
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .recipe-columns ol li::marker {
-    color: #9E5A63;
+    color: #7E3F4A;
     font-weight: 700;
 }
 
@@ -1088,7 +1088,7 @@
     font-family: Georgia, serif;
     font-size: 1.6em;
     font-weight: 700;
-    color: #2A1810;
+    color: #1E100A;
     margin: 0;
 }
 
@@ -1098,7 +1098,7 @@
     font-size: 0.92em;
     font-style: italic;
     line-height: 1.55;
-    color: #56634A;
+    color: #3F4A34;
 }
 
 .shelf-see-all {
@@ -1106,7 +1106,7 @@
     border: none;
     background: none;
     padding: 4px 0;
-    color: #56634A;
+    color: #3F4A34;
     font-size: 0.9em;
     font-weight: 600;
     cursor: var(--cursor-hot, pointer);
@@ -1118,8 +1118,8 @@
 
 .shelf-see-all:hover,
 .shelf-see-all:focus-visible {
-    color: #2A1810;
-    text-decoration-color: #9E5A63;
+    color: #1E100A;
+    text-decoration-color: #7E3F4A;
     outline: none;
 }
 
@@ -1156,7 +1156,7 @@
 }
 
 .shelf-rail:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 4px;
     border-radius: var(--r-small);
 }
@@ -1208,13 +1208,13 @@
     font-weight: 700;
     font-size: 1em;
     line-height: 1.3;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .shelf-item-meta {
     margin: 4px 0 0;
     font-size: 0.8em;
-    color: #56634A;
+    color: #3F4A34;
 }
 
 /* Desktop arrows: appear when hovering the row, hide at either end */
@@ -1228,7 +1228,7 @@
     border-radius: 50%;
     border: 1px solid #EBD5D0;
     background: rgba(250, 241, 239, 0.95);
-    color: #2A1810;
+    color: #1E100A;
     font-size: 1.4em;
     line-height: 1;
     cursor: var(--cursor-hot, pointer);
@@ -1251,7 +1251,7 @@
 }
 
 .shelf-arrow:hover {
-    background: #8A4D57;
+    background: #733642;
     color: #FAF1EF;
 }
 
@@ -1409,7 +1409,7 @@
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .cake-stage {
@@ -1468,7 +1468,7 @@
 }
 
 .bake-tile:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 4px;
 }
 
@@ -1528,7 +1528,7 @@
     border-radius: 50%;
     border: 1px solid #EBD5D0;
     background: rgba(250, 241, 239, 0.95);
-    color: #2A1810;
+    color: #1E100A;
     font-size: 1.4em;
     line-height: 1;
     cursor: var(--cursor-hot, pointer);
@@ -1539,7 +1539,7 @@
 .cake-arrow.next { right: 12px; }
 
 .cake-arrow:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 2px;
 }
 
@@ -1552,7 +1552,7 @@
     gap: 10px;
     border: 1.5px dashed #E3C4C0;
     border-radius: var(--r-inset);
-    color: #9E5A63;
+    color: #7E3F4A;
     font-size: 0.85em;
     font-style: italic;
 }
@@ -1598,7 +1598,7 @@
     font-style: italic;
     font-family: inherit;
     line-height: 1.6;
-    color: #56634A;
+    color: #3F4A34;
 }
 
 .make-page .shelf-intro .make-caption {
@@ -1611,7 +1611,7 @@
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .make-page .shelf-item-title,
@@ -1626,7 +1626,7 @@
 }
 
 .make-page .gallery-title {
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .make-page .shelf-item-meta,
@@ -1656,18 +1656,18 @@
     border: var(--card-border);
     background: #FFF8F6;
     box-shadow: var(--shadow-card);
-    color: #2A1810;
+    color: #1E100A;
     text-decoration: none;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .made-card:hover {
     transform: translateY(-3px);
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .made-card:focus-visible {
-    outline: 2px solid #8A4D57;
+    outline: 2px solid #733642;
     outline-offset: 3px;
 }
 
@@ -1702,7 +1702,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .made-title {
@@ -1718,13 +1718,13 @@
 
 .made-line {
     line-height: 1.55;
-    color: #3B2A24;
+    color: #2A1810;
 }
 
 .made-go {
     margin-top: 4px;
     font-weight: 700;
-    color: #8A4D57;
+    color: #733642;
 }
 
 /* the two builds: a screenshot of the real site beside a short line */
@@ -1749,8 +1749,8 @@
 
 /* the book in the writing shelf: mulberry, so it stands out from the poems */
 .shelf.writing-shelf .shelf-cover.writing-book {
-    background: #8A4D57;
-    border-color: #8A4D57;
+    background: #733642;
+    border-color: #733642;
     border-top-color: #6F3B45;
 }
 
@@ -1801,5 +1801,5 @@
     font-family: Georgia, serif;
     font-size: 1rem;
     font-style: italic;
-    color: #9E5A63;
+    color: #7E3F4A;
 }

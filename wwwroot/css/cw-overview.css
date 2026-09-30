@@ -13,14 +13,14 @@
     font-size: 1.4em;
     line-height: 1.7;
     text-wrap: pretty;
-    color: #3B2A24;
+    color: #2A1810;
     margin-bottom: 36px;
 }
 
 .cx-heading {
     font-family: Georgia, "Times New Roman", serif;
     font-size: 1.6em;
-    color: #2A1810;
+    color: #1E100A;
     margin: 0 0 16px;
 }
 
@@ -40,23 +40,23 @@
     border-radius: var(--r-pill);
     border: 1.5px solid #D9B8B3;
     background: #FFF8F6;
-    color: #8F4661;
+    color: #76344E;
     cursor: var(--cursor-hot, pointer);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .cx-pill:hover {
-    border-color: #8F4661;
+    border-color: #76344E;
 }
 
 .cx-pill[aria-pressed="true"] {
-    background: #8F4661;
-    border-color: #8F4661;
+    background: #76344E;
+    border-color: #76344E;
     color: #FFF8F6;
 }
 
 .cx-pill:focus-visible {
-    outline: 2px solid #8F4661;
+    outline: 2px solid #76344E;
     outline-offset: 3px;
 }
 
@@ -66,7 +66,7 @@
     font-family: Georgia, "Times New Roman", serif;
     font-style: italic;
     font-size: 1.15em;
-    color: #8F4661;
+    color: #76344E;
 }
 
 /* the grid while a theme is picked */
@@ -83,7 +83,7 @@
 }
 
 .courses-grid .course-card.lit .course-front {
-    box-shadow: 0 0 0 3px #FAF1EF, 0 0 0 6px #8F4661, 0 20px 50px rgba(158, 90, 99, 0.25);
+    box-shadow: 0 0 0 3px #FAF1EF, 0 0 0 6px #76344E, 0 20px 50px rgba(158, 90, 99, 0.25);
 }
 
 .cx-lit {

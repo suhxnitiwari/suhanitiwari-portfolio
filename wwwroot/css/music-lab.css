@@ -14,21 +14,21 @@
     font-family: Georgia, serif;
     font-size: 1.35rem;
     font-weight: 800;
-    color: #2A1810;
+    color: #1E100A;
 }
 
 .lab-sub {
     margin: 4px 0 16px;
     font-size: 0.88rem;
     font-style: italic;
-    color: #9E5A63;
+    color: #7E3F4A;
 }
 
 .lab-cloud {
     margin: 0;
     line-height: 1.5;
     font-family: Georgia, serif;
-    color: #8A4D57;
+    color: #733642;
 }
 
 .lab-cloud span { display: inline-block; margin: 0 0.14em; line-height: 1.25; }
