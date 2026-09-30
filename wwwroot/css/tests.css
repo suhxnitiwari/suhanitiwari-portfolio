@@ -252,6 +252,16 @@
     color: #2A1810;
 }
 
+.disc-series-hint {
+    margin-left: 12px;
+    font-family: system-ui, sans-serif;
+    font-size: 0.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #9E5A63;
+}
+
 .disc-series-tap {
     margin-top: auto;
     font-size: 0.72em;

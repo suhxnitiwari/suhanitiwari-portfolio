@@ -823,7 +823,7 @@
                 </div>
             </div>
             @* how it shows up at work: six situations, one card each *@
-            <h4 class="disc-series-title">How it shows up at work</h4>
+            <h4 class="disc-series-title">How it shows up at work <span class="disc-series-hint">Tap a card to flip it</span></h4>
             <ol class="disc-series">
                 @for (var i = 0; i < discAtWork.Length; i++)
                 {
@@ -833,7 +833,6 @@
                             <span class="disc-face front">
                                 <span class="disc-series-n">0@(i + 1)</span>
                                 <span class="disc-series-when">@when</span>
-                                <span class="disc-series-tap">Tap to see how I handle it ↻</span>
                             </span>
                             <span class="disc-face back">
                                 <span class="disc-series-how">@how</span>
