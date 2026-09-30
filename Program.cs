@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,19 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
     options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
+});
+
+// Each visitor gets 60 music requests a minute (one page load uses about 6), so nobody can
+// hammer the Spotify, MusicBrainz and Wikipedia lookups through my site. Pages themselves aren't limited.
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        context.Request.Path.StartsWithSegments("/spotify")
+            ? RateLimitPartition.GetFixedWindowLimiter(
+                context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                _ => new FixedWindowRateLimiterOptions { PermitLimit = 60, Window = TimeSpan.FromMinutes(1) })
+            : RateLimitPartition.GetNoLimiter("pages"));
 });
 
 var app = builder.Build();
@@ -48,6 +62,7 @@ contentTypes.Mappings[".py"] = "text/plain; charset=utf-8";
 app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
 
 app.UseRouting();
+app.UseRateLimiter();
 
 app.UseAuthorization();
 
