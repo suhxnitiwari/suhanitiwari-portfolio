@@ -459,9 +459,10 @@
         color: #56634A;
     }
 
+    /* one line of proof, always */
     .about-proof {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 8px;
         margin: 0;
         padding: 0;
@@ -2739,7 +2740,7 @@
                 "I’m fascinated by why people choose what they choose: what makes an idea resonate, a product stick, or a brand mean something.",
                 "That curiosity is basically where psychology, marketing, and business collide for me." },
             Photo: (string?)"/images/friends-coffee.jpg", Alt: "Me and three friends smiling at a Starbucks, each holding a coffee",
-            Proof: new[] { ("How I work with people", "/home/howiwork#strengths"), ("Human behavior courses", "/home/coursework#human-behavior"), ("Persuasion courses", "/home/coursework#persuasion"), ("Marketing projects", "/home/coursework#marketing") }),
+            Proof: new[] { ("Marketing projects", "/home/coursework#marketing"), ("Psychology courses", "/home/coursework#human-behavior"), ("How I work", "/home/howiwork#strengths") }),
         (Num: "02", Title: "I make things.",
             Paras: new[] {
                 "Websites. Art. Brand projects. A children’s book. Random ideas that probably did not need to become full-fledged projects but somehow did.",

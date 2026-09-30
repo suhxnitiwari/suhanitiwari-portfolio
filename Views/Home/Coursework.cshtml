@@ -163,14 +163,15 @@
     // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
     var misCan = new[]
     {
-        new MisCan("Build", "Full-stack web apps, from the database to the screen.", new[] { "C#", "ASP.NET Core MVC", "React" }, "MIS 333K, MIS 372T"),
-        new MisCan("Data", "Databases designed, queried and moved.", new[] { "SQL", "Data modeling", "ETL" }, "MIS 325, MIS 333K"),
-        new MisCan("Secure", "Logins, roles and protected routes.", new[] { "Authentication", "Authorization", "Role-based access" }, "MIS 372T, MIS 333K, MIS 325"),
+        // every skill here is from my résumé or the course lists above; the courses line credits where it came from
+        new MisCan("Build", "Full-stack web apps, from the database to the screen.", new[] { "C#", "ASP.NET Core MVC", "Entity Framework Core", "JavaScript", "React", "Node.js", "HTML/CSS", "REST APIs", "Git/GitHub", "Docker" }, "MIS 333K, MIS 372T"),
+        new MisCan("Data", "Databases designed, queried and moved.", new[] { "SQL", "PL/SQL", "Data Modeling", "ETL", "Snowflake", "MongoDB", "PostgreSQL", "Microsoft Azure" }, "MIS 325, MIS 333K, MIS 372T"),
+        new MisCan("Secure", "Logins, roles and protected routes.", new[] { "Authentication", "Authorization", "Role-Based Access", "Anti-Forgery Tokens" }, "MIS 372T, MIS 333K, MIS 325"),
         new MisCan("AI", "AI features inside real apps, and checks on what they output.", Array.Empty<string>(), "",
-            new[] { ("Use it", "LLMs and prompt engineering, MIS 304"), ("Feed it", "Embeddings and vector databases, MIS 325"),
-                    ("Build it", "AI features inside web apps, MIS 333K, 372T"), ("Judge it", "Whether AI is worth it, MIS 375") }),
-        new MisCan("Analyze", "Data turned into something a person can decide with.", new[] { "Python", "pandas", "R", "Power BI", "Tableau" }, "MIS 304, MIS 301, MIS 325, Intro to Data Science"),
-        new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT strategy", "Cost justification", "Go-to-market" }, "MIS 301, MIS 375")
+            new[] { ("Use it", "LLMs and Prompt Engineering, MIS 304"), ("Feed it", "Embeddings and Vector Databases, MIS 325"),
+                    ("Build it", "AI Features Inside Web Apps, MIS 333K, 372T"), ("Judge it", "Whether AI Is Worth It, MIS 375") }),
+        new MisCan("Analyze", "Data turned into something a person can decide with.", new[] { "Python", "Pandas", "Matplotlib", "R", "Excel", "Power BI", "Tableau" }, "MIS 304, MIS 301, MIS 325, Intro to Data Science"),
+        new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT Strategy", "Cost Justification", "Go-to-Market", "Porter’s Five Forces", "Platform Strategy", "ERP (Oracle NetSuite)" }, "MIS 301, MIS 375, Oracle")
     };
 
     // Overview: the nine subjects, in catalog order
@@ -955,7 +956,17 @@ document.querySelectorAll('.mp-projects').forEach(root => {
             s.classList.toggle('entering', n === current && !reduce);
         });
         if (focus) tabs[current].focus();
+        // keep the chosen tab in view when the row scrolls
+        const row = tabs[current].parentElement;
+        const tab = tabs[current].getBoundingClientRect(), box = row.getBoundingClientRect();
+        if (tab.left < box.left || tab.right > box.right) {
+            row.scrollBy({ left: tab.left < box.left ? tab.left - box.left - 4 : tab.right - box.right + 4, behavior: reduce ? 'auto' : 'smooth' });
+        }
     };
+    // ‹ › only show when the tabs don't fit on one line
+    const nav = root.querySelector('.mp-proj-nav');
+    const fits = () => { const row = root.querySelector('.mp-proj-tabs'); nav && nav.classList.toggle('overflows', row.scrollWidth > row.clientWidth + 2); };
+    if (nav) { new ResizeObserver(fits).observe(nav); fits(); }
     tabs.forEach((t, n) => {
         t.addEventListener('click', () => show(n));
         t.addEventListener('keydown', e => {

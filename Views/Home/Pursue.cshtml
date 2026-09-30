@@ -30,19 +30,20 @@
 
     .career-top {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 200px;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
         gap: 40px;
-        align-items: center;
+        align-items: stretch;
     }
 
     /* a portrait in an arch, cropped to my face and shoulders */
+    /* the photo fills the whole right side, as tall as the name and opener beside it */
     .career-photo {
         width: 100%;
-        height: auto;
-        aspect-ratio: 5 / 6;
+        height: 100%;
+        min-height: 240px;
         object-fit: cover;
-        object-position: 50% 32%;
-        border-radius: 999px 999px 22px 22px;
+        object-position: 52% 30%;
+        border-radius: 140px 140px 22px 22px;
         box-shadow: 0 16px 34px -12px rgba(74, 36, 42, 0.4);
     }
 
@@ -462,10 +463,10 @@
             <h2 class="career-seeking-title" id="seeking-heading">Work where technology meets people.</h2>
             <p class="career-seeking-text">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
             <ul class="career-seeking-fields">
-                <li>Technology Consultant</li>
+                <li>Product Marketing Manager</li>
                 <li>Associate Product Manager</li>
-                <li>Solutions Consultant</li>
-                <li>Business Systems Analyst</li>
+                <li>Technology Consultant</li>
+                @* still deciding: <li>Solutions Consultant</li> <li>Business Systems Analyst</li> *@
             </ul>
         </section>
 

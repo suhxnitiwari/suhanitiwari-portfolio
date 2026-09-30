@@ -875,6 +875,101 @@
         margin-bottom: 14px;
     }
 
+    /* Around Austin pages: cards on other pages stay out of the grid */
+    .spots-grid .spot.off-page {
+        display: none;
+    }
+
+    .spots-grid.flip .spot {
+        animation: spotIn 0.4s ease both;
+    }
+
+    @@media (min-width: 761px) {
+        .spots-grid.compact {
+            gap: 14px;
+            grid-auto-rows: minmax(116px, auto);
+        }
+
+        .spots-grid.compact .spot {
+            padding: 16px 18px;
+        }
+
+        .spots-grid.compact .spot h3 {
+            font-size: 1.2em;
+        }
+
+        .spots-grid.compact .spot p {
+            font-size: 0.88em;
+        }
+
+        /* the two-row cards in each mosaic: a blush wash, the name large at the bottom */
+        .spots-grid.compact .spot.featured,
+        .spots-grid.compact .spot.big {
+            background: linear-gradient(155deg, #F8E7E3 0%, #EFD2CF 100%);
+            color: #2A1810;
+        }
+
+        .spots-grid.compact .spot.featured h3,
+        .spots-grid.compact .spot.featured p,
+        .spots-grid.compact .spot.big h3,
+        .spots-grid.compact .spot.big p {
+            color: #2A1810;
+        }
+
+        .spots-grid.compact .spot.featured .spot-pill {
+            background: rgba(138, 77, 87, 0.12);
+            color: #56634A;
+        }
+
+        .spots-grid.compact .spot.featured h3,
+        .spots-grid.compact .spot.big h3 {
+            margin-top: auto;
+            font-size: 1.9em;
+        }
+
+        .spots-grid.compact .spot.featured p,
+        .spots-grid.compact .spot.big p {
+            font-size: 1em;
+        }
+    }
+
+    .spot-pager {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .spot-pager[hidden] {
+        display: none;
+    }
+
+    .spot-pager button {
+        width: 36px;
+        height: 36px;
+        border: 1.5px solid #C9969E;
+        border-radius: 50%;
+        background: #FFF8F6;
+        font-size: 1.2em;
+        line-height: 1;
+        color: #8A4D57;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .spot-pager button:hover {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .spot-count {
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #56634A;
+    }
+
     /* rows size to their cards (normal cards have their own min-height), so mini boxes stay small */
     .spots-grid.bento {
         grid-auto-flow: dense;
@@ -1240,12 +1335,12 @@
             // Add, remove or reorder spots freely; the tab counts update on their own.
             var onCampus = new[]
             {
-                new Spot("McCombs", "My Campus Home", "Where most of my college life happens.", "campus", Span: 4, Featured: true),
-                new Spot("Medici", "Study Favorite", "Coffee, studying, and an embarrassing amount of my time... seriously, I know every barista by name.", "cup"),
-                new Spot("Union Building", "New Study Spot", "My newest addition to the study rotation.", "laptop"),
+                new Spot("McCombs", "Home Base", "Where most of my college life happens.", "campus", Span: 4, Featured: true),
+                new Spot("Medici", "Favorite", "Coffee, studying, and an embarrassing amount of my time... seriously, I know every barista by name.", "cup"),
+                new Spot("Union Building", "New Spot", "My newest addition to the study rotation.", "laptop"),
                 new Spot("Life Science Library", "Study Spot", "Stained glass, old wood and quiet: the prettiest place on campus to study.", "book"),
                 new Spot("Architecture and Planning Library", "Study Spot", "Tucked inside Battle Hall, under beautiful painted ceilings.", "book"),
-                new Spot("PCL", "Old Study Favorite", "My go-to for locking in freshman year.", "book", Span: 3),
+                new Spot("PCL", "Old Fave", "My go-to for locking in freshman year.", "book", Span: 3),
                 new Spot("Rowling Hall", "Meetings", "My favorite spot for catching up and meeting with professors, because of the open layout!", "chat", Span: 3),
                 new Spot("Pizza Press", "Food", "A guilty pleasure, especially because they’re open till 12 a.m. I’m guilty of placing way too many last-minute orders there.", "dining", Mini: true),
                 new Spot("Sweetgreen", "Food", "Overpriced, and the portions underdeliver. BUT it’s healthy, it’s walking distance, I love their corn and spicy broccoli, and I’m obsessed with my custom guacamole greens bowl.", "dining", Mini: true),
@@ -1447,19 +1542,71 @@
         });
     }
 
+    // Around Austin on a wide screen: whole filter groups are gathered into pages of about
+    // eight spots, each page laid out as a mosaic (big two-row cards beside small ones),
+    // with ‹ 1 of 4 › to flip. A filter shows just its group on one page.
+    const pageOf = new WeakMap();
+    function paginate(grid) {
+        const cards = [...grid.querySelectorAll('.spot')];
+        cards.forEach(c => c.classList.remove('off-page'));
+        const shown = cards.filter(c => !c.hidden);
+        const groups = [];
+        shown.forEach(c => {
+            const last = groups[groups.length - 1];
+            if (last && last[0].dataset.filter === c.dataset.filter) last.push(c); else groups.push([c]);
+        });
+        const pages = [];
+        groups.forEach(g => {
+            const cur = pages[pages.length - 1];
+            if (cur && cur.length + g.length <= 7) cur.push(...g); else pages.push([...g]);
+        });
+        // a thin last page joins the one before it
+        if (pages.length > 1 && pages[pages.length - 1].length <= 3) pages[pages.length - 2].push(...pages.pop());
+        let at = Math.min(pageOf.get(grid) ?? 0, pages.length - 1);
+        pageOf.set(grid, at);
+        pages.forEach((pg, i) => pg.forEach(c => c.classList.toggle('off-page', i !== at)));
+        pagerFor(grid, pages.length, at);
+    }
+    function pagerFor(grid, count, at) {
+        let pager = grid.parentElement.querySelector('.spot-pager');
+        if (!pager) {
+            pager = document.createElement('div');
+            pager.className = 'spot-pager';
+            pager.innerHTML = '<button type="button" class="spot-prev" aria-label="Previous spots">‹</button><span class="spot-count" aria-live="polite"></span><button type="button" class="spot-next" aria-label="More spots">›</button>';
+            grid.after(pager);
+            const flip = step => {
+                const n = +pager.dataset.count;
+                pageOf.set(grid, ((pageOf.get(grid) ?? 0) + step + n) % n);
+                grid.classList.remove('flip'); void grid.offsetWidth; grid.classList.add('flip');
+                layoutBento(grid);
+            };
+            pager.querySelector('.spot-prev').addEventListener('click', () => flip(-1));
+            pager.querySelector('.spot-next').addEventListener('click', () => flip(1));
+        }
+        pager.dataset.count = count;
+        pager.hidden = count < 2;
+        pager.querySelector('.spot-count').textContent = `${at + 1} of ${count}`;
+    }
+
     function layoutBento(grid) {
         if (!grid || grid.closest('[hidden]')) return;
-        if (grid.classList.contains('compact')) {
-            layoutCompact(grid, window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1);
-            return;
-        }
         const cols = window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1;
+        if (grid.classList.contains('compact')) {
+            if (cols !== 6) {
+                grid.querySelectorAll('.spot.off-page').forEach(c => c.classList.remove('off-page'));
+                pagerFor(grid, 1, 0);
+                layoutCompact(grid, cols);
+                return;
+            }
+            grid.style.gridTemplateColumns = '';
+            paginate(grid);
+        }
         const cards = [...grid.querySelectorAll('.spot')];
         cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });
         // mini boxes sit in their own row at the end: a third of the width each (half on phones)
         const minis = cards.filter(c => !c.hidden && c.classList.contains('mini'));
         minis.forEach(c => { c.style.gridColumn = cols === 6 ? 'span 2' : cols === 2 ? 'span 1' : ''; });
-        const shown = cards.filter(c => !c.hidden && !c.classList.contains('mini'));
+        const shown = cards.filter(c => !c.hidden && !c.classList.contains('mini') && !c.classList.contains('off-page'));
         // On Campus on a wide screen (12 columns): the feature card with the next six in two rows
         // of three beside it, then the quick food spots in a row, so the whole tab fits on one screen
         grid.style.gridTemplateColumns = '';
@@ -1523,6 +1670,7 @@
         const f = btn.dataset.filter;
         document.querySelectorAll('.spot-filter').forEach(b => b.setAttribute('aria-pressed', b === btn));
         bento.querySelectorAll('.spot').forEach(c => c.hidden = f !== '' && c.dataset.filter !== f);
+        pageOf.set(bento, 0);
         layoutBento(bento);
     }));
     window.addEventListener('resize', layoutAll);

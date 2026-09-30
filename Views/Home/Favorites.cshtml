@@ -972,6 +972,15 @@
     /* the fives row: every card is a title, a subtitle and five equal rows (rank, cover, name, one detail line) */
     /* the three cards share one grid (title row, subtitle row, list row), so everything lines up across them */
     .music-fives { grid-template-rows: auto auto 1fr; row-gap: 0; }
+    /* one line for each title and one for each subtitle, so the three cards line up */
+    .music-fives .music-card-title,
+    .music-fives .music-card-sub,
+    .music-fives .lab-title,
+    .music-fives .lab-sub {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     .music-fives > .music-card,
     .music-fives > .lab-slot,

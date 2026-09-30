@@ -22,6 +22,17 @@
     const fiveList = rows => `<ol class="five-list">${rows.map((r, i) => `
             <li><div><em>${i + 1}</em>${r.art ? `<img src="${esc(r.art)}" alt="" loading="lazy">` : '<i></i>'}<span><b>${esc(r.title)}</b><span>${esc(r.detail)}</span></span></div></li>`).join('')}</ol>`;
 
+    // Kid-safe words only: nothing here should be a word Amaira (9) can't see. Any title word that
+    // matches (or starts with / contains one of the swear roots) is dropped before counting.
+    const NOT_FOR_KIDS = new Set(('kill killer killing killed murder murderer dead die dies died dying death deadly ' +
+        'gun guns shoot shot shots bullet blood bloody knife stab war weapon bomb suicide grave ' +
+        'rape raped raping rapist sex sexy kiss kisses kissing kissed naked nude bed lust seduce hot hottie thong ' +
+        'drunk drink drinking wine whiskey tequila vodka beer liquor shots high weed smoke smoking drug drugs pill pills cocaine ' +
+        'hate hated hater stupid dumb idiot hell damn god ' +
+        'fuck shit bitch bitches ass asshole damn crap bastard dick piss slut whore hoe hoes pussy cock tits boobs devil').split(' '));
+    const SWEAR_ROOTS = ['fuck', 'shit', 'bitch', 'slut', 'whore', 'pussy', 'dick', 'cock', 'bastard', 'nigg', 'fag'];
+    const kidSafe = w => !NOT_FOR_KIDS.has(w) && !NOT_FOR_KIDS.has(w.replace(/(es|s|ed|ing|in)$/, '')) && !SWEAR_ROOTS.some(r => w.includes(r));
+
     // Song title words: every word gets its own font, picked for what that word means, and no font is used twice.
     // [font, color, extra style]
     const WORD_FONTS = {
@@ -29,17 +40,13 @@
         love:   ["'Great Vibes'", '#B0566A'],                            // romantic script
         run:    ["'Racing Sans One'", '#56634A', 'font-style: italic'],  // built for speed
         better: ["'Abril Fatface'", '#2A1810'],                          // confident, levelled up
-        kiss:   ["'Pinyon Script'", '#C2607A'],                          // a light, flirty script
         hills:  ["'Rye'", '#6B7F5E'],                                    // wide open country
-        hate:   ["'Permanent Marker'", '#7A2E3B', 'transform: rotate(-4deg)'],   // scrawled angrily
         drop:   ["'Rubik Wet Paint'", '#8A4D57'],                        // literally dripping
-        dead:   ["'Creepster'", '#4A2530'],                              // horror-movie title
         break:  ["'Rubik Distressed'", '#8F4661'],                       // cracked and worn
         hands:  ["'Caveat'", '#8A4D57'],                                 // written by hand
         one:    ["'Monoton'", '#9E5A63'],                                // a single neon line
         last:   ["'Cormorant Garamond'", '#8C9BAE', 'font-style: italic; font-weight: 300'],   // thin and fading
         time:   ["'Orbitron'", '#5A3E36'],                               // a digital clock
-        stupid: ["'Comic Neue'", '#9E5A63', 'font-weight: 700'],         // the silliest font there is
         song:   ["'Pacifico'", '#D0708A'],                               // bubbly and sing-song
         heart:  ["'Lobster'", '#A3475C'],                                // big and warm
         down:   ["'Bebas Neue'", '#56634A', 'display: inline-block; transform: translateY(0.18em)'],   // sinking below the line
@@ -47,7 +54,7 @@
     // a word that isn't listed above takes the first unused font from its mood, then from the spares
     const MOOD_WORDS = {
         love: 'lover loving hold baby darling sweetheart honey forever angel crush adore mine yours babe romance',
-        angry: 'bitch fire burn war revenge villain poison toxic kill wrong hurt mad crazy fight liar cruel',
+        angry: 'fire burn villain wrong hurt mad crazy fight liar cruel',
         sad: 'sorry cry tears alone lonely lost goodbye miss cold blue broken sad empty ghost gone without rain leave',
         move: 'fast drive dance fly fall move jump high ride go wild shake away',
         dream: 'dream dreams night stars star moon sky heaven light sun gold glow paradise wish magic midnight',
@@ -91,14 +98,14 @@
             const seen = new Set();
             all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); const k = t.album; if (!k) return; albums[k] = albums[k] || { n: 0, art: t.albumArt, artist: main(t) }; albums[k].n++; });
             const top = Object.entries(albums).sort((a, b) => b[1].n - a[1].n).slice(0, 5);
-            card('albums', 'Albums I Can’t Leave', 'most songs across all my top lists', fiveList(top.map(([n, a]) => ({ art: a.art, title: n, detail: `${a.artist} · ${a.n} songs` }))));
+            card('albums', 'Albums on Loop', 'most songs in my top lists', fiveList(top.map(([n, a]) => ({ art: a.art, title: n, detail: `${a.artist}, ${a.n} songs` }))));
         }
 
         // From the vault
         if (all.length) {
             const seen = new Set();
             const oldest = all.filter(t => year(t) && !seen.has(key(t)) && seen.add(key(t))).sort((a, b) => year(a) - year(b)).slice(0, 5);
-            card('vault', 'From the Vault', 'the oldest songs still in my top lists', fiveList(oldest.map(t => ({ art: t.albumArt, title: t.name, detail: `${t.artists[0]} · ${year(t)}` }))));
+            card('vault', 'From the Vault', 'the oldest songs I still play', fiveList(oldest.map(t => ({ art: t.albumArt, title: t.name, detail: `${t.artists[0]}, ${year(t)}` }))));
         }
 
         // Song title words
@@ -106,7 +113,7 @@
             const skip = new Set('the a an of to and in on my me you i it is for with feat remix version from at your be this that all what we no so up by do dont just like'.split(' '));
             const words = {};
             const seen = new Set();
-            all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); t.name.toLowerCase().replace(/\(.*?\)|-.*$/g, '').replace(/[^a-z' ]/g, ' ').split(/\s+/).forEach(w => { w = w.replace(/'/g, ''); if (w.length > 2 && !skip.has(w)) words[w] = (words[w] || 0) + 1; }); });
+            all.forEach(t => { if (seen.has(key(t))) return; seen.add(key(t)); t.name.toLowerCase().replace(/\(.*?\)|-.*$/g, '').replace(/[^a-z' ]/g, ' ').split(/\s+/).forEach(w => { w = w.replace(/'/g, ''); if (w.length > 2 && !skip.has(w) && kidSafe(w)) words[w] = (words[w] || 0) + 1; }); });
             const top = Object.entries(words).sort((a, b) => b[1] - a[1]).slice(0, 18);
             const max = top[0]?.[1] || 1;
             const fonts = fontsFor(top.map(([w]) => w));
