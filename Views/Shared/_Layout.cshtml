@@ -507,6 +507,11 @@
             ("Coursework", "/home/pursue#coursework", "Coursework"),
             ("HowIWork", "/home/pursue#how-i-work", "How I Work")
         };
+        // The Pursue page gets two menu headers so no dropdown has more than five items:
+        // Work (what I've done) and Study (what I'm learning and why). Nothing is dropped, only regrouped.
+        var studyPages = new[] { "WhyMis", "McCombs", "Coursework" };
+        var work = pursue.Where(p => !studyPages.Contains(p.Page)).ToArray();
+        var study = pursue.Where(p => studyPages.Contains(p.Page)).ToArray();
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
         var onPursue = currentPage == "Pursue" || currentPage == "Career" || pursueIndex >= 0;
     }
@@ -524,17 +529,24 @@
                 <ul class="nav-links">
                     <li class="nav-item"><a href="/" class="nav-link @ActiveIf("Index")">Hello</a></li>
                     <li class="nav-item nav-dropdown" id="workNav">
-                        <a href="/home/pursue" class="nav-link @(onPursue ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
-                            Pursue<span class="nav-arrow">▼</span>
+                        <a href="/home/pursue#experience" class="nav-link @(onPursue && work.Any(p => p.Page == currentPage) || (work == work && (currentPage == "Pursue" || currentPage == "Career")) ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                            Work<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
-                            @for (var i = 0; i < pursue.Length; i++)
+                            @for (var i = 0; i < work.Length; i++)
                             {
-                                <a href="@pursue[i].Url" class="dropdown-item-custom @(i == pursueIndex ? "current" : "")"><span class="dropdown-num">@((i + 1).ToString("00"))</span>@pursue[i].Name</a>
-                                @if (pursue[i].Page == "Coursework")
-                                {
-                                    @* the three Coursework tabs, one tap away *@
-                                }
+                                <a href="@work[i].Url" class="dropdown-item-custom @(work[i].Page == currentPage ? "current" : "")"><span class="dropdown-num">@((i + 1).ToString("00"))</span>@work[i].Name</a>
+                            }
+                        </div>
+                    </li>
+                    <li class="nav-item nav-dropdown" id="studyNav">
+                        <a href="/home/pursue#why-mis" class="nav-link @(onPursue && study.Any(p => p.Page == currentPage) || (study == work && (currentPage == "Pursue" || currentPage == "Career")) ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                            Study<span class="nav-arrow">▼</span>
+                        </a>
+                        <div class="dropdown-menu-custom">
+                            @for (var i = 0; i < study.Length; i++)
+                            {
+                                <a href="@study[i].Url" class="dropdown-item-custom @(study[i].Page == currentPage ? "current" : "")"><span class="dropdown-num">@((i + 1).ToString("00"))</span>@study[i].Name</a>
                             }
                         </div>
                     </li>
@@ -619,7 +631,7 @@
     @* Starts loading my Spotify music in the background so Favorites is ready when you get there *@
     <script src="~/js/spotify-prefetch.js" asp-append-version="true" defer></script>
     <script>
-        // Dropdowns (Favorites, Make, Pursue). Clicking the name goes to the top of that page;
+        // Dropdowns (Favorites, Make, Work, Study). Clicking the name goes to the top of that page;
         // the menu opens on hover. On touch screens (no hover) the first tap opens the menu and a
         // second tap on the name goes to the page.
         const dropdowns = document.querySelectorAll('.nav-dropdown');
