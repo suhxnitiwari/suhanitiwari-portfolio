@@ -55,6 +55,14 @@ app.Use(async (context, next) =>
     headers["Content-Security-Policy"] = "frame-ancestors 'self' https://listening-history.onrender.com";
     headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+    // pages are always re-checked, so nobody keeps seeing an old version after I push a change
+    context.Response.OnStarting(() =>
+    {
+        var type = context.Response.ContentType ?? "";
+        if (type.StartsWith("text/html") && !context.Response.Headers.ContainsKey("Cache-Control"))
+            context.Response.Headers["Cache-Control"] = "no-cache";
+        return Task.CompletedTask;
+    });
     await next();
 });
 // serve my Python files too (wwwroot/py), so the Saturday planner can run in the browser
