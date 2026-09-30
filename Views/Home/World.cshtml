@@ -88,6 +88,165 @@
         margin-top: 0;
     }
 
+    /* a small eyebrow above each title: where I came from, what I carried, where I am, where I'm headed */
+    .world-eyebrow {
+        margin: 90px 0 6px;
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .world-eyebrow.first {
+        margin-top: 0;
+    }
+
+    .world-eyebrow + .world-block-title {
+        margin-top: 0;
+    }
+
+    /* THE WORLD I WANT TO BUILD: five principles on the left, the picked one's card on the right */
+    .build-world {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 32px;
+        align-items: stretch;
+    }
+
+    .build-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .build-pick {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: #FFF8F6;
+        font-family: Georgia, serif;
+        font-size: 1.15em;
+        text-align: left;
+        color: #2A1810;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .build-pick:hover {
+        transform: translateX(4px);
+    }
+
+    .build-pick[aria-pressed="true"] {
+        background: #8A4D57;
+        border-color: #8A4D57;
+        color: #FFF8F6;
+    }
+
+    .build-pick:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    .build-n {
+        font-family: system-ui, sans-serif;
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #9E5A63;
+    }
+
+    .build-pick[aria-pressed="true"] .build-n {
+        color: #F5E0DB;
+    }
+
+    .build-cards {
+        display: flex;
+    }
+
+    .build-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: linear-gradient(155deg, #F8E7E3 0%, #EFD2CF 100%);
+        box-shadow: var(--shadow-card);
+        animation: buildIn 0.35s ease both;
+    }
+
+    .build-card[hidden] {
+        display: none;
+    }
+
+    @@keyframes buildIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .build-card-n {
+        font-family: Georgia, serif;
+        font-size: 3em;
+        line-height: 1;
+        color: rgba(138, 77, 87, 0.35);
+    }
+
+    .build-card h3 {
+        margin: 10px 0 12px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        color: #2A1810;
+    }
+
+    .build-why {
+        margin: 0;
+        font-size: 1.1em;
+        line-height: 1.65;
+        color: #2A1810;
+    }
+
+    .build-proof {
+        margin: auto 0 0;
+        padding-top: 22px;
+        line-height: 1.55;
+        color: #2A1810;
+    }
+
+    .build-proof b {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.72em;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #56634A;
+    }
+
+    .build-link {
+        align-self: flex-start;
+        margin-top: 14px;
+        font-weight: 700;
+        color: #8A4D57;
+    }
+
+    @@media (max-width: 800px) {
+        .build-world {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .world-eyebrow {
+            margin-top: 60px;
+        }
+    }
+
     .world-block-subtitle {
         text-align: left;
         color: #56634A;
@@ -1316,7 +1475,8 @@
         }
 
         <!-- PLACES THAT SHAPED ME -->
-        <h2 class="world-block-title">Places That Shaped Me</h2>
+        <p class="world-eyebrow first">Where I came from</p>
+        <h2 class="world-block-title" id="places">Places That Shaped Me</h2>
         <p class="world-block-subtitle">a little map of how I became me</p>
         <div class="map-layout">
             <div id="map"></div>
@@ -1372,6 +1532,7 @@
                       traits = new[] { "Family", "Rituals", "Language", "Celebration", "Community", "Respect", "Heritage", "Cultural identity" } }
             };
         }
+        <p class="world-eyebrow">What I carried with me</p>
         <h2 class="world-block-title">Pieces of Me</h2>
         <p class="world-block-subtitle">I’m not made only by people. I’m made by family, friendships, cultures, education, experiences, and my own temperament.</p>
         <div class="pieces">
@@ -1453,6 +1614,7 @@
                 (Id: "austin", Label: "Around Austin", Spots: aroundAustin)
             };
         }
+        <p class="world-eyebrow">Where I am now</p>
         <h2 class="world-block-title">My 40 Acres</h2>
 
         <div class="spots-tabs" role="tablist" aria-label="Favorite spots">
@@ -1508,8 +1670,70 @@
             }
             <span class="spots-map-credit">Map data © OpenStreetMap contributors</span>
         </div>
+
+        <!-- THE WORLD I WANT TO BUILD: what shaped me, then what I get to shape back -->
+        <p class="world-eyebrow">Where I’m headed</p>
+        <h2 class="world-block-title">The World I Want to Build</h2>
+        <p class="world-block-subtitle">I’ve spent a lot of time thinking about what shaped me. I’m just as interested in what I get to shape next.</p>
+        <div class="build-world">
+            <ol class="build-list">
+                <li><button type="button" class="build-pick" aria-pressed="true" aria-controls="build-0"><span class="build-n">01</span>Girls get to build.</button></li>
+                <li><button type="button" class="build-pick" aria-pressed="false" aria-controls="build-1"><span class="build-n">02</span>Technology feels human.</button></li>
+                <li><button type="button" class="build-pick" aria-pressed="false" aria-controls="build-2"><span class="build-n">03</span>Curiosity survives growing up.</button></li>
+                <li><button type="button" class="build-pick" aria-pressed="false" aria-controls="build-3"><span class="build-n">04</span>Culture isn’t something you outgrow.</button></li>
+                <li><button type="button" class="build-pick" aria-pressed="false" aria-controls="build-4"><span class="build-n">05</span>People make room for people.</button></li>
+            </ol>
+            <div class="build-cards" aria-live="polite">
+                <article class="build-card" id="build-0">
+                    <span class="build-card-n">01</span>
+                    <h3>Girls get to build.</h3>
+                    <p class="build-why">Technology shouldn’t feel like something girls get invited into late. I want them building, coding and inventing early.</p>
+                    <p class="build-proof"><b>Where I’m already starting</b>I started Girls Who Code chapters at two middle schools and wrote a children’s book about women engineers.</p>
+                    <a class="build-link" href="/home/pursue#beyond">Beyond the Classroom →</a>
+                </article>
+                <article class="build-card" id="build-1" hidden>
+                    <span class="build-card-n">02</span>
+                    <h3>Technology feels human.</h3>
+                    <p class="build-why">People shouldn’t have to bend around technology. It should be built around them: how they think, what they need, what they’ll actually use.</p>
+                    <p class="build-proof"><b>Where I’m already starting</b>It’s why I study MIS and Psychology together.</p>
+                    <a class="build-link" href="/home/pursue#why-mis">Why MIS →</a>
+                </article>
+                <article class="build-card" id="build-2" hidden>
+                    <span class="build-card-n">03</span>
+                    <h3>Curiosity survives growing up.</h3>
+                    <p class="build-why">I want a world where asking too many questions is still a good thing, at 9 and at 90.</p>
+                    <p class="build-proof"><b>Where I’m already starting</b>At Camp Invention, I helped kids build and test their own inventions.</p>
+                    <a class="build-link" href="/home/pursue#beyond">Camp Invention →</a>
+                </article>
+                <article class="build-card" id="build-3" hidden>
+                    <span class="build-card-n">04</span>
+                    <h3>Culture isn’t something you outgrow.</h3>
+                    <p class="build-why">Modernity and tradition don’t have to cancel each other out. I carry both, and I don’t plan to choose.</p>
+                    <p class="build-proof"><b>Where I’m already starting</b>My art portfolio on cultural identity is about exactly this.</p>
+                    <a class="build-link" href="/home/make">My art →</a>
+                </article>
+                <article class="build-card" id="build-4" hidden>
+                    <span class="build-card-n">05</span>
+                    <h3>People make room for people.</h3>
+                    <p class="build-why">Different backgrounds, personalities and ways of thinking should make a room more interesting, not harder to walk into.</p>
+                    <p class="build-proof"><b>Where I’m already starting</b>Ten schools taught me what it’s like to be the new person. I try to be the one who makes room.</p>
+                    <a class="build-link" href="#places">The places →</a>
+                </article>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    // The World I Want to Build: pick a principle to see what it means and where I'm already starting on it
+    (() => {
+        const picks = [...document.querySelectorAll('.build-pick')];
+        picks.forEach(btn => btn.addEventListener('click', () => {
+            picks.forEach(b => b.setAttribute('aria-pressed', b === btn));
+            document.querySelectorAll('.build-card').forEach(c => c.hidden = c.id !== btn.getAttribute('aria-controls'));
+        }));
+    })();
+</script>
 
 <script>
     // Favorite spots: switch between On Campus and Around Austin (click, or arrow keys)
