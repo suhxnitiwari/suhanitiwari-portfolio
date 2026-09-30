@@ -497,7 +497,7 @@
                     <li class="nav-item"><a href="/" class="nav-link @ActiveIf("Index")">Hello</a></li>
                     <li class="nav-item"><a href="/home/world" class="nav-link @ActiveIf("World")">World</a></li>
                     <li class="nav-item nav-dropdown" id="favoritesNav">
-                        <a href="javascript:void(0)" class="nav-link @ActiveIf("Favorites")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="/home/favorites" class="nav-link @ActiveIf("Favorites")" style="display: flex; align-items: center; gap: 4px;">
                             Favorites<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
@@ -507,7 +507,7 @@
                         </div>
                     </li>
                     <li class="nav-item nav-dropdown" id="makeNav">
-                        <a href="javascript:void(0)" class="nav-link @ActiveIf("Make")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="/home/make" class="nav-link @ActiveIf("Make")" style="display: flex; align-items: center; gap: 4px;">
                             Curate<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
@@ -518,7 +518,7 @@
                         </div>
                     </li>
                     <li class="nav-item nav-dropdown" id="workNav">
-                        <a href="javascript:void(0)" class="nav-link @(onPursue ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                        <a href="/home/pursue" class="nav-link @(onPursue ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
                             Pursue<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
@@ -528,7 +528,7 @@
                             }
                         </div>
                     </li>
-                    <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")">Résumé</a></li>
+                    <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")" target="_blank" rel="noopener">Résumé</a></li>
                 </ul>
             </div>
         </div>
@@ -584,13 +584,27 @@
     @* Starts loading my Spotify music in the background so Favorites is ready when you get there *@
     <script src="~/js/spotify-prefetch.js" asp-append-version="true" defer></script>
     <script>
-        // Dropdowns (Favorites, Work): click to open, click anywhere else to close
+        // Dropdowns (Favorites, Curate, Pursue). Clicking the name goes to the top of that page;
+        // the menu opens on hover. On touch screens (no hover) the first tap opens the menu and a
+        // second tap on the name goes to the page.
         const dropdowns = document.querySelectorAll('.nav-dropdown');
+        const canHover = window.matchMedia('(hover: hover) and (min-width: 768px)');
         dropdowns.forEach(dropdown => {
-            dropdown.querySelector('.nav-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                dropdowns.forEach(other => { if (other !== dropdown) other.classList.remove('expanded'); });
-                dropdown.classList.toggle('expanded');
+            const link = dropdown.querySelector('.nav-link');
+            link.addEventListener('click', function(e) {
+                if (!canHover.matches && !dropdown.classList.contains('expanded')) {
+                    e.preventDefault();
+                    dropdowns.forEach(other => { if (other !== dropdown) other.classList.remove('expanded'); });
+                    dropdown.classList.add('expanded');
+                    return;
+                }
+                // already on that page: just glide back to the top
+                if (location.pathname.toLowerCase() === link.pathname.toLowerCase()) {
+                    e.preventDefault();
+                    dropdown.classList.remove('expanded');
+                    history.replaceState(null, '', link.pathname);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             });
         });
 
