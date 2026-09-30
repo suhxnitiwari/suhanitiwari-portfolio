@@ -504,12 +504,14 @@
             ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
             ("WhyMis", "/home/pursue#why-mis", "Why MIS"),
             ("McCombs", "/home/pursue#mccombs", "Why McCombs"),
-            ("Coursework", "/home/pursue#coursework", "Coursework"),
+            ("Coursework", "/home/pursue#overview", "Coursework"),
+            ("MisMajor", "/home/pursue#mis", "MIS Major"),
+            ("MarketingMinor", "/home/pursue#marketing", "Marketing Minor"),
             ("HowIWork", "/home/pursue#how-i-work", "How I Work")
         };
         // The Pursue page gets two menu headers so no dropdown has more than five items:
         // Work (what I've done) and Study (what I'm learning and why). Nothing is dropped, only regrouped.
-        var studyPages = new[] { "WhyMis", "McCombs", "Coursework" };
+        var studyPages = new[] { "WhyMis", "McCombs", "Coursework", "MisMajor", "MarketingMinor" };
         var work = pursue.Where(p => !studyPages.Contains(p.Page)).ToArray();
         var study = pursue.Where(p => studyPages.Contains(p.Page)).ToArray();
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
