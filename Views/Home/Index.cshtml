@@ -133,12 +133,62 @@
     }
 
 
-    /* the three buttons a recruiter came for, under SUHANI at the bottom left (the name stays the only words) */
+    /* Tagline and two buttons, tucked under SUHANI over the darker flowers (clear of my face) */
     .cover-intro {
         position: absolute;
         left: 2.6%;
-        bottom: 7%;
+        top: calc(38% + 12.5cqw);
+        max-width: 44%;
         animation: coverFade 1.2s ease 1.5s backwards;
+    }
+
+    /* as you scroll, the tagline fades; the Skills, Projects and Résumé buttons never fade,
+       so they're the last thing you see of the cover */
+    .cover-intro .cover-tagline {
+        opacity: calc(1 - var(--p, 0) * 2.2);
+    }
+
+    .cover-tagline {
+        margin: 0 0 clamp(30px, 3.4cqw, 52px);
+        font-family: Georgia, serif;
+        font-size: clamp(1.2rem, 1.85cqw, 1.75rem);
+        font-style: italic;
+        line-height: 1.35;
+        color: #FFFFFF;
+        text-shadow: 0 1px 12px rgba(20, 8, 6, 0.55);
+    }
+
+    .cover-tagline span,
+    .cover-tagline strong {
+        display: block;
+    }
+
+    /* McCombs School of Business, UT Austin */
+    .cover-school {
+        margin-bottom: clamp(12px, 1.3cqw, 20px);
+        font-family: system-ui, sans-serif;
+        font-size: 0.62em;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #FAF1EF;
+    }
+
+    /* Management Information Systems: the line a recruiter reads first */
+    .cover-major {
+        font-family: Georgia, serif;
+        font-size: 1.45em;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+        color: #FFFFFF;
+    }
+
+    .cover-second {
+        margin-top: clamp(10px, 1.1cqw, 18px);
+        font-size: 0.95em;
     }
 
     /* Skills, Projects, Résumé: always one row */
@@ -253,18 +303,33 @@
             left: 4%;
         }
 
+        /* sits just above the tagline and the row of buttons (about 140px tall together) */
         .cover-name.right {
-            bottom: calc(4% + 70px);
+            bottom: calc(4% + 190px);
             right: 4%;
         }
 
-        /* phones: the three buttons across the bottom */
+        /* phones: tagline and buttons across the bottom, where the scroll hint was */
         .cover-intro {
             left: 5%;
             right: 5%;
+            top: auto;
             bottom: 4%;
+            max-width: none;
+            text-align: center;
         }
 
+        .cover-tagline {
+            margin-bottom: 22px;
+            font-size: 0.95rem;
+        }
+
+        .cover-major {
+            font-size: 1.35em;
+            white-space: normal;
+        }
+
+        /* the two buttons side by side, sized to fit a phone */
         .cover-actions {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -277,6 +342,8 @@
             padding: 14px 10px;
             font-size: 0.78rem;
             letter-spacing: 0.8px;
+            text-align: center;
+            white-space: normal;
         }
 
         .cover-scroll {
@@ -2645,6 +2712,12 @@
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
     <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
     <div class="cover-intro">
+        @* Readable in one glance: who I am (MIS major at McCombs) and the two things a recruiter came for *@
+        <p class="cover-tagline">
+            <span class="cover-school">McCombs School of Business, UT Austin</span>
+            <strong class="cover-major">Management Information Systems</strong>
+            <span class="cover-second">Marketing, psychology and product strategy</span>
+        </p>
         <div class="cover-actions">
             <a class="cover-btn primary" href="/home/pursue#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
             <a class="cover-btn" href="/home/pursue#projects" aria-label="See my projects">Projects <span class="cover-arrow" aria-hidden="true">→</span></a>
@@ -2660,9 +2733,17 @@
     (function () {
         const hero = document.querySelector('.cover-hero');
         if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const intro = hero.querySelector('.cover-intro');
+        const actions = hero.querySelector('.cover-actions');
         const update = () => {
             const progress = Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight));
             hero.style.setProperty('--p', progress.toFixed(4));
+            // the Skills, Projects and Résumé buttons ride down with the page, staying put on screen,
+            // until they reach the bottom edge of the photo; then they leave with it, last of all
+            if (actions) {
+                const room = hero.offsetHeight - (actions.offsetTop + intro.offsetTop + actions.offsetHeight) - 18;
+                actions.style.transform = `translateY(${Math.max(0, Math.min(window.scrollY, room))}px)`;
+            }
         };
         window.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', update);
