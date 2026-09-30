@@ -46,12 +46,13 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // basic safety headers on every response: browsers won't guess file types, other sites can't
-// frame my pages to trick clicks, and links out don't leak full page addresses
+// frame my pages to trick clicks (only my own Listening History site may show a live preview),
+// and links out don't leak full page addresses
 app.Use(async (context, next) =>
 {
     var headers = context.Response.Headers;
     headers["X-Content-Type-Options"] = "nosniff";
-    headers["X-Frame-Options"] = "SAMEORIGIN";
+    headers["Content-Security-Policy"] = "frame-ancestors 'self' https://listening-history.onrender.com";
     headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
     await next();
