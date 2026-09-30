@@ -221,10 +221,50 @@
         color: #56634A;
     }
 
-    @@media (max-width: 520px) {
-        .project-stats {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+    .project-stats > div {
+        animation: statIn 0.35s ease both;
+    }
+
+    @@keyframes statIn {
+        from { opacity: 0; transform: translateX(8px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .stat-nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .stat-nav button {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #C9969E;
+        border-radius: 50%;
+        background: transparent;
+        font-size: 1.1em;
+        line-height: 1;
+        color: #8A4D57;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .stat-nav button:hover {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .stat-count {
+        font-size: 0.78em;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: #56634A;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .project-stats > div { animation: none; }
     }
 
     /* reader reviews under the photo, one at a time */
@@ -503,9 +543,12 @@
                     Role: "National Inventors Hall of Fame",
                     Stats: new[]
                     {
+                        ("16", "STEM modules taught"),
+                        ("K–6", "campers, kindergarten to 6th grade"),
                         ("4", "summers teaching"),
-                        ("16", "STEM modules across 4 curricula"),
-                        ("K–6", "campers, kindergarten to 6th grade")
+                        ("5", "design stages, from sketch to redesign"),
+                        ("4+", "engineering areas, from buoyancy to flight"),
+                        ("4", "curricula")
                     },
                     Description: "Guided elementary students through the engineering design process, from brainstorming and sketching to prototyping, testing, and redesigning. We built boats to explore buoyancy, experimented with paper airplanes and gliders to understand flight, designed solutions for cleaning contaminated water, and constructed mini skate parks to test motion and momentum. Each challenge turned a STEM concept into something students could build, test, and improve.",
                     Photo: "/images/camp-invention.jpg",
@@ -563,15 +606,28 @@
                             }
                             @if (project.Stats is { Length: > 0 })
                             {
-                                <dl class="project-stats">
-                                    @foreach (var (number, label) in project.Stats)
+                                var pages = (project.Stats.Length + 2) / 3;
+                                @* three numbers at a time; ‹ › flip to the next three *@
+                                <div class="stat-pager" aria-roledescription="carousel" aria-label="@project.Name in numbers">
+                                    <dl class="project-stats">
+                                        @for (var st = 0; st < project.Stats.Length; st++)
+                                        {
+                                            var (number, label) = project.Stats[st];
+                                            <div hidden="@(st >= 3)">
+                                                <dt>@number</dt>
+                                                <dd>@label</dd>
+                                            </div>
+                                        }
+                                    </dl>
+                                    @if (pages > 1)
                                     {
-                                        <div>
-                                            <dt>@number</dt>
-                                            <dd>@label</dd>
+                                        <div class="stat-nav">
+                                            <button type="button" class="stat-prev" aria-label="Previous numbers">‹</button>
+                                            <span class="stat-count" aria-live="polite">1 of @pages</span>
+                                            <button type="button" class="stat-next" aria-label="More numbers">›</button>
                                         </div>
                                     }
-                                </dl>
+                                </div>
                             }
                             @if (project.Tags is { Length: > 0 })
                             {
@@ -625,6 +681,22 @@
 </div>
 
 <script>
+    // Numbers: three at a time, ‹ and › flip to the next three
+    document.querySelectorAll('.stat-pager').forEach(box => {
+        const items = [...box.querySelectorAll('.project-stats > div')];
+        const count = box.querySelector('.stat-count');
+        if (!count) return;
+        const pages = Math.ceil(items.length / 3);
+        let page = 0;
+        const show = step => {
+            page = (page + step + pages) % pages;
+            items.forEach((it, i) => it.hidden = Math.floor(i / 3) !== page);
+            count.textContent = `${page + 1} of ${pages}`;
+        };
+        box.querySelector('.stat-prev').addEventListener('click', () => show(-1));
+        box.querySelector('.stat-next').addEventListener('click', () => show(1));
+    });
+
     // Reader reviews: ‹ and › step through them one at a time
     document.querySelectorAll('.review-carousel').forEach(box => {
         const cards = [...box.querySelectorAll('.review-card')];
