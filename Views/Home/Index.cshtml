@@ -133,6 +133,82 @@
     }
 
 
+    /* the three buttons a recruiter came for, under SUHANI at the bottom left (the name stays the only words) */
+    .cover-intro {
+        position: absolute;
+        left: 2.6%;
+        bottom: 7%;
+        animation: coverFade 1.2s ease 1.5s backwards;
+    }
+
+    /* Skills, Projects, Résumé: always one row */
+    .cover-actions {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 14px;
+    }
+
+    /* The two buttons a recruiter came for: clear and easy to spot, without the fuss */
+    .cover-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 17px 34px;
+        border-radius: var(--r-pill);
+        border: 2px solid rgba(255, 248, 246, 0.9);
+        background: rgba(30, 14, 12, 0.18);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        font-size: clamp(1rem, 1.2cqw, 1.2rem);
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        color: #FFF8F6;
+        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .cover-btn:hover {
+        transform: translateY(-2px);
+        background: #FFF8F6;
+        color: #8F4661;
+    }
+
+    /* the main one: solid mulberry */
+    .cover-btn.primary {
+        background: #8F4661;
+        border-color: #8F4661;
+        color: #FFFFFF;
+    }
+
+    .cover-btn.primary:hover {
+        background: #A0526F;
+        border-color: #A0526F;
+        color: #FFFFFF;
+    }
+
+    .cover-arrow {
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    .cover-btn:hover .cover-arrow {
+        transform: translateX(3px);
+    }
+
+    .cover-btn:focus-visible {
+        outline: 2px solid #FFF8F6;
+        outline-offset: 3px;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cover-btn,
+        .cover-arrow {
+            transition: none;
+        }
+    }
+
     .cover-scroll {
         position: absolute;
         left: 50%;
@@ -178,8 +254,29 @@
         }
 
         .cover-name.right {
-            bottom: 6%;
+            bottom: calc(4% + 70px);
             right: 4%;
+        }
+
+        /* phones: the three buttons across the bottom */
+        .cover-intro {
+            left: 5%;
+            right: 5%;
+            bottom: 4%;
+        }
+
+        .cover-actions {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .cover-btn {
+            justify-content: center;
+            gap: 6px;
+            padding: 14px 10px;
+            font-size: 0.78rem;
+            letter-spacing: 0.8px;
         }
 
         .cover-scroll {
@@ -202,7 +299,8 @@
         }
 
         .cover-name .ch,
-        .cover-scroll {
+        .cover-scroll,
+        .cover-intro {
             animation: none;
         }
     }
@@ -2546,6 +2644,13 @@
     <h1 class="visually-hidden">Suhani Tiwari</h1>
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
     <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
+    <div class="cover-intro">
+        <div class="cover-actions">
+            <a class="cover-btn primary" href="/home/pursue#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/home/pursue#projects" aria-label="See my projects">Projects <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
+        </div>
+    </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>
 </section>
 
