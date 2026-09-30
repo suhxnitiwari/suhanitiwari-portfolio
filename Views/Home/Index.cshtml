@@ -1386,6 +1386,91 @@
 
     /* ===== PERSONALITY SECTION ===== */
     /* Personality now comes straight after the hero photo, so no gap above it */
+    /* Personality, folded: a single bar until someone opens it */
+    .personality-fold > summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        max-width: var(--page-width, 1100px);
+        margin: 0 auto;
+        list-style: none;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .personality-fold > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .personality-fold[open] > summary {
+        margin-bottom: 36px;
+    }
+
+    .pfold-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pfold-kicker {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .pfold-title {
+        margin-top: 6px;
+        font-family: Georgia, serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2A1810;
+    }
+
+    .pfold-sub {
+        margin-top: 6px;
+        color: #56634A;
+    }
+
+    .pfold-btn {
+        flex: none;
+        padding: 12px 26px;
+        border-radius: 999px;
+        border: 1.5px solid #8A4D57;
+        font-weight: 600;
+        color: #8A4D57;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .pfold-btn .when-closed::after { content: " ↓"; }
+    .pfold-btn .when-open::after { content: " ↑"; }
+    .pfold-btn .when-open,
+    .personality-fold[open] .pfold-btn .when-closed { display: none; }
+    .personality-fold[open] .pfold-btn .when-open { display: inline; }
+
+    .personality-fold > summary:hover .pfold-btn {
+        background: #8A4D57;
+        color: #FAF1EF;
+    }
+
+    .personality-fold > summary:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 6px;
+        border-radius: 8px;
+    }
+
+    /* the bar already says Personality */
+    .personality-fold .personality-title {
+        display: none;
+    }
+
+    @@media (max-width: 800px) {
+        .personality-fold > summary {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
     #personality {
         margin-top: 0;
     }
@@ -2447,7 +2532,7 @@
     /* ===== CTA SECTION ===== */
     .cta-section {
         background: #FAF1EF;
-        padding: 100px 60px;
+        padding: 52px 60px 60px;
         text-align: center;
     }
 
@@ -2455,7 +2540,7 @@
         font-size: 2.5em;
         font-weight: 800;
         color: #2A1810;
-        margin-bottom: 50px;
+        margin-bottom: 24px;
         font-family: Georgia, serif;
     }
 
@@ -2471,7 +2556,7 @@
     .cta-link {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
         padding: var(--pad-card-sm);
         border-radius: var(--r-card);
         background: #FFF8F6;
@@ -2516,7 +2601,7 @@
 
     .cta-desc {
         font-family: Georgia, serif;
-        font-size: 1.15em;
+        font-size: 1.02em;
         line-height: 1.45;
     }
 
@@ -3202,8 +3287,17 @@
     };
 }
 <section class="type-section" id="personality">
+    @* Folded shut: one calm bar, and anyone curious opens the four tests *@
+    <details class="personality-fold" id="personalityFold">
+        <summary>
+            <span class="pfold-text">
+                <span class="pfold-kicker">For the curious</span>
+                <span class="pfold-title">Personality</span>
+                <span class="pfold-sub">Myers-Briggs, the Big Five, my VIA character strengths and a little astrology.</span>
+            </span>
+            <span class="pfold-btn" aria-hidden="true"><span class="when-closed">Open</span><span class="when-open">Close</span></span>
+        </summary>
     <div class="type-container">
-        <h2 class="personality-title">Personality</h2>
         <div class="test-tabs" role="tablist" aria-label="Personality tests">
             <button type="button" class="test-tab" role="tab" id="tab-mbti" aria-controls="test-mbti" aria-selected="true">Myers-Briggs</button>
             <button type="button" class="test-tab" role="tab" id="tab-ocean" aria-controls="test-ocean" aria-selected="false" tabindex="-1">Big Five</button>
@@ -3626,6 +3720,7 @@
             <p class="sky-note">Not real science. Fun science. Think girl math, but make it cosmic.</p>
         </div>
     </div>
+    </details>
 </section>
 
 <script>
