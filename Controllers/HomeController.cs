@@ -69,9 +69,19 @@ public class HomeController : Controller
     {
         if (System.IO.File.Exists(Path.Combine(environment.WebRootPath, "resume.pdf")))
         {
-            return Redirect("/resume.pdf");
+            return Redirect("/Tiwari_Suhani_Resume.pdf");
         }
         return View();
+    }
+
+    // The résumé opens in the browser, and saving it from there names the file Tiwari_Suhani_Resume.pdf
+    [Route("Tiwari_Suhani_Resume.pdf")]
+    public IActionResult ResumeFile([FromServices] IWebHostEnvironment environment)
+    {
+        var path = Path.Combine(environment.WebRootPath, "resume.pdf");
+        if (!System.IO.File.Exists(path)) return Redirect("/resume");
+        Response.Headers.ContentDisposition = "inline; filename=\"Tiwari_Suhani_Resume.pdf\"";
+        return PhysicalFile(path, "application/pdf");
     }
 
     // suhanitiwari.com/resume/download: the PDF saved as Tiwari_Suhani_Resume.pdf
