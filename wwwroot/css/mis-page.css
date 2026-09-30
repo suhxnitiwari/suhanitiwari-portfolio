@@ -269,14 +269,21 @@
    Type is sized in cqw (1% of the slide's width) so every slide scales as one piece; phones stack naturally. */
 .mk-sbux { --acc: #2F5D50; --acc-soft: #E6EFEA; }
 .mk-owala { --acc: #C8553D; --acc-soft: #FBE9E3; }
-.mk-ff { --acc: #2F6690; --acc-soft: #E4EEF5; }
+.mk-ff { --acc: #56634A; --acc-soft: #E3E8DC; }   /* the site's sage green */
+.mk-ff .mk-slide { position: relative; }
+.ff-logo { position: absolute; top: 1.6cqw; right: 3.2cqw; width: 3.4cqw; min-width: 30px; height: auto; }
+.ff-sum { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 2.4cqw; align-items: stretch; }
+.ff-sum .mk-scr { min-height: 0; }
+.ff-station { position: relative; margin: 0; min-height: 0; border-radius: 1.4cqw; overflow: hidden; border: 1px solid var(--line); }
+.ff-station img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+.ff-station figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6cqw 1.2cqw 0.8cqw; background: linear-gradient(transparent, rgba(20, 14, 10, 0.75)); font-size: clamp(10px, 1cqw, 13px); font-style: italic; color: #FFFFFF; }
 /* FuelFlow: persona, tabs, product features, partners and the business-case calculator */
 .ff-buyer, .ff-product { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 3cqw; align-items: center; }
 .ff-persona { padding: 2cqw 2.2cqw; border-radius: 1.4cqw; background: var(--acc); color: #FFFFFF; }
 .ff-kicker, .ff-label { margin: 0 0 0.6cqw; font-size: clamp(9px, 0.9cqw, 11px); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--acc); }
-.ff-persona .ff-kicker { color: #CFE0EC; }
+.ff-persona .ff-kicker { color: #DDE5D3; }
 .ff-persona h5 { margin: 0 !important; font-family: var(--serif); font-size: clamp(16px, 2cqw, 25px) !important; font-weight: 400 !important; line-height: 1.2; color: #FFFFFF; }
-.ff-where { margin: 0.4cqw 0 1.2cqw; font-style: italic; color: #CFE0EC; }
+.ff-where { margin: 0.4cqw 0 1.2cqw; font-style: italic; color: #DDE5D3; }
 .ff-persona ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5cqw; }
 .ff-persona li { padding-top: 0.5cqw; border-top: 1px solid rgba(255, 255, 255, 0.25); font-size: clamp(12px, 1.25cqw, 15px); }
 .ff-tabrow { display: flex; flex-wrap: wrap; gap: 0.6cqw; margin-bottom: 1.2cqw; }
@@ -310,7 +317,8 @@
 .ff-bars i { height: 1.2cqw; min-height: 8px; border-radius: var(--r-pill); background: var(--acc-soft); transition: background 0.2s ease; }
 .ff-bars i.on { background: var(--acc); }
 @media (max-width: 800px) {
-    .ff-buyer, .ff-product, .ff-calc { grid-template-columns: 1fr; gap: 20px; }
+    .ff-buyer, .ff-product, .ff-calc, .ff-sum { grid-template-columns: 1fr; gap: 20px; }
+    .ff-station { aspect-ratio: 1; }
 }
 
 .mk-deck { margin: 0 0 36px; }
