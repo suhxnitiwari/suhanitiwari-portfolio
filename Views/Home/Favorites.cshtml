@@ -1764,7 +1764,7 @@
         background: linear-gradient(155deg, #F8E7E3 0%, #EFD2CF 100%);
     }
 
-    .fav-vinyl span {
+    .fav-vinyl .fav-disc {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -1782,6 +1782,31 @@
     @@keyframes favSpin {
         to { transform: rotate(360deg); }
     }
+
+    /* Listen: my top three album covers from Spotify, with the record sliding out from behind */
+    .fav-albums .fav-disc {
+        left: 58%;
+    }
+
+    .fav-albums img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 132px;
+        height: 132px;
+        margin: -66px 0 0 -66px;
+        object-fit: cover;
+        border-radius: 6px;
+        box-shadow: 0 10px 22px rgba(42, 24, 16, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .fav-albums img:nth-of-type(1) { transform: translateX(-78px) rotate(-8deg) scale(0.9); }
+    .fav-albums img:nth-of-type(2) { transform: translateX(78px) rotate(8deg) scale(0.9); }
+    .fav-albums img:nth-of-type(3) { transform: translateX(-12px); z-index: 1; }
+    .fav-albums.has-covers .fav-disc { left: 60%; }
+    .fav-trio a:hover .fav-albums img:nth-of-type(1) { transform: translateX(-92px) rotate(-11deg) scale(0.9); }
+    .fav-trio a:hover .fav-albums img:nth-of-type(2) { transform: translateX(92px) rotate(11deg) scale(0.9); }
 
     /* Watch and Read: three covers fanned out */
     .fav-fan img {
@@ -1828,7 +1853,7 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .fav-vinyl span {
+        .fav-vinyl .fav-disc {
             animation: none;
         }
     }
@@ -1985,7 +2010,7 @@
             <ul class="fav-trio">
                 <li>
                     <a href="#listen-music">
-                        <span class="fav-art fav-vinyl" aria-hidden="true"><span></span></span>
+                        <span class="fav-art fav-vinyl fav-albums" aria-hidden="true"><span class="fav-disc"></span></span>
                         <b>Listen</b>
                         <span class="fav-how">How I feel →</span>
                         <span class="fav-why">Big feelings, dramatic lyrics, and songs I replay until they’re attached to a moment.</span>
@@ -2017,6 +2042,19 @@
                 </li>
             </ul>
         </header>
+
+        <script>
+            // Listen card: my three most-played albums right now, fanned like the posters and books beside it
+            fetch('/spotify/GetMusicLab').then(r => r.ok ? r.json() : null).then(data => {
+                const tracks = data?.topTracks?.short_term || data?.topTracks?.medium_term || [];
+                const seen = new Set(), covers = [];
+                for (const t of tracks) { if (t.albumArt && !seen.has(t.album)) { seen.add(t.album); covers.push(t.albumArt); } if (covers.length === 3) break; }
+                const art = document.querySelector('.fav-albums');
+                if (!art || covers.length < 3) return;
+                art.insertAdjacentHTML('beforeend', covers.map(src => `<img src="${src}" alt="" loading="lazy">`).join(''));
+                art.classList.add('has-covers');
+            }).catch(() => {});
+        </script>
 
         <!-- MY MUSIC: one compact dashboard, live from my Spotify -->
         <h2 class="section-title with-subtitle" id="listen-music">What I'm Listening To</h2>
