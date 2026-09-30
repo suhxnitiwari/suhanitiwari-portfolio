@@ -629,14 +629,14 @@
 .ow-hero { position: relative; margin: 0; justify-self: center; height: 36cqw; aspect-ratio: 246 / 922; filter: drop-shadow(0 1.2cqw 1.4cqw rgba(42, 24, 16, 0.3)); }
 .ow-hero-img { display: block; width: 100%; height: 100%; object-fit: contain; animation: owIn 0.35s ease both; }
 @keyframes owIn { from { opacity: 0.4; transform: translateY(4px); } }
-.ow-eng-time, .ow-eng-name { position: absolute; left: 8%; right: 8%; text-align: center; color: #FFFFFF; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); white-space: nowrap; overflow: hidden; }
+.ow-eng-time { position: absolute; left: 8%; right: 8%; text-align: center; color: #FFFFFF; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); white-space: nowrap; overflow: hidden; }
 .ow-eng-time { top: 42%; font: 700 1.1cqw/1 system-ui, sans-serif; letter-spacing: 0.18em; }
 /* until someone types, the name box pulses to ask for their name */
 .ow-nudge { animation: owNudge 1.8s ease-in-out infinite; }
 @keyframes owNudge { 0%, 100% { box-shadow: 0 0 0 0 rgba(143, 70, 97, 0); } 50% { box-shadow: 0 0 0 4px rgba(143, 70, 97, 0.22); } }
 @media (prefers-reduced-motion: reduce) { .ow-nudge { animation: none; } }
-.ow-eng-name { cursor: text; }
-.ow-eng-name { top: 76%; font: 700 2.2cqw/1 Georgia, serif; }
+.ow-eng-name { position: absolute; left: 4%; width: 92%; top: 70%; height: auto; overflow: visible; cursor: text; filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4)); }
+.ow-eng-name text { font-family: Georgia, serif; font-weight: 700; fill: #FFFFFF; }
 .ow-controls { display: flex; flex-direction: column; gap: 0.5cqw; }
 .ow-label { display: flex; justify-content: space-between; align-items: baseline; margin: 0.8cqw 0 0; font-size: clamp(10px, 0.8cqw, 12px); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mul); }
 .ow-count { font-weight: 600; letter-spacing: 0.08em; text-transform: none; color: #56634A; }
@@ -653,7 +653,6 @@
     .ow-build { grid-template-columns: 1fr; gap: 16px; }
     .ow-hero { height: 360px; }
     .ow-eng-time { font-size: 13px; }
-    .ow-eng-name { font-size: 24px; }
     .ow-lineup img { height: 110px; }
 }
 

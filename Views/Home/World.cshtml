@@ -965,7 +965,7 @@
         display: none;
         position: absolute;
         left: 26px;
-        bottom: 10px;
+        bottom: 8px;
         font-size: 0.65em;
         color: #8A4D57;
         opacity: 0.8;
@@ -1132,7 +1132,12 @@
         /* the whole My 40 Acres block, heading to arrows, fits a laptop screen at 100% */
         .spots-map.austin {
             padding-top: 24px;
-            padding-bottom: 14px;
+        }
+
+        /* room under the cards for the map credit, so it never sits on a card */
+        .spots-map.campus,
+        .spots-map.austin {
+            padding-bottom: 36px;
         }
 
         .spots-map.austin .spot-filters {

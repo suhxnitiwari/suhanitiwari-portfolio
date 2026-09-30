@@ -329,7 +329,7 @@
                                 <figure class="ow-hero" aria-live="polite">
                                     <img class="ow-hero-img" src="/images/projects/owala/bottles/austin.webp" alt="The Austin Marathon race-edition Owala bottle">
                                     <span class="ow-eng-time">4:12:36</span>
-                                    <span class="ow-eng-name" title="Tap to engrave your name">YOUR NAME</span>
+                                    <svg class="ow-eng-name" viewBox="0 0 200 64" role="img" aria-label="Engraved name"><title>Tap to engrave your name</title><path id="owArc" d="M 10 56 Q 100 14 190 56" fill="none"/><text text-anchor="middle"><textPath href="#owArc" startOffset="50%">YOUR NAME</textPath></text></svg>
                                 </figure>
                                 <div class="ow-controls">
                                     <label class="ow-label" for="owName">Engrave your name</label>
@@ -826,13 +826,16 @@
         }));
         picks[0].classList.add('got');
         const name = build.querySelector('.ow-eng-name'), time = build.querySelector('.ow-eng-time');
-        // the name shrinks until it fits across the bottle, however long it is
+        const text = name.querySelector('text'), arcText = name.querySelector('textPath'), arc = name.querySelector('path');
+        // the name curves along an arc, like an engraving, and shrinks until it fits on the arc
         const fit = () => {
-            name.style.fontSize = '';
-            let size = parseFloat(getComputedStyle(name).fontSize);
-            while (name.scrollWidth > name.clientWidth && size > 8) name.style.fontSize = `${--size}px`;
+            let size = 44;
+            text.setAttribute('font-size', size);
+            const room = arc.getTotalLength() * 0.9;
+            const len = text.getComputedTextLength();
+            if (len > room) text.setAttribute('font-size', Math.max(10, size * room / len));
         };
-        build.querySelector('#owName').addEventListener('input', e => { name.textContent = e.target.value.trim() || 'YOUR NAME'; e.target.classList.remove('ow-nudge'); fit(); });
+        build.querySelector('#owName').addEventListener('input', e => { arcText.textContent = e.target.value.trim() || 'YOUR NAME'; e.target.classList.remove('ow-nudge'); fit(); });
         // tapping the name on the bottle takes you to the box to type yours
         name.addEventListener('click', () => build.querySelector('#owName').focus());
         // finish time: numbers only, and the colons go in for you (41236 becomes 4:12:36)
