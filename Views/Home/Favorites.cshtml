@@ -1730,51 +1730,38 @@
         color: #2A1810;
     }
 
-    /* the intro fills the first screen: the thesis on top, then Listen, Watch, Read as three open columns with a picture each */
+    /* the intro: the headline, one line, and three small jumps to Listen, Watch and Read */
 
     #listen-music {
         scroll-margin-top: 100px;
     }
 
     .fav-trio {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 32px;
-        margin: 36px 0 0;
-        padding: 28px 0 0;
-        border-top: 1px solid #D9B8B3;
-        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 24px 0 0;
     }
 
     .fav-trio a {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+        padding: 8px 20px;
+        border: 1px solid #E3C9CE;
+        border-radius: 999px;
+        background: #FFF8F6;
+        font-size: 0.9em;
+        font-weight: 600;
         text-decoration: none;
-        color: #2A1810;
-    }
-
-    .fav-trio a b {
-        font-size: 0.72em;
-        font-weight: 700;
-        letter-spacing: 2.5px;
-        text-transform: uppercase;
-        color: #9E5A63;
-    }
-
-    .fav-how {
-        font-family: Georgia, serif;
-        font-size: 1.35em;
-        font-style: italic;
-    }
-
-    .fav-why {
-        line-height: 1.6;
-        color: #56634A;
-    }
-
-    .fav-trio a:hover .fav-how {
         color: #8A4D57;
+        transition: background 0.2s ease;
+    }
+
+    .fav-trio a:hover {
+        background: #F6E4E1;
+    }
+
+    .fav-trio a:focus-visible {
+        outline: 2px solid #9E5A63;
+        outline-offset: 3px;
     }
 
     /* the one-line thesis under each section title */
@@ -1904,13 +1891,8 @@
             font-size: 2.2em;
         }
 
-        .fav-type-grid,
-        .fav-trio {
+        .fav-type-grid {
             grid-template-columns: 1fr;
-        }
-
-        .fav-trio {
-            gap: 16px;
         }
 
         .fav-claim {
@@ -1921,34 +1903,15 @@
 
 <div class="listen-section" id="listen">
     <div class="listen-container">
-        @* the thread through the whole page: these aren't rankings, they're patterns *@
+        @* a quiet opener; "So apparently, I have a type." is saved for the bottom of the page *@
         <header class="fav-thesis">
-            <p class="fav-kicker">Favorites</p>
-            <h1>Apparently, I have a type.</h1>
-            <p>What I listen to, watch and read looks all over the place until you zoom out. Then the same things keep showing up: people, relationships, ambition, reinvention, curiosity, and a very strong preference for a happy ending.</p>
-            <ul class="fav-trio">
-                <li>
-                    <a href="#listen-music">
-                        <b>Listen</b>
-                        <span class="fav-how">How I feel →</span>
-                        <span class="fav-why">Big feelings, dramatic lyrics, and songs I replay until they’re attached to a moment.</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#watch">
-                        <b>Watch</b>
-                        <span class="fav-how">How I understand people →</span>
-                        <span class="fav-why">Ensemble casts, messy relationships, and a guaranteed happy ending.</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#read">
-                        <b>Read</b>
-                        <span class="fav-how">How I figure things out →</span>
-                        <span class="fav-why">Business, behavior and rom-coms, taking turns explaining the world.</span>
-                    </a>
-                </li>
-            </ul>
+            <h1>Favorites</h1>
+            <p>Things I love enough to put on the internet.</p>
+            <nav class="fav-trio" aria-label="Jump to">
+                <a href="#listen-music">Listen</a>
+                <a href="#watch">Watch</a>
+                <a href="#read">Read</a>
+            </nav>
         </header>
 
         @* MY MUSIC: one compact dashboard, live from my Spotify *@
