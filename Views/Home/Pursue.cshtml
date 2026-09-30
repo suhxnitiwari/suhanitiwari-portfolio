@@ -228,6 +228,21 @@
         color: #8A4D57;
     }
 
+    /* "go build the real thing" is the link to my projects: bold, with a soft underline */
+    .mccombs-build {
+        text-decoration: underline;
+        text-decoration-color: #C9969E;
+        text-underline-offset: 4px;
+    }
+
+    .mccombs-build em {
+        font-weight: 700;
+    }
+
+    .mccombs-build:hover {
+        text-decoration-color: #8A4D57;
+    }
+
     .mccombs-source {
         margin: auto 0 0 !important;
         padding-top: 14px;
@@ -294,6 +309,103 @@
     }
 
     .career-seeking-fields li {
+        padding: 0;
+        background: none;
+    }
+
+    /* each role is a button; the chosen one stays filled and its card opens below */
+    .role-tag {
+        padding: 7px 15px;
+        border-radius: var(--r-pill, 999px);
+        border: 1.5px solid #8A4D57;
+        background: #8A4D57;
+        font: inherit;
+        font-size: 0.85em;
+        font-weight: 600;
+        color: #FAF1EF;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .role-tag:hover {
+        transform: translateY(-2px);
+    }
+
+    .career-seeking.has-role .role-tag:not([aria-selected="true"]) {
+        background: transparent;
+        color: #8A4D57;
+    }
+
+    .role-tag:focus-visible {
+        outline: 2px solid #8A4D57;
+        outline-offset: 3px;
+    }
+
+    .role-hint {
+        margin: 10px 0 0;
+        font-size: 0.8em;
+        font-style: italic;
+        color: #9C8A84;
+    }
+
+    .career-seeking.has-role .role-hint {
+        display: none;
+    }
+
+    .role-card {
+        margin-top: 16px;
+        padding: 18px 20px;
+        border-radius: var(--r-inset, 14px);
+        background: #FAF1EF;
+        border-left: 3px solid #8A4D57;
+        animation: roleIn 0.3s ease both;
+    }
+
+    @@keyframes roleIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .role-card-label {
+        margin: 0;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .role-card-pitch {
+        margin: 6px 0 10px;
+        font-family: Georgia, serif;
+        font-size: 1.15rem;
+        font-style: italic;
+        color: #2A1810;
+    }
+
+    .role-card ul {
+        margin: 0;
+        padding-left: 18px;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    .role-card li + li {
+        margin-top: 4px;
+    }
+
+    .role-card li::marker {
+        color: #C9969E;
+    }
+
+    .role-card-link {
+        display: inline-block;
+        margin-top: 12px;
+        font-weight: 600;
+        color: #8A4D57;
+    }
+
+    .career-seeking-fields li.old-tag {
         padding: 7px 15px;
         border-radius: var(--r-pill, 999px);
         background: #8A4D57;
@@ -532,13 +644,63 @@
             <p class="career-seeking-label">The work I’m looking for</p>
             <h2 class="career-seeking-title" id="seeking-heading">Work where technology meets people.</h2>
             <p class="career-seeking-text">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
-            <ul class="career-seeking-fields">
-                <li>Product Marketing Manager</li>
-                <li>Product Manager</li>
-                <li>Brand Strategist</li>
-                <li>Technology Consultant</li>
-                <li>Management Consultant</li>
+            @{
+                // Each role: the pitch, three pieces of real evidence, and where to see it on the site
+                var roles = new[]
+                {
+                    ("pmm", "Product Marketing Manager", "I turn technical products into stories people actually care about.",
+                        new[] {
+                            "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 40% more website traffic and 37% more LinkedIn visits.",
+                            "I built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, from pricing to competitor analysis.",
+                            "A Marketing minor and a Psychology major: I study why people choose what they choose, then write for it." },
+                        "See my marketing projects", "/home/pursue#marketing"),
+                    ("pm", "Product Manager", "I sit where users, technology and the business meet, and I can build.",
+                        new[] {
+                            "I built RideFlow, a full-stack rideshare app, from the data model to the screen, plus the site you’re on.",
+                            "In my Starbucks app strategy, I prioritized features with RICE scoring and picked one metric to manage to.",
+                            "MIS taught me the system; Psychology taught me the user. Most product problems need both." },
+                        "See what I’ve built", "/home/pursue#projects"),
+                    ("brand", "Brand Strategist", "I think in identity: what a brand means to the person holding it.",
+                        new[] {
+                            "My Owala Marathon Series turns a water bottle into a collectible record of achievement.",
+                            "I repositioned Acacia Advisors’ messaging, and I’ve written, illustrated and published a children’s book.",
+                            "Artistic is my top RIASEC score (92), and my AP 2-D Art and Design portfolio scored a 5." },
+                        "See my Owala and Starbucks work", "/home/pursue#marketing"),
+                    ("tech", "Technology Consultant", "I help businesses choose and adopt the right systems.",
+                        new[] {
+                            "At Oracle, I led discovery calls with $20M to $200M companies and matched their needs to Oracle NetSuite, a cloud ERP.",
+                            "At Acacia Advisors, I worked on AI strategy and built the go-to-market for a $1M Microsoft Azure AI product.",
+                            "MIS 375 (Strategic IT Management) and MIS 301 gave me cost justification, platform strategy and ERP cases." },
+                        "See my experience", "/home/pursue#experience"),
+                    ("mc", "Management Consultant", "Give me a messy problem; I’ll structure it and bring a recommendation.",
+                        new[] {
+                            "At Acacia Advisors, I did market research, competitive analysis and strategic recommendations for client engagements.",
+                            "My strategy decks lead with the answer, back every number with a source and end with a plan.",
+                            "Communication is one of my top CliftonStrengths, and my DISC style is Dominance: decisive and focused on outcomes." },
+                        "See how I work through a problem", "/home/pursue#coursework")
+                };
+            }
+            <ul class="career-seeking-fields" role="tablist" aria-label="Roles I’m looking for">
+                @foreach (var (key, title, _, _, _, _) in roles)
+                {
+                    <li><button type="button" class="role-tag" role="tab" aria-selected="false" aria-controls="role-@key" data-role="@key">@title</button></li>
+                }
             </ul>
+            <p class="role-hint">Tap a role to see why I’m a fit.</p>
+            @foreach (var (key, title, pitch, points, linkText, link) in roles)
+            {
+                <div class="role-card" id="role-@key" role="tabpanel" hidden>
+                    <p class="role-card-label">Why I fit: @title</p>
+                    <p class="role-card-pitch">@pitch</p>
+                    <ul>
+                        @foreach (var point in points)
+                        {
+                            <li>@point</li>
+                        }
+                    </ul>
+                    <a class="role-card-link" href="@link">@linkText →</a>
+                </div>
+            }
         </section>
 
         <div class="career-actions">
@@ -564,8 +726,9 @@
                 <li><b>Top 10</b><span>Ten of our BBA programs rank here</span></li>
             </ul>
             <div class="mccombs-text">
-                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <em>go build the real thing</em>.</p>
+                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="#projects"><em>go build the real thing</em></a>.</p>
                 <p>Marketing sits right next door, so the psychology of why people choose what they choose is never far from the code. The rankings got me in the door. The people, the professors who know your name and classmates who push each other, are why I stay.</p>
+                <p>So far that’s meant a full-stack rideshare app, a database I designed and deployed in Oracle and Snowflake, and a Python planner that runs right in your browser. Every one of them is in my projects below, live and clickable.</p>
                 <p class="mccombs-source">Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
             </div>
         </div>
@@ -663,4 +826,21 @@
             btn._reset = setTimeout(() => btn.textContent = label, 2000);
         });
     });
+</script>
+
+<script>
+    // The roles in "The work I'm looking for": tap one to see why I fit it; tap it again to close
+    (() => {
+        const box = document.querySelector('.career-seeking');
+        if (!box) return;
+        const tags = [...box.querySelectorAll('.role-tag')];
+        const cards = [...box.querySelectorAll('.role-card')];
+        let open = null;
+        tags.forEach(tag => tag.addEventListener('click', () => {
+            open = open === tag.dataset.role ? null : tag.dataset.role;
+            tags.forEach(t => t.setAttribute('aria-selected', t.dataset.role === open));
+            cards.forEach(c => c.hidden = c.id !== `role-${open}`);
+            box.classList.toggle('has-role', open !== null);
+        }));
+    })();
 </script>

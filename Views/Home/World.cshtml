@@ -641,7 +641,7 @@
         justify-content: center;
         flex-wrap: wrap;
         gap: 14px;
-        margin: 26px 0 34px;
+        margin: 12px 0 14px;
     }
 
     .spots-tab {
@@ -885,21 +885,33 @@
     }
 
     @@media (min-width: 761px) {
+        /* the whole My 40 Acres block, heading to arrows, fits a laptop screen at 100% */
+        .spots-map.austin {
+            padding-top: 24px;
+            padding-bottom: 14px;
+        }
+
+        .spots-map.austin .spot-filters {
+            margin-bottom: 10px;
+        }
+
         .spots-grid.compact {
-            gap: 14px;
-            grid-auto-rows: minmax(116px, auto);
+            gap: 10px;
+            grid-auto-rows: minmax(92px, auto);
         }
 
         .spots-grid.compact .spot {
-            padding: 16px 18px;
+            padding: 11px 16px;
+            gap: 2px;
         }
 
         .spots-grid.compact .spot h3 {
-            font-size: 1.2em;
+            font-size: 1.15em;
         }
 
         .spots-grid.compact .spot p {
-            font-size: 0.88em;
+            font-size: 0.84em;
+            line-height: 1.4;
         }
 
         /* the two-row cards in each mosaic: a blush wash, the name large at the bottom */
@@ -938,7 +950,7 @@
         align-items: center;
         justify-content: flex-end;
         gap: 12px;
-        margin-top: 16px;
+        margin-top: 8px;
     }
 
     .spot-pager[hidden] {
@@ -946,8 +958,8 @@
     }
 
     .spot-pager button {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border: 1.5px solid #C9969E;
         border-radius: 50%;
         background: #FFF8F6;
@@ -1555,13 +1567,9 @@
             const last = groups[groups.length - 1];
             if (last && last[0].dataset.filter === c.dataset.filter) last.push(c); else groups.push([c]);
         });
-        const pages = [];
-        groups.forEach(g => {
-            const cur = pages[pages.length - 1];
-            if (cur && cur.length + g.length <= 7) cur.push(...g); else pages.push([...g]);
-        });
-        // a thin last page joins the one before it
-        if (pages.length > 1 && pages[pages.length - 1].length <= 3) pages[pages.length - 2].push(...pages.pop());
+        // at most two pages: "All" splits evenly in half; a single filter is one page
+        const half = Math.ceil(shown.length / 2);
+        const pages = shown.length > 9 ? [shown.slice(0, half), shown.slice(half)] : [shown];
         let at = Math.min(pageOf.get(grid) ?? 0, pages.length - 1);
         pageOf.set(grid, at);
         pages.forEach((pg, i) => pg.forEach(c => c.classList.toggle('off-page', i !== at)));
@@ -1588,6 +1596,36 @@
         pager.querySelector('.spot-count').textContent = `${at + 1} of ${count}`;
     }
 
+    // One page of "All": 12 columns, 4 rows. The spot with the most to say is the big card (4 wide, 2 tall),
+    // two pairs of wide cards sit beside it, then two rows of four finish the rectangle. 13 cards fill it exactly;
+    // 12 or 14 adjust the last row, so every page stays a clean rectangle.
+    function placePage(grid, page) {
+        grid.style.gridTemplateColumns = 'repeat(12, minmax(0, 1fr))';
+        const cards = [...grid.querySelectorAll('.spot')];
+        cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.style.order = ''; c.classList.remove('featured', 'big'); });
+        const text = c => c.textContent.trim().length;
+        const feature = page.reduce((a, b) => text(b) > text(a) ? b : a);
+        const rest = page.filter(c => c !== feature);
+        const put = (c, col, span, row, rows = 1) => { c.style.gridColumn = `${col} / span ${span}`; c.style.gridRow = `${row} / span ${rows}`; };
+        put(feature, 1, 4, 1, 2);
+        feature.classList.add('featured');
+        let k = 0;
+        [1, 2].forEach(row => [5, 9].forEach(col => { if (rest[k]) put(rest[k++], col, 4, row); }));
+        // what's left goes into rows 3 and 4, split as evenly as possible, each row filling all 12 columns
+        const left = rest.slice(k);
+        const rowsOf = [left.slice(0, Math.ceil(left.length / 2)), left.slice(Math.ceil(left.length / 2))];
+        rowsOf.forEach((row, r) => {
+            if (!row.length) return;
+            let col = 1;
+            row.forEach((c, i) => {
+                const span = i === row.length - 1 ? 13 - col : Math.floor(12 / row.length);
+                put(c, col, span, 3 + r);
+                col += span;
+            });
+        });
+        return true;
+    }
+
     function layoutBento(grid) {
         if (!grid || grid.closest('[hidden]')) return;
         const cols = window.innerWidth > 760 ? 6 : window.innerWidth > 440 ? 2 : 1;
@@ -1600,6 +1638,8 @@
             }
             grid.style.gridTemplateColumns = '';
             paginate(grid);
+            const page = [...grid.querySelectorAll('.spot')].filter(c => !c.hidden && !c.classList.contains('off-page'));
+            if (page.length >= 10 && placePage(grid, page)) return;
         }
         const cards = [...grid.querySelectorAll('.spot')];
         cards.forEach(c => { c.style.gridColumn = ''; c.style.gridRow = ''; c.classList.remove('featured', 'big'); });

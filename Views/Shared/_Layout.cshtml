@@ -231,6 +231,20 @@
             font-weight: 500;
         }
 
+        /* sub-items under Coursework: indented, smaller, with a thin line down the left */
+        .dropdown-item-custom.dropdown-sub {
+            margin-left: 52px;
+            padding: 6px 14px;
+            border-left: 1.5px solid #EBD5D0;
+            font-size: 0.76em;
+            letter-spacing: 1px;
+            color: #56634A;
+        }
+
+        .dropdown-item-custom.dropdown-sub:hover {
+            padding-left: 20px;
+        }
+
         .dropdown-item-custom:hover {
             background: #F5E5E1;
             color: #9E5A63;
@@ -471,13 +485,15 @@
         // Each item jumps to its section on the one long Pursue page.
         var pursue = new (string Page, string Url, string Name)[]
         {
+            // same order as the sections on the Pursue page, top to bottom
+            ("McCombs", "/home/pursue#mccombs", "McCombs at a Glance"),
             ("Experience", "/home/pursue#experience", "Experience"),
             ("Projects", "/home/pursue#projects", "Projects"),
-            // ("Education", "/home/pursue#education", "Education"),   off the page while I rework it
+            ("WhyMis", "/home/pursue#why-mis", "Why MIS"),
             ("Coursework", "/home/pursue#coursework", "Coursework"),
             ("BeyondTheClassroom", "/home/pursue#beyond", "Beyond the Classroom"),
-            ("HowIWork", "/home/pursue#how-i-work", "How I Work"),
-            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards")
+            ("ScholarshipsAndAwards", "/home/pursue#awards", "Scholarships & Awards"),
+            ("HowIWork", "/home/pursue#how-i-work", "How I Work")
         };
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
         var onPursue = currentPage == "Pursue" || currentPage == "Career" || pursueIndex >= 0;
@@ -525,6 +541,13 @@
                             @for (var i = 0; i < pursue.Length; i++)
                             {
                                 <a href="@pursue[i].Url" class="dropdown-item-custom @(i == pursueIndex ? "current" : "")"><span class="dropdown-num">@((i + 1).ToString("00"))</span>@pursue[i].Name</a>
+                                @if (pursue[i].Page == "Coursework")
+                                {
+                                    @* the three Coursework tabs, one tap away *@
+                                    <a href="/home/pursue#overview" class="dropdown-item-custom dropdown-sub">Overview</a>
+                                    <a href="/home/pursue#mis" class="dropdown-item-custom dropdown-sub">MIS Major</a>
+                                    <a href="/home/pursue#marketing" class="dropdown-item-custom dropdown-sub">Marketing Minor</a>
+                                }
                             }
                         </div>
                     </li>

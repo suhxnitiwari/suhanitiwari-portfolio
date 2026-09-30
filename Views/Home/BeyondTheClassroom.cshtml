@@ -146,7 +146,11 @@
         box-shadow: 0 24px 50px rgba(42, 24, 16, 0.24);
     }
 
+    /* one line under every photo */
     .project-photo figcaption {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         margin-top: 12px;
         font-size: 0.85em;
         font-style: italic;
@@ -507,7 +511,7 @@
                     // cropped from girls-who-code.jpg to frame me teaching
                     Photo: "/images/girls-who-code-teaching.jpg",
                     PhotoAlt: "Me leading a Girls Who Code session",
-                    PhotoCaption: "Leading a Girls Who Code session at Nelson Middle School"),
+                    PhotoCaption: "Leading Girls Who Code at Nelson Middle School"),
 
                 // My children's book (author + illustrator). Details from its Amazon listing.
                 new Initiative("Girls Can Be Engineers Too",
@@ -553,7 +557,7 @@
                     Description: "Guided elementary students through the engineering design process, from brainstorming and sketching to prototyping, testing, and redesigning. We built boats to explore buoyancy, experimented with paper airplanes and gliders to understand flight, designed solutions for cleaning contaminated water, and constructed mini skate parks to test motion and momentum. Each challenge turned a STEM concept into something students could build, test, and improve.",
                     Photo: "/images/camp-invention.jpg",
                     PhotoAlt: "Me with Camp Invention campers testing boat prototypes in a small pool",
-                    PhotoCaption: "Teaching campers how to make a cool boat and testing our prototypes")
+                    PhotoCaption: "Testing our boat prototypes with my campers")
             })
     };
 }
