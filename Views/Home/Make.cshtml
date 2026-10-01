@@ -80,7 +80,7 @@
     }
 
     /* leave room for the sticky menu when jumping to #art / #writing / #baking */
-    #made, #art, #writing, #baking, #cooking, #traveling {
+    #art, #writing, #baking, #cooking, #traveling {
         scroll-margin-top: 90px;
     }
 
@@ -404,63 +404,6 @@
             <h1 class="section-title">Make</h1>
             <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create. Every single thing on this page started the same way: “wait, what if…?”</p>
         </div>
-
-        @* Things I made because I wanted them to exist: the book leads, the four builds beside it *@
-        <div class="shelf made-shelf" id="made">
-            <div class="shelf-head">
-                <p class="make-q">What if it existed?</p>
-                <h2 class="shelf-title">Things I Made Because I Wanted Them to Exist</h2>
-            </div>
-            <div class="made-grid">
-                <a class="made-card made-feature" href="/home/work#beyond">
-                    <img src="/images/childrens-book-reader.jpg" alt="A young reader holding a copy of Girls Can Be Engineers, Too!" loading="lazy">
-                    <span class="made-body">
-                        <span class="made-kind">Children’s book</span>
-                        <span class="made-title">Girls Can Be Engineers, Too!</span>
-                        <span class="made-line">Bedtime stories for Amaira were all princesses. So I wrote and illustrated one about real women engineers.</span>
-                        <span class="made-go">See the book →</span>
-                    </span>
-                </a>
-                <a class="made-card made-shot" href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">
-                    <img src="/images/make/saturday-clay-pit.jpg" style="object-position: center" alt="The glowing Clay Pit sign at one of my favorite Austin restaurants" width="800" height="800" loading="lazy">
-                    <span class="made-body">
-                        <span class="made-kind">Python app</span>
-                        <span class="made-title">Saturday in Austin</span>
-                        <span class="made-line">One unnecessarily opinionated Saturday, planned for your mood.</span>
-                        <span class="made-go">Plan your Saturday ↗</span>
-                    </span>
-                </a>
-                <a class="made-card made-shot" href="https://suhxnitiwari.github.io/suhani-personality/" target="_blank" rel="noopener">
-                    <img src="/images/make/personality-blazer.jpg" style="object-position: center 30%" alt="Me in a blue blazer, smiling" width="800" height="800" loading="lazy">
-                    <span class="made-body">
-                        <span class="made-kind">Website</span>
-                        <span class="made-title">Soft Heart. Strong Spirit.</span>
-                        <span class="made-line">Ten personality tests, one interactive portrait of me.</span>
-                        <span class="made-go">Meet the real me ↗</span>
-                    </span>
-                </a>
-                <a class="made-card made-shot" href="https://suhxnitiwari.github.io/whats-in-my-bag/" target="_blank" rel="noopener">
-                    <img src="/images/make/whats-in-my-bag.jpg" style="object-position: center" alt="My black backpack with a pink Stanley in the side pocket" width="800" height="800" loading="lazy">
-                    <span class="made-body">
-                        <span class="made-kind">Website</span>
-                        <span class="made-title">What’s in My Bag?</span>
-                        <span class="made-line">I carry my whole life in this backpack. Tap it and everything falls out.</span>
-                        <span class="made-go">Open my bag ↗</span>
-                    </span>
-                </a>
-                @* Celestial used to be a tab in Personality; it's its own site now, so the card shows its wheel *@
-                <a class="made-card made-shot made-sky" href="https://suhxnitiwari.github.io/suhani-celestial/" target="_blank" rel="noopener">
-                    <span class="made-sky-art"><svg viewBox="0 0 400 400" class="made-wheel" aria-hidden="true" focusable="false"><circle cx="200" cy="200" r="196" class="wheel-edge" /><circle cx="200" cy="200" r="162" class="wheel-edge" /><circle cx="200" cy="200" r="112" class="wheel-inner" /><g><line x1="62.3" y1="114.6" x2="33.5" y2="96.7" class="wheel-edge" /><text x="28.7" y="148.2" class="wheel-sign">&#x2648;&#xFE0E;</text></g><g><line x1="38.1" y1="194.9" x2="4.1" y2="193.8" class="wheel-edge" /><text x="25.7" y="240.8" class="wheel-sign">&#x2649;&#xFE0E;</text></g><g><line x1="57.2" y1="276.5" x2="27.2" y2="292.6" class="wheel-edge" /><text x="69.5" y="322.5" class="wheel-sign">&#x264A;&#xFE0E;</text></g><g><line x1="114.6" y1="337.7" x2="96.7" y2="366.5" class="wheel-edge" /><text x="148.2" y="371.3" class="wheel-sign">&#x264B;&#xFE0E;</text></g><g><line x1="194.9" y1="361.9" x2="193.8" y2="395.9" class="wheel-edge" /><text x="240.8" y="374.3" class="wheel-sign">&#x264C;&#xFE0E;</text></g><g><line x1="276.5" y1="342.8" x2="292.6" y2="372.8" class="wheel-edge" /><text x="322.5" y="330.5" class="wheel-sign">&#x264D;&#xFE0E;</text></g><g><line x1="337.7" y1="285.4" x2="366.5" y2="303.3" class="wheel-edge" /><text x="371.3" y="251.8" class="wheel-sign">&#x264E;&#xFE0E;</text></g><g><line x1="361.9" y1="205.1" x2="395.9" y2="206.2" class="wheel-edge" /><text x="374.3" y="159.2" class="wheel-sign">&#x264F;&#xFE0E;</text></g><g><line x1="342.8" y1="123.5" x2="372.8" y2="107.4" class="wheel-edge" /><text x="330.5" y="77.5" class="wheel-sign">&#x2650;&#xFE0E;</text></g><g><line x1="285.4" y1="62.3" x2="303.3" y2="33.5" class="wheel-edge" /><text x="251.8" y="28.7" class="wheel-sign">&#x2651;&#xFE0E;</text></g><g><line x1="205.1" y1="38.1" x2="206.2" y2="4.1" class="wheel-edge" /><text x="159.2" y="25.7" class="wheel-sign">&#x2652;&#xFE0E;</text></g><g><line x1="123.5" y1="57.2" x2="107.4" y2="27.2" class="wheel-edge" /><text x="77.5" y="69.5" class="wheel-sign">&#x2653;&#xFE0E;</text></g><line x1="122.8" y1="118.9" x2="307.1" y2="167.2" class="wheel-aspect easy" /><line x1="108.4" y1="264.4" x2="206.6" y2="311.8" class="wheel-aspect easy" /><line x1="108.4" y1="264.4" x2="129.3" y2="113.2" class="wheel-aspect tense" /><line x1="109.1" y1="134.6" x2="264.6" y2="108.5" class="wheel-aspect tense" /><line x1="202.3" y1="88" x2="206.6" y2="311.8" class="wheel-aspect tense" /><line x1="110" y1="266.6" x2="206.6" y2="311.8" class="wheel-aspect easy" /><line x1="110" y1="266.6" x2="129.3" y2="113.2" class="wheel-aspect tense" /><line x1="307.1" y1="167.2" x2="168.2" y2="92.6" class="wheel-aspect tense" /><line x1="88" y1="200" x2="38" y2="200" class="wheel-asc" /><g class="wheel-planet"><circle cx="70" cy="200" r="15" /><text x="70" y="200" class="wheel-asc-label">ASC</text></g><g><line x1="67.5" y1="293.2" x2="75.7" y2="287.4" class="wheel-tick" /><g class="wheel-planet "><circle cx="83.2" cy="265.6" r="13" /><text x="83.2" y="265.6">&#x263E;&#xFE0E;</text></g></g><g><line x1="69.8" y1="296.4" x2="77.8" y2="290.4" class="wheel-tick" /><g class="wheel-planet "><circle cx="100.9" cy="290.2" r="13" /><text x="100.9" y="290.2">&#x2642;&#xFE0E;</text></g></g><g><line x1="209.5" y1="361.7" x2="208.9" y2="351.7" class="wheel-tick" /><g class="wheel-planet "><circle cx="207.9" cy="333.8" r="13" /><text x="207.9" y="333.8">&#x2644;&#xFE0E;</text></g></g><g><line x1="354.9" y1="152.5" x2="345.3" y2="155.5" class="wheel-tick" /><g class="wheel-planet "><circle cx="328.1" cy="160.7" r="13" /><text x="328.1" y="160.7">&#x2643;&#xFE0E;</text></g></g><g><line x1="293.4" y1="67.6" x2="287.7" y2="75.8" class="wheel-tick" /><g class="wheel-planet "><circle cx="277.3" cy="90.5" r="13" /><text x="277.3" y="90.5">&#x2647;&#xFE0E;</text></g></g><g><line x1="203.4" y1="38" x2="203.2" y2="48" class="wheel-tick" /><g class="wheel-planet "><circle cx="202.8" cy="66" r="13" /><text x="202.8" y="66">&#x2640;&#xFE0E;</text></g></g><g><line x1="154" y1="44.7" x2="156.8" y2="54.3" class="wheel-tick" /><g class="wheel-planet "><circle cx="161.9" cy="71.5" r="13" /><text x="161.9" y="71.5">&#x2646;&#xFE0E;</text></g></g><g><line x1="97.7" y1="74.4" x2="104" y2="82.2" class="wheel-tick" /><g class="wheel-planet "><circle cx="127.7" cy="87.2" r="13" /><text x="127.7" y="87.2">&#x2645;&#xFE0E;</text></g></g><g><line x1="88.3" y1="82.7" x2="95.2" y2="89.9" class="wheel-tick" /><g class="wheel-planet"><circle cx="104.1" cy="106.4" r="13" /><text x="104.1" y="106.4">&#x2600;&#xFE0E;</text></g></g><g><line x1="68.5" y1="105.4" x2="76.6" y2="111.3" class="wheel-tick" /><g class="wheel-planet "><circle cx="85.5" cy="130.3" r="13" /><text x="85.5" y="130.3">&#x263F;&#xFE0E;</text></g></g></svg></span>
-                    <span class="made-body">
-                        <span class="made-kind">Website</span>
-                        <span class="made-title">Celestial</span>
-                        <span class="made-line">My birth chart, a little less sciency. Pisces Sun, Gemini Moon, Taurus Rising.</span>
-                        <span class="made-go">Read my chart ↗</span>
-                    </span>
-                </a>
-            </div>
-        </div>
-        <hr class="shelf-divider">
 
         @* Digital Art: one gallery wall that slides sideways; each piece opens large *@
         <div class="shelf art-shelf" id="art">
