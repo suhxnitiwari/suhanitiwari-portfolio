@@ -1644,7 +1644,7 @@
 .made-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
     gap: 18px;
     margin-top: 16px;
 }
@@ -1673,7 +1673,7 @@
 
 /* the book photo is portrait (her face above, the book below), so it gets a tall column beside the text */
 .made-feature {
-    grid-row: 1 / 4;
+    grid-row: 1 / 5;
     flex-direction: row;
 }
 
