@@ -552,6 +552,9 @@
                         <line class="mis-axis" x1="300" y1="10" x2="300" y2="460" />
                         <line class="mis-axis" x1="10" y1="235" x2="590" y2="235" />
                         <circle class="mis-ring" cx="300" cy="235" r="165" />
+                        @* always moving: dashes flowing round the ring, and a dot that travels to whichever step is lit *@
+                        <circle class="mis-ring-flow" cx="300" cy="235" r="165" />
+                        <g class="mis-orbit"><circle class="mis-orbit-glow" cx="300" cy="70" r="16" /><circle class="mis-orbit-dot" cx="300" cy="70" r="7" /></g>
                         @for (var a = 0; a < misArrows.Length; a++)
                         {
                             <path class="mis-arrow" data-arrow="@a" d="@misArrows[a]" />
@@ -659,7 +662,6 @@
                     <div class="mp-head">
                         <p class="mp-eyebrow">People, Technology, Business</p>
                         <h3 class="mp-h2" id="mp-problem">Hand me a problem.</h3>
-                        <p class="mp-lead">Most problems need all three corners. What changes is where I start. Pick one to see the order I’d work it, then tap a corner to see that step and where I’ve done it before.</p>
                     </div>
                     <div class="mp-tabs" role="tablist" aria-label="Pick a problem"></div>
                     <div class="mp-tri">
@@ -699,7 +701,7 @@
                 @* The zoom lens *@
                 <section class="story-section reveal" aria-labelledby="zoom-heading">
                     <h2 class="story-heading" id="zoom-heading">From one line of code to the business case behind it.</h2>
-                    <p class="story-sub">I can talk to the engineer and the executive in the same meeting. Slide to see what I bring at each level.</p>
+                    <p class="story-sub">I can talk to the engineer and the executive in the same meeting.</p>
                     <div class="zoom">
                         <div class="zoom-lens" aria-hidden="true">
                             @for (var z = zoomStops.Length - 1; z >= 0; z--)
@@ -783,8 +785,8 @@
     let focused = null;   // the corner someone tapped, or null for all three
 
     // Tapping a corner lights up that corner and its step in the card; tapping it again shows all three
-    function focusCorner(k) {
-        focused = focused === k ? null : k;
+    function focusCorner(k, auto) {
+        focused = focused === k && !auto ? null : k;
         nodes.querySelectorAll('.mp-corner').forEach(g => {
             const on = +g.dataset.k === focused;
             g.classList.toggle('on', on);
@@ -793,7 +795,7 @@
         body.classList.toggle('has-focus', focused !== null);
         body.querySelectorAll('.mp-step').forEach(st => st.classList.toggle('lit', +st.dataset.k === focused));
         const lit = body.querySelector('.mp-step.lit');
-        if (lit && matchMedia('(max-width: 900px)').matches) lit.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        if (lit && !auto && matchMedia('(max-width: 900px)').matches) lit.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
     }
 
     function show(i) {
@@ -801,7 +803,7 @@
         body.classList.remove('has-focus');
         const pr = problems[i];
         buttons.forEach((b, n) => { b.setAttribute('aria-selected', n === i); b.tabIndex = n === i ? 0 : -1; });
-        path.innerHTML = [0, 1].map(j => `<path d="${seg(corners[pr.p[j]], corners[pr.p[j + 1]])}" stroke="#76344E" stroke-width="2.4" fill="none" marker-end="url(#mp-arrow)" />`).join('');
+        path.innerHTML = [0, 1].map(j => `<path d="${seg(corners[pr.p[j]], corners[pr.p[j + 1]])}" pathLength="1" style="--j:${j}" stroke="#76344E" stroke-width="2.4" fill="none" marker-end="url(#mp-arrow)" />`).join('');
         nodes.innerHTML = corners.map((v, k) => {
             const order = pr.p.indexOf(k) + 1, w = v.n.length * 9 + 44;
             return `<g class="mp-corner" style="--c:${v.c}" data-k="${k}" role="button" tabindex="0" aria-pressed="false" aria-label="${v.n}: step ${order}">` +
@@ -839,48 +841,15 @@
         });
     });
     show(0);
-})();
 
-// Project carousels (MIS and Marketing): ‹ › and the project names show one project at a time (arrow keys work on the names too)
-document.querySelectorAll('.mp-projects').forEach(root => {
-    const tabs = [...root.querySelectorAll('.mp-proj-tabs [role="tab"]')];
-    const slides = [...root.querySelectorAll('.mp-proj')];
-    if (!tabs.length) return;
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let current = 0;
-    const show = (i, focus) => {
-        current = (i + slides.length) % slides.length;
-        tabs.forEach((t, n) => { t.setAttribute('aria-selected', n === current); t.tabIndex = n === current ? 0 : -1; });
-        slides.forEach((s, n) => {
-            s.hidden = n !== current;
-            s.classList.toggle('entering', n === current && !reduce);
-        });
-        // live previews marked data-live (Saturday in Austin, Personality Site) only load once their slide is opened
-        slides[current].querySelectorAll('iframe[data-live]').forEach(f => { f.src = f.dataset.live; f.removeAttribute('data-live'); });
-        if (focus) tabs[current].focus();
-        // keep the chosen tab in view when the row scrolls
-        const row = tabs[current].parentElement;
-        const tab = tabs[current].getBoundingClientRect(), box = row.getBoundingClientRect();
-        if (tab.left < box.left || tab.right > box.right) {
-            row.scrollBy({ left: tab.left < box.left ? tab.left - box.left - 4 : tab.right - box.right + 4, behavior: reduce ? 'auto' : 'smooth' });
-        }
-    };
-    // ‹ › only show when the tabs don't fit on one line
-    const nav = root.querySelector('.mp-proj-nav');
-    // measure with the arrows hidden, or the arrows themselves would make the row look too narrow
-    const fits = () => { const row = root.querySelector('.mp-proj-tabs'); if (!nav) return; nav.classList.remove('overflows'); nav.classList.toggle('overflows', row.scrollWidth > row.clientWidth + 2); };
-    if (nav) { new ResizeObserver(fits).observe(nav); fits(); }
-    tabs.forEach((t, n) => {
-        t.addEventListener('click', () => show(n));
-        t.addEventListener('keydown', e => {
-            if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-            e.preventDefault();
-            e.stopPropagation();   // don't also spin the MIS cycle
-            show(current + (e.key === 'ArrowRight' ? 1 : -1), true);
-        });
-    });
-    root.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
-});
+    // it plays itself: each corner lights up in the order I'd work it, then on to the next problem
+    let at = 0, beat = 0;
+    autoplay(document.querySelector('.mp-tri').closest('.mp-section'), () => {
+        if (beat === 3) { at = (at + 1) % problems.length; show(at); beat = 0; return; }
+        focusCorner(problems[at].p[beat++], true);
+    }, 2200);
+    buttons.forEach((b, i) => b.addEventListener('click', () => { at = i; beat = 0; }));
+})();
 
 // Marketing decks: one slide at a time, ‹ › on the stage, arrow keys, and a chapter button per slide (built from data-title)
 document.querySelectorAll('.mk-deck').forEach(deck => {
@@ -958,7 +927,8 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     const hashFor = { 'cw-tab-mis': '#mis', 'cw-tab-mk': '#marketing', 'cw-tab-overview': '#overview' };
     const baseTitle = document.title;
     const tabForHash = h =>
-        h === '#marketing' ? byId('cw-tab-mk')
+        // #mk-… is one marketing project (the home page's best-work cards link straight to them)
+        h === '#marketing' || h.startsWith('#mk-') ? byId('cw-tab-mk')
             // Overview, and the theme links that pick a crossover on it (from the home page)
             : ['#overview', '#human-behavior', '#persuasion', '#storytelling', '#decision-making', '#leadership', '#innovation'].includes(h) ? byId('cw-tab-overview')
             : misTab;
@@ -1033,8 +1003,16 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     const count = details.length;
     let selected = 0;
 
+    // the orbiting dot always moves forward, so it spins round the ring instead of jumping back
+    const orbit = mis.querySelector('.mis-orbit');
+    let orbitAngle = 0;
+
     function select(i) {
         selected = i;
+        if (i !== null && orbit) {
+            orbitAngle += ((i * 90 - orbitAngle) % 360 + 360) % 360;
+            orbit.style.transform = `rotate(${orbitAngle}deg)`;
+        }
         mis.classList.toggle('has-selection', i !== null);
         boxes.forEach((b, n) => b.classList.toggle('selected', n === i));
         boxButtons.forEach((b, n) => b.setAttribute('aria-pressed', n === i));
@@ -1101,6 +1079,8 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     // back on a wide screen with everything closed: show step 01 again
     phone.addEventListener('change', () => { if (!phone.matches && selected === null) select(0); });
     select(0);
+    // it walks round the cycle by itself (on phones the steps are an accordion, so it waits to be opened)
+    autoplay(mis.querySelector('.mis-cycle-row'), () => { if (!phone.matches) select(step(1)); }, 3200);
 })();
 
 // The zoom lens: the slider, a tick, or a click on a ring picks a level; the rings up to that level light up
@@ -1144,6 +1124,8 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     });
     lens.addEventListener('mouseleave', () => rings.forEach(r => r.classList.remove('hover')));
     show(0);
+    // it zooms out by itself, one level at a time, then starts again from the code
+    autoplay(document.querySelector('.zoom'), () => show((+range.value + 1) % stops.length), 2600);
 })();
 
 // The story sections ease in as they scroll into view (the MIS tab starts hidden, which is fine: they wait)
@@ -1294,3 +1276,4 @@ document.addEventListener('keydown', function(event) {
     border-bottom: none;
 }
 </style>
+<script src="~/js/project-carousel.js" asp-append-version="true"></script>

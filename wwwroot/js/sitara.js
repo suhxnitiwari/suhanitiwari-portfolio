@@ -183,4 +183,31 @@
 
     form.addEventListener('submit', e => { e.preventDefault(); ask(input.value); });
     chips.querySelectorAll('button').forEach(b => b.addEventListener('click', () => ask(b.textContent)));
+
+    // Never sit on top of something you need to click: once the page stops scrolling, if a link, button, field or video
+    // is under the launcher, she tucks into the right edge (a sliver of her face still shows, and she still opens on a tap).
+    // Over empty space she slides back out.
+    const clickable = 'a, button, input, select, textarea, label, video, [role="button"], [role="tab"], [tabindex]:not([tabindex="-1"])';
+    const overlapsSomething = () => {
+        const box = launch.getBoundingClientRect();
+        root.style.pointerEvents = 'none';   // look underneath her, not at her
+        const points = [[0.15, 0.25], [0.5, 0.5], [0.85, 0.25], [0.15, 0.85], [0.85, 0.85], [0.5, 0.1]];
+        const hit = points.some(([fx, fy]) => {
+            const el = document.elementFromPoint(box.left + box.width * fx, box.top + box.height * fy);
+            return el && !root.contains(el) && el.closest(clickable);
+        });
+        root.style.pointerEvents = '';
+        return hit;
+    };
+    let settle;
+    const check = () => {
+        if (root.classList.contains('open')) { root.classList.remove('tucked'); return; }
+        root.classList.remove('tucked');           // measure from her normal spot
+        root.classList.toggle('tucked', overlapsSomething());
+    };
+    addEventListener('scroll', () => { clearTimeout(settle); settle = setTimeout(check, 140); }, { passive: true });
+    addEventListener('resize', () => { clearTimeout(settle); settle = setTimeout(check, 140); });
+    // a tucked Sitara slides out on hover or focus, so she's easy to reach on purpose
+    launch.addEventListener('focus', () => root.classList.remove('tucked'));
+    setTimeout(check, 600);
 })();

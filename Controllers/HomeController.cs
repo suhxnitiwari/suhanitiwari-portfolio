@@ -52,6 +52,10 @@ public class HomeController : Controller
         return View("Pursue");
     }
 
+    // Case studies: one editorial page per project, linked from the Projects board
+    [Route("work/starbucks")]
+    public IActionResult Starbucks() => View("CaseStarbucks");
+
     // /career: the one link to send a recruiter, the Work page
     [Route("career")]
     public IActionResult Career() => Redirect("/home/work");

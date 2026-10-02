@@ -161,6 +161,7 @@ html {
 .honors-hero h1,
 .work-tests-hero h1,
 .about-intro h2,
+.cs-title,
 .cta-section > h2 {
     font-family: Georgia, serif !important;
     font-size: var(--title-size) !important;
@@ -183,6 +184,7 @@ html {
 .personality-title,
 #mis-heading,
 #mk-heading,
+.cs-h,
 .story-heading {
     font-family: Georgia, serif !important;
     font-size: var(--section-size) !important;
@@ -210,6 +212,7 @@ html {
 .spot h3,
 .via-card h3,
 .sky-card h3,
+.cs-sub,
 .tot-title {
     font-family: Georgia, serif !important;
     font-size: var(--sub-size) !important;

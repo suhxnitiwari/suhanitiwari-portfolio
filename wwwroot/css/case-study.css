@@ -1,0 +1,497 @@
+/* CASE STUDY: one editorial page per project (Views/Home/Case*.cshtml).
+   A quiet table of contents on the left that follows you down the page, and the story on the right:
+   a small label, a serif heading and a short paragraph per section, with exhibits in between.
+   Heading sizes come from the site's rules (.cs-title, .cs-h and .cs-sub are listed in site.css). */
+
+.cs-page {
+    padding: 48px 40px 96px;
+    background: linear-gradient(135deg, #F7EAE6 0%, #FAF1EF 100%);
+    color: #1E100A;
+}
+
+.cs-wrap {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 56px;
+    max-width: var(--page-width);
+    margin: 0 auto;
+}
+
+/* the table of contents: sticks beside the story, and the section you're reading is marked */
+.cs-toc {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+}
+
+.cs-back {
+    display: inline-block;
+    margin-bottom: 26px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #7E3F4A;
+    text-decoration: none;
+}
+
+.cs-back:hover {
+    color: #1E100A;
+}
+
+.cs-toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid #E2C6C0;
+}
+
+.cs-toc a {
+    display: block;
+    margin-left: -1px;
+    padding: 6px 0 6px 14px;
+    border-left: 2px solid transparent;
+    font-size: 0.92rem;
+    color: #7A665F;
+    text-decoration: none;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.cs-toc a:hover,
+.cs-toc a.on {
+    color: #1E100A;
+    border-left-color: #7E3F4A;
+}
+
+/* labels: the small caps line above every heading */
+.cs-label {
+    display: block;
+    margin: 0 0 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #7E3F4A;
+}
+
+.cs-title {
+    margin: 0;
+}
+
+.cs-dek {
+    margin: 14px 0 0;
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: #4A3530;
+}
+
+/* the hero: the project's video in its panel, like its tile on the Projects board */
+.cs-hero {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9.4;
+    margin: 32px 0 0;
+    border-radius: var(--r-card);
+    background: var(--panel, #56634A);
+}
+
+.cs-hero video {
+    position: absolute;
+    left: 7%;
+    bottom: -5%;
+    width: 100%;
+    height: auto;
+    border-radius: var(--r-inset) 0 0 0;
+    box-shadow: 0 14px 40px rgba(42, 24, 16, 0.3);
+}
+
+/* role, team, course and tools in one row under the hero */
+.cs-meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    margin: 28px 0 0;
+    padding: 0 0 28px;
+    border-bottom: 1px solid #E2C6C0;
+}
+
+.cs-meta dt {
+    margin-bottom: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7A665F;
+}
+
+.cs-meta dd {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* sections */
+.cs-section {
+    padding: 64px 0 0;
+    scroll-margin-top: 80px;
+}
+
+.cs-h {
+    margin: 0 0 14px;
+}
+
+.cs-body {
+    margin: 0 0 14px;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #2A1810;
+}
+
+.cs-body b {
+    color: #7E3F4A;
+}
+
+/* three ideas side by side: situation, catch and fix, or the three opportunities */
+.cs-three {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-three li {
+    padding: var(--pad-card-sm);
+    border: var(--card-border);
+    border-radius: var(--r-card);
+    background: #FFF8F6;
+    box-shadow: var(--shadow-card);
+}
+
+.cs-three .cs-sub {
+    margin: 0 0 8px;
+}
+
+.cs-three p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4A3530;
+}
+
+.cs-three .cs-tag {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C27B8A;
+}
+
+.cs-three .cs-test {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed #E2C6C0;
+    font-style: italic;
+}
+
+/* exhibits: a numbered figure with a caption, in a soft panel */
+.cs-exhibit {
+    margin: 24px 0 0;
+    padding: var(--pad-card);
+    border: var(--card-border);
+    border-radius: var(--r-card);
+    background: #FFF8F6;
+    box-shadow: var(--shadow-card);
+}
+
+.cs-exhibit figcaption {
+    margin-bottom: 18px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7A665F;
+}
+
+.cs-bars {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-bars li {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 4.5rem;
+    gap: 14px;
+    align-items: center;
+    font-size: 0.92rem;
+}
+
+.cs-bars i {
+    display: block;
+    height: 12px;
+    border-radius: var(--r-pill);
+    background: #EBD5D0;
+    overflow: hidden;
+}
+
+.cs-bars i::after {
+    content: "";
+    display: block;
+    width: var(--w);
+    height: 100%;
+    border-radius: inherit;
+    background: #C27B8A;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(var(--n, 0) * 60ms);
+}
+
+.cs-bars li.hi i::after {
+    background: #56634A;
+}
+
+.cs-bars.in i::after {
+    transform: none;
+}
+
+.cs-bars b {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* big numbers in a row */
+.cs-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-stats li {
+    padding-top: 14px;
+    border-top: 2px solid #1E100A;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4A3530;
+}
+
+.cs-stats b {
+    display: block;
+    margin-bottom: 4px;
+    font-family: Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #1E100A;
+}
+
+/* the one line to remember from a section */
+.cs-takeaway {
+    margin: 24px 0 0;
+    padding: 16px 20px;
+    border-left: 3px solid #7E3F4A;
+    border-radius: 0 var(--r-inset) var(--r-inset) 0;
+    background: #F3E3E0;
+    font-family: Georgia, serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.cs-takeaway b {
+    display: block;
+    margin-bottom: 4px;
+    font-family: system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-style: normal;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7E3F4A;
+}
+
+/* a 2 by 2 of what to build now and later */
+.cs-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 18px 0 0;
+}
+
+.cs-matrix div {
+    padding: 18px 20px;
+    border-radius: var(--r-inset);
+    background: #F3E3E0;
+}
+
+.cs-matrix .win {
+    background: #56634A;
+    color: #FFFFFF;
+}
+
+.cs-matrix h4 {
+    margin: 0 0 6px;
+    font-family: Georgia, serif;
+    font-size: 1rem;
+}
+
+.cs-matrix p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* the north star */
+.cs-star {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 28px;
+    align-items: start;
+    margin: 24px 0 0;
+}
+
+.cs-star-main {
+    padding: var(--pad-card);
+    border-radius: var(--r-card);
+    background: #1E100A;
+    color: #FAF1EF;
+}
+
+.cs-star-main b {
+    display: block;
+    margin: 6px 0 10px;
+    font-family: 'Bodoni Moda', Georgia, serif;
+    font-size: 3.4rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #FFFFFF;
+}
+
+.cs-star-main .cs-label {
+    color: #EBC8CC;
+}
+
+.cs-star-main p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.cs-drivers {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: driver;
+}
+
+.cs-drivers li {
+    counter-increment: driver;
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    padding: 12px 0;
+    border-bottom: 1px solid #E2C6C0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4A3530;
+}
+
+.cs-drivers li::before {
+    content: "0" counter(driver);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #C27B8A;
+    padding-top: 3px;
+}
+
+.cs-drivers b {
+    color: #1E100A;
+}
+
+/* a plain list of what I did */
+.cs-did {
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cs-did li {
+    position: relative;
+    padding: 12px 0 12px 26px;
+    border-bottom: 1px solid #E2C6C0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.cs-did li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: #C27B8A;
+}
+
+.cs-source {
+    margin: 12px 0 0;
+    font-size: 0.78rem;
+    color: #7A665F;
+}
+
+.cs-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 22px 0 0;
+    padding: 12px 22px;
+    border-radius: var(--r-pill);
+    background: #7E3F4A;
+    color: #FFFFFF;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.cs-cta:hover {
+    background: #5E2E37;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+}
+
+/* sections fade up as you reach them */
+.cs-section.cs-rise {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.cs-section.cs-rise.in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cs-section.cs-rise { opacity: 1; transform: none; transition: none; }
+    .cs-bars i::after { transform: none; transition: none; }
+    .cs-toc a, .cs-cta { transition: none; }
+}
+
+/* tablets and phones: the contents list goes away and everything stacks */
+@media (max-width: 900px) {
+    .cs-page { padding: 32px 20px 72px; }
+    .cs-wrap { grid-template-columns: 1fr; gap: 0; }
+    .cs-toc { position: static; }
+    .cs-toc ol { display: none; }
+    .cs-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cs-three, .cs-stats, .cs-star { grid-template-columns: 1fr; }
+    .cs-bars li { grid-template-columns: minmax(0, 1fr) 4rem; }
+    .cs-bars li span { grid-column: 1 / -1; }
+}

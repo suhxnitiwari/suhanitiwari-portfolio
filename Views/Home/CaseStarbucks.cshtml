@@ -1,0 +1,191 @@
+@* Case study: Starbucks AI Loyalty. Every fact and number here comes from my Starbucks deck (Views/Home/_MarketingWork.cshtml);
+   the working prototype stays on the Study page, and this page links to it. *@
+@{
+    ViewData["Title"] = "Starbucks AI Loyalty";
+
+    var toc = new[]
+    {
+        ("overview", "Overview"), ("problem", "Problem"), ("opportunities", "Opportunities"),
+        ("priorities", "Priorities"), ("solution", "Solution"), ("measure", "Measuring success"), ("process", "How I worked")
+    };
+
+    // RICE scores from my deck (Reach × Impact × Confidence ÷ Effort), highest first
+    var rice = new (string Feature, int Score)[]
+    {
+        ("Drink customization profiles", 33750),
+        ("Smart menu filtering and personalization", 29250),
+        ("Scheduling recurring orders", 20250),
+        ("AI personalized suggestions", 16875),
+        ("Wait-time based store routing", 15714),
+        ("Drink comparison tool", 14875),
+        ("Scheduling ahead (one-time)", 13281),
+        ("Multi-user profiles", 10286),
+        ("Line Priority Boost (paid)", 4000),
+        ("Study-optimized store finder", 3656)
+    };
+    var riceMax = rice.Max(r => r.Score);
+    string Pct(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
+}
+<link rel="stylesheet" href="~/css/case-study.css" asp-append-version="true" />
+
+<main class="cs-page">
+    <div class="cs-wrap">
+        <nav class="cs-toc" aria-label="On this page">
+            <a class="cs-back" href="/home/work#projects">← Projects</a>
+            <ol>
+                @foreach (var (id, name) in toc)
+                {
+                    <li><a href="#@id">@name</a></li>
+                }
+            </ol>
+        </nav>
+
+        <article>
+            <header>
+                <span class="cs-label">Starbucks, product management</span>
+                <h1 class="cs-title">Where the Starbucks app’s growth is hiding</h1>
+                <p class="cs-dek">What to build, and how to measure it.</p>
+                <div class="cs-hero" style="--panel: #56634A">
+                    <video src="/videos/projects/starbucks.mp4" poster="/videos/projects/starbucks.jpg" width="960" height="538"
+                           muted loop playsinline autoplay aria-label="Flipping through my Starbucks strategy deck"></video>
+                </div>
+                <dl class="cs-meta">
+                    <div><dt>Role</dt><dd>Product strategy, research and prototype</dd></div>
+                    <div><dt>Team</dt><dd>Solo</dd></div>
+                    <div><dt>Course</dt><dd>MKT 372T Product Management, McCombs</dd></div>
+                    <div><dt>Methods</dt><dd>Opportunity solution tree, KANO, RICE, working-backwards memo</dd></div>
+                </dl>
+            </header>
+
+            <section class="cs-section" id="overview">
+                <span class="cs-label">Overview</span>
+                <h2 class="cs-h">Starbucks can grow by turning its app from a checkout tool into a daily ritual.</h2>
+                <ul class="cs-three">
+                    <li><span class="cs-tag">The situation</span><p>Starbucks takes <b>48%</b> of U.S. coffee-shop spending, and Rewards members already drive <b>58%</b> of U.S. store sales.</p></li>
+                    <li><span class="cs-tag">The catch</span><p>Yet <b>69%</b> of transactions still aren’t mobile orders, and people use the app to pay, not to discover or plan.</p></li>
+                    <li><span class="cs-tag">The fix</span><p>Build habit-forming features first, then manage to one metric: <b>Weekly Active Ritual Orders per User</b>.</p></li>
+                </ul>
+            </section>
+
+            <section class="cs-section" id="problem">
+                <span class="cs-label">Problem</span>
+                <h2 class="cs-h">Nearly half of U.S. coffee-shop spending, but only about 3 in 10 orders placed ahead in the app.</h2>
+                <ul class="cs-stats">
+                    <li><b>31%</b>of transactions are mobile orders</li>
+                    <li><b>58%</b>of U.S. store sales come from Rewards members</li>
+                    <li><b>35M+</b>active Rewards members, an all-time high</li>
+                </ul>
+                <p class="cs-takeaway"><b>Key takeaway</b>The growth isn’t new customers. It’s moving visits Starbucks already has into the app.</p>
+                <p class="cs-source">Source: Technomic (2025); Starbucks Q4 FY25 investor dashboard</p>
+            </section>
+
+            <section class="cs-section" id="opportunities">
+                <span class="cs-label">Opportunities</span>
+                <h2 class="cs-h">Three ways to make ordering predictive and personal.</h2>
+                <p class="cs-body">The target outcome: grow mobile revenue and habit-driven visits by making the app a predictive, personalized daily ordering platform. I mapped it as an opportunity solution tree, with a test for each branch.</p>
+                <ul class="cs-three">
+                    <li>
+                        <span class="cs-tag">A</span>
+                        <h3 class="cs-sub">Routine automation</h3>
+                        <p>Nothing can be scheduled, and ordering ignores routine and context.</p>
+                        <p class="cs-test">Test: a “Schedule this weekly?” prompt after checkout</p>
+                    </li>
+                    <li>
+                        <span class="cs-tag">B</span>
+                        <h3 class="cs-sub">Health-aware customization</h3>
+                        <p>Health preferences aren’t saved, and healthy choices get no guidance.</p>
+                        <p class="cs-test">Test: auto-applied modifiers vs. manual customizing</p>
+                    </li>
+                    <li>
+                        <span class="cs-tag">C</span>
+                        <h3 class="cs-sub">Personalized recs and deals</h3>
+                        <p>Offers ignore behavior, and the full menu overwhelms discovery.</p>
+                        <p class="cs-test">Test: a personalized offer vs. a generic coupon</p>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="cs-section" id="priorities">
+                <span class="cs-label">Priorities</span>
+                <h2 class="cs-h">The features that build habits score highest.</h2>
+                <p class="cs-body">I scored ten features with RICE (Reach × Impact × Confidence ÷ Effort). The top three all make the next order faster than the last; paid line-skipping lands near the bottom.</p>
+                <figure class="cs-exhibit">
+                    <figcaption>RICE score by feature</figcaption>
+                    <ol class="cs-bars">
+                        @for (var i = 0; i < rice.Length; i++)
+                        {
+                            var (feature, score) = rice[i];
+                            <li class="@(score >= 20000 ? "hi" : "")" style="--w: @Pct(score * 100.0 / riceMax)%; --n: @i"><span>@feature</span><i></i><b>@score.ToString("N0")</b></li>
+                        }
+                    </ol>
+                </figure>
+                <div class="cs-matrix">
+                    <div class="win"><h4>Quick wins: ship now</h4><p>Smart menu filtering, customization profiles, wait-time store routing</p></div>
+                    <div><h4>Strategic bets: fund next</h4><p>Recurring orders, scheduling ahead, AI drink suggestions, multi-user profiles, study-optimized store finder</p></div>
+                    <div><h4>Fill-ins</h4><p>Side-by-side drink comparison</p></div>
+                    <div><h4>Deprioritize</h4><p>Line Priority Boost (paid)</p></div>
+                </div>
+            </section>
+
+            <section class="cs-section" id="solution">
+                <span class="cs-label">Solution</span>
+                <h2 class="cs-h">An app that turns one order into a weekly ritual.</h2>
+                <p class="cs-body">I prototyped the redesigned app and rebuilt it in code as a working app: pick who’s ordering, reorder your usual in one tap, find your next favorite by mood, weather and events, schedule it as a ritual, and watch your rewards grow.</p>
+                <a class="cs-cta" href="/home/study#mk-title-0">Try the working prototype <span aria-hidden="true">→</span></a>
+            </section>
+
+            <section class="cs-section" id="measure">
+                <span class="cs-label">Measuring success</span>
+                <h2 class="cs-h">Success is weekly ritual orders, not downloads.</h2>
+                <div class="cs-star">
+                    <div class="cs-star-main">
+                        <span class="cs-label">North star metric</span>
+                        <b>WARO</b>
+                        <p>Weekly Active Ritual Orders per User: orders placed from a saved, scheduled or AI-suggested routine. It captures both revenue and habit.</p>
+                    </div>
+                    <ol class="cs-drivers" aria-label="What drives WARO">
+                        <li><span><b>Habit formation:</b> recurring and scheduled orders created</span></li>
+                        <li><span><b>Personalization:</b> recommendations that fit the moment</span></li>
+                        <li><span><b>Convenience:</b> one-tap reorder, reliable pickup</span></li>
+                        <li><span><b>Engagement:</b> active use beyond checkout</span></li>
+                        <li><span><b>Retention:</b> users returning week after week</span></li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="cs-section" id="process">
+                <span class="cs-label">How I worked</span>
+                <h2 class="cs-h">From the business model to a working prototype.</h2>
+                <ul class="cs-did">
+                    <li>Mapped the business with a Business Model Canvas, Value Proposition Canvas, Product Vision Board and Opportunity Solution Tree</li>
+                    <li>Prioritized ten new features with KANO analysis and RICE scoring, then sequenced them into a phased roadmap</li>
+                    <li>Wrote an Amazon-style working-backwards memo and prototyped the redesigned app screens</li>
+                    <li>Invented a north star metric, WARO, with the KPI tree behind it</li>
+                </ul>
+                <a class="cs-cta" href="/home/work#projects"><span aria-hidden="true">←</span> Back to all projects</a>
+            </section>
+        </article>
+    </div>
+</main>
+
+<script>
+    // the contents list marks the section you're reading; sections fade up and the RICE bars fill as you reach them
+    (() => {
+        if (!('IntersectionObserver' in window)) { document.querySelectorAll('.cs-bars').forEach(b => b.classList.add('in')); return; }
+        const links = new Map([...document.querySelectorAll('.cs-toc a[href^="#"]')].map(a => [a.getAttribute('href').slice(1), a]));
+        const sections = [...document.querySelectorAll('.cs-section')];
+        const spy = new IntersectionObserver(entries => entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            links.forEach(a => a.classList.remove('on'));
+            links.get(e.target.id)?.classList.add('on');
+        }), { rootMargin: '-35% 0px -60% 0px' });
+        sections.forEach(s => spy.observe(s));
+
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const reach = new IntersectionObserver(entries => entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('in'); reach.unobserve(e.target); }
+        }), { threshold: 0.15 });
+        if (!reduce) sections.forEach(s => { s.classList.add('cs-rise'); reach.observe(s); });
+        document.querySelectorAll('.cs-bars').forEach(b => reduce ? b.classList.add('in') : reach.observe(b));
+    })();
+</script>

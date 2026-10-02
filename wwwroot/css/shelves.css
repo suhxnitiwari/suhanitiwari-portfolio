@@ -163,7 +163,6 @@
         repeating-linear-gradient(180deg, transparent 0 25px, rgba(150, 170, 200, 0.28) 25px 26px),
         #FFFBF4;
     box-shadow: 0 6px 16px rgba(42, 24, 16, 0.14), inset 0 0 40px rgba(210, 180, 150, 0.18);
-    transform: rotate(-1deg);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -173,7 +172,7 @@
 }
 
 .trip-journal:hover .journal-page {
-    transform: rotate(0deg) translateY(-4px);
+    transform: translateY(-4px);
     box-shadow: 0 14px 28px rgba(42, 24, 16, 0.2);
 }
 
@@ -204,7 +203,6 @@
     padding: 5px 5px 16px;
     background: #FFFFFF;
     box-shadow: 0 3px 8px rgba(42, 24, 16, 0.18);
-    transform: rotate(-3deg);
 }
 
 .journal-snap svg {
@@ -221,7 +219,6 @@
     background: #FFF4EE;
     border: 1px solid #E9CFC6;
     box-shadow: 0 3px 8px rgba(42, 24, 16, 0.14);
-    transform: rotate(2.5deg);
     font-size: clamp(0.5rem, 4.4cqw, 0.72rem);
     color: #1E100A;
     overflow: hidden;
@@ -1640,151 +1637,151 @@
     padding-right: 0;
 }
 
-/* THINGS I MADE BECAUSE I WANTED THEM TO EXIST: the book large on the left, three builds stacked on the right */
+/* THINGS I MADE BECAUSE I WANTED THEM TO EXIST: two staggered columns of big tiles (Saturday + the book on
+   the left, the three sites on the right), each showing the real thing with a short caption underneath */
 .made-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
     margin-top: 16px;
+    align-items: start;
+}
+
+.made-col {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
 }
 
 .made-card {
     display: flex;
-    overflow: hidden;
-    border-radius: var(--r-card);
-    border: var(--card-border);
-    background: #FFF8F6;
-    box-shadow: var(--shadow-card);
+    flex-direction: column;
+    gap: 6px;
     color: #1E100A;
     text-decoration: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .made-card:hover {
-    transform: translateY(-3px);
     color: #1E100A;
 }
 
 .made-card:focus-visible {
     outline: 2px solid #733642;
-    outline-offset: 3px;
+    outline-offset: 6px;
+    border-radius: var(--r-card);
 }
 
-/* the book photo is portrait (her face above, the book below), so it gets a tall column beside the text */
-.made-feature {
-    grid-row: 1 / 5;
-    flex-direction: row;
+/* the colored tile; the live site sits in a browser window that runs off the bottom edge */
+.made-tile {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    border: var(--card-border);
+    margin-bottom: 8px;
 }
 
-.made-feature img {
-    flex: 0 0 46%;
-    width: 46%;
-    height: auto;
-    min-height: 100%;
-    object-fit: cover;
-    object-position: center 55%;
+.made-window {
+    position: absolute;
+    left: 9%;
+    right: 9%;
+    top: 11%;
+    display: block;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+    background: #FFFFFF;
+    box-shadow: 0 18px 40px rgba(30, 16, 10, 0.22);
+    transition: transform 0.35s ease;
 }
 
-.made-feature .made-body {
-    justify-content: flex-end;
+.made-card:hover .made-window {
+    transform: translateY(-6px);
 }
 
-.made-body {
+.made-window-bar {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: var(--pad-card-sm);
+    gap: 5px;
+    padding: 7px 10px;
+    background: #F4ECEA;
+    border-bottom: 1px solid #E6D6D2;
 }
 
-.made-kind {
-    font-size: 0.7em;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #7E3F4A;
+.made-window-bar i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #D8C3BF;
+}
+
+.made-window img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* each tile picks up its site's own colors */
+.made-tile-saturday    { aspect-ratio: 4 / 3; background: linear-gradient(160deg, #F7E2CF 0%, #E9A56F 100%); }
+.made-tile-personality { background: radial-gradient(circle at 50% 70%, #E0679A 0%, #5B1C38 55%, #2B0F1D 100%); }
+.made-tile-bag         { background: linear-gradient(160deg, #FBEDEE 0%, #EFC3CC 100%); }
+.made-tile-celestial   { background: linear-gradient(160deg, #F1E1E0 0%, #C9969E 100%); }
+
+/* the book: the photo of her holding it, full bleed */
+.made-tile-book {
+    aspect-ratio: 4 / 5.3;
+    background: #F5E0DB;
+}
+
+.made-tile-book img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+    transition: transform 0.5s ease;
+}
+
+.made-card:hover .made-tile-book img {
+    transform: scale(1.03);
+}
+
+.made-caption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
 }
 
 .made-title {
     font-family: Georgia, serif;
-    font-size: 1.45em;
+    font-size: 1.2em;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
-.made-feature .made-title {
-    font-size: 1.8em;
+.made-meta {
+    flex-shrink: 0;
+    font-size: 0.7em;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7E3F4A;
 }
 
 .made-line {
-    line-height: 1.55;
-    color: #2A1810;
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: #5A4038;
 }
-
-.made-go {
-    margin-top: 4px;
-    font-weight: 700;
-    color: #733642;
-}
-
-/* the two builds: a screenshot of the real site beside a short line */
-.made-shot img {
-    flex: 0 0 50%;
-    width: 50%;
-    height: auto;
-    min-height: 100%;
-    object-fit: cover;
-    object-position: left top;
-    border-right: var(--card-border);
-}
-
-.made-shot .made-body {
-    justify-content: center;
-}
-
-/* Celestial has no photo: its birth chart wheel sits in the image's place */
-.made-sky-art {
-    flex: 0 0 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px;
-    background: #F5E0DB;
-    border-right: var(--card-border);
-}
-
-.made-wheel {
-    width: 100%;
-    max-width: 170px;
-    height: auto;
-    transition: transform 0.6s ease;
-}
-
-.made-sky:hover .made-wheel {
-    transform: rotate(8deg);
-}
-
-.made-wheel > circle:first-child { fill: #FFF8F6; }
-.made-wheel .wheel-edge { fill: none; stroke: #C9969E; stroke-width: 1.5; }
-.made-wheel .wheel-inner { fill: none; stroke: #EBD5D0; stroke-width: 1.5; }
-.made-wheel .wheel-sign { font-size: 15px; fill: #7E3F4A; text-anchor: middle; dominant-baseline: central; }
-.made-wheel .wheel-aspect { stroke-width: 1.5; opacity: 0.55; }
-.made-wheel .wheel-aspect.easy { stroke: #7F9A6B; }
-.made-wheel .wheel-aspect.tense { stroke: #C27B8A; }
-.made-wheel .wheel-asc,
-.made-wheel .wheel-tick { stroke: #733642; stroke-width: 2; }
-.made-wheel .wheel-planet circle { fill: #FFF8F6; stroke: #C9969E; stroke-width: 1; }
-.made-wheel .wheel-planet text { font-size: 14px; fill: #733642; text-anchor: middle; dominant-baseline: central; }
-.made-wheel .wheel-asc-label { font-size: 9px !important; font-weight: 700; letter-spacing: 1px; }
 
 @media (prefers-reduced-motion: reduce) {
-    .made-sky:hover .made-wheel { transform: none; }
+    .made-card:hover .made-window,
+    .made-card:hover .made-tile-book img { transform: none; }
 }
 
 @media (max-width: 760px) {
-    .made-shot { flex-direction: column; }
-    .made-sky-art { flex-basis: auto; height: 200px; border-right: 0; border-bottom: var(--card-border); }
-    .made-shot img { width: 100%; height: 200px; flex-basis: auto; border-right: 0; border-bottom: var(--card-border); }
+    .made-grid { grid-template-columns: 1fr; gap: 36px; }
+    .made-tile-book { aspect-ratio: 4 / 4.4; }
+    .made-caption { flex-wrap: wrap; gap: 2px 16px; }
 }
 
 /* the book in the writing shelf: mulberry, so it stands out from the poems */
@@ -1810,24 +1807,6 @@
 
 .make-page .writing-book .writing-read {
     margin-top: 16px;
-}
-
-@media (max-width: 760px) {
-    .made-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: none;
-    }
-
-    .made-feature {
-        grid-row: auto;
-        flex-direction: column;
-    }
-
-    .made-feature img {
-        width: 100%;
-        height: 420px;
-        flex-basis: auto;
-    }
 }
 
 /* Make: every shelf opens with the "wait, what if…?" that started it */

@@ -37,6 +37,12 @@
 .sitara-launch i, .sitara-head h2 i { font-style: normal; color: #F3C9A0; }
 .sitara.open .sitara-launch { display: none; }
 
+/* tucked: slid into the right edge so she doesn't cover a link or button underneath; a sliver of her face peeks out */
+.sitara-launch { transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.35s ease; }
+.sitara.tucked .sitara-launch { transform: translateX(calc(100% - 2px)); opacity: 0.9; }
+.sitara.tucked .sitara-launch:hover { transform: translateX(calc(100% - 14px)); }
+@media (prefers-reduced-motion: reduce) { .sitara-launch { transition: none; } }
+
 /* panel */
 .sitara-panel {
     width: min(380px, calc(100vw - 32px));
@@ -99,6 +105,7 @@
 
 @media (max-width: 560px) {
     .sitara { right: 12px; bottom: 12px; }
+    .sitara.tucked .sitara-launch { transform: translateX(calc(100% - 10px)); }
     .sitara-launch span { display: none; }
     .sitara-launch { padding: 4px; }
     .sitara-launch img { width: 52px; height: 52px; }

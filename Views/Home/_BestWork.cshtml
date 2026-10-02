@@ -1,0 +1,344 @@
+@* My best work: the videos do the talking. Every project is a short silent video of the real thing, then a title, one line about it and the tools it uses as chips.
+   The videos are recorded from the live sites and decks (tools/record) and only play while they're on screen.
+   The board has a hierarchy: the size of a tile says how much the project matters. Big feature tiles, then halves, then a row of small ones.
+   Screen recordings sit in a colored panel and run off its bottom-right edge like a window; motion graphics and photos fill the whole tile. *@
+@{
+    // Size: "hero" (two thirds of a row), "tall" (the third beside a hero), "half" or "small" (a quarter).
+    // Rows have to add up: hero and tall share a row, halves come in twos, smalls in fours.
+    // Panel: the color behind a screen recording (null = the video fills the tile). Inset: the video sits inside the panel as its own card.
+    var stories = new[]
+    {
+        (Size: "hero", Kind: "Full-stack app", Title: "RideFlow", Video: "rideflow", Panel: (string?)"#EBC8CC", Inset: false,
+            Label: "Scrolling through the live RideFlow app", Link: "https://rideflow-frontend.onrender.com/",
+            Line: "A rideshare app for riders, drivers and admins, built solo in a course designed for teams.", Skills: new[] { "React", "Node.js", "Express", "PostgreSQL" }),
+        (Size: "tall", Kind: "Children’s book", Title: "Girls Can Be Engineers, Too!", Video: "book", Panel: (string?)null, Inset: false,
+            Label: "A young reader holding a copy of Girls Can Be Engineers, Too!", Link: "/home/work#beyond",
+            Line: "Bedtime stories were all princesses, so I wrote one about real women engineers.", Skills: new[] { "Writing", "Illustration", "Publishing" }),
+
+        (Size: "half", Kind: "Product management", Title: "Starbucks AI Loyalty", Video: "starbucks", Panel: (string?)"#56634A", Inset: false,
+            Label: "Flipping through my Starbucks strategy deck", Link: "/work/starbucks",
+            Line: "Turning the Starbucks app from a checkout tool into a daily ritual.", Skills: new[] { "RICE scoring", "KANO analysis", "Roadmapping", "Prototyping" }),
+        (Size: "half", Kind: "Media strategy", Title: "Netflix’s $20B Leak", Video: "netflix", Panel: (string?)null, Inset: false,
+            Label: "A wall of Netflix posters drifting in the dark while a red searchlight sweeps across", Link: "/home/study#mk-title-3",
+            Line: "YouTube is eating Netflix’s evenings. My plan to make Netflix TV again.", Skills: new[] { "Media strategy", "Competitive analysis", "Motion graphics" }),
+
+        (Size: "hero", Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
+            Label: "A pink group chat fills with fans talking about Glossier, then goes quiet", Link: "/home/study#mk-title-4",
+            Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }),
+        (Size: "tall", Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
+            Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
+            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
+
+        (Size: "half", Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
+            Label: "Flipping through my Owala Marathon Series deck", Link: "/home/study#mk-title-1",
+            Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
+        (Size: "half", Kind: "Website", Title: "Soft Heart. Strong Spirit.", Video: "personality", Panel: (string?)null, Inset: false,
+            Label: "Scrolling through my personality website", Link: "https://suhxnitiwari.github.io/suhani-personality/",
+            Line: "Ten personality tests, one person: an interactive story of who I am and what drives me.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
+
+        (Size: "small", Kind: "Data and SQL", Title: "Listening History", Video: "listening", Panel: (string?)"#8A4D57", Inset: false,
+            Label: "Scrolling through the live Listening History app", Link: "https://listening-history.onrender.com/",
+            Line: "Four years of my Spotify listening, turned into a data warehouse I can ask anything in SQL.", Skills: new[] { "Python", "PostgreSQL", "FastAPI" }),
+        (Size: "small", Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
+            Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
+            Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
+        (Size: "small", Kind: "Website", Title: "Celestial", Video: "celestial", Panel: (string?)"#34422F", Inset: false,
+            Label: "Scrolling through my Celestial birth chart website", Link: "https://suhxnitiwari.github.io/suhani-celestial/",
+            Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
+        (Size: "small", Kind: "Product strategy", Title: "FuelFlow", Video: "fuelflow", Panel: (string?)"#E6D3C3", Inset: false,
+            Label: "Flipping through my FuelFlow deck", Link: "/home/study#mk-title-2",
+            Line: "Putting real food where UT students already are, between classes.", Skills: new[] { "Product pitch", "Problem framing" })
+    };
+}
+<div class="best-board">
+    @for (var i = 0; i < stories.Length; i++)
+    {
+        var story = stories[i];
+        var external = story.Link.StartsWith("http");
+        var look = story.Panel == null ? "" : story.Inset ? " inset" : " framed";
+        <a class="best-story best-@story.Size" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--d: @(i % 4 * 90)ms"
+           data-cue="@(external ? "Open it live ↗" : story.Link.StartsWith("/work/") ? "Read the case study →" : story.Video == "book" ? "Read the story →" : "See the deck →")">
+            <span class="best-media@(look)" style="@(story.Panel != null ? $"--panel: {story.Panel}" : null)">
+                <video src="/videos/projects/@(story.Video).mp4" poster="/videos/projects/@(story.Video).jpg"
+                       muted loop playsinline preload="none" aria-label="@story.Label"></video>
+            </span>
+            <span class="best-caption">
+                <span class="best-title">@story.Title <span class="best-arrow" aria-hidden="true">@(external ? "↗" : "→")</span></span>
+                <span class="best-kicker">@story.Kind</span>
+            </span>
+            <span class="best-line">@story.Line</span>
+            <span class="best-skills">
+                @foreach (var skill in story.Skills)
+                {
+                    <span class="best-skill">@skill</span>
+                }
+            </span>
+        </a>
+    }
+    @* the label that follows your cursor over a project *@
+    <span class="best-cue" aria-hidden="true"></span>
+</div>
+
+<script>
+    // a little label rides along with the cursor over each video, saying what clicking does (mouse only)
+    (() => {
+        const board = document.querySelector('.best-board');
+        const cue = board && board.querySelector('.best-cue');
+        if (!cue || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        board.querySelectorAll('.best-story').forEach(story => {
+            const media = story.querySelector('.best-media');
+            media.addEventListener('pointerenter', () => { cue.textContent = story.dataset.cue; cue.classList.add('on'); });
+            media.addEventListener('pointerleave', () => cue.classList.remove('on'));
+            media.addEventListener('pointermove', e => {
+                const box = board.getBoundingClientRect();
+                cue.style.translate = `${e.clientX - box.left}px ${e.clientY - box.top}px`;
+            });
+        });
+    })();
+</script>
+
+<script>
+    // each video plays only while it's on screen, and each tile rises in as you reach it, a beat after its neighbor
+    // (none of it for people who asked for less motion; without this script every tile simply shows)
+    (() => {
+        const board = document.querySelector('.best-board');
+        if (!board || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+        const seen = new IntersectionObserver(entries => entries.forEach(e => {
+            if (e.isIntersecting) { e.target.preload = 'auto'; e.target.play().catch(() => {}); }
+            else e.target.pause();
+        }), { threshold: 0.25 });
+        board.querySelectorAll('.best-media video').forEach(v => seen.observe(v));
+
+        // a page opened in a background tab never reports what's on screen, so it skips the rise rather than hide tiles
+        if (document.hidden) return;
+        board.classList.add('rise');
+        const rise = new IntersectionObserver(entries => entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('in');
+            rise.unobserve(e.target);
+        }), { threshold: 0.12 });
+        board.querySelectorAll('.best-story').forEach(s => rise.observe(s));
+    })();
+</script>
+
+<style>
+    /* MY BEST WORK: a 12-column board where size is rank */
+    .best-board {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 44px 20px;
+        margin-bottom: 64px;
+    }
+
+    .best-hero  { grid-column: span 8; }
+    .best-tall  { grid-column: span 4; }
+    .best-half  { grid-column: span 6; }
+    .best-small { grid-column: span 3; }
+
+    .best-story {
+        display: flex;
+        flex-direction: column;
+        color: #1E100A;
+        text-decoration: none;
+    }
+
+    .best-story:hover {
+        color: #1E100A;
+    }
+
+    .best-story:focus-visible {
+        outline: 2px solid #7E3F4A;
+        outline-offset: 6px;
+    }
+
+    /* the tile. A hero sets its row's height and the tall tile beside it stretches to match */
+    .best-media {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        border-radius: var(--r-inset);
+        background: #F3E3E0;
+        aspect-ratio: 16 / 10;
+        transition: box-shadow 0.35s ease, transform 0.35s ease;
+    }
+
+    .best-hero .best-media  { aspect-ratio: 16 / 9.6; }
+    .best-tall .best-media  { aspect-ratio: auto; flex: 1 1 auto; min-height: 260px; }
+    .best-small .best-media { aspect-ratio: 4 / 3.2; }
+
+    .best-media video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    /* screen recordings: a colored panel, the recording set in from the left and running off the bottom-right edge */
+    .best-media.framed {
+        background: var(--panel);
+    }
+
+    .best-media.framed video {
+        inset: auto auto -4% 8%;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        border-radius: var(--r-small) 0 0 0;
+        box-shadow: 0 10px 30px rgba(42, 24, 16, 0.22);
+        transform-origin: top left;
+    }
+
+    /* inset: the video sits inside the panel as its own card, with color all the way around */
+    .best-media.inset {
+        background: var(--panel);
+    }
+
+    .best-media.inset video {
+        inset: 7%;
+        width: 86%;
+        height: 86%;
+        border-radius: var(--r-inset);
+        box-shadow: 0 10px 30px rgba(42, 24, 16, 0.22);
+    }
+
+    .best-story:hover .best-media {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(42, 24, 16, 0.16);
+    }
+
+    .best-story:hover .best-media video {
+        transform: scale(1.04);
+    }
+
+    /* rising in: set by the script, so without it nothing is ever hidden */
+    .best-board.rise .best-story {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transition-delay: var(--d, 0ms);
+    }
+
+    .best-board.rise .best-story.in {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* the cursor label: a small pill just above the pointer */
+    .best-cue {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        padding: 7px 14px;
+        border-radius: var(--r-pill);
+        background: #7E3F4A;
+        color: #FFFFFF;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.25);
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -150%) scale(0.85);
+        transition: opacity 0.2s ease, transform 0.25s ease;
+    }
+
+    .best-cue.on {
+        opacity: 1;
+        transform: translate(-50%, -150%) scale(1);
+    }
+
+    /* one quiet line under each tile: the title on the left, what it is on the right */
+    .best-caption {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 12px;
+    }
+
+    .best-title {
+        font-family: Georgia, serif;
+        font-size: 1.05rem;
+        line-height: 1.3;
+    }
+
+    .best-hero .best-title { font-size: 1.3rem; }
+
+    .best-kicker {
+        flex: none;
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    /* the one-line story, then the tools it was built with as little chips */
+    .best-line {
+        display: block;
+        margin-top: 6px;
+        font-size: 0.86rem;
+        line-height: 1.5;
+        color: #5A4740;
+    }
+
+    .best-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    .best-skill {
+        padding: 3px 10px;
+        border: 1px solid #E2CCC7;
+        border-radius: var(--r-pill);
+        background: #FFFBF9;
+        font-size: 0.72rem;
+        color: #4A3730;
+    }
+
+    .best-arrow {
+        display: inline-block;
+        font-family: system-ui, sans-serif;
+        font-size: 0.7em;
+        vertical-align: 0.15em;
+        color: #7E3F4A;
+        transition: transform 0.25s ease;
+    }
+
+    .best-story:hover .best-arrow {
+        transform: translate(3px, -3px);
+    }
+
+    /* the small tiles keep their story to two lines and their kind under the title */
+    .best-small .best-caption { flex-direction: column; gap: 2px; }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .best-media, .best-media video, .best-arrow { transition: none; }
+        .best-story:hover .best-media, .best-story:hover .best-media video, .best-story:hover .best-arrow { transform: none; }
+    }
+
+    /* tablets: a hero takes the whole row, everything else goes two across */
+    @@media (max-width: 1000px) {
+        .best-hero { grid-column: span 12; }
+        .best-tall, .best-half, .best-small { grid-column: span 6; }
+        .best-tall .best-media { aspect-ratio: 4 / 5; flex: none; }
+    }
+
+    /* phones: one column */
+    @@media (max-width: 640px) {
+        .best-board { display: flex; flex-direction: column; gap: 36px; }
+        .best-media, .best-hero .best-media, .best-small .best-media { aspect-ratio: 4 / 3; }
+        .best-tall .best-media { aspect-ratio: 4 / 5; }
+        .best-caption { flex-direction: column; gap: 2px; }
+    }
+</style>

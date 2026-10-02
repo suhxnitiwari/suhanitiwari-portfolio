@@ -1,0 +1,316 @@
+@* Rhode Has a Hailey Problem: my Rhode strategy, the 6th project in the Marketing carousel (rendered from _MarketingWork.cshtml).
+   The look: Rhode's milky neutrals (oat, cream, espresso) with a glazed sheen. Same slideshow as the other decks.
+   Numbers checked Oct 2026: e.l.f.'s deal announcement (AP, May 2025), e.l.f. fiscal 2026 results, Cosmetics Business (Sephora launch).
+   The cover video is a motion graphic I made: a glazed drop, and one name repeating until it fills the frame. *@
+<style>
+    .mk-rh { --r-oat: #EFE8DF; --r-cream: #F8F4EE; --r-taupe: #9A7B62; --r-deep: #6F5644; --r-ink: #2B2622; --r-mute: #6E625A; --r-line: #DDD2C5; }
+
+    .mk-rh .mk-stage { border: 1px solid var(--r-line); background: radial-gradient(70% 60% at 72% 40%, #FBF8F4 0%, var(--r-oat) 60%, #E4DACE 100%); }
+    .mk-rh .mk-slide { color: var(--r-ink); padding: 3.6cqw 4.8cqw 3cqw; gap: 1.4cqw; }
+    .mk-rh .mk-slide p { color: var(--r-mute); }
+    .mk-rh .r-kick { margin: 0; font-size: clamp(9px, 0.9cqw, 11px) !important; font-weight: 600; letter-spacing: 0.4cqw; text-transform: lowercase; color: var(--r-taupe) !important; }
+    .mk-rh .r-h { margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: clamp(18px, 3.4cqw, 40px); line-height: 1.08; color: var(--r-ink); letter-spacing: -0.02em; }
+    .mk-rh .r-h em { color: var(--r-taupe); }
+    .mk-rh .r-lede { font-size: clamp(12px, 1.45cqw, 17px) !important; line-height: 1.55 !important; max-width: 70cqw; }
+    .mk-rh .r-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 4; font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--r-taupe); }
+    .mk-rh .r-cap { font-size: clamp(9px, 0.95cqw, 12px) !important; letter-spacing: 0.25cqw; text-transform: uppercase; font-weight: 600; color: var(--r-mute) !important; }
+    .mk-rh .r-card { background: rgba(251, 248, 244, 0.85); border: 1px solid var(--r-line); border-radius: 1.2cqw; box-shadow: 0 1cqw 2.4cqw -1.4cqw rgba(110, 85, 65, 0.35); }
+    /* a glazed rule under every heading, with a sheen running along it */
+    .mk-rh .r-rule { height: 2px; width: 12cqw; border-radius: 2px; background: linear-gradient(90deg, var(--r-taupe), #E8DCCD, var(--r-taupe)); background-size: 200% 100%; animation: rSheen 4s linear infinite; }
+    @@keyframes rSheen { to { background-position: -200% 0; } }
+    @@keyframes rRise { from { opacity: 0; transform: translateY(1.6cqw); } }
+
+    .mk-rh .r-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .mk-rh .r-cover > p, .mk-rh .r-cover > div, .mk-rh .r-cover > h4 { position: relative; z-index: 1; }
+    .mk-rh .r-title { margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 700; font-size: clamp(28px, 6.8cqw, 78px); line-height: 0.98; color: var(--r-ink); letter-spacing: -0.03em; }
+    .mk-rh .r-title em { color: var(--r-taupe); font-weight: 600; }
+    .mk-rh .r-cover { justify-content: center; }
+    .mk-rh .mk-slide.r-cover .r-lede { color: var(--r-ink) !important; max-width: 40cqw; }
+
+    .mk-rh .r-two { display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; align-items: center; flex: 1; }
+
+    /* growth bars */
+    .mk-rh .r-cols { display: flex; align-items: flex-end; gap: 3cqw; height: 22cqw; padding: 0 2cqw; border-bottom: 1px solid var(--r-line); }
+    .mk-rh .r-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.6cqw; }
+    .mk-rh .r-col b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(16px, 3cqw, 34px); }
+    .mk-rh .r-col i { display: block; width: 70%; height: var(--h); border-radius: 0.8cqw 0.8cqw 0 0; transform-origin: bottom; animation: rUp 1.4s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d);
+        background: radial-gradient(120% 60% at 30% 0%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 60%), linear-gradient(180deg, #E3D3C2, var(--r-taupe)); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
+    .mk-rh .r-col span { font-size: clamp(9px, 1cqw, 12px); color: var(--r-mute); text-align: center; margin-bottom: -2.4cqw; }
+    @@keyframes rUp { from { transform: scaleY(0); } }
+    .mk-rh .r-stats { display: grid; gap: 1.2cqw; }
+    .mk-rh .r-stat { padding: 1.3cqw 1.6cqw; animation: rRise 0.6s ease both; animation-delay: calc(var(--n) * 0.15s); }
+    .mk-rh .r-stat b { display: block; font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(18px, 3cqw, 34px); line-height: 1; color: var(--r-ink); }
+    .mk-rh .r-stat span { display: block; margin-top: 0.4cqw; font-size: clamp(10px, 1.15cqw, 14px); color: var(--r-mute); }
+
+    /* the deal, as one bar */
+    .mk-rh .r-deal { display: flex; height: 9cqw; border-radius: 1cqw; overflow: hidden; }
+    .mk-rh .r-deal div { display: flex; flex-direction: column; justify-content: center; padding-left: 1.6cqw; transform-origin: left; animation: rGrow 1s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d); }
+    .mk-rh .r-deal b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(15px, 2.6cqw, 30px); line-height: 1; }
+    .mk-rh .r-deal span { font-size: clamp(9px, 1.05cqw, 13px); margin-top: 0.3cqw; }
+    @@keyframes rGrow { from { transform: scaleX(0); } }
+
+    /* one hub vs many: drawn on a canvas */
+    .mk-rh .r-net { position: relative; width: 100%; aspect-ratio: 1.25; }
+    .mk-rh .r-net canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* Glossier then, Rhode now */
+    .mk-rh .r-race { display: grid; grid-template-columns: 9cqw repeat(3, 1fr); gap: 1cqw; align-items: center; }
+    .mk-rh .r-race > span { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(12px, 1.7cqw, 20px); font-weight: 700; }
+    .mk-rh .r-race b { padding: 1.1cqw 1.2cqw; border-radius: 99px; text-align: center; font-size: clamp(10px, 1.15cqw, 14px); font-weight: 600; background: var(--r-cream); border: 1px solid var(--r-line); color: var(--r-ink); animation: rRise 0.45s ease both; animation-delay: calc(var(--n) * 0.18s); }
+    .mk-rh .r-race b.q { background: var(--r-ink); color: var(--r-cream); border-color: var(--r-ink); }
+    .mk-rh .r-race b.end { background: var(--r-taupe); color: #FFF; border-color: var(--r-taupe); }
+
+    /* the lip case: Rhode's phone case with a lip tint tucked in the back */
+    .mk-rh .r-phone { position: relative; width: 18cqw; aspect-ratio: 9 / 18.5; margin: 0 auto; border-radius: 3cqw; background: linear-gradient(145deg, #F4ECE3, #D9CBBB); box-shadow: inset 0 0 0 0.25cqw rgba(255, 255, 255, 0.6), 0 2cqw 4cqw -1.6cqw rgba(90, 70, 55, 0.55); animation: rFloat 5s ease-in-out infinite alternate; }
+    .mk-rh .r-phone::before { content: ""; position: absolute; left: 1.6cqw; top: 1.6cqw; width: 5cqw; height: 5cqw; border-radius: 1.4cqw; background: rgba(43, 38, 34, 0.12); }
+    .mk-rh .r-phone i { position: absolute; left: 50%; bottom: 3cqw; width: 3cqw; height: 9cqw; margin-left: -1.5cqw; border-radius: 1.5cqw; background: linear-gradient(180deg, #E9B9A8 0 40%, #F4ECE3 40% 100%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6), 0 0.6cqw 1cqw rgba(90, 70, 55, 0.35); animation: rSlot 5s ease-in-out infinite; }
+    .mk-rh .r-phone em { position: absolute; left: 0; right: 0; top: 46%; text-align: center; font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; font-size: clamp(10px, 1.3cqw, 15px); color: var(--r-deep); }
+    .mk-rh .r-drop { position: absolute; right: -2cqw; top: 2cqw; padding: 0.6cqw 1.2cqw; border-radius: 99px; background: var(--r-ink); color: var(--r-cream); font-size: clamp(9px, 1cqw, 12px); font-weight: 600; white-space: nowrap; animation: rRise 0.6s ease 0.6s both; }
+    @@keyframes rFloat { to { transform: translateY(-1cqw); } }
+    @@keyframes rSlot { 0%, 30% { transform: translateY(0); } 50%, 80% { transform: translateY(-5cqw); } 100% { transform: translateY(0); } }
+
+    .mk-rh .r-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1cqw; }
+    .mk-rh .r-list li { padding: 1.1cqw 1.4cqw; font-size: clamp(11px, 1.35cqw, 16px); color: var(--r-ink); animation: rRise 0.45s ease both; animation-delay: calc(var(--n) * 0.18s); }
+    .mk-rh .r-list li b { color: var(--r-deep); }
+
+    .mk-rh .r-kk { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; flex: 1; }
+    .mk-rh .r-kk > div { padding: 2cqw 2.2cqw; display: flex; flex-direction: column; gap: 1cqw; animation: rRise 0.6s ease both; }
+    .mk-rh .r-kk > div:nth-child(2) { animation-delay: 0.3s; }
+    .mk-rh .r-kk small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.3cqw; color: var(--r-taupe); }
+    .mk-rh .r-kk b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(13px, 1.8cqw, 21px); line-height: 1.25; color: var(--r-ink); }
+    .mk-rh .r-kk .kill b { text-decoration: line-through; text-decoration-color: var(--r-taupe); text-decoration-thickness: 2px; }
+
+    .mk-rh .mk-chapters button[aria-pressed="true"] { background: var(--r-ink); border-color: var(--r-ink); }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .mk-rh .r-rule, .mk-rh .r-col i, .mk-rh .r-stat, .mk-rh .r-deal div, .mk-rh .r-race b, .mk-rh .r-phone, .mk-rh .r-phone i, .mk-rh .r-drop, .mk-rh .r-list li, .mk-rh .r-kk > div { animation: none; }
+    }
+</style>
+
+@{
+    const string rsig = "<span class=\"r-sig\" aria-hidden=\"true\">suhani ✦</span>";
+}
+<div class="mp-proj mk-rh" id="mk-proj-5" role="tabpanel" aria-labelledby="mk-title-5" hidden>
+    <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Rhode slides">
+        <div class="mk-stage">
+            <div class="mk-slide r-cover" data-title="The problem">
+                <video class="r-bg" src="/videos/projects/rhode.mp4" poster="/videos/projects/rhode.jpg" muted loop playsinline autoplay aria-label="A glazed donut swells and catches the light while the name hailey repeats until it fills the frame"></video>
+                @Html.Raw(rsig)
+                <p class="r-kick">rhode strategy, 2026</p>
+                <h4 class="r-title">Rhode has a<br /><em>Hailey problem.</em></h4>
+                <p class="r-lede">A $390M beauty brand runs on one face. Here’s how to make it outlive the fame.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Winning" hidden>
+                @Html.Raw(rsig)
+                <p class="r-kick">where rhode stands</p>
+                <h4 class="r-h">Rhode isn’t struggling. <em>That’s why now is the time.</em></h4>
+                <div class="r-rule"></div>
+                <div class="r-two">
+                    <div>
+                        <p class="r-cap" style="margin-bottom:1cqw">Net sales, last 12 months</p>
+                        <div class="r-cols">
+                            <div class="r-col"><b>$212M</b><i style="--h: 10.6cqw; --d: 0s"></i><span>to March 2025</span></div>
+                            <div class="r-col"><b>~$390M</b><i style="--h: 19.5cqw; --d: 0.3s"></i><span>to March 2026, up 80%</span></div>
+                        </div>
+                    </div>
+                    <div class="r-stats">
+                        <div class="r-stat r-card" style="--n: 0"><b>$10M+</b><span>in its first two days at Sephora U.S.</span></div>
+                        <div class="r-stat r-card" style="--n: 1"><b>$1B</b><span>what e.l.f. agreed to pay for it in 2025</span></div>
+                        <div class="r-stat r-card" style="--n: 2"><b>8</b><span>new countries in 2026, from Mexico to Portugal</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="The deal" hidden>
+                @Html.Raw(rsig)
+                <p class="r-kick">follow the money</p>
+                <h4 class="r-h">e.l.f. paid $1B <em>for a face.</em></h4>
+                <div class="r-rule"></div>
+                <p class="r-lede">Hailey Bieber stayed on as chief creative officer and head of innovation. And a fifth of the price only pays out if the brand keeps growing.</p>
+                <div class="r-deal" style="margin-top:auto">
+                    <div style="flex: 600; background: var(--r-ink); color: var(--r-cream); --d: 0s"><b>$600M</b><span>cash</span></div>
+                    <div style="flex: 200; background: var(--r-taupe); color: #FFF; --d: 0.4s"><b>$200M</b><span>e.l.f. stock</span></div>
+                    <div style="flex: 200; background: repeating-linear-gradient(135deg, #E9DFD3 0 0.6cqw, #F6F0E9 0.6cqw 1.2cqw); color: var(--r-ink); border: 1px dashed var(--r-taupe); --d: 0.8s"><b>$200M</b><span>only if Rhode keeps growing</span></div>
+                </div>
+                <p class="r-cap">e.l.f. Beauty deal terms, May 2025: up to $1B over three years</p>
+            </div>
+
+            <div class="mk-slide" data-title="One face" hidden>
+                @Html.Raw(rsig)
+                <div class="r-two" style="grid-template-columns:1fr 1.1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="r-kick">the real risk</p>
+                        <h4 class="r-h">Every line runs <em>through one person.</em></h4>
+                        <div class="r-rule"></div>
+                        <p class="r-lede">Fans don’t just buy Rhode. They buy Hailey’s skin, Hailey’s phone case, Hailey’s routine. That’s rocket fuel, until she gets busy, gets bored, or steps back.</p>
+                        <p class="r-lede">A brand that can’t lose its founder isn’t a brand yet. It’s an endorsement.</p>
+                    </div>
+                    <div class="r-net"><canvas aria-hidden="true"></canvas></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Glossier’s mistake" hidden>
+                @Html.Raw(rsig)
+                <p class="r-kick">we’ve seen this movie</p>
+                <h4 class="r-h">Rhode is one step away <em>from Glossier’s mistake.</em></h4>
+                <div class="r-rule"></div>
+                <div style="display:flex;flex-direction:column;gap:1.6cqw;margin-top:auto">
+                    <div class="r-race"><span>Glossier</span><b style="--n: 0">Cult brand online</b><b class="q" style="--n: 1">Into Sephora, 2023</b><b class="end" style="--n: 2">Lost its cult</b></div>
+                    <div class="r-race"><span>Rhode</span><b style="--n: 3">Cult brand online</b><b class="q" style="--n: 4">Into Sephora, 2025</b><b style="--n: 5;border-style:dashed">?</b></div>
+                </div>
+                <p class="r-lede">Online, Rhode drops sold out and felt like events. On a shelf next to hundreds of other brands, it’s just a product. Scarcity was half the magic.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Move 1" hidden>
+                @Html.Raw(rsig)
+                <div class="r-two" style="grid-template-columns:1.1fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="r-kick">move 01, the product</p>
+                        <h4 class="r-h">Make the product <em>the celebrity.</em></h4>
+                        <div class="r-rule"></div>
+                        <p class="r-lede">Glossier You outlived Glossier’s hype because people love the bottle, not the founder. Rhode needs its own: the peptide lip treatment and the lip case, marketed as icons that don’t need Hailey in the shot.</p>
+                    </div>
+                    <ul class="r-list">
+                        <li class="r-card" style="--n: 0"><b>Hero first:</b> every campaign leads with the product, not the face</li>
+                        <li class="r-card" style="--n: 1"><b>Own a word:</b> “glazed” as a look anyone can get</li>
+                        <li class="r-card" style="--n: 2"><b>Fewer launches:</b> one new icon a year, not a full makeup line</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Move 2" hidden>
+                @Html.Raw(rsig)
+                <div class="r-two" style="grid-template-columns:1fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="r-kick">move 02, the faces</p>
+                        <h4 class="r-h">Build a bench <em>of faces.</em></h4>
+                        <div class="r-rule"></div>
+                        <p class="r-lede">Eight new countries in 2026 is the perfect excuse. Sign a local face for every market (Mexico City, Lisbon, Prague) and a creator program at home, so Hailey becomes the founder, not the only face.</p>
+                    </div>
+                    <ul class="r-list">
+                        <li class="r-card" style="--n: 0"><b>One muse per market,</b> chosen by local fans</li>
+                        <li class="r-card" style="--n: 1"><b>A paid creator bench</b> for every routine</li>
+                        <li class="r-card" style="--n: 2"><b>Hailey in fewer posts,</b> with sales tracked per face</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Move 3" hidden>
+                @Html.Raw(rsig)
+                <div class="r-two" style="grid-template-columns:1.2fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="r-kick">move 03, the drop</p>
+                        <h4 class="r-h">Keep the drop alive <em>inside Sephora.</em></h4>
+                        <div class="r-rule"></div>
+                        <p class="r-lede">Sephora sells the core. Rhode.com keeps the magic: limited lip case colors, shades and collabs released only to a members’ waitlist, in small batches, with a countdown.</p>
+                        <p class="r-lede">Everyone can buy Rhode. Only members can catch the drop.</p>
+                    </div>
+                    <div class="r-phone" aria-hidden="true"><i></i><em>members only</em><span class="r-drop">next drop in 02:14:09</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Kill, keep" hidden>
+                @Html.Raw(rsig)
+                <p class="r-kick">the hard calls</p>
+                <h4 class="r-h">Less Hailey in the ads. <em>More Rhode in the world.</em></h4>
+                <div class="r-rule"></div>
+                <div class="r-kk">
+                    <div class="r-card kill">
+                        <small>KILL</small>
+                        <b>Hailey in every campaign</b>
+                        <b>Launching a full makeup line fast</b>
+                        <b>Every product, everywhere, all the time</b>
+                    </div>
+                    <div class="r-card">
+                        <small>KEEP</small>
+                        <b>A tiny lineup of heroes</b>
+                        <b>Sold-out drops, only online</b>
+                        <b>e.l.f.’s speed and scale behind the scenes</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide r-cover" data-title="The takeaway" hidden>
+                <video class="r-bg" src="/videos/projects/rhode.mp4" poster="/videos/projects/rhode.jpg" muted loop playsinline autoplay aria-hidden="true"></video>
+                @Html.Raw(rsig)
+                <p class="r-kick">how to measure it</p>
+                <h4 class="r-title" style="font-size:clamp(22px, 4.8cqw, 56px);max-width:52cqw">Rhode doesn’t need less Hailey. <em>It needs more Rhode.</em></h4>
+                <p class="r-lede"><b style="color:#2B2622">The one number:</b> Hailey-free demand, the share of sales and buzz that doesn’t start with one of her posts. When it passes half, Rhode is a brand.</p>
+            </div>
+        </div>
+        <div class="mk-nav-row">
+            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+            <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+        </div>
+    </div>
+
+    <div class="mk-info">
+        <div>
+            <h3 id="mk-title-5">Rhode Has a Hailey Problem</h3>
+            <p class="mp-proof-sub">Rhode is booming, and every sale runs through one famous face. My plan to make the brand outlive the fame.</p>
+        </div>
+        <ul class="mp-proof-list">
+            <li>Followed the money from e.l.f.’s $1B deal to Rhode’s first year in Sephora, and fact-checked every number</li>
+            <li>Connected it to my Glossier case: the same move into Sephora, one step earlier</li>
+            <li>Three moves: make the product the celebrity, build a bench of faces, and keep the drop alive</li>
+            <li>Invented Hailey-free demand, the share of sales that doesn’t start with her</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // One face: every customer line runs through a single hub, then the picture splits into many hubs (the goal)
+    (() => {
+        const box = document.querySelector('.mk-rh .r-net');
+        if (!box) return;
+        const canvas = box.querySelector('canvas'), ctx = canvas.getContext('2d');
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let w = 0, h = 0, fans = [], t0 = 0, wasHidden = true;
+        const build = () => {
+            const r = box.getBoundingClientRect();
+            w = canvas.width = Math.round(r.width * 2); h = canvas.height = Math.round(r.height * 2);
+            fans = Array.from({ length: 46 }, (_, i) => ({ a: i * 2.39996, d: 0.22 + 0.24 * ((i * 53) % 100) / 100 }));
+        };
+        const hubs = () => [[0.5, 0.5], [0.24, 0.3], [0.76, 0.3], [0.26, 0.74], [0.74, 0.74]];
+        const frame = now => {
+            requestAnimationFrame(frame);
+            const hidden = box.closest('.mk-slide').hidden || box.closest('.mp-proj').hidden || document.hidden;
+            if (hidden) { wasHidden = true; return; }
+            if (wasHidden) { t0 = now; wasHidden = false; }
+            if (!w || canvas.width !== Math.round(box.getBoundingClientRect().width * 2)) build();
+            // 0 to 3s: one hub; 3 to 6s: split into five; then hold, and loop every 9s
+            const s = ((now - t0) / 1000) % 9, split = reduce ? 1 : Math.min(1, Math.max(0, (s - 3) / 3));
+            const H = hubs();
+            ctx.clearRect(0, 0, w, h);
+            fans.forEach((f, i) => {
+                const fx = w / 2 + Math.cos(f.a) * w * f.d * 1.1, fy = h / 2 + Math.sin(f.a) * h * f.d * 1.2;
+                const target = H[1 + (i % 4)], hx = (0.5 + (target[0] - 0.5) * split) * w, hy = (0.5 + (target[1] - 0.5) * split) * h;
+                ctx.strokeStyle = 'rgba(154, 123, 98, 0.28)'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(fx, fy); ctx.lineTo(hx, hy); ctx.stroke();
+                ctx.fillStyle = '#FBF8F4'; ctx.strokeStyle = '#9A7B62'; ctx.beginPath(); ctx.arc(fx, fy, 7, 0, 7); ctx.fill(); ctx.stroke();
+            });
+            const shown = split > 0.02 ? H.slice(1) : [H[0]];
+            shown.forEach((p, k) => {
+                const x = (0.5 + (p[0] - 0.5) * split) * w, y = (0.5 + (p[1] - 0.5) * split) * h;
+                ctx.fillStyle = k === 0 || split < 0.02 ? '#2B2622' : '#9A7B62';
+                ctx.beginPath(); ctx.arc(x, y, split < 0.02 ? 40 : 26, 0, 7); ctx.fill();
+            });
+            ctx.fillStyle = '#F8F4EE'; ctx.font = `600 ${Math.round(w / 30)}px Georgia, serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            if (split < 0.02) ctx.fillText('Hailey', w / 2, h / 2);
+            ctx.fillStyle = '#6E625A'; ctx.font = `600 ${Math.round(w / 40)}px system-ui, sans-serif`;
+            ctx.fillText(split < 0.5 ? 'today: one hub' : 'the goal: many faces', w / 2, h - 18);
+        };
+        requestAnimationFrame(frame);
+    })();
+
+    (() => {
+        const vids = [...document.querySelectorAll('.mk-rh video')];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { vids.forEach(v => { v.removeAttribute('autoplay'); v.pause(); }); return; }
+        setInterval(() => vids.forEach(v => {
+            const open = !v.closest('.mk-slide').hidden && !v.closest('.mp-proj').hidden;
+            if (open && v.paused) v.play().catch(() => {}); else if (!open && !v.paused) v.pause();
+        }), 500);
+    })();
+</script>

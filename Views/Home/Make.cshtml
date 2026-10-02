@@ -65,6 +65,78 @@
         font-size: 1.05em;
     }
 
+    /* the four "what ifs": one row of cards under the intro, each jumping to its shelf */
+    .make-ifs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin: 26px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .make-ifs a {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: var(--pad-card-sm);
+        border: var(--card-border);
+        border-radius: var(--r-card);
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+        color: #1E100A;
+        text-decoration: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .make-ifs a:hover,
+    .make-ifs a:focus-visible {
+        transform: translateY(-4px);
+        border-color: #C27B8A;
+        box-shadow: 0 14px 26px -12px rgba(42, 24, 16, 0.3);
+    }
+
+    .make-if-num {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        color: #C27B8A;
+    }
+
+    .make-if-q {
+        flex: 1;
+        margin: 8px 0 14px;
+        font-family: Georgia, serif;
+        font-size: 1.05rem;
+        font-style: italic;
+        line-height: 1.35;
+        color: #7E3F4A;
+    }
+
+    .make-if-shelf {
+        font-family: Georgia, serif;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .make-if-shelf span {
+        display: inline-block;
+        color: #7E3F4A;
+        transition: transform 0.3s ease;
+    }
+
+    .make-ifs a:hover .make-if-shelf span {
+        transform: translateY(3px);
+    }
+
+    @@media (max-width: 800px) {
+        .make-ifs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .make-ifs a, .make-if-shelf span { transition: none; }
+    }
+
     /* Baking intro: title and subtitle on the left, the paragraph on the right,
        on the same columns as the cake gallery and treats below so the row has no empty corner */
     .bake-intro {
@@ -91,6 +163,7 @@
     }
 </style>
 <link rel="stylesheet" href="~/css/shelves.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/make-motion.css" asp-append-version="true" />
 
 @{
     // Art: selected works from my AP 2-D Art and Design portfolio (digital, drawn in Procreate).
@@ -403,6 +476,17 @@
         <div class="shelf-intro">
             <h1 class="section-title">Make</h1>
             <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create. Every single thing on this page started the same way: “wait, what if…?”</p>
+            @* the "what if" behind each shelf, so the intro leads straight into them; each one jumps to its shelf *@
+            <ol class="make-ifs" aria-label="On this page">
+                @foreach (var (num, question, shelf, id) in new[] {
+                    ("01", "I painted where I’m from?", "Digital Art", "art"),
+                    ("02", "I wrote it down?", "Writing", "writing"),
+                    ("03", "I followed the recipe, then didn’t?", "Baking", "baking"),
+                    ("04", "I planned the perfect trip?", "Itineraries", "traveling") })
+                {
+                    <li><a href="#@id"><span class="make-if-num">@num</span><span class="make-if-q">…@question</span><span class="make-if-shelf">@shelf <span aria-hidden="true">↓</span></span></a></li>
+                }
+            </ol>
         </div>
 
         @* Digital Art: one gallery wall that slides sideways; each piece opens large *@
@@ -510,6 +594,23 @@
                                 else
                                 {
                                     <svg class="bake-whisk" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M8 7v12M16 7v12"/></svg>
+                                }
+                                @* a peek at the edit, sliding up over the photo; the pop-up has the full list *@
+                                @if (spotCount > 0)
+                                {
+                                    <span class="trip-peek" aria-hidden="true">
+                                        <span class="trip-peek-label">The edit</span>
+                                        <ul>
+                                            @for (var n = 0; n < Math.Min(4, spotCount); n++)
+                                            {
+                                                <li style="--n: @n">@trip.Spots![n].Emoji @trip.Spots[n].Name</li>
+                                            }
+                                            @if (spotCount > 4)
+                                            {
+                                                <li class="more" style="--n: 4">and @(spotCount - 4) more</li>
+                                            }
+                                        </ul>
+                                    </span>
                                 }
                             </div>
                             </button>
@@ -639,3 +740,4 @@
 <script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes.Concat(cooks)))</script>
 
 <script src="~/js/shelves.js" asp-append-version="true"></script>
+<script src="~/js/make-motion.js" asp-append-version="true"></script>

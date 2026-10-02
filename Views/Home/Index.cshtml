@@ -175,22 +175,6 @@
         color: #FAF1EF;
     }
 
-    /* Management Information Systems: the line a recruiter reads first */
-    .cover-major {
-        font-family: Georgia, serif;
-        font-size: 1.45em;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 1.2;
-        white-space: nowrap;
-        color: #FFFFFF;
-    }
-
-    .cover-second {
-        margin-top: clamp(10px, 1.1cqw, 18px);
-        font-size: 0.95em;
-    }
-
     /* Skills, Projects, Résumé: always one row */
     .cover-actions {
         display: flex;
@@ -324,11 +308,6 @@
             font-size: 0.95rem;
         }
 
-        .cover-major {
-            font-size: 1.35em;
-            white-space: normal;
-        }
-
         /* the two buttons side by side, sized to fit a phone */
         .cover-actions {
             display: grid;
@@ -433,6 +412,59 @@
 
     .about-intro p:last-child {
         margin-bottom: 0;
+    }
+
+    /* the tagline: the last word rises in and out, same motion as the Work page headline */
+    .about-intro .about-tagline {
+        margin-bottom: 14px;
+    }
+
+    .about-rotator {
+        display: inline-grid;
+        vertical-align: bottom;
+        overflow: hidden;
+        color: #7E3F4A;
+    }
+
+    .about-word {
+        grid-area: 1 / 1;
+        font-style: italic;
+        opacity: 0;
+        transform: translateY(70%);
+        transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .about-word.on {
+        opacity: 1;
+        transform: none;
+    }
+
+    .about-word.off {
+        opacity: 0;
+        transform: translateY(-70%);
+    }
+
+    .about-sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    .about-intro .about-prev {
+        margin: 0 0 26px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 2.5px;
+        line-height: 1.4;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .about-word { transition: none; }
     }
 
     /* MIS and marketing in my intro, colored and linked to their Coursework tabs */
@@ -634,8 +666,13 @@
 
         .about-story,
         .about-story.flip {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 28px;
+        }
+
+        /* three pills don't fit on one line on a phone */
+        .about-proof {
+            flex-wrap: wrap;
         }
 
         .about-story.flip .about-story-text {
@@ -1604,11 +1641,9 @@
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
     <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
     <div class="cover-intro">
-        @* Readable in one glance: who I am (MIS major at McCombs) and the two things a recruiter came for *@
+        @* Readable in one glance: where I study, what I do in one line, and where I've already done it *@
         <p class="cover-tagline">
-            <span class="cover-school">McCombs School of Business, UT Austin</span>
-            <strong class="cover-major">Management Information Systems</strong>
-            <span class="cover-second">Marketing, psychology and product strategy</span>
+            <span class="cover-school">MIS · McCombs School of Business, UT Austin</span>
         </p>
         <div class="cover-actions">
             <a class="cover-btn primary" href="/home/study#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
@@ -1678,7 +1713,10 @@
 <section class="about-section" id="about">
     <div class="about-container">
         <div class="about-intro">
-            <h2>Hi, I’m Suhani.</h2>
+            @* the tagline's last word keeps changing; screen readers get the whole list once instead *@
+            <h2 class="about-tagline">Building technology people choose, with a love for
+                <span class="about-rotator" aria-hidden="true"><span class="about-word on">psychology</span><span class="about-word">brands</span><span class="about-word">learning</span></span><span class="about-sr">psychology, brands and learning</span></h2>
+            <p class="about-prev">Previously at Oracle and Acacia Advisors</p>
             <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/study#mis">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/study#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
@@ -2136,7 +2174,7 @@
                 const angle = (n / 8) * Math.PI * 2;
                 heart.className = 'quiz-heart';
                 heart.textContent = '♥';
-                heart.style.color = n % 2 ? '#C9A24D' : '#C98A9A';
+                heart.style.color = n % 2 ? '#E0567F' : '#C98A9A';
                 heart.style.left = `${box.left - base.left + box.width / 2}px`;
                 heart.style.top = `${box.top - base.top + box.height / 2}px`;
                 heart.style.setProperty('--dx', `${Math.cos(angle) * 46}px`);
@@ -2257,3 +2295,18 @@
 
 
 
+<script>
+    // the tagline's last word rotates through what I love (autoplay.js loads after this view, so wait for the page)
+    document.addEventListener('DOMContentLoaded', () => {
+        const words = [...document.querySelectorAll('.about-word')];
+        if (words.length < 2 || !window.autoplay) return;
+        let now = 0;
+        autoplay(document.querySelector('.about-tagline'), () => {
+            const leaving = words[now];
+            leaving.classList.replace('on', 'off');
+            setTimeout(() => leaving.classList.remove('off'), 600);
+            now = (now + 1) % words.length;
+            words[now].classList.add('on');
+        }, 2400);
+    });
+</script>

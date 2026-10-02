@@ -356,6 +356,163 @@
     @@media (max-width: 768px) {
     }
 
+    /* ===== THE COVER: one headline about the kind of work I do, a line under it, and my photo ===== */
+    .career-seeking.cv {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: none;
+        box-shadow: none;
+    }
+
+    .cv-cover {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 56px;
+        align-items: center;
+        padding: 36px 0 28px;
+    }
+
+    .cv-headline {
+        margin: 18px 0 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+        font-weight: 500;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        color: #1E100A;
+    }
+
+    .cv-headline em {
+        font-style: italic;
+        color: #7E3F4A;
+    }
+
+    .cv-lede {
+        margin: 22px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: #4A3530;
+    }
+
+    /* WHERE I FIT: the roles as a quiet numbered list further down the page */
+    .career-fit {
+        padding: 56px 40px 24px;
+    }
+
+    .career-fit-sub {
+        margin: -16px 0 18px;
+        font-size: 1rem;
+        font-style: italic;
+        color: #4A3530;
+    }
+
+    /* the roles as a numbered index */
+    .cv-index {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 22px;
+        margin: 28px 0 0;
+        padding: 18px 0 0;
+        border-top: 1px solid #E2C6C0;
+        list-style: none;
+    }
+
+    .cv-index .role-tag {
+        padding: 4px 0;
+        border: none;
+        border-radius: 0;
+        background: none;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #7A665F;
+        box-shadow: inset 0 -2px 0 transparent;
+        transition: color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cv-index .role-tag b {
+        margin-right: 6px;
+        font-family: Georgia, serif;
+        font-weight: 400;
+        letter-spacing: 0;
+        color: #C99AA5;
+    }
+
+    .cv-index .role-tag:hover {
+        transform: none;
+    }
+
+    .cv-index .role-tag.now,
+    .cv-index .role-tag:hover {
+        color: #1E100A;
+        box-shadow: inset 0 -2px 0 #7E3F4A;
+    }
+
+    .cv-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+    }
+
+    .cv-btn {
+        padding: 11px 22px;
+        border-radius: var(--r-pill);
+        border: 1.5px solid #7E3F4A;
+        background: transparent;
+        font: inherit;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #7E3F4A;
+        text-decoration: none;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cv-btn:hover,
+    .cv-btn.solid {
+        background: #7E3F4A;
+        color: #FFF8F6;
+    }
+
+    .cv-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    /* my photo in an arch, drifting slowly closer */
+    .cv-photo {
+        margin: 0;
+        overflow: hidden;
+        aspect-ratio: 4 / 5;
+        border-radius: 999px 999px var(--r-small) var(--r-small);
+        box-shadow: 0 24px 50px -20px rgba(74, 36, 42, 0.45);
+    }
+
+    .cv-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 30%;
+        animation: cvDrift 18s ease-in-out infinite alternate;
+    }
+
+    @@keyframes cvDrift {
+        from { transform: scale(1.02); }
+        to { transform: scale(1.12) translateY(-2%); }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cv-photo img { transition: none; animation: none; }
+    }
+
+    @@media (max-width: 800px) {
+        .cv-cover { grid-template-columns: 1fr; gap: 28px; padding-top: 8px; }
+        .cv-photo { order: -1; width: 62%; margin: 0 auto; }
+    }
+
     /* WHERE I'M HEADED: one clear card right under the facts */
     .career-seeking {
         margin: 18px 0 0;
@@ -620,7 +777,27 @@
         justify-content: center;
         margin: 0;
         min-height: 190px;
-        animation: whyIn 0.4s ease both;
+        animation: whyIn 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    /* the current dot fills up over the 5 seconds before the next quote */
+    .why-dots button[aria-current="true"] {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .why-dots button[aria-current="true"]::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 248, 246, 0.55);
+        transform-origin: left;
+        animation: whyTimer 5s linear both;
+    }
+
+    @@keyframes whyTimer {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
     }
 
     .why-quote-slide[hidden] {
@@ -628,8 +805,12 @@
     }
 
     @@keyframes whyIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: none; }
+        from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+        to { opacity: 1; transform: none; filter: none; }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .why-quote-slide, .why-dots button[aria-current="true"]::after { animation: none; }
     }
 
     .why-quote-slide blockquote {
@@ -916,6 +1097,42 @@
             "Drove 20% growth in website traffic and 27% in LinkedIn visits by redesigning messaging for Acacia’s AI and cloud services."
         })
     };
+
+    // Each role: the pitch, three pieces of real evidence, and where to see it on the site
+    var roles = new[]
+    {
+        ("pmm", "Product Marketing Manager", "I turn technical products into stories people actually care about.",
+            new[] {
+                "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 20% more website traffic and 27% more LinkedIn visits.",
+                "I built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, from pricing to competitor analysis.",
+                "My children’s book sold 1,000 copies in its first month and hit #1 New Release in STEM Education." },
+            "See my marketing projects", "/home/study#marketing"),
+        ("pm", "Product Manager", "I sit where users, technology and the business meet, and I can build.",
+            new[] {
+                "I built RideFlow, a full-stack rideshare app, from the data model to the screen.",
+                "In my Starbucks app strategy, I prioritized features with RICE scoring and picked one metric to manage to.",
+                "I also built this website, with three live APIs and Sitara, an AI guide I wrote the guardrails for." },
+            "See what I’ve built", "/home/work#projects"),
+        ("brand", "Brand Strategist", "I think in identity: what a brand means to the person holding it.",
+            new[] {
+                "My Owala Marathon Series turns a water bottle into a collectible record of achievement.",
+                "I repositioned Acacia Advisors’ messaging, and I’ve written, illustrated and published a children’s book.",
+                "My art portfolio on cultural identity won a VASE award and a Scholastic Art Award." },
+            "See my Owala and Starbucks work", "/home/study#marketing"),
+        ("tech", "Technology Consultant", "I help businesses choose and adopt the right systems.",
+            new[] {
+                "At Oracle, I led discovery calls with $20M to $200M companies and matched their needs to Oracle NetSuite, a cloud ERP.",
+                "At Acacia Advisors, I worked on AI strategy and built the go-to-market for a $1M Microsoft Azure AI product.",
+                "I designed a database and deployed it in both Oracle and Snowflake, so I know what adopting a system really takes." },
+            "See my experience", "/home/work#experience"),
+        ("mc", "Management Consultant", "Give me a messy problem; I’ll structure it and bring a recommendation.",
+            new[] {
+                "At Acacia Advisors, I did market research, competitive analysis and strategic recommendations for client engagements.",
+                "My strategy decks lead with the answer, back every number with a source and end with a plan.",
+                "Leading Girls Who Code sessions taught me to make a hard idea simple for any room." },
+            "See how I work through a problem", "/home/study#coursework")
+    };
+    var fitRoles = roles.Select(r => (Key: r.Item1, Title: r.Item2)).ToArray();
 }
 
 @if (isWork)
@@ -923,77 +1140,24 @@
 <header class="career-intro" id="top">
     <div class="career-wrap">
 
-        <dl class="career-facts">
-            <div>
-                <dt>Majors</dt>
-                <dd>Management Information Systems<br />Psychology</dd>
-            </div>
-            <div>
-                <dt>Minors</dt>
-                <dd>Marketing<br />Educational Psychology</dd>
-            </div>
-            <div>
-                <dt>GPA</dt>
-                <dd>3.5/4.0<span>McCombs</span></dd>
-            </div>
-            <div>
-                <dt>Experience</dt>
-                <dd>ERP Consultant Intern<span>Oracle, summer 2026</span></dd>
-            </div>
-            <div>
-                <dt>Based in</dt>
-                <dd>Austin, Texas<span>US citizen</span></dd>
-            </div>
-        </dl>
-
         @* what I'm looking for: the kind of work and the fields it lives in, so nobody has to guess *@
-        <section class="career-seeking" aria-labelledby="seeking-heading">
-            <p class="career-seeking-label">Where I’m headed</p>
-            <h2 class="career-seeking-title" id="seeking-heading">Work where technology meets people.</h2>
-            <p class="career-seeking-text">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
-            @{
-                // Each role: the pitch, three pieces of real evidence, and where to see it on the site
-                var roles = new[]
-                {
-                    ("pmm", "Product Marketing Manager", "I turn technical products into stories people actually care about.",
-                        new[] {
-                            "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 20% more website traffic and 27% more LinkedIn visits.",
-                            "I built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, from pricing to competitor analysis.",
-                            "My children’s book sold 1,000 copies in its first month and hit #1 New Release in STEM Education." },
-                        "See my marketing projects", "/home/study#marketing"),
-                    ("pm", "Product Manager", "I sit where users, technology and the business meet, and I can build.",
-                        new[] {
-                            "I built RideFlow, a full-stack rideshare app, from the data model to the screen.",
-                            "In my Starbucks app strategy, I prioritized features with RICE scoring and picked one metric to manage to.",
-                            "I also built this website, with three live APIs and Sitara, an AI guide I wrote the guardrails for." },
-                        "See what I’ve built", "/home/work#projects"),
-                    ("brand", "Brand Strategist", "I think in identity: what a brand means to the person holding it.",
-                        new[] {
-                            "My Owala Marathon Series turns a water bottle into a collectible record of achievement.",
-                            "I repositioned Acacia Advisors’ messaging, and I’ve written, illustrated and published a children’s book.",
-                            "My art portfolio on cultural identity won a VASE award and a Scholastic Art Award." },
-                        "See my Owala and Starbucks work", "/home/study#marketing"),
-                    ("tech", "Technology Consultant", "I help businesses choose and adopt the right systems.",
-                        new[] {
-                            "At Oracle, I led discovery calls with $20M to $200M companies and matched their needs to Oracle NetSuite, a cloud ERP.",
-                            "At Acacia Advisors, I worked on AI strategy and built the go-to-market for a $1M Microsoft Azure AI product.",
-                            "I designed a database and deployed it in both Oracle and Snowflake, so I know what adopting a system really takes." },
-                        "See my experience", "/home/work#experience"),
-                    ("mc", "Management Consultant", "Give me a messy problem; I’ll structure it and bring a recommendation.",
-                        new[] {
-                            "At Acacia Advisors, I did market research, competitive analysis and strategic recommendations for client engagements.",
-                            "My strategy decks lead with the answer, back every number with a source and end with a plan.",
-                            "Leading Girls Who Code sessions taught me to make a hard idea simple for any room." },
-                        "See how I work through a problem", "/home/study#coursework")
-                };
-            }
-            <ul class="career-seeking-fields" aria-label="Roles I’m a good fit for">
-                @foreach (var (key, title, _, _, _, _) in roles)
-                {
-                    <li><button type="button" class="role-tag" aria-haspopup="dialog" data-role="@key">@title</button></li>
-                }
-            </ul>
-            <p class="role-hint">Tap a role to see why I’m a fit.</p>
+        <section class="career-seeking cv" aria-labelledby="seeking-heading">
+            @* the cover: what kind of work I do, in one line, then my photo. The roles I fit come later, in Where I fit *@
+            <div class="cv-cover">
+                <div class="cv-copy">
+                    <h2 class="cv-headline" id="seeking-heading">Work where technology <em>meets people.</em></h2>
+                    <p class="cv-lede">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
+                    <div class="cv-actions">
+                        <a class="cv-btn solid" href="/resume" target="_blank" rel="noopener">Résumé ↗</a>
+                        @* these two copy to the clipboard instead of opening anything *@
+                        <button type="button" class="cv-btn career-copy" data-copy="suhanitiwari@utexas.edu" data-done="Email copied ✓">Email me</button>
+                        <button type="button" class="cv-btn career-copy" data-copy="https://www.linkedin.com/in/suhxnitiwari/" data-done="LinkedIn copied ✓">LinkedIn</button>
+                    </div>
+                </div>
+                <figure class="cv-photo">
+                    <img src="/images/make/personality-blazer.jpg" width="800" height="800" alt="Me in a blue blazer, smiling" fetchpriority="high">
+                </figure>
+            </div>
             <dialog class="role-pop" aria-label="Why I fit">
                 <button type="button" class="role-pop-close" aria-label="Close">×</button>
             @foreach (var (key, title, pitch, points, linkText, link) in roles)
@@ -1012,14 +1176,6 @@
             }
             </dialog>
         </section>
-
-        <div class="career-actions">
-            <a class="career-btn primary" href="/resume" target="_blank" rel="noopener">View my résumé ↗</a>
-            <a class="career-btn" href="#projects">See my projects ↓</a>
-            @* these two copy to the clipboard instead of opening anything *@
-            <button type="button" class="career-btn career-copy" data-copy="suhanitiwari@utexas.edu" data-done="Email copied ✓">Email me</button>
-            <button type="button" class="career-btn career-copy" data-copy="https://www.linkedin.com/in/suhxnitiwari/" data-done="LinkedIn copied ✓">LinkedIn</button>
-        </div>
 
     </div>
 </header>
@@ -1057,7 +1213,7 @@
             <h2 class="career-section-title" id="projects-heading">Projects</h2>
             <button type="button" class="coded-btn" aria-haspopup="dialog">SuhaniCoded<span aria-hidden="true">™</span></button>
         </div>
-        <partial name="_RideFlowProof" />
+        <partial name="_BestWork" />
 
         @* SuhaniCoded: coded by Suhani, and something only Suhani would do *@
         <dialog class="role-pop coded-pop" aria-labelledby="coded-title">
@@ -1066,6 +1222,20 @@
             <h3 class="coded-title" id="coded-title">SuhaniCoded <em>(adj.)</em></h3>
             <p class="coded-lede">When something is so clearly me that you’d know I made it without seeing my name. Built around the people using it, structured before it’s styled, and finished with the little extras nobody asked for. Also, yes, I literally coded it.</p>
         </dialog>
+    </div>
+</section>
+
+@* WHERE I FIT: the roles, kept quiet and further down; each opens its "why I fit" card (the pop-up lives in the cover) *@
+<section class="pursue-part career-fit" id="fit" aria-labelledby="fit-heading">
+    <div class="career-wrap">
+        <h2 class="career-section-title" id="fit-heading">Where I fit</h2>
+        <p class="career-fit-sub">Tap one to see why.</p>
+        <ul class="cv-index" aria-label="Roles I’m a good fit for">
+            @for (var r = 0; r < fitRoles.Length; r++)
+            {
+                <li><button type="button" class="role-tag" aria-haspopup="dialog" data-role="@fitRoles[r].Key"><b>0@(r + 1)</b>@fitRoles[r].Title</button></li>
+            }
+        </ul>
     </div>
 </section>
 
@@ -1271,13 +1441,13 @@ else
 </script>
 
 <script>
-    // Why MIS quotes: ‹ › and the dots switch quotes; they turn on their own every 7 seconds unless you're reading one
+    // Why MIS quotes: ‹ › and the dots switch quotes; they turn on their own every 5 seconds
     (() => {
         const box = document.querySelector('.why-quotes');
         if (!box) return;
         const slides = [...box.querySelectorAll('.why-quote-slide')];
         const dots = [...box.querySelectorAll('.why-dots button')];
-        let i = 0, timer;
+        let i = 0;
         const show = n => {
             i = (n + slides.length) % slides.length;
             slides.forEach((s, k) => s.hidden = k !== i);
@@ -1285,24 +1455,18 @@ else
         };
         box.querySelectorAll('.why-arrow').forEach(b => b.addEventListener('click', () => show(i + +b.dataset.go)));
         dots.forEach((d, k) => d.addEventListener('click', () => show(k)));
-        const play = () => { if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(() => show(i + 1), 7000); };
-        box.addEventListener('mouseenter', () => clearInterval(timer));
-        box.addEventListener('mouseleave', play);
-        play();
+        autoplay(box, () => show(i + 1), 5000);
     })();
 </script>
 
 <script>
-    // The roles in "The work I'm a good fit for": tap one and its "why I fit" card pops up
+    // Where I fit: tap a role and its "why I fit" card pops up
     (() => {
-        const box = document.querySelector('.career-seeking');
-        const pop = box && box.querySelector('.role-pop');
+        const pop = document.querySelector('.career-seeking .role-pop');
         if (!pop) return;
         const cards = [...pop.querySelectorAll('.role-card')];
-        box.querySelectorAll('.role-tag').forEach(tag => tag.addEventListener('click', () => {
-            cards.forEach(c => c.hidden = c.id !== `role-${tag.dataset.role}`);
-            pop.showModal();
-        }));
+        const openRole = key => { cards.forEach(c => c.hidden = c.id !== `role-${key}`); pop.showModal(); };
+        document.querySelectorAll('.career-fit .role-tag').forEach(tag => tag.addEventListener('click', () => openRole(tag.dataset.role)));
         pop.querySelector('.role-pop-close').addEventListener('click', () => pop.close());
         // tapping outside the card (on the dimmed page) closes it; so does following its link
         pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });

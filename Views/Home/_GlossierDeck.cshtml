@@ -1,0 +1,394 @@
+@* How Glossier Lost Its Cult: my Glossier strategy, the 5th project in the Marketing carousel (rendered from _MarketingWork.cshtml).
+   Built from the HBS case I studied in MIS 375 (Glossier: Co-Creating a Cult Brand with a Digital Community, 2019) and followed to 2026.
+   The look: Glossier pink, bubble wrap, chat bubbles and Bodoni. Same slideshow as the other decks (Coursework.cshtml builds the chapters).
+   Numbers checked Oct 2026: the case; TechCrunch and Glossy (2022 layoffs); WWD (Colin Walsh); Inside Retail and BoF (2026 store
+   closures, fragrance about 40% of sales). Glossier is private, so valuations are as reported. The cover video is a motion graphic I made. *@
+<style>
+    .mk-gls { --g-pink: #F4A2B6; --g-pink2: #F9D3DC; --g-red: #D63A93; --g-deep: #A8434E; --g-ink: #2A1810; --g-mute: #6E5A55; --g-white: #FFFFFF;
+        --puff: #F4A2B6; --beam: #F6A68E; --dusk: #E7B19E; --dawn: #F2552C; --haze: #E23FA0; --storm: #B4505A; }
+
+    /* the stage: clean white like a product shot, with soft clouds of the six Cloud Paint shades bleeding in from the corners */
+    .mk-gls .mk-stage { border: 1px solid #F1DCDC; background:
+        radial-gradient(28cqw 22cqw at 0% 0%, rgba(244, 162, 182, 0.45), rgba(244, 162, 182, 0)),
+        radial-gradient(26cqw 20cqw at 100% 0%, rgba(246, 166, 142, 0.38), rgba(246, 166, 142, 0)),
+        radial-gradient(30cqw 22cqw at 100% 100%, rgba(226, 63, 160, 0.22), rgba(226, 63, 160, 0)),
+        radial-gradient(26cqw 20cqw at 0% 100%, rgba(231, 177, 158, 0.4), rgba(231, 177, 158, 0)),
+        #FBF8F6; }
+    /* doodles from the moodboard: a star, a smiley and a squiggle, drawn in pink, sitting quietly in the corners */
+    .mk-gls .g-doodle { position: absolute; z-index: 1; pointer-events: none; color: var(--puff); }
+    .mk-gls .g-doodle svg { width: 100%; height: 100%; overflow: visible; }
+    .mk-gls .g-doodle.star { width: 4cqw; right: 6cqw; top: 2.6cqw; animation: gTwinkle 3s ease-in-out infinite; }
+    .mk-gls .g-doodle.smile { width: 4.2cqw; left: 2.4cqw; bottom: 2.6cqw; }
+    .mk-gls .g-doodle.squig { width: 9cqw; right: 13cqw; bottom: 1.6cqw; }
+    @@keyframes gTwinkle { 50% { transform: scale(1.18); } }
+    .mk-gls .mk-slide { color: var(--g-ink); padding: 3.4cqw 4.6cqw 3cqw; gap: 1.4cqw; }
+    .mk-gls .mk-slide p { color: var(--g-mute); }
+    .mk-gls .g-kick { align-self: flex-start; display: inline-block; margin: 0; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--puff); border: 0.25cqw solid #FFF; box-shadow: 0 0.4cqw 1cqw rgba(180, 80, 90, 0.25); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFF !important; }
+    .mk-gls .g-h { margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: clamp(18px, 3.4cqw, 40px); line-height: 1.08; color: var(--g-ink); letter-spacing: -0.02em; }
+    .mk-gls .g-h em { color: var(--g-red); }
+    .mk-gls .g-lede { font-size: clamp(12px, 1.5cqw, 18px) !important; line-height: 1.5 !important; max-width: 70cqw; }
+    .mk-gls .g-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 4; font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--g-red); }
+    .mk-gls .g-cap { font-size: clamp(9px, 0.95cqw, 12px) !important; letter-spacing: 0.25cqw; text-transform: uppercase; font-weight: 700; color: var(--g-mute) !important; }
+    .mk-gls .g-card { background: #FFFFFF; border: 1px solid #F3D3DA; border-radius: 1.4cqw; box-shadow: 0 1cqw 2.4cqw -1.2cqw rgba(160, 80, 80, 0.35); }
+
+    /* cover and close: the group-chat video */
+    .mk-gls .g-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .mk-gls .g-cover > p, .mk-gls .g-cover > div, .mk-gls .g-cover > h4 { position: relative; z-index: 1; }
+    .mk-gls .g-cover { justify-content: flex-start; }
+    .mk-gls .g-title { margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 700; font-size: clamp(28px, 6.6cqw, 76px); line-height: 0.98; color: var(--g-ink); letter-spacing: -0.03em; max-width: 46cqw; }
+    .mk-gls .g-title em { color: var(--g-red); font-weight: 600; }
+    .mk-gls .mk-slide.g-cover .g-lede { color: var(--g-ink) !important; max-width: 40cqw; }
+
+    /* big numbers */
+    .mk-gls .g-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6cqw; }
+    .mk-gls .g-stat { padding: 1.4cqw 1.6cqw; }
+    .mk-gls .g-stat b { display: block; font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(18px, 3.4cqw, 40px); font-weight: 700; line-height: 1; color: var(--g-ink); }
+    .mk-gls .g-stat.red b { color: var(--g-red); }
+    .mk-gls .g-stat span { display: block; margin-top: 0.6cqw; font-size: clamp(10px, 1.1cqw, 13px); color: var(--g-mute); line-height: 1.35; }
+
+    /* chat bubbles */
+    .mk-gls .g-thread { display: flex; flex-direction: column; gap: 0.8cqw; }
+    .mk-gls .g-msg { align-self: flex-start; max-width: 80%; padding: 0.9cqw 1.4cqw; border-radius: 1.6cqw 1.6cqw 1.6cqw 0.4cqw; background: var(--g-white); font-size: clamp(11px, 1.35cqw, 16px); color: var(--g-ink);
+        box-shadow: 0 0.6cqw 1.4cqw -0.6cqw rgba(160, 80, 80, 0.4); animation: gPop 0.5s cubic-bezier(.2, .8, .2, 1.2) both; animation-delay: calc(var(--n) * 0.35s); }
+    .mk-gls .g-msg.me { align-self: flex-end; border-radius: 1.6cqw 1.6cqw 0.4cqw 1.6cqw; background: var(--g-red); color: #FFF; }
+    .mk-gls .g-msg small { display: block; font-size: 0.75em; font-weight: 700; opacity: 0.7; }
+    @@keyframes gPop { from { opacity: 0; transform: translateY(1cqw) scale(0.95); } }
+
+    /* rise and fall: valuation line */
+    .mk-gls .g-line { width: 100%; height: 32cqw; overflow: visible; }
+    .mk-gls .g-line .ln { fill: none; stroke: var(--g-red); stroke-width: 0.8; stroke-dasharray: 100; stroke-dashoffset: 100; animation: gDraw 2.2s cubic-bezier(.3, .6, .2, 1) 0.2s forwards; }
+    .mk-gls .g-line .ln.est { stroke-dasharray: 2 1.4; stroke-dashoffset: 0; opacity: 0; animation: gFade 0.6s ease 2.2s forwards; }
+    .mk-gls .g-line .dt { opacity: 0; animation: gFade 0.4s ease forwards; animation-delay: calc(0.3s + var(--n) * 0.35s); }
+    @@keyframes gDraw { to { stroke-dashoffset: 0; } }
+    @@keyframes gFade { to { opacity: 1; } }
+
+    /* who owns the customer: two journeys */
+    .mk-gls .g-flow { display: grid; grid-template-columns: 8cqw repeat(4, 1fr); gap: 1cqw; align-items: center; }
+    .mk-gls .g-flow > span { font-size: clamp(10px, 1.15cqw, 14px); font-weight: 700; color: var(--g-ink); }
+    .mk-gls .g-step { padding: 1cqw; text-align: center; border-radius: 99px; font-size: clamp(10px, 1.2cqw, 14px); font-weight: 700; animation: gPop 0.4s ease both; animation-delay: calc(var(--n) * 0.18s); }
+    .mk-gls .g-step.own { background: var(--g-red); color: #FFF; }
+    .mk-gls .g-step.rent { background: var(--g-white); color: var(--g-mute); border: 1px dashed #C9898A; }
+    .mk-gls .g-quote { padding: 1.6cqw 2cqw; font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; font-size: clamp(13px, 1.9cqw, 22px); line-height: 1.3; color: var(--g-ink); }
+    .mk-gls .g-quote small { display: block; margin-top: 0.6cqw; font-family: system-ui, sans-serif; font-style: normal; font-size: clamp(9px, 1cqw, 12px); color: var(--g-mute); }
+
+    /* the perfume donut */
+    .mk-gls .g-two { display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; align-items: center; flex: 1; }
+    .mk-gls .g-donut { position: relative; width: 26cqw; aspect-ratio: 1; margin: 0 auto; }
+    .mk-gls .g-donut svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .mk-gls .g-donut .arc { fill: none; stroke: var(--g-red); stroke-width: 7; stroke-dasharray: 0 100; animation: gArc 1.6s cubic-bezier(.2, .7, .2, 1) 0.3s forwards; }
+    @@keyframes gArc { to { stroke-dasharray: 40 100; } }
+    .mk-gls .g-donut div { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .mk-gls .g-donut b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(18px, 3.6cqw, 42px); color: var(--g-red); line-height: 1; }
+    .mk-gls .g-donut span { font-size: clamp(10px, 1.2cqw, 14px); color: var(--g-mute); margin-top: 0.4cqw; }
+
+    /* the club app on a phone */
+    .mk-gls .g-phone { width: 22cqw; aspect-ratio: 9 / 17; margin: 0 auto; border-radius: 2.6cqw; background: var(--g-white); border: 0.6cqw solid var(--g-ink); padding: 1.6cqw 1.3cqw; display: flex; flex-direction: column; gap: 0.9cqw; box-shadow: 0 2cqw 4cqw -1.6cqw rgba(80, 30, 30, 0.5); }
+    .mk-gls .g-phone h6 { margin: 0; font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(12px, 1.7cqw, 20px); color: var(--g-ink); }
+    .mk-gls .g-vote { font-size: clamp(9px, 1cqw, 12px); color: var(--g-ink); }
+    .mk-gls .g-vote i { display: block; height: 0.9cqw; margin-top: 0.3cqw; border-radius: 99px; background: #F3DAD6; overflow: hidden; }
+    .mk-gls .g-vote i::after { content: ""; display: block; height: 100%; width: var(--w); background: var(--g-red); border-radius: inherit; transform-origin: left; animation: gGrow 1.6s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--n) * 0.3s); }
+    @@keyframes gGrow { from { transform: scaleX(0); } }
+    .mk-gls .g-pill { align-self: flex-start; padding: 0.5cqw 1cqw; border-radius: 99px; background: var(--g-pink); font-size: clamp(9px, 0.95cqw, 11px); font-weight: 700; color: var(--g-red); }
+    .mk-gls .g-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1cqw; }
+    .mk-gls .g-list li { padding: 1.1cqw 1.4cqw; font-size: clamp(11px, 1.35cqw, 16px); color: var(--g-ink); animation: gPop 0.4s ease both; animation-delay: calc(var(--n) * 0.2s); }
+    .mk-gls .g-list li b { color: var(--g-red); }
+
+    /* creator network */
+    .mk-gls .g-net { position: relative; width: 100%; aspect-ratio: 1.3; }
+    .mk-gls .g-net canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* scent layering */
+    .mk-gls .g-scents { display: flex; justify-content: center; align-items: center; height: 100%; position: relative; }
+    .mk-gls .g-orb { position: absolute; width: 17cqw; aspect-ratio: 1; border-radius: 50%; mix-blend-mode: multiply; display: flex; align-items: center; justify-content: center;
+        font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(12px, 1.8cqw, 21px); color: var(--g-ink); animation: gOrb 6s ease-in-out infinite alternate; }
+    .mk-gls .g-orb:nth-child(1) { background: rgba(240, 160, 150, 0.75); --x: -7cqw; --y: -3cqw; }
+    .mk-gls .g-orb:nth-child(2) { background: rgba(214, 180, 230, 0.7); --x: 7cqw; --y: -3cqw; animation-delay: -2s; }
+    .mk-gls .g-orb:nth-child(3) { background: rgba(250, 215, 160, 0.75); --x: 0cqw; --y: 6cqw; animation-delay: -4s; }
+    .mk-gls .g-orb { transform: translate(var(--x), var(--y)); }
+    @@keyframes gOrb { from { transform: translate(var(--x), var(--y)) scale(0.92); } to { transform: translate(calc(var(--x) * 0.55), calc(var(--y) * 0.55)) scale(1.05); } }
+
+    /* kill and keep */
+    .mk-gls .g-kk { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; flex: 1; }
+    .mk-gls .g-kk > div { padding: 2cqw 2.2cqw; display: flex; flex-direction: column; gap: 1cqw; animation: gPop 0.6s ease both; }
+    .mk-gls .g-kk > div:nth-child(2) { animation-delay: 0.3s; }
+    .mk-gls .g-kk small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.3cqw; color: var(--g-red); }
+    .mk-gls .g-kk b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(13px, 1.8cqw, 21px); line-height: 1.25; color: var(--g-ink); }
+    .mk-gls .g-kk .kill b { text-decoration: line-through; text-decoration-color: var(--g-red); text-decoration-thickness: 2px; }
+
+    /* the ending: Cloud Paint tubes drop from the sky and land in a pile, every time the slide opens */
+    .mk-gls .g-end > p, .mk-gls .g-end > h4 { position: relative; z-index: 3; }
+    .mk-gls .g-end { justify-content: center; }
+    .mk-gls .g-drop { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+    .mk-gls .g-tube { position: absolute; left: var(--x); top: var(--y); width: 5.4cqw; height: 18cqw; display: flex; flex-direction: column; align-items: center;
+        transform: rotate(var(--r)); animation: gFall 1.1s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: var(--d); filter: drop-shadow(0 0.8cqw 1cqw rgba(90, 40, 40, 0.22)); }
+    .mk-gls .g-tube i { width: 55%; height: 2.2cqw; border-radius: 0.3cqw 0.3cqw 0 0; background: repeating-linear-gradient(0deg, var(--c) 0 0.35cqw, rgba(0, 0, 0, 0.12) 0.35cqw 0.45cqw); }
+    .mk-gls .g-tube b { width: 100%; height: 4.4cqw; border-radius: 0.6cqw 0.6cqw 0 0; background: var(--c); display: flex; align-items: center; justify-content: center;
+        writing-mode: vertical-rl; transform: rotate(180deg); font: 700 clamp(6px, 0.7cqw, 9px) system-ui, sans-serif; letter-spacing: 0.15cqw; color: rgba(255, 255, 255, 0.9); }
+    .mk-gls .g-tube em { flex: 1; width: 100%; background: linear-gradient(90deg, #FFFFFF 0%, #F4F1EF 100%); border-radius: 0 0 0.3cqw 0.3cqw; clip-path: polygon(0 0, 100% 0, 100% 92%, 96% 100%, 4% 100%, 0 92%);
+        writing-mode: vertical-rl; display: flex; align-items: center; justify-content: flex-start; padding-top: 1cqw; font: 600 clamp(7px, 0.85cqw, 11px) system-ui, sans-serif; font-style: normal; color: #2A1810; }
+    @@keyframes gFall { from { transform: translateY(-70cqw) rotate(calc(var(--r) * -0.4)); opacity: 0; } 20% { opacity: 1; } }
+    .mk-gls .g-end::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 50%; z-index: 2; background: linear-gradient(90deg, rgba(251, 248, 246, 0.97) 70%, rgba(251, 248, 246, 0)); }
+
+    .mk-gls .mk-chapters button[aria-pressed="true"] { background: var(--g-red); border-color: var(--g-red); }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .mk-gls .g-tube, .mk-gls .g-doodle, .mk-gls .g-msg, .mk-gls .g-step, .mk-gls .g-list li, .mk-gls .g-kk > div, .mk-gls .g-orb, .mk-gls .g-vote i::after, .mk-gls .g-donut .arc, .mk-gls .g-line .ln, .mk-gls .g-line .dt { animation: none; }
+        .mk-gls .g-donut .arc { stroke-dasharray: 40 100; }
+        .mk-gls .g-line .ln { stroke-dashoffset: 0; }
+        .mk-gls .g-line .ln.est, .mk-gls .g-line .dt { opacity: 1; }
+    }
+</style>
+
+@{
+    const string sig = "<span class=\"g-sig\" aria-hidden=\"true\">suhani ✦</span>"
+        + "<span class=\"g-doodle star\" aria-hidden=\"true\"><svg viewBox=\"0 0 40 40\"><path d=\"M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/></svg></span>"
+        + "<span class=\"g-doodle smile\" aria-hidden=\"true\"><svg viewBox=\"0 0 40 40\"><circle cx=\"20\" cy=\"20\" r=\"17\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\"/><circle cx=\"14\" cy=\"16\" r=\"2\" fill=\"currentColor\"/><circle cx=\"26\" cy=\"16\" r=\"2\" fill=\"currentColor\"/><path d=\"M12 24 Q20 31 28 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg></span>"
+        + "<span class=\"g-doodle squig\" aria-hidden=\"true\"><svg viewBox=\"0 0 100 30\"><path d=\"M4 18 C 16 2, 28 30, 40 14 S 64 2, 76 16 S 92 28, 96 10\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg></span>";
+    // valuation and sales milestones, plotted as x = year, y = 60 - value in $B * 28 (reported; Glossier is private)
+    var points = new[] { ("2014", "Launch", 10.0, 58.0), ("2018", "~$100M sales", 38.0, 50.0), ("2021", "$1.8B valuation", 59.0, 9.6), ("2026", "less than half", 94.0, 36.0) };
+}
+<div class="mp-proj mk-gls" id="mk-proj-4" role="tabpanel" aria-labelledby="mk-title-4" hidden>
+    <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Glossier slides">
+        <div class="mk-stage">
+            <div class="mk-slide g-cover" data-title="The cult">
+                <video class="g-bg" src="/videos/projects/glossier.mp4" poster="/videos/projects/glossier.jpg" muted loop playsinline autoplay aria-label="A pink group chat fills with fans talking about Glossier, then goes quiet"></video>
+                @Html.Raw(sig)
+                <p class="g-kick">Glossier strategy, 2026</p>
+                <h4 class="g-title">How Glossier <em>lost its cult.</em></h4>
+                <p class="g-lede">First it lost the group chat. Glossier was built by its comments section, then handed its fans to Sephora and TikTok. Here’s how to win them back.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The moat" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">How it started</p>
+                <h4 class="g-h">The moat was never makeup. <em>It was the comments section.</em></h4>
+                <div class="g-two" style="grid-template-columns:1.2fr 1fr">
+                    <div class="g-stats" style="grid-template-columns:1fr 1fr">
+                        <div class="g-stat g-card"><b>1.5M</b><span>Into The Gloss readers a month</span></div>
+                        <div class="g-stat g-card red"><b>~400</b><span>comments shaped Milky Jelly cleanser</span></div>
+                        <div class="g-stat g-card"><b>~80%</b><span>of first-year sales from owned and earned media</span></div>
+                        <div class="g-stat g-card red"><b>600%</b><span>sales growth in 2017</span></div>
+                    </div>
+                    <div class="g-thread">
+                        <div class="g-msg me" style="--n: 0"><small>Emily, Into The Gloss</small>What’s your dream cleanser?</div>
+                        <div class="g-msg" style="--n: 1">something gentle that doesn’t strip</div>
+                        <div class="g-msg" style="--n: 2">milky?? like a jelly but milky</div>
+                        <div class="g-msg" style="--n: 3">no fragrance pls 🙏</div>
+                        <div class="g-msg me" style="--n: 4"><small>A year later</small>Milky Jelly Cleanser, $18</div>
+                    </div>
+                </div>
+                <p class="g-cap">HBS case: Glossier (2019). Thread illustrative.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Cult to cautionary" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">What happened next</p>
+                <h4 class="g-h">From cult brand <em>to cautionary tale.</em></h4>
+                <div class="g-two" style="grid-template-columns:1.35fr 1fr;align-items:center">
+                    <svg class="g-line" viewBox="0 0 100 62" role="img" aria-label="Glossier grew from launch in 2014 to about $100M in sales by 2018 and a $1.8B valuation in 2021, then fell to a reported valuation of less than half that by 2026">
+                        <path class="ln" pathLength="100" d="M10 58 L38 50 L59 9.6" />
+                        <path class="ln est" d="M59 9.6 L94 36" />
+                        @for (var i = 0; i < points.Length; i++)
+                        {
+                            var (yr, label, x, y) = points[i];
+                            <circle class="dt" style="--n: @i" cx="@x" cy="@y" r="1.3" fill="#D9415E" />
+                            @* Razor reads a bare <text> tag in a loop as its own, so the SVG labels are written out raw *@
+                            @Html.Raw(FormattableString.Invariant($"<text class=\"dt\" style=\"--n: {i}\" x=\"{x}\" y=\"{(y < 20 ? y - 4 : y - 3.5)}\" font-size=\"2.8\" font-weight=\"700\" fill=\"#2A1810\" text-anchor=\"middle\">{label}</text>"))
+                            @Html.Raw(FormattableString.Invariant($"<text class=\"dt\" style=\"--n: {i}\" x=\"{x}\" y=\"61.5\" font-size=\"2.4\" fill=\"#6E5A55\" text-anchor=\"middle\">{yr}</text>"))
+                        }
+                    </svg>
+                    <ul class="g-list">
+                        <li class="g-card" style="--n: 3"><b>2022</b> Tech team takes the biggest layoffs; the founder steps down</li>
+                        <li class="g-card" style="--n: 4"><b>2023</b> Into Sephora</li>
+                        <li class="g-card" style="--n: 5"><b>2026</b> A third of staff cut, 9 of 12 stores closing, third CEO in four years</li>
+                    </ul>
+                </div>
+                <p class="g-cap">Glossier is private: values as reported. Dashed line: direction, not exact.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The moat, fired" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">The real mistake</p>
+                <h4 class="g-h">Glossier fired its moat, <em>then rented its fans back.</em></h4>
+                <div class="g-two" style="grid-template-columns:1fr 1.4fr;gap:2.4cqw">
+                    <p class="g-quote g-card">“Our competitive foil isn’t Clinique or MAC. It’s Amazon.”<small>Glossier’s president in 2018, when a third of the company built its own tech platform. In 2022 the tech team took the biggest cuts.</small></p>
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="g-cap">Who owns each step of the customer</p>
+                        <div class="g-flow"><span>2018</span><b class="g-step own" style="--n: 0">Into The Gloss</b><b class="g-step own" style="--n: 1">Glossier.com</b><b class="g-step own" style="--n: 2">Showroom</b><b class="g-step own" style="--n: 3">#glossierpink</b></div>
+                        <div class="g-flow"><span>2026</span><b class="g-step rent" style="--n: 5">TikTok</b><b class="g-step rent" style="--n: 6">Sephora</b><b class="g-step own" style="--n: 7">The product</b><b class="g-step rent" style="--n: 8">TikTok</b></div>
+                        <p class="g-lede" style="margin-top:0.6cqw">In 2018 the team warned Sephora would take 40 to 50% of the margin. Now discovery, the sale and the conversation all happen on someone else’s platform.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="A perfume company" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">Follow the money</p>
+                <h4 class="g-h">Glossier is quietly becoming <em>a perfume company.</em></h4>
+                <div class="g-two">
+                    <div class="g-donut">
+                        <svg viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#FFFBFA" stroke-width="7" /><circle class="arc" cx="21" cy="21" r="15.9" pathLength="100" /></svg>
+                        <div><b>~40%</b><span>of sales are fragrance</span></div>
+                    </div>
+                    <ul class="g-list">
+                        <li class="g-card" style="--n: 0"><b>About $90M</b> a year from Glossier You and its new flankers</li>
+                        <li class="g-card" style="--n: 1"><b>A top-selling perfume</b> at Sephora</li>
+                        <li class="g-card" style="--n: 2"><b>The new CEO</b> is cutting launches to bet on heroes: You, Cloud Paint, Boy Brow</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Move 1" hidden>
+                @Html.Raw(sig)
+                <div class="g-two" style="grid-template-columns:1.2fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="g-kick">Move 01, community</p>
+                        <h4 class="g-h">Reopen <em>the comments section.</em></h4>
+                        <p class="g-lede">The Glossier Club: Into The Gloss reborn as a members’ app. Vote on the next launch, post your Top Shelf, get early access and invites to the three flagships.</p>
+                        <p class="g-lede">It’s the loyalty program the 2018 team debated and never built, and every vote becomes first-party data Sephora can’t see.</p>
+                    </div>
+                    <div class="g-phone" aria-hidden="true">
+                        <h6>Glossier Club</h6>
+                        <span class="g-pill">Vote: what do we make next?</span>
+                        <div class="g-vote" style="--w: 78%; --n: 0">A You body oil<i></i></div>
+                        <div class="g-vote" style="--w: 52%; --n: 1">Cloud Paint in a new shade<i></i></div>
+                        <div class="g-vote" style="--w: 31%; --n: 2">Boy Brow in clear<i></i></div>
+                        <div class="g-msg" style="--n: 3;max-width:100%">my top shelf this week 🫧</div>
+                        <div class="g-msg me" style="--n: 4;max-width:100%">You’re invited: scent night, NYC</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Move 2" hidden>
+                @Html.Raw(sig)
+                <div class="g-two" style="grid-template-columns:1fr 1.1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="g-kick">Move 02, creators</p>
+                        <h4 class="g-h">Turn every fan <em>into a storefront.</em></h4>
+                        <p class="g-lede">Glossier already tried paid reps in 2018, and it flopped: it picked loyal customers, not creators. Run it again on TikTok Shop with the right people, paid per sale (15 to 25% is the beauty norm).</p>
+                        <p class="g-lede">Thousands of small creators beat one celebrity, and every link sends the buyer back to Glossier, not Sephora.</p>
+                    </div>
+                    <div class="g-net"><canvas aria-hidden="true"></canvas></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Move 3" hidden>
+                @Html.Raw(sig)
+                <div class="g-two" style="grid-template-columns:1fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="g-kick">Move 03, the hero</p>
+                        <h4 class="g-h">Make You a world, <em>not a perfume.</em></h4>
+                        <p class="g-lede">You is designed to smell different on everyone. Lean in: layering sets that mix You and its flankers into your own scent, refills sold only through the Club, and the three flagships rebuilt as scent labs.</p>
+                        <p class="g-lede">Sephora sells the first bottle. Glossier owns every bottle after it.</p>
+                    </div>
+                    <div class="g-scents" aria-hidden="true"><span class="g-orb">You</span><span class="g-orb">+ a flanker</span><span class="g-orb">= yours</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Kill, keep" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">The hard calls</p>
+                <h4 class="g-h">Stop chasing Gen Z. <em>Go get your friends back.</em></h4>
+                <div class="g-kk">
+                    <div class="g-card kill">
+                        <small>KILL</small>
+                        <b>Chasing TikTok trends against Rhode and Rare Beauty</b>
+                        <b>More stores and more launches</b>
+                        <b>Treating Sephora as home</b>
+                    </div>
+                    <div class="g-card">
+                        <small>KEEP</small>
+                        <b>Heroes: You, Cloud Paint, Boy Brow</b>
+                        <b>Three flagships as pilgrimages (the 2018 showroom converted 65%)</b>
+                        <b>Sephora, but only for discovery</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide g-end" data-title="The takeaway" hidden>
+                <div class="g-drop" aria-hidden="true">
+                    <span class="g-tube" style="--c: #F4A2B6; --x: 38.9cqw; --y: 9.1cqw; --r: -24deg; --d: 0.00s"><i></i><b>PUFF</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F6A68E; --x: 69.2cqw; --y: 16.4cqw; --r: -73deg; --d: 0.11s"><i></i><b>BEAM</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #E7B19E; --x: 40.3cqw; --y: 6.9cqw; --r: 24deg; --d: 0.22s"><i></i><b>DUSK</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F2552C; --x: 68.5cqw; --y: 18.4cqw; --r: -75deg; --d: 0.33s"><i></i><b>DAWN</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #E23FA0; --x: 44.8cqw; --y: 23.8cqw; --r: -53deg; --d: 0.44s"><i></i><b>HAZE</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #B4505A; --x: 72.4cqw; --y: 37.2cqw; --r: -52deg; --d: 0.55s"><i></i><b>STORM</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F4A2B6; --x: 43.8cqw; --y: 18.3cqw; --r: -53deg; --d: 0.66s"><i></i><b>PUFF</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F6A68E; --x: 75.4cqw; --y: 27.2cqw; --r: -54deg; --d: 0.77s"><i></i><b>BEAM</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #E7B19E; --x: 48.8cqw; --y: 16.7cqw; --r: -53deg; --d: 0.88s"><i></i><b>DUSK</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F2552C; --x: 77.7cqw; --y: 20.9cqw; --r: 65deg; --d: 0.99s"><i></i><b>DAWN</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #E23FA0; --x: 49.8cqw; --y: 35.4cqw; --r: 37deg; --d: 1.10s"><i></i><b>HAZE</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #B4505A; --x: 80.8cqw; --y: 27.8cqw; --r: -25deg; --d: 1.21s"><i></i><b>STORM</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F4A2B6; --x: 50.8cqw; --y: 6.9cqw; --r: 62deg; --d: 1.32s"><i></i><b>PUFF</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F6A68E; --x: 79.7cqw; --y: 19.5cqw; --r: -50deg; --d: 1.43s"><i></i><b>BEAM</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #E7B19E; --x: 52.0cqw; --y: 2.9cqw; --r: 44deg; --d: 1.54s"><i></i><b>DUSK</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #F2552C; --x: 85.8cqw; --y: -4.0cqw; --r: 40deg; --d: 1.65s"><i></i><b>DAWN</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #E23FA0; --x: 55.1cqw; --y: 6.9cqw; --r: 24deg; --d: 1.76s"><i></i><b>HAZE</b><em>cloud paint</em></span>
+                    <span class="g-tube" style="--c: #B4505A; --x: 82.6cqw; --y: 1.0cqw; --r: -24deg; --d: 1.87s"><i></i><b>STORM</b><em>cloud paint</em></span>
+                </div>
+                @Html.Raw(sig)
+                <p class="g-kick">How to measure it</p>
+                <h4 class="g-title" style="font-size:clamp(22px, 4.6cqw, 54px);max-width:40cqw">Glossier doesn’t need to be cool again. <em>It needs its friends back.</em></h4>
+                <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>The one number:</b> community-sourced revenue, the share of sales that start in Glossier’s own channels (the Club, creators, the flagships). Today Sephora owns that start.</p>
+            </div>
+        </div>
+        <div class="mk-nav-row">
+            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+            <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+        </div>
+    </div>
+
+    <div class="mk-info">
+        <div>
+            <h3 id="mk-title-4">How Glossier Lost Its Cult</h3>
+            <p class="mp-proof-sub">Glossier was built by its comments section, then handed its fans to Sephora and TikTok. My plan to win them back.</p>
+        </div>
+        <ul class="mp-proof-list">
+            <li>Started from the HBS case I studied in MIS 375 and followed the story from 2018 to 2026</li>
+            <li>Found the turn the case predicts: the tech team that built Glossier’s platform was cut, then discovery moved to Sephora</li>
+            <li>Three moves: a members’ club, creators paid per sale, and fragrance as a world</li>
+            <li>Invented community-sourced revenue, the share of sales that start in Glossier’s own channels</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Move 2: a creator network. One brand in the middle, creators around it, sales pulsing back to the center
+    (() => {
+        const box = document.querySelector('.mk-gls .g-net');
+        if (!box) return;
+        const canvas = box.querySelector('canvas'), ctx = canvas.getContext('2d');
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let nodes = [], pulses = [], w = 0, h = 0;
+        const build = () => {
+            const r = box.getBoundingClientRect();
+            w = canvas.width = Math.round(r.width * 2); h = canvas.height = Math.round(r.height * 2);
+            nodes = Array.from({ length: 38 }, (_, i) => { const a = i * 2.4, d = 0.18 + 0.3 * ((i * 37) % 100) / 100; return { x: w / 2 + Math.cos(a) * w * d, y: h / 2 + Math.sin(a) * h * d * 1.1, s: 3 + (i % 4) }; });
+        };
+        const frame = () => {
+            requestAnimationFrame(frame);
+            if (box.closest('.mk-slide').hidden || box.closest('.mp-proj').hidden || document.hidden) return;
+            if (!w || canvas.width !== Math.round(box.getBoundingClientRect().width * 2)) build();
+            ctx.clearRect(0, 0, w, h);
+            nodes.forEach(n => { ctx.strokeStyle = 'rgba(217, 65, 94, 0.18)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(w / 2, h / 2); ctx.lineTo(n.x, n.y); ctx.stroke(); });
+            if (!reduce && Math.random() < 0.3) pulses.push({ n: nodes[Math.floor(Math.random() * nodes.length)], p: 0 });
+            pulses.forEach(q => { q.p += 0.025; const x = q.n.x + (w / 2 - q.n.x) * q.p, y = q.n.y + (h / 2 - q.n.y) * q.p; ctx.fillStyle = '#D9415E'; ctx.beginPath(); ctx.arc(x, y, 5, 0, 7); ctx.fill(); });
+            pulses = pulses.filter(q => q.p < 1);
+            nodes.forEach(n => { ctx.fillStyle = '#FFFBFA'; ctx.strokeStyle = '#D9415E'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(n.x, n.y, n.s * 2.2, 0, 7); ctx.fill(); ctx.stroke(); });
+            ctx.fillStyle = '#D9415E'; ctx.beginPath(); ctx.arc(w / 2, h / 2, 34, 0, 7); ctx.fill();
+            ctx.fillStyle = '#FFFFFF'; ctx.font = `700 ${Math.round(w / 34)}px Georgia, serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('G', w / 2, h / 2 + 2);
+        };
+        frame();
+    })();
+
+    // the cover and closing videos only play while their slide is open
+    (() => {
+        const vids = [...document.querySelectorAll('.mk-gls video')];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { vids.forEach(v => { v.removeAttribute('autoplay'); v.pause(); }); return; }
+        setInterval(() => vids.forEach(v => {
+            const open = !v.closest('.mk-slide').hidden && !v.closest('.mp-proj').hidden;
+            if (open && v.paused) v.play().catch(() => {}); else if (!open && !v.paused) v.pause();
+        }), 500);
+    })();
+</script>

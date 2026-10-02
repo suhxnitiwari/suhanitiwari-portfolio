@@ -211,6 +211,19 @@
 .mp-step { transition: opacity 0.25s ease, background 0.25s ease; }
 .mp-tri-body.has-focus .mp-step:not(.lit) { opacity: 0.35; }
 .mp-step.lit { background: rgba(143, 70, 97, 0.06); margin: 0 -14px; padding-left: 14px; padding-right: 14px; border-radius: var(--r-small, 8px); }
+/* fewer words: a step shows its detail only while it's lit */
+.mp-step-d, .mp-step-r { display: none; }
+.mp-step.lit .mp-step-d, .mp-step.lit .mp-step-r { display: block; animation: mpIn 0.45s ease both; }
+/* the arrows draw themselves, one after the other, and the lit corner breathes */
+.mp-tri-path path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: mpDraw 0.7s ease forwards; animation-delay: calc(var(--j) * 0.6s + 0.15s); }
+.mp-corner.on .mp-corner-halo { transform-box: fill-box; transform-origin: center; animation: mpBreathe 1.6s ease-in-out infinite; }
+@keyframes mpDraw { to { stroke-dashoffset: 0; } }
+@keyframes mpBreathe { 50% { transform: scale(1.35); opacity: 0.08; } }
+@keyframes mpIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+    .mp-tri-path path { stroke-dashoffset: 0; animation: none; }
+    .mp-corner.on .mp-corner-halo, .mp-step.lit .mp-step-d, .mp-step.lit .mp-step-r { animation: none; }
+}
 .mp-get { border-top: 1px solid var(--line); padding-top: 14px; margin: 2px 0 0; font-size: 14px; color: var(--muted); }
 .mp-get b { color: var(--choc); font-weight: 600; }
 

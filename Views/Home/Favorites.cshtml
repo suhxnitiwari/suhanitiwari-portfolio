@@ -1866,6 +1866,76 @@
         color: #733642;
     }
 
+    /* SHELVES IN MOTION: posters rise in one after another, and the one under your cursor lifts and slowly pushes in */
+    .shelf-rail > .fav-rise {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transition-delay: calc(var(--i) * 80ms);
+    }
+
+    .shelf-rail.in > .fav-rise {
+        opacity: 1;
+        transform: none;
+    }
+
+    .shelf-item .shelf-cover {
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .shelf-item .shelf-cover img {
+        transition: transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .shelf-item:hover .shelf-cover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 28px -12px rgba(42, 24, 16, 0.4);
+    }
+
+    .shelf-item:hover .shelf-cover:not(.show-whole) img {
+        transform: scale(1.06);
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .shelf-item .shelf-cover, .shelf-item .shelf-cover img { transition: none; }
+        .shelf-item:hover .shelf-cover, .shelf-item:hover .shelf-cover img { transform: none; }
+    }
+
+    /* three covers from that obsession, stacked; they fan out when the card comes on screen, and a little more on hover */
+    .fav-type-stack {
+        position: relative;
+        height: 150px;
+        margin-bottom: 10px;
+    }
+
+    .fav-type-stack img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 96px;
+        height: 144px;
+        object-fit: cover;
+        border-radius: var(--r-small);
+        box-shadow: 0 8px 18px -8px rgba(42, 24, 16, 0.45);
+        z-index: calc(3 - var(--k));
+        transform: translateX(calc(var(--k) * 22px));
+        transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transition-delay: calc(var(--k) * 80ms);
+    }
+
+    .fav-type-grid li.open .fav-type-stack img {
+        transform: translateX(calc(var(--k) * 78px));
+    }
+
+    .fav-type-grid li:hover .fav-type-stack img {
+        transform: translateX(calc(var(--k) * 88px)) translateY(calc(var(--k) * -3px));
+        transition-delay: 0s;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .fav-type-stack img { transition: none; transform: translateX(calc(var(--k) * 78px)); }
+    }
+
     .fav-type-from {
         margin: 0;
         font-size: 0.85em;
@@ -3517,22 +3587,47 @@
             <p class="fav-type-sub">Different medium, same obsessions: people, why they do what they do, what they make, and what makes something worth coming back to.</p>
             <ul class="fav-type-grid">
                 <li>
+                    <div class="fav-type-stack" aria-hidden="true"><img src="/images/posters/how-to-lose-a-guy-in-10-days.jpg" alt="" loading="lazy" style="--k: 0"><img src="/images/posters/modern-family.jpg" alt="" loading="lazy" style="--k: 1"><img src="/images/covers/influence.jpg" alt="" loading="lazy" style="--k: 2"></div>
                     <h3>Understanding</h3>
                     <p class="fav-type-from">Rom-coms, ensemble shows, psychology books, emotionally specific lyrics</p>
                     <p>I’m endlessly interested in why people choose each other, misunderstand each other, and change.</p>
                 </li>
                 <li>
+                    <div class="fav-type-stack" aria-hidden="true"><img src="/images/covers/creativity-inc.jpg" alt="" loading="lazy" style="--k: 0"><img src="/images/covers/inspired.jpg" alt="" loading="lazy" style="--k: 1"><img src="/images/covers/the-design-of-everyday-things.jpg" alt="" loading="lazy" style="--k: 2"></div>
                     <h3>Making</h3>
                     <p class="fav-type-from">Product books, creativity talks, whole discographies</p>
                     <p>I like seeing how something goes from an idea to a thing people care about.</p>
                 </li>
                 <li>
+                    <div class="fav-type-stack" aria-hidden="true"><img src="/images/posters/friends.jpg" alt="" loading="lazy" style="--k: 0"><img src="/images/posters/gilmore-girls.jpg" alt="" loading="lazy" style="--k: 1"><img src="/images/covers/people-we-meet-on-vacation.jpg" alt="" loading="lazy" style="--k: 2"></div>
                     <h3>Feeling</h3>
                     <p class="fav-type-from">Nostalgic songs, comfort shows, happy endings, books I reread</p>
                     <p>I don’t come back to things just because they’re “good.” I come back to things that make me feel something.</p>
                 </li>
             </ul>
         </section>
+        <script>
+            // the shelves: each row of posters and covers rises in one after another as it comes on screen
+            (() => {
+                if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+                const rails = document.querySelectorAll('.shelf-rail');
+                rails.forEach(rail => [...rail.children].forEach((item, i) => { item.style.setProperty('--i', Math.min(i, 6)); item.classList.add('fav-rise'); }));
+                const seen = new IntersectionObserver(entries => entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+                }), { threshold: 0.2 });
+                rails.forEach(r => seen.observe(r));
+            })();
+
+            // the covers fan out once each card is on screen
+            (() => {
+                const cards = document.querySelectorAll('.fav-type-grid li');
+                if (!('IntersectionObserver' in window)) { cards.forEach(c => c.classList.add('open')); return; }
+                const seen = new IntersectionObserver(entries => entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('open'); seen.unobserve(e.target); }
+                }), { threshold: 0.4 });
+                cards.forEach(c => seen.observe(c));
+            })();
+        </script>
     </div>
 </section>
 
