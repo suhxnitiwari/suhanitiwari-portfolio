@@ -402,33 +402,6 @@
         text-decoration: underline;
     }
 
-    /* the other ten projects, opened in place below the four */
-    .all-projects {
-        margin-top: 48px;
-        scroll-margin-top: 90px;
-    }
-
-    .all-projects-btn {
-        display: block;
-        margin: 40px auto 0;
-        padding: 14px 30px;
-        border-radius: var(--r-pill);
-        border: 2px solid #76344E;
-        background: transparent;
-        font-size: 0.85rem;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #76344E;
-        cursor: var(--cursor-hot, pointer);
-        transition: background 0.2s ease, color 0.2s ease;
-    }
-
-    .all-projects-btn:hover,
-    .all-projects-btn:focus-visible {
-        background: #76344E;
-        color: #FFFFFF;
-    }
 
     @@media (max-width: 700px) {
         .selected-work {
@@ -1856,6 +1829,47 @@
         outline-offset: 3px;
     }
 
+    /* "You've come this far…": the door from the polished part of the site into the rest of me */
+    .view-more.come-far {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        margin-top: 56px;
+        padding: 26px 48px;
+        border-radius: var(--r-small);
+        border: 1.5px solid #C9969E;
+    }
+
+    .view-more.come-far[hidden] {
+        display: none;
+    }
+
+    .come-far-big {
+        font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+        line-height: 1.1;
+        color: #3A1F26;
+    }
+
+    .come-far-small {
+        font-family: system-ui, sans-serif;
+        font-size: 0.8rem;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #76344E;
+    }
+
+    /* Everything else I've made: same look as Selected work, a line under the title */
+    .more-work-lede {
+        margin: 8px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.15rem;
+        font-style: italic;
+        color: #7E3F4A;
+    }
+
 </style>
 
 @* HERO: my name, split around me *@
@@ -1935,37 +1949,12 @@
     <div class="selected-wrap">
         <div class="selected-head">
             <h2 id="selected-work-heading">Selected work</h2>
-            <a class="selected-all" href="#projects">All projects <span aria-hidden="true">→</span></a>
+            <a class="selected-all" href="#projects">Everything else <span aria-hidden="true">↓</span></a>
         </div>
         <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
 
-        @* the other ten, right here under the four, closed until asked for (#projects opens them) *@
-        <div class="all-projects" id="projects" hidden>
-            <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
-        </div>
-        <button type="button" class="all-projects-btn" aria-expanded="false" aria-controls="projects">See all projects <span aria-hidden="true">↓</span></button>
     </div>
 </section>
-<script>
-    // "See all projects" opens the rest of the board in place; a link to #projects opens it too
-    (() => {
-        const box = document.getElementById('projects'), btn = document.querySelector('.all-projects-btn');
-        if (!box || !btn) return;
-        const set = open => {
-            box.hidden = !open;
-            btn.setAttribute('aria-expanded', open);
-            btn.innerHTML = open ? 'Show fewer <span aria-hidden="true">↑</span>' : 'See all projects <span aria-hidden="true">↓</span>';
-        };
-        btn.addEventListener('click', () => {
-            const open = box.hidden;
-            set(open);
-            if (!open) document.getElementById('selected-work').scrollIntoView({ behavior: 'smooth' });
-        });
-        const fromHash = () => { if (location.hash === '#projects') { set(true); box.scrollIntoView(); } };
-        addEventListener('hashchange', fromHash);
-        fromHash();
-    })();
-</script>
 
 @* ABOUT: my own words *@
 @{
@@ -2070,10 +2059,29 @@
     </div>
 </section>
 
-@* THE REST OF THE SITE, in one scroll: more projects, leadership and awards, then why I study what I do and
-   my coursework (Views/Home/Pursue.cshtml, embedded), then Playground (Views/Home/Make.cshtml) *@
-<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "all" }, { "Embed", true } }' />
-<partial name="Make" />
+@* PROOF, then HEART: awards right after school, then what I do for other people (the same views their old pages used) *@
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
+</section>
+<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
+    @await Html.PartialAsync("BeyondTheClassroom")
+</section>
+
+@* MORE PROJECTS: the four up top are what I'd like to be judged by; this is the lab of everything else (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <div>
+                <h2 id="more-work-heading">Everything else I’ve made</h2>
+                <p class="more-work-lede">Because the question wouldn’t leave me alone.</p>
+            </div>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
+    </div>
+</section>
+
+@* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
+<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />
 
 @* ABOUT, CONTINUED: the three things about me, now that you've seen the work *@
 <section class="about-section about-more" id="about-more">
@@ -2115,6 +2123,9 @@
     </div>
 </section>
 
+@* PLAY: Playground, the things I make for fun (Views/Home/Make.cshtml) *@
+<partial name="Make" />
+
 @* IF YOU KNOW ME, YOU KNOW... *@
 @{
     // Flip cards: (front, back). Add or remove freely.
@@ -2130,7 +2141,7 @@
         ("can’t watch horror movies", "Absolutely not. I’ll cover my eyes, ask everyone what happened, and somehow still be traumatized by the scene I didn’t technically watch.")
     };
 }
-<section class="know-me">
+<section class="know-me" id="know-me">
     <div class="about-container">
         <h2 class="tp-lead">If you know me, you know…</h2>
         <p class="kn-hint">Tap a card to flip it.</p>
@@ -2152,11 +2163,11 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
-        <button type="button" class="view-more" aria-expanded="false" aria-controls="moreAboutMe">View more…</button>
+        <button type="button" class="view-more come-far" aria-expanded="false" aria-controls="moreAboutMe"><span class="come-far-big">You’ve come this far…</span><span class="come-far-small">You might as well get to know me <span aria-hidden="true">↓</span></span></button>
     </div>
 </section>
 
-@* VIEW MORE: If I were a... and The Duality of a Woman stay tucked away until "View more…" is clicked *@
+@* YOU’VE COME THIS FAR…: If I were a..., The Duality of a Woman and the quiz stay tucked away until it’s clicked *@
 <div class="more-about-me" id="moreAboutMe" hidden>
 @* IF I WERE A... *@
 @{
@@ -2593,7 +2604,7 @@
         show(0);
     })();
 
-    // "View more…" under If you know me... opens If I were a... and The Duality of a Woman; the button at its bottom closes it again
+    // "You’ve come this far…" under If you know me... opens If I were a..., The Duality of a Woman and the quiz; the button at its bottom closes it again
     (() => {
         const more = document.querySelector('.view-more:not(.view-less)');
         const less = document.querySelector('.view-less');

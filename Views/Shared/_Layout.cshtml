@@ -686,8 +686,8 @@
         // in page order, top to bottom
         const spyParts = [
             ['work', 'selected-work'], ['hello', 'about'], ['work', 'experience'], ['study', 'education'],
-            ['study', 'why-mis'], ['study', 'coursework'], ['work', 'beyond'], ['work', 'awards'],
-            ['playground', 'playground'], ['hello', 'about-more']
+            ['work', 'awards'], ['work', 'beyond'], ['work', 'projects'], ['study', 'why-mis'], ['study', 'coursework'],
+            ['hello', 'about-more'], ['playground', 'playground'], ['hello', 'know-me']
         ].map(([spy, id]) => [spy, document.getElementById(id)]).filter(([, el]) => el);
         if (spyParts.length) {
             const spy = () => {
