@@ -777,3 +777,6 @@ button.sb-event { width: 100%; border: none; font: inherit; text-align: left; cu
     .sb-guide button::before { left: 12px; }
 }
 
+
+/* on the one-page home, a "See the deck" link lands on the whole project card, clear of the sticky menu */
+.mp-proj { scroll-margin-top: 80px; }

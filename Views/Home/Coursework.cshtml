@@ -968,18 +968,27 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     // back / forward: show whichever tab the address now points to
     addEventListener('popstate', () => show(tabForHash(location.hash)));
     // a Coursework link in the Pursue menu while already on Pursue: switch the tab and glide down to it
+    // (on the one-page home, a project card's "See the deck" link #mk-… or a theme link opens its tab, then lands on it)
     addEventListener('hashchange', () => {
-        if (!['#mis', '#marketing', '#overview'].includes(location.hash)) return;
-        show(tabForHash(location.hash));
-        const cw = document.getElementById('coursework');
-        if (cw) cw.scrollIntoView({ behavior: 'smooth' });
+        const h = location.hash;
+        if (!(['#mis', '#marketing', '#overview'].includes(h) || tabForHash(h) !== misTab)) return;
+        show(tabForHash(h));
+        // a project's title is tucked inside its card, so land on the top of the whole card
+        const named = ['#mis', '#marketing', '#overview'].includes(h) ? null : document.getElementById(h.slice(1));
+        const target = named && (named.closest('.mp-proj') || named);
+        const cw = target || document.getElementById('coursework');
+        // a beat later, once the project carousel has also opened its slide
+        if (cw) setTimeout(() => cw.scrollIntoView({ behavior: 'smooth' }), 60);
     });
     // clicking Pursue in the navbar while already here resets to MIS Major
     addEventListener('nav:top', () => show(misTab));
     // #mis opens MIS Major; #skills opens it and jumps to that section (the home page links here)
     // On the one-page Pursue (/home/pursue), #mis and #marketing also scroll down to the Coursework section
     const onPursue = !!document.getElementById('coursework');
+    // a marketing project link (#mk-title-3 or #mk-proj-3) lands on that project's card in the Marketing tab
+    const mkCard = location.hash.startsWith('#mk-') && document.getElementById(location.hash.slice(1))?.closest('.mp-proj');
     const jumpTo = ['#skills'].includes(location.hash) ? location.hash.slice(1)
+        : mkCard ? mkCard.id
         : onPursue && ['#mis', '#marketing', '#overview'].includes(location.hash) ? 'coursework' : null;
     show(tabForHash(location.hash));
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,

@@ -408,6 +408,166 @@
         }
     }
 
+    /* ===== EXPERIENCE and EDUCATION: right under who I am, same heading as Selected work ===== */
+    .home-part {
+        padding: 24px 40px 64px;
+        background: #FAF1EF;
+        scroll-margin-top: 70px;
+    }
+
+    .home-part-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 28px;
+    }
+
+    .home-part-head h2 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+        font-weight: 400;
+        color: #3A1F26;
+    }
+
+    .home-part-link {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: #76344E;
+        text-decoration: none;
+    }
+
+    .home-part-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Education reads like a job row: the school set large on the left, the numbers and classes on the right */
+    .edu {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+        gap: 48px;
+        padding: 34px 0;
+        border-top: 2px solid #1E100A;
+        border-bottom: 1px solid #E2C6C0;
+    }
+
+    .edu-school {
+        margin: 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 2.6rem;
+        line-height: 1.05;
+        color: #733642;
+    }
+
+    .edu-college {
+        margin: 10px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #1E100A;
+    }
+
+    .edu-degrees {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.95em;
+        line-height: 1.7;
+        color: #3F4A34;
+    }
+
+    .edu-degrees b {
+        color: #1E100A;
+    }
+
+    .edu-facts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+        margin: 0 0 30px;
+    }
+
+    .edu-facts div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .edu-facts dt {
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-weight: 400;
+        color: #1E100A;
+    }
+
+    .edu-facts dd {
+        margin: 0;
+        font-size: 0.85em;
+        line-height: 1.35;
+        color: #7A665F;
+    }
+
+    .edu-label {
+        margin: 0 0 12px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #76344E;
+    }
+
+    .edu-courses {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .edu-courses li {
+        padding: 6px 14px;
+        border: 1px solid #E2C6C0;
+        border-radius: var(--r-pill);
+        background: #FFFFFF;
+        font-size: 0.88em;
+        color: #3A1F26;
+    }
+
+    /* the three stories, now further down the page, get their own breathing room */
+    .about-more {
+        padding-top: 80px;
+    }
+
+    @@media (max-width: 800px) {
+        .home-part {
+            padding: 16px 20px 48px;
+        }
+
+        .home-part-head {
+            flex-wrap: wrap;
+            row-gap: 8px;
+        }
+
+        .edu {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 26px 0;
+        }
+
+        .edu-school {
+            font-size: 2.1rem;
+        }
+
+        .edu-facts {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
     /* ===== ABOUT: hello, then three things about me ===== */
     /* leave room for the sticky menu when "Scroll ↓" jumps here */
     #about {
@@ -1711,7 +1871,7 @@
         </p>
         <div class="cover-actions">
             <a class="cover-btn primary" href="#selected-work" aria-label="See my selected work">Work <span class="cover-arrow" aria-hidden="true">↓</span></a>
-            <a class="cover-btn" href="/home/study#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
             <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
@@ -1747,7 +1907,7 @@
     <div class="selected-wrap">
         <div class="selected-head">
             <h2 id="selected-work-heading">Selected work</h2>
-            <a class="selected-all" href="/home/work#projects">All projects <span aria-hidden="true">→</span></a>
+            <a class="selected-all" href="/#projects">All projects <span aria-hidden="true">→</span></a>
         </div>
         <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
     </div>
@@ -1770,19 +1930,19 @@
                 "I’m fascinated by why people choose what they choose: what makes an idea resonate, a product stick, or a brand mean something.",
                 "That curiosity is why I study psychology and marketing alongside MIS, and why my work always ends up centered on users and customers." },
             Photo: (string?)"/images/friends-coffee.jpg", Alt: "Me and three friends smiling at a Starbucks, each holding a coffee",
-            Proof: new[] { ("Marketing projects", "/home/coursework#marketing"), ("Psychology courses", "/home/coursework#human-behavior"), ("How I work", "https://suhxnitiwari.github.io/how-i-work/") }),
+            Proof: new[] { ("Marketing projects", "/#marketing"), ("Psychology courses", "/#human-behavior"), ("How I work", "https://suhxnitiwari.github.io/how-i-work/") }),
         (Num: "02", Title: "I make things.",
             Paras: new[] {
                 "Websites. Products. A children’s book. Things that probably did not need to become full-fledged projects but somehow did.",
                 "I like taking something from “wait, what if…” to something you can actually see, use, or experience." },
             Photo: (string?)"/images/childrens-book-reader.jpg", Alt: "A young reader smiling and holding a copy of Girls Can Be Engineers, Too! by Suhani Tiwari",
-            Proof: new[] { ("What I’ve built", "/home/work#projects"), ("My children’s book", "/home/beyondtheclassroom"), ("Things I make", "/home/make") }),
+            Proof: new[] { ("What I’ve built", "/#projects"), ("My children’s book", "/#beyond"), ("Things I make", "/#playground") }),
         (Num: "03", Title: "I tend to start things.",
             Paras: new[] {
                 "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 240+ girls.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
             Photo: (string?)"/images/girls-who-code-teaching.jpg", Alt: "Teaching a Girls Who Code session at the whiteboard while students follow along on laptops",
-            Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("How I lead", "https://suhxnitiwari.github.io/how-i-work/"), ("Leadership courses", "/home/coursework#leadership") })
+            Proof: new[] { ("Girls Who Code", "/#beyond"), ("How I lead", "https://suhxnitiwari.github.io/how-i-work/"), ("Leadership courses", "/#leadership") })
     };
 }
 <section class="about-section" id="about">
@@ -1793,9 +1953,77 @@
             <h2 class="about-tagline"><span class="about-sr">Building technology people choose, with a love for psychology, brands and learning</span><span class="about-type" aria-hidden="true">Building technology people choose, with a love for</span>
                 <span class="about-rotator" aria-hidden="true"><span class="about-word on" data-words="psychology|brands|learning">psychology</span></span><span class="about-caret" aria-hidden="true"></span></h2>
             <p class="about-prev">Previously at Oracle and Acacia Advisors</p>
-            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/work#projects">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/study#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
+            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/#projects">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
+    </div>
+</section>
+
+@* EXPERIENCE: right under who I am, the roles themselves (Views/Home/_Experience.cshtml, shared with Work) *@
+<section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
+    <div class="about-container">
+        <div class="home-part-head">
+            <h2 id="home-experience-heading">Experience</h2>
+            <a class="home-part-link" href="/resume" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span></a>
+        </div>
+        <partial name="_Experience" />
+    </div>
+</section>
+
+@* EDUCATION: school, degrees, GPA and the classes behind what I build (same facts as my résumé) *@
+@{
+    var eduFacts = new[]
+    {
+        ("3.5", "GPA, out of 4.0"),
+        ("May 2027", "graduating"),
+        ("#4", "MIS program in the US"),
+        ("#6", "undergraduate business school in the US")
+    };
+    var eduCourses = new[] { "Full-Stack Web App Development", "Web Application Development", "Database Management", "Problem Solving & Programming", "Strategic IT Management", "Intro to Data Science", "Decision Science", "Statistics for Business" };
+}
+<section class="home-part home-education" id="education" aria-labelledby="home-education-heading">
+    <div class="about-container">
+        <div class="home-part-head">
+            <h2 id="home-education-heading">Education</h2>
+            <a class="home-part-link" href="/#education">Why MIS and McCombs <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="edu">
+            <div class="edu-side">
+                <p class="edu-school">The University of Texas at Austin</p>
+                <p class="edu-college">McCombs School of Business</p>
+                <ul class="edu-degrees">
+                    <li><b>BBA</b>, Management Information Systems</li>
+                    <li><b>BA</b>, Psychology</li>
+                    <li><b>Minors</b>, Marketing and Educational Psychology</li>
+                </ul>
+            </div>
+            <div class="edu-main">
+                <dl class="edu-facts">
+                    @foreach (var (num, label) in eduFacts)
+                    {
+                        <div><dt>@num</dt><dd>@label</dd></div>
+                    }
+                </dl>
+                <p class="edu-label">Classes behind what I build</p>
+                <ul class="edu-courses">
+                    @foreach (var course in eduCourses)
+                    {
+                        <li>@course</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* THE REST OF THE SITE, in one scroll: more projects, leadership and awards, then why I study what I do and
+   my coursework (Views/Home/Pursue.cshtml, embedded), then Playground (Views/Home/Make.cshtml) *@
+<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "all" }, { "Embed", true } }' />
+<partial name="Make" />
+
+@* ABOUT, CONTINUED: the three things about me, now that you've seen the work *@
+<section class="about-section about-more" id="about-more">
+    <div class="about-container">
         <div class="about-stories">
             @for (var i = 0; i < aboutPoints.Length; i++)
             {
@@ -2420,3 +2648,8 @@
         seen.observe(document.querySelector('.about-tagline'));
     });
 </script>
+
+@{
+    // set last: the sections embedded above set their own page titles while they render
+    ViewData["Title"] = "Hello";
+}

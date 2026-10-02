@@ -5,7 +5,13 @@
    works on its own address (/home/education and so on), so deep links from elsewhere keep working. *@
 @{
     // which half of the page this is: Work or Study
-    var isWork = (ViewData["Part"] as string ?? "work") == "work";
+    var part = ViewData["Part"] as string ?? "work";
+    var isWork = part == "work";
+    // Embed: the home page shows Work and Study inside its one long scroll ("all"), without the Work cover
+    // or a second Experience (home has its own), and with "More projects" instead of the full board
+    var embed = ViewData["Embed"] as bool? == true;
+    var showWork = isWork || part == "all";
+    var showStudy = !isWork;
 }
 <style>
     /* land each section just below the sticky navbar when jumping from the Pursue menu */
@@ -844,79 +850,6 @@
         color: #1E100A;
     }
 
-    /* Experience gets the most room on the page: one open row per role, the company set large,
-       a headline number, then the bullets. Rules between rows instead of cards. */
-    .job-list {
-        display: flex;
-        flex-direction: column;
-        border-top: 2px solid #1E100A;
-    }
-
-    .job {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-        gap: 48px;
-        padding: 34px 0;
-        border-bottom: 1px solid #E2C6C0;
-    }
-
-    .job-company {
-        margin: 0;
-        font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-size: 2.6rem;
-        line-height: 1.05;
-        color: #733642;
-    }
-
-    .job h3 {
-        margin: 10px 0 0;
-        font-family: Georgia, serif;
-        font-size: 1.3em;
-        color: #1E100A;
-    }
-
-    .job-where {
-        margin: 6px 0 0;
-        font-size: 0.9em;
-        line-height: 1.5;
-        color: #3F4A34;
-    }
-
-    .job-stat {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        margin: 20px 0 0;
-    }
-
-    .job-stat b {
-        font-family: Georgia, serif;
-        font-size: 1.9em;
-        color: #1E100A;
-    }
-
-    .job-stat span {
-        font-size: 0.85em;
-        line-height: 1.35;
-        color: #7A665F;
-    }
-
-    .job ul {
-        margin: 0;
-        padding-left: 18px;
-        font-size: 1.05em;
-        line-height: 1.7;
-        color: #1E100A;
-    }
-
-    .job li + li {
-        margin-top: 12px;
-    }
-
-    .job li::marker {
-        color: #C9969E;
-    }
-
     @@media (max-width: 800px) {
         .career-intro,
         .career-experience,
@@ -938,39 +871,12 @@
             gap: 20px;
         }
 
-        .job {
-            grid-template-columns: 1fr;
-            gap: 18px;
-            padding: 26px 0;
-        }
-
-        .job-company {
-            font-size: 2.1rem;
-        }
     }
 </style>
 
-@{
-    // The roles, most recent first (same facts Sitara uses)
-    var jobs = new[]
-    {
-        ("May to August 2026", "ERP Consultant Intern", "Oracle", "Austin, Texas", "$20M to $200M", "the size of the companies I prospected", new[]
-        {
-            "Completed Oracle’s 12-week Enterprise Sales Development program, building skills in consultative selling and ERP technology.",
-            "Prospected $20M to $200M enterprises through outbound calls and strategic account planning to build an ERP sales pipeline.",
-            "Led discovery calls to uncover prospects’ business needs and align them with Oracle NetSuite, a cloud-based ERP."
-        }),
-        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors", "Denver, Colorado (remote)", "20%", "more website traffic from messaging I redesigned", new[]
-        {
-            "Conducted market research and competitive analysis across client consulting engagements, including Barry Manufacturing.",
-            "Built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product through pricing and competitor analysis.",
-            "Drove 20% growth in website traffic and 27% in LinkedIn visits by redesigning messaging for Acacia’s AI and cloud services."
-        })
-    };
-
-}
-
-@if (isWork)
+@if (showWork)
+{
+if (!embed)
 {
 <header class="career-intro" id="top">
     <div class="career-wrap">
@@ -1003,37 +909,27 @@
 <section class="pursue-part career-experience" id="experience" aria-labelledby="experience-heading">
     <div class="career-wrap">
         <h2 class="career-section-title" id="experience-heading">Experience</h2>
-        <div class="job-list">
-            @foreach (var (when, title, company, place, stat, statLabel, points) in jobs)
-            {
-                <article class="job">
-                    <div class="job-side">
-                        <p class="job-company">@company</p>
-                        <h3>@title</h3>
-                        <p class="job-where">@when<br />@place</p>
-                        <p class="job-stat"><b>@stat</b><span>@statLabel</span></p>
-                    </div>
-                    <ul>
-                        @foreach (var point in points)
-                        {
-                            <li>@point</li>
-                        }
-                    </ul>
-                </article>
-            }
-        </div>
+        <partial name="_Experience" />
     </div>
 </section>
+}
 
 @* PROJECTS: what I built, one project at a time (Views/Home/_RideFlowProof.cshtml) *@
 <link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
 <section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
     <div class="career-wrap mp">
         <div class="projects-head">
-            <h2 class="career-section-title" id="projects-heading">Projects</h2>
+            <h2 class="career-section-title" id="projects-heading">@(embed ? "More projects" : "Projects")</h2>
             <button type="button" class="coded-btn" aria-haspopup="dialog">SuhaniCoded<span aria-hidden="true">™</span></button>
         </div>
-        <partial name="_BestWork" />
+        @if (embed)
+        {
+            <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
+        }
+        else
+        {
+            <partial name="_BestWork" />
+        }
 
         @* SuhaniCoded: coded by Suhani, and something only Suhani would do *@
         <dialog class="role-pop coded-pop" aria-labelledby="coded-title">
@@ -1052,9 +948,12 @@
     @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
 }
-else
+@if (showStudy)
+{
+if (!embed)
 {
 <h1 class="visually-hidden">Suhani Tiwari: study</h1>
+}
 @* WHY: two tabs sharing one spot, like Coursework. Why MIS is open first; #mccombs links open Why McCombs *@
 <section class="pursue-part career-why" id="why-mis" aria-labelledby="why-heading">
     <span class="why-anchor" id="mccombs"></span>
@@ -1135,7 +1034,7 @@ else
                 </li>
             </ul>
             <div class="mccombs-text">
-                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="/home/work#projects"><em>go build the real thing</em></a>.</p>
+                <p>If you want to learn to build technology for people, you go where it’s taught best. My major comes out of the same McCombs department behind the country’s top graduate Information Systems program, and it shows in how the classes are built: less memorizing, more <a class="mccombs-build" href="/#projects"><em>go build the real thing</em></a>.</p>
                 <p><a class="mccombs-build" href="#marketing"><b>Marketing</b></a> sits right next door, so the psychology of why people choose what they choose is never far from the code. The rankings got me in the door. The people, the professors who know your name and classmates who push each other, are why I stay.</p>
                 <p>So far that’s meant a full-stack rideshare app, a database I designed and deployed in Oracle and Snowflake, and a Python planner that runs right in your browser. Every one of them is in my projects above, live and clickable.</p>
                 <p class="mccombs-source">Tap a ranking to see what it means for me. Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
@@ -1158,12 +1057,12 @@ else
 
 @{
     // set last: each section sets its own title while it renders
-    ViewData["Title"] = isWork ? "Work" : "Study";
+    if (!embed) { ViewData["Title"] = isWork ? "Work" : "Study"; }
 }
 
 <script>
     // Old links like /home/study#coursework or #mis: those sections live on Study now
-    if (@(isWork ? "true" : "false") && ['#why-mis', '#mccombs', '#coursework', '#overview', '#mis', '#marketing', '#human-behavior', '#persuasion', '#storytelling', '#decision-making', '#leadership', '#innovation'].includes(location.hash)) {
+    if (@(isWork && !embed ? "true" : "false") && ['#why-mis', '#mccombs', '#coursework', '#overview', '#mis', '#marketing', '#human-behavior', '#persuasion', '#storytelling', '#decision-making', '#leadership', '#innovation'].includes(location.hash)) {
         location.replace('/home/study' + location.hash);
     }
 </script>

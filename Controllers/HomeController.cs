@@ -11,44 +11,29 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Education()
-    {
-        return View();
-    }
+    // The whole site is one long home page now. Old page addresses land on their part of it, and a #section
+    // on the old address carries over (/home/study#marketing opens the Marketing Minor tab on the home page).
+    // A server redirect can't see the #part, so this tiny page does the hop in the browser.
+    private ContentResult ToHome(string section) => Content(
+        $"<!doctype html><meta charset=\"utf-8\"><title>Suhani Tiwari</title>" +
+        $"<script>location.replace('/' + (location.hash.replace('#mk-title-', '#mk-proj-') || '#{section}'))</script>" +
+        $"<a href=\"/#{section}\">Continue to suhanitiwari.com</a>", "text/html");
 
-    public IActionResult Coursework()
-    {
-        return View();
-    }
+    public IActionResult Education() => ToHome("education");
 
-    public IActionResult BeyondTheClassroom()
-    {
-        return View();
-    }
+    public IActionResult Coursework() => ToHome("coursework");
+
+    public IActionResult BeyondTheClassroom() => ToHome("beyond");
 
     // How I Work moved to its own site; old links land there
     public IActionResult HowIWork() => Redirect("https://suhxnitiwari.github.io/how-i-work/");
 
-    // Work: what I've done (experience, projects, leadership, awards)
-    public IActionResult Work()
-    {
-        ViewData["Part"] = "work";
-        return View("Pursue");
-    }
+    // Work, Study and the old Pursue page are parts of the home page now
+    public IActionResult Work() => ToHome("experience");
 
-    // Study: what I'm learning and why (why MIS, why McCombs, coursework)
-    public IActionResult Study()
-    {
-        ViewData["Part"] = "study";
-        return View("Pursue");
-    }
+    public IActionResult Study() => ToHome("education");
 
-    // The old one-page Pursue address still works: it shows Work, and a Study link (#coursework, #mis...) hops to Study
-    public IActionResult Pursue()
-    {
-        ViewData["Part"] = "work";
-        return View("Pursue");
-    }
+    public IActionResult Pursue() => ToHome("experience");
 
     // Case studies: one editorial page per project, linked from the Projects board
     [Route("work/starbucks")]
@@ -56,12 +41,9 @@ public class HomeController : Controller
 
     // /career: the one link to send a recruiter, the Work page
     [Route("career")]
-    public IActionResult Career() => Redirect("/home/work");
+    public IActionResult Career() => Redirect("/#experience");
 
-    public IActionResult ScholarshipsAndAwards()
-    {
-        return View();
-    }
+    public IActionResult ScholarshipsAndAwards() => ToHome("awards");
 
     // Off the Clock (my favorites) moved to its own site; old links land there
     public IActionResult Favorites() => Redirect("https://suhxnitiwari.github.io/off-the-clock/");
@@ -73,11 +55,11 @@ public class HomeController : Controller
 
     // suhanitiwari.com/mis: how I define the MIS major, opened straight to the MIS Major tab of Coursework
     [Route("mis")]
-    public IActionResult Mis() => Redirect("/home/study#mis");
+    public IActionResult Mis() => Redirect("/#mis");
 
     // suhanitiwari.com/projects: straight to the things I've built
     [Route("projects")]
-    public IActionResult Projects() => Redirect("/home/work#projects");
+    public IActionResult Projects() => Redirect("/#selected-work");
 
     [Route("resume")]
     public IActionResult Resume([FromServices] IWebHostEnvironment environment)
@@ -108,10 +90,8 @@ public class HomeController : Controller
         return PhysicalFile(path, "application/pdf", "Tiwari_Suhani_Resume.pdf");
     }
 
-    public IActionResult Make()
-    {
-        return View();
-    }
+    // Playground is the last big part of the home page
+    public IActionResult Make() => ToHome("playground");
 
     // World moved out into its own project: github.com/suhxnitiwari/suhani-world
 

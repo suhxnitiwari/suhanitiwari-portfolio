@@ -1,0 +1,125 @@
+@* Experience: one open row per role, most recent first. Shared by the Work page and the home page,
+   so the roles only live here (same facts Sitara uses). *@
+@{
+    var jobs = new[]
+    {
+        ("May to August 2026", "ERP Consultant Intern", "Oracle", "Austin, Texas", "$20M to $200M", "the size of the companies I prospected", new[]
+        {
+            "Completed Oracle’s 12-week Enterprise Sales Development program, building skills in consultative selling and ERP technology.",
+            "Prospected $20M to $200M enterprises through outbound calls and strategic account planning to build an ERP sales pipeline.",
+            "Led discovery calls to uncover prospects’ business needs and align them with Oracle NetSuite, a cloud-based ERP."
+        }),
+        ("May 2025 to January 2026", "Strategy Consulting Intern", "Acacia Advisors", "Denver, Colorado (remote)", "20%", "more website traffic from messaging I redesigned", new[]
+        {
+            "Conducted market research and competitive analysis across client consulting engagements, including Barry Manufacturing.",
+            "Built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product through pricing and competitor analysis.",
+            "Drove 20% growth in website traffic and 27% in LinkedIn visits by redesigning messaging for Acacia’s AI and cloud services."
+        })
+    };
+}
+<style>
+    /* Experience gets the most room on the page: one open row per role, the company set large,
+       a headline number, then the bullets. Rules between rows instead of cards. */
+    .job-list {
+        display: flex;
+        flex-direction: column;
+        border-top: 2px solid #1E100A;
+    }
+
+    .job {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+        gap: 48px;
+        padding: 34px 0;
+        border-bottom: 1px solid #E2C6C0;
+    }
+
+    .job-company {
+        margin: 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 2.6rem;
+        line-height: 1.05;
+        color: #733642;
+    }
+
+    .job h3 {
+        margin: 10px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        color: #1E100A;
+    }
+
+    .job-where {
+        margin: 6px 0 0;
+        font-size: 0.9em;
+        line-height: 1.5;
+        color: #3F4A34;
+    }
+
+    .job-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin: 20px 0 0;
+    }
+
+    .job-stat b {
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        color: #1E100A;
+    }
+
+    .job-stat span {
+        font-size: 0.85em;
+        line-height: 1.35;
+        color: #7A665F;
+    }
+
+    .job ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 1.05em;
+        line-height: 1.7;
+        color: #1E100A;
+    }
+
+    .job li + li {
+        margin-top: 12px;
+    }
+
+    .job li::marker {
+        color: #C9969E;
+    }
+
+    @@media (max-width: 800px) {
+        .job {
+            grid-template-columns: 1fr;
+            gap: 18px;
+            padding: 26px 0;
+        }
+
+        .job-company {
+            font-size: 2.1rem;
+        }
+    }
+</style>
+
+<div class="job-list">
+    @foreach (var (when, title, company, place, stat, statLabel, points) in jobs)
+    {
+        <article class="job">
+            <div class="job-side">
+                <p class="job-company">@company</p>
+                <h3>@title</h3>
+                <p class="job-where">@when<br />@place</p>
+                <p class="job-stat"><b>@stat</b><span>@statLabel</span></p>
+            </div>
+            <ul>
+                @foreach (var point in points)
+                {
+                    <li>@point</li>
+                }
+            </ul>
+        </article>
+    }
+</div>
