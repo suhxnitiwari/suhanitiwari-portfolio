@@ -63,10 +63,8 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Favorites()
-    {
-        return View();
-    }
+    // Off the Clock (my favorites) moved to its own site; old links land there
+    public IActionResult Favorites() => Redirect("https://suhxnitiwari.github.io/off-the-clock/");
 
     // "Résumé": my résumé once wwwroot/resume.pdf exists, a short holding page until then
     // suhanitiwari.com/quiz: a direct link for people who just want to take How Well Do You Know Me?

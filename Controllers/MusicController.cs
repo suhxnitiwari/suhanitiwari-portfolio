@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -9,6 +10,7 @@ namespace Tiwari_Suhani_HW3.Controllers
 {
     // 30-second song previews from the iTunes Search API (free, no key). Spotify stopped giving out previews,
     // so the On Repeat list asks here instead: /music/preview?title=...&artist=...
+    [EnableCors("OffTheClock")]   // my Off the Clock site reads this too
     public class MusicController : Controller
     {
         private readonly IHttpClientFactory _http;

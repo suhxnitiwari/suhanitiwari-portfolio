@@ -134,7 +134,7 @@
             transform: rotate(180deg);
         }
 
-        /* Laptops/desktops: dropdowns (Favorites, Work) open on hover too */
+        /* Laptops/desktops: dropdowns (Work, Study, Playground) open on hover too */
         @@media (hover: hover) and (min-width: 768px) {
             .nav-dropdown:hover .dropdown-menu-custom {
                 display: block;
@@ -564,16 +564,6 @@
                             <a href="/home/make#traveling" class="dropdown-item-custom">Itineraries</a>
                         </div>
                     </li>
-                    <li class="nav-item nav-dropdown" id="favoritesNav">
-                        <a href="/home/favorites" class="nav-link @ActiveIf("Favorites")" style="display: flex; align-items: center; gap: 4px;">
-                            Off the Clock<span class="nav-arrow">▼</span>
-                        </a>
-                        <div class="dropdown-menu-custom">
-                            <a href="/home/favorites#listen" class="dropdown-item-custom">Listen</a>
-                            <a href="/home/favorites#watch" class="dropdown-item-custom">Watch</a>
-                            <a href="/home/favorites#read" class="dropdown-item-custom">Read</a>
-                        </div>
-                    </li>
                     <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")" target="_blank" rel="noopener">Résumé</a></li>
                 </ul>
             </div>
@@ -631,10 +621,8 @@
     <partial name="_Sitara" />
     <script src="~/js/sitara.js" asp-append-version="true"></script>
     <script src="~/js/sparkle.js" asp-append-version="true" defer></script>
-    @* Starts loading my Spotify music in the background so Favorites is ready when you get there *@
-    <script src="~/js/spotify-prefetch.js" asp-append-version="true" defer></script>
     <script>
-        // Dropdowns (Favorites, Make, Work, Study). Clicking the name goes to the top of that page;
+        // Dropdowns (Work, Study, Playground). Clicking the name goes to the top of that page;
         // the menu opens on hover. On touch screens (no hover) the first tap opens the menu and a
         // second tap on the name goes to the page.
         const dropdowns = document.querySelectorAll('.nav-dropdown');

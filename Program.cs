@@ -10,6 +10,14 @@ builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();   // keeps a copy of my Spotify data between visits
 builder.Services.AddScoped<Tiwari_Suhani_HW3.Services.SpotifyService>();
 
+// Off the Clock lives on its own site now (GitHub Pages) but still gets my live Spotify music from here,
+// so that one site may read the /spotify and /music answers. Nothing else changes for anyone else.
+builder.Services.AddCors(options => options.AddPolicy("OffTheClock", policy =>
+{
+    policy.WithOrigins("https://suhxnitiwari.github.io").WithMethods("GET");
+    if (builder.Environment.IsDevelopment()) policy.SetIsOriginAllowed(_ => true).WithMethods("GET");
+}));
+
 // On Render the site sits behind a proxy that handles HTTPS; this lets the app see the
 // original https address instead of the proxy's plain http one.
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -71,6 +79,7 @@ contentTypes.Mappings[".py"] = "text/plain; charset=utf-8";
 app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
 
 app.UseRouting();
+app.UseCors();
 app.UseRateLimiter();
 
 app.UseAuthorization();

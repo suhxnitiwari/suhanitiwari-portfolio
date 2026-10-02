@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ using Tiwari_Suhani_HW3.Services;
 
 namespace Tiwari_Suhani_HW3.Controllers
 {
+    [EnableCors("OffTheClock")]   // my Off the Clock site reads these too
     public class SpotifyController : Controller
     {
         private readonly SpotifyService _spotifyService;
