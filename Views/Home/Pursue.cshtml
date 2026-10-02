@@ -874,80 +874,9 @@
     }
 </style>
 
-@if (showWork)
-{
-if (!embed)
-{
-<header class="career-intro" id="top">
-    <div class="career-wrap">
-
-        @* what I'm looking for: the kind of work and the fields it lives in, so nobody has to guess *@
-        <section class="career-seeking cv" aria-labelledby="seeking-heading">
-            @* the cover: what kind of work I do, in one line, then my photo. *@
-            <div class="cv-cover">
-                <div class="cv-copy">
-                    @* the word after "meets" keeps changing; screen readers get the full list once *@
-                    <h2 class="cv-headline" id="seeking-heading">Work where technology <em>meets</em><br />
-                        <span class="cv-turn" aria-hidden="true"><em class="on">people.</em><em>psychology.</em><em>business.</em><em>storytelling.</em><em>culture.</em></span><span class="cv-sr">people, psychology, business, storytelling and culture.</span></h2>
-                    <p class="cv-lede">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
-                    <div class="cv-actions">
-                        <a class="cv-btn solid" href="/resume" target="_blank" rel="noopener">Résumé ↗</a>
-                        @* these two copy to the clipboard instead of opening anything *@
-                        <button type="button" class="cv-btn career-copy" data-copy="suhanitiwari@utexas.edu" data-done="Email copied ✓">Email me</button>
-                        <button type="button" class="cv-btn career-copy" data-copy="https://www.linkedin.com/in/suhxnitiwari/" data-done="LinkedIn copied ✓">LinkedIn</button>
-                    </div>
-                </div>
-                <figure class="cv-photo">
-                    <img src="/images/make/personality-blazer.jpg" width="800" height="800" alt="Me in a blue blazer, smiling" fetchpriority="high">
-                </figure>
-            </div>
-        </section>
-
-    </div>
-</header>
-
-<section class="pursue-part career-experience" id="experience" aria-labelledby="experience-heading">
-    <div class="career-wrap">
-        <h2 class="career-section-title" id="experience-heading">Experience</h2>
-        <partial name="_Experience" />
-    </div>
-</section>
-}
-
-@* PROJECTS: what I built, one project at a time (Views/Home/_RideFlowProof.cshtml) *@
+@* Study comes first: on the home page it follows Education, so school reads as one story;
+   then leadership and awards (each page on its own only ever shows one of the two) *@
 <link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
-<section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
-    <div class="career-wrap mp">
-        <div class="projects-head">
-            <h2 class="career-section-title" id="projects-heading">@(embed ? "More projects" : "Projects")</h2>
-            <button type="button" class="coded-btn" aria-haspopup="dialog">SuhaniCoded<span aria-hidden="true">™</span></button>
-        </div>
-        @if (embed)
-        {
-            <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
-        }
-        else
-        {
-            <partial name="_BestWork" />
-        }
-
-        @* SuhaniCoded: coded by Suhani, and something only Suhani would do *@
-        <dialog class="role-pop coded-pop" aria-labelledby="coded-title">
-            <button type="button" class="role-pop-close" aria-label="Close">×</button>
-            <p class="role-card-label">What SuhaniCoded means</p>
-            <h3 class="coded-title" id="coded-title">SuhaniCoded <em>(adj.)</em></h3>
-            <p class="coded-lede">When something is so clearly me that you’d know I made it without seeing my name. Built around the people using it, structured before it’s styled, and finished with the little extras nobody asked for. Also, yes, I literally coded it.</p>
-        </dialog>
-    </div>
-</section>
-
-<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
-    @await Html.PartialAsync("BeyondTheClassroom")
-</section>
-<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
-    @await Html.PartialAsync("ScholarshipsAndAwards")
-</section>
-}
 @if (showStudy)
 {
 if (!embed)
@@ -1053,6 +982,75 @@ if (!embed)
     @await Html.PartialAsync("Coursework")
 </section>
 
+}
+@if (showWork)
+{
+if (!embed)
+{
+<header class="career-intro" id="top">
+    <div class="career-wrap">
+
+        @* what I'm looking for: the kind of work and the fields it lives in, so nobody has to guess *@
+        <section class="career-seeking cv" aria-labelledby="seeking-heading">
+            @* the cover: what kind of work I do, in one line, then my photo. *@
+            <div class="cv-cover">
+                <div class="cv-copy">
+                    @* the word after "meets" keeps changing; screen readers get the full list once *@
+                    <h2 class="cv-headline" id="seeking-heading">Work where technology <em>meets</em><br />
+                        <span class="cv-turn" aria-hidden="true"><em class="on">people.</em><em>psychology.</em><em>business.</em><em>storytelling.</em><em>culture.</em></span><span class="cv-sr">people, psychology, business, storytelling and culture.</span></h2>
+                    <p class="cv-lede">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
+                    <div class="cv-actions">
+                        <a class="cv-btn solid" href="/resume" target="_blank" rel="noopener">Résumé ↗</a>
+                        @* these two copy to the clipboard instead of opening anything *@
+                        <button type="button" class="cv-btn career-copy" data-copy="suhanitiwari@utexas.edu" data-done="Email copied ✓">Email me</button>
+                        <button type="button" class="cv-btn career-copy" data-copy="https://www.linkedin.com/in/suhxnitiwari/" data-done="LinkedIn copied ✓">LinkedIn</button>
+                    </div>
+                </div>
+                <figure class="cv-photo">
+                    <img src="/images/make/personality-blazer.jpg" width="800" height="800" alt="Me in a blue blazer, smiling" fetchpriority="high">
+                </figure>
+            </div>
+        </section>
+
+    </div>
+</header>
+
+<section class="pursue-part career-experience" id="experience" aria-labelledby="experience-heading">
+    <div class="career-wrap">
+        <h2 class="career-section-title" id="experience-heading">Experience</h2>
+        <partial name="_Experience" />
+    </div>
+</section>
+}
+
+@* PROJECTS: what I built. On the home page they sit under Selected work instead (Views/Home/Index.cshtml) *@
+if (!embed)
+{
+<section class="pursue-part career-projects" id="projects" aria-labelledby="projects-heading">
+    <div class="career-wrap mp">
+        <div class="projects-head">
+            <h2 class="career-section-title" id="projects-heading">Projects</h2>
+            <button type="button" class="coded-btn" aria-haspopup="dialog">SuhaniCoded<span aria-hidden="true">™</span></button>
+        </div>
+        <partial name="_BestWork" />
+
+        @* SuhaniCoded: coded by Suhani, and something only Suhani would do *@
+        <dialog class="role-pop coded-pop" aria-labelledby="coded-title">
+            <button type="button" class="role-pop-close" aria-label="Close">×</button>
+            <p class="role-card-label">What SuhaniCoded means</p>
+            <h3 class="coded-title" id="coded-title">SuhaniCoded <em>(adj.)</em></h3>
+            <p class="coded-lede">When something is so clearly me that you’d know I made it without seeing my name. Built around the people using it, structured before it’s styled, and finished with the little extras nobody asked for. Also, yes, I literally coded it.</p>
+        </dialog>
+    </div>
+</section>
+}
+
+<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
+    @await Html.PartialAsync("BeyondTheClassroom")
+</section>
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
+</section>
 }
 
 @{

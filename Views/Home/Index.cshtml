@@ -402,6 +402,34 @@
         text-decoration: underline;
     }
 
+    /* the other ten projects, opened in place below the four */
+    .all-projects {
+        margin-top: 48px;
+        scroll-margin-top: 90px;
+    }
+
+    .all-projects-btn {
+        display: block;
+        margin: 40px auto 0;
+        padding: 14px 30px;
+        border-radius: var(--r-pill);
+        border: 2px solid #76344E;
+        background: transparent;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #76344E;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .all-projects-btn:hover,
+    .all-projects-btn:focus-visible {
+        background: #76344E;
+        color: #FFFFFF;
+    }
+
     @@media (max-width: 700px) {
         .selected-work {
             padding: 56px 16px 48px;
@@ -1907,11 +1935,37 @@
     <div class="selected-wrap">
         <div class="selected-head">
             <h2 id="selected-work-heading">Selected work</h2>
-            <a class="selected-all" href="/#projects">All projects <span aria-hidden="true">→</span></a>
+            <a class="selected-all" href="#projects">All projects <span aria-hidden="true">→</span></a>
         </div>
         <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
+
+        @* the other ten, right here under the four, closed until asked for (#projects opens them) *@
+        <div class="all-projects" id="projects" hidden>
+            <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
+        </div>
+        <button type="button" class="all-projects-btn" aria-expanded="false" aria-controls="projects">See all projects <span aria-hidden="true">↓</span></button>
     </div>
 </section>
+<script>
+    // "See all projects" opens the rest of the board in place; a link to #projects opens it too
+    (() => {
+        const box = document.getElementById('projects'), btn = document.querySelector('.all-projects-btn');
+        if (!box || !btn) return;
+        const set = open => {
+            box.hidden = !open;
+            btn.setAttribute('aria-expanded', open);
+            btn.innerHTML = open ? 'Show fewer <span aria-hidden="true">↑</span>' : 'See all projects <span aria-hidden="true">↓</span>';
+        };
+        btn.addEventListener('click', () => {
+            const open = box.hidden;
+            set(open);
+            if (!open) document.getElementById('selected-work').scrollIntoView({ behavior: 'smooth' });
+        });
+        const fromHash = () => { if (location.hash === '#projects') { set(true); box.scrollIntoView(); } };
+        addEventListener('hashchange', fromHash);
+        fromHash();
+    })();
+</script>
 
 @* ABOUT: my own words *@
 @{
