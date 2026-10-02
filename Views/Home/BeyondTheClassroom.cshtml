@@ -233,37 +233,59 @@
         to { opacity: 1; transform: none; }
     }
 
+    /* with more than three numbers, small ‹ › sit at the end of the number row */
+    .stat-pager:has(.stat-nav) {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 12px;
+        margin-top: 24px;
+        padding: 18px 0;
+        border-top: 1px solid #EBD5D0;
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .stat-pager:has(.stat-nav) .project-stats {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
     .stat-nav {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 10px;
+        gap: 2px;
+        height: calc(1.55em * 1.1);
     }
 
     .stat-nav button {
-        width: 30px;
-        height: 30px;
-        border: 1px solid #C9969E;
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        padding: 0 0 2px;
+        border: 0;
         border-radius: 50%;
         background: transparent;
-        font-size: 1.1em;
+        font-size: 1.15em;
         line-height: 1;
-        color: #733642;
+        color: #9C6670;
         cursor: var(--cursor-hot, pointer);
         transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .stat-nav button:hover {
-        background: #733642;
-        color: #FAF1EF;
+    .stat-nav button:hover,
+    .stat-nav button:focus-visible {
+        background: #EBD5D0;
+        color: #733642;
     }
 
     .stat-count {
-        font-size: 0.78em;
-        font-weight: 600;
-        letter-spacing: 1px;
-        color: #3F4A34;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
     }
 
     @@media (prefers-reduced-motion: reduce) {
@@ -626,8 +648,8 @@
                                     {
                                         <div class="stat-nav">
                                             <button type="button" class="stat-prev" aria-label="Previous numbers">‹</button>
+                                                                                        <button type="button" class="stat-next" aria-label="More numbers">›</button>
                                             <span class="stat-count" aria-live="polite">1 of @pages</span>
-                                            <button type="button" class="stat-next" aria-label="More numbers">›</button>
                                         </div>
                                     }
                                 </div>

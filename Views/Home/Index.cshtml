@@ -1877,36 +1877,44 @@
         outline-offset: 3px;
     }
 
-    /* "You've come this far…": the door from the polished part of the site into the rest of me */
+    /* "a little more about me": a quiet door from the polished part of the site into the rest of me, a line of text rather than a button */
     .view-more.come-far {
-        display: flex;
-        flex-direction: column;
+        display: inline-flex;
         align-items: center;
         gap: 6px;
-        margin-top: 56px;
-        padding: 26px 48px;
-        border-radius: var(--r-small);
-        border: 1.5px solid #C9969E;
+        margin: 44px auto 0;
+        padding: 4px 2px;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        font-family: Georgia, serif;
+        font-size: 1.05rem;
+        font-style: italic;
+        color: #7E3F4A;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 5px;
+        transition: text-decoration-color 0.2s ease, color 0.2s ease;
+    }
+
+    .view-more.come-far:hover {
+        background: none;
+        color: #5E2A36;
+        text-decoration-color: #C9969E;
     }
 
     .view-more.come-far[hidden] {
         display: none;
     }
 
-    .come-far-big {
-        font-size: clamp(1.8rem, 3.6vw, 2.6rem);
-        line-height: 1.1;
-        color: #3A1F26;
+    .come-far-row {
+        text-align: center;
     }
 
-    .come-far-small {
-        font-family: system-ui, sans-serif;
-        font-size: 0.8rem;
+    .come-far-arrow {
         font-style: normal;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #76344E;
+        font-size: 0.9em;
+        opacity: 0.7;
     }
 
     /* Everything else I've made: same look as Selected work, a line under the title */
@@ -2076,7 +2084,7 @@
     <div class="about-container">
         <div class="home-part-head">
             <h2 id="home-education-heading">Education</h2>
-            <a class="home-part-link" href="/#education">Why MIS and McCombs <span aria-hidden="true">→</span></a>
+            <a class="home-part-link" href="/#why-mis">Why MIS and McCombs <span aria-hidden="true">→</span></a>
         </div>
         <div class="edu">
             <div class="edu-side">
@@ -2235,11 +2243,11 @@
         </ul>
         <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
         </div>
-        <button type="button" class="view-more come-far" aria-expanded="false" aria-controls="moreAboutMe"><span class="come-far-big">You’ve come this far…</span><span class="come-far-small">You might as well get to know me <span aria-hidden="true">↓</span></span></button>
+        <div class="come-far-row"><button type="button" class="view-more come-far" aria-expanded="false" aria-controls="moreAboutMe">a little more about me <span class="come-far-arrow" aria-hidden="true">↓</span></button></div>
     </div>
 </section>
 
-@* YOU’VE COME THIS FAR…: If I were a..., The Duality of a Woman and the quiz stay tucked away until it’s clicked *@
+@* A LITTLE MORE ABOUT ME: If I were a..., The Duality of a Woman and the quiz stay tucked away until it’s clicked *@
 <div class="more-about-me" id="moreAboutMe" hidden>
 @* IF I WERE A... *@
 @{
@@ -2675,7 +2683,7 @@
         show(0);
     })();
 
-    // "You’ve come this far…" under If you know me... opens If I were a..., The Duality of a Woman and the quiz (it stays open)
+    // "a little more about me" under If you know me... opens If I were a..., The Duality of a Woman and the quiz (it stays open)
     (() => {
         const more = document.querySelector('.view-more');
         if (!more) return;
