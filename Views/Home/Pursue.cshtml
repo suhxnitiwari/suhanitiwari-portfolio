@@ -381,197 +381,6 @@
         color: #4A3530;
     }
 
-    /* WHERE I FIT: a bento of flip cards */
-    .career-fit {
-        padding: 56px 40px 24px;
-    }
-
-    .career-fit-sub {
-        margin: -16px 0 24px;
-        font-size: 1rem;
-        font-style: italic;
-        color: #4A3530;
-    }
-
-    .fit-board {
-        display: grid;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        gap: 20px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .fit-cell {
-        grid-column: span var(--c);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        perspective: 1400px;
-    }
-
-    /* both faces share one grid cell, so the card is as tall as its longer side */
-    .fit-card {
-        flex: 1;
-        display: grid;
-        padding: 0;
-        border: none;
-        background: none;
-        text-align: left;
-        cursor: var(--cursor-hot, pointer);
-        transform-style: preserve-3d;
-        transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-    }
-
-    .fit-card[aria-pressed="true"] { transform: rotateY(180deg); }
-    .fit-card:focus-visible { outline: 2px solid #7E3F4A; outline-offset: 4px; border-radius: var(--r-card); }
-
-    .fit-face {
-        grid-area: 1 / 1;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        min-height: 290px;
-        padding: var(--pad-card);
-        border-radius: var(--r-card);
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-    }
-
-    .fit-front {
-        background: radial-gradient(120% 90% at 100% 0%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 55%), var(--bg);
-        color: #FFF8F6;
-        box-shadow: 0 18px 36px -22px rgba(42, 24, 16, 0.55);
-        transition: transform 0.35s ease;
-    }
-
-    .fit-card:hover .fit-front { transform: translateY(-4px); }
-
-    .fit-num {
-        font-family: 'Bodoni Moda', Georgia, serif;
-        font-size: 3.4rem;
-        line-height: 1;
-        opacity: 0.45;
-    }
-
-    .fit-role {
-        margin-top: auto;
-        font-family: Georgia, serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1.2;
-    }
-
-    .fit-pitch {
-        font-family: Georgia, serif;
-        font-size: 1.02rem;
-        font-style: italic;
-        line-height: 1.5;
-        opacity: 0.92;
-    }
-
-    .fit-hint {
-        margin-top: 6px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        opacity: 0.75;
-    }
-
-    .fit-back {
-        transform: rotateY(180deg);
-        background: #FFF8F6;
-        border: var(--card-border);
-        box-shadow: var(--shadow-card);
-        color: #1E100A;
-    }
-
-    .fit-back-label {
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: #7E3F4A;
-    }
-
-    .fit-point {
-        position: relative;
-        padding-left: 18px;
-        font-size: 0.9rem;
-        line-height: 1.55;
-        color: #3A2A24;
-    }
-
-    .fit-point::before {
-        content: "✦";
-        position: absolute;
-        left: 0;
-        color: var(--bg);
-    }
-
-    .fit-back .fit-hint { margin-top: auto; color: #7E3F4A; }
-
-    .fit-link {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #7E3F4A;
-        text-decoration: none;
-    }
-
-    .fit-link:hover { text-decoration: underline; }
-
-    @@media (prefers-reduced-motion: reduce) {
-        .fit-card, .fit-front { transition: none; }
-    }
-
-    @@media (max-width: 900px) {
-        .fit-cell { grid-column: span 12; }
-    }
-
-    /* the roles as a numbered index */
-    .cv-index {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px 22px;
-        margin: 28px 0 0;
-        padding: 18px 0 0;
-        border-top: 1px solid #E2C6C0;
-        list-style: none;
-    }
-
-    .cv-index .role-tag {
-        padding: 4px 0;
-        border: none;
-        border-radius: 0;
-        background: none;
-        font-size: 0.82rem;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #7A665F;
-        box-shadow: inset 0 -2px 0 transparent;
-        transition: color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .cv-index .role-tag b {
-        margin-right: 6px;
-        font-family: Georgia, serif;
-        font-weight: 400;
-        letter-spacing: 0;
-        color: #C99AA5;
-    }
-
-    .cv-index .role-tag:hover {
-        transform: none;
-    }
-
-    .cv-index .role-tag.now,
-    .cv-index .role-tag:hover {
-        color: #1E100A;
-        box-shadow: inset 0 -2px 0 #7E3F4A;
-    }
-
     .cv-actions {
         display: flex;
         flex-wrap: wrap;
@@ -681,37 +490,7 @@
         background: none;
     }
 
-    /* each role is a button; the chosen one stays filled and its card opens below */
-    .role-tag {
-        padding: 7px 15px;
-        border-radius: var(--r-pill, 999px);
-        border: 1.5px solid #733642;
-        background: #733642;
-        font: inherit;
-        font-size: 0.85em;
-        font-weight: 600;
-        color: #FAF1EF;
-        cursor: var(--cursor-hot, pointer);
-        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-    }
-
-    .role-tag:hover {
-        transform: translateY(-2px);
-    }
-
-    .role-tag:focus-visible {
-        outline: 2px solid #733642;
-        outline-offset: 3px;
-    }
-
-    .role-hint {
-        margin: 10px 0 0;
-        font-size: 0.8em;
-        font-style: italic;
-        color: #9C8A84;
-    }
-
-    /* the "why I fit" card pops up over the page instead of pushing it down */
+    /* pop-up card (SuhaniCoded) over the page instead of pushing it down */
     .role-pop {
         position: fixed;
         inset: 0;
@@ -773,36 +552,6 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         color: #7E3F4A;
-    }
-
-    .role-card-pitch {
-        margin: 6px 0 10px;
-        font-family: Georgia, serif;
-        font-size: 1.15rem;
-        font-style: italic;
-        color: #1E100A;
-    }
-
-    .role-card ul {
-        margin: 0;
-        padding-left: 18px;
-        line-height: 1.6;
-        color: #1E100A;
-    }
-
-    .role-card li + li {
-        margin-top: 4px;
-    }
-
-    .role-card li::marker {
-        color: #C9969E;
-    }
-
-    .role-card-link {
-        display: inline-block;
-        margin-top: 12px;
-        font-weight: 600;
-        color: #733642;
     }
 
     .career-seeking-fields li.old-tag {
@@ -1219,41 +968,6 @@
         })
     };
 
-    // Each role: the pitch, three pieces of real evidence, and where to see it on the site
-    var roles = new[]
-    {
-        ("pmm", "Product Marketing Manager", "I turn technical products into stories people actually care about.",
-            new[] {
-                "At Acacia Advisors, I redesigned the messaging for their AI and cloud services, driving 20% more website traffic and 27% more LinkedIn visits.",
-                "I built the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, from pricing to competitor analysis.",
-                "My children’s book sold 1,000 copies in its first month and hit #1 New Release in STEM Education." },
-            "See my marketing projects", "/home/study#marketing"),
-        ("pm", "Product Manager", "I sit where users, technology and the business meet, and I can build.",
-            new[] {
-                "I built RideFlow, a full-stack rideshare app, from the data model to the screen.",
-                "In my Starbucks app strategy, I prioritized features with RICE scoring and picked one metric to manage to.",
-                "I also built this website, with three live APIs and Sitara, an AI guide I wrote the guardrails for." },
-            "See what I’ve built", "/home/work#projects"),
-        ("brand", "Brand Strategist", "I think in identity: what a brand means to the person holding it.",
-            new[] {
-                "My Owala Marathon Series turns a water bottle into a collectible record of achievement.",
-                "I repositioned Acacia Advisors’ messaging, and I’ve written, illustrated and published a children’s book.",
-                "My art portfolio on cultural identity won a VASE award and a Scholastic Art Award." },
-            "See my Owala and Starbucks work", "/home/study#marketing"),
-        ("tech", "Technology Consultant", "I help businesses choose and adopt the right systems.",
-            new[] {
-                "At Oracle, I led discovery calls with $20M to $200M companies and matched their needs to Oracle NetSuite, a cloud ERP.",
-                "At Acacia Advisors, I worked on AI strategy and built the go-to-market for a $1M Microsoft Azure AI product.",
-                "I designed a database and deployed it in both Oracle and Snowflake, so I know what adopting a system really takes." },
-            "See my experience", "/home/work#experience"),
-        ("mc", "Management Consultant", "Give me a messy problem; I’ll structure it and bring a recommendation.",
-            new[] {
-                "At Acacia Advisors, I did market research, competitive analysis and strategic recommendations for client engagements.",
-                "My strategy decks lead with the answer, back every number with a source and end with a plan.",
-                "Leading Girls Who Code sessions taught me to make a hard idea simple for any room." },
-            "See how I work through a problem", "/home/study#coursework")
-    };
-    var fitRoles = roles.Select(r => (Key: r.Item1, Title: r.Item2)).ToArray();
 }
 
 @if (isWork)
@@ -1263,7 +977,7 @@
 
         @* what I'm looking for: the kind of work and the fields it lives in, so nobody has to guess *@
         <section class="career-seeking cv" aria-labelledby="seeking-heading">
-            @* the cover: what kind of work I do, in one line, then my photo. The roles I fit come later, in Where I fit *@
+            @* the cover: what kind of work I do, in one line, then my photo. *@
             <div class="cv-cover">
                 <div class="cv-copy">
                     @* the word after "meets" keeps changing; screen readers get the full list once *@
@@ -1281,23 +995,6 @@
                     <img src="/images/make/personality-blazer.jpg" width="800" height="800" alt="Me in a blue blazer, smiling" fetchpriority="high">
                 </figure>
             </div>
-            <dialog class="role-pop" aria-label="Why I fit">
-                <button type="button" class="role-pop-close" aria-label="Close">×</button>
-            @foreach (var (key, title, pitch, points, linkText, link) in roles)
-            {
-                <div class="role-card" id="role-@key" hidden>
-                    <p class="role-card-label">Why I fit: @title</p>
-                    <p class="role-card-pitch">@pitch</p>
-                    <ul>
-                        @foreach (var point in points)
-                        {
-                            <li>@point</li>
-                        }
-                    </ul>
-                    <a class="role-card-link" href="@link">@linkText →</a>
-                </div>
-            }
-            </dialog>
         </section>
 
     </div>
@@ -1345,43 +1042,6 @@
             <h3 class="coded-title" id="coded-title">SuhaniCoded <em>(adj.)</em></h3>
             <p class="coded-lede">When something is so clearly me that you’d know I made it without seeing my name. Built around the people using it, structured before it’s styled, and finished with the little extras nobody asked for. Also, yes, I literally coded it.</p>
         </dialog>
-    </div>
-</section>
-
-@* WHERE I FIT: a bento of flip cards. The front is the role and my one-line pitch; tap it and it flips to the proof.
-   Rows split differently (7 and 5, then three across), never more than three in a row. *@
-<section class="pursue-part career-fit" id="fit" aria-labelledby="fit-heading">
-    <div class="career-wrap">
-        <h2 class="career-section-title" id="fit-heading">Where I fit</h2>
-        <p class="career-fit-sub">Five roles I’m a good fit for. Tap a card to flip it to the proof.</p>
-        @{
-            var fitLook = new[] { (Cols: 7, Bg: "#7E3F4A"), (Cols: 5, Bg: "#56634A"), (Cols: 4, Bg: "#C27B8A"), (Cols: 4, Bg: "#34422F"), (Cols: 4, Bg: "#9E5A63") };
-        }
-        <ul class="fit-board">
-            @for (var r = 0; r < roles.Length; r++)
-            {
-                var (key, title, pitch, points, linkText, link) = roles[r];
-                <li class="fit-cell" style="--c: @fitLook[r].Cols; --bg: @fitLook[r].Bg">
-                    <button type="button" class="fit-card" aria-pressed="false" aria-label="@title: @pitch Tap to see the proof.">
-                        <span class="fit-face fit-front">
-                            <span class="fit-num">0@(r + 1)</span>
-                            <span class="fit-role">@title</span>
-                            <span class="fit-pitch">@pitch</span>
-                            <span class="fit-hint">Tap for the proof ↻</span>
-                        </span>
-                        <span class="fit-face fit-back">
-                            <span class="fit-back-label">Why I fit: @title</span>
-                            @foreach (var point in points)
-                            {
-                                <span class="fit-point">@point</span>
-                            }
-                            <span class="fit-hint">Tap to flip back ↻</span>
-                        </span>
-                    </button>
-                    <a class="fit-link" href="@link">@linkText →</a>
-                </li>
-            }
-        </ul>
     </div>
 </section>
 
@@ -1530,12 +1190,6 @@ else
 </script>
 
 <script>
-    // Where I fit: tap a card to flip it to the proof; tap again to flip back
-    document.querySelectorAll('.fit-card').forEach(card => card.addEventListener('click', () =>
-        card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') !== 'true')));
-</script>
-
-<script>
     // Work where technology meets ...: the last word turns over every couple of seconds while it's on screen
     document.addEventListener('DOMContentLoaded', () => {
         const words = [...document.querySelectorAll('.cv-turn em')];
@@ -1588,20 +1242,6 @@ else
     })();
 </script>
 
-<script>
-    // Where I fit: tap a role and its "why I fit" card pops up
-    (() => {
-        const pop = document.querySelector('.career-seeking .role-pop');
-        if (!pop) return;
-        const cards = [...pop.querySelectorAll('.role-card')];
-        const openRole = key => { cards.forEach(c => c.hidden = c.id !== `role-${key}`); pop.showModal(); };
-        document.querySelectorAll('.career-fit .role-tag').forEach(tag => tag.addEventListener('click', () => openRole(tag.dataset.role)));
-        pop.querySelector('.role-pop-close').addEventListener('click', () => pop.close());
-        // tapping outside the card (on the dimmed page) closes it; so does following its link
-        pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
-        pop.querySelectorAll('.role-card-link').forEach(a => a.addEventListener('click', () => pop.close()));
-    })();
-</script>
 <script>
     // The Why: switch between Why MIS and Why McCombs (click or arrow keys); #mccombs opens Why McCombs
     (() => {

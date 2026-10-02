@@ -48,7 +48,15 @@
             Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Website", Title: "Celestial", Video: "celestial", Panel: (string?)"#34422F", Inset: false,
             Label: "Scrolling through my Celestial birth chart website", Link: "https://suhxnitiwari.github.io/suhani-celestial/",
-            Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" })
+            Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
+
+        // In the works: no video or link yet (Video and Link stay null until they ship)
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics · In the works", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
+            Label: "", Link: (string?)null,
+            Line: "My YouTube watch history as a funnel: what gets the click, what gets finished, and what brings me back.", Skills: new[] { "SQL", "Funnel analysis", "Product memo" }),
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics · In the works", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
+            Label: "", Link: (string?)null,
+            Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" })
     };
 
     // The homepage shows only my four strongest, each led by its number: two rows, 8 and 4, then 6 and 6
@@ -73,6 +81,27 @@
     @for (var i = 0; i < stories.Length; i++)
     {
         var story = stories[i];
+        if (story.Link == null)
+        {
+            @* in the works: same tile, a placeholder where the video goes, and nothing to click yet *@
+            <div class="best-story best-soon@(story.Cols <= 5 ? " best-narrow" : "")" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms">
+                <span class="best-media" style="--panel: @story.Panel">
+                    <span class="best-soon-mark">In the works</span>
+                </span>
+                <span class="best-caption">
+                    <span class="best-title">@story.Title</span>
+                    <span class="best-kicker">@story.Kind</span>
+                </span>
+                <span class="best-line">@story.Line</span>
+                <span class="best-skills">
+                    @foreach (var skill in story.Skills)
+                    {
+                        <span class="best-skill">@skill</span>
+                    }
+                </span>
+            </div>
+            continue;
+        }
         var external = story.Link.StartsWith("http");
         var look = story.Panel == null ? "" : story.Inset ? " inset" : " framed";
         <a class="best-story@(story.Fill ? " best-fill" : "")@(story.Cols <= 5 ? " best-narrow" : "")" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms"
@@ -177,6 +206,25 @@
         background: #F3E3E0;
         aspect-ratio: 16 / 10;
         transition: box-shadow 0.35s ease, transform 0.35s ease;
+    }
+
+    /* in the works: a solid panel with a quiet label instead of a video */
+    .best-soon .best-media {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--panel);
+    }
+
+    .best-soon-mark {
+        padding: 7px 16px;
+        border: 1.5px solid rgba(250, 241, 239, 0.7);
+        border-radius: var(--r-pill, 999px);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #FAF1EF;
     }
 
     /* a filling tile stretches to the height its row partner sets */
