@@ -175,7 +175,13 @@
         color: #FAF1EF;
     }
 
-    /* Skills, Projects, Résumé: always one row */
+    /* the one line that says what I do */
+    .cover-line {
+        font-weight: 400;
+        text-wrap: balance;
+    }
+
+    /* Work, Skills, Résumé: always one row */
     .cover-actions {
         display: flex;
         flex-wrap: nowrap;
@@ -348,6 +354,57 @@
         .cover-scroll,
         .cover-intro {
             animation: none;
+        }
+    }
+
+    /* ===== SELECTED WORK: four projects before anything about me ===== */
+    #selected-work {
+        scroll-margin-top: 70px;
+    }
+
+    .selected-work {
+        padding: 80px 40px 70px;
+        background: #FFFFFF;
+    }
+
+    .selected-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .selected-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 36px;
+    }
+
+    .selected-head h2 {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: clamp(2.2rem, 4.6vw, 3.6rem);
+        font-weight: 400;
+        color: #3A1F26;
+    }
+
+    .selected-all {
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: #76344E;
+        text-decoration: none;
+    }
+
+    .selected-all:hover {
+        text-decoration: underline;
+    }
+
+    @@media (max-width: 700px) {
+        .selected-work {
+            padding: 56px 16px 48px;
         }
     }
 
@@ -1650,14 +1707,15 @@
         @* Readable in one glance: where I study, what I do in one line, and where I've already done it *@
         <p class="cover-tagline">
             <span class="cover-school">MIS · McCombs School of Business, UT Austin</span>
+            <strong class="cover-line">I study why people choose things, then build better things for them to choose.</strong>
         </p>
         <div class="cover-actions">
-            <a class="cover-btn primary" href="/home/study#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
-            <a class="cover-btn" href="/home/work#projects" aria-label="See my projects">Projects <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn primary" href="#selected-work" aria-label="See my selected work">Work <span class="cover-arrow" aria-hidden="true">↓</span></a>
+            <a class="cover-btn" href="/home/study#mis" aria-label="See my MIS skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
             <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
-    <a class="cover-scroll" href="#about">Scroll ↓</a>
+    <a class="cover-scroll" href="#selected-work">Scroll ↓</a>
 </section>
 
 <script>
@@ -1683,6 +1741,17 @@
         update();
     })();
 </script>
+
+@* SELECTED WORK: the proof comes first, my four strongest projects right under the cover (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <h2 id="selected-work-heading">Selected work</h2>
+            <a class="selected-all" href="/home/work#projects">All projects <span aria-hidden="true">→</span></a>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
+    </div>
+</section>
 
 @* ABOUT: my own words *@
 @{

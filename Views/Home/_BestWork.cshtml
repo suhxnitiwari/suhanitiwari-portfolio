@@ -50,6 +50,24 @@
             Label: "Scrolling through my Celestial birth chart website", Link: "https://suhxnitiwari.github.io/suhani-celestial/",
             Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" })
     };
+
+    // The homepage shows only my four strongest, each led by its number: two rows, 8 and 4, then 6 and 6
+    if (ViewData["Featured"] as bool? == true)
+    {
+        var picks = new (string Title, int Cols, bool Fill, string Line)[]
+        {
+            ("RideFlow", 8, false, "33 automated tests. Riders, drivers and admins. I built the whole rideshare system, not just the screens."),
+            ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have."),
+            ("Listening History", 6, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
+            ("Saturday in Austin", 6, false, "250 Austin places and an algorithm for the question every group chat fails to answer.")
+        };
+        stories = picks.Select(p =>
+        {
+            var story = stories.First(s => s.Title == p.Title);
+            story.Cols = p.Cols; story.Fill = p.Fill; story.Line = p.Line;
+            return story;
+        }).ToArray();
+    }
 }
 <div class="best-board">
     @for (var i = 0; i < stories.Length; i++)
