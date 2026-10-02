@@ -1,53 +1,54 @@
 @* My best work: the videos do the talking. Every project is a short silent video of the real thing, then a title, one line about it and the tools it uses as chips.
    The videos are recorded from the live sites and decks (tools/record) and only play while they're on screen.
-   The board has a hierarchy: the size of a tile says how much the project matters. Big feature tiles, then halves, then a row of small ones.
+   The board is a bento: every row splits differently and never holds more than three tiles. Bigger tiles are the projects that matter most.
    Screen recordings sit in a colored panel and run off its bottom-right edge like a window; motion graphics and photos fill the whole tile. *@
 @{
-    // Size: "hero" (two thirds of a row), "tall" (the third beside a hero), "half" or "small" (a quarter).
-    // Rows have to add up: hero and tall share a row, halves come in twos, smalls in fours.
+    // Cols: how many of the 12 columns the tile takes. Rows: 2 makes a tower that stands beside two rows.
+    // Fill: the tile stretches to the height its row partner sets with its shape.
+    // Rows split differently (8 and 4, 5 and 7, a tower beside two rows) and never hold more than three tiles.
     // Panel: the color behind a screen recording (null = the video fills the tile). Inset: the video sits inside the panel as its own card.
     var stories = new[]
     {
-        (Size: "hero", Kind: "Full-stack app", Title: "RideFlow", Video: "rideflow", Panel: (string?)"#EBC8CC", Inset: false,
+        (Cols: 8, Rows: 1, Fill: false, Kind: "Full-stack app", Title: "RideFlow", Video: "rideflow", Panel: (string?)"#EBC8CC", Inset: false,
             Label: "Scrolling through the live RideFlow app", Link: "https://rideflow-frontend.onrender.com/",
             Line: "A rideshare app for riders, drivers and admins, built solo in a course designed for teams.", Skills: new[] { "React", "Node.js", "Express", "PostgreSQL" }),
-        (Size: "tall", Kind: "Children’s book", Title: "Girls Can Be Engineers, Too!", Video: "book", Panel: (string?)null, Inset: false,
+        (Cols: 4, Rows: 1, Fill: true, Kind: "Children’s book", Title: "Girls Can Be Engineers, Too!", Video: "book", Panel: (string?)null, Inset: false,
             Label: "A young reader holding a copy of Girls Can Be Engineers, Too!", Link: "/home/work#beyond",
             Line: "Bedtime stories were all princesses, so I wrote one about real women engineers.", Skills: new[] { "Writing", "Illustration", "Publishing" }),
 
-        (Size: "half", Kind: "Product management", Title: "Starbucks AI Loyalty", Video: "starbucks", Panel: (string?)"#56634A", Inset: false,
+        (Cols: 5, Rows: 1, Fill: true, Kind: "Product management", Title: "Starbucks AI Loyalty", Video: "starbucks", Panel: (string?)"#56634A", Inset: false,
             Label: "Flipping through my Starbucks strategy deck", Link: "/work/starbucks",
             Line: "Turning the Starbucks app from a checkout tool into a daily ritual.", Skills: new[] { "RICE scoring", "KANO analysis", "Roadmapping", "Prototyping" }),
-        (Size: "half", Kind: "Media strategy", Title: "Netflix’s $20B Leak", Video: "netflix", Panel: (string?)null, Inset: false,
+        (Cols: 7, Rows: 1, Fill: false, Kind: "Media strategy", Title: "Netflix’s $20B Leak", Video: "netflix", Panel: (string?)null, Inset: false,
             Label: "A wall of Netflix posters drifting in the dark while a red searchlight sweeps across", Link: "/home/study#mk-title-3",
             Line: "YouTube is eating Netflix’s evenings. My plan to make Netflix TV again.", Skills: new[] { "Media strategy", "Competitive analysis", "Motion graphics" }),
 
-        (Size: "hero", Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
-            Label: "A pink group chat fills with fans talking about Glossier, then goes quiet", Link: "/home/study#mk-title-4",
-            Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }),
-        (Size: "tall", Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
+        (Cols: 7, Rows: 2, Fill: true, Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
             Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
             Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
+        (Cols: 5, Rows: 1, Fill: false, Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
+            Label: "A pink group chat fills with fans talking about Glossier, then goes quiet", Link: "/home/study#mk-title-4",
+            Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }),
+        (Cols: 5, Rows: 1, Fill: false, Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Video: "rhode", Panel: (string?)null, Inset: false,
+            Label: "Glossy blush and bronzer swatches swipe in while the trends Hailey started flash past", Link: "/home/study#mk-title-5",
+            Line: "e.l.f. paid $1B for a face. My plan to make the product the celebrity.", Skills: new[] { "Brand strategy", "Celebrity brand", "Motion graphics" }),
 
-        (Size: "half", Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
-            Label: "Flipping through my Owala Marathon Series deck", Link: "/home/study#mk-title-1",
-            Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
-        (Size: "half", Kind: "Website", Title: "Soft Heart. Strong Spirit.", Video: "personality", Panel: (string?)null, Inset: false,
+        (Cols: 8, Rows: 1, Fill: false, Kind: "Website", Title: "Soft Heart. Strong Spirit.", Video: "personality", Panel: (string?)null, Inset: false,
             Label: "Scrolling through my personality website", Link: "https://suhxnitiwari.github.io/suhani-personality/",
             Line: "Ten personality tests, one person: an interactive story of who I am and what drives me.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
+        (Cols: 4, Rows: 1, Fill: true, Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
+            Label: "Flipping through my Owala Marathon Series deck", Link: "/home/study#mk-title-1",
+            Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
 
-        (Size: "small", Kind: "Data and SQL", Title: "Listening History", Video: "listening", Panel: (string?)"#8A4D57", Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Data and SQL", Title: "Listening History", Video: "listening", Panel: (string?)"#8A4D57", Inset: false,
             Label: "Scrolling through the live Listening History app", Link: "https://listening-history.onrender.com/",
             Line: "Four years of my Spotify listening, turned into a data warehouse I can ask anything in SQL.", Skills: new[] { "Python", "PostgreSQL", "FastAPI" }),
-        (Size: "small", Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
             Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
             Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
-        (Size: "small", Kind: "Website", Title: "Celestial", Video: "celestial", Panel: (string?)"#34422F", Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Website", Title: "Celestial", Video: "celestial", Panel: (string?)"#34422F", Inset: false,
             Label: "Scrolling through my Celestial birth chart website", Link: "https://suhxnitiwari.github.io/suhani-celestial/",
-            Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
-        (Size: "small", Kind: "Product strategy", Title: "FuelFlow", Video: "fuelflow", Panel: (string?)"#E6D3C3", Inset: false,
-            Label: "Flipping through my FuelFlow deck", Link: "/home/study#mk-title-2",
-            Line: "Putting real food where UT students already are, between classes.", Skills: new[] { "Product pitch", "Problem framing" })
+            Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" })
     };
 }
 <div class="best-board">
@@ -56,7 +57,7 @@
         var story = stories[i];
         var external = story.Link.StartsWith("http");
         var look = story.Panel == null ? "" : story.Inset ? " inset" : " framed";
-        <a class="best-story best-@story.Size" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--d: @(i % 4 * 90)ms"
+        <a class="best-story@(story.Fill ? " best-fill" : "")@(story.Cols <= 5 ? " best-narrow" : "")" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms"
            data-cue="@(external ? "Open it live ↗" : story.Link.StartsWith("/work/") ? "Read the case study →" : story.Video == "book" ? "Read the story →" : "See the deck →")">
             <span class="best-media@(look)" style="@(story.Panel != null ? $"--panel: {story.Panel}" : null)">
                 <video src="/videos/projects/@(story.Video).mp4" poster="/videos/projects/@(story.Video).jpg"
@@ -131,10 +132,7 @@
         margin-bottom: 64px;
     }
 
-    .best-hero  { grid-column: span 8; }
-    .best-tall  { grid-column: span 4; }
-    .best-half  { grid-column: span 6; }
-    .best-small { grid-column: span 3; }
+    .best-story { grid-column: span var(--c); grid-row: span var(--r); }
 
     .best-story {
         display: flex;
@@ -163,9 +161,8 @@
         transition: box-shadow 0.35s ease, transform 0.35s ease;
     }
 
-    .best-hero .best-media  { aspect-ratio: 16 / 9.6; }
-    .best-tall .best-media  { aspect-ratio: auto; flex: 1 1 auto; min-height: 260px; }
-    .best-small .best-media { aspect-ratio: 4 / 3.2; }
+    /* a filling tile stretches to the height its row partner sets */
+    .best-fill .best-media { aspect-ratio: auto; flex: 1 1 auto; min-height: 240px; }
 
     .best-media video {
         position: absolute;
@@ -270,7 +267,7 @@
         line-height: 1.3;
     }
 
-    .best-hero .best-title { font-size: 1.3rem; }
+    .best-story:not(.best-narrow):not(.best-fill) .best-title { font-size: 1.2rem; }
 
     .best-kicker {
         flex: none;
@@ -319,26 +316,25 @@
         transform: translate(3px, -3px);
     }
 
-    /* the small tiles keep their story to two lines and their kind under the title */
-    .best-small .best-caption { flex-direction: column; gap: 2px; }
+    /* narrow tiles put their kind under the title */
+    .best-narrow .best-caption, .best-fill .best-caption { flex-direction: column; gap: 2px; }
 
     @@media (prefers-reduced-motion: reduce) {
         .best-media, .best-media video, .best-arrow { transition: none; }
         .best-story:hover .best-media, .best-story:hover .best-media video, .best-story:hover .best-arrow { transform: none; }
     }
 
-    /* tablets: a hero takes the whole row, everything else goes two across */
+    /* tablets: wide tiles take the whole row, the rest go two across, and towers stop spanning */
     @@media (max-width: 1000px) {
-        .best-hero { grid-column: span 12; }
-        .best-tall, .best-half, .best-small { grid-column: span 6; }
-        .best-tall .best-media { aspect-ratio: 4 / 5; flex: none; }
+        .best-story { grid-column: span 6; grid-row: auto; }
+        .best-story:not(.best-narrow):not(.best-fill) { grid-column: span 12; }
+        .best-fill .best-media { aspect-ratio: 4 / 5; flex: none; min-height: 0; }
     }
 
     /* phones: one column */
     @@media (max-width: 640px) {
         .best-board { display: flex; flex-direction: column; gap: 36px; }
-        .best-media, .best-hero .best-media, .best-small .best-media { aspect-ratio: 4 / 3; }
-        .best-tall .best-media { aspect-ratio: 4 / 5; }
+        .best-media, .best-fill .best-media { aspect-ratio: 4 / 3; flex: none; min-height: 0; }
         .best-caption { flex-direction: column; gap: 2px; }
     }
 </style>

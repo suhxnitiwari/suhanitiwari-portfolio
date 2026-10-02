@@ -1,5 +1,5 @@
 @* Work and Study share this view (ViewData["Part"]). Work, in the order a recruiter needs it: experience, projects,
-   leadership, awards and how I work. Study: why MIS, why McCombs and coursework. Old notes follow.
+   leadership and awards. Study: why MIS, why McCombs and coursework. Old notes follow.
    Pursue: every Pursue page stacked into one long page, in the order a recruiter needs it:
    proof first (experience, projects, leadership, awards), then why I study what I do, McCombs, coursework, and how I work (closed until a viewer opens it). Each section is the same view that also
    works on its own address (/home/education and so on), so deep links from elsewhere keep working. *@
@@ -11,29 +11,6 @@
     /* land each section just below the sticky navbar when jumping from the Pursue menu */
     .pursue-part { scroll-margin-top: 70px; }
 
-    /* How I Work stays closed until a viewer asks for it: one pill to open, one at the bottom to close */
-    .hiw-fold { padding: 10px 16px 60px; text-align: center; }
-    .hiw-toggle {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-        padding: 12px 28px;
-        border-radius: 999px;
-        border: 1px solid #EBD5D0;
-        background: #FFF8F6;
-        font-family: Georgia, serif;
-        color: #7E3F4A;
-        cursor: var(--cursor-hot, pointer);
-        transition: background 0.2s ease;
-    }
-    .hiw-toggle:hover { background: #F6E4E1; }
-    .hiw-toggle:focus-visible { outline: 2px solid #7E3F4A; outline-offset: 3px; }
-    .hiw-toggle[hidden] { display: none; }
-    .hiw-toggle-title { font-size: 1.15em; font-style: italic; }
-    .hiw-toggle-sub { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.8em; color: #7A665F; }
-    .hiw-body { text-align: left; }
-    .hiw-close { margin-top: 30px; font-size: 1.05em; font-style: italic; }
 </style>
 
 @* Bodoni Moda (the font for my name), same local files as the home page *@
@@ -388,6 +365,14 @@
         color: #7E3F4A;
     }
 
+    /* the changing word: each one rises in and the last rises out, in the same spot */
+    .cv-turn { display: inline-grid; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; }
+    .cv-turn em { grid-area: 1 / 1; opacity: 0; transform: translateY(70%); transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .cv-turn em.on { opacity: 1; transform: none; }
+    .cv-turn em.off { opacity: 0; transform: translateY(-70%); }
+    .cv-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    @@media (prefers-reduced-motion: reduce) { .cv-turn em { transition: none; } }
+
     .cv-lede {
         margin: 22px 0 0;
         font-family: Georgia, serif;
@@ -396,16 +381,152 @@
         color: #4A3530;
     }
 
-    /* WHERE I FIT: the roles as a quiet numbered list further down the page */
+    /* WHERE I FIT: a bento of flip cards */
     .career-fit {
         padding: 56px 40px 24px;
     }
 
     .career-fit-sub {
-        margin: -16px 0 18px;
+        margin: -16px 0 24px;
         font-size: 1rem;
         font-style: italic;
         color: #4A3530;
+    }
+
+    .fit-board {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .fit-cell {
+        grid-column: span var(--c);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        perspective: 1400px;
+    }
+
+    /* both faces share one grid cell, so the card is as tall as its longer side */
+    .fit-card {
+        flex: 1;
+        display: grid;
+        padding: 0;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: var(--cursor-hot, pointer);
+        transform-style: preserve-3d;
+        transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .fit-card[aria-pressed="true"] { transform: rotateY(180deg); }
+    .fit-card:focus-visible { outline: 2px solid #7E3F4A; outline-offset: 4px; border-radius: var(--r-card); }
+
+    .fit-face {
+        grid-area: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 290px;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .fit-front {
+        background: radial-gradient(120% 90% at 100% 0%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 55%), var(--bg);
+        color: #FFF8F6;
+        box-shadow: 0 18px 36px -22px rgba(42, 24, 16, 0.55);
+        transition: transform 0.35s ease;
+    }
+
+    .fit-card:hover .fit-front { transform: translateY(-4px); }
+
+    .fit-num {
+        font-family: 'Bodoni Moda', Georgia, serif;
+        font-size: 3.4rem;
+        line-height: 1;
+        opacity: 0.45;
+    }
+
+    .fit-role {
+        margin-top: auto;
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .fit-pitch {
+        font-family: Georgia, serif;
+        font-size: 1.02rem;
+        font-style: italic;
+        line-height: 1.5;
+        opacity: 0.92;
+    }
+
+    .fit-hint {
+        margin-top: 6px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        opacity: 0.75;
+    }
+
+    .fit-back {
+        transform: rotateY(180deg);
+        background: #FFF8F6;
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
+        color: #1E100A;
+    }
+
+    .fit-back-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .fit-point {
+        position: relative;
+        padding-left: 18px;
+        font-size: 0.9rem;
+        line-height: 1.55;
+        color: #3A2A24;
+    }
+
+    .fit-point::before {
+        content: "✦";
+        position: absolute;
+        left: 0;
+        color: var(--bg);
+    }
+
+    .fit-back .fit-hint { margin-top: auto; color: #7E3F4A; }
+
+    .fit-link {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #7E3F4A;
+        text-decoration: none;
+    }
+
+    .fit-link:hover { text-decoration: underline; }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .fit-card, .fit-front { transition: none; }
+    }
+
+    @@media (max-width: 900px) {
+        .fit-cell { grid-column: span 12; }
     }
 
     /* the roles as a numbered index */
@@ -1145,7 +1266,9 @@
             @* the cover: what kind of work I do, in one line, then my photo. The roles I fit come later, in Where I fit *@
             <div class="cv-cover">
                 <div class="cv-copy">
-                    <h2 class="cv-headline" id="seeking-heading">Work where technology <em>meets people.</em></h2>
+                    @* the word after "meets" keeps changing; screen readers get the full list once *@
+                    <h2 class="cv-headline" id="seeking-heading">Work where technology <em>meets</em><br />
+                        <span class="cv-turn" aria-hidden="true"><em class="on">people.</em><em>psychology.</em><em>business.</em><em>storytelling.</em><em>culture.</em></span><span class="cv-sr">people, psychology, business, storytelling and culture.</span></h2>
                     <p class="cv-lede">Understanding what users and clients actually need, building or choosing the right system, and making the business case for it.</p>
                     <div class="cv-actions">
                         <a class="cv-btn solid" href="/resume" target="_blank" rel="noopener">Résumé ↗</a>
@@ -1225,15 +1348,38 @@
     </div>
 </section>
 
-@* WHERE I FIT: the roles, kept quiet and further down; each opens its "why I fit" card (the pop-up lives in the cover) *@
+@* WHERE I FIT: a bento of flip cards. The front is the role and my one-line pitch; tap it and it flips to the proof.
+   Rows split differently (7 and 5, then three across), never more than three in a row. *@
 <section class="pursue-part career-fit" id="fit" aria-labelledby="fit-heading">
     <div class="career-wrap">
         <h2 class="career-section-title" id="fit-heading">Where I fit</h2>
-        <p class="career-fit-sub">Tap one to see why.</p>
-        <ul class="cv-index" aria-label="Roles I’m a good fit for">
-            @for (var r = 0; r < fitRoles.Length; r++)
+        <p class="career-fit-sub">Five roles I’m a good fit for. Tap a card to flip it to the proof.</p>
+        @{
+            var fitLook = new[] { (Cols: 7, Bg: "#7E3F4A"), (Cols: 5, Bg: "#56634A"), (Cols: 4, Bg: "#C27B8A"), (Cols: 4, Bg: "#34422F"), (Cols: 4, Bg: "#9E5A63") };
+        }
+        <ul class="fit-board">
+            @for (var r = 0; r < roles.Length; r++)
             {
-                <li><button type="button" class="role-tag" aria-haspopup="dialog" data-role="@fitRoles[r].Key"><b>0@(r + 1)</b>@fitRoles[r].Title</button></li>
+                var (key, title, pitch, points, linkText, link) = roles[r];
+                <li class="fit-cell" style="--c: @fitLook[r].Cols; --bg: @fitLook[r].Bg">
+                    <button type="button" class="fit-card" aria-pressed="false" aria-label="@title: @pitch Tap to see the proof.">
+                        <span class="fit-face fit-front">
+                            <span class="fit-num">0@(r + 1)</span>
+                            <span class="fit-role">@title</span>
+                            <span class="fit-pitch">@pitch</span>
+                            <span class="fit-hint">Tap for the proof ↻</span>
+                        </span>
+                        <span class="fit-face fit-back">
+                            <span class="fit-back-label">Why I fit: @title</span>
+                            @foreach (var point in points)
+                            {
+                                <span class="fit-point">@point</span>
+                            }
+                            <span class="fit-hint">Tap to flip back ↻</span>
+                        </span>
+                    </button>
+                    <a class="fit-link" href="@link">@linkText →</a>
+                </li>
             }
         </ul>
     </div>
@@ -1244,18 +1390,6 @@
 </section>
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
-</section>
-@* HOW I WORK: DISC, CliftonStrengths and RIASEC, closed until a viewer taps to open it.
-   The Pursue menu's "How I Work" link (#how-i-work) opens it too. *@
-<section class="pursue-part hiw-fold" id="how-i-work" aria-label="How I work">
-    <button type="button" class="hiw-toggle hiw-open" aria-expanded="false" aria-controls="hiwBody">
-        <span class="hiw-toggle-title">How I Work…</span>
-        <span class="hiw-toggle-sub">My DISC style, CliftonStrengths and RIASEC</span>
-    </button>
-    <div class="hiw-body" id="hiwBody" hidden>
-        @await Html.PartialAsync("HowIWork")
-        <button type="button" class="hiw-toggle hiw-close" aria-controls="hiwBody">Close How I Work</button>
-    </div>
 </section>
 }
 else
@@ -1396,30 +1530,25 @@ else
 </script>
 
 <script>
-    // How I Work: closed until the viewer opens it (or arrives from the menu's #how-i-work link)
-    (() => {
-        const open = document.querySelector('.hiw-open');
-        const close = document.querySelector('.hiw-close');
-        const body = document.getElementById('hiwBody');
-        if (!open || !close || !body) return;
-        const show = () => {
-            body.hidden = false;
-            open.hidden = true;
-            open.setAttribute('aria-expanded', true);
-            window.dispatchEvent(new Event('resize'));   // its tabs and cards were measured while hidden
-        };
-        open.addEventListener('click', show);
-        close.addEventListener('click', () => {
-            body.hidden = true;
-            open.hidden = false;
-            open.setAttribute('aria-expanded', false);
-            open.scrollIntoView({ block: 'center' });   // back to the button, not somewhere further down
-            open.focus({ preventScroll: true });
-        });
-        const fromHash = () => { if (location.hash === '#how-i-work') show(); };
-        fromHash();
-        window.addEventListener('hashchange', fromHash);
-    })();
+    // Where I fit: tap a card to flip it to the proof; tap again to flip back
+    document.querySelectorAll('.fit-card').forEach(card => card.addEventListener('click', () =>
+        card.setAttribute('aria-pressed', card.getAttribute('aria-pressed') !== 'true')));
+</script>
+
+<script>
+    // Work where technology meets ...: the last word turns over every couple of seconds while it's on screen
+    document.addEventListener('DOMContentLoaded', () => {
+        const words = [...document.querySelectorAll('.cv-turn em')];
+        if (words.length < 2 || !window.autoplay) return;
+        let now = 0;
+        autoplay(document.querySelector('.cv-headline'), () => {
+            const leaving = words[now];
+            leaving.classList.replace('on', 'off');
+            setTimeout(() => leaving.classList.remove('off'), 600);
+            now = (now + 1) % words.length;
+            words[now].classList.add('on');
+        }, 2200);
+    });
 </script>
 
 <script>

@@ -155,23 +155,23 @@
     // Overview: the nine subjects, in catalog order
     var themes = new[]
     {
-        new CwTheme("MIS", "Management Information Systems", "Technology & Systems", "Diving deep into technology, systems, and how to build the future.", "#76344E",
+        new CwTheme("MIS", "Management Information Systems", "Technology & Systems", "I can design a database, build a full-stack app, and decide which system a business should run on.", "#76344E",
             new[] { "Intro to IT Management", "Problem Solving & Programming", "Database Management", "Web Application Development", "Business System Development", "Strategic IT Management", "Full-Stack Web App Development", "Independent Research in MIS" }),
-        new CwTheme("Leadership", "Leadership & Communication", "People & Organizations", "Understanding people, influence, and how to lead with intention.", "#7A4A42",
+        new CwTheme("Leadership", "Leadership & Communication", "People & Organizations", "I can read a team, get people moving in the same direction, and say the hard thing clearly.", "#7A4A42",
             new[] { "Professional Development", "Leadership Challenges", "Organizational Behavior", "Business Communication" }),
-        new CwTheme("Marketing", "Marketing", "Brand, Product & Consumer Strategy", "Brand strategy, consumer psychology, and the art of telling stories that sell.", "#98626C",
+        new CwTheme("Marketing", "Marketing", "Brand, Product & Consumer Strategy", "I can find who a product is really for, position it, and build the plan that gets them to buy and come back.", "#98626C",
             new[] { "Principles of Marketing", "Strategic Product Management", "Brand Management", "Business to Business Marketing", "Consumer Behavior", "Sales-Driving B2B Strategy", "Science of Influence", "Creativity in Marketing" }),
-        new CwTheme("Ed Psych", "Educational Psychology", "Learning & Human Development", "How humans learn, grow, and develop.", "#5E7050",
+        new CwTheme("Ed Psych", "Educational Psychology", "Learning & Human Development", "I know how people actually learn, and how to design an experience that sticks.", "#5E7050",
             new[] { "Strategic Learning for 21st Century", "Cognition & Human Learning", "Mindfulness & Compassion", "Intro to Career Planning", "Research in Educational Psychology" }),
-        new CwTheme("Psychology", "Psychology", "Mind, Behavior & Cognition", "The science of mind and behavior, from neurons to social dynamics.", "#5C3A2A",
+        new CwTheme("Psychology", "Psychology", "Mind, Behavior & Cognition", "I know why people decide, remember and act the way they do, down to the brain.", "#5C3A2A",
             new[] { "Intro to Psychology", "Personality", "Cognitive Psychology", "Social Psychology", "Conditioning & Learning", "Hormones & Behavior", "Neuroscience of Motivation", "Cognitive Neuroscience", "Social Cognition" }),
-        new CwTheme("Advertising", "Advertising", "Storytelling & Influence", "Storytelling across mediums: podcasts, brands, film.", "#8E5656",
+        new CwTheme("Advertising", "Advertising", "Storytelling & Influence", "I can turn a brand into a story people want to hear, on a podcast, in an ad or on screen.", "#8E5656",
             new[] { "Psychology of Advertising", "Brand Podcasting", "Brand Storytelling", "Intro Media/Entertainment", "Storytelling in Film & TV" }),
-        new CwTheme("Analytics & Ops", "Analytics & Operations", "Business Fundamentals", "Numbers, data, and strategic decisions.", "#4E5F42",
+        new CwTheme("Analytics & Ops", "Analytics & Operations", "Business Fundamentals", "I can read the financials, run the numbers and back a decision with data.", "#4E5F42",
             new[] { "Strategy Beyond Markets", "Fundamentals of Accounting", "Financial Accounting II", "Corporate Finance", "Intro to Data Science", "Statistics for Business", "Intro to Decision Science", "Operations Management" }),
-        new CwTheme("Foundations", "Foundations of Thought", "Humanities & Social Sciences", "Ideas, history, and how humans think.", "#946058",
+        new CwTheme("Foundations", "Foundations of Thought", "Humanities & Social Sciences", "I can make an argument, write it well and check whether a source holds up.", "#946058",
             new[] { "News Literacy", "Rhetoric & Writing", "Masterworks of Literature", "Classical Mythology", "Federal Government", "American & Texas Government", "US History Since 1865", "US History 1492-1865", "Calculus for Business" }),
-        new CwTheme("Creation & Analysis", "Creation & Analysis", "Science, Math & Arts", "Creating and analyzing: art, science, and economics.", "#A0606E",
+        new CwTheme("Creation & Analysis", "Creation & Analysis", "Science, Math & Arts", "I think like an economist and a scientist, and I make things like an artist.", "#A0606E",
             new[] { "Macroeconomics", "Microeconomics", "Physical Geology", "Sustaining a Planet", "Studio Art Lab", "Speech Communication", "Intro Media/Entertainment", "Fundamentals of Nutrition", "Computer Fluency" })
     };
 
@@ -448,7 +448,11 @@
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview" hidden>
         @* six ways the subjects work together: picking one lights up the cards that feed it *@
         <div class="cx">
-            <p class="cx-intro">On paper, my classes look scattered across nine departments and four schools. In practice, they keep answering the same question: how do people think, and how do you build things that work for them? Psychology and education taught me how people learn and decide. Marketing and advertising taught me how to reach them. MIS, analytics and economics taught me how to build and measure what they need. The humanities taught me how to explain all of it.</p>
+            @* the same intro as the MIS and Marketing tabs: a two-line heading, then one italic thesis *@
+            <header class="mp mp-hero">
+                <h2 id="ov-heading">I took classes in nine subjects.<br />Here’s the one thing they share.</h2>
+                <p class="mp-thesis">On paper they look scattered across four schools. In practice they all answer one question: how do people think, and how do you build things that work for them?</p>
+            </header>
             <p class="cx-heading" id="cx-heading">Nine subjects. Six ways they work together.</p>
             <div class="cx-pills" role="group" aria-labelledby="cx-heading">
                 @for (var c = 0; c < crossovers.Length; c++)
@@ -483,7 +487,7 @@
                         </div>
                         <div class="course-back">
                             <div class="course-back-content">
-                                <p class="course-description">@th.Blurb @th.Courses.Length courses.</p>
+                                <p class="course-description">@th.Blurb</p>
                                 <button class="view-more-btn" onclick="event.stopPropagation(); openThemeModal(@i)">VIEW MORE</button>
                             </div>
                         </div>

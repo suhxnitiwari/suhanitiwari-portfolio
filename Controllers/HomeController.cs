@@ -26,12 +26,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult HowIWork()
-    {
-        return View();
-    }
+    // How I Work moved to its own site; old links land there
+    public IActionResult HowIWork() => Redirect("https://suhxnitiwari.github.io/how-i-work/");
 
-    // Work: what I've done (experience, projects, leadership, awards, how I work)
+    // Work: what I've done (experience, projects, leadership, awards)
     public IActionResult Work()
     {
         ViewData["Part"] = "work";

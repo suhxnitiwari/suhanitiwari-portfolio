@@ -444,6 +444,12 @@
         transform: translateY(-70%);
     }
 
+    /* the decoding: letters still scrambling are mulberry and a blinking caret rides at the end */
+    .about-type .x, .about-word .x { color: #C27B8A; }
+    .about-caret { display: inline-block; width: 0.08em; height: 0.9em; margin-left: 0.06em; vertical-align: -0.08em; background: #7E3F4A; animation: aboutBlink 0.9s steps(1) infinite; }
+    .about-caret.done { display: none; }
+    @@keyframes aboutBlink { 50% { opacity: 0; } }
+
     .about-sr {
         position: absolute;
         width: 1px;
@@ -1695,7 +1701,7 @@
                 "I’m fascinated by why people choose what they choose: what makes an idea resonate, a product stick, or a brand mean something.",
                 "That curiosity is why I study psychology and marketing alongside MIS, and why my work always ends up centered on users and customers." },
             Photo: (string?)"/images/friends-coffee.jpg", Alt: "Me and three friends smiling at a Starbucks, each holding a coffee",
-            Proof: new[] { ("Marketing projects", "/home/coursework#marketing"), ("Psychology courses", "/home/coursework#human-behavior"), ("How I work", "/home/howiwork#strengths") }),
+            Proof: new[] { ("Marketing projects", "/home/coursework#marketing"), ("Psychology courses", "/home/coursework#human-behavior"), ("How I work", "https://suhxnitiwari.github.io/how-i-work/") }),
         (Num: "02", Title: "I make things.",
             Paras: new[] {
                 "Websites. Products. A children’s book. Things that probably did not need to become full-fledged projects but somehow did.",
@@ -1707,17 +1713,18 @@
                 "Sometimes literally: I started Girls Who Code chapters at two middle schools and grew them to 240+ girls.",
                 "Mostly, though, I’m happiest when there’s an idea floating around and someone needs to turn it into an actual thing." },
             Photo: (string?)"/images/girls-who-code-teaching.jpg", Alt: "Teaching a Girls Who Code session at the whiteboard while students follow along on laptops",
-            Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("How I lead", "/home/howiwork#disc"), ("Leadership courses", "/home/coursework#leadership") })
+            Proof: new[] { ("Girls Who Code", "/home/beyondtheclassroom"), ("How I lead", "https://suhxnitiwari.github.io/how-i-work/"), ("Leadership courses", "/home/coursework#leadership") })
     };
 }
 <section class="about-section" id="about">
     <div class="about-container">
         <div class="about-intro">
             @* the tagline's last word keeps changing; screen readers get the whole list once instead *@
-            <h2 class="about-tagline">Building technology people choose, with a love for
-                <span class="about-rotator" aria-hidden="true"><span class="about-word on">psychology</span><span class="about-word">brands</span><span class="about-word">learning</span></span><span class="about-sr">psychology, brands and learning</span></h2>
+            @* it types itself out like code: keyboard mash first, then the real words unfold letter by letter *@
+            <h2 class="about-tagline"><span class="about-sr">Building technology people choose, with a love for psychology, brands and learning</span><span class="about-type" aria-hidden="true">Building technology people choose, with a love for</span>
+                <span class="about-rotator" aria-hidden="true"><span class="about-word on" data-words="psychology|brands|learning">psychology</span></span><span class="about-caret" aria-hidden="true"></span></h2>
             <p class="about-prev">Previously at Oracle and Acacia Advisors</p>
-            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/study#mis">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/study#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
+            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/home/work#projects">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/home/study#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
         <div class="about-stories">
@@ -2296,17 +2303,51 @@
 
 
 <script>
-    // the tagline's last word rotates through what I love (autoplay.js loads after this view, so wait for the page)
+    // the tagline types itself out like code: a line of keyboard mash, then the real words unfold left to right,
+    // then the last word keeps changing, decoding itself each time (autoplay.js loads after this view, so wait for the page)
     document.addEventListener('DOMContentLoaded', () => {
-        const words = [...document.querySelectorAll('.about-word')];
-        if (words.length < 2 || !window.autoplay) return;
-        let now = 0;
-        autoplay(document.querySelector('.about-tagline'), () => {
-            const leaving = words[now];
-            leaving.classList.replace('on', 'off');
-            setTimeout(() => leaving.classList.remove('off'), 600);
-            now = (now + 1) % words.length;
-            words[now].classList.add('on');
-        }, 2400);
+        const line = document.querySelector('.about-type'), word = document.querySelector('.about-word'), caret = document.querySelector('.about-caret');
+        if (!line || !word) return;
+        const mash = 'asdfjkl;qweruiopzxcvnm,./';
+        const junk = n => Array.from({ length: n }, () => mash[Math.floor(Math.random() * mash.length)]).join('');
+        const esc = c => c.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+        // reveal `text` into `el` over `ms`: settled letters on the left, scrambling letters on the right
+        const decode = (el, text, ms, done) => {
+            const t0 = performance.now();
+            const step = now => {
+                const p = Math.min(1, (now - t0) / ms), n = Math.floor(p * text.length);
+                const rest = text.slice(n).replace(/[^ ]/g, () => mash[Math.floor(Math.random() * mash.length)]);
+                el.innerHTML = esc(text.slice(0, n)) + (rest ? '<span class="x">' + esc(rest) + '</span>' : '');
+                if (p < 1) requestAnimationFrame(step); else done && done();
+            };
+            requestAnimationFrame(step);
+        };
+        const words = word.dataset.words.split('|');
+        // no animation for people who asked for less motion, or for a page opened in a background tab (it would sit empty)
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.hidden || !('IntersectionObserver' in window)) { caret.classList.add('done'); return; }
+        const full = line.textContent;
+        let started = false;
+        const start = () => {
+            if (started) return; started = true;
+            // a beat of pure keyboard mash, typed in fast, then the sentence unfolds out of it
+            let typed = 0;
+            const mashLine = junk(full.length);
+            const typeMash = () => {
+                typed = Math.min(full.length, typed + 3);
+                line.innerHTML = '<span class="x">' + esc(mashLine.slice(0, typed)) + '</span>';
+                word.innerHTML = '';
+                if (typed < full.length) setTimeout(typeMash, 18);
+                else setTimeout(() => decode(line, full, 1500, () => decode(word, words[0], 500, () => {
+                    caret.classList.add('done');
+                    let now = 0;
+                    if (window.autoplay) autoplay(document.querySelector('.about-tagline'), () => { now = (now + 1) % words.length; decode(word, words[now], 550); }, 2600);
+                })), 250);
+            };
+            typeMash();
+        };
+        line.innerHTML = '';
+        word.innerHTML = '';
+        const seen = new IntersectionObserver(([e]) => { if (e.isIntersecting) { start(); seen.disconnect(); } }, { threshold: 0.4 });
+        seen.observe(document.querySelector('.about-tagline'));
     });
 </script>

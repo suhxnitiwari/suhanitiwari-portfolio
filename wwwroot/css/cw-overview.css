@@ -104,3 +104,6 @@
     .cx-heading { font-size: 1.3em; }
     .cx-pill { padding: 8px 16px; font-size: 0.85em; }
 }
+
+/* the overview intro sits the same distance under the tabs as the MIS and Marketing intros */
+.cx > .mp-hero { padding-top: 4px; }
