@@ -489,7 +489,7 @@
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 20px;
-        margin: 0 0 30px;
+        margin: 0 0 24px;
     }
 
     .edu-facts div {
@@ -521,13 +521,61 @@
         color: #76344E;
     }
 
+    .edu-main {
+        min-width: 0;
+    }
+
+    .edu-scroller {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .edu-courses {
         display: flex;
-        flex-wrap: wrap;
+        flex: 1;
+        min-width: 0;
         gap: 8px;
         margin: 0;
-        padding: 0;
+        padding: 2px 0;
         list-style: none;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        mask-image: linear-gradient(90deg, #000 88%, transparent);
+    }
+
+    .edu-courses::-webkit-scrollbar {
+        display: none;
+    }
+
+    .edu-courses li {
+        flex: none;
+        scroll-snap-align: start;
+        white-space: nowrap;
+    }
+
+    .edu-arrow {
+        flex: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid #E2C6C0;
+        background: #FFFFFF;
+        font-size: 1.2rem;
+        line-height: 1;
+        color: #76344E;
+        cursor: var(--cursor-hot, pointer);
+        transition: opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .edu-arrow:hover {
+        background: #F6E4E1;
+    }
+
+    .edu-arrow:disabled {
+        opacity: 0.3;
+        cursor: default;
     }
 
     .edu-courses li {
@@ -555,7 +603,7 @@
         }
 
         .edu {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 24px;
             padding: 26px 0;
         }
@@ -2020,7 +2068,7 @@
         ("3.5", "GPA, out of 4.0"),
         ("May 2027", "graduating"),
         ("#4", "MIS program in the US"),
-        ("#6", "undergraduate business school in the US")
+        ("#6", "undergrad business school in the US")
     };
     var eduCourses = new[] { "Full-Stack Web App Development", "Web Application Development", "Database Management", "Problem Solving & Programming", "Strategic IT Management", "Intro to Data Science", "Decision Science", "Statistics for Business" };
 }
@@ -2048,12 +2096,17 @@
                     }
                 </dl>
                 <p class="edu-label">Classes behind what I build</p>
-                <ul class="edu-courses">
-                    @foreach (var course in eduCourses)
-                    {
-                        <li>@course</li>
-                    }
-                </ul>
+                @* one row that scrolls sideways, so the classes never run taller than the school column beside them *@
+                <div class="edu-scroller">
+                    <button type="button" class="edu-arrow edu-prev" aria-label="Previous classes" disabled>‹</button>
+                    <ul class="edu-courses">
+                        @foreach (var course in eduCourses)
+                        {
+                            <li>@course</li>
+                        }
+                    </ul>
+                    <button type="button" class="edu-arrow edu-next" aria-label="More classes">›</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2066,6 +2119,25 @@
 <section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
     @await Html.PartialAsync("BeyondTheClassroom")
 </section>
+
+<script>
+    // Education's classes: ‹ › scroll the row, and each arrow dims when there's nothing more that way
+    (() => {
+        const row = document.querySelector('.edu-courses');
+        if (!row) return;
+        const prev = document.querySelector('.edu-prev'), next = document.querySelector('.edu-next');
+        const update = () => {
+            prev.disabled = row.scrollLeft <= 2;
+            next.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+            row.style.maskImage = next.disabled ? 'none' : '';
+        };
+        prev.addEventListener('click', () => row.scrollBy({ left: -row.clientWidth * 0.8, behavior: 'smooth' }));
+        next.addEventListener('click', () => row.scrollBy({ left: row.clientWidth * 0.8, behavior: 'smooth' }));
+        row.addEventListener('scroll', update, { passive: true });
+        addEventListener('resize', update);
+        update();
+    })();
+</script>
 
 @* MORE PROJECTS: the four up top are what I'd like to be judged by; this is the lab of everything else (Views/Home/_BestWork.cshtml) *@
 <section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
@@ -2420,7 +2492,6 @@
                 </ul>
             </div>
         </div>
-        <button type="button" class="view-more view-less" aria-controls="moreAboutMe">Okay, that’s enough about me</button>
     </div>
 </section>
 </div>
@@ -2604,11 +2675,10 @@
         show(0);
     })();
 
-    // "You’ve come this far…" under If you know me... opens If I were a..., The Duality of a Woman and the quiz; the button at its bottom closes it again
+    // "You’ve come this far…" under If you know me... opens If I were a..., The Duality of a Woman and the quiz (it stays open)
     (() => {
-        const more = document.querySelector('.view-more:not(.view-less)');
-        const less = document.querySelector('.view-less');
-        if (!more || !less) return;
+        const more = document.querySelector('.view-more');
+        if (!more) return;
         const target = document.getElementById(more.getAttribute('aria-controls'));
         more.addEventListener('click', () => {
             target.hidden = false;
@@ -2626,13 +2696,6 @@
         };
         openQuiz();
         window.addEventListener('hashchange', openQuiz);
-        less.addEventListener('click', () => {
-            target.hidden = true;
-            more.hidden = false;
-            more.setAttribute('aria-expanded', false);
-            more.scrollIntoView({ block: 'center' }); // back to where you were, not left somewhere further down
-            more.focus({ preventScroll: true });
-        });
     })();
 
     // arrows scroll each row by one card; they fade out at either end
