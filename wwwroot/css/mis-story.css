@@ -662,6 +662,12 @@
     min-height: 190px;
 }
 
+/* every level sits in the same grid cell, so the box is always as tall as the longest level
+   and never changes size; the levels not showing are just invisible */
+.zoom-stops { display: grid; }
+.zoom-stops > .zoom-stop { grid-area: 1 / 1; }
+.zoom-stops > .zoom-stop[hidden] { display: block !important; visibility: hidden; }   /* beats Bootstrap's [hidden] !important */
+
 .zoom-level,
 .zoom-trained {
     margin: 0;

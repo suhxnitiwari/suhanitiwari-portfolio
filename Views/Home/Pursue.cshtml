@@ -589,7 +589,12 @@
     .why-tab:hover { border-color: #76344E; }
     .why-tab[aria-selected="true"] { background: #76344E; border-color: #76344E; color: #FFF8F6; }
     .why-tab:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
-    .why-panel[hidden] { display: none; }
+    /* both panels sit in the same grid cell, so the section is always as tall as the taller one
+       and switching tabs never changes the height; the closed one is just invisible */
+    .why-stack { display: grid; }
+    .why-stack > .why-panel { grid-area: 1 / 1; width: 100%; }
+    .why-stack > .why-panel[hidden] { display: block !important; visibility: hidden; }   /* beats Bootstrap's [hidden] !important */
+    .why-stack > .why-wrap[hidden] { display: grid !important; }
     @@media (max-width: 600px) {
         .why-tabs { gap: 8px; }
         .why-tab { padding: 9px 14px; font-size: 0.72em; letter-spacing: 1px; }
@@ -893,6 +898,7 @@ if (!embed)
             <button type="button" class="why-tab" role="tab" id="why-tab-mccombs" aria-controls="why-panel-mccombs" aria-selected="false" tabindex="-1">Why McCombs</button>
         </div>
     </div>
+    <div class="why-stack">
     <div class="career-wrap why-wrap why-panel" id="why-panel-mis" role="tabpanel" aria-labelledby="why-tab-mis">
         <div>
             <p class="why-question">So why not English, Design, Studio Art, or Music Performance?</p>
@@ -969,6 +975,7 @@ if (!embed)
                 <p class="mccombs-source">Tap a ranking to see what it means for me. Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
             </div>
         </div>
+    </div>
     </div>
 </section>
 

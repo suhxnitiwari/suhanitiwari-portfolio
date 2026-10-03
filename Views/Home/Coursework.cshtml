@@ -722,6 +722,7 @@
                                     <button type="button" class="zoom-tick" data-zoom="@z" tabindex="-1" aria-hidden="true">@zoomStops[z].Short</button>
                                 }
                             </div>
+                            <div class="zoom-stops">
                             @for (var z = 0; z < zoomStops.Length; z++)
                             {
                                 <div class="zoom-stop" data-stop="@z" @(z == 0 ? "" : "hidden") aria-live="polite">
@@ -741,6 +742,7 @@
                                     </ul>
                                 </div>
                             }
+                            </div>
                         </div>
                     </div>
                 </section>
