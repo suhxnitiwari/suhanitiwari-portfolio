@@ -2132,18 +2132,6 @@
     </div>
 </section>
 
-@* MORE PROJECTS: the four up top are what I'd like to be judged by; this is the lab of everything else (Views/Home/_BestWork.cshtml) *@
-<section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
-    <div class="selected-wrap">
-        <div class="selected-head">
-            <div>
-                <h2 id="more-work-heading">Projects</h2>
-            </div>
-        </div>
-        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
-    </div>
-</section>
-
 @* EXPERIENCE: where I've worked, right after what I've built (Views/Home/_Experience.cshtml, shared with Work) *@
 <section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
     <div class="about-container">
@@ -2231,6 +2219,18 @@
         update();
     })();
 </script>
+
+@* MORE PROJECTS: proof again, after the words of experience and education; everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <div>
+                <h2 id="more-work-heading">Projects</h2>
+            </div>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
+    </div>
+</section>
 
 @* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
 <partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />

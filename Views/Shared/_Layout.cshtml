@@ -685,7 +685,7 @@
         const spyLinks = [...document.querySelectorAll('.nav-link[data-spy]')];
         // in page order, top to bottom
         const spyParts = [
-            ['hello', 'about'], ['work', 'selected-work'], ['work', 'projects'], ['work', 'experience'], ['study', 'education'],
+            ['hello', 'about'], ['work', 'selected-work'], ['work', 'experience'], ['study', 'education'], ['work', 'projects'],
             ['study', 'why-mis'], ['study', 'coursework'], ['work', 'awards'], ['work', 'beyond'],
             ['playground', 'playground'], ['hello', 'know-me']
         ].map(([spy, id]) => [spy, document.getElementById(id)]).filter(([, el]) => el);
