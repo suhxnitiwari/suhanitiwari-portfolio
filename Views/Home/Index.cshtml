@@ -2050,7 +2050,7 @@
             <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
-    <a class="cover-scroll" href="#selected-work">Scroll ↓</a>
+    <a class="cover-scroll" href="#about">Scroll ↓</a>
 </section>
 
 <script>
@@ -2076,18 +2076,6 @@
         update();
     })();
 </script>
-
-@* SELECTED WORK: the proof comes first, my four strongest projects right under the cover (Views/Home/_BestWork.cshtml) *@
-<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
-    <div class="selected-wrap">
-        <div class="selected-head">
-            <h2 id="selected-work-heading">Selected work</h2>
-            <a class="selected-all" href="#projects">More projects <span aria-hidden="true">↓</span></a>
-        </div>
-        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
-
-    </div>
-</section>
 
 @* ABOUT: my own words *@
 @{
@@ -2135,7 +2123,31 @@
     </div>
 </section>
 
-@* EXPERIENCE: right under who I am, the roles themselves (Views/Home/_Experience.cshtml, shared with Work) *@
+@* SELECTED WORK: my four strongest projects, right after who I am (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <h2 id="selected-work-heading">Selected work</h2>
+            <a class="selected-all" href="#projects">More projects <span aria-hidden="true">↓</span></a>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
+
+    </div>
+</section>
+
+@* MORE PROJECTS: the four up top are what I'd like to be judged by; this is the lab of everything else (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <div>
+                <h2 id="more-work-heading">Projects</h2>
+            </div>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
+    </div>
+</section>
+
+@* EXPERIENCE: where I've worked, right after what I've built (Views/Home/_Experience.cshtml, shared with Work) *@
 <section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
     <div class="about-container">
         <div class="home-part-head">
@@ -2204,11 +2216,6 @@
     </div>
 </section>
 
-@* HEART: what I do for other people (the same view its old page used) *@
-<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
-    @await Html.PartialAsync("BeyondTheClassroom")
-</section>
-
 <script>
     // Education's classes: ‹ › scroll the row, and each arrow dims when there's nothing more that way
     (() => {
@@ -2228,24 +2235,17 @@
     })();
 </script>
 
-@* MORE PROJECTS: the four up top are what I'd like to be judged by; this is the lab of everything else (Views/Home/_BestWork.cshtml) *@
-<section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
-    <div class="selected-wrap">
-        <div class="selected-head">
-            <div>
-                <h2 id="more-work-heading">Projects</h2>
-            </div>
-        </div>
-        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
-    </div>
-</section>
-
 @* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
 <partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />
 
-@* AWARDS: the scholarships and honors, right after the classes (Views/Home/ScholarshipsAndAwards.cshtml) *@
+@* SCHOLARSHIPS: the honors, right after the classes (Views/Home/ScholarshipsAndAwards.cshtml) *@
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
     @await Html.PartialAsync("ScholarshipsAndAwards")
+</section>
+
+@* BEYOND THE CLASSROOM: what I do for other people, the bridge from school to the personal (the same view its old page used) *@
+<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
+    @await Html.PartialAsync("BeyondTheClassroom")
 </section>
 
 @* ABOUT, CONTINUED is off the page: it repeated Beyond the Classroom (Girls Who Code, the book, the same photos).
