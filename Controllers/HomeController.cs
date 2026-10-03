@@ -19,9 +19,24 @@ public class HomeController : Controller
         $"<script>location.replace('/' + (location.hash.replace('#mk-title-', '#mk-proj-') || '#{section}'))</script>" +
         $"<a href=\"/#{section}\">Continue to suhanitiwari.com</a>", "text/html");
 
+    // The homepage introduces; the Study page holds the depth: why MIS and McCombs,
+    // coursework (MIS and Marketing) and scholarships. Old addresses land on their part of it.
+    private ContentResult ToStudy(string section) => Content(
+        $"<!doctype html><meta charset=\"utf-8\"><title>Suhani Tiwari</title>" +
+        $"<script>location.replace('/study' + (location.hash || '#{section}'))</script>" +
+        $"<a href=\"/study#{section}\">Continue to suhanitiwari.com/study</a>", "text/html");
+
+    [Route("study")]
+    [Route("home/study")]
+    public IActionResult Study()
+    {
+        ViewData["Part"] = "study";
+        return View("Pursue");
+    }
+
     public IActionResult Education() => ToHome("education");
 
-    public IActionResult Coursework() => ToHome("coursework");
+    public IActionResult Coursework() => ToStudy("coursework");
 
     public IActionResult BeyondTheClassroom() => ToHome("beyond");
 
@@ -30,8 +45,6 @@ public class HomeController : Controller
 
     // Work, Study and the old Pursue page are parts of the home page now
     public IActionResult Work() => ToHome("experience");
-
-    public IActionResult Study() => ToHome("education");
 
     public IActionResult Pursue() => ToHome("experience");
 
@@ -43,7 +56,7 @@ public class HomeController : Controller
     [Route("career")]
     public IActionResult Career() => Redirect("/#experience");
 
-    public IActionResult ScholarshipsAndAwards() => ToHome("awards");
+    public IActionResult ScholarshipsAndAwards() => ToStudy("awards");
 
     // Off the Clock (my favorites) moved to its own site; old links land there
     public IActionResult Favorites() => Redirect("https://suhxnitiwari.github.io/off-the-clock/");
@@ -55,7 +68,7 @@ public class HomeController : Controller
 
     // suhanitiwari.com/mis: how I define the MIS major, opened straight to the MIS Major tab of Coursework
     [Route("mis")]
-    public IActionResult Mis() => Redirect("/#mis");
+    public IActionResult Mis() => Redirect("/study#mis");
 
     // suhanitiwari.com/projects: straight to the things I've built
     [Route("projects")]

@@ -1036,9 +1036,8 @@ if (!embed)
                 <p>McCombs gave me the business. Austin gave me the playground.</p>
                 @* typed live: the serious answer types out, deletes itself, and the joke about the rankings types in and stays *@
                 <p class="mccombs-type">
-                    <span class="visually-hidden">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing. But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look. hey, did you look yet??</span>
-                    <span class="mccombs-type-line is-on" aria-hidden="true">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing.</span>
-                    <span class="mccombs-type-line" aria-hidden="true">But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look.</span>
+                    <span class="mccombs-type-line is-on">A great business school isn’t a number on a ranking list. It’s what happens when you’re surrounded by people who keep raising your definition of good.</span>
+                    <span class="mccombs-type-line">That said… someone went through all the trouble of ranking us. It would honestly be rude not to look.</span>
                 </p>
                 <script>
                     (() => {
@@ -1065,8 +1064,6 @@ if (!embed)
                         const seen = new IntersectionObserver(async ([e]) => {
                             if (!e.isIntersecting) return;
                             seen.disconnect();
-                            // on phones the rankings sit above the story, not beside it
-                            if (matchMedia('(max-width: 800px)').matches) texts[1] = texts[1].replace('leftttt', 'uppppp');
                             await type(serious, texts[0]);
                             await wait(2600);
                             caret.classList.add('typing');
@@ -1103,6 +1100,13 @@ if (showCoursework)
 {
 <section class="pursue-part" id="coursework" aria-label="Coursework">
     @await Html.PartialAsync("Coursework")
+</section>
+}
+@* the Study page ends on the scholarships the coursework earned *@
+if (!embed && !showWork)
+{
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
 }
 
