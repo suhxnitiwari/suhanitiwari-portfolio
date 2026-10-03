@@ -65,7 +65,11 @@ const shots = {
     },
     owala: {
         url: 'http://localhost:5142/home/study#mk-title-owala', w: 1280, h: 900, crop: '#mk-proj-owala .mk-stage',
-        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-owala .mk-step[data-go="1"]').click()`); } await sleep(1500); }
+        run: async ev => { await sleep(1500); for (let i = 0; i < 9; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-owala .mk-step[data-go="1"]').click()`); } await sleep(1500); }
+    },
+    'owala-cover': {
+        // the Owala deck's cover: an animation page stepped frame by frame through window.render(t), so it plays smoothly
+        url: new URL('./owala-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
     }
 };
 
@@ -109,6 +113,22 @@ try {
     }
 
     if (shot.prep) await shot.prep(ev);
+
+    // pages with window.render(t) are stepped one frame at a time instead of captured live
+    if (shot.fps) {
+        await ev('window.ready');
+        const total = Math.round((await ev('window.DUR')) * shot.fps), times = [];
+        for (let i = 0; i < total; i++) {
+            await ev(`render(${i / shot.fps})`);
+            const res = await send('Page.captureScreenshot', { format: 'jpeg', quality: 90 });
+            writeFileSync(`${out}/${String(i + 1).padStart(5, '0')}.jpg`, Buffer.from(res.result.data, 'base64'));
+            times.push(i * 1000 / shot.fps);
+        }
+        writeFileSync(`${out}/times.json`, JSON.stringify(times));
+        console.log(`${name}: ${total} frames at ${shot.fps} fps`);
+        chrome.kill();
+        process.exit(0);
+    }
 
     // capture frames as fast as Chrome gives them while the script plays
     const times = [];
