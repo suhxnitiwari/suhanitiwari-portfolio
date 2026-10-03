@@ -1,6 +1,34 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Threading.RateLimiting;
+
+// `dotnet run -- hash-world-password` turns a password into the hash My World checks against.
+// The password is typed without echoing and never saved; only the printed hash goes into the
+// World__PasswordHash setting on Render.
+if (args.Length > 0 && args[0] == "hash-world-password")
+{
+    Console.Write("Password for My World: ");
+    string password;
+    if (Console.IsInputRedirected)
+    {
+        password = Console.ReadLine() ?? "";
+    }
+    else
+    {
+        var typed = new System.Text.StringBuilder();
+        for (var key = Console.ReadKey(intercept: true); key.Key != ConsoleKey.Enter; key = Console.ReadKey(intercept: true))
+        {
+            if (key.Key == ConsoleKey.Backspace) { if (typed.Length > 0) typed.Length--; }
+            else typed.Append(key.KeyChar);
+        }
+        password = typed.ToString();
+    }
+    Console.WriteLine();
+    Console.WriteLine(new PasswordHasher<object>().HashPassword(new object(), password));
+    return;
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +66,29 @@ builder.Services.AddRateLimiter(options =>
                 context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
                 _ => new FixedWindowRateLimiterOptions { PermitLimit = 60, Window = TimeSpan.FromMinutes(1) })
             : RateLimitPartition.GetNoLimiter("pages"));
+});
+
+// My World (/world) is private: one password, checked against a PBKDF2 hash (never the password itself),
+// then an encrypted cookie that only works under /world, only over HTTPS, never from another site,
+// and runs out after two hours of not using it
+builder.Services.AddAuthentication("World").AddCookie("World", options =>
+{
+    options.LoginPath = "/world/login";
+    options.Cookie.Name = "world";
+    options.Cookie.Path = "/world";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment() ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+    options.SlidingExpiration = true;
+});
+
+builder.Services.Configure<Microsoft.AspNetCore.RateLimiting.RateLimiterOptions>(options =>
+{
+    // five password tries per visitor every 15 minutes, so nobody can guess their way in
+    options.AddPolicy("world-login", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 5, Window = TimeSpan.FromMinutes(15) }));
 });
 
 var app = builder.Build();
@@ -82,6 +133,7 @@ app.UseRouting();
 app.UseCors();
 app.UseRateLimiter();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

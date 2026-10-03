@@ -13,4 +13,14 @@
     <None Remove="spotify-token.json" />
   </ItemGroup>
 
+  <!-- My World's pages come from the private suhani-world repo (a submodule) and live outside wwwroot,
+       so they're only ever served through the login in WorldController -->
+  <ItemGroup>
+    <Compile Remove="PrivateContent\**" />
+    <Content Remove="PrivateContent\**" />
+    <None Remove="PrivateContent\**" />
+    <EmbeddedResource Remove="PrivateContent\**" />
+    <Content Include="PrivateContent\world\published\**" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

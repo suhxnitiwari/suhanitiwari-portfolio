@@ -1,0 +1,3 @@
+[submodule "PrivateContent/world"]
+	path = PrivateContent/world
+	url = https://github.com/suhxnitiwari/suhani-world.git
