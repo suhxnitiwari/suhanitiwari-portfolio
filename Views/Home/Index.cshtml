@@ -596,66 +596,51 @@
         min-width: 0;
     }
 
-    .edu-scroller {
-        display: flex;
+    .edu-rows {
+        display: grid;
+        gap: 10px;
+    }
+
+    /* each row: a small label, then pills that grow to fill the whole width */
+    .edu-row {
+        display: grid;
+        grid-template-columns: 9.5em minmax(0, 1fr);
         align-items: center;
-        gap: 8px;
+        gap: 14px;
+    }
+
+    .edu-row-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: #7A665F;
     }
 
     .edu-courses {
         display: flex;
-        flex: 1;
-        min-width: 0;
+        flex-wrap: wrap;
         gap: 8px;
         margin: 0;
-        padding: 2px 0;
+        padding: 0;
         list-style: none;
-        overflow-x: auto;
-        scroll-snap-type: x proximity;
-        scrollbar-width: none;
-        mask-image: linear-gradient(90deg, #000 88%, transparent);
-    }
-
-    .edu-courses::-webkit-scrollbar {
-        display: none;
     }
 
     .edu-courses li {
-        flex: none;
-        scroll-snap-align: start;
-        white-space: nowrap;
-    }
-
-    .edu-arrow {
-        flex: none;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        border: 1px solid #E2C6C0;
-        background: #FFFFFF;
-        font-size: 1.2rem;
-        line-height: 1;
-        color: #76344E;
-        cursor: var(--cursor-hot, pointer);
-        transition: opacity 0.2s ease, background 0.2s ease;
-    }
-
-    .edu-arrow:hover {
-        background: #F6E4E1;
-    }
-
-    .edu-arrow:disabled {
-        opacity: 0.3;
-        cursor: default;
-    }
-
-    .edu-courses li {
-        padding: 6px 14px;
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 7px 14px;
         border: 1px solid #E2C6C0;
         border-radius: var(--r-pill);
         background: #FFFFFF;
         font-size: 0.88em;
         color: #3A1F26;
+    }
+
+    /* the second row (business and psychology) in a soft blush, so the two halves read as a pair */
+    .edu-row + .edu-row .edu-courses li {
+        background: #F6E4E1;
+        border-color: #E8C9C3;
     }
 
     /* the three stories, now further down the page, get their own breathing room */
@@ -685,6 +670,11 @@
 
         .edu-facts {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .edu-row {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 6px;
         }
     }
 
@@ -2222,7 +2212,12 @@
         ("#4", "MIS program in the US"),
         ("#6", "undergrad business school in the US")
     };
-    var eduCourses = new[] { "Full-Stack Web App Development", "Web Application Development", "Database Management", "Problem Solving & Programming", "Strategic IT Management", "Intro to Data Science", "Decision Science", "Statistics for Business" };
+    // two rows that show how the halves work together: the tech I build with, then the business and psychology of who it's for
+    var eduRows = new[]
+    {
+        ("Build it", new[] { "Full-Stack Web App Development", "Database Management", "Problem Solving & Programming", "Intro to Data Science" }),
+        ("Know who it’s for", new[] { "Consumer Behavior", "Social Psychology", "Science of Influence", "Cognitive Psychology" })
+    };
 }
 <section class="home-part home-education" id="education" aria-labelledby="home-education-heading">
     <div class="about-container">
@@ -2248,40 +2243,25 @@
                     }
                 </dl>
                 <p class="edu-label">Classes behind what I build</p>
-                @* one row that scrolls sideways, so the classes never run taller than the school column beside them *@
-                <div class="edu-scroller">
-                    <button type="button" class="edu-arrow edu-prev" aria-label="Previous classes" disabled>‹</button>
-                    <ul class="edu-courses">
-                        @foreach (var course in eduCourses)
-                        {
-                            <li>@course</li>
-                        }
-                    </ul>
-                    <button type="button" class="edu-arrow edu-next" aria-label="More classes">›</button>
+                @* two full rows: the tech classes, then the business and psychology ones; each row's pills stretch to fill the box *@
+                <div class="edu-rows">
+                    @foreach (var (label, courses) in eduRows)
+                    {
+                        <div class="edu-row">
+                            <span class="edu-row-label">@label</span>
+                            <ul class="edu-courses">
+                                @foreach (var course in courses)
+                                {
+                                    <li>@course</li>
+                                }
+                            </ul>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<script>
-    // Education's classes: ‹ › scroll the row, and each arrow dims when there's nothing more that way
-    (() => {
-        const row = document.querySelector('.edu-courses');
-        if (!row) return;
-        const prev = document.querySelector('.edu-prev'), next = document.querySelector('.edu-next');
-        const update = () => {
-            prev.disabled = row.scrollLeft <= 2;
-            next.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
-            row.style.maskImage = next.disabled ? 'none' : '';
-        };
-        prev.addEventListener('click', () => row.scrollBy({ left: -row.clientWidth * 0.8, behavior: 'smooth' }));
-        next.addEventListener('click', () => row.scrollBy({ left: row.clientWidth * 0.8, behavior: 'smooth' }));
-        row.addEventListener('scroll', update, { passive: true });
-        addEventListener('resize', update);
-        update();
-    })();
-</script>
 
 @* CURIOSITY: why I study what I do (Views/Home/Pursue.cshtml, Study half, embedded; Coursework comes after the projects) *@
 <partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true }, { "NoCoursework", true } }' />
