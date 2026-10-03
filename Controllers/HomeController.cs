@@ -34,6 +34,10 @@ public class HomeController : Controller
         return View("Pursue");
     }
 
+    // Marketing: my Marketing minor's projects on their own page
+    [Route("marketing")]
+    public IActionResult Marketing() => View();
+
     public IActionResult Education() => ToHome("education");
 
     public IActionResult Coursework() => ToStudy("coursework");

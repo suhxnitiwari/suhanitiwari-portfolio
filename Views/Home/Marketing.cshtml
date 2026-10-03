@@ -1,0 +1,922 @@
+@* Marketing: my Marketing minor's work on its own page. It's the Marketing Minor tab of Coursework
+   (Views/Home/_MarketingWork.cshtml, with the board in _MarketingBoard.cshtml), shown by itself, so the decks,
+   the board and links like /marketing#mk-proj-netflix all work the same as they do on the Study page. *@
+@{
+    ViewData["Title"] = "Marketing";
+}
+@* Bodoni Moda (the font for my name), same local files as the home page *@
+<style>
+    @@font-face {
+      font-family: 'Bodoni Moda';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(/fonts/bodoni-moda-latin-normal.woff2) format('woff2');
+    }
+
+    /* ===== CAREER INTRO: who I am, the facts a recruiter scans for, then where to jump ===== */
+    .career-intro {
+        padding: 28px 40px 36px;
+        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .career-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .career-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        gap: 40px;
+        align-items: stretch;
+    }
+
+    /* a portrait in an arch, cropped to my face and shoulders */
+    /* the photo fills the whole right side, as tall as the name and opener beside it */
+    .career-photo {
+        width: 100%;
+        height: 100%;
+        min-height: 240px;
+        object-fit: cover;
+        object-position: 52% 30%;
+        border-radius: 140px 140px 22px 22px;
+        box-shadow: 0 16px 34px -12px rgba(74, 36, 42, 0.4);
+    }
+
+    .career-kicker {
+        margin: 0;
+        font-size: 0.8em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .career-name {
+        margin: 6px 0 0;
+        font-family: 'Bodoni Moda', Didot, 'Bodoni 72', Georgia, serif;
+        font-size: clamp(2.6em, 5.4vw, 4.3em);
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: #1E100A;
+    }
+
+    /* two lines, one idea each */
+    .career-lede span {
+        display: block;
+    }
+
+    .career-lede {
+        max-width: none;
+        margin: 14px 0 0;
+        font-family: Georgia, serif;
+        font-size: clamp(1.05em, 1.6vw, 1.22em);
+        font-style: italic;
+        line-height: 1.45;
+        color: #1E100A;
+    }
+
+    /* the scan-in-five-seconds facts, like the header of a case study */
+    .career-facts {
+        display: grid;
+        grid-template-columns: 1.5fr 1.2fr 0.6fr 1.1fr 0.9fr;
+        gap: 24px;
+        margin: 22px 0 0;
+        padding: 16px 0;
+        border-top: 1px solid #EBD5D0;
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .career-facts dt {
+        font-size: 0.72em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .career-facts dd {
+        margin: 6px 0 0;
+        line-height: 1.45;
+        color: #1E100A;
+    }
+
+    .career-facts dd span {
+        display: block;
+        font-size: 0.88em;
+        color: #3F4A34;
+    }
+
+    .career-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 18px 0 0;
+    }
+
+    .career-btn {
+        padding: 11px 24px;
+        border-radius: var(--r-pill);
+        border: 1.5px solid #733642;
+        font-weight: 600;
+        font-size: 0.95em;
+        color: #733642;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    button.career-btn {
+        background: none;
+        font-family: inherit;
+        line-height: normal;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .career-btn.primary {
+        background: #733642;
+        color: #FAF1EF;
+    }
+
+    .career-btn:hover {
+        transform: translateY(-2px);
+        background: #7E3F4A;
+        border-color: #7E3F4A;
+        color: #FAF1EF;
+    }
+
+    /* McCOMBS AT A GLANCE: the rankings on the left, what they mean to me on the right */
+    .mccombs-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 48px;
+        align-items: start;   /* the tiles keep their own size instead of stretching to the story */
+    }
+
+    /* the rankings ride along while you read the story beside them */
+    @@media (min-width: 801px) {
+        .mccombs-stats {
+            position: sticky;
+            top: 90px;
+        }
+    }
+
+    /* the text column: paragraphs at the top, the rankings source pinned to the bottom so it ends level with Top 10 */
+    .mccombs-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* pull the first line up by its half-leading so the text starts level with the tiles' top edge */
+    .mccombs-text p:first-child {
+        margin-top: -0.4em;
+    }
+
+    .mccombs-source a {
+        color: inherit;
+        text-underline-offset: 3px;
+    }
+
+    .mccombs-stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* each ranking is a card that flips over to show how it connects to me */
+    .mccombs-stats li {
+        perspective: 1000px;
+    }
+
+    .mccombs-flip {
+        position: relative;
+        display: grid;
+        width: 100%;
+        height: 100%;
+        min-height: 128px;
+        padding: 0;
+        border: none;
+        background: none;
+        font: inherit;
+        text-align: left;
+        cursor: var(--cursor-hot, pointer);
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+    }
+
+    .mccombs-flip[aria-pressed="true"] {
+        transform: rotateY(180deg);
+    }
+
+    .mccombs-face {
+        grid-area: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: var(--pad-card-sm);
+        border-radius: var(--r-card);
+        background: #FFF8F6;
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .mccombs-face.back {
+        justify-content: center;
+        background: #733642;
+        border-color: #733642;
+        transform: rotateY(180deg);
+    }
+
+    .mccombs-face.back em {
+        font-size: 0.68rem;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #F5E0DB;
+    }
+
+    .mccombs-face.back span {
+        font-size: 0.92em;
+        line-height: 1.45;
+        color: #FFF8F6;
+    }
+
+    .mccombs-flip:hover .mccombs-face.front {
+        border-color: #C9969E;
+    }
+
+    .mccombs-flip:focus-visible {
+        outline: 2px solid #733642;
+        outline-offset: 4px;
+        border-radius: var(--r-card);
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .mccombs-flip {
+            transition: none;
+        }
+    }
+
+    /* the fifth tile spans the row so the grid ends flush */
+    .mccombs-stats li:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .mccombs-face.front b {
+        font-family: Georgia, serif;
+        font-size: 2.2em;
+        line-height: 1;
+        color: #733642;
+    }
+
+    .mccombs-face.front span {
+        font-size: 0.95em;
+        line-height: 1.4;
+        color: #2A1810;
+    }
+
+    .mccombs-text p {
+        margin: 0 0 16px;
+        font-size: 1.05em;
+        line-height: 1.75;
+        color: #2A1810;
+    }
+
+    .mccombs-text em {
+        font-family: Georgia, serif;
+        color: #733642;
+    }
+
+    /* the opening line matches Why MIS: big mulberry serif, not the paragraph size */
+    /* the typed paragraph: both versions share one spot, so the space never changes size */
+    .mccombs-type {
+        display: grid;
+    }
+
+    .mccombs-type-line {
+        grid-area: 1 / 1;
+        visibility: hidden;
+    }
+
+    .mccombs-type-line.is-on {
+        visibility: visible;
+    }
+
+    .mccombs-caret {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        margin-left: 2px;
+        vertical-align: -0.2em;
+        background: #733642;
+        animation: mccombsBlink 1s steps(1) infinite;
+    }
+
+    .mccombs-caret.typing {
+        animation: none;
+    }
+
+    @@keyframes mccombsBlink {
+        50% { opacity: 0; }
+    }
+
+    .mccombs-text .why-question {
+        font-size: clamp(1.25rem, 2vw, 1.6rem);
+    }
+
+    /* "go build the real thing" is the link to my projects: bold, with a soft underline */
+    .mccombs-build,
+    .mccombs-build:visited {
+        color: #733642;
+        text-decoration: underline;
+        text-decoration-color: #C9969E;
+        text-underline-offset: 4px;
+    }
+
+    .mccombs-build em {
+        font-weight: 700;
+    }
+
+    .mccombs-build:hover {
+        text-decoration-color: #733642;
+    }
+
+    .mccombs-source {
+        margin: auto 0 0 !important;
+        padding-top: 14px;
+        border-top: 1px solid #EBD5D0;
+        line-height: 1.4 !important;
+        font-size: 0.8em !important;
+        letter-spacing: 0.06em;
+        color: #7A665F !important;
+    }
+
+    @@media (max-width: 900px) {
+        .mccombs-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+    }
+
+    /* ===== THE COVER: one headline about the kind of work I do, a line under it, and my photo ===== */
+    .career-seeking.cv {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: none;
+        box-shadow: none;
+    }
+
+    .cv-cover {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 56px;
+        align-items: center;
+        padding: 36px 0 28px;
+    }
+
+    .cv-headline {
+        margin: 18px 0 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+        font-weight: 500;
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        color: #1E100A;
+    }
+
+    .cv-headline em {
+        font-style: italic;
+        color: #7E3F4A;
+    }
+
+    /* the changing word: each one rises in and the last rises out, in the same spot */
+    .cv-turn { display: inline-grid; overflow: hidden; vertical-align: bottom; padding-bottom: 0.12em; }
+    .cv-turn em { grid-area: 1 / 1; opacity: 0; transform: translateY(70%); transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    .cv-turn em.on { opacity: 1; transform: none; }
+    .cv-turn em.off { opacity: 0; transform: translateY(-70%); }
+    .cv-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    @@media (prefers-reduced-motion: reduce) { .cv-turn em { transition: none; } }
+
+    .cv-lede {
+        margin: 22px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: #4A3530;
+    }
+
+    .cv-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+    }
+
+    .cv-btn {
+        padding: 11px 22px;
+        border-radius: var(--r-pill);
+        border: 1.5px solid #7E3F4A;
+        background: transparent;
+        font: inherit;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #7E3F4A;
+        text-decoration: none;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .cv-btn:hover,
+    .cv-btn.solid {
+        background: #7E3F4A;
+        color: #FFF8F6;
+    }
+
+    .cv-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    /* my photo in an arch, drifting slowly closer */
+    .cv-photo {
+        margin: 0;
+        overflow: hidden;
+        aspect-ratio: 4 / 5;
+        border-radius: 999px 999px var(--r-small) var(--r-small);
+        box-shadow: 0 24px 50px -20px rgba(74, 36, 42, 0.45);
+    }
+
+    .cv-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 30%;
+        animation: cvDrift 18s ease-in-out infinite alternate;
+    }
+
+    @@keyframes cvDrift {
+        from { transform: scale(1.02); }
+        to { transform: scale(1.12) translateY(-2%); }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .cv-photo img { transition: none; animation: none; }
+    }
+
+    @@media (max-width: 800px) {
+        .cv-cover { grid-template-columns: 1fr; gap: 28px; padding-top: 8px; }
+        .cv-photo { order: -1; width: 62%; margin: 0 auto; }
+    }
+
+    /* WHERE I'M HEADED: one clear card right under the facts */
+    .career-seeking {
+        margin: 18px 0 0;
+        padding: var(--pad-card-sm);
+        border-radius: var(--r-card);
+        background: #FFF8F6;
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
+    }
+
+    .career-seeking-label {
+        margin: 0;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .career-seeking-title {
+        margin: 8px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #1E100A;
+    }
+
+    .career-seeking-text {
+        margin: 8px 0 0;
+        line-height: 1.6;
+        color: #1E100A;
+    }
+
+    .career-seeking-fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .career-seeking-fields li {
+        padding: 0;
+        background: none;
+    }
+
+    /* pop-up card (SuhaniCoded) over the page instead of pushing it down */
+    .role-pop {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        height: fit-content;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+        width: min(620px, calc(100vw - 32px));
+        padding: 30px 32px 28px;
+        border: none;
+        border-top: 4px solid #733642;
+        border-radius: var(--r-card, 20px);
+        background: #FFF8F6;
+        box-shadow: 0 24px 60px rgba(42, 24, 16, 0.25);
+    }
+
+    .role-pop[open] {
+        animation: roleIn 0.25s ease both;
+    }
+
+    .role-pop::backdrop {
+        background: rgba(42, 24, 16, 0.35);
+        backdrop-filter: blur(3px);
+    }
+
+    @@keyframes roleIn {
+        from { opacity: 0; transform: translateY(10px) scale(0.98); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .role-pop-close {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 50%;
+        background: #F5E0DB;
+        font-size: 1.3rem;
+        line-height: 1;
+        color: #733642;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .role-pop-close:focus-visible {
+        outline: 2px solid #733642;
+        outline-offset: 2px;
+    }
+
+    .role-pop-close:hover {
+        background: #EFD3CD;
+    }
+
+    .role-card-label {
+        margin: 0;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .career-seeking-fields li.old-tag {
+        padding: 7px 15px;
+        border-radius: var(--r-pill, 999px);
+        background: #733642;
+        font-size: 0.85em;
+        font-weight: 600;
+        color: #FAF1EF;
+    }
+
+    /* THE WHY: Why MIS and Why McCombs share one section, switched by pill tabs like Coursework's */
+    .why-anchor { display: block; scroll-margin-top: 70px; }
+    .why-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 36px; }
+    .why-tab {
+        padding: 11px 26px;
+        border-radius: var(--r-pill, 999px);
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        color: #1E100A;
+        font: inherit;
+        font-size: 0.85em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .why-tab:hover { border-color: #76344E; }
+    .why-tab[aria-selected="true"] { background: #76344E; border-color: #76344E; color: #FFF8F6; }
+    .why-tab:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
+    /* both panels sit in the same grid cell, so the section is always as tall as the taller one
+       and switching tabs never changes the height; the closed one is just invisible */
+    /* each tab is as tall as its own story; sharing one height stretched Why MIS's quote card to fit Why McCombs */
+    .why-stack > .why-panel { width: 100%; }
+    @@media (max-width: 600px) {
+        .why-tabs { gap: 8px; }
+        .why-tab { padding: 9px 14px; font-size: 0.72em; letter-spacing: 1px; }
+    }
+
+    /* WHY MIS: the story on the left, one line to remember on the right */
+    .career-why {
+        padding: 64px 40px;
+        background: #FAF1EF;
+    }
+
+    .why-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 48px;
+        align-items: stretch;   /* the quote card runs corner to corner: top of the kicker to the last line */
+    }
+
+    /* the opening line sizes itself to the column, so each sentence keeps to exactly one line */
+    .why-wrap > div:first-child {
+        container-type: inline-size;
+    }
+
+    .why-wrap .why-question {
+        font-size: clamp(1.05rem, 3.9cqi, 1.45rem);
+        white-space: nowrap;
+    }
+
+    @@media (max-width: 800px) {
+        .why-wrap .why-question {
+            white-space: normal;
+        }
+    }
+
+    .why-wrap .career-section-title {
+        margin: 0 0 10px;
+    }
+
+    /* the opening line, in mulberry serif: one sentence per line, big enough to lead the story */
+    .why-question {
+        margin: 0 0 22px !important;
+        font-family: Georgia, serif;
+        font-size: clamp(1.25rem, 2vw, 1.6rem);
+        font-style: italic;
+        font-weight: 700;
+        line-height: 1.35 !important;
+        text-wrap: balance;
+        color: #733642 !important;
+    }
+
+    .why-wrap p:not(.career-kicker) {
+        margin: 0 0 14px;
+        line-height: 1.7;
+        color: #1E100A;
+    }
+
+    /* the quotes I live by, one at a time, in their own card */
+    .why-wrap p:not(.career-kicker):last-child {
+        margin-bottom: 0;
+    }
+
+    .why-quotes {
+        display: flex;
+        flex-direction: column;
+        padding: var(--pad-card);
+        border-radius: var(--r-card);
+        background: #FFF8F6;
+        border: var(--card-border);
+        border-top: 4px solid #733642;
+        box-shadow: var(--shadow-card);
+    }
+
+    .why-quote-slide {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+        min-height: 190px;
+        animation: whyIn 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    /* the current dot fills up over the 5 seconds before the next quote */
+    .why-dots button[aria-current="true"] {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .why-dots button[aria-current="true"]::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 248, 246, 0.55);
+        transform-origin: left;
+        animation: whyTimer 5s linear both;
+    }
+
+    @@keyframes whyTimer {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+
+    .why-quote-slide[hidden] {
+        display: none;
+    }
+
+    @@keyframes whyIn {
+        from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+        to { opacity: 1; transform: none; filter: none; }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .why-quote-slide, .why-dots button[aria-current="true"]::after { animation: none; }
+    }
+
+    .why-quote-slide blockquote {
+        margin: 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 1.75rem;
+        font-style: italic;
+        line-height: 1.3;
+        color: #733642;
+    }
+
+    .why-quote-slide figcaption {
+        margin-top: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #3F4A34;
+    }
+
+    /* ‹ on the far left, › on the far right, dots between */
+    .why-quote-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto;
+        padding-top: 18px;
+        border-top: 1px solid #EBD5D0;
+    }
+
+    .why-quote-nav button.why-arrow {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid #D9B8B3;
+        background: #FFF8F6;
+        font-size: 18px;
+        line-height: 1;
+        color: #733642;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .why-quote-nav button.why-arrow:focus-visible,
+    .why-dots button:focus-visible {
+        outline: 2px solid #733642;
+        outline-offset: 3px;
+    }
+
+    .why-quote-nav button.why-arrow:hover {
+        background: #733642;
+        color: #FFF8F6;
+    }
+
+    .why-dots {
+        display: flex;
+        gap: 8px;
+    }
+
+    .why-dots button {
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: #E2C6C0;
+        cursor: var(--cursor-hot, pointer);
+    }
+
+    .why-dots button[aria-current="true"] {
+        width: 22px;
+        border-radius: var(--r-pill, 999px);
+        background: #733642;
+    }
+
+    @@media (max-width: 800px) {
+        .career-why {
+            padding: 48px 20px;
+        }
+
+        .why-wrap {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+    }
+
+    /* EXPERIENCE: one card per role */
+    .career-experience {
+        padding: 72px 40px 24px;
+        background: #FAF1EF;
+    }
+
+    /* Projects title on the left, the SuhaniCoded button in the corner */
+    .projects-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .coded-btn {
+        flex: none;
+        padding: 8px 18px;
+        border-radius: var(--r-pill);
+        border: 1.5px solid #733642;
+        background: transparent;
+        font-family: Georgia, serif;
+        font-size: 1rem;
+        font-style: italic;
+        color: #733642;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .coded-btn:hover {
+        background: #733642;
+        color: #FFF8F6;
+    }
+
+    .coded-btn:focus-visible {
+        outline: 2px solid #733642;
+        outline-offset: 3px;
+    }
+
+    .coded-title {
+        margin: 6px 0 10px;
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        color: #1E100A;
+    }
+
+    .coded-title em {
+        font-size: 0.7em;
+        font-weight: 400;
+        color: #7E3F4A;
+    }
+
+    .coded-lede {
+        margin: 0;
+        line-height: 1.6;
+        color: #2A1810;
+    }
+
+    /* PROJECTS: right after Experience, so recruiters see what I built early */
+    .career-projects {
+        padding: 72px 40px 24px;
+        background: #FAF1EF;
+    }
+
+    .career-projects .mp-projects { margin-bottom: 72px; }
+
+    .career-section-title {
+        margin: 0 0 28px;
+        font-family: Georgia, serif;
+        font-size: 2.4em;
+        color: #1E100A;
+    }
+
+    @@media (max-width: 800px) {
+        .career-intro,
+        .career-experience,
+        .career-projects {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .career-intro {
+            padding-top: 48px;
+        }
+
+        .career-facts {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .career-top {
+            grid-template-columns: minmax(0, 1fr) 120px;
+            gap: 20px;
+        }
+
+    }
+</style>
+
+@await Html.PartialAsync("Coursework", null, new ViewDataDictionary(ViewData) { { "CourseworkOnly", "marketing" } })

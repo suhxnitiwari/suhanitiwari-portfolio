@@ -1,5 +1,7 @@
 @{
-    ViewData["Title"] = "Coursework";
+    // /marketing renders just the Marketing Minor tab, on its own page (ViewData["CourseworkOnly"] = "marketing")
+    var marketingOnly = ViewData["CourseworkOnly"] as string == "marketing";
+    if (!marketingOnly) { ViewData["Title"] = "Coursework"; }
 }
 
 @functions {
@@ -451,15 +453,21 @@
     <div class="coursework-container">
         @* HERO *@
         <div class="coursework-hero">
-            <h1>Coursework</h1>
+            <h1>@(marketingOnly ? "Marketing" : "Coursework")</h1>
         </div>
 
         @* Overview (all nine themes), my MIS major, or my marketing projects *@
-        <div class="cw-tabs" role="tablist" aria-label="Coursework view">
-            <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="false" tabindex="-1">Overview</button>
-            <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="true">MIS Major</button>
+        <div class="cw-tabs" role="tablist" aria-label="Coursework view" hidden="@(marketingOnly ? "hidden" : null)">
+            @if (!marketingOnly)
+            {
+                <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="false" tabindex="-1">Overview</button>
+                <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="true">MIS Major</button>
+            }
             <button type="button" class="cw-tab" role="tab" id="cw-tab-mk" aria-controls="cw-mk" aria-selected="false" tabindex="-1">Marketing Minor</button>
         </div>
+
+        @if (!marketingOnly)
+        {
 
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview" hidden>
         @* six ways the subjects work together: picking one lights up the cards that feed it *@
@@ -823,7 +831,9 @@
             </div>
         </div>
 
-        <div class="cw-panel" id="cw-mk" role="tabpanel" aria-labelledby="cw-tab-mk" hidden>
+        }
+
+        <div class="cw-panel" id="cw-mk" role="tabpanel" aria-labelledby="cw-tab-mk" hidden="@(marketingOnly ? null : "hidden")">
             <partial name="_MarketingWork" />
         </div>
     </div>
@@ -1048,7 +1058,8 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     // each tab has its own address and title, so a view can be shared and the back button moves between tabs
     // MIS Major is the default tab; #mis still works for links from the home page
     const byId = id => tabs.find(t => t.id === id);
-    const misTab = byId('cw-tab-mis');
+    // MIS Major is the default; on /marketing, the only tab is Marketing
+    const misTab = byId('cw-tab-mis') || tabs[0];
     const hashFor = { 'cw-tab-mis': '#mis', 'cw-tab-mk': '#marketing', 'cw-tab-overview': '#overview' };
     const baseTitle = document.title;
     const tabForHash = h =>
@@ -1126,7 +1137,8 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
 // MIS cycle: picking a step lights up its box and its outgoing arrow and shows its detail card.
 // On phones the steps are a list, and tapping the open one closes it again.
 (() => {
-    const mis = document.querySelector('.mis');
+    // the MIS Major cycle (the Marketing section shares the .mis class, so skip it; on /marketing there's no cycle)
+    const mis = document.querySelector('.mis:not(.mk)');
     if (!mis) return;
     const boxes = [...mis.querySelectorAll('.mis-box')];
     const boxButtons = [...mis.querySelectorAll('.mis-box-main')];

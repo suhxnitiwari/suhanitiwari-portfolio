@@ -2379,6 +2379,59 @@
     </div>
 </section>
 
+@* MARKETING WORK: my Marketing minor gets its own row, right after Selected work: the top four decks from the
+   Marketing board (Views/Home/_MarketingBoard.cshtml, in its rank order; Starbucks is already in Selected work),
+   each opening its deck on /marketing *@
+@{
+    var marketingRow = new[]
+    {
+        (Id: "rhode", Brand: "Rhode", Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Line: "Making the brand outlive the fame", Cover: "rhode"),
+        (Id: "glossier", Brand: "Glossier", Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Line: "Winning back the group chat", Cover: "glossier"),
+        (Id: "netflix", Brand: "Netflix", Kind: "Media strategy", Title: "Netflix’s $20B Leak", Line: "Keeping the fandom after the credits", Cover: "netflix"),
+        (Id: "primebookclub", Brand: "Prime Video", Kind: "Community strategy", Title: "All Hype, No Club", Line: "Turning book-to-screen hype into a club", Cover: "primebookclub")
+    };
+}
+<section class="selected-work marketing-row" id="marketing-work" aria-labelledby="marketing-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <h2 id="marketing-work-heading">Marketing work</h2>
+            <a class="selected-all" href="/marketing">All marketing work <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="marketing-row-lede">From my Marketing minor: why people fall for a brand, and what would make them stay.</p>
+        <ul class="marketing-row-grid">
+            @foreach (var m in marketingRow)
+            {
+                <li>
+                    <a href="/marketing#mk-proj-@m.Id">
+                        <span class="marketing-row-cover"><img src="/videos/projects/@(m.Cover).jpg" alt="" loading="lazy" /></span>
+                        <span class="marketing-row-kind">@m.Brand · @m.Kind</span>
+                        <span class="marketing-row-title">@m.Title</span>
+                        <span class="marketing-row-line">@m.Line</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
+
+<style>
+    /* Marketing work: four decks in a row, a quieter echo of Selected work */
+    .marketing-row { padding-top: 10px; }
+    .marketing-row .selected-head { margin-bottom: 10px; }
+    .marketing-row-lede { margin: 0 0 30px; font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; color: #733642; }
+    .marketing-row-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin: 0; padding: 0; list-style: none; }
+    .marketing-row-grid a { display: flex; flex-direction: column; gap: 6px; color: inherit; text-decoration: none; }
+    .marketing-row-cover { display: block; aspect-ratio: 16 / 10; border-radius: var(--r-card, 14px); overflow: hidden; background: #F6E4E1; box-shadow: var(--shadow-card); }
+    .marketing-row-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; }
+    .marketing-row-grid a:hover .marketing-row-cover img, .marketing-row-grid a:focus-visible .marketing-row-cover img { transform: scale(1.04); }
+    .marketing-row-grid a:focus-visible { outline: 2px solid #76344E; outline-offset: 6px; border-radius: 8px; }
+    .marketing-row-kind { margin-top: 8px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #76344E; }
+    .marketing-row-title { font-family: Georgia, serif; font-size: 1.2rem; line-height: 1.25; color: #1E100A; }
+    .marketing-row-line { font-size: 0.9rem; line-height: 1.45; color: #7A665F; }
+    @@media (max-width: 900px) { .marketing-row-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @@media (max-width: 480px) { .marketing-row-grid { grid-template-columns: 1fr; } }
+</style>
+
 @* EXPERIENCE: where I've worked, right after what I've built (Views/Home/_Experience.cshtml, shared with Work) *@
 <section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
     <div class="about-container">
@@ -2432,7 +2485,7 @@
         (1, "Consumer Behavior", "Marketing", "", "Consumer Behavior", "Why do people buy what they buy?",
             "Needs, perception, identity and the path to a purchase, and what turns a buyer into a regular.",
             new[] { "Decision journey", "Motivation", "Identity", "Brand loyalty" },
-            "How Glossier Lost Its Cult", "/study#mk-proj-glossier"),
+            "How Glossier Lost Its Cult", "/marketing#mk-proj-glossier"),
         (1, "Social Psychology", "Psychology", "", "Social Psychology", "How do other people shape what we think and do?",
             "Attitudes, conformity, group behavior and social influence: why the room changes the person.",
             new[] { "Attitudes", "Conformity", "Group behavior", "Social influence" },
@@ -2440,7 +2493,7 @@
         (1, "Science of Influence", "Marketing", "", "Science of Influence", "What actually changes someone’s mind?",
             "The research behind persuasion: social proof, scarcity, commitment, authority and framing.",
             new[] { "Persuasion", "Social proof", "Scarcity", "Framing" },
-            "Rhode Has a Hailey Problem", "/study#mk-proj-rhode"),
+            "Rhode Has a Hailey Problem", "/marketing#mk-proj-rhode"),
         (1, "Cognitive Psychology", "Psychology", "", "Cognitive Psychology", "How does the mind take in, store and use information?",
             "Attention, perception, memory and decision-making: the mental machinery behind every choice someone makes.",
             new[] { "Attention", "Perception", "Memory", "Decision-making", "Problem solving" },
