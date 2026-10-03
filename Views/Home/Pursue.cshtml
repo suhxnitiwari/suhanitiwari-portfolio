@@ -1036,7 +1036,7 @@ if (!embed)
                 <p>McCombs gave me the business. Austin gave me the playground.</p>
                 @* typed live: the serious answer types out, deletes itself, and the joke about the rankings types in and stays *@
                 <p class="mccombs-type">
-                    <span class="visually-hidden">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing. But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look.</span>
+                    <span class="visually-hidden">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing. But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look. hey, did you look yet??</span>
                     <span class="mccombs-type-line is-on" aria-hidden="true">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing.</span>
                     <span class="mccombs-type-line" aria-hidden="true">But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look.</span>
                 </p>
@@ -1051,9 +1051,9 @@ if (!embed)
                         caret.className = 'mccombs-caret';
                         serious.textContent = '';
                         serious.append(caret);
-                        async function type(el, text) {
+                        async function type(el, text, from = 0) {
                             caret.classList.add('typing');
-                            for (let k = 1; k <= text.length; k++) {
+                            for (let k = from + 1; k <= text.length; k++) {
                                 el.textContent = text.slice(0, k);
                                 el.append(caret);
                                 const ch = text[k - 1];
@@ -1078,6 +1078,9 @@ if (!embed)
                             joke.textContent = '';
                             joke.classList.add('is-on');
                             await type(joke, texts[1]);
+                            // give them a moment to actually look, then check
+                            await wait(5000);
+                            await type(joke, texts[1] + ' hey, did you look yet??', texts[1].length);
                         }, { threshold: 0.6 });
                         seen.observe(box);
                     })();
