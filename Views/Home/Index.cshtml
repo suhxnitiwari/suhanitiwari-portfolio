@@ -2209,7 +2209,7 @@
             <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
-    <a class="cover-scroll" href="#selected-work">Scroll ↓</a>
+    <a class="cover-scroll" href="#about">Scroll ↓</a>
 </section>
 
 <script>
@@ -2313,19 +2313,7 @@
     })();
 </script>
 
-@* SELECTED WORK: my four strongest projects, first thing after the hero (Views/Home/_BestWork.cshtml) *@
-<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
-    <div class="selected-wrap">
-        <div class="selected-head">
-            <h2 id="selected-work-heading">Selected work</h2>
-            <a class="selected-all" href="#projects">More projects <span aria-hidden="true">↓</span></a>
-        </div>
-        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
-
-    </div>
-</section>
-
-@* THE THESIS: who I am and the one thread through all of it, right after the work that shows it *@
+@* THE THESIS: who I am and the one thread through all of it, right after the hero *@
 @{
 
     // Alternating story rows: text and photo swap sides each time.
@@ -2365,6 +2353,18 @@
             <p>Those aren’t four separate interests. Psychology and consumer behavior explain why people choose what they choose. <a class="about-mis-link" href="/study#marketing">Marketing</a> and <a class="about-mis-link" href="/work/starbucks">product strategy</a> decide what’s worth offering them. Technology is how it gets built. And education asks the same question about learning: why some things stick. That thread runs through everything here, from discovery calls at Oracle to a children’s book about women engineers.</p>
             <p>Off the clock: vanilla lattes, rom-coms, Pilates and yoga, a new restaurant whenever possible, and always one creative project in progress. Most of them end up somewhere on this site.</p>
         </div>
+    </div>
+</section>
+
+@* SELECTED WORK: my four strongest projects, right after who I am (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <h2 id="selected-work-heading">Selected work</h2>
+            <a class="selected-all" href="#projects">More projects <span aria-hidden="true">↓</span></a>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
+
     </div>
 </section>
 
