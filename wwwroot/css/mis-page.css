@@ -55,6 +55,11 @@
 /* MIS and Marketing: the pitch sized to the column, so the first sentence fills exactly two full lines,
    then the bold payoff ("I speak both." / "People don't love brands…") underneath */
 .mp-hero-fill { container-type: inline-size; }
+/* the "I studied MIS. / I minored in marketing." heading steps back so the pitch under it leads
+   (all three Coursework tabs, so switching tabs doesn't change the size) */
+.mp-hero #mis-heading,
+.mp-hero #mk-heading,
+.mp-hero #ov-heading { font-size: max(1.2rem, calc(var(--section-size) * 0.75)) !important; }
 .mp-hero-fill .mp-thesis { font-size: clamp(1.15rem, 3.55cqi, 1.9rem); max-width: 27.8em; }
 .mk .mp-hero-fill .mp-thesis { font-size: clamp(1.15rem, 3.25cqi, 1.9rem); max-width: 30.4em; }   /* a slightly longer sentence */
 /* on wide screens the size stops growing and the width (in em) keeps it at two full lines */
