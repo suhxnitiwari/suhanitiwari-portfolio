@@ -29,18 +29,6 @@ This site brings together my work, education, projects, interests and personalit
 
 ## What I built
 
-### A home page that tells a story
-
-The home page runs in order, like a story: a prologue, then **01 Dallas** (growing up: Girls Who Code, my children's book, Camp Invention), **02 Leaving home** (the move to McCombs, why MIS, the classes), **03 Austin** (Oracle, Acacia, the projects, the scholarships) and **04 Home** (who I am now, what I make for fun, and the quiz).
-
-- **Every claim is a number.** Each chapter opens with real figures, defined as `StoryChapter` and `StoryStat` records at the top of `Views/Home/Index.cshtml`. Each number names its source and links to the proof. The music numbers come from [Heavy Rotation](https://suhxnitiwari.github.io/listening-galaxy/)'s export.
-- **A cinematic opening.** Six seconds before the cover, once per visit. It can be skipped with any key, click or scroll, and never plays for deep links, background tabs or reduced motion.
-- **Threads.** Three ideas (understanding people, making things, starting things) run through every chapter. Hover a number and everything on its thread lights up. The chapter rail shows where you are.
-- **Press `/`.** A search palette built from the page itself (chapters, numbers, roles, projects, classes, cards, tabs). It flies to the result, opening any closed tab or section first.
-- **Two guides.** "How to read this" (press `?`) explains the marks, and "How I built this" is the case study.
-
-The styles and script are `wwwroot/css/story.css` and `wwwroot/js/story.js`, with no framework.
-
 ### A server-rendered MVC app where content is data
 
 Every page is a Razor view backed by a controller action. The content on each page (courses, skills, favorite spots, trips, talks, puzzle pieces) is defined as C# records at the top of its view and rendered with loops. Adding a course, a restaurant or a TED talk is a one-line change, and the layout, counts, filters and pop-ups update on their own.

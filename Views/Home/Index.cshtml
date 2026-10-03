@@ -2,14 +2,6 @@
     ViewData["Title"] = "Hello";
 }
 
-@functions {
-    // The story's data (rendered by Chapter() below the styles). Thread: "people", "make", "start", or "" for none.
-    public record StoryStat(string Value, string Label, string Source, string Href, string Thread = "", double? Count = null, string Prefix = "", string Suffix = "");
-    public record StoryChapter(string Id, string Num, string Short, string Place, string When, string Title, string Lede, string Verdict, StoryStat[] Stats, string Threads = "");
-}
-
-<link rel="stylesheet" href="~/css/story.css" asp-append-version="true" />
-
 <style>
     * {
         margin: 0;
@@ -2030,169 +2022,6 @@
 </style>
 <link rel="preload" as="image" href="/images/hero-suhani.jpg" fetchpriority="high">
 
-@* THE STORY: the home page runs in order, Dallas → leaving home → Austin → home (wwwroot/css/story.css, wwwroot/js/story.js).
-   Each chapter is data: where and when, one line, a short narration in "she", and its numbers.
-   Every number names where it comes from (Source, and Href to fly to the proof) and its thread:
-   people = I understand people, make = I make things, start = I tend to start things (the same three as "01 / 02 / 03" in Home).
-   Count = what it counts up to on screen (null for numbers that shouldn't count, like 7:35 AM).
-   Music numbers come from Heavy Rotation's export (listening-history/etl/galaxy_export.py), never typed from memory. *@
-@{
-    var heavyRotation = "https://suhxnitiwari.github.io/listening-galaxy/";
-    var fromHeavyRotation = "Heavy Rotation, my Spotify data warehouse";
-    var chapters = new[]
-    {
-        new StoryChapter("ch-dallas", "01", "Dallas", "Dallas, Texas", "Growing up · to 2024",
-            "The girl who started things.",
-            "Before McCombs and before the internships, there was Dallas: two middle-school classrooms, a whiteboard, four summers of campers testing what floats, and a picture book she wrote because the one she wanted for her little sister didn’t exist yet.",
-            "Somebody had to start a Girls Who Code chapter. She started two.",
-            new[]
-            {
-                new StoryStat("240+", "girls taught to code over two years", "Girls Who Code, in Beyond the Classroom", "#beyond", "start", 240, Suffix: "+"),
-                new StoryStat("2", "middle-school chapters she founded", "Girls Who Code, in Beyond the Classroom", "#beyond", "start", 2),
-                new StoryStat("100%", "of her mentees who took AP CS scored a 3 or higher", "Girls Who Code, in Beyond the Classroom", "#beyond", "people", 100, Suffix: "%"),
-                new StoryStat("1,000", "copies of her children’s book sold in its first month", "Girls Can Be Engineers, Too!, in Beyond the Classroom", "#beyond", "make", 1000),
-                new StoryStat("$4,194", "donated to Dallas–Fort Worth libraries for early STEM", "Girls Can Be Engineers, Too!, in Beyond the Classroom", "#beyond", "people", 4194, Prefix: "$"),
-                new StoryStat("350+", "hours of community service in a single year", "President’s Volunteer Service Award (Gold, 2023), in Scholarships & Awards", "#awards", "people", 350, Suffix: "+")
-            }),
-        new StoryChapter("ch-leaving", "02", "Leaving home", "Leaving home", "Summer 2024",
-            "Goodbye, suburbs.",
-            "In August 2024 she left Dallas for McCombs, three hours south. On her first morning in Austin she pressed play on a song about the suburbs you grow up in. New city, huge imposter syndrome. Her answer was to sign up for more.",
-            "Auditioning a new version of herself, and keeping the old one too.",
-            new[]
-            {
-                new StoryStat("7:35 AM", "her first morning in Austin, August 16, 2024: “Suburban Legends” on play", fromHeavyRotation, heavyRotation),
-                new StoryStat("21% → 31%", "of her songs were party songs: high school, then her first year of college", fromHeavyRotation, heavyRotation),
-                new StoryStat("#4", "MIS program in the US, the one she picked", "U.S. News ranking, in Education", "#education", "make"),
-                new StoryStat("2 + 2", "degrees and minors: MIS, psychology, marketing, educational psychology", "Education", "#education", "people")
-            }),
-        new StoryChapter("ch-austin", "03", "Austin", "Austin, Texas", "2024 to now",
-            "Then she got to work.",
-            "Austin is where the curiosity got a job description: a strategy internship, an Oracle internship, a rideshare system built from scratch, and a habit of turning every question that won’t leave her alone into a project.",
-            "Not just the screens. The whole system.",
-            new[]
-            {
-                new StoryStat("20%", "more website traffic from messaging she redesigned at Acacia Advisors", "Acacia Advisors, in Experience", "#experience", "people", 20, Suffix: "%"),
-                new StoryStat("$1M", "Azure AI product she wrote the go-to-market strategy for", "Acacia Advisors, in Experience", "#experience", "people", 1, Prefix: "$", Suffix: "M"),
-                new StoryStat("12", "weeks of Oracle’s Enterprise Sales Development program", "Oracle, in Experience", "#experience", "people", 12),
-                new StoryStat("33", "automated tests in RideFlow, her full-stack rideshare app", "RideFlow, in Selected work", "#selected-work", "make", 33),
-                new StoryStat("182,293", "Spotify records in the data warehouse she designed", "Heavy Rotation, in Selected work", "#selected-work", "make", 182293),
-                new StoryStat("2", "McCombs scholarships for 2026–27, one for student leadership", "Scholarships & Awards", "#awards", "start", 2)
-            }),
-        new StoryChapter("ch-home", "04", "Home", "Home", "Austin, now",
-            "Home is Austin now.",
-            "4,395 hours of music later, the girl who pressed play in Dallas lives in Austin and graduates in May 2027. What’s left is everything a résumé can’t hold: what she believes, what she makes for fun, and a quiz about her that only one person has aced.",
-            "Still pressing play.",
-            new[]
-            {
-                new StoryStat("4,395", "hours of music since May 2022, from Dallas to Austin", fromHeavyRotation, heavyRotation, Count: 4395),
-                new StoryStat("13", "times Cupid fired on Valentine’s Day 2024. One song on repeat: “Can’t Catch Me Now.”", fromHeavyRotation, heavyRotation, Count: 13),
-                new StoryStat("43,455", "songs skipped in under a second. She’s not indecisive, she’s picky.", fromHeavyRotation, heavyRotation, Count: 43455)
-            },
-            // the last chapter holds 01 / 02 / 03, so every thread runs through it
-            Threads: "people make start")
-    };
-
-    // one chapter opener: the dark band, the place set huge, then its numbers
-    void Chapter(StoryChapter c)
-    {
-        var cols = c.Stats.Length % 3 == 0 ? 3 : c.Stats.Length;
-        <section class="chapter" id="@c.Id" data-num="@c.Num" data-place="@c.Place" data-short="Ch @c.Num · @c.Short" aria-labelledby="@c.Id-title">
-            <div class="chapter-wrap">
-                <p class="chapter-eyebrow"><span class="chapter-num">Chapter @c.Num</span><span class="chapter-when">@c.When</span></p>
-                <h2 class="chapter-place" id="@c.Id-title">@c.Place</h2>
-                <p class="chapter-title">@c.Title</p>
-                <p class="chapter-lede">@c.Lede</p>
-                <ul class="chapter-stats" style="--cols: @cols">
-                    @foreach (var s in c.Stats)
-                    {
-                        var external = s.Href.StartsWith("http");
-                        <li>
-                            <a class="st" href="@s.Href" data-source="@s.Source" data-thread="@(string.IsNullOrEmpty(s.Thread) ? null : s.Thread)"
-                               target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)">
-                                <b class="st-num" data-count="@s.Count?.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-prefix="@(s.Prefix == "" ? null : s.Prefix)" data-suffix="@(s.Suffix == "" ? null : s.Suffix)">@s.Value</b>
-                                <span class="st-label">@s.Label</span>
-                                <span class="st-from">@(external ? "Heavy Rotation ↗" : "See the proof ↓")</span>
-                                <span class="visually-hidden">Source: @s.Source</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
-                <p class="chapter-verdict">@c.Verdict</p>
-            </div>
-        </section>
-    }
-
-    string ChapterThreads(StoryChapter c) => string.Join(" ", c.Stats.Select(s => s.Thread).Concat(c.Threads.Split(' ')).Where(t => t != "").Distinct());
-}
-
-@* THE OPENING: six seconds before the cover, once per visit. Hidden unless the script right under it decides to play it:
-   never for a link straight to a section, a background tab, or anyone who asked their device for less motion.
-   Any key, click, scroll or the Skip button ends it, and the cover's own entrance waits until the curtain lifts. *@
-<div class="opening" id="opening" hidden>
-    <div class="opening-frame" data-at="0">
-        <span class="opening-kicker">Chapter 01</span>
-        <p class="opening-big">Dallas, Texas.</p>
-    </div>
-    <div class="opening-frame" data-at="1350">
-        <ul class="opening-nums">
-            <li><b data-to="240">240</b><span>girls taught to code</span></li>
-            <li><b data-to="1000">1,000</b><span>books sold</span></li>
-            <li><b data-to="350">350</b><span>hours given</span></li>
-        </ul>
-    </div>
-    <div class="opening-frame" data-at="2800">
-        <span class="opening-kicker">August 16, 2024 · 7:35 AM</span>
-        <p class="opening-big">She leaves <em>home.</em></p>
-    </div>
-    <div class="opening-frame" data-at="4150">
-        <span class="opening-kicker">Chapters 03 and 04</span>
-        <p class="opening-big">Austin, Texas.</p>
-    </div>
-    <button type="button" class="opening-skip">Skip intro</button>
-    <span class="opening-time" aria-hidden="true"></span>
-</div>
-<script>
-    (() => {
-        const el = document.getElementById('opening'), root = document.documentElement;
-        let seen = false;
-        try { seen = sessionStorage.getItem('opening') === '1'; } catch { }
-        if (seen || location.hash || document.hidden || navigator.webdriver || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        try { sessionStorage.setItem('opening', '1'); } catch { }
-        el.hidden = false;
-        root.classList.add('opening-on');
-        const frames = [...el.querySelectorAll('.opening-frame')], timers = [];
-        const count = b => {
-            const to = +b.dataset.to, t0 = performance.now();
-            const step = now => {
-                const p = Math.min(1, (now - t0) / 1000);
-                b.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US');
-                if (p < 1) requestAnimationFrame(step);
-            };
-            requestAnimationFrame(step);
-        };
-        frames.forEach((f, i) => timers.push(setTimeout(() => {
-            if (i) frames[i - 1].classList.replace('on', 'off');
-            f.classList.add('on');
-            f.querySelectorAll('[data-to]').forEach(count);
-        }, +f.dataset.at)));
-        let done = false;
-        const end = () => {
-            if (done) return;
-            done = true;
-            timers.forEach(clearTimeout);
-            el.classList.add('lift');
-            root.classList.remove('opening-on');
-            ['keydown', 'wheel', 'touchstart'].forEach(e => removeEventListener(e, end));
-            setTimeout(() => el.remove(), 1000);
-        };
-        timers.push(setTimeout(end, 5300));
-        el.addEventListener('click', end);
-        ['keydown', 'wheel', 'touchstart'].forEach(e => addEventListener(e, end, { passive: true }));
-        el.querySelector('.opening-skip').focus({ preventScroll: true });
-    })();
-</script>
-
-
 <section class="cover-hero" aria-label="Suhani Tiwari">
     <div class="cover-media">
         <img class="cover-photo" src="/images/hero-suhani.jpg" width="1672" height="941"
@@ -2214,7 +2043,7 @@
             <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
-    <a class="cover-scroll" href="#about">Scroll ↓</a>
+    <a class="cover-scroll" href="#selected-work">Scroll ↓</a>
 </section>
 
 <script>
@@ -2241,7 +2070,19 @@
     })();
 </script>
 
-@* PROLOGUE: who I am, in my own words, and how to read the story *@
+@* SELECTED WORK: the proof comes first, my four strongest projects right under the cover (Views/Home/_BestWork.cshtml) *@
+<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
+    <div class="selected-wrap">
+        <div class="selected-head">
+            <h2 id="selected-work-heading">Selected work</h2>
+            <a class="selected-all" href="#projects">Everything else <span aria-hidden="true">↓</span></a>
+        </div>
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
+
+    </div>
+</section>
+
+@* ABOUT: my own words *@
 @{
     // My age, worked out from my birthday (March 6, 2006) so it updates on its own every year
     var birthday = new DateTime(2006, 3, 6);
@@ -2284,27 +2125,26 @@
             <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/#projects">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
             <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
         </div>
-        @* how to read the story that starts right below: the path, the numbers, the / key, and the two guides *@
-        <div class="story-key">
-            <p><b>What follows is a story in four chapters:</b> <span class="story-key-path">Dallas → leaving home → Austin → home.</span> Every number in it is real. Hover one to see where it comes from, and press <kbd class="key">/</kbd> to fly straight to anything.</p>
-            <div class="story-key-actions">
-                <button type="button" class="story-btn" data-open="read" hidden>How to read this</button>
-                <button type="button" class="story-btn" data-open="build" hidden>How I built this</button>
-            </div>
-        </div>
     </div>
 </section>
 
-@* CHAPTER 01 · DALLAS: growing up, the girl who started things *@
-@{ Chapter(chapters[0]); }
-
-@* Dallas, in my own words: Girls Who Code, the book, Camp Invention (Views/Home/BeyondTheClassroom.cshtml) *@
-<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
-    @await Html.PartialAsync("BeyondTheClassroom")
+@* EXPERIENCE: right under who I am, the roles themselves (Views/Home/_Experience.cshtml, shared with Work) *@
+<section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
+    <div class="about-container">
+        <div class="home-part-head">
+            <h2 id="home-experience-heading">Experience</h2>
+            @* one click saves the PDF as Tiwari_Suhani_Resume.pdf (/resume/download sends it under that name) *@
+            <div class="resume-actions">
+                <a class="home-part-link" href="/resume" target="_blank" rel="noopener">View <span aria-hidden="true">↗</span></a>
+                <a class="resume-download" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7.5 8 11l3.5-3.5M3 13.5h10"/></svg>
+                    <span class="resume-download-label">Download résumé</span>
+                </a>
+            </div>
+        </div>
+        <partial name="_Experience" />
+    </div>
 </section>
-
-@* CHAPTER 02 · LEAVING HOME: the move to McCombs, then why MIS and the classes *@
-@{ Chapter(chapters[1]); }
 
 @* EDUCATION: school, degrees, GPA and the classes behind what I build (same facts as my résumé) *@
 @{
@@ -2357,6 +2197,14 @@
     </div>
 </section>
 
+@* PROOF, then HEART: awards right after school, then what I do for other people (the same views their old pages used) *@
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
+</section>
+<section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
+    @await Html.PartialAsync("BeyondTheClassroom")
+</section>
+
 <script>
     // Education's classes: ‹ › scroll the row, and each arrow dims when there's nothing more that way
     (() => {
@@ -2376,42 +2224,6 @@
     })();
 </script>
 
-@* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
-<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />
-
-@* CHAPTER 03 · AUSTIN: the work, the projects, the scholarships *@
-@{ Chapter(chapters[2]); }
-
-@* EXPERIENCE: right under who I am, the roles themselves (Views/Home/_Experience.cshtml, shared with Work) *@
-<section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
-    <div class="about-container">
-        <div class="home-part-head">
-            <h2 id="home-experience-heading">Experience</h2>
-            @* one click saves the PDF as Tiwari_Suhani_Resume.pdf (/resume/download sends it under that name) *@
-            <div class="resume-actions">
-                <a class="home-part-link" href="/resume" target="_blank" rel="noopener">View <span aria-hidden="true">↗</span></a>
-                <a class="resume-download" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">
-                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7.5 8 11l3.5-3.5M3 13.5h10"/></svg>
-                    <span class="resume-download-label">Download résumé</span>
-                </a>
-            </div>
-        </div>
-        <partial name="_Experience" />
-    </div>
-</section>
-
-@* SELECTED WORK: my four strongest projects, the heart of the Austin chapter (Views/Home/_BestWork.cshtml) *@
-<section class="selected-work" id="selected-work" aria-labelledby="selected-work-heading">
-    <div class="selected-wrap">
-        <div class="selected-head">
-            <h2 id="selected-work-heading">Selected work</h2>
-            <a class="selected-all" href="#projects">Everything else <span aria-hidden="true">↓</span></a>
-        </div>
-        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Featured", true } }' />
-
-    </div>
-</section>
-
 @* MORE PROJECTS: the four up top are what I'd like to be judged by; this is the lab of everything else (Views/Home/_BestWork.cshtml) *@
 <section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
     <div class="selected-wrap">
@@ -2425,22 +2237,17 @@
     </div>
 </section>
 
-@* the awards: two from the Dallas years, the rest from Austin (Views/Home/ScholarshipsAndAwards.cshtml) *@
-<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
-    @await Html.PartialAsync("ScholarshipsAndAwards")
-</section>
+@* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
+<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />
 
-@* CHAPTER 04 · HOME: who I am now, what I make for fun, and the quiz *@
-@{ Chapter(chapters[3]); }
-
-@* ABOUT, CONTINUED: the three things about me, now that you've seen the whole story (each is one of the story's threads) *@
+@* ABOUT, CONTINUED: the three things about me, now that you've seen the work *@
 <section class="about-section about-more" id="about-more">
     <div class="about-container">
         <div class="about-stories">
             @for (var i = 0; i < aboutPoints.Length; i++)
             {
                 var point = aboutPoints[i];
-                <article class="about-story@(i % 2 == 1 ? " flip" : "")" data-thread="@(new[] { "people", "make", "start" }[i])">
+                <article class="about-story@(i % 2 == 1 ? " flip" : "")">
                     <div class="about-story-text">
                         <span class="about-num">@point.Num</span>
                         <h3>@point.Title</h3>
@@ -3074,120 +2881,6 @@
         seen.observe(document.querySelector('.about-tagline'));
     });
 </script>
-
-@* THE RAIL: where you are in the story (wide screens), the three threads, and the / and ? keys *@
-<nav class="rail" aria-label="Chapters of the story">
-    <ol>
-        <li class="rail-fill" aria-hidden="true"></li>
-        @foreach (var c in chapters)
-        {
-            <li><a class="rail-ch" href="#@c.Id" data-threads="@ChapterThreads(c)"><span class="rail-dot" aria-hidden="true"></span><span class="rail-name">@c.Num · @c.Short</span></a></li>
-        }
-    </ol>
-    <div class="rail-threads" role="group" aria-label="Light up a thread">
-        <button type="button" class="thread-chip" data-thread-key="people" aria-pressed="false"><span>Understanding people</span></button>
-        <button type="button" class="thread-chip" data-thread-key="make" aria-pressed="false"><span>Making things</span></button>
-        <button type="button" class="thread-chip" data-thread-key="start" aria-pressed="false"><span>Starting things</span></button>
-    </div>
-    <div class="rail-keys">
-        <button type="button" data-open="seek" aria-label="Search the site (press /)" title="Search (/)" hidden>/</button>
-        <button type="button" data-open="read" aria-label="How to read this (press ?)" title="How to read this (?)" hidden>?</button>
-    </div>
-</nav>
-
-@* SEARCH: press / (or ⌘K) anywhere; story.js builds the list from what's on the page *@
-<dialog class="seek" id="seek" aria-label="Search the site">
-    <div class="seek-bar">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
-        <input class="seek-input" type="search" placeholder="A project, a class, a city, a number…" aria-label="Search the site"
-               role="combobox" aria-expanded="true" aria-controls="seekList" aria-autocomplete="list" autocomplete="off" spellcheck="false">
-    </div>
-    <ul class="seek-list" id="seekList" role="listbox" aria-label="Results"></ul>
-    <p class="seek-foot"><span><kbd class="key">↑</kbd> <kbd class="key">↓</kbd> to move</span><span><kbd class="key">⏎</kbd> to fly there</span><span><kbd class="key">esc</kbd> to close</span></p>
-</dialog>
-
-@* HOW TO READ THIS: the decoder *@
-<dialog class="story-doc" id="storyRead" aria-labelledby="storyReadTitle">
-    <header class="doc-head">
-        <div>
-            <p class="doc-kicker">The decoder</p>
-            <h2 id="storyReadTitle">How to read this</h2>
-        </div>
-        <button type="button" class="doc-close" aria-label="Close">×</button>
-    </header>
-    <div class="doc-body">
-        <h3>It runs in order</h3>
-        <p>This page is one story, told top to bottom. <b>01 Dallas</b> is growing up, <b>02 Leaving home</b> is the move to McCombs, <b>03 Austin</b> is the work, and <b>04 Home</b> is everything a résumé can’t hold. You can still skip ahead: the menu, the rail and <kbd class="key">/</kbd> all go anywhere.</p>
-
-        <h3>What the marks mean</h3>
-        <dl class="legend">
-            <dt><span class="legend-band">Dallas</span></dt>
-            <dd><b>A dark band</b> opens each chapter. The bands are narrated (“she”). Everything between them is me talking (“I”).</dd>
-            <dt><span class="legend-num">240+</span></dt>
-            <dd><b>A big number</b> is always a real one, never an adjective. Hover it to see where it comes from, and click it to fly to the proof. It counts up from zero the first time you see it.</dd>
-            <dt><span class="legend-dots"><i style="background: var(--thread-people)"></i><i style="background: var(--thread-make)"></i><i style="background: var(--thread-start)"></i></span></dt>
-            <dd><b>A colored dot</b> marks a thread, one of three things that show up in every chapter. Hover a number and everything else on its thread lights up, in every chapter.</dd>
-            <dt><span class="legend-rail"><i class="on"></i><i class="on"></i><i></i><i></i></span></dt>
-            <dd><b>The rail</b> on the left edge of wide screens shows which chapter you’re in. Hover a thread at its bottom to see which chapters it runs through. Click it to keep it lit while you scroll.</dd>
-        </dl>
-
-        <h3>The three threads</h3>
-        <ul class="thread-list">
-            <li data-thread-key="people"><span><b>Understanding people.</b> Why people choose what they choose: psychology, marketing, teaching, the clients I’ve worked for.</span></li>
-            <li data-thread-key="make"><span><b>Making things.</b> A children’s book, a rideshare system, a data warehouse, this site.</span></li>
-            <li data-thread-key="start"><span><b>Starting things.</b> Two Girls Who Code chapters, and anything else that needed someone to go first.</span></li>
-        </ul>
-
-        <h3>Where the numbers come from</h3>
-        <p>Career numbers come from the same records as my résumé and the sections they point to. Music numbers come from <a href="@heavyRotation" target="_blank" rel="noopener">Heavy Rotation ↗</a>, my Spotify data warehouse: 182,293 raw records cleaned into a PostgreSQL star schema, and every number computed by its export, not typed by hand.</p>
-
-        <h3>Keys</h3>
-        <p><kbd class="key">/</kbd> or <kbd class="key">⌘K</kbd> to search, <kbd class="key">?</kbd> for this guide, <kbd class="key">esc</kbd> to close anything. Cards flip when you tap them.</p>
-    </div>
-</dialog>
-
-@* HOW I BUILT THIS: the case study *@
-<dialog class="story-doc" id="storyBuild" aria-labelledby="storyBuildTitle">
-    <header class="doc-head">
-        <div>
-            <p class="doc-kicker">Case study</p>
-            <h2 id="storyBuildTitle">How I built this</h2>
-        </div>
-        <button type="button" class="doc-close" aria-label="Close">×</button>
-    </header>
-    <div class="doc-body">
-        <h3>The problem</h3>
-        <p>The old home page was organized like a résumé: work, then school, then awards, then me. Accurate, and easy to forget. A story has a beginning, a middle and an end, so I rebuilt the page around one: where I started, the move, the work, and who I am now. The facts didn’t change. The order did.</p>
-
-        <h3>By the numbers</h3>
-        <div class="build-stats">
-            <div><b>@chapters.Length</b><span>chapters, in the order they happened</span></div>
-            <div><b>@chapters.Sum(c => c.Stats.Length)</b><span>numbers, each linked to its source</span></div>
-            <div><b>0</b><span>front-end frameworks or build steps</span></div>
-            <div><b>12 h</b><span>how long live Spotify results stay cached</span></div>
-            <div><b>60</b><span>music requests per visitor per minute, at most</span></div>
-        </div>
-
-        <h3>How a number gets on the page</h3>
-        <ol class="build-flow">
-            <li><b>A record in C#</b><span>Each chapter is a <code>StoryChapter</code> record at the top of <code>Index.cshtml</code>, and each number is a <code>StoryStat</code> carrying its source, a link to the proof and its thread.</span></li>
-            <li><b>Rendered on the server</b><span>ASP.NET Core MVC turns the records into HTML with Razor, so every number is real text on first paint: readable without JavaScript, by screen readers and by search engines.</span></li>
-            <li><b>Brought to life in the browser</b><span><code>story.js</code> counts the numbers up, tilts them toward your cursor, draws the thread connections and runs the rail, in plain JavaScript.</span></li>
-            <li><b>Music numbers from a warehouse</b><span>182,293 raw Spotify records go through a Python ETL into a PostgreSQL star schema, and a 680 KB export feeds Heavy Rotation and the numbers here.</span></li>
-        </ol>
-
-        <h3>Decisions worth explaining</h3>
-        <p><b>Search builds itself from the page.</b> Press <kbd class="key">/</kbd> and the index is assembled from the chapters, numbers, roles, projects, classes and headings actually on the page, so nothing has to be registered by hand. Results score best at the start of a label, then the start of a word, then letters in order, so “gwc” finds Girls Who Code. If a result sits inside a closed tab or the tucked-away “a little more about me” section, search opens it first, then flies there.</p>
-        <p><b>The opening never gets in the way.</b> It plays once per visit. Any key, click or scroll skips it, and it never plays for a link to a section, a background tab, or anyone who has asked their device for less motion. The cover’s own entrance waits until the curtain lifts.</p>
-        <p><b>Live data, politely.</b> This server is also the API for my live Spotify data. Access tokens are cached and renewed a minute before they expire, behind a lock so only one request refreshes at a time. Results are cached for 12 hours, MusicBrainz genre lookups stay at one a second, and each visitor gets 60 music requests a minute.</p>
-        <p><b>Shipped like a product.</b> .NET 10 and C#, a two-stage Docker build, deployed to Render on every push to <code>main</code>.</p>
-        <p><a href="https://github.com/suhxnitiwari" target="_blank" rel="noopener">See the code on GitHub ↗</a></p>
-    </div>
-</dialog>
-
-<script src="~/js/story.js" asp-append-version="true"></script>
-
-
 
 @{
     // set last: the sections embedded above set their own page titles while they render
