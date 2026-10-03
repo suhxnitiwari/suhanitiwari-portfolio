@@ -235,7 +235,7 @@
                     "https://www.girlspring.com/8-life-changing-habits/")
     };
 
-    // Baking. Fill in each recipe when ready; until then its card says "recipe coming soon".
+    // Baking. Fill in each recipe when ready; until then its card shows just the photo and name.
     //   new Recipe("Walnut Banana Bread", "a line about it", "/images/bakes/walnut-banana-bread.jpg",
     //              "1 hr 10 min", "Makes 1 loaf", new[] { "3 ripe bananas", ... }, new[] { "Mash the bananas...", ... })
     // Photo is optional: without one, the card shows a soft blush cover with a whisk.
@@ -413,7 +413,7 @@
                                     </div>
                                 </button>
                                 <p class="shelf-item-title">@bake.Title</p>
-                                <p class="shelf-item-meta">@(bake.Steps.Length == 0 ? "recipe coming soon" : !string.IsNullOrEmpty(bake.Line) ? bake.Line : bake.Time)</p>
+                                <p class="shelf-item-meta">@(bake.Steps.Length == 0 ? "" : !string.IsNullOrEmpty(bake.Line) ? bake.Line : bake.Time)</p>
                             </li>
                         }
                     </ul>
@@ -477,7 +477,7 @@
                                         }
                                         <span class="bake-tile-label">
                                             <span class="bake-tile-title">@bake.Title</span>
-                                            <span class="bake-tile-meta">@(bake.Steps.Length == 0 ? "recipe coming soon" : !string.IsNullOrEmpty(bake.Line) ? bake.Line : bake.Time)</span>
+                                            <span class="bake-tile-meta">@(bake.Steps.Length == 0 ? "" : !string.IsNullOrEmpty(bake.Line) ? bake.Line : bake.Time)</span>
                                         </span>
                                     </button>
                                 </li>
@@ -625,7 +625,7 @@
                 <p class="make-q">What if I planned the perfect trip?</p>
                 <h2 class="shelf-title">Itineraries</h2>
             </div>
-            <p class="shelf-caption"><strong>“We’ll figure it out when we get there” is not a travel philosophy I recognize.</strong> I plan cities the way I experience them: through neighborhoods, art, architecture, food, coffee, and the places I’d regret finding out about after I left. Yes, there will be a spreadsheet. No, you may not make fun of it until we’re having the best day of the trip.</p>
+            <p class="shelf-caption"><strong>“We’ll figure it out when we get there” is not a travel philosophy I recognize.</strong> I plan cities the way I experience them: through neighborhoods, art, architecture, food, coffee, and the places I’d regret finding out about after I left. Yes, there will be a spreadsheet. No, you may not make fun of it until we’re having the best day of the trip. It’s the same instinct behind <a href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Saturday in Austin</a>, the planner I built to do it in code.</p>
             @if (trips.Length > 0)
             {
             <div class="shelf-rail-wrap">

@@ -642,20 +642,16 @@
     .edu-courses {
         display: flex;
         flex-wrap: nowrap;
-        gap: 6px;
+        gap: 0;
         margin: 0;
         padding: 0;
         list-style: none;
     }
 
     .edu-courses li {
-        flex: 1 1 auto;
-        text-align: center;
-        padding: 2px 10px;
-        border: 1px solid #E2C6C0;
-        border-radius: var(--r-pill);
-        background: #FFFFFF;
-        font-size: clamp(0.6rem, 1.75cqi, 0.78rem);   /* shrinks with the column so all four always fit on one line */
+        flex: 0 0 auto;
+        padding: 0;
+        font-size: clamp(0.66rem, 1.9cqi, 0.86rem);   /* shrinks with the column so all four always fit on one line */
         line-height: 1.35;
         white-space: nowrap;
         color: #3A1F26;
@@ -688,10 +684,11 @@
         }
     }
 
-    /* the second row (business and psychology) in a soft blush, so the two halves read as a pair */
-    .edu-row + .edu-row .edu-courses li {
-        background: #F6E4E1;
-        border-color: #E8C9C3;
+    /* the classes aren't links, so they read as plain text with a dot between, not as buttons */
+    .edu-courses li + li::before {
+        content: "·";
+        margin: 0 8px;
+        color: #B38A93;
     }
 
     /* the three stories, now further down the page, get their own breathing room */
@@ -2143,7 +2140,7 @@
     <div class="cover-intro">
         @* Readable in one glance: where I study, what I do in one line, and where I've already done it *@
         <p class="cover-tagline">
-            <span class="cover-school">MIS at McCombs School of Business</span>
+            <span class="cover-school">Management Information Systems · UT Austin McCombs</span>
             @{
                 // what I do, said five ways: the first is the one everyone sees first, then they trade places every 10 seconds
                 var coverLines = new[]
@@ -2314,8 +2311,9 @@
             <h2 class="about-tagline"><span class="about-sr">Building technology people choose, with a love for psychology, brands and learning</span><span class="about-type" aria-hidden="true">Building technology people choose, with a love for</span>
                 <span class="about-rotator" aria-hidden="true"><span class="about-word on" data-words="psychology|brands|learning">psychology</span></span><span class="about-caret" aria-hidden="true"></span></h2>
             <p class="about-prev">Previously at Oracle and Acacia Advisors</p>
-            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/#projects">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/#marketing">marketing</a>, consumer behavior, and <a class="about-mis-link" href="/work/starbucks">product strategy</a>. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
-            <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
+            <p>I’m a student at UT Austin’s McCombs School of Business, earning a Bachelor of Business Administration in <a class="about-mis-link" href="/#projects">Management Information Systems (MIS)</a> and a Bachelor of Arts in Psychology, with minors in Marketing and Educational Psychology. I graduate in May 2027.</p>
+            <p>Those aren’t four separate interests. Psychology and consumer behavior explain why people choose what they choose. <a class="about-mis-link" href="/#marketing">Marketing</a> and <a class="about-mis-link" href="/work/starbucks">product strategy</a> decide what’s worth offering them. Technology is how it gets built. And education asks the same question about learning: why some things stick. That thread runs through everything here, from discovery calls at Oracle to a children’s book about women engineers.</p>
+            <p>Off the clock: vanilla lattes, rom-coms, Pilates and yoga, a new restaurant whenever possible, and always one creative project in progress. Most of them end up somewhere on this site.</p>
         </div>
     </div>
 </section>
@@ -2356,7 +2354,7 @@
     {
         ("3.5", "GPA, out of 4.0"),
         ("May 2027", "graduating"),
-        ("#4", "MIS program in the US"),
+        ("#4", "Management Information Systems program in the US"),
         ("#6", "undergrad business school in the US")
     };
     // two rows that show how the halves work together: the tech I build with, then the business and psychology of who it's for
