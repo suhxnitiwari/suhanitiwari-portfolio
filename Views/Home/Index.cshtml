@@ -3511,3 +3511,25 @@
         [...sections, ...Object.keys(partOf).map(id => document.getElementById(id)).filter(Boolean)].forEach(s => seen.observe(s));
     })();
 </script>
+
+@* SPACING: the home page is one long scroll, so sections sit closer together here than on their own pages:
+   about 110px between any two sections on laptops and desktops (phones keep their own spacing) *@
+<style>
+    @@media (min-width: 801px) {
+        #about.about-section { padding-top: 56px; padding-bottom: 44px; }
+        #selected-work.selected-work, #projects.selected-work { padding-top: 56px; padding-bottom: 76px; }
+        #marketing-work.coursework-section { padding-top: 56px; padding-bottom: 8px; }
+        #experience.home-part, #education.home-part { padding-bottom: 36px; }
+        #why-mis.career-why { padding-top: 48px; padding-bottom: 48px; }
+        #coursework .coursework-section { padding-top: 48px; padding-bottom: 16px; }
+        #beyond .beyond-section { padding-top: 56px; padding-bottom: 32px; }
+        #awards .honors-section { padding-top: 48px; padding-bottom: 56px; }
+        #playground.listen-section { padding-top: 48px; padding-bottom: 40px; }
+        #finale.finale { padding-top: 56px; padding-bottom: 96px; }
+        #marketing-work.coursework-section { padding-top: 36px; }
+        /* the last block in each section keeps no extra margin, so the padding above is the whole gap */
+        #about .about-intro, #selected-work .best-board, #projects .best-board,
+        #marketing-work .mis, #marketing-work .mp-projects, #coursework .mis { margin-bottom: 0; }
+        #beyond .project:last-child { padding-bottom: 0; }
+    }
+</style>
