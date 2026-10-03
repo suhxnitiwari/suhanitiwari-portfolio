@@ -759,7 +759,8 @@
     }
 
     /* the decoding: letters still scrambling are mulberry and a blinking caret rides at the end */
-    .about-type .x, .about-word .x { color: #C27B8A; }
+    .about-type .x, .about-word .x { color: #C27B8A; overflow-wrap: anywhere; }
+    .about-tagline { max-width: 100%; overflow-wrap: break-word; }
     .about-caret { display: inline-block; width: 0.08em; height: 0.9em; margin-left: 0.06em; vertical-align: -0.08em; background: #7E3F4A; animation: aboutBlink 0.9s steps(1) infinite; }
     .about-caret.done { display: none; }
     @@keyframes aboutBlink { 50% { opacity: 0; } }
@@ -782,6 +783,9 @@
         text-transform: uppercase;
         color: #7E3F4A;
     }
+
+    .about-prev-link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .about-prev-link:hover, .about-prev-link:focus-visible { color: #D1167A; }
 
     @@media (prefers-reduced-motion: reduce) {
         .about-word { transition: none; }
@@ -1451,12 +1455,15 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
         gap: 56px;
-        align-items: center;
+        align-items: stretch;   /* the paragraph runs as tall as the quiz card beside it, top to bottom */
         max-width: 1100px;
         margin: 56px auto 0;
     }
 
     .duality-row .duality-note {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         max-width: none;
         margin: 0;
         padding-left: 24px;
@@ -2121,9 +2128,9 @@
             @* it types itself out like code: keyboard mash first, then the real words unfold letter by letter *@
             <h2 class="about-tagline"><span class="about-sr">Building technology people choose, with a love for psychology, brands and learning</span><span class="about-type" aria-hidden="true">Building technology people choose, with a love for</span>
                 <span class="about-rotator" aria-hidden="true"><span class="about-word on" data-words="psychology|brands|learning">psychology</span></span><span class="about-caret" aria-hidden="true"></span></h2>
-            <p class="about-prev">Previously at Oracle and Acacia Advisors</p>
-            <p>I’m a @age-year-old student at the McCombs School of Business at UT Austin studying <a class="about-mis-link" href="/#projects">Management Information Systems</a>. My academic interests include psychology, <a class="about-mis-link" href="/#marketing">marketing</a>, consumer behavior, and product strategy. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making education better for everyone is one of the things I care about most.</p>
-            <p>Outside of school and work, I love vanilla lattes, rom-coms, traveling, trying new restaurants, Pilates and yoga, art, and always having some kind of creative project going.</p>
+            <p class="about-prev">Previously at <a class="about-prev-link" href="#experience">Oracle</a> and <a class="about-prev-link" href="#experience">Acacia Advisors</a></p>
+            <p>I’m a @age-year-old student at the <a class="about-mis-link" href="#mccombs">McCombs School of Business</a> at UT Austin studying <a class="about-mis-link" href="/#projects">Management Information Systems</a>. My academic interests include <a class="about-mis-link" href="#human-behavior">psychology</a>, <a class="about-mis-link" href="/#marketing">marketing</a>, <a class="about-mis-link" href="#mk-projects">consumer behavior</a>, and <a class="about-mis-link" href="/work/starbucks">product strategy</a>. I’m especially interested in what makes people choose a product, connect with a brand, and keep coming back to it, and in the same question for learning: why some things stick, and how we could all learn better. Making <a class="about-mis-link" href="#beyond">education</a> better for everyone is one of the things I care about most.</p>
+            <p>Outside of school and work, I love <a class="about-mis-link" href="#know-me">vanilla lattes, rom-coms</a>, <a class="about-mis-link" href="#traveling">traveling</a>, trying new restaurants, Pilates and yoga, <a class="about-mis-link" href="#art">art</a>, and always having some kind of <a class="about-mis-link" href="#playground">creative project</a> going.</p>
         </div>
     </div>
 </section>
@@ -2240,7 +2247,8 @@
 @* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
 <partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />
 
-@* ABOUT, CONTINUED: the three things about me, now that you've seen the work *@
+@* ABOUT, CONTINUED is off the page: it repeated Beyond the Classroom (Girls Who Code, the book, the same photos).
+   To bring it back, uncomment this section (aboutPoints above still holds its content).
 <section class="about-section about-more" id="about-more">
     <div class="about-container">
         <div class="about-stories">
@@ -2279,6 +2287,7 @@
         </div>
     </div>
 </section>
+*@
 
 @* PLAY: Playground, the things I make for fun (Views/Home/Make.cshtml) *@
 <partial name="Make" />
@@ -2861,7 +2870,8 @@
             if (started) return; started = true;
             // a beat of pure keyboard mash, typed in fast, then the sentence unfolds out of it
             let typed = 0;
-            const mashLine = junk(full.length);
+            // the mash keeps the sentence's spaces, so it wraps like the real words and never runs past the edge
+            const mashLine = full.replace(/[^ ]/g, () => junk(1));
             const typeMash = () => {
                 typed = Math.min(full.length, typed + 3);
                 line.innerHTML = '<span class="x">' + esc(mashLine.slice(0, typed)) + '</span>';
@@ -2875,6 +2885,10 @@
             };
             typeMash();
         };
+        // hold the heading at its finished height while it types, so nothing below jumps around
+        const tag = document.querySelector('.about-tagline');
+        tag.style.minHeight = tag.offsetHeight + 'px';
+        addEventListener('resize', () => { tag.style.minHeight = ''; }, { once: true });
         line.innerHTML = '';
         word.innerHTML = '';
         const seen = new IntersectionObserver(([e]) => { if (e.isIntersecting) { start(); seen.disconnect(); } }, { threshold: 0.4 });

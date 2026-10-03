@@ -687,7 +687,7 @@
         const spyParts = [
             ['work', 'selected-work'], ['hello', 'about'], ['work', 'experience'], ['study', 'education'],
             ['work', 'awards'], ['work', 'beyond'], ['work', 'projects'], ['study', 'why-mis'], ['study', 'coursework'],
-            ['hello', 'about-more'], ['playground', 'playground'], ['hello', 'know-me']
+            ['playground', 'playground'], ['hello', 'know-me']
         ].map(([spy, id]) => [spy, document.getElementById(id)]).filter(([, el]) => el);
         if (spyParts.length) {
             const spy = () => {
