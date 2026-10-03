@@ -659,10 +659,15 @@
                 </div>
                 </div>
 
+                @* the four levels are the headline; "Hand me a problem" and the zoom lens wait behind View more *@
+                <div class="mis-more-bar">
+                    <button type="button" class="mis-more-btn" aria-expanded="false" aria-controls="mis-more-problem mis-more-zoom">View more <span aria-hidden="true">↓</span></button>
+                </div>
+
                 @* 4. my projects moved to their own Projects section on Pursue, right after Experience (Views/Home/_RideFlowProof.cshtml) *@
 
                 @* 5. how I work: hand me a problem *@
-                <div class="mp-section" aria-labelledby="mp-problem">
+                <div class="mp-section mis-more" id="mis-more-problem" aria-labelledby="mp-problem" hidden>
                     <div class="mp-head">
                         <p class="mp-eyebrow">People, Technology, Business</p>
                         <h3 class="mp-h2" id="mp-problem">Hand me a problem.</h3>
@@ -700,7 +705,7 @@
             </dialog>
 
             @* ===== the story around the cycle ===== *@
-            <div class="story">
+            <div class="story mis-more" id="mis-more-zoom" hidden>
 
                 @* The zoom lens *@
                 <section class="story-section reveal" aria-labelledby="zoom-heading">
@@ -755,6 +760,47 @@
         </div>
     </div>
 </div>
+
+<style>
+    .mis-more-bar { display: flex; justify-content: center; margin: 36px 0 8px; }
+    .mis-more-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 28px;
+        border: 1.5px solid #76344E;
+        border-radius: var(--r-pill, 999px);
+        background: transparent;
+        font-family: Georgia, serif;
+        font-size: 1rem;
+        font-style: italic;
+        color: #76344E;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.25s ease, color 0.25s ease;
+    }
+    .mis-more-btn:hover, .mis-more-btn:focus-visible { background: #76344E; color: #FFF8F6; }
+    .mis-more-btn:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
+    .mis-more:not([hidden]) { animation: misMoreIn 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+    @@keyframes misMoreIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
+</style>
+<script>
+    // View more: opens "Hand me a problem" and the zoom lens under the four levels; View less folds them away again
+    (() => {
+        const btn = document.querySelector('.mis-more-btn');
+        if (!btn) return;
+        const parts = [...document.querySelectorAll('.mis-more')];
+        const open = on => {
+            parts.forEach(p => p.hidden = !on);
+            btn.setAttribute('aria-expanded', on);
+            btn.innerHTML = on ? 'View less <span aria-hidden="true">↑</span>' : 'View more <span aria-hidden="true">↓</span>';
+            if (!on) btn.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        };
+        btn.addEventListener('click', () => open(btn.getAttribute('aria-expanded') !== 'true'));
+        // a link straight to one of them opens it first
+        if (['#mp-problem', '#zoom-heading'].includes(location.hash)) open(true);
+    })();
+</script>
 
 @* Course Modal *@
 <div id="courseModal" class="course-modal">
