@@ -2216,7 +2216,7 @@
         </p>
         <div class="cover-actions">
             <a class="cover-btn primary" href="#selected-work" aria-label="See my selected work">Work <span class="cover-arrow" aria-hidden="true">↓</span></a>
-            <a class="cover-btn" href="/study#mis" aria-label="See my Management Information Systems skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/#mis" aria-label="See my Management Information Systems skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
             <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
@@ -2361,7 +2361,7 @@
                 <span class="about-rotator" aria-hidden="true"><span class="about-word on" data-words="psychology|brands|learning">psychology</span></span><span class="about-caret" aria-hidden="true"></span></h2>
             <p class="about-prev">Previously at <a href="https://www.linkedin.com/company/oracle/" target="_blank" rel="noopener">Oracle</a> and <a href="https://www.linkedin.com/company/acacia-advisors/" target="_blank" rel="noopener">Acacia Advisors</a></p>
             <p>I’m a student at UT Austin’s McCombs School of Business, earning a Bachelor of Business Administration in <a class="about-mis-link" href="/#projects">Management Information Systems (MIS)</a> and a Bachelor of Arts in Psychology, with minors in Marketing and Educational Psychology.</p>
-            <p>Those aren’t four separate interests. Psychology and consumer behavior explain why people choose what they choose. <a class="about-mis-link" href="/study#marketing">Marketing</a> and <a class="about-mis-link" href="/work/starbucks">product strategy</a> decide what’s worth offering them. Technology is how it gets built. And education asks the same question about learning: why some things stick. That thread runs through everything here, from discovery calls at Oracle to a children’s book about women engineers.</p>
+            <p>Those aren’t four separate interests. Psychology and consumer behavior explain why people choose what they choose. <a class="about-mis-link" href="/#marketing-work">Marketing</a> and <a class="about-mis-link" href="/work/starbucks">product strategy</a> decide what’s worth offering them. Technology is how it gets built. And education asks the same question about learning: why some things stick. That thread runs through everything here, from discovery calls at Oracle to a children’s book about women engineers.</p>
             <p>Off the clock: vanilla lattes, rom-coms, Pilates and yoga, a new restaurant whenever possible, and always one creative project in progress. Most of them end up somewhere on this site.</p>
         </div>
     </div>
@@ -2379,58 +2379,16 @@
     </div>
 </section>
 
-@* MARKETING WORK: my Marketing minor gets its own row, right after Selected work: the top four decks from the
-   Marketing board (Views/Home/_MarketingBoard.cshtml, in its rank order; Starbucks is already in Selected work),
-   each opening its deck on /marketing *@
-@{
-    var marketingRow = new[]
-    {
-        (Id: "rhode", Brand: "Rhode", Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Line: "Making the brand outlive the fame", Cover: "rhode"),
-        (Id: "glossier", Brand: "Glossier", Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Line: "Winning back the group chat", Cover: "glossier"),
-        (Id: "netflix", Brand: "Netflix", Kind: "Media strategy", Title: "Netflix’s $20B Leak", Line: "Keeping the fandom after the credits", Cover: "netflix"),
-        (Id: "primebookclub", Brand: "Prime Video", Kind: "Community strategy", Title: "All Hype, No Club", Line: "Turning book-to-screen hype into a club", Cover: "primebookclub")
-    };
-}
-<section class="selected-work marketing-row" id="marketing-work" aria-labelledby="marketing-work-heading">
-    <div class="selected-wrap">
-        <div class="selected-head">
-            <h2 id="marketing-work-heading">Marketing work</h2>
-            <a class="selected-all" href="/marketing">All marketing work <span aria-hidden="true">→</span></a>
-        </div>
-        <p class="marketing-row-lede">From my Marketing minor: why people fall for a brand, and what would make them stay.</p>
-        <ul class="marketing-row-grid">
-            @foreach (var m in marketingRow)
-            {
-                <li>
-                    <a href="/marketing#mk-proj-@m.Id">
-                        <span class="marketing-row-cover"><img src="/videos/projects/@(m.Cover).jpg" alt="" loading="lazy" /></span>
-                        <span class="marketing-row-kind">@m.Brand · @m.Kind</span>
-                        <span class="marketing-row-title">@m.Title</span>
-                        <span class="marketing-row-line">@m.Line</span>
-                    </a>
-                </li>
-            }
-        </ul>
+@* MARKETING WORK: my Marketing minor's whole section, right after Selected work: the board of every project and
+   each deck (Views/Home/_MarketingWork.cshtml). Its slideshows and carousel are run by the Coursework scripts further down. *@
+<link rel="stylesheet" href="/css/coursework-responsive.css">
+<link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
+<section class="coursework-section home-marketing" id="marketing-work" aria-label="Marketing work">
+    <div class="coursework-container">
+        <partial name="_MarketingWork" />
     </div>
 </section>
-
-<style>
-    /* Marketing work: four decks in a row, a quieter echo of Selected work */
-    .marketing-row { padding-top: 10px; }
-    .marketing-row .selected-head { margin-bottom: 10px; }
-    .marketing-row-lede { margin: 0 0 30px; font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; color: #733642; }
-    .marketing-row-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin: 0; padding: 0; list-style: none; }
-    .marketing-row-grid a { display: flex; flex-direction: column; gap: 6px; color: inherit; text-decoration: none; }
-    .marketing-row-cover { display: block; aspect-ratio: 16 / 10; border-radius: var(--r-card, 14px); overflow: hidden; background: #F6E4E1; box-shadow: var(--shadow-card); }
-    .marketing-row-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s ease; }
-    .marketing-row-grid a:hover .marketing-row-cover img, .marketing-row-grid a:focus-visible .marketing-row-cover img { transform: scale(1.04); }
-    .marketing-row-grid a:focus-visible { outline: 2px solid #76344E; outline-offset: 6px; border-radius: 8px; }
-    .marketing-row-kind { margin-top: 8px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #76344E; }
-    .marketing-row-title { font-family: Georgia, serif; font-size: 1.2rem; line-height: 1.25; color: #1E100A; }
-    .marketing-row-line { font-size: 0.9rem; line-height: 1.45; color: #7A665F; }
-    @@media (max-width: 900px) { .marketing-row-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @@media (max-width: 480px) { .marketing-row-grid { grid-template-columns: 1fr; } }
-</style>
 
 @* EXPERIENCE: where I've worked, right after what I've built (Views/Home/_Experience.cshtml, shared with Work) *@
 <section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
@@ -2485,7 +2443,7 @@
         (1, "Consumer Behavior", "Marketing", "", "Consumer Behavior", "Why do people buy what they buy?",
             "Needs, perception, identity and the path to a purchase, and what turns a buyer into a regular.",
             new[] { "Decision journey", "Motivation", "Identity", "Brand loyalty" },
-            "How Glossier Lost Its Cult", "/marketing#mk-proj-glossier"),
+            "How Glossier Lost Its Cult", "/#mk-proj-glossier"),
         (1, "Social Psychology", "Psychology", "", "Social Psychology", "How do other people shape what we think and do?",
             "Attitudes, conformity, group behavior and social influence: why the room changes the person.",
             new[] { "Attitudes", "Conformity", "Group behavior", "Social influence" },
@@ -2493,7 +2451,7 @@
         (1, "Science of Influence", "Marketing", "", "Science of Influence", "What actually changes someone’s mind?",
             "The research behind persuasion: social proof, scarcity, commitment, authority and framing.",
             new[] { "Persuasion", "Social proof", "Scarcity", "Framing" },
-            "Rhode Has a Hailey Problem", "/marketing#mk-proj-rhode"),
+            "Rhode Has a Hailey Problem", "/#mk-proj-rhode"),
         (1, "Cognitive Psychology", "Psychology", "", "Cognitive Psychology", "How does the mind take in, store and use information?",
             "Attention, perception, memory and decision-making: the mental machinery behind every choice someone makes.",
             new[] { "Attention", "Perception", "Memory", "Decision-making", "Problem solving" },
@@ -2504,7 +2462,7 @@
     <div class="about-container">
         <div class="home-part-head">
             <h2 id="home-education-heading">Education</h2>
-            <a class="home-part-link" href="/study#why-mis">Why MIS and McCombs <span aria-hidden="true">→</span></a>
+            <a class="home-part-link" href="/#why-mis">Why MIS and McCombs <span aria-hidden="true">→</span></a>
         </div>
         <div class="edu">
             <div class="edu-side">
@@ -2582,6 +2540,15 @@
     </div>
 </section>
 
+@* THE WHY: why MIS and why McCombs, as tabs (Views/Home/Pursue.cshtml, Study half, embedded) *@
+<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true }, { "NoCoursework", true } }' />
+
+@* WHAT I CAN DO: Coursework's Overview and MIS Major (capability cards, the curriculum cycle, "View more" for the rest).
+   Marketing isn't repeated here: it has its own section after Selected work. *@
+<section class="pursue-part" id="coursework" aria-label="Coursework">
+    @await Html.PartialAsync("Coursework", null, new ViewDataDictionary(ViewData) { { "CourseworkOnly", "mis" } })
+</section>
+
 @* MORE PROJECTS: everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
 <section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
     <div class="selected-wrap">
@@ -2597,6 +2564,11 @@
 @* BEYOND THE CLASSROOM: what I do for other people, the bridge from school to the personal (the same view its old page used) *@
 <section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
     @await Html.PartialAsync("BeyondTheClassroom")
+</section>
+
+@* SCHOLARSHIPS: the honors, after what I do for other people (Views/Home/ScholarshipsAndAwards.cshtml) *@
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
 
 @* ABOUT, CONTINUED is off the page: it repeated Beyond the Classroom (Girls Who Code, the book, the same photos).
@@ -2959,9 +2931,9 @@
     var finale = new (string Prefix, int To, string Suffix, string Label, string Note, string Href)[]
     {
         // every label and every italic line is about the same length, so each card reads as two lines and two lines
-        ("", 9, "", "subjects studied across four schools", "Most people pick one major. I picked two.", "/study#overview"),
+        ("", 9, "", "subjects studied across four schools", "Most people pick one major. I picked two.", "/#overview"),
         ("", 240, "+", "girls I taught to code in two years", "In my AP CS class, there were three of us.", "#beyond"),
-        ("", 350, "", "hours volunteered in a single year", "Gold only required 250. I kept going.", "/study#awards"),
+        ("", 350, "", "hours volunteered in a single year", "Gold only required 250. I kept going.", "/#awards"),
         ("", 1000, "", "book copies sold in the first month", "I wrote it for one reader: my sister.", "#beyond"),
         ("$", 4194, "", "given to DFW libraries for early STEM", "All of my book’s first-month profit.", "#beyond")
     };
@@ -3488,3 +3460,54 @@
     // set last: the sections embedded above set their own page titles while they render
     ViewData["Title"] = "Hello";
 }
+
+@* CHAPTERS: a slim tracker down the right edge (wide screens only), so the long scroll always says where you are.
+   The current chapter's name shows beside its dot; it stays out of the way on the hero. *@
+@{
+    var chapters = new[]
+    {
+        ("selected-work", "Work"), ("marketing-work", "Marketing"), ("experience", "Experience"), ("education", "Education"),
+        ("why-mis", "The why"), ("coursework", "What I can do"), ("projects", "More projects"), ("beyond", "Beyond the classroom"),
+        ("playground", "Passions"), ("finale", "The short version")
+    };
+}
+<nav class="chapters" aria-label="Chapters">
+    <ol>
+        @foreach (var (id, name) in chapters)
+        {
+            <li><a href="#@id" data-chapter="@id"><span>@name</span></a></li>
+        }
+    </ol>
+</nav>
+<style>
+    .chapters { position: fixed; right: 18px; top: 50%; z-index: 40; transform: translateY(-50%); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .chapters.on { opacity: 1; pointer-events: auto; }
+    .chapters ol { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .chapters a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none; }
+    .chapters a::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: rgba(118, 52, 78, 0.28); transition: background 0.2s ease, height 0.2s ease; }
+    .chapters span { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #76344E; white-space: nowrap;
+        opacity: 0; transform: translateX(6px); transition: opacity 0.2s ease, transform 0.2s ease; }
+    .chapters a:hover span, .chapters a:focus-visible span, .chapters a.current span { opacity: 1; transform: none; }
+    .chapters a:hover::after, .chapters a.current::after { background: #76344E; }
+    .chapters a.current::after { height: 18px; border-radius: 4px; }
+    .chapters a:focus-visible { outline: 2px solid #76344E; outline-offset: 4px; border-radius: 4px; }
+    @@media (max-width: 1199px) { .chapters { display: none; } }
+</style>
+<script>
+    // light up the chapter in the middle of the screen; show the tracker once the hero is behind you
+    (() => {
+        const nav = document.querySelector('.chapters');
+        if (!nav || !('IntersectionObserver' in window)) return;
+        const links = [...nav.querySelectorAll('a')];
+        const sections = links.map(a => document.getElementById(a.dataset.chapter)).filter(Boolean);
+        const hero = document.querySelector('.cover-hero');
+        if (hero) new IntersectionObserver(([e]) => nav.classList.toggle('on', !e.isIntersecting), { threshold: 0.15 }).observe(hero);
+        else nav.classList.add('on');
+        // sections without their own dot light up the chapter they belong to
+        const partOf = { awards: 'beyond' };
+        const mark = id => links.forEach(a => a.classList.toggle('current', a.dataset.chapter === (partOf[id] || id)));
+        const seen = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) mark(e.target.id); }),
+            { rootMargin: '-45% 0px -50% 0px' });
+        [...sections, ...Object.keys(partOf).map(id => document.getElementById(id)).filter(Boolean)].forEach(s => seen.observe(s));
+    })();
+</script>

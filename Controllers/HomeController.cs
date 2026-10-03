@@ -16,23 +16,13 @@ public class HomeController : Controller
     // A server redirect can't see the #part, so this tiny page does the hop in the browser.
     private ContentResult ToHome(string section) => Content(
         $"<!doctype html><meta charset=\"utf-8\"><title>Suhani Tiwari</title>" +
-        $"<script>location.replace('/' + (location.hash.replace('#mk-title-', '#mk-proj-') || '#{section}'))</script>" +
+        $"<script>location.replace('/' + (location.hash.replace('#mk-title-', '#mk-proj-').replace(/^#marketing$/, '#marketing-work') || '#{section}'))</script>" +
         $"<a href=\"/#{section}\">Continue to suhanitiwari.com</a>", "text/html");
 
-    // The homepage introduces; the Study page holds the depth: why MIS and McCombs,
-    // coursework (MIS and Marketing) and scholarships. Old addresses land on their part of it.
-    private ContentResult ToStudy(string section) => Content(
-        $"<!doctype html><meta charset=\"utf-8\"><title>Suhani Tiwari</title>" +
-        $"<script>location.replace('/study' + (location.hash || '#{section}'))</script>" +
-        $"<a href=\"/study#{section}\">Continue to suhanitiwari.com/study</a>", "text/html");
-
+    // everything lives on the one home page again; old /study links land on their part of it
     [Route("study")]
     [Route("home/study")]
-    public IActionResult Study()
-    {
-        ViewData["Part"] = "study";
-        return View("Pursue");
-    }
+    public IActionResult Study() => ToHome("why-mis");
 
     // Marketing: my Marketing minor's projects on their own page
     [Route("marketing")]
@@ -40,7 +30,7 @@ public class HomeController : Controller
 
     public IActionResult Education() => ToHome("education");
 
-    public IActionResult Coursework() => ToStudy("coursework");
+    public IActionResult Coursework() => ToHome("coursework");
 
     public IActionResult BeyondTheClassroom() => ToHome("beyond");
 
@@ -60,7 +50,7 @@ public class HomeController : Controller
     [Route("career")]
     public IActionResult Career() => Redirect("/#experience");
 
-    public IActionResult ScholarshipsAndAwards() => ToStudy("awards");
+    public IActionResult ScholarshipsAndAwards() => ToHome("awards");
 
     // Off the Clock (my favorites) moved to its own site; old links land there
     public IActionResult Favorites() => Redirect("https://suhxnitiwari.github.io/off-the-clock/");
@@ -72,7 +62,7 @@ public class HomeController : Controller
 
     // suhanitiwari.com/mis: how I define the MIS major, opened straight to the MIS Major tab of Coursework
     [Route("mis")]
-    public IActionResult Mis() => Redirect("/study#mis");
+    public IActionResult Mis() => Redirect("/#mis");
 
     // suhanitiwari.com/projects: straight to the things I've built
     [Route("projects")]

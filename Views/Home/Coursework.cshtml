@@ -1,7 +1,9 @@
 @{
-    // /marketing renders just the Marketing Minor tab, on its own page (ViewData["CourseworkOnly"] = "marketing")
+    // /marketing renders just the Marketing Minor tab, on its own page (ViewData["CourseworkOnly"] = "marketing");
+    // the home page renders Overview and MIS Major only ("mis"), since Marketing has its own section higher up
     var marketingOnly = ViewData["CourseworkOnly"] as string == "marketing";
-    if (!marketingOnly) { ViewData["Title"] = "Coursework"; }
+    var misOnly = ViewData["CourseworkOnly"] as string == "mis";
+    if (!marketingOnly && !misOnly) { ViewData["Title"] = "Coursework"; }
 }
 
 @functions {
@@ -463,7 +465,10 @@
                 <button type="button" class="cw-tab" role="tab" id="cw-tab-overview" aria-controls="cw-overview" aria-selected="false" tabindex="-1">Overview</button>
                 <button type="button" class="cw-tab" role="tab" id="cw-tab-mis" aria-controls="cw-mis" aria-selected="true">MIS Major</button>
             }
-            <button type="button" class="cw-tab" role="tab" id="cw-tab-mk" aria-controls="cw-mk" aria-selected="false" tabindex="-1">Marketing Minor</button>
+            @if (!misOnly)
+            {
+                <button type="button" class="cw-tab" role="tab" id="cw-tab-mk" aria-controls="cw-mk" aria-selected="false" tabindex="-1">Marketing Minor</button>
+            }
         </div>
 
         @if (!marketingOnly)
@@ -833,9 +838,12 @@
 
         }
 
-        <div class="cw-panel" id="cw-mk" role="tabpanel" aria-labelledby="cw-tab-mk" hidden="@(marketingOnly ? null : "hidden")">
-            <partial name="_MarketingWork" />
-        </div>
+        @if (!misOnly)
+        {
+            <div class="cw-panel" id="cw-mk" role="tabpanel" aria-labelledby="cw-tab-mk" hidden="@(marketingOnly ? null : "hidden")">
+                <partial name="_MarketingWork" />
+            </div>
+        }
     </div>
 </div>
 
@@ -1064,7 +1072,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     const baseTitle = document.title;
     const tabForHash = h =>
         // #mk-… is one marketing project (the home page's best-work cards link straight to them)
-        h === '#marketing' || h.startsWith('#mk-') ? byId('cw-tab-mk')
+        h === '#marketing' || h.startsWith('#mk-') ? (byId('cw-tab-mk') || misTab)
             // Overview, and the theme links that pick a crossover on it (from the home page)
             : ['#overview', '#human-behavior', '#persuasion', '#storytelling', '#decision-making', '#leadership', '#innovation'].includes(h) ? byId('cw-tab-overview')
             : misTab;
@@ -1119,8 +1127,11 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     const onPursue = !!document.getElementById('coursework');
     // a marketing project link (#mk-title-netflix or #mk-proj-netflix) lands on that project's card in the Marketing tab
     const mkCard = location.hash.startsWith('#mk-') && document.getElementById(location.hash.slice(1))?.closest('.mp-proj');
+    // on the home page Marketing has its own section (#marketing-work), so an old #marketing link lands there
+    const marketingHome = location.hash === '#marketing' && !byId('cw-tab-mk') && document.getElementById('marketing-work');
     const jumpTo = ['#skills'].includes(location.hash) ? location.hash.slice(1)
         : mkCard ? mkCard.id
+        : marketingHome ? 'marketing-work'
         : onPursue && ['#mis', '#marketing', '#overview'].includes(location.hash) ? 'coursework' : null;
     show(tabForHash(location.hash));
     // jump instantly (the site scrolls smoothly, which can stall on load), and once more after images settle,
