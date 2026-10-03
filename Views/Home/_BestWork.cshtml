@@ -40,9 +40,9 @@
             Label: "Flipping through my Owala Marathon Series deck", Link: "/#mk-proj-1",
             Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
 
-        (Cols: 4, Rows: 1, Fill: false, Kind: "Data and SQL", Title: "Listening History", Video: "listening", Panel: (string?)"#8A4D57", Inset: false,
-            Label: "Scrolling through the live Listening History app", Link: "https://listening-history.onrender.com/",
-            Line: "Four years of my Spotify listening, turned into a data warehouse I can ask anything in SQL.", Skills: new[] { "Python", "PostgreSQL", "FastAPI" }),
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Data story", Title: "Heavy Rotation", Video: "galaxy", Panel: (string?)null, Inset: false,
+            Label: "Flying at warp speed into a galaxy where every song I've played is a star", Link: "https://suhxnitiwari.github.io/listening-galaxy/",
+            Line: "Four years of my Spotify listening as a galaxy: every song a star, and the more I played it, the brighter it burns.", Skills: new[] { "Python", "PostgreSQL", "JavaScript" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
             Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
             Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
@@ -64,9 +64,9 @@
     {
         var picks = new (string Title, int Cols, bool Fill, string Line)[]
         {
-            ("RideFlow", 8, false, "33 automated tests. Riders, drivers and admins. I built the whole rideshare system, not just the screens."),
+            ("Heavy Rotation", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
             ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have."),
-            ("Listening History", 6, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
+            ("RideFlow", 6, false, "33 automated tests. Riders, drivers and admins. I built the whole rideshare system, not just the screens."),
             ("Saturday in Austin", 6, false, "250 Austin places and an algorithm for the question every group chat fails to answer.")
         };
         stories = picks.Select(p =>
@@ -80,13 +80,31 @@
     // Further down the home page: everything Selected work didn't show, re-tiled so each row still fills 12 columns
     if (ViewData["Rest"] as bool? == true)
     {
-        var shown = new[] { "RideFlow", "Girls Can Be Engineers, Too!", "Listening History", "Saturday in Austin" };
+        var shown = new[] { "Heavy Rotation", "Girls Can Be Engineers, Too!", "RideFlow", "Saturday in Austin" };
         stories = stories.Where(s => !shown.Contains(s.Title)).Select(s =>
         {
             if (s.Title is "Celestial" or "YouTube Watch Funnel" or "Spotify Retention Cohorts") s.Cols = 4;
             return s;
         }).ToArray();
     }
+}
+@{
+    // what the label beside your cursor says over each project: what you'd actually do there, in that project's own words
+    var cues = new Dictionary<string, string>
+    {
+        ["Heavy Rotation"] = "Fly through my galaxy ↗",
+        ["RideFlow"] = "Book a ride ↗",
+        ["Girls Can Be Engineers, Too!"] = "Read the story →",
+        ["Starbucks AI Loyalty"] = "Order the case study →",
+        ["Netflix’s $20B Leak"] = "Plug the leak →",
+        ["What’s in My Bag?"] = "Unzip my bag ↗",
+        ["How Glossier Lost Its Cult"] = "Open the group chat →",
+        ["Rhode Has a Hailey Problem"] = "Swatch the plan →",
+        ["Soft Heart. Strong Spirit."] = "Meet all ten of me ↗",
+        ["Owala: The Marathon Series"] = "Run the series →",
+        ["Saturday in Austin"] = "Plan your Saturday ↗",
+        ["Celestial"] = "Read my stars ↗"
+    };
 }
 <div class="best-board">
     @for (var i = 0; i < stories.Length; i++)
@@ -116,7 +134,7 @@
         var external = story.Link.StartsWith("http");
         var look = story.Panel == null ? "" : story.Inset ? " inset" : " framed";
         <a class="best-story@(story.Fill ? " best-fill" : "")@(story.Cols <= 5 ? " best-narrow" : "")" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms"
-           data-cue="@(external ? "Open it live ↗" : story.Link.StartsWith("/work/") ? "Read the case study →" : story.Video == "book" ? "Read the story →" : "See the deck →")">
+           data-cue="@(cues.TryGetValue(story.Title, out var cue) ? cue : external ? "Open it live ↗" : story.Link.StartsWith("/work/") ? "Read the case study →" : story.Video == "book" ? "Read the story →" : "See the deck →")">
             <span class="best-media@(look)" style="@(story.Panel != null ? $"--panel: {story.Panel}" : null)">
                 <video src="/videos/projects/@(story.Video).mp4" poster="/videos/projects/@(story.Video).jpg"
                        muted loop playsinline preload="none" aria-label="@story.Label"></video>

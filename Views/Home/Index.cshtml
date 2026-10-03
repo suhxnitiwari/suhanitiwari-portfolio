@@ -454,6 +454,54 @@
         text-decoration: underline;
     }
 
+    /* the résumé download: a quiet mulberry outline that fills in on hover */
+    .resume-actions {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+    }
+
+    .resume-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 20px 10px 17px;
+        border: 1.5px solid #76344E;
+        border-radius: var(--r-pill, 999px);
+        font-family: Georgia, serif;
+        font-size: 0.98rem;
+        font-style: italic;
+        white-space: nowrap;
+        color: #76344E;
+        text-decoration: none;
+        transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .resume-download svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.25s ease;
+    }
+
+    .resume-download:hover,
+    .resume-download:focus-visible {
+        background: #76344E;
+        color: #FFF8F6;
+        box-shadow: 0 6px 18px rgba(118, 52, 78, 0.22);
+    }
+
+    .resume-download:hover svg { transform: translateY(2px); }
+    .resume-download:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .resume-download, .resume-download svg { transition: none; }
+    }
+
     /* Education reads like a job row: the school set large on the left, the numbers and classes on the right */
     .edu {
         display: grid;
@@ -2027,7 +2075,7 @@
                 new StoryStat("$1M", "Azure AI product she wrote the go-to-market strategy for", "Acacia Advisors, in Experience", "#experience", "people", 1, Prefix: "$", Suffix: "M"),
                 new StoryStat("12", "weeks of Oracle’s Enterprise Sales Development program", "Oracle, in Experience", "#experience", "people", 12),
                 new StoryStat("33", "automated tests in RideFlow, her full-stack rideshare app", "RideFlow, in Selected work", "#selected-work", "make", 33),
-                new StoryStat("182,293", "Spotify records in the data warehouse she designed", "Listening History, in Selected work", "#selected-work", "make", 182293),
+                new StoryStat("182,293", "Spotify records in the data warehouse she designed", "Heavy Rotation, in Selected work", "#selected-work", "make", 182293),
                 new StoryStat("2", "McCombs scholarships for 2026–27, one for student leadership", "Scholarships & Awards", "#awards", "start", 2)
             }),
         new StoryChapter("ch-home", "04", "Home", "Home", "Austin, now",
@@ -2339,7 +2387,14 @@
     <div class="about-container">
         <div class="home-part-head">
             <h2 id="home-experience-heading">Experience</h2>
-            <a class="home-part-link" href="/resume" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↗</span></a>
+            @* one click saves the PDF as Tiwari_Suhani_Resume.pdf (/resume/download sends it under that name) *@
+            <div class="resume-actions">
+                <a class="home-part-link" href="/resume" target="_blank" rel="noopener">View <span aria-hidden="true">↗</span></a>
+                <a class="resume-download" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7.5 8 11l3.5-3.5M3 13.5h10"/></svg>
+                    <span class="resume-download-label">Download résumé</span>
+                </a>
+            </div>
         </div>
         <partial name="_Experience" />
     </div>

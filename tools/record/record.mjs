@@ -14,9 +14,17 @@ const shots = {
         url: 'https://rideflow-frontend.onrender.com/', w: 1280, h: 800,
         run: async ev => { await sleep(1500); await ev(`window.scrollTo({top: 0})`); for (let y = 0; y < 2400; y += 8) { await ev(`window.scrollTo(0, ${y})`); await sleep(16); } await sleep(800); }
     },
-    listening: {
-        url: 'https://listening-history.onrender.com/', w: 1280, h: 800,
-        run: async ev => { await sleep(1500); for (let y = 0; y < 2600; y += 8) { await ev(`window.scrollTo(0, ${y})`); await sleep(16); } await sleep(800); }
+    galaxy: {
+        // Heavy Rotation: prep waits for the soundcheck and picks "Continue without sound", then the video runs
+        // from the warp into the galaxy forming, month by month
+        url: 'https://suhxnitiwari.github.io/listening-galaxy/', w: 1280, h: 800,
+        prep: async ev => {
+            const quiet = `[...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Continue without sound')`;
+            for (let i = 0; i < 60 && !(await ev(`!!${quiet}`)); i++) await sleep(500);
+            await ev(`${quiet}.click()`);
+            await sleep(6500);   // skip the dark title card; start at the warp into the galaxy
+        },
+        run: async () => { await sleep(20000); }
     },
     bag: {
         url: 'https://suhxnitiwari.github.io/whats-in-my-bag/', w: 1000, h: 1000,

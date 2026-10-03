@@ -38,7 +38,7 @@ document.querySelectorAll('.mp-projects').forEach(root => {
         });
     });
     root.querySelectorAll('.mp-proj-arrow').forEach(b => b.addEventListener('click', () => show(current + +b.dataset.go)));
-    // a link like /home/work#mp-listening opens that project's slide and scrolls to it (the homepage cards use these)
+    // a link like /home/work#mp-rideflow opens that project's slide and scrolls to it (the homepage cards use these)
     const fromHash = () => {
         const target = location.hash.length > 1 && root.querySelector(location.hash);
         const slide = target && target.closest('.mp-proj');
