@@ -90,7 +90,7 @@ public class HomeController : Controller
         return PhysicalFile(path, "application/pdf", "Tiwari_Suhani_Resume.pdf");
     }
 
-    // Playground is the last big part of the home page
+    // Passions is the last big part of the home page
     public IActionResult Make() => ToHome("playground");
 
     // World moved out into its own project: github.com/suhxnitiwari/suhani-world

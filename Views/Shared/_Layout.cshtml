@@ -134,7 +134,7 @@
             transform: rotate(180deg);
         }
 
-        /* Laptops/desktops: dropdowns (Work, Study, Playground) open on hover too */
+        /* Laptops/desktops: dropdowns (Work, Study, Passions) open on hover too */
         @@media (hover: hover) and (min-width: 768px) {
             .nav-dropdown:hover .dropdown-menu-custom {
                 display: block;
@@ -557,7 +557,7 @@
                     </li>
                     <li class="nav-item nav-dropdown" id="makeNav">
                         <a href="/#playground" data-spy="playground" class="nav-link" style="display: flex; align-items: center; gap: 4px;">
-                            Playground<span class="nav-arrow">▼</span>
+                            Passions<span class="nav-arrow">▼</span>
                         </a>
                         <div class="dropdown-menu-custom">
                             <a href="/#art" class="dropdown-item-custom">Digital Art</a>
@@ -624,7 +624,7 @@
     <script src="~/js/sitara.js" asp-append-version="true"></script>
     <script src="~/js/sparkle.js" asp-append-version="true" defer></script>
     <script>
-        // Dropdowns (Work, Study, Playground). Clicking the name goes to the top of that page;
+        // Dropdowns (Work, Study, Passions). Clicking the name goes to the top of that page;
         // the menu opens on hover. On touch screens (no hover) the first tap opens the menu and a
         // second tap on the name goes to the page.
         const dropdowns = document.querySelectorAll('.nav-dropdown');
@@ -638,7 +638,7 @@
                     dropdown.classList.add('expanded');
                     return;
                 }
-                // a section of the home page (Work, Study, Playground): let the link jump down to it
+                // a section of the home page (Work, Study, Passions): let the link jump down to it
                 if (link.hash) return;
                 // already on that page: just glide back to the top
                 if (location.pathname.toLowerCase() === link.pathname.toLowerCase()) {
@@ -686,7 +686,7 @@
         // in page order, top to bottom
         const spyParts = [
             ['work', 'selected-work'], ['hello', 'about'], ['work', 'experience'], ['study', 'education'],
-            ['work', 'awards'], ['work', 'beyond'], ['work', 'projects'], ['study', 'why-mis'], ['study', 'coursework'],
+            ['work', 'beyond'], ['work', 'projects'], ['study', 'why-mis'], ['study', 'coursework'], ['work', 'awards'],
             ['playground', 'playground'], ['hello', 'know-me']
         ].map(([spy, id]) => [spy, document.getElementById(id)]).filter(([, el]) => el);
         if (spyParts.length) {
