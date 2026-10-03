@@ -529,6 +529,7 @@
 
     /* Education reads like a job row: the school set large on the left, the numbers and classes on the right */
     .edu {
+        --edu-line: 1.65rem;   /* one degree line; the two class rows match it, so they sit level with BA and Minors */
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
         gap: 48px;
@@ -558,7 +559,7 @@
         padding: 0;
         list-style: none;
         font-size: 0.95em;
-        line-height: 1.7;
+        line-height: var(--edu-line);
         color: #3F4A34;
     }
 
@@ -566,75 +567,150 @@
         color: #1E100A;
     }
 
-    /* three fields, each with the one job it does */
+    .edu-facts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        align-items: start;
+        gap: 20px;
+        margin: 0 0 auto;   /* the numbers at the top, the classes pushed down to end level with Minors */
+        padding-bottom: 16px;
+    }
+
+    .edu-facts div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    /* lining numerals and one line height, so 3.5, May 2027, #4 and #6 share a baseline */
+    .edu-facts dt {
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-weight: 400;
+        font-variant-numeric: lining-nums;
+        line-height: 1.1;
+        color: #1E100A;
+    }
+
+    .edu-facts dd {
+        margin: 0;
+        font-size: 0.85em;
+        line-height: 1.35;
+        color: #7A665F;
+    }
+
+    .edu-label {
+        margin: 0;
+        line-height: var(--edu-line);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #76344E;
+    }
+
     .edu-main {
         min-width: 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        gap: 22px;
+        container-type: inline-size;
     }
 
-    .edu-trio {
+    .edu-rows {
         display: grid;
-        gap: 14px;
+    }
+
+    /* each row: one degree line tall, a small label, then four pills on one line that fill the width */
+    .edu-row {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 12px;
+        height: var(--edu-line);
+    }
+
+    .edu-row-label {
+        width: 9em;
+        white-space: nowrap;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: #7A665F;
+    }
+
+    .edu-courses {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 6px;
         margin: 0;
         padding: 0;
         list-style: none;
     }
 
-    .edu-trio li {
+    .edu-courses li {
+        flex: 1 1 auto;
         display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 4px 18px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #EBD5D0;
     }
 
-    .edu-trio-line {
-        font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-size: clamp(1.6rem, 3vw, 2.3rem);
-        line-height: 1.1;
-        color: #1E100A;
-    }
-
-    /* the classes under each line: real buttons, since each one opens its card */
-    .edu-classes {
-        flex-basis: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 6px;
-    }
-
+    /* each class is a button that opens its card, compact enough that each row stays one line */
     .edu-class {
-        padding: 6px 14px;
+        flex: 1 1 auto;
+        padding: 2px 10px;
         border: 1px solid #E2C6C0;
-        border-radius: 999px;
+        border-radius: var(--r-pill, 999px);
         background: #FFFFFF;
         font: inherit;
-        font-size: 0.85rem;
+        font-size: clamp(0.6rem, 1.75cqi, 0.78rem);   /* shrinks with the column so all four always fit on one line */
+        line-height: 1.35;
+        white-space: nowrap;
         color: #3A1F26;
         cursor: pointer;
         transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
-    .edu-class::after {
-        content: " +";
-        color: #A9788A;
+    .edu-row + .edu-row .edu-class {
+        background: #F6E4E1;
+        border-color: #E8C9C3;
     }
 
-    .edu-class:hover, .edu-class:focus-visible {
-        border-color: #76344E;
+    .edu-class:hover, .edu-class:focus-visible,
+    .edu-row + .edu-row .edu-class:hover, .edu-row + .edu-row .edu-class:focus-visible {
         background: #76344E;
+        border-color: #76344E;
         color: #FFF8F6;
     }
 
-    .edu-class:hover::after, .edu-class:focus-visible::after { color: #F6E4E1; }
-
     .edu-class:focus-visible { outline: 2px solid #76344E; outline-offset: 2px; }
+
+    /* a narrow right column (tablets, small windows) can't fit four on a line: let the rows wrap instead */
+    @@container (max-width: 520px) {
+        .edu-label {
+            margin-bottom: 6px;
+        }
+
+        .edu-rows {
+            gap: 8px;
+        }
+
+        .edu-row {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 4px;
+            height: auto;
+        }
+
+        .edu-courses {
+            flex-wrap: wrap;
+        }
+
+        .edu-class {
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            white-space: normal;
+        }
+    }
+
+
 
     /* the class card */
     .class-card {
@@ -660,26 +736,6 @@
     .class-card-topics li { padding: 4px 11px; border-radius: 999px; background: rgba(143, 70, 97, 0.09); font-size: 0.82rem; font-weight: 600; color: #76344E; }
     .class-card-proof { font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700; color: #76344E; text-decoration: none; border-bottom: 1px solid currentColor; }
 
-    .edu-trio-field {
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #76344E;
-    }
-
-    .edu-more {
-        align-self: flex-start;
-        font-family: Georgia, serif;
-        font-style: italic;
-        font-size: 1.05rem;
-        color: #76344E;
-        text-decoration: none;
-        border-bottom: 1px solid currentColor;
-    }
-
-    .edu-more:hover, .edu-more:focus-visible { color: #5E2840; }
-
     /* the three stories, now further down the page, get their own breathing room */
     .about-more {
         padding-top: 80px;
@@ -703,6 +759,43 @@
 
         .edu-school {
             font-size: 2.1rem;
+        }
+
+        .edu-facts {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        /* phones: everything stacks, so the rows can wrap and breathe again */
+        .edu-main {
+            display: block;
+        }
+
+        .edu-facts {
+            margin-bottom: 8px;
+        }
+
+        .edu-label {
+            margin-bottom: 8px;
+        }
+
+        .edu-rows {
+            gap: 10px;
+        }
+
+        .edu-row {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 6px;
+            height: auto;
+        }
+
+        .edu-courses {
+            flex-wrap: wrap;
+        }
+
+        .edu-class {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            white-space: normal;
         }
     }
 
@@ -2293,59 +2386,54 @@
     </div>
 </section>
 
-@* EDUCATION, compressed: the school on the left, the three fields as one sentence about what each one is for,
-   and the depth (why MIS and McCombs, coursework, rankings, scholarships) one click away on /study *@
+@* EDUCATION: school, degrees, GPA and the classes behind what I build (same facts as my résumé). Each class is a button
+   that opens its card: what it asks, what it covers, the tools, and where it shows up in my work *@
 @{
-    var eduTrio = new[]
+    var eduFacts = new[]
     {
-        ("Build the technology.", "Management Information Systems"),
-        ("Understand the person.", "Psychology"),
-        ("Make them care.", "Marketing")
+        ("3.5", "GPA, out of 4.0"),
+        ("May 2027", "graduating"),
+        ("#4", "Management Information Systems program in the US"),
+        ("#6", "undergrad business school in the US")
     };
-    // the classes under each line. Each is a button that opens its card: what it asks, what it covers,
-    // the tools, and where it shows up in my work. MIS details match Coursework (Views/Home/Coursework.cshtml).
-    var eduClasses = new (int Field, string Code, string Name, string Question, string Summary, string[] Topics, string Proof, string ProofHref)[]
+    // two rows that show how the halves work together: the tech I build with, then the business and psychology of who it's for
+    var eduRows = new[] { "Build it", "Know who it’s for" };
+    // every class on the two rows: (row, short label on the button, then what its card says).
+    // MIS details match Coursework (Views/Home/Coursework.cshtml).
+    var eduClasses = new (int Row, string Label, string Field, string Code, string Name, string Question, string Summary, string[] Topics, string Proof, string ProofHref)[]
     {
-        (0, "MIS 304", "Problem Solving and Programming", "Can I translate ambiguity into executable logic?",
-            "Turning business problems written in plain English into working Python.",
-            new[] { "Python", "Object-oriented programming", "pandas", "Matplotlib", "Data structures", "LLMs", "Prompt engineering" },
-            "Saturday in Austin", "https://suhxnitiwari.github.io/saturday-in-austin/"),
-        (0, "MIS 325", "Database Management", "How should information be represented and used?",
-            "Designing a database from scratch, then moving past SQL into NoSQL, pipelines and cloud warehouses.",
-            new[] { "SQL", "PL/SQL", "ER modeling", "Normalization", "CTEs", "Window functions", "Stored procedures", "MongoDB", "Snowflake", "ETL pipelines" },
-            "Listening History", "https://listening-history.onrender.com"),
-        (0, "MIS 333K", "Web Application Development", "Can I turn code and data into something people can use?",
-            "A full web app with user accounts, a real database and an AI feature, built as a team.",
-            new[] { "C#", "ASP.NET Core", "Entity Framework Core", "LINQ", "Azure SQL", "Users and roles", "AI features", "MVC architecture" },
-            "This website", "https://github.com/suhxnitiwari/suhanitiwari-portfolio"),
-        (0, "MIS 372T", "Full-Stack Web App Development", "Can I take an app from idea to deployed, alone?",
+        (0, "Full-Stack Web Dev", "Management Information Systems", "MIS 372T", "Full-Stack Web App Development", "Can I take an app from idea to deployed, alone?",
             "A full-stack app built and deployed end to end. Mine was RideFlow, built solo.",
             new[] { "React", "Vite", "Node.js", "Express", "Sequelize", "PostgreSQL", "REST APIs", "Deployment" },
             "RideFlow", "https://rideflow-frontend.onrender.com/"),
-        (1, "", "Cognitive Psychology", "How does the mind take in, store and use information?",
-            "Attention, perception, memory and decision-making: the mental machinery behind every choice someone makes.",
-            new[] { "Attention", "Perception", "Memory", "Decision-making", "Problem solving" },
-            "Search History", "https://suhxnitiwari.github.io/search-history/"),
-        (1, "", "Social Psychology", "How do other people shape what we think and do?",
-            "Attitudes, conformity, group behavior and social influence: why the room changes the person.",
-            new[] { "Attitudes", "Conformity", "Group behavior", "Social influence" },
+        (0, "Database Management", "Management Information Systems", "MIS 325", "Database Management", "How should information be represented and used?",
+            "Designing a database from scratch, then moving past SQL into NoSQL, pipelines and cloud warehouses.",
+            new[] { "SQL", "PL/SQL", "ER modeling", "Normalization", "CTEs", "Window functions", "Stored procedures", "MongoDB", "Snowflake", "ETL pipelines" },
+            "Listening History", "https://listening-history.onrender.com"),
+        (0, "Programming", "Management Information Systems", "MIS 304", "Problem Solving and Programming", "Can I translate ambiguity into executable logic?",
+            "Turning business problems written in plain English into working Python.",
+            new[] { "Python", "Object-oriented programming", "pandas", "Matplotlib", "Data structures", "LLMs", "Prompt engineering" },
+            "Saturday in Austin", "https://suhxnitiwari.github.io/saturday-in-austin/"),
+        (0, "Data Science", "Analytics", "", "Intro to Data Science", "What can the data actually tell us?",
+            "Cleaning, exploring and modeling real data, and explaining what it means to someone who has to decide.",
+            new[] { "Python", "Data cleaning", "Exploratory analysis", "Visualization", "Modeling" },
             "Heavy Rotation", "https://suhxnitiwari.github.io/listening-galaxy/"),
-        (1, "", "Social Cognition", "How do we make sense of other people, and ourselves?",
-            "How people form impressions, explain behavior and lean on mental shortcuts when judging others.",
-            new[] { "Impression formation", "Attribution", "Heuristics", "Self-perception" },
-            "Soft Heart. Strong Spirit.", "https://suhxnitiwari.github.io/suhani-personality/"),
-        (2, "", "Consumer Behavior", "Why do people buy what they buy?",
+        (1, "Consumer Behavior", "Marketing", "", "Consumer Behavior", "Why do people buy what they buy?",
             "Needs, perception, identity and the path to a purchase, and what turns a buyer into a regular.",
             new[] { "Decision journey", "Motivation", "Identity", "Brand loyalty" },
             "How Glossier Lost Its Cult", "/study#mk-proj-glossier"),
-        (2, "", "Science of Influence", "What actually changes someone’s mind?",
+        (1, "Social Psychology", "Psychology", "", "Social Psychology", "How do other people shape what we think and do?",
+            "Attitudes, conformity, group behavior and social influence: why the room changes the person.",
+            new[] { "Attitudes", "Conformity", "Group behavior", "Social influence" },
+            "Heavy Rotation", "https://suhxnitiwari.github.io/listening-galaxy/"),
+        (1, "Science of Influence", "Marketing", "", "Science of Influence", "What actually changes someone’s mind?",
             "The research behind persuasion: social proof, scarcity, commitment, authority and framing.",
             new[] { "Persuasion", "Social proof", "Scarcity", "Framing" },
             "Rhode Has a Hailey Problem", "/study#mk-proj-rhode"),
-        (2, "", "Strategic Product Management", "What’s worth building, and for whom?",
-            "Deciding what to build and why: customer needs, prioritization, roadmaps and launch.",
-            new[] { "Customer discovery", "Prioritization", "Roadmapping", "Positioning" },
-            "Starbucks AI Loyalty", "/work/starbucks")
+        (1, "Cognitive Psychology", "Psychology", "", "Cognitive Psychology", "How does the mind take in, store and use information?",
+            "Attention, perception, memory and decision-making: the mental machinery behind every choice someone makes.",
+            new[] { "Attention", "Perception", "Memory", "Decision-making", "Problem solving" },
+            "Search History", "https://suhxnitiwari.github.io/search-history/")
     };
 }
 <section class="home-part home-education" id="education" aria-labelledby="home-education-heading">
@@ -2362,28 +2450,35 @@
                     <li><b>BBA</b>, Management Information Systems</li>
                     <li><b>BA</b>, Psychology</li>
                     <li><b>Minors</b>, Marketing and Educational Psychology</li>
-                    <li><b>Graduating</b>, May 2027</li>
                 </ul>
             </div>
             <div class="edu-main">
-                <ol class="edu-trio">
-                    @for (var f = 0; f < eduTrio.Length; f++)
+                <dl class="edu-facts">
+                    @foreach (var (num, label) in eduFacts)
                     {
-                        <li>
-                            <span class="edu-trio-line">@eduTrio[f].Item1</span><span class="edu-trio-field">@eduTrio[f].Item2</span>
-                            <span class="edu-classes">
+                        <div><dt>@num</dt><dd>@label</dd></div>
+                    }
+                </dl>
+                <p class="edu-label">Classes behind what I build</p>
+                @* two rows, one line each, level with BA and Minors: the tech classes, then the business and psychology ones *@
+                <div class="edu-rows">
+                    @for (var r = 0; r < eduRows.Length; r++)
+                    {
+                        <div class="edu-row">
+                            <span class="edu-row-label">@eduRows[r]</span>
+                            <ul class="edu-courses">
                                 @for (var c = 0; c < eduClasses.Length; c++)
                                 {
-                                    if (eduClasses[c].Field != f) { continue; }
-                                    <button type="button" class="edu-class" data-class="@c" aria-haspopup="dialog">@eduClasses[c].Name</button>
+                                    if (eduClasses[c].Row != r) { continue; }
+                                    <li><button type="button" class="edu-class" data-class="@c" aria-haspopup="dialog">@eduClasses[c].Label</button></li>
                                 }
-                            </span>
-                        </li>
+                            </ul>
+                        </div>
                     }
-                </ol>
+                </div>
                 @* one card for every class, filled in from the button that opened it *@
                 <dialog class="class-card" id="class-card" aria-labelledby="class-card-name"
-                        data-classes="@Json.Serialize(eduClasses.Select(k => new { field = eduTrio[k.Field].Item2, code = k.Code, name = k.Name, question = k.Question, summary = k.Summary, topics = k.Topics, proof = k.Proof, href = k.ProofHref })).ToString()">
+                        data-classes="@Json.Serialize(eduClasses.Select(k => new { field = k.Field, code = k.Code, name = k.Name, question = k.Question, summary = k.Summary, topics = k.Topics, proof = k.Proof, href = k.ProofHref })).ToString()">
                     <button type="button" class="class-card-close" aria-label="Close">×</button>
                     <p class="class-card-kicker"></p>
                     <h3 class="class-card-name" id="class-card-name"></h3>
@@ -2418,7 +2513,6 @@
                         card.addEventListener('click', e => { if (e.target === card) card.close(); });
                     })();
                 </script>
-                <a class="edu-more" href="/study">See what I actually studied <span aria-hidden="true">→</span></a>
             </div>
         </div>
     </div>
