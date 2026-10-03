@@ -2220,7 +2220,10 @@
     })();
 </script>
 
-@* MORE PROJECTS: proof again, after the words of experience and education; everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
+@* CURIOSITY: why I study what I do (Views/Home/Pursue.cshtml, Study half, embedded; Coursework comes after the projects) *@
+<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true }, { "NoCoursework", true } }' />
+
+@* MORE PROJECTS: proof right after The Why: why I chose MIS, then what it let me build; everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
 <section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
     <div class="selected-wrap">
         <div class="selected-head">
@@ -2232,8 +2235,10 @@
     </div>
 </section>
 
-@* CURIOSITY: why I study what I do, then the classes (Views/Home/Pursue.cshtml, Study half, embedded) *@
-<partial name="Pursue" view-data='new ViewDataDictionary(ViewData) { { "Part", "study" }, { "Embed", true } }' />
+@* COURSEWORK: the classes behind it all (Views/Home/Coursework.cshtml) *@
+<section class="pursue-part" id="coursework" aria-label="Coursework">
+    @await Html.PartialAsync("Coursework")
+</section>
 
 @* SCHOLARSHIPS: the honors, right after the classes (Views/Home/ScholarshipsAndAwards.cshtml) *@
 <section class="pursue-part" id="awards" aria-label="Scholarships and awards">
@@ -2590,6 +2595,174 @@
     </div>
 </section>
 </div>
+
+@* THE FINALE: the page ends on proof, not a quiz. One line, four numbers that count up (each links to where it comes from), then what to do next *@
+@{
+    var finale = new (int To, string Suffix, string Label, string Href)[]
+    {
+        (240, "+", "girls taught to code", "#beyond"),
+        (1000, "", "copies of my book sold in its first month", "#beyond"),
+        (182293, "", "Spotify plays turned into a galaxy", "https://suhxnitiwari.github.io/listening-galaxy/"),
+        (33, "", "automated tests in RideFlow", "https://rideflow-frontend.onrender.com/")
+    };
+}
+<section class="finale" id="finale" aria-labelledby="finale-heading">
+    <div class="finale-wrap">
+        <p class="finale-kicker">The short version</p>
+        <h2 class="finale-line" id="finale-heading">I build things people <em>choose.</em></h2>
+        <ul class="finale-nums">
+            @foreach (var n in finale)
+            {
+                var external = n.Href.StartsWith("http");
+                <li>
+                    <a href="@n.Href" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)">
+                        <b data-to="@n.To" data-suffix="@n.Suffix">@n.To.ToString("N0")@n.Suffix</b>
+                        <span>@n.Label</span>
+                    </a>
+                </li>
+            }
+        </ul>
+        <div class="finale-actions">
+            <a class="finale-btn solid" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">Download résumé <span aria-hidden="true">↓</span></a>
+            <a class="finale-btn" href="mailto:suhxnitiwari@gmail.com">Email me <span aria-hidden="true">↗</span></a>
+            <a class="finale-btn" href="https://www.linkedin.com/in/suhxnitiwari/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .finale {
+        position: relative;
+        overflow: hidden;
+        padding: 120px 40px 130px;
+        background: radial-gradient(ellipse at 50% 0%, #F7E3E3 0%, #FAF1EF 55%, #F6E8E4 100%);
+        border-top: 1px solid #EBD5D0;
+        text-align: center;
+    }
+    .finale-wrap { max-width: 1100px; margin: 0 auto; }
+    .finale-kicker {
+        margin: 0 0 18px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+    .finale-line {
+        margin: 0 0 64px;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: clamp(2.6rem, 7vw, 5.6rem);
+        font-weight: 400;
+        line-height: 1.05;
+        letter-spacing: -0.01em;
+        color: #1E100A;
+    }
+    .finale-line em { font-style: italic; color: #733642; }
+    .finale-nums {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin: 0 0 64px;
+        padding: 0;
+        list-style: none;
+    }
+    .finale-nums a {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 100%;
+        padding: 30px 18px 26px;
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+        color: #1E100A;
+        text-decoration: none;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .finale-nums a:hover, .finale-nums a:focus-visible {
+        transform: translateY(-4px);
+        border-color: #C27B8A;
+        box-shadow: 0 14px 30px rgba(115, 54, 66, 0.14);
+    }
+    .finale-nums b {
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+        font-weight: 400;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        color: #733642;
+    }
+    .finale-nums span { font-size: 0.92rem; line-height: 1.45; color: #4A3A36; }
+    .finale-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+    .finale-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 30px;
+        border: 1.5px solid #76344E;
+        border-radius: var(--r-pill, 999px);
+        font-family: Georgia, serif;
+        font-size: 1.08rem;
+        font-style: italic;
+        color: #76344E;
+        text-decoration: none;
+        transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .finale-btn:hover, .finale-btn:focus-visible { background: #76344E; color: #FFF8F6; transform: translateY(-2px); }
+    .finale-btn.solid { background: #76344E; color: #FFF8F6; box-shadow: 0 10px 24px rgba(118, 52, 78, 0.25); }
+    .finale-btn.solid:hover, .finale-btn.solid:focus-visible { background: #5E2840; }
+    .finale-btn:focus-visible, .finale-nums a:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
+
+    /* it rises in when you reach it: the line first, then each number, then the buttons */
+    .finale.ready .finale-line, .finale.ready .finale-nums li, .finale.ready .finale-actions { opacity: 0; transform: translateY(24px); }
+    .finale.go .finale-line, .finale.go .finale-nums li, .finale.go .finale-actions {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .finale.go .finale-nums li:nth-child(1) { transition-delay: 0.25s; }
+    .finale.go .finale-nums li:nth-child(2) { transition-delay: 0.35s; }
+    .finale.go .finale-nums li:nth-child(3) { transition-delay: 0.45s; }
+    .finale.go .finale-nums li:nth-child(4) { transition-delay: 0.55s; }
+    .finale.go .finale-actions { transition-delay: 0.8s; }
+
+    @@media (max-width: 860px) {
+        .finale { padding: 80px 20px 90px; }
+        .finale-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @@media (max-width: 420px) {
+        .finale-nums { grid-template-columns: 1fr; }
+    }
+</style>
+
+<script>
+    // the finale: rises in and counts each number up from zero the first time it's on screen
+    // (none of it for people who asked for less motion; without this script everything simply shows, numbers and all)
+    (() => {
+        const el = document.getElementById('finale');
+        if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window) || document.hidden) return;
+        el.classList.add('ready');
+        const nums = [...el.querySelectorAll('b[data-to]')];
+        nums.forEach(b => b.textContent = '0' + b.dataset.suffix);
+        const count = (b, delay) => setTimeout(() => {
+            const to = +b.dataset.to, t0 = performance.now(), ms = 1600;
+            const step = now => {
+                const p = Math.min(1, (now - t0) / ms), eased = 1 - Math.pow(1 - p, 3);
+                b.textContent = Math.round(to * eased).toLocaleString('en-US') + b.dataset.suffix;
+                if (p < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }, delay);
+        const seen = new IntersectionObserver(([e]) => {
+            if (!e.isIntersecting) return;
+            seen.disconnect();
+            el.classList.add('go');
+            nums.forEach((b, i) => count(b, 300 + i * 100));
+        }, { threshold: 0.3 });
+        seen.observe(el);
+    })();
+</script>
 
 <script>
     // How Well Do You Know Me?: one This or That at a time. Guess, see my pick, get a score at the end.

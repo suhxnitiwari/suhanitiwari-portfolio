@@ -46,15 +46,12 @@
         (Cols: 4, Rows: 1, Fill: false, Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
             Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
             Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
-        (Cols: 4, Rows: 1, Fill: false, Kind: "Website", Title: "Celestial", Video: "celestial", Panel: (string?)"#34422F", Inset: false,
-            Label: "Scrolling through my Celestial birth chart website", Link: "https://suhxnitiwari.github.io/suhani-celestial/",
-            Line: "My birth chart, a little less sciency. Click any planet on the wheel to read it.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
 
         // In the works: no video or link yet (Video and Link stay null until they ship)
-        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics · In the works", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
             Label: "", Link: (string?)null,
             Line: "My YouTube watch history as a funnel: what gets the click, what gets finished, and what brings me back.", Skills: new[] { "SQL", "Funnel analysis", "Product memo" }),
-        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics · In the works", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
             Label: "", Link: (string?)null,
             Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" })
     };
@@ -66,7 +63,7 @@
         {
             ("Heavy Rotation", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
             ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have."),
-            ("RideFlow", 6, false, "33 automated tests. Riders, drivers and admins. I built the whole rideshare system, not just the screens."),
+            ("Starbucks AI Loyalty", 6, false, "Turning the Starbucks app from a checkout tool into a daily ritual."),
             ("Saturday in Austin", 6, false, "250 Austin places and an algorithm for the question every group chat fails to answer.")
         };
         stories = picks.Select(p =>
@@ -80,10 +77,12 @@
     // Further down the home page: everything Selected work didn't show, re-tiled so each row still fills 12 columns
     if (ViewData["Rest"] as bool? == true)
     {
-        var shown = new[] { "Heavy Rotation", "Girls Can Be Engineers, Too!", "RideFlow", "Saturday in Austin" };
+        var shown = new[] { "Heavy Rotation", "Girls Can Be Engineers, Too!", "Starbucks AI Loyalty", "Saturday in Austin" };
+        // rows: RideFlow 7 + Netflix 5, the bag tower beside Glossier and Rhode, Personality 8 + Owala 4, then the two in the works at 6 and 6
         stories = stories.Where(s => !shown.Contains(s.Title)).Select(s =>
         {
-            if (s.Title is "Celestial" or "YouTube Watch Funnel" or "Spotify Retention Cohorts") s.Cols = 4;
+            if (s.Title == "RideFlow") s.Cols = 7;
+            if (s.Title == "Netflix’s $20B Leak") s.Cols = 5;
             return s;
         }).ToArray();
     }
@@ -93,7 +92,7 @@
     var cues = new Dictionary<string, string>
     {
         ["Heavy Rotation"] = "Fly through my galaxy ↗",
-        ["RideFlow"] = "Book a ride ↗",
+        ["RideFlow"] = "See the whole system ↗",
         ["Girls Can Be Engineers, Too!"] = "Read the story →",
         ["Starbucks AI Loyalty"] = "Order the case study →",
         ["Netflix’s $20B Leak"] = "Plug the leak →",
@@ -102,8 +101,7 @@
         ["Rhode Has a Hailey Problem"] = "Swatch the plan →",
         ["Soft Heart. Strong Spirit."] = "Meet all ten of me ↗",
         ["Owala: The Marathon Series"] = "Run the series →",
-        ["Saturday in Austin"] = "Plan your Saturday ↗",
-        ["Celestial"] = "Read my stars ↗"
+        ["Saturday in Austin"] = "Explore Austin ↗"
     };
 }
 <div class="best-board">

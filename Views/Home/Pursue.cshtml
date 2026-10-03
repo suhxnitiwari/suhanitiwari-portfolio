@@ -12,6 +12,8 @@
     var embed = ViewData["Embed"] as bool? == true;
     var showWork = isWork || part == "all";
     var showStudy = !isWork;
+    // NoCoursework: the home page puts its own sections between The Why and Coursework, so it renders Coursework itself
+    var showCoursework = ViewData["NoCoursework"] as bool? != true;
 }
 <style>
     /* land each section just below the sticky navbar when jumping from the Pursue menu */
@@ -985,9 +987,12 @@ if (!embed)
 </section>
 *@
 
+if (showCoursework)
+{
 <section class="pursue-part" id="coursework" aria-label="Coursework">
     @await Html.PartialAsync("Coursework")
 </section>
+}
 
 }
 @if (showWork)
