@@ -1585,6 +1585,19 @@
     .quiz-head { padding: 22px 24px 4px; text-align: center; }
     .quiz-card .tot-title { margin: 0 0 4px; font-size: 1.45em; }
     .quiz-card .kn-hint { margin: 0; font-size: 0.72em; }
+    /* the pop-quiz setup above the title: short serif lines, the joke last and smallest */
+    .quiz-intro {
+        margin: 0 0 18px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #EBD5D0;
+        font-family: Georgia, serif;
+        font-size: 0.95em;
+        line-height: 1.5;
+        color: #2A1810;
+    }
+    .quiz-intro p { margin: 0 0 8px; }
+    .quiz-intro .quiz-intro-lead { font-size: 1.15em; font-style: italic; color: #733642; }
+    .quiz-intro .quiz-intro-aside { margin: 0; font-size: 0.88em; font-style: italic; color: #7E3F4A; }
 
     .quiz-top {
         display: flex;
@@ -2565,6 +2578,14 @@
         <div class="duality-row">
             <p class="duality-note">For a long time, I thought these things were supposed to add up more neatly. <strong>Now I think the contradictions are the point.</strong> I don’t fit perfectly into one category, and I don’t particularly want to.</p>
             <div class="quiz-col">
+                @* the setup before the quiz: you've read the whole site, so here's the pop quiz *@
+                <div class="quiz-intro">
+                    <p class="quiz-intro-lead">Well, you’ve made it this far.</p>
+                    <p>You’ve read about my work, my degree, my projects, my hobbies, and probably more of my personality than you expected when you opened this website.</p>
+                    <p>Might as well find out if you retained any of it.</p>
+                    <p><b>Pop quiz. Ten questions. No notes.</b></p>
+                    <p class="quiz-intro-aside">This is mildly embarrassing if you get a 2.</p>
+                </div>
                 <h3 class="tot-title">How Well Do You Know Me?</h3>
                 <p class="kn-hint">This or that? Guess my pick.</p>
 
@@ -2875,7 +2896,7 @@
         if (col) {
             const head = document.createElement('div');
             head.className = 'quiz-head';
-            head.append(...col.querySelectorAll(':scope > .tot-title, :scope > .kn-hint'));
+            head.append(...col.querySelectorAll(':scope > .quiz-intro, :scope > .tot-title, :scope > .kn-hint'));
             $('.quiz-card').prepend(head);
         }
         // a small line drawing for every option, drawn in the page's mulberry (no emoji)
