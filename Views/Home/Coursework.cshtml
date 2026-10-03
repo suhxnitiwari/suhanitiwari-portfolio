@@ -20,7 +20,10 @@
     public record CwCross(string Title, string Question, (int Theme, string Course)[] From);
 
     // "What I can do": one block per capability. Thread = the AI block's course-by-course rows instead of skill pills.
-    public record MisCan(string Name, string Line, string[] Key, string From, (string Verb, string Text)[]? Thread = null);
+    // one card in "What I can actually do": the job, the question a recruiter would ask, what I do, the tools,
+    // the proof (a project on this site), and the classes it came from (small, for anyone who wants the academic trail)
+    public record MisCan(string Name, string Question, string Line, string[] Key, string From,
+        string Proof, string ProofLine, string? ProofHref, (string Verb, string Text, string From)[]? Thread = null);
 
     // One step of the cycle. Left/Top = where the box sits on the diagram (its center, in % of the diagram).
     public record MisStep(string Theme, string Title, string Color, string Icon, string Left, string Top,
@@ -141,16 +144,29 @@
     // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
     var misCan = new[]
     {
-        // every skill here is from my résumé or the course lists above; the courses line credits where it came from
-        new MisCan("Build", "Full-stack web apps, from the database to the screen.", new[] { "C#", "ASP.NET Core MVC", "Entity Framework Core", "JavaScript", "React", "Node.js", "HTML/CSS", "REST APIs", "Git/GitHub", "Docker" }, "MIS 333K, MIS 372T"),
-        new MisCan("Data", "Databases designed, queried and moved.", new[] { "SQL", "PL/SQL", "Data Modeling", "ETL", "Snowflake", "MongoDB", "PostgreSQL", "Microsoft Azure" }, "MIS 325, MIS 333K, MIS 372T"),
-        new MisCan("Secure", "Logins, roles and protected routes.", new[] { "Authentication", "Authorization", "Role-Based Access", "Anti-Forgery Tokens" }, "MIS 372T, MIS 333K, MIS 325"),
-        new MisCan("AI", "AI features inside real apps, and checks on what they output.", Array.Empty<string>(), "",
-            new[] { ("Use it", "LLMs and Prompt Engineering, MIS 304"), ("Feed it", "Embeddings and Vector Databases, MIS 325"),
-                    ("Build it", "AI Features Inside Web Apps, MIS 333K, 372T"), ("Judge it", "Whether AI Is Worth It, MIS 375") }),
-        new MisCan("Analyze", "Data turned into something a person can decide with.", new[] { "Python", "Pandas", "Matplotlib", "R", "Excel", "Power BI", "Tableau" }, "MIS 304, MIS 301, MIS 325, Intro to Data Science"),
-        new MisCan("Strategize", "Whether it’s worth building, and what it costs.", new[] { "IT Strategy", "Cost Justification", "Go-to-Market", "Porter’s Five Forces", "Platform Strategy", "ERP (Oracle NetSuite)" }, "MIS 301, MIS 375, Oracle")
+        // every tool here is from my résumé or the course lists above; every proof is a project on this site
+        new MisCan("Build it", "Can you actually ship it?", "Full-stack applications, from the database to the interface.",
+            new[] { "C#", "ASP.NET Core", "React", "Node.js", "Entity Framework Core", "JavaScript", "HTML/CSS", "REST APIs", "Git/GitHub", "Docker" },
+            "MIS 333K, MIS 372T", "RideFlow", "A full-stack rideshare app · 33 automated tests", "https://rideflow-frontend.onrender.com/"),
+        new MisCan("Structure it", "Can the data survive the idea?", "Databases I can design, query, move and actually make useful.",
+            new[] { "SQL", "PostgreSQL", "Snowflake", "Data Modeling", "PL/SQL", "ETL", "MongoDB", "Microsoft Azure" },
+            "MIS 325, MIS 333K, MIS 372T", "Heavy Rotation", "182,293 Spotify plays, stored and queried in PostgreSQL", "https://suhxnitiwari.github.io/listening-galaxy/"),
+        new MisCan("Protect it", "Can everyone see everything? Hopefully not.", "Authentication, authorization, roles and protected routes.",
+            new[] { "Authentication", "Authorization", "Role-Based Access", "Anti-Forgery Tokens" },
+            "MIS 372T, MIS 333K, MIS 325", "RideFlow", "Riders, drivers and admins, each seeing only their own side", "https://rideflow-frontend.onrender.com/"),
+        new MisCan("Put AI in it", "And know when not to.", "LLMs inside real applications, grounded in the right context and judged before anyone calls it “intelligent.”",
+            Array.Empty<string>(), "", "Sitara", "The AI guide in the corner of this page. Go on, ask her about me.", null,
+            new[] { ("Use it", "LLMs and prompting", "MIS 304"), ("Ground it", "Embeddings and vector databases", "MIS 325"),
+                    ("Build it", "AI inside applications", "MIS 333K, 372T"), ("Judge it", "Is AI even worth using here?", "MIS 375") }),
+        new MisCan("Prove it", "Did it actually work?", "Turn behavior into data, and data into a decision.",
+            new[] { "Python", "Pandas", "Tableau", "Power BI", "Matplotlib", "R", "Excel" },
+            "MIS 304, MIS 301, MIS 325, Intro to Data Science", "Saturday in Austin", "250 Austin places and an algorithm that finally picks the plan", "https://suhxnitiwari.github.io/saturday-in-austin/"),
+        new MisCan("Justify it", "Cool idea. Should we spend money on it?", "Cost, strategy, market, platform and implementation decisions.",
+            new[] { "Cost Justification", "IT Strategy", "Go-to-Market", "Platform Strategy", "Porter’s Five Forces", "ERP (Oracle NetSuite)" },
+            "MIS 301, MIS 375, Oracle", "Starbucks AI Loyalty", "RICE scoring, KANO analysis and a roadmap", "/work/starbucks")
     };
+    // the trip the six cards take, idea to business decision
+    var misTrip = new[] { "Idea", "Build", "Data", "Security", "AI", "Analysis", "Business decision" };
 
     // Overview: the nine subjects, in catalog order
     var themes = new[]
@@ -510,28 +526,80 @@
                 <div class="mp-section" id="skills" style="scroll-margin-top:100px" aria-labelledby="mp-can-title">
                     <div class="mp-head">
                         <p class="mp-eyebrow">From classroom to capability</p>
-                        <h3 class="mp-h2" id="mp-can-title">I didn’t just learn the vocabulary.<br />I built with it.</h3>
+                        <h3 class="mp-h2" id="mp-can-title">Knowing the vocabulary is cute.<br />Can you actually build the thing?</h3>
+                        <p class="mp-can-lede">I can take an idea from database to interface, secure it, put AI inside it, analyze what happens next, and tell you whether it was worth building in the first place.</p>
                     </div>
+                    @* the six cards are one trip: idea in, business decision out *@
+                    <p class="mp-trip" aria-label="The trip the six cards take">
+                        @for (var t = 0; t < misTrip.Length; t++)
+                        {
+                            <span>@misTrip[t]</span>
+                            if (t < misTrip.Length - 1) { <i aria-hidden="true">→</i> }
+                        }
+                    </p>
                     <ol class="mp-caps">
                         @for (var i = 0; i < misCan.Length; i++)
                         {
                             var cap = misCan[i];
-                            <li class="mp-cap">
-                                <span class="mp-cap-num">0@(i + 1)</span>
-                                <p class="mp-cap-name">@cap.Name.ToUpperInvariant()</p>
+                            var shown = 4;
+                            <li class="mp-cap@(cap.Thread is null ? "" : " mp-cap-ai")">
+                                <p class="mp-cap-name"><span class="mp-cap-num">0@(i + 1)</span> @cap.Name.ToUpperInvariant()</p>
+                                <p class="mp-cap-q">@cap.Question</p>
                                 <p class="mp-cap-line">@cap.Line</p>
                                 @if (cap.Thread is { } thread)
                                 {
-                                    <ul class="mp-cap-thread">@foreach (var row in thread) { <li><b>@row.Verb.ToUpperInvariant()</b><span>@row.Text</span></li> }</ul>
+                                    @* the AI lifecycle, top to bottom; judging it is the step that matters most *@
+                                    <ol class="mp-cap-thread">
+                                        @foreach (var row in thread)
+                                        {
+                                            <li class="@(row.Verb == "Judge it" ? "is-judge" : "")"><b>@row.Verb.ToUpperInvariant()</b><span>@row.Text</span><small>@row.From</small></li>
+                                        }
+                                    </ol>
                                 }
                                 else
                                 {
-                                    <ul class="mp-cap-key">@foreach (var k in cap.Key) { <li>@k</li> }</ul>
+                                    @* the top four tools, the rest one tap away *@
+                                    <ul class="mp-cap-key">
+                                        @for (var k = 0; k < cap.Key.Length; k++)
+                                        {
+                                            <li hidden="@(k >= shown ? "hidden" : null)">@cap.Key[k]</li>
+                                        }
+                                    </ul>
+                                    @if (cap.Key.Length > shown)
+                                    {
+                                        <button type="button" class="mp-cap-more" aria-expanded="false" data-more="+ @(cap.Key.Length - shown) more">+ @(cap.Key.Length - shown) more</button>
+                                    }
+                                }
+                                <div class="mp-cap-proof">
+                                    <span class="mp-cap-proof-label">Proof</span>
+                                    @if (cap.ProofHref is { } href)
+                                    {
+                                        var external = href.StartsWith("http");
+                                        <a href="@href" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)">@cap.Proof <span aria-hidden="true">@(external ? "↗" : "→")</span></a>
+                                    }
+                                    else
+                                    {
+                                        <b>@cap.Proof ✦</b>
+                                    }
+                                    <span class="mp-cap-proof-line">@cap.ProofLine</span>
+                                </div>
+                                @if (cap.From != "")
+                                {
                                     <p class="mp-cap-from">@cap.From</p>
                                 }
                             </li>
                         }
                     </ol>
+                    <p class="mp-can-close">That’s MIS to me. Not business <em>or</em> technology. The entire trip from <em>“what if?”</em> to <em>“was it worth it?”</em></p>
+                    <script>
+                        // "+ 5 more": show the rest of a card's tools, and fold them back
+                        document.querySelectorAll('.mp-cap-more').forEach(btn => btn.addEventListener('click', () => {
+                            const open = btn.getAttribute('aria-expanded') !== 'true';
+                            btn.closest('.mp-cap').querySelectorAll('.mp-cap-key li').forEach((li, k) => { if (k >= 4) li.hidden = !open; });
+                            btn.setAttribute('aria-expanded', String(open));
+                            btn.textContent = open ? 'Show less' : btn.dataset.more;
+                        }));
+                    </script>
                 </div>
 
                 @* 3. how the major builds it: the cycle *@
