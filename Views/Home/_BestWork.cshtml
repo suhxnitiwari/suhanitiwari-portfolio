@@ -59,15 +59,15 @@
             Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" })
     };
 
-    // The homepage shows only my four strongest, each led by its number: two rows, 8 and 4, then 6 and 6
+    // The homepage shows only my four strongest, one per side of me: product, brand, data, heart. Two rows, 7 and 5, then 8 and 4
     if (ViewData["Featured"] as bool? == true)
     {
         var picks = new (string Title, int Cols, bool Fill, string Line)[]
         {
+            ("Starbucks AI Loyalty", 7, false, "Turning the Starbucks app from a checkout tool into a daily ritual."),
+            ("How Glossier Lost Its Cult", 5, true, "The moat was never makeup. It was the comments section."),
             ("Heavy Rotation", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
-            ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have."),
-            ("Starbucks AI Loyalty", 6, false, "Turning the Starbucks app from a checkout tool into a daily ritual."),
-            ("Saturday in Austin", 6, false, "250 Austin places and an algorithm for the question every group chat fails to answer.")
+            ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have.")
         };
         stories = picks.Select(p =>
         {
@@ -80,14 +80,19 @@
     // Further down the home page: everything Selected work didn't show, re-tiled so each row still fills 12 columns
     if (ViewData["Rest"] as bool? == true)
     {
-        var shown = new[] { "Heavy Rotation", "Girls Can Be Engineers, Too!", "Starbucks AI Loyalty", "Saturday in Austin" };
-        // rows: RideFlow 7 + Netflix 5, the bag tower beside Glossier and Rhode, Personality 8 + Owala 4, then Suhaiku beside the two in the works at 4, 4 and 4
-        stories = stories.Where(s => !shown.Contains(s.Title)).Select(s =>
+        // rows: RideFlow 7 + Netflix 5, the bag tower beside Rhode and Saturday, Personality 8 + Owala 4, then Suhaiku beside the two in the works at 4, 4 and 4
+        var order = new (string Title, int Cols)[]
         {
-            if (s.Title == "RideFlow") s.Cols = 7;
-            if (s.Title == "Netflix’s $20B Leak") s.Cols = 5;
-            if (s.Title is "YouTube Watch Funnel" or "Spotify Retention Cohorts") s.Cols = 4;
-            return s;
+            ("RideFlow", 7), ("Netflix’s $20B Leak", 5),
+            ("What’s in My Bag?", 7), ("Rhode Has a Hailey Problem", 5), ("Saturday in Austin", 5),
+            ("Soft Heart. Strong Spirit.", 8), ("Owala: The Marathon Series", 4),
+            ("Suhaiku", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
+        };
+        stories = order.Select(o =>
+        {
+            var story = stories.First(s => s.Title == o.Title);
+            story.Cols = o.Cols;
+            return story;
         }).ToArray();
     }
 }
