@@ -619,15 +619,15 @@
         margin: 0 0 10px;
     }
 
-    /* the question under the title: the subtitle, in mulberry serif */
+    /* the opening line, in mulberry serif: one sentence per line, big enough to lead the story */
     .why-question {
-        margin: 0 0 18px !important;
+        margin: 0 0 22px !important;
         font-family: Georgia, serif;
-        font-size: 1.12rem;
+        font-size: clamp(1.25rem, 2vw, 1.6rem);
         font-style: italic;
         font-weight: 700;
         line-height: 1.35 !important;
-        white-space: nowrap;   /* one line, always (it wraps again on phones) */
+        text-wrap: balance;
         color: #733642 !important;
     }
 
@@ -778,10 +778,6 @@
             gap: 24px;
         }
 
-        .why-question {
-            white-space: normal;
-        }
-
     }
 
     /* EXPERIENCE: one card per role */
@@ -903,7 +899,7 @@ if (!embed)
     <div class="why-stack">
     <div class="career-wrap why-wrap why-panel" id="why-panel-mis" role="tabpanel" aria-labelledby="why-tab-mis">
         <div>
-            <p class="why-question">I didn’t choose technology instead of the arts. I chose it so my art could do more.</p>
+            <p class="why-question">I didn’t choose technology instead of the arts.<br />I chose it so my art could do more.</p>
             <p>I read constantly. I write. I play instruments. I’ve been making art for as long as I can remember. But eventually, making something beautiful wasn’t enough. I wanted to understand why people chose something, remembered it, returned to it, or couldn’t put it down.</p>
             <p>And technology was already hiding inside everything I loved. The tools I draw with. The apps that put stories in my hands. The playlist that finds a song before I know I want it. None of those things are purely technical. Someone had to understand people well enough to imagine them, and technology well enough to make them real.</p>
             <p>That’s what MIS is to me.</p>
