@@ -107,14 +107,6 @@
     .mk-gls .g-orb { transform: translate(var(--x), var(--y)); }
     @@keyframes gOrb { from { transform: translate(var(--x), var(--y)) scale(0.92); } to { transform: translate(calc(var(--x) * 0.55), calc(var(--y) * 0.55)) scale(1.05); } }
 
-    /* kill and keep */
-    .mk-gls .g-kk { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; flex: 1; }
-    .mk-gls .g-kk > div { padding: 2cqw 2.2cqw; display: flex; flex-direction: column; gap: 1cqw; animation: gPop 0.6s ease both; }
-    .mk-gls .g-kk > div:nth-child(2) { animation-delay: 0.3s; }
-    .mk-gls .g-kk small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.3cqw; color: var(--g-red); }
-    .mk-gls .g-kk b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(13px, 1.8cqw, 21px); line-height: 1.25; color: var(--g-ink); }
-    .mk-gls .g-kk .kill b { text-decoration: line-through; text-decoration-color: var(--g-red); text-decoration-thickness: 2px; }
-
     /* the ending: Cloud Paint tubes drop from the sky and land in a pile, every time the slide opens */
     .mk-gls .g-end > p, .mk-gls .g-end > h4 { position: relative; z-index: 3; }
     .mk-gls .g-end { justify-content: center; }
@@ -129,10 +121,17 @@
     @@keyframes gFall { from { transform: translateY(-70cqw) rotate(calc(var(--r) * -0.4)); opacity: 0; } 20% { opacity: 1; } }
     .mk-gls .g-end::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 50%; z-index: 2; background: linear-gradient(90deg, rgba(251, 248, 246, 0.97) 70%, rgba(251, 248, 246, 0)); }
 
+    /* the comeback: the chat goes quiet, then Glossier replies; three acts on the right */
+    .mk-gls .g-gap { align-self: center; padding: 0.3cqw 1.1cqw; border-radius: 99px; border: 1px dashed #C9898A; font-size: clamp(9px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.15cqw; text-transform: uppercase; color: var(--g-mute);
+        animation: gPop 0.4s ease both; animation-delay: calc(var(--n) * 0.35s); }
+    .mk-gls .g-acts li span { display: block; margin-bottom: 0.2cqw; font-size: clamp(9px, 0.95cqw, 12px); font-weight: 800; letter-spacing: 0.15cqw; text-transform: uppercase; color: var(--g-red); }
+    .mk-gls .g-acts li small { display: block; margin-top: 0.3cqw; font-size: 0.8em; color: var(--g-mute); }
+    .mk-gls .g-tag { align-self: flex-start; padding: 0.4cqw 1cqw; border-radius: 99px; background: var(--g-pink2); font-size: clamp(10px, 1.1cqw, 13px); font-weight: 700; color: var(--g-red); }
+
     .mk-gls .mk-chapters button[aria-pressed="true"] { background: var(--g-red); border-color: var(--g-red); }
 
     @@media (prefers-reduced-motion: reduce) {
-        .mk-gls .g-tube, .mk-gls .g-doodle, .mk-gls .g-msg, .mk-gls .g-step, .mk-gls .g-list li, .mk-gls .g-kk > div, .mk-gls .g-orb, .mk-gls .g-vote i::after, .mk-gls .g-donut .arc, .mk-gls .g-line .ln, .mk-gls .g-line .dt { animation: none; }
+        .mk-gls .g-tube, .mk-gls .g-doodle, .mk-gls .g-msg, .mk-gls .g-step, .mk-gls .g-list li, .mk-gls .g-orb, .mk-gls .g-vote i::after, .mk-gls .g-donut .arc, .mk-gls .g-line .ln, .mk-gls .g-line .dt { animation: none; }
         .mk-gls .g-donut .arc { stroke-dasharray: 40 100; }
         .mk-gls .g-line .ln { stroke-dashoffset: 0; }
         .mk-gls .g-line .ln.est, .mk-gls .g-line .dt { opacity: 1; }
@@ -238,6 +237,30 @@
                 </div>
             </div>
 
+            <div class="mk-slide" data-title="The comeback" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">The comeback idea</p>
+                <h4 class="g-h">The group chat went quiet. <em>The comeback is a reply.</em></h4>
+                <div class="g-two" style="grid-template-columns:1fr 1.1fr">
+                    <div class="g-thread">
+                        <div class="g-msg me" style="--n: 0"><small>Glossier, Into The Gloss</small>What’s your dream cleanser?</div>
+                        <div class="g-msg" style="--n: 1">milky. gentle. no fragrance pls 🙏</div>
+                        <div class="g-msg me" style="--n: 2"><small>A year later</small>Milky Jelly Cleanser, $18</div>
+                        <span class="g-gap" style="--n: 3">then: layoffs, Sephora, silence</span>
+                        <div class="g-msg" style="--n: 4">wait, you’re at sephora now??</div>
+                        <div class="g-msg me" style="--n: 5"><small>Glossier, 2027</small>hey. it’s been a while 🫧 what should we make next?</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:1.2cqw">
+                        <p class="g-cap">The campaign: Back in the chat</p>
+                        <ul class="g-list g-acts">
+                            <li class="g-card" style="--n: 2"><span>Act 1 · The text</span>One text to every past customer. Reply and you’re in the Club.<small>Runs Move 01</small></li>
+                            <li class="g-card" style="--n: 3"><span>Act 2 · The vote</span>Creators host the Club’s first vote. The winner ships in 90 days.<small>Runs Move 02</small></li>
+                            <li class="g-card" style="--n: 4"><span>Act 3 · The label</span>Your group chat names your You, and their words go on the bottle.<small>Runs Move 03</small></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="mk-slide" data-title="Move 1" hidden>
                 @Html.Raw(sig)
                 <div class="g-two" style="grid-template-columns:1.2fr 1fr">
@@ -245,7 +268,8 @@
                         <p class="g-kick">Move 01, community</p>
                         <h4 class="g-h">Reopen <em>the comments section.</em></h4>
                         <p class="g-lede">The Glossier Club: Into The Gloss reborn as a members’ app. Vote on the next launch, post your Top Shelf, get early access and invites to the three flagships.</p>
-                        <p class="g-lede">It’s the loyalty program the 2018 team debated and never built, and every vote becomes first-party data Sephora can’t see.</p>
+                        <p class="g-lede">It opens with one text to every past customer: “hey. it’s been a while 🫧” Reply and you’re in. It’s the loyalty program the 2018 team debated and never built, and every vote is first-party data Sephora can’t see.</p>
+                        <span class="g-tag">Target: 10% of past customers reply</span>
                     </div>
                     <div class="g-phone" aria-hidden="true">
                         <h6>Glossier Club</h6>
@@ -266,7 +290,8 @@
                         <p class="g-kick">Move 02, creators</p>
                         <h4 class="g-h">Turn every fan <em>into a storefront.</em></h4>
                         <p class="g-lede">Glossier already tried paid reps in 2018, and it flopped: it picked loyal customers, not creators. Run it again on TikTok Shop with the right people, paid per sale (15 to 25% is the beauty norm).</p>
-                        <p class="g-lede">Thousands of small creators beat one celebrity, and every link sends the buyer back to Glossier, not Sephora.</p>
+                        <p class="g-lede">Their first job: host the Club’s first vote. The winner ships in 90 days, named after the comment that won it. Thousands of small creators beat one celebrity, and every link sends the buyer back to Glossier, not Sephora.</p>
+                        <span class="g-tag">Target: 1 in 2 Club members vote</span>
                     </div>
                     <div class="g-net"><canvas aria-hidden="true"></canvas></div>
                 </div>
@@ -278,30 +303,11 @@
                     <div style="display:flex;flex-direction:column;gap:1.4cqw">
                         <p class="g-kick">Move 03, the hero</p>
                         <h4 class="g-h">Make You a world, <em>not a perfume.</em></h4>
-                        <p class="g-lede">You is designed to smell different on everyone. Lean in: layering sets that mix You and its flankers into your own scent, refills sold only through the Club, and the three flagships rebuilt as scent labs.</p>
-                        <p class="g-lede">Sephora sells the first bottle. Glossier owns every bottle after it.</p>
+                        <p class="g-lede">You is designed to smell different on everyone. Lean in: layering sets, refills sold only through the Club, and the three flagships rebuilt as scent labs.</p>
+                        <p class="g-lede">The hook: ask your group chat what you smell like. Their words get printed on your bottle, and every post links back to Glossier. Sephora sells the first bottle. Glossier owns every bottle after it.</p>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.8cqw"><span class="g-tag">#WhatDoISmellLike</span><span class="g-tag">Target: 25% of new customers from a friend</span></div>
                     </div>
                     <div class="g-scents" aria-hidden="true"><span class="g-orb">You</span><span class="g-orb">+ a flanker</span><span class="g-orb">= yours</span></div>
-                </div>
-            </div>
-
-            <div class="mk-slide" data-title="Kill, keep" hidden>
-                @Html.Raw(sig)
-                <p class="g-kick">The hard calls</p>
-                <h4 class="g-h">Stop chasing Gen Z. <em>Go get your friends back.</em></h4>
-                <div class="g-kk">
-                    <div class="g-card kill">
-                        <small>KILL</small>
-                        <b>Chasing TikTok trends against Rhode and Rare Beauty</b>
-                        <b>More stores and more launches</b>
-                        <b>Treating Sephora as home</b>
-                    </div>
-                    <div class="g-card">
-                        <small>KEEP</small>
-                        <b>Heroes: You, Cloud Paint, Boy Brow</b>
-                        <b>Three flagships as pilgrimages (the 2018 showroom converted 65%)</b>
-                        <b>Sephora, but only for discovery</b>
-                    </div>
                 </div>
             </div>
 
@@ -329,7 +335,8 @@
                 @Html.Raw(sig)
                 <p class="g-kick">How to measure it</p>
                 <h4 class="g-title" style="font-size:clamp(22px, 4.6cqw, 54px);max-width:40cqw">Glossier doesn’t need to be cool again. <em>It needs its friends back.</em></h4>
-                <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>The one number:</b> community-sourced revenue, the share of sales that start in Glossier’s own channels (the Club, creators, the flagships). Today Sephora owns that start.</p>
+                <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>The one number:</b> community-sourced revenue, the share of sales that start in Glossier’s own channels (the Club, creators, the flagships). Today Sephora owns that start. The target: 35% by the end of 2027.</p>
+                <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>What to stop:</b> chasing TikTok trends against Rhode, opening more stores, and treating Sephora as home.</p>
             </div>
         </div>
         <div class="mk-nav-row">
@@ -348,6 +355,7 @@
             <li>Started from the HBS case I studied in MIS 375 and followed the story from 2018 to 2026</li>
             <li>Found the turn the case predicts: the tech team that built Glossier’s platform was cut, then discovery moved to Sephora</li>
             <li>Three moves: a members’ club, creators paid per sale, and fragrance as a world</li>
+            <li>Tied them into one campaign, Back in the chat: a text to every past fan, a creator-run vote, and a perfume your friends name</li>
             <li>Invented community-sourced revenue, the share of sales that start in Glossier’s own channels</li>
         </ul>
     </div>
