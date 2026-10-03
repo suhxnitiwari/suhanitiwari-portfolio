@@ -17,23 +17,39 @@
     var owalaSections = new[] { "Summary", "Problem", "Market", "Strategy", "Plan" };
     var ffSections = new[] { "Summary" };
 
-    // RICE scores from my Starbucks deck (Reach × Impact × Confidence ÷ Effort), highest first
-    var rice = new (string Feature, int Score)[]
+    // RICE scores from my Starbucks deck (Reach × Impact × Confidence ÷ Effort), highest first,
+    // tagged with the quadrant each landed in on my impact/effort matrix
+    var rice = new (string Feature, int Score, string Quad)[]
     {
-        ("Drink customization profiles", 33750),
-        ("Smart menu filtering & personalization", 29250),
-        ("Scheduling recurring orders", 20250),
-        ("AI personalized suggestions", 16875),
-        ("Wait-time based store routing", 15714),
-        ("Drink comparison tool", 14875),
-        ("Scheduling ahead (one-time)", 13281),
-        ("Multi-user profiles", 10286),
-        ("Line Priority Boost (paid)", 4000),
-        ("Study-optimized store finder", 3656)
+        ("Drink customization profiles", 33750, "win"),
+        ("Smart menu filtering & personalization", 29250, "win"),
+        ("Scheduling recurring orders", 20250, "bet"),
+        ("AI personalized suggestions", 16875, "bet"),
+        ("Wait-time based store routing", 15714, "win"),
+        ("Drink comparison tool", 14875, "fill"),
+        ("Scheduling ahead (one-time)", 13281, "bet"),
+        ("Multi-user profiles", 10286, "bet"),
+        ("Line Priority Boost (paid)", 4000, "cut"),
+        ("Study-optimized store finder", 3656, "bet")
     };
     var riceMax = rice.Max(r => r.Score);
-    var share = new (string Brand, int Pct)[] { ("Starbucks", 48), ("Every other U.S. coffee shop", 52) };   // Technomic, 2025
     string Pct(double v) => v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
+
+    // Starbucks Card, Loyalty & Mobile dashboard, U.S., Q4 FY23 through Q3 FY26
+    var sbQ = new[] { "Q4 FY23", "Q1 FY24", "Q2", "Q3", "Q4", "Q1 FY25", "Q2", "Q3", "Q4", "Q1 FY26", "Q2", "Q3" };
+    var sbMop = new[] { 29, 31, 31, 31, 31, 31, 31, 31, 31, 32, 33, 33 };   // mobile orders, % of transactions
+    var sbMembers = new[] { 32.6, 34.3, 32.8, 33.8, 33.8, 34.6, 34.2, 33.9, 34.2, 35.5, 35.6, 35.8 };   // 90-day active, M
+    var sbLoaded = new double[] { 2826, 3595, 2649, 2973, 2789, 3523, 2629, 2963, 2801, 3558, 2787, 3115 };   // $M loaded on cards
+    // a sparkline path in a 100 × 30 box
+    string Spark(double[] v) { double lo = v.Min(), hi = v.Max(); return "M" + string.Join(" L", v.Select((x, i) => Pct(i * 100.0 / (v.Length - 1)) + " " + Pct(28 - (x - lo) / (hi - lo) * 26))); }
+
+    // what the prize is worth: 35.8M members × adoption × extra ritual orders a week × 52 weeks × ~$7 ticket, in $B a year
+    var adopt = new[] { 5, 10, 20 };
+    var perWeek = new[] { 0.5, 1.0, 2.0 };
+    double Prize(int a, double o) => 35.8 * a / 100.0 * o * 52 * 7 / 1000;
+
+    // WARO target path by month after launch (author goals)
+    var waro = new (int Month, double Target)[] { (0, 0.2), (3, 0.5), (6, 0.8), (9, 1.0), (12, 1.2) };
 }
 <section class="mis mp mk" aria-labelledby="mk-heading">
     <header class="mp-hero">
@@ -45,8 +61,8 @@
         <div class="mp-proj-nav">
             <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
             <div class="mp-proj-tabs" role="tablist" aria-label="Choose a project">
-                <button type="button" role="tab" aria-selected="true" aria-controls="mk-proj-rhode">Celebrity Brand</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-glossier" tabindex="-1">Brand Strategy</button>
+                <button type="button" role="tab" aria-selected="true" aria-controls="mk-proj-glossier">Brand Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-rhode" tabindex="-1">Celebrity Brand</button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-netflix" tabindex="-1">Media Strategy</button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-primebookclub" tabindex="-1">Community Strategy</button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-fuelflow" tabindex="-1">Product Pitch</button>
@@ -56,11 +72,11 @@
             <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
         </div>
 
-        @* ===================== Rhode ===================== *@
-        <partial name="_RhodeDeck" />
-
         @* ===================== Glossier ===================== *@
         <partial name="_GlossierDeck" />
+
+        @* ===================== Rhode ===================== *@
+        <partial name="_RhodeDeck" />
 
         @* ===================== Netflix ===================== *@
         <partial name="_NetflixDeck" />
@@ -245,44 +261,129 @@
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Starbucks slides">
                 <div class="mk-stage">
 
-                    <div class="mk-slide" data-title="Summary">
+                    <div class="mk-slide sb-cover" data-title="Hook">
+                        <video class="sb-bg" src="/videos/projects/starbucks-cover.mp4" poster="/videos/projects/starbucks-cover.jpg" muted loop playsinline autoplay aria-label="Four weeks of one person’s orders fill a calendar: an oat latte every weekday, a Frappuccino and cake pop on Saturday, a hazelnut latte on Sunday. A gold scan finds the three patterns and fills in next week by itself"></video>
+                        <p class="sb-kick">Starbucks app strategy</p>
+                        <h4 class="sb-title">Starbucks’ app holds $12 billion a year. <em>It’s a glorified gift card.</em></h4>
+                        <p class="sb-lede"><b>35.8M</b> people open it to pay. Almost nobody opens it to plan: regulars tap through the same order every morning, and <b>2 in 3</b> orders still aren’t placed ahead in the app. Here’s how to make it a daily ritual instead.</p>
+                        <ul class="sb-chips">
+                            <li><b>35.8M</b>active Rewards members</li>
+                            <li><b>33%</b>of orders placed in the app</li>
+                            <li><b>59%</b>of store spend from members</li>
+                        </ul>
+                        <span class="sb-src">Source: Starbucks Card, Loyalty &amp; Mobile dashboard, Q3 FY26 (U.S.)</span>
+                        <span class="sb-sig" aria-hidden="true">suhani ✦</span>
+                    </div>
+
+                    <div class="mk-slide" data-title="Summary" hidden>
                         @Html.Raw(Top(sbuxSections, 0, "Starbucks: App &amp; loyalty strategy"))
                         <h4 class="mk-h">Starbucks can grow by turning its app from a checkout tool into <em>a daily ritual</em>.</h4>
                         <ol class="mk-scr">
-                            <li><span>the situation</span><p>Starbucks takes <b>48%</b> of U.S. coffee-shop spending, and Rewards members already drive <b>58%</b> of U.S. store sales.</p></li>
-                            <li><span>the catch</span><p>Yet <b>69%</b> of transactions still aren’t mobile orders, and people use it to pay, not to discover or plan.</p></li>
-                            <li><span>the fix</span><p>Build habit-forming features first (customization profiles, smart filtering, recurring orders) and manage to one metric: <b>Weekly Active Ritual Orders per User</b>.</p></li>
+                            <li><span>the situation</span><p>Starbucks takes <b>48%</b> of U.S. coffee-shop spending, and <b>35.8M</b> active Rewards members already drive <b>59%</b> of U.S. store spend.</p></li>
+                            <li><span>the catch</span><p>Yet <b>67%</b> of transactions still aren’t mobile orders, a share that has moved just <b>4 points</b> in three years. People use the app to pay, not to discover or plan.</p></li>
+                            <li><span>the fix</span><p>Build habit-forming features first (customization profiles, smart filtering, recurring orders), manage to one metric, <b>Weekly Active Ritual Orders per User</b>, and capture up to <b>$1.3B</b> a year.</p></li>
                         </ol>
-                        @Html.Raw(Foot("Technomic (2025); Starbucks Q4 FY25 investor dashboard; author analysis", 1, 7))
+                        @Html.Raw(Foot("Technomic (2025); Starbucks Card, Loyalty &amp; Mobile dashboard, Q3 FY26; author analysis", 2, 9))
                     </div>
 
                     <div class="mk-slide" data-title="The gap" hidden>
                         @Html.Raw(Top(sbuxSections, 1, "Starbucks: App &amp; loyalty strategy"))
-                        <h4 class="mk-h">Starbucks takes nearly half of U.S. coffee-shop spending, but only <em>about 3 in 10</em> orders are placed ahead in the app.</h4>
+                        <h4 class="mk-h">Starbucks takes nearly half of U.S. coffee-shop spending, but only <em>1 in 3</em> orders is placed ahead in the app.</h4>
                         <div class="mk-split">
                             <figure class="mk-exhibit">
-                                <figcaption>Exhibit 1: Share of U.S. coffee-shop spending, %</figcaption>
-                                <ol class="mk-hbars">
-                                    @foreach (var (brand, pct) in share)
+                                <figcaption>Exhibit 1: Every 100 U.S. orders, by how they’re placed</figcaption>
+                                <div class="sb-waffle" role="img" aria-label="33 of every 100 U.S. orders are mobile orders; 67 are placed some other way">
+                                    @for (var i = 0; i < 100; i++)
                                     {
-                                        <li class="@(brand == "Starbucks" ? "hi" : "")" style="--w: @Pct(pct * 100.0 / 48)%"><span>@brand</span><i></i><b>@pct</b></li>
+                                        <i class="@(i < 33 ? "on" : "")" style="--n: @i"></i>
                                     }
-                                </ol>
+                                </div>
+                                <p class="sb-legend"><span class="on"><b>33</b> ordered ahead in the app</span><span><b>67</b> everywhere else: register, drive-thru, delivery</span></p>
                             </figure>
                             <div class="mk-side">
                                 <p class="mk-exlabel">The app today</p>
                                 <ul class="mk-kpis">
-                                    <li><b>31%</b>of transactions are mobile orders</li>
-                                    <li><b>58%</b>of U.S. store sales come from Rewards members</li>
-                                    <li><b>35M+</b>active Rewards members, an all-time high</li>
+                                    <li><b>48%</b>of U.S. coffee-shop spending goes to Starbucks</li>
+                                    <li><b>59%</b>of U.S. store spend comes from Rewards members</li>
+                                    <li><b>$3.1B</b>loaded onto Starbucks cards in a single quarter</li>
                                 </ul>
                                 <p class="mk-sowhat"><b>Key takeaway</b>The growth isn’t new customers. It’s moving visits Starbucks already has into the app.</p>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Technomic (2025); Starbucks Q4 FY25 investor dashboard", 2, 7))
+                        @Html.Raw(Foot("Technomic (2025); Starbucks Card, Loyalty &amp; Mobile dashboard, Q3 FY26", 3, 9))
                     </div>
 
-                    <div class="mk-slide" data-title="Opportunities" hidden>
+                    <div class="mk-slide" data-title="Plateau" hidden>
+                        @Html.Raw(Top(sbuxSections, 1, "Starbucks: App &amp; loyalty strategy"))
+                        <h4 class="mk-h">Members keep growing. <em>The habit doesn’t.</em></h4>
+                        <div class="sb-plateau">
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 2: Mobile orders, % of U.S. transactions, by quarter</figcaption>
+                                <ol class="sb-cols" aria-label="Mobile orders held between 29% and 33% of transactions for twelve straight quarters">
+                                    @for (var i = 0; i < sbMop.Length; i++)
+                                    {
+                                        <li class="@(i >= 9 ? "up" : "")" style="--h: @Pct(sbMop[i] * 100.0 / 40)%; --n: @i"><b>@sbMop[i]</b><i></i><span>@sbQ[i]</span></li>
+                                    }
+                                </ol>
+                                <p class="sb-flat"><span>8 straight quarters at 31%</span></p>
+                            </figure>
+                            <div class="sb-tiles">
+                                <div class="sb-tile">
+                                    <p class="mk-exlabel">Active Rewards members</p>
+                                    <b>35.8M</b>
+                                    <span><em>+10%</em> since Q4 FY23</span>
+                                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="@Spark(sbMembers)" /></svg>
+                                </div>
+                                <div class="sb-tile">
+                                    <p class="mk-exlabel">Dollars loaded on cards</p>
+                                    <b>$12.3B</b>
+                                    <span>in the last four quarters, peaking each holiday</span>
+                                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="@Spark(sbLoaded)" /></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>Starbucks keeps winning the wallet: members grew 10% while the share of orders placed ahead rose just 4 points.</p>
+                        @Html.Raw(Foot("Starbucks Card, Loyalty &amp; Mobile dashboards (Oct 2025, Jul 2026), U.S. company-operated stores", 4, 9))
+                    </div>
+
+                    <div class="mk-slide" data-title="Prize" hidden>
+                        @Html.Raw(Top(sbuxSections, 1, "Starbucks: App &amp; loyalty strategy"))
+                        <h4 class="mk-h">One extra ritual order a week from 1 in 10 members is worth <em>$1.3B a year</em>.</h4>
+                        <div class="sb-prize">
+                            <ol class="sb-eq" aria-label="Base case">
+                                <li><b>35.8M</b>active Rewards members</li>
+                                <li><i>×</i><b>10%</b>who set up a ritual</li>
+                                <li><i>×</i><b>1</b>extra order a week</li>
+                                <li><i>×</i><b>52</b>weeks</li>
+                                <li><i>×</i><b>~$7</b>average ticket*</li>
+                                <li class="sum"><i>=</i><b>$1.30B</b>added revenue a year</li>
+                            </ol>
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 3: Added revenue a year, $B, by adoption and extra ritual orders a week</figcaption>
+                                <table class="sb-heat">
+                                    <thead><tr><th scope="col"><span class="visually-hidden">Members who adopt</span></th>@foreach (var o in perWeek) { <th scope="col">@Pct(o) a week</th> }</tr></thead>
+                                    <tbody>
+                                        @foreach (var a in adopt)
+                                        {
+                                            <tr>
+                                                <th scope="row">@a% adopt</th>
+                                                @foreach (var o in perWeek)
+                                                {
+                                                    var v = Prize(a, o);
+                                                    <td class="@(a == 10 && o == 1.0 ? "base " : "")@(v / Prize(20, 2.0) > 0.4 ? "dark" : "")" style="--a: @Pct(v / Prize(20, 2.0))">$@v.ToString("0.00")</td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <p class="sb-legend"><span class="base">Base case</span><span>The cautious corner still adds $0.33B</span></p>
+                            </figure>
+                        </div>
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>The base case equals 3.5% of FY25 revenue ($37.2B), all from customers Starbucks already has.</p>
+                        @Html.Raw(Foot("Starbucks FY25 results; author model. *Ticket is an assumption", 5, 9))
+                    </div>
+
+                    <div class="mk-slide" data-title="Options" hidden>
                         @Html.Raw(Top(sbuxSections, 2, "Starbucks: App &amp; loyalty strategy"))
                         <h4 class="mk-h">Three opportunities could make ordering <em>predictive and personal</em>.</h4>
                         <p class="mk-outcome"><span>Target outcome</span>Grow mobile revenue and habit-driven visits by making the app a predictive, personalized daily ordering platform.</p>
@@ -306,18 +407,20 @@
                                 <p class="mk-test"><b>Test</b>Personalized offer vs. a generic coupon</p>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Opportunity solution tree, author analysis", 3, 7))
+                        @Html.Raw(Foot("Opportunity solution tree, author analysis", 6, 9))
                     </div>
 
-                    <div class="mk-slide" data-title="RICE scores" hidden>
+                    <div class="mk-slide" data-title="Priorities" hidden>
                         @Html.Raw(Top(sbuxSections, 3, "Starbucks: App &amp; loyalty strategy"))
-                        <h4 class="mk-h">The features that <em>build habits</em> score highest; paid line-skipping scores near the bottom.</h4>
+                        <h4 class="mk-h">Habit features score highest, so <em>ship the quick wins first</em>, fund the bets and cut paid line-skipping.</h4>
                         <figure class="mk-exhibit grow">
-                            <figcaption>Exhibit 2: RICE score by feature (Reach × Impact × Confidence ÷ Effort)</figcaption>
-                            <ol class="mk-bars">
-                                @foreach (var (feature, score) in rice)
+                            <figcaption>Exhibit 4: RICE score by feature (Reach × Impact × Confidence ÷ Effort), colored by impact/effort quadrant</figcaption>
+                            <p class="sb-quads"><span class="win">Quick win: high impact, low effort</span><span class="bet">Strategic bet: high impact, high effort</span><span class="fill">Fill-in</span><span class="cut">Deprioritize</span></p>
+                            <ol class="mk-bars sb-rice">
+                                @for (var i = 0; i < rice.Length; i++)
                                 {
-                                    <li class="@(score >= 20000 ? "top" : score < 5000 ? "low" : "")" style="--w: @Pct(score * 100.0 / riceMax)%">
+                                    var (feature, score, quad) = rice[i];
+                                    <li class="@quad" style="--w: @Pct(score * 100.0 / riceMax)%; --n: @i">
                                         <span class="mk-bar-label">@feature</span>
                                         <span class="mk-bar"><i></i></span>
                                         <span class="mk-bar-val">@score.ToString("N0")</span>
@@ -325,23 +428,8 @@
                                 }
                             </ol>
                         </figure>
-                        <p class="mk-sowhat inline"><b>Key takeaway</b>The three highest scorers all build habits: they make the next order faster than the last.</p>
-                        @Html.Raw(Foot("RICE scoring, author analysis", 4, 7))
-                    </div>
-
-                    <div class="mk-slide" data-title="Prioritization" hidden>
-                        @Html.Raw(Top(sbuxSections, 3, "Starbucks: App &amp; loyalty strategy"))
-                        <h4 class="mk-h">Ship <em>three quick wins</em> now, then fund the habit-forming bets.</h4>
-                        <div class="mk-matrix">
-                            <div class="q win"><h5>Quick wins <small>High impact, low effort</small></h5><p>Smart menu filtering<br />Customization profiles<br />Wait-time store routing</p></div>
-                            <div class="q bet"><h5>Strategic bets <small>High impact, high effort</small></h5><p>Recurring orders, Scheduling ahead<br />AI drink suggestions, Multi-user profiles<br />Study-optimized store finder</p></div>
-                            <div class="q fill"><h5>Fill-ins <small>Low impact, low effort</small></h5><p>Side-by-side drink comparison</p></div>
-                            <div class="q cut"><h5>Deprioritize <small>Low impact, high effort</small></h5><p>Line Priority Boost (paid)</p></div>
-                            <div class="mk-goal">Goal<b>Maximize WARO</b></div>
-                            <span class="ax y">User impact →</span>
-                            <span class="ax x">Implementation effort →</span>
-                        </div>
-                        @Html.Raw(Foot("Feature prioritization matrix, author analysis", 5, 7))
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>Two of the top three are quick wins, and all three make the next order faster than the last. Every one is judged by WARO.</p>
+                        @Html.Raw(Foot("RICE scoring and impact/effort matrix, author analysis", 7, 9))
                     </div>
 
                     <div class="mk-slide" data-title="The app" hidden>
@@ -373,30 +461,52 @@
                                 <li><button type="button" data-go="rewards"><b>Watch WARO grow</b><span>The north star: weekly ritual orders per user</span></button></li>
                             </ol>
                         </div>
-                        @Html.Raw(Foot("Author prototype, rebuilt in code as a working app", 6, 7))
+                        @Html.Raw(Foot("Author prototype, rebuilt in code as a working app", 8, 9))
                     </div>
 
                     <div class="mk-slide" data-title="North star" hidden>
                         @Html.Raw(Top(sbuxSections, 5, "Starbucks: App &amp; loyalty strategy"))
-                        <h4 class="mk-h">Success is measured by <em>weekly ritual orders</em>, not downloads.</h4>
+                        <h4 class="mk-h">Success is <em>1.2 ritual orders a week</em> per user within a year, not downloads.</h4>
                         <div class="mk-star">
                             <div class="mk-star-main">
                                 <p class="mk-exlabel">North star metric</p>
                                 <b>WARO</b>
                                 <span>Weekly Active Ritual Orders per User: orders placed from a saved, scheduled or AI-suggested routine. It captures both revenue and habit.</span>
+                                <ul class="sb-drivers"><li>Habit</li><li>Personalization</li><li>Convenience</li><li>Engagement</li><li>Retention</li></ul>
+                                <ul class="sb-guards">
+                                    <li><b>&lt; 4 min</b>pickup wait, so rituals never mean a line</li>
+                                    <li><b>&lt; 15%</b>of rituals paused or canceled a month</li>
+                                </ul>
                             </div>
                             <figure class="mk-exhibit">
-                                <figcaption>Exhibit 3: Drivers of WARO</figcaption>
-                                <ol class="mk-drivers">
-                                    <li><b>Habit formation</b>recurring and scheduled orders created</li>
-                                    <li><b>Personalization</b>recommendations that fit the moment</li>
-                                    <li><b>Convenience</b>one-tap reorder, reliable pickup</li>
-                                    <li><b>Engagement</b>active use beyond checkout</li>
-                                    <li><b>Retention</b>users returning week after week</li>
-                                </ol>
+                                <figcaption>Exhibit 5: WARO target by month after launch, with the roadmap behind it</figcaption>
+                                @{
+                                    // x: month 0–12 across 9–92; y: WARO 0–1.6 from 52 up to 14, leaving the top for the phase labels
+                                    string X(double m) => Pct(9 + m / 12 * 83);
+                                    double Y(double w) => 52 - w / 1.6 * 38;
+                                    var phases = new (double From, double To, string Name, string Ships)[] { (0, 3, "Quick wins", "Profiles &amp; filters"), (3, 9, "Habit bets", "Recurring & scheduled orders"), (9, 12, "AI layer", "AI picks, multi-user") };
+                                    var svg = new System.Text.StringBuilder();
+                                    for (var i = 0; i < phases.Length; i++)
+                                    {
+                                        var (from, to, name, ships) = phases[i];
+                                        svg.Append($"<rect class=\"ph p{i}\" x=\"{X(from)}\" y=\"4\" width=\"{Pct((to - from) / 12 * 83)}\" height=\"48\" />");
+                                        svg.Append($"<text class=\"phn\" x=\"{X(from + 0.25)}\" y=\"8.6\">{name}</text>");
+                                        svg.Append($"<text class=\"phs\" x=\"{X(from + 0.25)}\" y=\"12\">{ships}</text>");
+                                    }
+                                    foreach (var w in new[] { 0.0, 0.5, 1.0 }) { svg.Append($"<line class=\"grid\" x1=\"9\" x2=\"92\" y1=\"{Pct(Y(w))}\" y2=\"{Pct(Y(w))}\" /><text class=\"ax\" x=\"7.5\" y=\"{Pct(Y(w) + 1)}\" text-anchor=\"end\">{Pct(w)}</text>"); }
+                                    svg.Append($"<path class=\"ln\" pathLength=\"100\" d=\"M{string.Join(" L", waro.Select(p => X(p.Month) + " " + Pct(Y(p.Target))))}\" />");
+                                    for (var i = 0; i < waro.Length; i++)
+                                    {
+                                        var (m, t) = waro[i];
+                                        svg.Append($"<circle class=\"dt\" style=\"--n: {i}\" cx=\"{X(m)}\" cy=\"{Pct(Y(t))}\" r=\"1.3\" />");
+                                        svg.Append($"<text class=\"val\" style=\"--n: {i}\" x=\"{X(m)}\" y=\"{Pct(Y(t) - 2.6)}\" text-anchor=\"middle\">{Pct(t)}</text>");
+                                        svg.Append($"<text class=\"ax\" x=\"{X(m)}\" y=\"57\" text-anchor=\"middle\">{(m == 0 ? "Launch" : "Month " + m)}</text>");
+                                    }
+                                }
+                                <svg class="sb-waro-chart" viewBox="0 0 100 60" role="img" aria-label="WARO targets: 0.2 at launch, 0.5 by month 3, 0.8 by month 6, 1.0 by month 9 and 1.2 by month 12, across three roadmap phases">@Html.Raw(svg.ToString())</svg>
                             </figure>
                         </div>
-                        @Html.Raw(Foot("Product metrics framework, author analysis", 7, 7))
+                        @Html.Raw(Foot("Product metrics framework and targets, author analysis", 9, 9))
                     </div>
 
                 </div>
