@@ -971,6 +971,11 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
 
 // Overview / MIS Major / Marketing tabs (click, or arrow keys). #mis or #skills opens MIS Major; #marketing opens Marketing.
 (() => {
+    // older links numbered the marketing projects (#mk-proj-3 was Netflix); send them to the project's name instead,
+    // before anything below (or the project carousel) reads the hash
+    const legacyMk = ['starbucks', 'owala', 'fuelflow', 'netflix', 'glossier', 'rhode'];
+    const oldMk = location.hash.match(/^#mk-(proj|title)-([0-5])$/);
+    if (oldMk) history.replaceState(null, '', `#mk-${oldMk[1]}-${legacyMk[oldMk[2]]}`);
     const tabs = [...document.querySelectorAll('.cw-tab')];
     // each tab has its own address and title, so a view can be shared and the back button moves between tabs
     // MIS Major is the default tab; #mis still works for links from the home page
@@ -1033,7 +1038,7 @@ document.querySelectorAll('.mk-deck').forEach(deck => {
     // #mis opens MIS Major; #skills opens it and jumps to that section (the home page links here)
     // On the one-page Pursue (/home/pursue), #mis and #marketing also scroll down to the Coursework section
     const onPursue = !!document.getElementById('coursework');
-    // a marketing project link (#mk-title-3 or #mk-proj-3) lands on that project's card in the Marketing tab
+    // a marketing project link (#mk-title-netflix or #mk-proj-netflix) lands on that project's card in the Marketing tab
     const mkCard = location.hash.startsWith('#mk-') && document.getElementById(location.hash.slice(1))?.closest('.mp-proj');
     const jumpTo = ['#skills'].includes(location.hash) ? location.hash.slice(1)
         : mkCard ? mkCard.id

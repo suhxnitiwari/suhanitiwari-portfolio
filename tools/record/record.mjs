@@ -35,12 +35,12 @@ const shots = {
         }
     },
     starbucks: {
-        url: 'http://localhost:5142/home/study#mk-title-0', w: 1280, h: 900, crop: '#mk-proj-0 .mk-stage',
-        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-0 .mk-step[data-go="1"]').click()`); } await sleep(1500); }
+        url: 'http://localhost:5142/home/study#mk-title-starbucks', w: 1280, h: 900, crop: '#mk-proj-starbucks .mk-stage',
+        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-starbucks .mk-step[data-go="1"]').click()`); } await sleep(1500); }
     },
     fuelflow: {
-        url: 'http://localhost:5142/home/study#mk-title-2', w: 1280, h: 900, crop: '#mk-proj-2 .mk-stage',
-        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-2 .mk-step[data-go="1"]').click()`); } await sleep(1500); }
+        url: 'http://localhost:5142/home/study#mk-title-fuelflow', w: 1280, h: 900, crop: '#mk-proj-fuelflow .mk-stage',
+        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-fuelflow .mk-step[data-go="1"]').click()`); } await sleep(1500); }
     },
     personality: {
         url: 'https://suhxnitiwari.github.io/suhani-personality/', w: 1280, h: 800,
@@ -64,8 +64,8 @@ const shots = {
         }
     },
     owala: {
-        url: 'http://localhost:5142/home/study#mk-title-1', w: 1280, h: 900, crop: '#mk-proj-1 .mk-stage',
-        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-1 .mk-step[data-go="1"]').click()`); } await sleep(1500); }
+        url: 'http://localhost:5142/home/study#mk-title-owala', w: 1280, h: 900, crop: '#mk-proj-owala .mk-stage',
+        run: async ev => { await sleep(1500); for (let i = 0; i < 6; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-owala .mk-step[data-go="1"]').click()`); } await sleep(1500); }
     }
 };
 
