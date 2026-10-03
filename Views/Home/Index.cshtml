@@ -2659,28 +2659,36 @@
 </section>
 </div>
 
-@* THE FINALE: the page ends on proof, not a quiz. One line, four numbers that count up (each links to where it comes from), then what to do next *@
+@* THE FINALE: the page ends on proof, not a quiz. One line that keeps rewriting itself, five numbers that count up
+   (each links to where it comes from, with the line that makes the number land), then what to do next *@
 @{
-    var finale = new (int To, string Suffix, string Label, string Href)[]
+    var finale = new (string Prefix, int To, string Suffix, string Label, string Note, string Href)[]
     {
-        (240, "+", "girls taught to code", "#beyond"),
-        (1000, "", "copies of my book sold in its first month", "#beyond"),
-        (182293, "", "Spotify plays turned into a galaxy", "https://suhxnitiwari.github.io/listening-galaxy/"),
-        (33, "", "automated tests in RideFlow", "https://rideflow-frontend.onrender.com/")
+        ("", 9, "", "subjects studied across four schools", "Most people pick one major. I picked two, then kept going.", "/#overview"),
+        ("", 240, "+", "girls taught to code", "In my AP CS class, there were three of us.", "#beyond"),
+        ("", 350, "", "hours volunteered in one year", "Gold only required 250.", "#awards"),
+        ("", 1000, "", "copies of my book sold in its first month", "I wrote it for an audience of one.", "#beyond"),
+        ("$", 4194, "", "donated to Dallas-Fort Worth libraries for early STEM", "From a book I wrote at 17.", "#beyond")
     };
+    // the last word of the line, typed, deleted and retyped like an editor revising it; the first is the one it settles on without motion
+    var finaleWords = new[] { "choose.", "fall for.", "come back to.", "remember.", "can’t put down." };
 }
 <section class="finale" id="finale" aria-labelledby="finale-heading">
     <div class="finale-wrap">
         <p class="finale-kicker">The short version</p>
-        <h2 class="finale-line" id="finale-heading">I build things people <em>choose.</em></h2>
+        <h2 class="finale-line" id="finale-heading">
+            <span class="visually-hidden">I build things people choose.</span>
+            <span aria-hidden="true">I build things people<br /><em class="finale-word" data-words="@string.Join("|", finaleWords)">@finaleWords[0]</em><span class="finale-caret"></span></span>
+        </h2>
         <ul class="finale-nums">
             @foreach (var n in finale)
             {
                 var external = n.Href.StartsWith("http");
                 <li>
                     <a href="@n.Href" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)">
-                        <b data-to="@n.To" data-suffix="@n.Suffix">@n.To.ToString("N0")@n.Suffix</b>
+                        <b data-to="@n.To" data-prefix="@n.Prefix" data-suffix="@n.Suffix">@n.Prefix@n.To.ToString("N0")@n.Suffix</b>
                         <span>@n.Label</span>
+                        <small class="finale-note">@n.Note</small>
                     </a>
                 </li>
             }
@@ -2721,10 +2729,13 @@
         color: #1E100A;
     }
     .finale-line em { font-style: italic; color: #733642; }
+    /* the rewritten word always gets its own line, so the cards below never jump as it changes length */
+    .finale-word { white-space: nowrap; }
+    /* all five in one row */
     .finale-nums {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 18px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
         margin: 0 0 64px;
         padding: 0;
         list-style: none;
@@ -2757,6 +2768,28 @@
         color: #733642;
     }
     .finale-nums span { font-size: 0.92rem; line-height: 1.45; color: #4A3A36; }
+    /* the line that makes the number land: last, in italic, pinned to the bottom so the row lines up */
+    .finale-note {
+        margin-top: auto;
+        padding-top: 4px;
+        font-family: Georgia, serif;
+        font-size: 0.95rem;
+        font-style: italic;
+        line-height: 1.4;
+        color: #733642;
+    }
+    /* a blinking cursor after the word being rewritten */
+    .finale-caret {
+        display: inline-block;
+        width: 3px;
+        height: 0.8em;
+        margin-left: 0.06em;
+        vertical-align: -0.04em;
+        background: #733642;
+        animation: finaleBlink 1s steps(1) infinite;
+    }
+    .finale-caret.typing { animation: none; }
+    @@keyframes finaleBlink { 50% { opacity: 0; } }
     .finale-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
     .finale-btn {
         display: inline-flex;
@@ -2788,14 +2821,15 @@
     .finale.go .finale-nums li:nth-child(2) { transition-delay: 0.35s; }
     .finale.go .finale-nums li:nth-child(3) { transition-delay: 0.45s; }
     .finale.go .finale-nums li:nth-child(4) { transition-delay: 0.55s; }
+    .finale.go .finale-nums li:nth-child(5) { transition-delay: 0.65s; }
     .finale.go .finale-actions { transition-delay: 0.8s; }
 
     @@media (max-width: 860px) {
         .finale { padding: 80px 20px 90px; }
-        .finale-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .finale-nums { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
     }
-    @@media (max-width: 420px) {
-        .finale-nums { grid-template-columns: 1fr; }
+    @@media (prefers-reduced-motion: reduce) {
+        .finale-caret { display: none; }
     }
 </style>
 
@@ -2807,12 +2841,12 @@
         if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window) || document.hidden) return;
         el.classList.add('ready');
         const nums = [...el.querySelectorAll('b[data-to]')];
-        nums.forEach(b => b.textContent = '0' + b.dataset.suffix);
+        nums.forEach(b => b.textContent = b.dataset.prefix + '0' + b.dataset.suffix);
         const count = (b, delay) => setTimeout(() => {
             const to = +b.dataset.to, t0 = performance.now(), ms = 1600;
             const step = now => {
                 const p = Math.min(1, (now - t0) / ms), eased = 1 - Math.pow(1 - p, 3);
-                b.textContent = Math.round(to * eased).toLocaleString('en-US') + b.dataset.suffix;
+                b.textContent = b.dataset.prefix + Math.round(to * eased).toLocaleString('en-US') + b.dataset.suffix;
                 if (p < 1) requestAnimationFrame(step);
             };
             requestAnimationFrame(step);
@@ -2822,8 +2856,26 @@
             seen.disconnect();
             el.classList.add('go');
             nums.forEach((b, i) => count(b, 300 + i * 100));
+            setTimeout(rewrite, 2600);
         }, { threshold: 0.3 });
         seen.observe(el);
+
+        // the line's last word: hold it, delete it letter by letter, type the next one, and loop
+        const word = el.querySelector('.finale-word'), caret = el.querySelector('.finale-caret');
+        const words = word ? word.dataset.words.split('|') : [];
+        const wait = ms => new Promise(r => setTimeout(r, ms));
+        async function rewrite() {
+            if (words.length < 2) return;
+            for (let i = 0; ; i = (i + 1) % words.length) {
+                await wait(2600);
+                caret.classList.add('typing');
+                for (let t = word.textContent; t.length; t = t.slice(0, -1)) { word.textContent = t.slice(0, -1); await wait(45); }
+                await wait(250);
+                const next = words[(i + 1) % words.length];
+                for (let k = 1; k <= next.length; k++) { word.textContent = next.slice(0, k); await wait(85); }
+                caret.classList.remove('typing');
+            }
+        }
     })();
 </script>
 
