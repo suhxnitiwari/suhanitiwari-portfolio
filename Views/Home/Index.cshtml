@@ -918,6 +918,17 @@
         color: #7E3F4A;
     }
 
+    /* Oracle and Acacia link to their LinkedIn pages */
+    .about-intro .about-prev a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: rgba(126, 63, 74, 0.35);
+        text-underline-offset: 4px;
+        transition: text-decoration-color 0.2s ease;
+    }
+
+    .about-intro .about-prev a:hover, .about-intro .about-prev a:focus-visible { text-decoration-color: currentColor; }
+
     @@media (prefers-reduced-motion: reduce) {
         .about-word { transition: none; }
     }
@@ -2348,7 +2359,7 @@
             @* it types itself out like code: keyboard mash first, then the real words unfold letter by letter *@
             <h2 class="about-tagline"><span class="about-sr">Building technology people choose, with a love for psychology, brands and learning</span><span class="about-type" aria-hidden="true">Building technology people choose, with a love for</span>
                 <span class="about-rotator" aria-hidden="true"><span class="about-word on" data-words="psychology|brands|learning">psychology</span></span><span class="about-caret" aria-hidden="true"></span></h2>
-            <p class="about-prev">Previously at Oracle and Acacia Advisors</p>
+            <p class="about-prev">Previously at <a href="https://www.linkedin.com/company/oracle/" target="_blank" rel="noopener">Oracle</a> and <a href="https://www.linkedin.com/company/acacia-advisors/" target="_blank" rel="noopener">Acacia Advisors</a></p>
             <p>I’m a student at UT Austin’s McCombs School of Business, earning a Bachelor of Business Administration in <a class="about-mis-link" href="/#projects">Management Information Systems (MIS)</a> and a Bachelor of Arts in Psychology, with minors in Marketing and Educational Psychology.</p>
             <p>Those aren’t four separate interests. Psychology and consumer behavior explain why people choose what they choose. <a class="about-mis-link" href="/study#marketing">Marketing</a> and <a class="about-mis-link" href="/work/starbucks">product strategy</a> decide what’s worth offering them. Technology is how it gets built. And education asks the same question about learning: why some things stick. That thread runs through everything here, from discovery calls at Oracle to a children’s book about women engineers.</p>
             <p>Off the clock: vanilla lattes, rom-coms, Pilates and yoga, a new restaurant whenever possible, and always one creative project in progress. Most of them end up somewhere on this site.</p>
@@ -2894,11 +2905,12 @@
 @{
     var finale = new (string Prefix, int To, string Suffix, string Label, string Note, string Href)[]
     {
-        ("", 9, "", "subjects studied across four schools", "Most people pick one major. I picked two, then kept going.", "/#overview"),
-        ("", 240, "+", "girls taught to code", "In my AP CS class, there were three of us.", "#beyond"),
-        ("", 350, "", "hours volunteered in one year", "Gold only required 250.", "#awards"),
-        ("", 1000, "", "copies of my book sold in its first month", "I wrote it for an audience of one.", "#beyond"),
-        ("$", 4194, "", "donated to Dallas-Fort Worth libraries for early STEM", "From a book I wrote at 17.", "#beyond")
+        // every label and every italic line is about the same length, so each card reads as two lines and two lines
+        ("", 9, "", "subjects studied across four schools", "Most people pick one major. I picked two.", "/study#overview"),
+        ("", 240, "+", "girls I taught to code in two years", "In my AP CS class, there were three of us.", "#beyond"),
+        ("", 350, "", "hours volunteered in a single year", "Gold only required 250. I kept going.", "/study#awards"),
+        ("", 1000, "", "book copies sold in the first month", "I wrote it for one reader: my sister.", "#beyond"),
+        ("$", 4194, "", "given to DFW libraries for early STEM", "All of my book’s first-month profit.", "#beyond")
     };
     // the last word of the line, typed, deleted and retyped like an editor revising it; the first is the one it settles on without motion
     var finaleWords = new[] { "choose.", "fall for.", "feel understood by.", "resonate with.", "obsess over.", "come back to.", "remember.", "can’t put down." };
