@@ -1,0 +1,188 @@
+<!doctype html>
+<!-- The FuelFlow deck's 15-second cover video, as a page. A Tuesday at UT: back-to-back classes stack up, lunch gets
+     crossed out and an energy bar drains; then the real numbers (UT Student Government survey, 2022); then the FuelFlow
+     station rises into the building with its three promises and the energy comes back; it ends on the logo and the line.
+     window.render(t) draws the frame at t seconds, so record.mjs can step through it frame by frame (window.DUR = 15). -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    @font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 900; src: url(../../wwwroot/fonts/bodoni-moda-latin-normal.woff2) format('woff2'); }
+    @font-face { font-family: 'Bodoni Moda'; font-style: italic; font-weight: 400 900; src: url(../../wwwroot/fonts/bodoni-moda-latin-italic.woff2) format('woff2'); }
+    :root { --sage: #3F4A34; --sage-2: #5E7050; --sage-soft: #E3E8DC; --orange: #BF5700; --orange-2: #D9782D; --cream: #FBF8F1; --ink: #1E1A14; --mute: #6E6A5E; }
+    html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; }
+    body { position: relative; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink);
+        background: radial-gradient(circle at 88% 8%, #E6EBDD 0, rgba(230, 235, 221, 0) 40%), radial-gradient(circle at 6% 96%, #F6E3D2 0, rgba(246, 227, 210, 0) 38%), var(--cream); }
+    .abs { position: absolute; }
+    .serif { font-family: 'Bodoni Moda', Didot, Georgia, serif; }
+    .kick { font-size: 15px; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: var(--orange); }
+
+    /* scene 1: the day */
+    #day { left: 80px; top: 70px; width: 1120px; height: 580px; }
+    #day h1 { position: absolute; left: 0; top: 30px; margin: 0; font-size: 64px; font-weight: 600; line-height: 1.02; letter-spacing: -0.02em; }
+    #day h1 em { color: var(--sage-2); }
+    #clock { position: absolute; right: 0; top: 0; font: 700 74px/1 "SF Mono", Menlo, monospace; letter-spacing: 0.02em; color: var(--sage); font-variant-numeric: tabular-nums; }
+    #clock small { display: block; margin-top: 6px; text-align: right; font: 800 13px/1 -apple-system, sans-serif; letter-spacing: 0.3em; color: var(--mute); }
+    .cls { position: absolute; left: 0; height: 52px; display: flex; align-items: center; gap: 18px; padding: 0 22px; border-radius: 14px; background: #FFFFFF;
+        border: 1px solid #E2DDCF; box-shadow: 0 14px 24px -18px rgba(30, 26, 20, 0.5); font-size: 19px; font-weight: 600; white-space: nowrap; }
+    .cls b { font: 700 16px/1 "SF Mono", Menlo, monospace; color: var(--orange); }
+    #lunch { position: absolute; left: 0; height: 52px; display: flex; align-items: center; gap: 14px; padding: 0 22px; border-radius: 14px;
+        border: 2px dashed #C9C2B0; font-size: 19px; font-weight: 600; color: var(--mute); white-space: nowrap; }
+    #lunch b { font: 700 16px/1 "SF Mono", Menlo, monospace; }
+    #strike { position: absolute; left: -6px; right: -6px; top: 50%; height: 4px; border-radius: 2px; background: #B4232F; transform-origin: 0 50%; }
+    #notime { position: absolute; left: calc(100% + 16px); top: 50%; transform: translateY(-50%) rotate(-4deg); font: 700 26px/1 'Bradley Hand', 'Segoe Print', cursive; color: #B4232F; white-space: nowrap; }
+
+    /* energy bar (shared by scenes 1 and 3) */
+    #energy { right: 80px; top: 250px; width: 300px; }
+    #energy p { margin: 0 0 10px; font-size: 14px; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; color: var(--mute); }
+    #battery { position: relative; height: 64px; border: 4px solid var(--ink); border-radius: 16px; padding: 6px; box-sizing: border-box; }
+    #battery::after { content: ""; position: absolute; right: -14px; top: 18px; width: 8px; height: 20px; border-radius: 0 4px 4px 0; background: var(--ink); }
+    #fill { height: 100%; border-radius: 9px; }
+    #pct { margin-top: 10px; font: 700 34px/1 "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; }
+
+    /* scene 2: the numbers */
+    #nums { left: 80px; top: 120px; width: 1120px; }
+    .stat { display: flex; align-items: center; gap: 34px; }
+    .stat .big { font-size: 170px; font-weight: 700; line-height: 0.9; letter-spacing: -0.04em; color: var(--sage); font-variant-numeric: lining-nums; min-width: 330px; }
+    .stat .big.o { color: var(--orange); }
+    .stat p { margin: 0; max-width: 640px; font-size: 32px; line-height: 1.25; font-weight: 500; }
+    .stat p em { font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; color: var(--sage-2); }
+    #src { left: 80px; bottom: 54px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: var(--mute); }
+
+    /* scene 3: the station */
+    #station { left: 480px; top: 120px; width: 340px; height: 470px; border-radius: 22px; background: linear-gradient(160deg, #C7651C, #9C4410);
+        box-shadow: 0 40px 60px -30px rgba(30, 26, 20, 0.7); overflow: hidden; }
+    #station .band { position: absolute; left: 0; right: 0; top: 0; height: 74px; background: var(--sage); display: flex; align-items: center; justify-content: center; gap: 10px; color: #fff; }
+    #station .band img { width: 40px; height: 40px; }
+    #station .band span { font: 800 26px/1 -apple-system, sans-serif; letter-spacing: 0.06em; }
+    #station .glass { position: absolute; left: 20px; right: 20px; top: 94px; bottom: 96px; border-radius: 12px; background: #2A2A24; padding: 12px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 10px; box-sizing: border-box; }
+    .shelf { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; border-bottom: 3px solid #6A6656; padding-bottom: 6px; }
+    .meal { border-radius: 7px; position: relative; overflow: hidden; }
+    .meal::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 34%; background: rgba(255, 255, 255, 0.85); }
+    #station .pay { position: absolute; left: 20px; right: 20px; bottom: 22px; height: 54px; border-radius: 10px; background: #F5EFE4; display: flex; align-items: center; justify-content: center;
+        font: 800 15px/1 -apple-system, sans-serif; letter-spacing: 0.18em; color: var(--sage); }
+    #building { left: 430px; top: 76px; width: 440px; height: 560px; border-radius: 26px 26px 0 0; border: 3px solid #D9D2C1; border-bottom: none; }
+    #building span { position: absolute; left: 0; right: 0; top: -2px; transform: translateY(-100%); text-align: center; font-size: 14px; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: var(--mute); padding-bottom: 8px; }
+    .badge { position: absolute; padding: 14px 22px; border-radius: 999px; background: #FFFFFF; border: 2px solid var(--sage); box-shadow: 0 16px 26px -18px rgba(30, 26, 20, 0.6);
+        font-size: 22px; font-weight: 700; color: var(--sage); white-space: nowrap; }
+
+    /* scene 4: the end card */
+    #end { inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    #end img { width: 230px; height: auto; }
+    #end h2 { margin: 26px 0 0; font-size: 58px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
+    #end h2 em { color: var(--sage-2); }
+    #end p { margin: 18px 0 0; font-size: 15px; font-weight: 800; letter-spacing: 0.3em; text-transform: uppercase; color: var(--orange); }
+</style>
+</head>
+<body>
+    <div id="day" class="abs">
+        <p class="kick" style="margin:0">A Tuesday at UT Austin</p>
+        <h1 class="serif">Back-to-back,<br><em>all day.</em></h1>
+        <div id="clock">8:00<small>AM</small></div>
+        <div id="classes"></div>
+        <div id="lunch"><b>12:30</b> Lunch<div id="strike"></div><div id="notime">no time</div></div>
+    </div>
+
+    <div id="energy" class="abs"><p>Energy</p><div id="battery"><div id="fill"></div></div><div id="pct">100%</div></div>
+
+    <div id="nums" class="abs">
+        <div class="stat" id="s1"><div class="big serif" id="n1">0%</div><p>of UT students surveyed were <em>food insecure</em>, about 3× the national average.</p></div>
+        <div class="stat o" id="s2" style="margin-top:34px"><div class="big o serif" id="n2">0%</div><p>had <em>never used</em> the free campus food pantry.</p></div>
+    </div>
+    <p id="src" class="abs">Source: UT Student Government Food Insecurity Action Team survey of ~430 students, 2022 (The Daily Texan); USDA national average</p>
+
+    <div id="building" class="abs"><span>McCombs School of Business</span></div>
+    <div id="station" class="abs">
+        <div class="band"><img src="../../wwwroot/images/projects/fuelflow/logo.png" alt=""><span>FUELFLOW</span></div>
+        <div class="glass">
+            <div class="shelf"><div class="meal" style="background:#8DA66B"></div><div class="meal" style="background:#D9A441"></div><div class="meal" style="background:#C2593A"></div></div>
+            <div class="shelf"><div class="meal" style="background:#E3C27A"></div><div class="meal" style="background:#7FA36A"></div><div class="meal" style="background:#B85C38"></div></div>
+            <div class="shelf"><div class="meal" style="background:#A7C08A"></div><div class="meal" style="background:#C98B4E"></div><div class="meal" style="background:#6E8F5A"></div></div>
+        </div>
+        <div class="pay">TAP · 60 SEC</div>
+    </div>
+    <div class="badge" id="b1">10g+ protein</div>
+    <div class="badge" id="b2">Nothing over $12.50</div>
+    <div class="badge" id="b3">60-second checkout</div>
+
+    <div id="end" class="abs">
+        <img src="../../wwwroot/images/projects/fuelflow/logo.png" alt="FuelFlow Campus">
+        <h2 class="serif">Real food <em>where students already are.</em></h2>
+        <p>FuelFlow · A product pitch by Suhani Tiwari</p>
+    </div>
+
+<script>
+    const $ = id => document.getElementById(id);
+    const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+    const span = (t, a, b) => clamp((t - a) / (b - a));            // 0 → 1 between a and b seconds
+    const ease = p => 1 - Math.pow(1 - p, 3);                         // ease-out
+    const inOut = p => p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+    const back = p => { const c = 1.6; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };   // a little overshoot
+    const set = (el, o, x = 0, y = 0, s = 1) => { el.style.opacity = o; el.style.transform = `translate(${x}px, ${y}px) scale(${s})`; };
+
+    // the day: five classes, back to back, with lunch where a break should be
+    const day = [['8:00', 'Database Management'], ['9:30', 'Cognitive Psychology'], ['11:00', 'Consumer Behavior'], ['2:00', 'Strategic IT Management'], ['3:30', 'Statistics for Business']];
+    const tops = [190, 254, 318, 446, 510];
+    day.forEach(([time, name], i) => {
+        const d = document.createElement('div');
+        d.className = 'cls'; d.id = 'c' + i; d.style.top = tops[i] + 'px';
+        d.innerHTML = `<b>${time}</b>${name}`;
+        $('classes').append(d);
+    });
+    $('lunch').style.top = '382px';
+
+    const CLOCK = [[0, 8 * 60], [3.6, 15 * 60 + 30]];   // 8:00 AM → 3:30 PM over the first 3.6 s
+    const fmt = m => { const h = Math.floor(m / 60), mm = String(Math.floor(m % 60 / 5) * 5).padStart(2, '0'); return [`${((h + 11) % 12) + 1}:${mm}`, h < 12 ? 'AM' : 'PM']; };
+
+    window.DUR = 15;
+    window.render = t => {
+        // scene 1, 0–4.6 s: the day stacks up and the energy drains
+        const out1 = ease(span(t, 4.2, 4.8));
+        set($('day'), 1 - out1, -60 * out1);
+        const mins = CLOCK[0][1] + (CLOCK[1][1] - CLOCK[0][1]) * inOut(span(t, 0.3, 3.6));
+        const [hm, ap] = fmt(mins);
+        $('clock').firstChild.nodeValue = hm; $('clock').querySelector('small').textContent = ap;
+        day.forEach((_, i) => { const p = back(span(t, 0.4 + i * 0.55 + (i > 2 ? 0.35 : 0), 0.85 + i * 0.55 + (i > 2 ? 0.35 : 0))); set($('c' + i), clamp(p * 2), 40 * (1 - p)); });
+        const lp = back(span(t, 1.9, 2.3)); set($('lunch'), clamp(lp * 2), 40 * (1 - lp));
+        $('strike').style.transform = `scaleX(${ease(span(t, 2.55, 2.9))})`;
+        $('notime').style.opacity = span(t, 2.8, 3.1);
+
+        // energy: drains through the day, sits low through the numbers, refills when the station arrives
+        const level = t < 8.6 ? 100 - 82 * inOut(span(t, 0.4, 3.8)) : 18 + 82 * ease(span(t, 10.1, 11.8));
+        $('fill').style.width = level + '%';
+        $('fill').style.background = level < 35 ? '#B4232F' : level < 65 ? '#D9A441' : '#5E7050';
+        $('pct').textContent = Math.round(level) + '%';
+        $('pct').style.color = $('fill').style.background;
+        const eIn = ease(span(t, 0.2, 0.7)), eOutA = ease(span(t, 4.2, 4.7)), eBack = ease(span(t, 9.4, 9.9)), eOutB = ease(span(t, 12.2, 12.7));
+        const eo = t < 6 ? eIn * (1 - eOutA) : eBack * (1 - eOutB);
+        set($('energy'), eo, 0, 0, 1);
+        $('energy').style.top = t < 6 ? '250px' : '330px';
+        $('energy').style.right = t < 6 ? '80px' : '64px';
+
+        // scene 2, 4.6–9 s: the numbers
+        const n1 = ease(span(t, 4.9, 6.2)), n2 = ease(span(t, 6.3, 7.6)), outN = ease(span(t, 8.6, 9.1));
+        set($('s1'), clamp(span(t, 4.8, 5.2)) * (1 - outN), 0, 30 * (1 - ease(span(t, 4.8, 5.4))));
+        set($('s2'), clamp(span(t, 6.2, 6.6)) * (1 - outN), 0, 30 * (1 - ease(span(t, 6.2, 6.8))));
+        $('n1').textContent = Math.round(32 * n1) + '%';
+        $('n2').textContent = Math.round(90 * n2) + '%';
+        $('src').style.opacity = clamp(span(t, 5.4, 5.9)) * (1 - outN);
+
+        // scene 3, 9–12.6 s: the station rises into McCombs, the promises pop, the energy comes back
+        const bIn = ease(span(t, 9.0, 9.6)), sIn = back(span(t, 9.3, 10.1)), out3 = ease(span(t, 12.2, 12.7));
+        set($('building'), bIn * (1 - out3));
+        set($('station'), clamp(span(t, 9.3, 9.6)) * (1 - out3), 0, 260 * (1 - sIn));
+        const badge = (id, a, x, y) => { const p = back(span(t, a, a + 0.45)); set($(id), clamp(p * 2) * (1 - out3), 0, 0, 0.6 + 0.4 * p); $(id).style.left = x + 'px'; $(id).style.top = y + 'px'; };
+        badge('b1', 10.3, 96, 200);
+        badge('b2', 10.75, 60, 300);
+        badge('b3', 11.2, 84, 400);
+
+        // scene 4, 12.6–15 s: logo and the line, then it holds
+        const end = ease(span(t, 12.6, 13.4));
+        set($('end'), end, 0, 24 * (1 - end));
+        $('end').querySelector('img').style.transform = `scale(${0.8 + 0.2 * back(span(t, 12.6, 13.3))})`;
+    };
+
+    window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]).then(() => { render(0); return true; });
+</script>
+</body>
+</html>

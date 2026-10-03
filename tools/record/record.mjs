@@ -85,6 +85,10 @@ const shots = {
     'owala-cover': {
         // the Owala deck's cover: an animation page stepped frame by frame through window.render(t), so it plays smoothly
         url: new URL('./owala-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
+    },
+    'fuelflow-cover': {
+        // the FuelFlow deck's 15-second cover: a Tuesday at UT, the survey numbers, the station, the logo
+        url: new URL('./fuelflow-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
     }
 };
 

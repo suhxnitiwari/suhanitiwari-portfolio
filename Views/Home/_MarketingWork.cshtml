@@ -92,22 +92,42 @@
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="FuelFlow slides">
                 <div class="mk-stage">
 
-                    <div class="mk-slide" data-title="Summary">
+                    @* 1. a 15-second film of a UT student's day: classes stack up, lunch gets crossed out, the survey numbers,
+                       then the station and the logo (tools/record/fuelflow-cover.html, recorded with record.mjs) *@
+                    <div class="mk-slide ff-cover" data-title="The day">
+                        <video class="ff-film" src="/videos/projects/fuelflow-cover.mp4" poster="/videos/projects/fuelflow-cover.jpg" muted loop playsinline autoplay
+                               aria-label="A Tuesday at UT Austin: back-to-back classes from 8 AM to 3:30 PM, lunch crossed out with no time, energy draining to 18%. Then: 32% of UT students surveyed were food insecure and 90% had never used the campus food pantry. A FuelFlow station rises into McCombs with 10g+ protein, nothing over $12.50 and a 60-second checkout, and the energy refills. It ends on the FuelFlow logo: real food where students already are."></video>
+                    </div>
+
+<div class="mk-slide" data-title="Summary" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">UT can fuel student focus by putting <em>real food where students already are</em>.</h4>
                         <img class="ff-logo" loading="lazy" src="/images/projects/fuelflow/logo.png" alt="FuelFlow Campus logo">
                         <div class="ff-sum">
                         <ol class="mk-scr">
-                            <li><span>the situation</span><p>Students move through packed class schedules where time, cost and access make eating well hard, so many <b>skip meals</b> between classes.</p></li>
+                            <li><span>the situation</span><p>In a 2022 UT Student Government survey, <b>32%</b> of students were food insecure, and packed class schedules make it worse: many <b>skip meals</b> between classes.</p></li>
                             <li><span>the catch</span><p>Dining isn’t inside the buildings where students spend their day, healthy food is expensive for daily use, and UT has no data on how students actually eat.</p></li>
                             <li><span>the fix</span><p><b>FuelFlow</b>: smart nutrition stations in <b>6 to 8</b> academic buildings, with <b>10g+ protein</b> meals, nothing over <b>$12.50</b>, and a <b>60-second</b> checkout.</p></li>
                         </ol>
                         <figure class="ff-station"><img src="/images/projects/fuelflow/station.jpg" alt="A FuelFlow smart nutrition station inside the McCombs School of Business, stocked with ready meals and drinks, nothing over $12.50" loading="lazy"><figcaption>My concept render: a station inside McCombs</figcaption></figure>
                         </div>
-                        @Html.Raw(Foot("Author analysis", 1, 7))
+                        @Html.Raw(Foot("UT Student Government survey, 2022 (The Daily Texan); author analysis", 2, 10))
                     </div>
 
-                    <div class="mk-slide" data-title="The barrier" hidden>
+                    @* 3. the evidence: UT's own numbers first, then the national picture *@
+                    <div class="mk-slide" data-title="The evidence" hidden>
+                        @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
+                        <h4 class="mk-h">The help exists. <em>Students don’t walk to it.</em></h4>
+                        <div class="mk-cards ff-three">
+                            <div><i>32%</i><h5>of UT students surveyed were food insecure</h5><p>About three times the national average, in a 2022 Student Government survey of roughly 430 students.</p></div>
+                            <div><i>90%</i><h5>had never used UT Outpost</h5><p>UT already runs a free pantry. Almost nobody surveyed had used it.</p></div>
+                            <div><i>22 of 31</i><h5>studies found over a third of college students food insecure</h5><p>The U.S. Government Accountability Office’s 2018 review of research on campus hunger.</p></div>
+                        </div>
+                        <p class="mk-sowhat inline"><b>Key takeaway</b>Supply isn’t the gap. Proximity is. Food has to be where students already spend their day.</p>
+                        @Html.Raw(Foot("UT Student Government Food Insecurity Action Team survey, via The Daily Texan, June 2022; U.S. GAO-19-95, Dec 2018", 3, 10))
+                    </div>
+
+<div class="mk-slide" data-title="The barrier" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">Four barriers stand between students and <em>a real meal</em>.</h4>
                         <div class="mk-cards">
@@ -117,10 +137,10 @@
                             <div><i>4</i><h5>Energy</h5><p>Skipped meals mean low energy, weaker focus and lower performance.</p></div>
                         </div>
                         <p class="mk-sowhat inline"><b>Key takeaway</b>The problem isn’t that students don’t care about eating well. It’s that the day is built against it.</p>
-                        @Html.Raw(Foot("Author analysis", 2, 7))
+                        @Html.Raw(Foot("Author analysis", 4, 10))
                     </div>
 
-                    <div class="mk-slide" data-title="The buyer" hidden>
+<div class="mk-slide" data-title="The buyer" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">The buyer isn’t the student. It’s the person <em>accountable for student success</em>.</h4>
                         <div class="ff-buyer">
@@ -148,10 +168,10 @@
                                 <ul class="ff-list" data-p="3" hidden><li>Declining retention rates</li><li>Budget accountability pressure</li><li>Limited operational bandwidth</li><li>Programs lacking measurable ROI</li></ul>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Buyer persona, author analysis", 3, 7))
+                        @Html.Raw(Foot("Buyer persona, author analysis", 5, 10))
                     </div>
 
-                    <div class="mk-slide" data-title="The product" hidden>
+<div class="mk-slide" data-title="The product" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">One station, <em>three wins</em>: students, administrators and operations.</h4>
                         <div class="ff-product">
@@ -174,10 +194,28 @@
                                 <ul class="ff-list" data-p="2" hidden><li>Fits existing spaces, no new construction</li><li>Automated checkout reduces staffing demand</li><li>Data-driven restocking across every location</li></ul>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Product requirements, author analysis", 4, 7))
+                        @Html.Raw(Foot("Product requirements, author analysis", 6, 10))
                     </div>
 
-                    <div class="mk-slide" data-title="Rollout" hidden>
+                    @* 7. sixty seconds at a station, step by step *@
+                    <div class="mk-slide" data-title="60 seconds" hidden>
+                        @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
+                        <h4 class="mk-h">From the end of class to a real meal in <em>under a minute</em>.</h4>
+                        <ol class="mk-timeline ff-journey">
+                            <li><b>0 sec</b>Class lets out, and the station is down the hall</li>
+                            <li><b>10 sec</b>Every label shows protein grams and the price</li>
+                            <li><b>30 sec</b>Tap Dine In Dollars, a card or a phone</li>
+                            <li><b>45 sec</b>The door unlocks. Grab the meal and go.</li>
+                            <li><b>60 sec</b>Back in the study zone, still on time</li>
+                        </ol>
+                        <div class="mk-split ff-sees">
+                            <p class="mk-sowhat"><b>What the student gets</b>A meal with 10g+ protein, nothing over $12.50, without leaving the building.</p>
+                            <p class="mk-sowhat"><b>What UT gets</b>Anonymous demand data by building and hour, so restocking and expansion follow real behavior.</p>
+                        </div>
+                        @Html.Raw(Foot("Product requirements, author analysis", 7, 10))
+                    </div>
+
+<div class="mk-slide" data-title="Rollout" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">Plug in, stock local, and <em>scale building by building</em>.</h4>
                         <div class="mk-cards">
@@ -187,10 +225,10 @@
                             <div><i>4</i><h5>Payments and data</h5><p>Dine In Dollars and mobile wallets, plus a dashboard showing UT usage and demand.</p></div>
                         </div>
                         <div class="ff-partners"><b>Austin-aligned partners</b><span>SnapKitchen</span><span>CookUnity</span><span>Designer Wellness</span><span>La Colombe</span><span>Premier Protein</span></div>
-                        @Html.Raw(Foot("Implementation plan and supplier criteria, author analysis", 5, 7))
+                        @Html.Raw(Foot("Implementation plan and supplier criteria, author analysis", 8, 10))
                     </div>
 
-                    <div class="mk-slide" data-title="Business case" hidden>
+<div class="mk-slide" data-title="Business case" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">Each station pays for itself, and <em>30% goes back</em> to UT Dining.</h4>
                         <div class="ff-calc">
@@ -210,10 +248,10 @@
                                 <div class="ff-bars" aria-hidden="true"></div>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Projected at $8K to $12K net revenue per station a year; author analysis", 6, 7))
+                        @Html.Raw(Foot("Projected at $8K to $12K net revenue per station a year; author analysis", 9, 10))
                     </div>
 
-                    <div class="mk-slide" data-title="Why it wins" hidden>
+<div class="mk-slide" data-title="Why it wins" hidden>
                         @Html.Raw(Top(ffSections, 0, "FuelFlow: Smart nutrition for campus"))
                         <h4 class="mk-h">It isn’t a vending machine. It’s <em>daily wellness infrastructure</em>.</h4>
                         <div class="mk-split">
@@ -234,9 +272,8 @@
                                 <p class="mk-sowhat"><b>Key takeaway</b>UT already offers counseling. FuelFlow adds the missing daily, physical touchpoint to its wellness system.</p>
                             </div>
                         </div>
-                        @Html.Raw(Foot("Author analysis", 7, 7))
+                        @Html.Raw(Foot("Author analysis", 10, 10))
                     </div>
-
                 </div>
                 <div class="mk-nav-row">
                     <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
@@ -248,12 +285,12 @@
             <div class="mk-info">
                 <div>
                     <h3 id="mk-title-fuelflow">FuelFlow: Smart Nutrition for Campus</h3>
-                    <p class="mp-proof-sub">A pitch to put affordable, high-protein meal stations inside UT’s academic buildings. Built solo for MKT 372T.</p>
+                    <p class="mp-proof-sub">A pitch to put affordable, high-protein meal stations inside UT’s academic buildings, opening on a 15-second film of a student’s day. Built solo for MKT 372T.</p>
                 </div>
                 <ul class="mp-proof-list">
+                    <li>Grounded the problem in UT’s own data: 32% of students surveyed were food insecure, and 90% had never used the campus pantry</li>
                     <li>Built the buyer persona around UT’s Associate Director of Student Success and Wellness, not the student</li>
                     <li>Designed stations for 6 to 8 academic hubs: 10g+ protein, nothing over $12.50, 60-second checkout</li>
-                    <li>Set vendor criteria and picked Austin-aligned partners like SnapKitchen, CookUnity and La Colombe</li>
                     <li>Projected $8K to $12K net revenue per station a year, with 30% reinvested into UT Dining</li>
                 </ul>
             </div>
@@ -1037,6 +1074,20 @@
         bar.querySelector('.sb-back').addEventListener('click', () => go(state.history.pop() || 'home', false));
         demo.querySelectorAll('.sb-guide button').forEach(b => b.addEventListener('click', () => { state.history = []; go(b.dataset.go, false); }));
         render();
+    })();
+
+    // FuelFlow: the 15-second film starts from the top every time its slide opens, and rests when it's off screen
+    (() => {
+        const film = document.querySelector('#mk-proj-fuelflow .ff-film');
+        if (!film) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { film.removeAttribute('autoplay'); film.pause(); return; }
+        let wasOpen = false;
+        setInterval(() => {
+            const open = !film.closest('.mk-slide').hidden && !film.closest('.mp-proj').hidden;
+            if (open && !wasOpen) { film.currentTime = 0; film.play().catch(() => {}); }
+            else if (!open && wasOpen) film.pause();
+            wasOpen = open;
+        }, 300);
     })();
 
     // FuelFlow: tabs on the buyer and product slides, and the business-case calculator
