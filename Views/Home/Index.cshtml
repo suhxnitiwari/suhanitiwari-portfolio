@@ -186,16 +186,26 @@
 
     .cover-line .cover-slide {
         grid-area: 1 / 1;
-        opacity: 0;
         visibility: hidden;
-        transition: opacity 0.9s ease, visibility 0s linear 0.9s;
     }
 
     .cover-line .cover-slide.is-on {
-        opacity: 1;
         visibility: visible;
-        transition: opacity 0.9s ease 0.3s, visibility 0s;
     }
+
+    /* the typing cursor: stays at the end of the line, blinking, while the tagline holds */
+    .cover-caret {
+        display: inline-block;
+        width: 2px;
+        height: 1.05em;
+        margin-left: 3px;
+        vertical-align: -0.15em;
+        background: #FFFFFF;
+        box-shadow: 0 1px 10px rgba(20, 8, 6, 0.55);
+        animation: coverBlink 1s steps(1) infinite;
+    }
+    .cover-caret.typing { animation: none; }
+    @@keyframes coverBlink { 50% { opacity: 0; } }
 
     /* two sentences, two lines, once there's room to keep them clear of my face */
     @@media (min-width: 1000px) {
@@ -2118,25 +2128,80 @@
         update();
     })();
 
-    // Tagline rotation: a new version every 10 seconds, paused while you're hovering over it to read
-    // or while the tab is in the background. Reduced motion keeps the first one.
+    // Tagline rotation: each version types itself out, holds with the cursor blinking at the end,
+    // deletes itself, and the next one types in. Holds longer while you're hovering over it to read,
+    // and waits while the tab is in the background. Reduced motion keeps the first one, still.
     (function () {
         const line = document.querySelector('.cover-line');
         const slides = line ? [...line.querySelectorAll('.cover-slide')] : [];
         if (slides.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        let current = 0;
-        let paused = false;
+        // screen readers get the first version once, not every letter of every version
+        const said = document.createElement('span');
+        said.className = 'visually-hidden';
+        said.textContent = slides[0].textContent.replace(/\s+/g, ' ').trim();
+        line.before(said);
+        line.setAttribute('aria-hidden', 'true');
+
+        let hovering = false;
         const intro = line.closest('.cover-intro');
-        intro.addEventListener('mouseenter', () => { paused = true; });
-        intro.addEventListener('mouseleave', () => { paused = false; });
-        setInterval(() => {
-            if (paused || document.hidden) return;
-            slides[current].classList.remove('is-on');
-            slides[current].setAttribute('aria-hidden', 'true');
-            current = (current + 1) % slides.length;
-            slides[current].classList.add('is-on');
-            slides[current].setAttribute('aria-hidden', 'false');
-        }, 10000);
+        intro.addEventListener('mouseenter', () => { hovering = true; });
+        intro.addEventListener('mouseleave', () => { hovering = false; });
+        const wait = ms => new Promise(r => setTimeout(r, ms));
+        const ready = async () => { while (hovering || document.hidden) await wait(300); };
+
+        const caret = document.createElement('i');
+        caret.className = 'cover-caret';
+        // the hidden versions keep their full text, so the tallest still holds the space and the buttons never move
+        const lines = slides.map(s => [...s.querySelectorAll(':scope > span')].map(l => l.textContent));
+
+        async function type(slide, i) {
+            const spans = [...slide.querySelectorAll(':scope > span')];
+            spans.forEach(sp => { sp.textContent = ''; });
+            slides.forEach(s => s.classList.toggle('is-on', s === slide));
+            caret.classList.add('typing');
+            for (let n = 0; n < spans.length; n++) {
+                const text = lines[i][n];
+                for (let k = 1; k <= text.length; k++) {
+                    spans[n].textContent = text.slice(0, k);
+                    spans[n].append(caret);
+                    await wait(text[k - 1] === ' ' ? 30 : 42);
+                }
+                if (n < spans.length - 1) await wait(260);
+            }
+            caret.classList.remove('typing');
+        }
+
+        async function erase(slide) {
+            const spans = [...slide.querySelectorAll(':scope > span')];
+            caret.classList.add('typing');
+            for (let n = spans.length - 1; n >= 0; n--) {
+                let text = spans[n].textContent;
+                while (text.length) {
+                    text = text.slice(0, -1);
+                    spans[n].textContent = text;
+                    spans[n].append(caret);
+                    await wait(16);
+                }
+            }
+        }
+
+        // start blank with just the cursor, so the first version types in rather than flashing in whole
+        slides[0].querySelectorAll(':scope > span').forEach(sp => { sp.textContent = ''; });
+        slides[0].querySelector(':scope > span').append(caret);
+
+        (async () => {
+            await wait(1600);   // let the name and photo settle in first
+            for (let i = 0; ; i = (i + 1) % slides.length) {
+                await type(slides[i], i);
+                await wait(5000);
+                await ready();
+                await erase(slides[i]);
+                // hide it, then put the full text back so it keeps holding the space
+                slides[i].classList.remove('is-on');
+                slides[i].querySelectorAll(':scope > span').forEach((sp, n) => { sp.textContent = lines[i][n]; });
+                await wait(300);
+            }
+        })();
     })();
 </script>
 
@@ -2694,10 +2759,10 @@
                 </li>
             }
         </ul>
+        @* just the résumé here; email and LinkedIn are in the footer right below *@
         <div class="finale-actions">
+            <p class="finale-joke">Fine. I’ll compress 20 GB of personality into an 84 KB PDF.</p>
             <a class="finale-btn solid" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">Download résumé <span aria-hidden="true">↓</span></a>
-            <a class="finale-btn" href="mailto:suhxnitiwari@gmail.com">Email me <span aria-hidden="true">↗</span></a>
-            <a class="finale-btn" href="https://www.linkedin.com/in/suhxnitiwari/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
         </div>
     </div>
 </section>
@@ -2791,7 +2856,14 @@
     }
     .finale-caret.typing { animation: none; }
     @@keyframes finaleBlink { 50% { opacity: 0; } }
-    .finale-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+    .finale-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .finale-joke {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 1.05rem;
+        font-style: italic;
+        color: #733642;
+    }
     .finale-btn {
         display: inline-flex;
         align-items: center;

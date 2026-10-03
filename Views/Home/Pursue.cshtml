@@ -169,7 +169,15 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 48px;
-        align-items: stretch;   /* the text column runs as tall as the tiles */
+        align-items: start;   /* the tiles keep their own size instead of stretching to the story */
+    }
+
+    /* the rankings ride along while you read the story beside them */
+    @@media (min-width: 801px) {
+        .mccombs-stats {
+            position: sticky;
+            top: 90px;
+        }
     }
 
     /* the text column: paragraphs at the top, the rankings source pinned to the bottom so it ends level with Top 10 */
@@ -305,6 +313,38 @@
     }
 
     /* the opening line matches Why MIS: big mulberry serif, not the paragraph size */
+    /* the typed paragraph: both versions share one spot, so the space never changes size */
+    .mccombs-type {
+        display: grid;
+    }
+
+    .mccombs-type-line {
+        grid-area: 1 / 1;
+        visibility: hidden;
+    }
+
+    .mccombs-type-line.is-on {
+        visibility: visible;
+    }
+
+    .mccombs-caret {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        margin-left: 2px;
+        vertical-align: -0.2em;
+        background: #733642;
+        animation: mccombsBlink 1s steps(1) infinite;
+    }
+
+    .mccombs-caret.typing {
+        animation: none;
+    }
+
+    @@keyframes mccombsBlink {
+        50% { opacity: 0; }
+    }
+
     .mccombs-text .why-question {
         font-size: clamp(1.25rem, 2vw, 1.6rem);
     }
@@ -598,10 +638,8 @@
     .why-tab:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
     /* both panels sit in the same grid cell, so the section is always as tall as the taller one
        and switching tabs never changes the height; the closed one is just invisible */
-    .why-stack { display: grid; }
-    .why-stack > .why-panel { grid-area: 1 / 1; width: 100%; }
-    .why-stack > .why-panel[hidden] { display: block !important; visibility: hidden; }   /* beats Bootstrap's [hidden] !important */
-    .why-stack > .why-wrap[hidden] { display: grid !important; }
+    /* each tab is as tall as its own story; sharing one height stretched Why MIS's quote card to fit Why McCombs */
+    .why-stack > .why-panel { width: 100%; }
     @@media (max-width: 600px) {
         .why-tabs { gap: 8px; }
         .why-tab { padding: 9px 14px; font-size: 0.72em; letter-spacing: 1px; }
@@ -618,6 +656,22 @@
         grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
         gap: 48px;
         align-items: stretch;   /* the quote card runs corner to corner: top of the kicker to the last line */
+    }
+
+    /* the opening line sizes itself to the column, so each sentence keeps to exactly one line */
+    .why-wrap > div:first-child {
+        container-type: inline-size;
+    }
+
+    .why-wrap .why-question {
+        font-size: clamp(1.05rem, 3.9cqi, 1.45rem);
+        white-space: nowrap;
+    }
+
+    @@media (max-width: 800px) {
+        .why-wrap .why-question {
+            white-space: normal;
+        }
     }
 
     .why-wrap .career-section-title {
@@ -975,15 +1029,60 @@ if (!embed)
             <div class="mccombs-text">
                 <p class="why-question">I didn’t come to Austin to study business from a textbook.</p>
                 <p>I came to build things, break things, ask why people wanted them in the first place, and do it somewhere ambitious enough to keep up.</p>
-                <p>That’s what made McCombs make sense to me. The same department behind the #1 graduate Information Systems program in the country teaches my undergraduate MIS major. Some of my professors teach at both levels. If I wanted to understand how technology and business actually work together, who better to learn from?</p>
-                <p>MIS meant I could learn the technology behind an idea instead of stopping at the strategy. <a class="mccombs-build" href="#marketing"><b>Marketing</b></a> meant I could study the person on the other side of it: what they notice, what they choose, what they trust, and what makes them come back. And Austin meant none of it had to stay hypothetical.</p>
+                <p>My MIS major connects directly to professors who teach the #1 graduate Information Systems program in the country, giving me direct access to how technology and business actually intersect.</p>
+                <p>Combining MIS with <a class="mccombs-build" href="#marketing"><b>Marketing</b></a> gave me the full picture: MIS taught me to build the technology behind an idea; Marketing taught me to understand the user on the other side—what they notice, trust, and care about. Austin’s proximity to industry and my summer at Oracle ensured none of it stayed theoretical.</p>
                 <p>Here, I’ve built full-stack applications, designed and deployed databases, worked with real datasets, studied consumer behavior, and learned that the interesting question isn’t whether something can be built.</p>
                 <p>It’s whether it should be built, who it’s for, and what would make them care.</p>
-                <p>McCombs gave me the business. Austin gave me the playground. Texas taught me to think bigger.</p>
-                <p>The rankings are nice. I’m proud of them. But the best thing I’ve gotten from studying here isn’t a number beside my school’s name.</p>
-                <p>It’s the instinct to take an idea and <a class="mccombs-build" href="/#projects"><em>go build the damn thing</em></a>.</p>
-                <p>Turns out, Texas does more than go big.</p>
-                <p><b>We build big, too.</b> 🤘</p>
+                <p>McCombs gave me the business. Austin gave me the playground.</p>
+                @* typed live: the serious answer types out, deletes itself, and the joke about the rankings types in and stays *@
+                <p class="mccombs-type">
+                    <span class="visually-hidden">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing. But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look.</span>
+                    <span class="mccombs-type-line is-on" aria-hidden="true">A great business school isn’t defined by a number on a ranking list. The real takeaway isn’t a stat on a webpage. It’s the instinct to take an idea, question it, test it, and go build the damn thing.</span>
+                    <span class="mccombs-type-line" aria-hidden="true">But, I mean… since someone else went through all the trouble of ranking us… feeeeel free to look leftttt… just real quick… c’mon, go look.</span>
+                </p>
+                <script>
+                    (() => {
+                        const box = document.currentScript.previousElementSibling;
+                        const [serious, joke] = box.querySelectorAll('.mccombs-type-line');
+                        if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+                        const texts = [serious.textContent, joke.textContent];
+                        const wait = ms => new Promise(r => setTimeout(r, ms));
+                        const caret = document.createElement('i');
+                        caret.className = 'mccombs-caret';
+                        serious.textContent = '';
+                        serious.append(caret);
+                        async function type(el, text) {
+                            caret.classList.add('typing');
+                            for (let k = 1; k <= text.length; k++) {
+                                el.textContent = text.slice(0, k);
+                                el.append(caret);
+                                const ch = text[k - 1];
+                                // a beat on every pause, and the stretched letters drag on purpose
+                                await wait(ch === '…' ? 520 : ch === '.' || ch === ',' ? 220 : ch === text[k - 2] ? 85 : 30);
+                            }
+                            caret.classList.remove('typing');
+                        }
+                        const seen = new IntersectionObserver(async ([e]) => {
+                            if (!e.isIntersecting) return;
+                            seen.disconnect();
+                            // on phones the rankings sit above the story, not beside it
+                            if (matchMedia('(max-width: 800px)').matches) texts[1] = texts[1].replace('leftttt', 'uppppp');
+                            await type(serious, texts[0]);
+                            await wait(2600);
+                            caret.classList.add('typing');
+                            for (let t = texts[0]; t.length; ) { t = t.slice(0, -2); serious.textContent = t; serious.append(caret); await wait(12); }
+                            await wait(500);
+                            // the serious line keeps holding the space while hidden, so nothing below jumps
+                            serious.textContent = texts[0];
+                            serious.classList.remove('is-on');
+                            joke.textContent = '';
+                            joke.classList.add('is-on');
+                            await type(joke, texts[1]);
+                        }, { threshold: 0.6 });
+                        seen.observe(box);
+                    })();
+                </script>
+                <p><b>Texas doesn’t just think big—we build big, too.</b> 🤘</p>
                 <p class="mccombs-source">Tap a ranking to see what it means for me. Rankings: <a href="https://www.usnews.com/best-colleges/university-of-texas-at-austin-3658/overall-rankings" target="_blank" rel="noopener">U.S. News &amp; World Report ↗</a></p>
             </div>
         </div>
