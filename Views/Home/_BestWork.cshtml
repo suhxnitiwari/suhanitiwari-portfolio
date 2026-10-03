@@ -46,6 +46,9 @@
         (Cols: 4, Rows: 1, Fill: false, Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
             Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
             Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
+        (Cols: 4, Rows: 1, Fill: false, Kind: "AI website", Title: "Suhaiku", Video: "suhaiku", Panel: (string?)"#5E4A5C", Inset: false,
+            Label: "Walking along a gallery wall of framed paintings, stepping up to two of them as their haiku fade in", Link: "https://suhxnitiwari.github.io/suhaiku/",
+            Line: "A small museum of haiku. Every painting is composed from the poem hung inside it, and Claude writes new ones while you watch.", Skills: new[] { "JavaScript", "Canvas", "Claude API" }),
 
         // In the works: no video or link yet (Video and Link stay null until they ship)
         (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
@@ -78,11 +81,12 @@
     if (ViewData["Rest"] as bool? == true)
     {
         var shown = new[] { "Heavy Rotation", "Girls Can Be Engineers, Too!", "Starbucks AI Loyalty", "Saturday in Austin" };
-        // rows: RideFlow 7 + Netflix 5, the bag tower beside Glossier and Rhode, Personality 8 + Owala 4, then the two in the works at 6 and 6
+        // rows: RideFlow 7 + Netflix 5, the bag tower beside Glossier and Rhode, Personality 8 + Owala 4, then Suhaiku beside the two in the works at 4, 4 and 4
         stories = stories.Where(s => !shown.Contains(s.Title)).Select(s =>
         {
             if (s.Title == "RideFlow") s.Cols = 7;
             if (s.Title == "Netflix’s $20B Leak") s.Cols = 5;
+            if (s.Title is "YouTube Watch Funnel" or "Spotify Retention Cohorts") s.Cols = 4;
             return s;
         }).ToArray();
     }
@@ -101,7 +105,8 @@
         ["Rhode Has a Hailey Problem"] = "Swatch the plan →",
         ["Soft Heart. Strong Spirit."] = "Meet all ten of me ↗",
         ["Owala: The Marathon Series"] = "Run the series →",
-        ["Saturday in Austin"] = "Explore Austin ↗"
+        ["Saturday in Austin"] = "Explore Austin ↗",
+        ["Suhaiku"] = "Step into the gallery ↗"
     };
 }
 <div class="best-board">

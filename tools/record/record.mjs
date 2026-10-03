@@ -63,6 +63,21 @@ const shots = {
             await sleep(800);
         }
     },
+    suhaiku: {
+        // Suhaiku: starts on the gallery wall, walks up to two prints (the words fade in, the label explains how each
+        // was made), and steps back each time, so the loop ends where it starts. SUHAIKU_URL records a local build.
+        url: process.env.SUHAIKU_URL || 'https://suhxnitiwari.github.io/suhaiku/', w: 1280, h: 800,
+        prep: async ev => { await ev(`(() => { const w = document.querySelector('#wall'); scrollTo(0, w.getBoundingClientRect().top + scrollY - 90); })()`); await sleep(1500); },
+        run: async ev => {
+            const visit = async (k, hold) => {
+                await ev(`document.querySelector('.frame[data-k="${k}"]').click()`); await sleep(hold);
+                await ev(`document.querySelector('#roomBack').click()`); await sleep(1700);
+            };
+            await sleep(1800);
+            await visit(3, 5600);
+            await visit(2, 5200);
+        }
+    },
     owala: {
         url: 'http://localhost:5142/home/study#mk-title-owala', w: 1280, h: 900, crop: '#mk-proj-owala .mk-stage',
         run: async ev => { await sleep(1500); for (let i = 0; i < 9; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-owala .mk-step[data-go="1"]').click()`); } await sleep(1500); }
