@@ -1,0 +1,194 @@
+@* The Marketing board: a Pinterest-style wall of every marketing project, above the decks (rendered from _MarketingWork.cshtml).
+   Tile height follows how strong the project is: the strongest get the tallest pins. A filter row on top narrows it by industry.
+   Picking a pin opens its deck below by pressing that project's tab in the carousel (project-carousel.js), so links like
+   /#mk-proj-netflix keep working. Pins are placed into the shortest column in order, so the strongest work stays on top. *@
+@{
+    // Size: xl (tallest) > l > m > s, by how impressive the project is. Pos: where the 16:9 cover crops to in a taller pin.
+    var pins = new[]
+    {
+        (Id: "rhode", Size: "xl", Tag: "beauty", Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Cover: "rhode", Pos: "62% 50%",
+            Line: "Rhode is booming, and every sale runs through one famous face. My plan to make the brand outlive the fame."),
+        (Id: "glossier", Size: "xl", Tag: "beauty", Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Cover: "glossier", Pos: "74% 50%",
+            Line: "Built by its comments section, then handed its fans to Sephora and TikTok. My plan to win them back."),
+        (Id: "netflix", Size: "l", Tag: "media", Kind: "Media strategy", Title: "Netflix’s $20B Leak", Cover: "netflix", Pos: "50% 50%",
+            Line: "Netflix makes the hits, then lets the fandom and the money move to YouTube, TikTok and Reddit."),
+        (Id: "primebookclub", Size: "l", Tag: "media", Kind: "Community strategy", Title: "All Hype, No Club", Cover: "primebookclub", Pos: "80% 50%",
+            Line: "Prime’s book adaptations draw tens of millions. Its book club reaches under 1% of them."),
+        (Id: "starbucks", Size: "m", Tag: "food", Kind: "Product management", Title: "Starbucks AI Loyalty", Cover: "starbucks-cover", Pos: "86% 50%",
+            Line: "Where the Starbucks app’s growth is hiding, what to build, and how to measure it."),
+        (Id: "owala", Size: "m", Tag: "lifestyle", Kind: "Marketing strategy", Title: "Owala: The Marathon Series", Cover: "owala-cover", Pos: "64% 50%",
+            Line: "Turning a bottle people buy once into one they collect."),
+        (Id: "fuelflow", Size: "s", Tag: "food", Kind: "Product pitch", Title: "FuelFlow", Cover: "fuelflow", Pos: "50% 50%",
+            Line: "Affordable, high-protein meal stations inside UT’s academic buildings."),
+    };
+    var filters = new[] { ("all", "All"), ("beauty", "Beauty"), ("media", "Media"), ("food", "Food & Drink"), ("lifestyle", "Lifestyle") };
+}
+<style>
+    /* the board replaces the row of project names; the tabs stay in the page so the carousel and old links still work */
+    .mk .mp-proj-nav { display: none; }
+    .mkb { margin: 0 0 44px; }
+    .mkb-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+    .mkb-filters button { font: inherit; font-size: 0.82em; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; padding: 10px 16px; border-radius: var(--r-pill, 99px);
+        border: 1.5px solid #D9B8B3; background: #FFF8F6; color: #1E100A; cursor: var(--cursor-hot, pointer); transition: background 0.2s, border-color 0.2s, color 0.2s; }
+    .mkb-filters button span { margin-left: 6px; opacity: 0.55; font-variant-numeric: tabular-nums; }
+    .mkb-filters button:hover { border-color: var(--mul, #76344E); }
+    .mkb-filters button[aria-pressed="true"] { background: #76344E; border-color: #76344E; color: #FFF8F6; }
+    .mkb-filters button:focus-visible, .mkb-pin:focus-visible { outline: 2px solid var(--mul, #76344E); outline-offset: 3px; }
+
+    /* masonry: columns are filled by script, shortest first; without script the pins just wrap */
+    .mkb-wall { display: flex; gap: 18px; align-items: flex-start; }
+    .mkb-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+    .mkb-wall:not(.laid) { flex-wrap: wrap; }
+    .mkb-wall:not(.laid) > .mkb-pin { flex: 1 1 280px; }
+
+    .mkb-pin { display: block; width: 100%; padding: 0; text-align: left; font: inherit; color: inherit; border: 0; background: #FFFCFB; border-radius: 18px; overflow: hidden; cursor: var(--cursor-hot, pointer);
+        box-shadow: 0 0 0 1px var(--line, #EAD9D5), 0 18px 40px -30px rgba(42, 24, 16, 0.45); transition: transform 0.25s ease, box-shadow 0.25s ease; animation: mkbIn 0.45s ease both; }
+    .mkb-pin:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px #D9B8B3, 0 26px 50px -30px rgba(42, 24, 16, 0.55); }
+    .mkb-pin[aria-current="true"] { box-shadow: 0 0 0 2.5px #76344E, 0 26px 50px -30px rgba(42, 24, 16, 0.55); }
+    .mkb-pin[hidden] { display: none; }
+    @@keyframes mkbIn { from { opacity: 0; transform: translateY(14px); } }
+
+    .mkb-media { position: relative; display: block; overflow: hidden; background: #F3E6E2; }
+    .mkb-pin.xl .mkb-media { aspect-ratio: 4 / 5; }
+    .mkb-pin.l .mkb-media { aspect-ratio: 1 / 1; }
+    .mkb-pin.m .mkb-media { aspect-ratio: 4 / 3; }
+    .mkb-pin.s .mkb-media { aspect-ratio: 16 / 9; }
+    .mkb-media img, .mkb-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos); transition: transform 0.6s ease; }
+    .mkb-media video { opacity: 0; transition: opacity 0.3s ease; }
+    .mkb-pin.playing .mkb-media video { opacity: 1; }
+    .mkb-pin:hover .mkb-media img { transform: scale(1.03); }
+    .mkb-open { position: absolute; left: 12px; top: 12px; padding: 6px 11px; border-radius: 99px; background: #76344E; color: #FFF8F6; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0; transform: translateY(-4px); transition: opacity 0.2s, transform 0.2s; }
+    .mkb-pin[aria-current="true"] .mkb-open { opacity: 1; transform: none; }
+
+    .mkb-body { display: block; padding: 16px 18px 18px; }
+    .mkb-kind { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--acc, #B4576F); }
+    .mkb-title { display: block; margin-top: 6px; font-family: var(--serif, Georgia, serif); font-size: 24px; line-height: 1.15; color: var(--choc, #2A1810); }
+    .mkb-pin.xl .mkb-title { font-size: 30px; }
+    .mkb-pin.s .mkb-title { font-size: 21px; }
+    .mkb-line { display: block; margin-top: 8px; font-size: 14.5px; line-height: 1.45; color: var(--muted, #6E5A55); }
+    .mkb-go { display: inline-block; margin-top: 12px; font-size: 13px; font-weight: 700; color: #76344E; }
+    .mkb-pin:hover .mkb-go { text-decoration: underline; text-underline-offset: 3px; }
+
+    @@media (max-width: 520px) {
+        .mkb-wall { gap: 12px; }
+        .mkb-col { gap: 12px; }
+        .mkb-body { padding: 12px 13px 14px; }
+        .mkb-title, .mkb-pin.xl .mkb-title, .mkb-pin.s .mkb-title { font-size: 18px; }
+        .mkb-line { display: none; }
+        .mkb-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; }
+        .mkb-filters button { flex: none; }
+    }
+    @@media (prefers-reduced-motion: reduce) {
+        .mkb-pin, .mkb-media img { animation: none; transition: none; }
+        .mkb-pin:hover { transform: none; }
+    }
+</style>
+
+<div class="mkb" id="mk-board">
+    <div class="mkb-filters" role="group" aria-label="Filter projects by industry">
+        @foreach (var (key, label) in filters)
+        {
+            var count = key == "all" ? pins.Length : pins.Count(p => p.Tag == key);
+            <button type="button" data-filter="@key" aria-pressed="@(key == "all" ? "true" : "false")">@label<span>@count</span></button>
+        }
+    </div>
+    <div class="mkb-wall">
+        @for (var n = 0; n < pins.Length; n++)
+        {
+            var p = pins[n];
+            <button type="button" class="mkb-pin @p.Size" data-tag="@p.Tag" data-proj="mk-proj-@p.Id" style="animation-delay: @(n * 60)ms" aria-label="Open @p.Title">
+                <span class="mkb-media" style="--pos: @p.Pos">
+                    <img src="/videos/projects/@(p.Cover).jpg" alt="" loading="lazy" />
+                    <video data-src="/videos/projects/@(p.Cover).mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
+                    <span class="mkb-open">Open below</span>
+                </span>
+                <span class="mkb-body">
+                    <span class="mkb-kind">@p.Kind</span>
+                    <span class="mkb-title">@p.Title</span>
+                    <span class="mkb-line">@p.Line</span>
+                    <span class="mkb-go">See the deck ↓</span>
+                </span>
+            </button>
+        }
+    </div>
+</div>
+
+<script>
+    // the project tabs come after the board in the page, so wait for the whole page before wiring it up
+    const mkBoard = () => {
+        const board = document.getElementById('mk-board');
+        if (!board) return;
+        const wall = board.querySelector('.mkb-wall');
+        const pins = [...wall.querySelectorAll('.mkb-pin')];
+        const chips = [...board.querySelectorAll('[data-filter]')];
+        const root = board.closest('.mp-projects') || document;
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // masonry: drop each visible pin, strongest first, into the shortest column
+        const colsFor = () => innerWidth <= 900 ? 2 : 3;
+        let laidCols = 0;
+        const lay = () => {
+            const n = colsFor();
+            const cols = Array.from({ length: n }, () => Object.assign(document.createElement('div'), { className: 'mkb-col' }));
+            const heights = new Array(n).fill(0);
+            // measure every pin before any of them move (a pin in a detached column measures 0)
+            const size = new Map(pins.map(p => [p, p.offsetHeight || ({ xl: 5, l: 4, m: 3, s: 2 })[p.classList[1]]]));
+            pins.forEach(p => {
+                if (p.hidden) { wall.append(p); return; }
+                const i = heights.indexOf(Math.min(...heights));
+                cols[i].append(p);
+                heights[i] += size.get(p);
+            });
+            wall.querySelectorAll('.mkb-col').forEach(c => c.remove());
+            wall.prepend(...cols);
+            wall.classList.add('laid');
+            laidCols = n;
+        };
+        // measure heights in one column first, so the shortest-column pick uses real sizes
+        const relayout = () => { wall.classList.remove('laid'); pins.forEach(p => wall.append(p)); wall.querySelectorAll('.mkb-col').forEach(c => c.remove()); lay(); lay(); };
+
+        // which deck is open: follow the carousel's tabs
+        const tabs = [...root.querySelectorAll('.mp-proj-tabs [role="tab"]')];
+        const mark = () => {
+            const open = tabs.find(t => t.getAttribute('aria-selected') === 'true');
+            pins.forEach(p => p.setAttribute('aria-current', open && open.getAttribute('aria-controls') === p.dataset.proj ? 'true' : 'false'));
+        };
+        tabs.forEach(t => new MutationObserver(mark).observe(t, { attributes: true, attributeFilter: ['aria-selected'] }));
+
+        const open = (pin, scroll) => {
+            const tab = tabs.find(t => t.getAttribute('aria-controls') === pin.dataset.proj);
+            if (!tab) return;
+            tab.click();
+            history.replaceState(null, '', '#' + pin.dataset.proj);
+            if (scroll) document.getElementById(pin.dataset.proj)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        };
+        pins.forEach(p => p.addEventListener('click', () => open(p, true)));
+
+        chips.forEach(c => c.addEventListener('click', () => {
+            const key = c.dataset.filter;
+            chips.forEach(b => b.setAttribute('aria-pressed', b === c));
+            pins.forEach(p => { p.hidden = key !== 'all' && p.dataset.tag !== key; });
+            relayout();
+            // if the open deck was filtered out, open the strongest one still showing
+            const current = pins.find(p => p.getAttribute('aria-current') === 'true');
+            if (current && current.hidden) { const first = pins.find(p => !p.hidden); if (first) open(first, false); }
+        }));
+
+        // covers play on hover (or keyboard focus) only, so seven videos never run at once
+        pins.forEach(p => {
+            const v = p.querySelector('video');
+            const play = () => { if (reduce) return; if (!v.src) v.src = v.dataset.src; v.play().then(() => p.classList.add('playing')).catch(() => {}); };
+            const stop = () => { v.pause(); p.classList.remove('playing'); };
+            p.addEventListener('mouseenter', play); p.addEventListener('mouseleave', stop);
+            p.addEventListener('focus', play); p.addEventListener('blur', stop);
+        });
+
+        let t;
+        addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { if (colsFor() !== laidCols) relayout(); }, 150); });
+        relayout();
+        mark();
+        // fonts change the titles' heights, so place the pins again once they're in
+        document.fonts?.ready.then(() => relayout());
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mkBoard); else mkBoard();
+</script>
