@@ -600,6 +600,66 @@
         color: #1E100A;
     }
 
+    /* the classes under each line: real buttons, since each one opens its card */
+    .edu-classes {
+        flex-basis: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 6px;
+    }
+
+    .edu-class {
+        padding: 6px 14px;
+        border: 1px solid #E2C6C0;
+        border-radius: 999px;
+        background: #FFFFFF;
+        font: inherit;
+        font-size: 0.85rem;
+        color: #3A1F26;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .edu-class::after {
+        content: " +";
+        color: #A9788A;
+    }
+
+    .edu-class:hover, .edu-class:focus-visible {
+        border-color: #76344E;
+        background: #76344E;
+        color: #FFF8F6;
+    }
+
+    .edu-class:hover::after, .edu-class:focus-visible::after { color: #F6E4E1; }
+
+    .edu-class:focus-visible { outline: 2px solid #76344E; outline-offset: 2px; }
+
+    /* the class card */
+    .class-card {
+        width: min(520px, calc(100vw - 32px));
+        padding: 34px 32px 30px;
+        border: var(--card-border, 1px solid #EBD5D0);
+        border-top: 4px solid #76344E;
+        border-radius: var(--r-card, 18px);
+        background: #FFF8F6;
+        color: #1E100A;
+        box-shadow: 0 30px 60px -20px rgba(42, 24, 16, 0.45);
+    }
+
+    .class-card::backdrop { background: rgba(30, 14, 12, 0.45); backdrop-filter: blur(3px); }
+    .class-card-close { position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; border: none; border-radius: 50%; background: none; font-size: 1.5rem; line-height: 1; color: #7A665F; cursor: pointer; }
+    .class-card-close:hover, .class-card-close:focus-visible { background: #F6E4E1; color: #1E100A; }
+    .class-card-kicker { margin: 0 0 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #76344E; }
+    .class-card-name { margin: 0 0 10px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 1.9rem; font-weight: 400; line-height: 1.15; }
+    .class-card-question { margin: 0 0 14px; font-family: Georgia, serif; font-style: italic; font-size: 1.08rem; color: #733642; }
+    .class-card-summary { margin: 0 0 20px; font-size: 0.98rem; line-height: 1.6; color: #3A2A26; }
+    .class-card-label { margin: 0 0 8px; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #7A665F; }
+    .class-card-topics { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 20px; padding: 0; list-style: none; }
+    .class-card-topics li { padding: 4px 11px; border-radius: 999px; background: rgba(143, 70, 97, 0.09); font-size: 0.82rem; font-weight: 600; color: #76344E; }
+    .class-card-proof { font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700; color: #76344E; text-decoration: none; border-bottom: 1px solid currentColor; }
+
     .edu-trio-field {
         font-size: 0.72rem;
         font-weight: 700;
@@ -2242,6 +2302,51 @@
         ("Understand the person.", "Psychology"),
         ("Make them care.", "Marketing")
     };
+    // the classes under each line. Each is a button that opens its card: what it asks, what it covers,
+    // the tools, and where it shows up in my work. MIS details match Coursework (Views/Home/Coursework.cshtml).
+    var eduClasses = new (int Field, string Code, string Name, string Question, string Summary, string[] Topics, string Proof, string ProofHref)[]
+    {
+        (0, "MIS 304", "Problem Solving and Programming", "Can I translate ambiguity into executable logic?",
+            "Turning business problems written in plain English into working Python.",
+            new[] { "Python", "Object-oriented programming", "pandas", "Matplotlib", "Data structures", "LLMs", "Prompt engineering" },
+            "Saturday in Austin", "https://suhxnitiwari.github.io/saturday-in-austin/"),
+        (0, "MIS 325", "Database Management", "How should information be represented and used?",
+            "Designing a database from scratch, then moving past SQL into NoSQL, pipelines and cloud warehouses.",
+            new[] { "SQL", "PL/SQL", "ER modeling", "Normalization", "CTEs", "Window functions", "Stored procedures", "MongoDB", "Snowflake", "ETL pipelines" },
+            "Listening History", "https://listening-history.onrender.com"),
+        (0, "MIS 333K", "Web Application Development", "Can I turn code and data into something people can use?",
+            "A full web app with user accounts, a real database and an AI feature, built as a team.",
+            new[] { "C#", "ASP.NET Core", "Entity Framework Core", "LINQ", "Azure SQL", "Users and roles", "AI features", "MVC architecture" },
+            "This website", "https://github.com/suhxnitiwari/suhanitiwari-portfolio"),
+        (0, "MIS 372T", "Full-Stack Web App Development", "Can I take an app from idea to deployed, alone?",
+            "A full-stack app built and deployed end to end. Mine was RideFlow, built solo.",
+            new[] { "React", "Vite", "Node.js", "Express", "Sequelize", "PostgreSQL", "REST APIs", "Deployment" },
+            "RideFlow", "https://rideflow-frontend.onrender.com/"),
+        (1, "", "Cognitive Psychology", "How does the mind take in, store and use information?",
+            "Attention, perception, memory and decision-making: the mental machinery behind every choice someone makes.",
+            new[] { "Attention", "Perception", "Memory", "Decision-making", "Problem solving" },
+            "Search History", "https://suhxnitiwari.github.io/search-history/"),
+        (1, "", "Social Psychology", "How do other people shape what we think and do?",
+            "Attitudes, conformity, group behavior and social influence: why the room changes the person.",
+            new[] { "Attitudes", "Conformity", "Group behavior", "Social influence" },
+            "Heavy Rotation", "https://suhxnitiwari.github.io/listening-galaxy/"),
+        (1, "", "Social Cognition", "How do we make sense of other people, and ourselves?",
+            "How people form impressions, explain behavior and lean on mental shortcuts when judging others.",
+            new[] { "Impression formation", "Attribution", "Heuristics", "Self-perception" },
+            "Soft Heart. Strong Spirit.", "https://suhxnitiwari.github.io/suhani-personality/"),
+        (2, "", "Consumer Behavior", "Why do people buy what they buy?",
+            "Needs, perception, identity and the path to a purchase, and what turns a buyer into a regular.",
+            new[] { "Decision journey", "Motivation", "Identity", "Brand loyalty" },
+            "How Glossier Lost Its Cult", "/study#mk-proj-glossier"),
+        (2, "", "Science of Influence", "What actually changes someone’s mind?",
+            "The research behind persuasion: social proof, scarcity, commitment, authority and framing.",
+            new[] { "Persuasion", "Social proof", "Scarcity", "Framing" },
+            "Rhode Has a Hailey Problem", "/study#mk-proj-rhode"),
+        (2, "", "Strategic Product Management", "What’s worth building, and for whom?",
+            "Deciding what to build and why: customer needs, prioritization, roadmaps and launch.",
+            new[] { "Customer discovery", "Prioritization", "Roadmapping", "Positioning" },
+            "Starbucks AI Loyalty", "/work/starbucks")
+    };
 }
 <section class="home-part home-education" id="education" aria-labelledby="home-education-heading">
     <div class="about-container">
@@ -2262,11 +2367,57 @@
             </div>
             <div class="edu-main">
                 <ol class="edu-trio">
-                    @foreach (var (line, field) in eduTrio)
+                    @for (var f = 0; f < eduTrio.Length; f++)
                     {
-                        <li><span class="edu-trio-line">@line</span><span class="edu-trio-field">@field</span></li>
+                        <li>
+                            <span class="edu-trio-line">@eduTrio[f].Item1</span><span class="edu-trio-field">@eduTrio[f].Item2</span>
+                            <span class="edu-classes">
+                                @for (var c = 0; c < eduClasses.Length; c++)
+                                {
+                                    if (eduClasses[c].Field != f) { continue; }
+                                    <button type="button" class="edu-class" data-class="@c" aria-haspopup="dialog">@eduClasses[c].Name</button>
+                                }
+                            </span>
+                        </li>
                     }
                 </ol>
+                @* one card for every class, filled in from the button that opened it *@
+                <dialog class="class-card" id="class-card" aria-labelledby="class-card-name"
+                        data-classes="@Json.Serialize(eduClasses.Select(k => new { field = eduTrio[k.Field].Item2, code = k.Code, name = k.Name, question = k.Question, summary = k.Summary, topics = k.Topics, proof = k.Proof, href = k.ProofHref })).ToString()">
+                    <button type="button" class="class-card-close" aria-label="Close">×</button>
+                    <p class="class-card-kicker"></p>
+                    <h3 class="class-card-name" id="class-card-name"></h3>
+                    <p class="class-card-question"></p>
+                    <p class="class-card-summary"></p>
+                    <p class="class-card-label">What it covers</p>
+                    <ul class="class-card-topics"></ul>
+                    <p class="class-card-label">Where it shows up</p>
+                    <a class="class-card-proof"></a>
+                </dialog>
+                <script>
+                    // a class button opens its card; Esc, the × or a click outside closes it
+                    (() => {
+                        const card = document.getElementById('class-card');
+                        if (!card || !card.showModal) return;
+                        const classes = JSON.parse(card.dataset.classes);
+                        const $ = sel => card.querySelector(sel);
+                        document.querySelectorAll('.edu-class').forEach(btn => btn.addEventListener('click', () => {
+                            const k = classes[+btn.dataset.class];
+                            $('.class-card-kicker').textContent = k.code ? `${k.code} · ${k.field}` : k.field;
+                            $('.class-card-name').textContent = k.name;
+                            $('.class-card-question').textContent = k.question;
+                            $('.class-card-summary').textContent = k.summary;
+                            $('.class-card-topics').replaceChildren(...k.topics.map(t => Object.assign(document.createElement('li'), { textContent: t })));
+                            const proof = $('.class-card-proof');
+                            proof.textContent = k.proof + (k.href.startsWith('http') ? ' ↗' : ' →');
+                            proof.href = k.href;
+                            if (k.href.startsWith('http')) { proof.target = '_blank'; proof.rel = 'noopener'; } else { proof.removeAttribute('target'); proof.removeAttribute('rel'); }
+                            card.showModal();
+                        }));
+                        $('.class-card-close').addEventListener('click', () => card.close());
+                        card.addEventListener('click', e => { if (e.target === card) card.close(); });
+                    })();
+                </script>
                 <a class="edu-more" href="/study">See what I actually studied <span aria-hidden="true">→</span></a>
             </div>
         </div>
