@@ -176,9 +176,32 @@
     }
 
     /* the one line that says what I do */
-    .cover-line {
+    /* the five versions stack in one spot, so the tallest sets the height and the buttons never jump
+       (.cover-tagline in front so it outranks the display: block above) */
+    .cover-tagline .cover-line {
+        display: grid;
         font-weight: 400;
         text-wrap: balance;
+    }
+
+    .cover-line .cover-slide {
+        grid-area: 1 / 1;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.9s ease, visibility 0s linear 0.9s;
+    }
+
+    .cover-line .cover-slide.is-on {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.9s ease 0.3s, visibility 0s;
+    }
+
+    /* two sentences, two lines, once there's room to keep them clear of my face */
+    @@media (min-width: 1000px) {
+        .cover-slide span {
+            white-space: nowrap;
+        }
     }
 
     /* Work, Skills, Résumé: always one row */
@@ -2039,7 +2062,26 @@
         @* Readable in one glance: where I study, what I do in one line, and where I've already done it *@
         <p class="cover-tagline">
             <span class="cover-school">MIS at McCombs School of Business</span>
-            <strong class="cover-line">I study why people choose things, then build better things for them to choose.</strong>
+            @{
+                // what I do, said five ways: the first is the one everyone sees first, then they trade places every 10 seconds
+                var coverLines = new[]
+                {
+                    ("Behind every brand, app and habit we fall for, there’s a why.", "I find it in the data. Then I build what we’ll love next."),
+                    ("Most of my favorite things started with a “what if?”", "I turn those questions into things you can actually use."),
+                    ("Give me one question and I’ll come back with seventeen.", "I follow curiosity, then make something out of it."),
+                    ("Useful things don’t have to be boring.", "I live somewhere between the spreadsheet and the moodboard."),
+                    ("Curious about what people choose, ignore and come back to,", "I find the pattern, figure out the why, and build from it.")
+                };
+            }
+            <strong class="cover-line">
+                @for (var t = 0; t < coverLines.Length; t++)
+                {
+                    <span class="cover-slide@(t == 0 ? " is-on" : "")" aria-hidden="@(t == 0 ? "false" : "true")">
+                        <span>@coverLines[t].Item1</span>
+                        <span>@coverLines[t].Item2</span>
+                    </span>
+                }
+            </strong>
         </p>
         <div class="cover-actions">
             <a class="cover-btn primary" href="#selected-work" aria-label="See my selected work">Work <span class="cover-arrow" aria-hidden="true">↓</span></a>
@@ -2071,6 +2113,27 @@
         window.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', update);
         update();
+    })();
+
+    // Tagline rotation: a new version every 10 seconds, paused while you're hovering over it to read
+    // or while the tab is in the background. Reduced motion keeps the first one.
+    (function () {
+        const line = document.querySelector('.cover-line');
+        const slides = line ? [...line.querySelectorAll('.cover-slide')] : [];
+        if (slides.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        let current = 0;
+        let paused = false;
+        const intro = line.closest('.cover-intro');
+        intro.addEventListener('mouseenter', () => { paused = true; });
+        intro.addEventListener('mouseleave', () => { paused = false; });
+        setInterval(() => {
+            if (paused || document.hidden) return;
+            slides[current].classList.remove('is-on');
+            slides[current].setAttribute('aria-hidden', 'true');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('is-on');
+            slides[current].setAttribute('aria-hidden', 'false');
+        }, 10000);
     })();
 </script>
 

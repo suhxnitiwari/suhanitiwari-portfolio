@@ -407,7 +407,7 @@
                     <p class="make-q">What if I followed the recipe, then didn’t?</p>
                     <h2 class="shelf-title">@title</h2>
                 </div>
-                <p class="shelf-caption bake-intro">Baking is basically coding with better snacks. Get the flour-to-butter ratio wrong and you don’t get a cake, you get sludge. Follow the structure first, then have all the fun with the flavor, the colors and the decorating, because that’s the part where a cake starts to look like the person it’s for.</p>
+                <p class="shelf-caption bake-intro"><strong>Recipes are suggestions. Ratios are not.</strong> Baking is basically coding with better snacks. Break the flour-to-butter ratio and nothing works. Get the architecture right, though, and suddenly you can mess with the flavor, color, decoration, and everything that makes it yours.</p>
                 <div class="bake-split">
                     <div class="cake-viewer" aria-roledescription="carousel" aria-label="Cake gallery">
                         <h3 class="bake-group-label">Cake Gallery</h3>
@@ -475,7 +475,7 @@
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
             <h1 class="section-title">Passions</h1>
-            <p class="shelf-caption make-caption">Life can’t just be about what I consume. So here’s what I create. Every single thing on this page started the same way: “wait, what if…?”</p>
+            <p class="shelf-caption make-caption"><strong>Nobody asked me to make any of this. That’s kind of the point.</strong> When I’m interested in something, consuming it is rarely enough. I want to make my own version, pull it apart, improve it, or take the idea somewhere it wasn’t supposed to go. These are the things I make when there is no assignment attached.</p>
             @* the "what if" behind each shelf, so the intro leads straight into them; each one jumps to its shelf *@
             <ol class="make-ifs" aria-label="On this page">
                 @foreach (var (num, question, shelf, id) in new[] {
@@ -495,7 +495,7 @@
                 <p class="make-q">What if I painted where I’m from?</p>
                 <h2 class="shelf-title">Digital Art</h2>
             </div>
-            <p class="shelf-caption art-caption">My AP 2-D Art and Design portfolio was about cultural identity: growing up across the world and getting to call two cultures my own. Every piece mixes the traditions I grew up with and the life I live now, from diyas to braids. Not to brag, but it earned a 5, a VASE award and a Scholastic Art Award.</p>
+            <p class="shelf-caption art-caption"><strong>I grew up between cultures. Eventually, I started drawing the space between them.</strong> My AP 2-D Art portfolio became an attempt to make cultural identity visible: the traditions I inherited, the places I’ve lived, and the strange experience of belonging to more than one world at once. Not to brag, but it earned a 5, a VASE award and a Scholastic Art Award.</p>
             <div class="shelf-rail-wrap gallery-wall-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Slide the Digital Art wall left">‹</button>
                 <div class="gallery-wall" role="group" aria-label="Digital Art" tabindex="0">
@@ -515,6 +515,7 @@
                     <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@(writing.Length + 1)">See all @(writing.Length + 1) →</button>
                 }
             </div>
+            <p class="shelf-caption"><strong>Some thoughts refuse to stay thoughts.</strong> Mine have become poems, essays, stories, and eventually a children’s book. Writing is where the things I can’t fit into a dataset, design, or conversation usually end up.</p>
             <div class="shelf-rail-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Scroll Writing left">‹</button>
                 <ul class="shelf-rail" tabindex="0" aria-label="Writing">
@@ -574,7 +575,7 @@
                 <p class="make-q">What if I planned the perfect trip?</p>
                 <h2 class="shelf-title">Itineraries</h2>
             </div>
-            <p class="shelf-caption">Places make me, me. I go looking for the art and culture in every city, like wandering Little Italy in New York or staring up at Chicago’s beautiful architecture. And I travel like I do most things: with a plan. Here are my city edits: the spots I’d send you to, from first coffee to the last stop of the night.</p>
+            <p class="shelf-caption"><strong>“We’ll figure it out when we get there” is not a travel philosophy I recognize.</strong> I plan cities the way I experience them: through neighborhoods, art, architecture, food, coffee, and the places I’d regret finding out about after I left. Yes, there will be a spreadsheet. No, you may not make fun of it until we’re having the best day of the trip.</p>
             @if (trips.Length > 0)
             {
             <div class="shelf-rail-wrap">
