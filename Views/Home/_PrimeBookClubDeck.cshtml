@@ -1,0 +1,491 @@
+@* All Hype, No Club: my Prime Book Club strategy, a project in the Marketing carousel (rendered from _MarketingWork.cshtml).
+   The look: a reader's notebook. Ruled paper, a pink margin line, highlighter on the key phrase, margin notes in Caveat,
+   and the club's own bright blue. Same slideshow as the other decks (Coursework.cshtml builds the chapters from data-title).
+   Every number is from industry data or trade press, not the club's own posts: Circana BookScan (via Publishers Lunch and
+   Publishers Weekly), the Audio Publishers Association, The Hollywood Reporter, Deadline, Variety, Gold Derby, Collider,
+   Nielsen, Cambridge Dictionary, Netflix, B&T and Amazon MGM Studios press. The one social number (followers) is the
+   club's public Instagram count, Oct 2026. Checked Oct 2026. *@
+<style>
+    @@font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 900; font-display: swap; src: url(/fonts/bodoni-moda-latin-normal.woff2) format('woff2'); }
+    @@font-face { font-family: 'Bodoni Moda'; font-style: italic; font-weight: 400 900; font-display: swap; src: url(/fonts/bodoni-moda-latin-italic.woff2) format('woff2'); }
+    @@font-face { font-family: 'Caveat'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(/fonts/caveat-latin.woff2) format('woff2'); }
+
+    .mk-pbc { --pb-blue: #1A7CF0; --pb-sky: #5DB2FF; --pb-navy: #0C1E3C; --pb-paper: #FBF7EE; --pb-rule: rgba(26, 124, 240, 0.12); --pb-margin: rgba(240, 90, 140, 0.45);
+        --pb-pink: #F0508C; --pb-hl: rgba(255, 128, 176, 0.42); --pb-ink: #1B2436; --pb-mute: #5F6779; --pb-hand: 'Caveat', 'Bradley Hand', cursive; --pb-serif: 'Bodoni Moda', Didot, Georgia, serif; }
+
+    /* the stage: a page of ruled notebook paper with a pink margin line */
+    .mk-pbc .mk-stage { background: var(--pb-paper); border: 1px solid #E7DECD; box-shadow: 0 30px 60px -35px rgba(12, 30, 60, 0.45); }
+    .mk-pbc .mk-stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+        background: repeating-linear-gradient(180deg, transparent 0 3.1cqw, var(--pb-rule) 3.1cqw calc(3.1cqw + 1px)); }
+    .mk-pbc .mk-stage::after { content: ""; position: absolute; top: 0; bottom: 0; left: 2.6cqw; width: 1px; background: var(--pb-margin); pointer-events: none; z-index: 0; }
+    .mk-pbc .mk-slide { color: var(--pb-ink); padding: 3.2cqw 4.6cqw 2.8cqw 5.6cqw; gap: 1.3cqw; z-index: 1; }
+    .mk-pbc .mk-slide p { color: var(--pb-mute); }
+
+    .mk-pbc .pb-kick { font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 700; letter-spacing: 0.3cqw; text-transform: uppercase; color: var(--pb-blue) !important; }
+    .mk-pbc .pb-h { margin: 0; font-family: var(--pb-serif); font-weight: 600; font-size: clamp(18px, 3.2cqw, 38px); line-height: 1.1; color: var(--pb-ink); letter-spacing: -0.02em; max-width: 78cqw; }
+    /* the key phrase gets swiped with a pink highlighter each time the slide opens */
+    .mk-pbc .pb-h em, .mk-pbc .pb-title em { font-style: italic; color: var(--pb-navy);
+        background: linear-gradient(var(--pb-hl), var(--pb-hl)) no-repeat 0 88% / 0% 42%; animation: pbHi 0.9s cubic-bezier(.3, .7, .2, 1) 0.35s forwards; }
+    @@keyframes pbHi { to { background-size: 100% 42%; } }
+    .mk-pbc .pb-lede { font-size: clamp(12px, 1.45cqw, 18px) !important; line-height: 1.5 !important; max-width: 66cqw; }
+    .mk-pbc .pb-cap { font-size: clamp(9px, 0.9cqw, 11px) !important; color: var(--pb-mute) !important; margin-top: auto !important; }
+    .mk-pbc .pb-cap b { color: var(--pb-ink); }
+    .mk-pbc .pb-note { font-family: var(--pb-hand); font-weight: 600; color: var(--pb-blue) !important; font-size: clamp(14px, 2cqw, 24px) !important; line-height: 1.1 !important; transform: rotate(-2deg); }
+    .mk-pbc .pb-sig { position: absolute; right: 3cqw; bottom: 2cqw; z-index: 4; font-family: var(--pb-hand); font-weight: 700; font-size: clamp(13px, 1.7cqw, 20px); color: var(--pb-pink); transform: rotate(-4deg); }
+    .mk-pbc .pb-lab { font-size: clamp(9px, 0.95cqw, 12px) !important; letter-spacing: 0.2cqw; text-transform: uppercase; font-weight: 700; color: var(--pb-navy) !important; }
+    .mk-pbc .pb-two { display: grid; grid-template-columns: 1fr 1fr; gap: 3.4cqw; flex: 1; min-height: 0; align-items: center; }
+    .mk-pbc .pb-fill { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 1.8cqw; }
+    @@keyframes pbRise { from { opacity: 0; transform: translateY(1.6cqw); } }
+
+    /* slide 1 and 10: the club's blue page, a rotating stamp with its own tagline, a highlighted book page */
+    .mk-pbc .pb-cover { background: var(--pb-blue); color: #fff; justify-content: space-between; }
+    .mk-pbc .pb-cover::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 85% 20%, #3E95FF 0, rgba(62, 149, 255, 0) 45%), radial-gradient(circle at 10% 100%, #0F58C4 0, rgba(15, 88, 196, 0) 50%); }
+    .mk-pbc .pb-cover .pb-kick { color: #CFE5FF !important; }
+    .mk-pbc .pb-cover p { color: #E3EEFF; }
+    .mk-pbc .pb-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+    .mk-pbc .pb-cover:has(.pb-bg)::before { display: none; }
+    .mk-pbc .pb-title { margin: 0; font-family: var(--pb-serif); font-weight: 700; font-size: clamp(30px, 6.2cqw, 76px); line-height: 0.98; letter-spacing: -0.03em; color: #fff; max-width: 42cqw; }
+    .mk-pbc .pb-cover .pb-title em { color: #fff; --pb-hl: rgba(240, 80, 140, 0.75); }
+    .mk-pbc .pb-cover .pb-lede { color: #E3EEFF !important; max-width: 40cqw; }
+    .mk-pbc .pb-cover .pb-sig { color: #fff; }
+    .mk-pbc .pb-stamp { position: absolute; right: 7cqw; top: 6cqw; width: 26cqw; aspect-ratio: 1; z-index: 1; }
+    .mk-pbc .pb-stamp svg { width: 100%; height: 100%; animation: pbSpin 40s linear infinite; }
+    .mk-pbc .pb-stamp b { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-family: var(--pb-hand); font-weight: 700; font-size: clamp(22px, 4.4cqw, 54px); line-height: 0.85; color: #fff; transform: rotate(-8deg); }
+    @@keyframes pbSpin { to { transform: rotate(360deg); } }
+    .mk-pbc .pb-page { position: absolute; right: 5cqw; bottom: 4.4cqw; width: 30cqw; padding: 1.6cqw 1.8cqw; z-index: 1; background: var(--pb-paper); border-radius: 0.4cqw; transform: rotate(3deg);
+        box-shadow: 0 1.6cqw 3.2cqw rgba(12, 30, 60, 0.35); animation: pbRise 0.8s cubic-bezier(.2, .7, .2, 1) 0.2s both; }
+    .mk-pbc .pb-page i { display: block; height: 0.55cqw; margin: 0.75cqw 0; border-radius: 1px; background: #CFC6B5; width: var(--w); }
+    .mk-pbc .pb-page i.hl { background: #CFC6B5; box-shadow: 0 0 0 0.35cqw transparent; position: relative; }
+    .mk-pbc .pb-page i.hl::after { content: ""; position: absolute; left: -0.3cqw; top: -0.55cqw; height: 1.65cqw; width: 0; background: var(--pb-hl); border-radius: 0.2cqw; animation: pbSwipe 0.7s ease forwards; animation-delay: var(--d); }
+    @@keyframes pbSwipe { to { width: calc(100% + 0.6cqw); } }
+    .mk-pbc .pb-page small { display: block; margin-top: 1cqw; font-family: var(--pb-hand); font-weight: 700; font-size: clamp(12px, 1.6cqw, 19px); color: var(--pb-pink); transform: rotate(-2deg); }
+
+    /* slide 2: two bars, and a library card of hits */
+    .mk-pbc .pb-bars { display: grid; gap: 1.4cqw; }
+    .mk-pbc .pb-bar { display: grid; grid-template-columns: 13cqw 1fr 7cqw; gap: 1.2cqw; align-items: center; font-size: clamp(11px, 1.25cqw, 15px); font-weight: 700; color: var(--pb-ink); }
+    .mk-pbc .pb-bar i { display: block; height: 3cqw; border-radius: 0.4cqw; background: rgba(26, 124, 240, 0.08); overflow: hidden; }
+    .mk-pbc .pb-bar i::after { content: ""; display: block; height: 100%; width: var(--w); background: var(--c, var(--pb-blue)); border-radius: inherit; transform-origin: left; animation: pbGrow 1.4s cubic-bezier(.2, .7, .2, 1) 0.2s both; }
+    .mk-pbc .pb-bar b { font-family: var(--pb-serif); font-size: clamp(14px, 2.3cqw, 28px); text-align: right; color: var(--c, var(--pb-blue)); }
+    @@keyframes pbGrow { from { transform: scaleX(0); } }
+    .mk-pbc .pb-minis { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4cqw; margin-top: 1.6cqw; }
+    .mk-pbc .pb-mini { border-top: 2px solid var(--pb-blue); padding-top: 0.7cqw; font-size: clamp(10px, 1.1cqw, 13px); color: var(--pb-mute); }
+    .mk-pbc .pb-mini b { display: block; font-family: var(--pb-serif); font-size: clamp(16px, 2.6cqw, 30px); color: var(--pb-ink); line-height: 1.05; }
+    .mk-pbc .pb-mini.pink { border-color: var(--pb-pink); }
+    .mk-pbc .pb-mini.pink b { color: var(--pb-pink); }
+    .mk-pbc .pb-card { background: #fff; border: 1px solid #E2D8C6; border-radius: 0.6cqw; box-shadow: 0 1cqw 2.4cqw -1.4cqw rgba(12, 30, 60, 0.35); }
+    .mk-pbc .pb-lib { padding: 1.3cqw 1.6cqw; }
+    .mk-pbc .pb-lib h5 { margin: 0 0 0.6cqw; font-family: var(--pb-hand); font-size: clamp(15px, 2.1cqw, 25px); color: var(--pb-blue); }
+    .mk-pbc .pb-lib li { display: grid; grid-template-columns: 1fr auto; gap: 1.6cqw; align-items: baseline; padding: 1.1cqw 0; border-top: 1px dashed #D9CFBD;
+        font-size: clamp(10px, 1.2cqw, 14px) !important; animation: pbRise 0.5s ease both; animation-delay: calc(0.15s + var(--n) * 0.12s); }
+    .mk-pbc .pb-lib li span { color: var(--pb-mute); }
+    .mk-pbc .pb-lib li b { font-family: var(--pb-serif); font-size: clamp(12px, 1.7cqw, 20px); color: var(--pb-navy); white-space: nowrap; }
+
+    /* slide 3: one dot per ~205K viewers, and one of them is the club */
+    .mk-pbc .pb-dotwrap { display: grid; grid-template-columns: 1fr 26cqw; gap: 3cqw; flex: 1; align-items: center; min-height: 0; }
+    .mk-pbc .pb-dots { display: grid; grid-template-columns: repeat(22, 1fr); gap: 0.55cqw; }
+    .mk-pbc .pb-dots i { aspect-ratio: 1; border-radius: 50%; background: #C9D7EC; animation: pbPop 0.3s ease both; animation-delay: calc(var(--n) * 6ms); }
+    .mk-pbc .pb-dots i.club { background: var(--pb-pink); box-shadow: 0 0 0 0.35cqw rgba(240, 80, 140, 0.25); animation: pbPop 0.3s ease both, pbPulse 1.6s ease-in-out 1.4s infinite; }
+    @@keyframes pbPop { from { opacity: 0; transform: scale(0.2); } }
+    @@keyframes pbPulse { 50% { box-shadow: 0 0 0 0.9cqw rgba(240, 80, 140, 0); } }
+    .mk-pbc .mk-slide .pb-big { font-family: var(--pb-serif); font-weight: 700; font-size: clamp(30px, 6.4cqw, 76px); line-height: 0.95; color: var(--pb-pink); margin: 0; }
+    .mk-pbc .pb-key { display: flex; gap: 1.8cqw; font-size: clamp(9px, 1cqw, 12px); color: var(--pb-mute); }
+    .mk-pbc .pb-key span::before { content: ""; display: inline-block; width: 1cqw; height: 1cqw; min-width: 7px; min-height: 7px; border-radius: 50%; margin-right: 0.5cqw; vertical-align: middle; background: #C9D7EC; }
+    .mk-pbc .pb-key span.club::before { background: var(--pb-pink); }
+
+    /* slide 4: the fall calendar, and four problems on index cards */
+    .mk-pbc .pb-cal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; }
+    .mk-pbc .pb-day { padding: 1.4cqw 1.4cqw; border-top: 0.45cqw solid var(--pb-blue); animation: pbRise 0.5s ease both; animation-delay: calc(var(--n) * 0.14s); }
+    .mk-pbc .pb-day.th { border-top-color: var(--pb-pink); }
+    .mk-pbc .pb-day small { display: block; font-size: clamp(9px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.15cqw; color: var(--pb-blue); }
+    .mk-pbc .pb-day.th small { color: var(--pb-pink); }
+    .mk-pbc .pb-day b { display: block; margin-top: 0.3cqw; font-family: var(--pb-serif); font-size: clamp(12px, 1.6cqw, 19px); line-height: 1.15; color: var(--pb-ink); }
+    .mk-pbc .pb-day span { display: block; margin-top: 0.3cqw; font-size: clamp(9px, 1cqw, 12px); color: var(--pb-mute); }
+    .mk-pbc .pb-probs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; }
+    .mk-pbc .pb-prob { padding: 1.6cqw 1.5cqw; min-height: 13cqw; display: flex; flex-direction: column; gap: 0.5cqw; animation: pbRise 0.5s ease both; animation-delay: calc(0.6s + var(--n) * 0.14s); }
+    .mk-pbc .pb-prob small { font-family: var(--pb-hand); font-weight: 700; font-size: clamp(14px, 1.9cqw, 22px); color: var(--pb-pink); line-height: 1; }
+    .mk-pbc .pb-prob b { font-size: clamp(11px, 1.3cqw, 15px); line-height: 1.25; color: var(--pb-ink); }
+    .mk-pbc .pb-prob span { font-size: clamp(9px, 1.02cqw, 12px); line-height: 1.35; color: var(--pb-mute); }
+
+    /* slide 5: Verity's two numbers, and why the club went quiet */
+    .mk-pbc .pb-score { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4cqw; }
+    .mk-pbc .pb-score div { padding: 1.4cqw 1.6cqw; }
+    .mk-pbc .pb-score b { display: block; font-family: var(--pb-serif); font-weight: 700; font-size: clamp(24px, 4.6cqw, 56px); line-height: 1; color: var(--pb-blue); }
+    .mk-pbc .pb-score .pink b { color: var(--pb-pink); }
+    .mk-pbc .pb-score span { display: block; margin-top: 0.5cqw; font-size: clamp(10px, 1.15cqw, 14px); color: var(--pb-mute); }
+    .mk-pbc .pb-why { display: grid; gap: 1.5cqw; counter-reset: why; }
+    .mk-pbc .pb-why li { display: grid; grid-template-columns: 3cqw 1fr; gap: 1cqw; align-items: baseline; font-size: clamp(11px, 1.3cqw, 15px) !important; color: var(--pb-ink); animation: pbRise 0.5s ease both; animation-delay: calc(0.2s + var(--n) * 0.15s); }
+    .mk-pbc .pb-why li::before { counter-increment: why; content: counter(why); font-family: var(--pb-hand); font-weight: 700; font-size: clamp(16px, 2.3cqw, 28px); color: var(--pb-pink); line-height: 0.8; }
+    .mk-pbc .pb-why li span { display: block; color: var(--pb-mute); font-size: 0.88em; }
+    .mk-pbc .pb-fix { padding: 1.2cqw 1.6cqw; border-left: 0.45cqw solid var(--pb-blue); font-size: clamp(11px, 1.3cqw, 15px) !important; color: var(--pb-ink) !important; }
+
+    /* slide 6: three facts on sticky notes */
+    .mk-pbc .pb-stickies { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; margin-top: 0.6cqw; }
+    .mk-pbc .pb-sticky { padding: 2.4cqw 2.2cqw 2.6cqw; min-height: 15cqw; background: #FFF3A8; box-shadow: 0 1.2cqw 2.4cqw -1.4cqw rgba(12, 30, 60, 0.4); transform: rotate(var(--r)); animation: pbRise 0.6s ease both; animation-delay: calc(var(--n) * 0.15s); }
+    .mk-pbc .pb-sticky:nth-child(2) { background: #FFD9E6; }
+    .mk-pbc .pb-sticky:nth-child(3) { background: #D7EAFF; }
+    .mk-pbc .pb-sticky b { display: block; font-family: var(--pb-serif); font-weight: 700; font-size: clamp(22px, 4cqw, 48px); line-height: 1; color: var(--pb-navy); }
+    .mk-pbc .pb-sticky span { display: block; margin-top: 0.7cqw; font-size: clamp(10px, 1.2cqw, 14px); line-height: 1.35; color: var(--pb-ink); }
+    .mk-pbc .pb-sticky small { display: block; margin-top: 0.8cqw; font-size: clamp(8px, 0.85cqw, 10px); color: var(--pb-mute); }
+    .mk-pbc .pb-hyp { display: flex; gap: 1.2cqw; align-items: baseline; padding: 1cqw 1.4cqw; border: 1px dashed var(--pb-blue); border-radius: 0.6cqw; font-size: clamp(10px, 1.2cqw, 14px) !important; color: var(--pb-ink) !important; }
+    .mk-pbc .pb-hyp b { color: var(--pb-blue); white-space: nowrap; }
+
+    /* slide 7: the club's monthly loop */
+    .mk-pbc .pb-loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; position: relative; }
+    .mk-pbc .pb-loop::before { content: ""; position: absolute; left: 4%; right: 4%; top: 2.1cqw; border-top: 2px dashed var(--pb-sky); z-index: 0; }
+    .mk-pbc .pb-step { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.7cqw; animation: pbRise 0.5s ease both; animation-delay: calc(var(--n) * 0.18s); }
+    .mk-pbc .pb-step i { display: grid; place-items: center; width: 4.2cqw; height: 4.2cqw; border-radius: 50%; background: var(--pb-blue); color: #fff; font-style: normal; font-weight: 700; font-size: clamp(11px, 1.3cqw, 15px); box-shadow: 0 0 0 0.5cqw var(--pb-paper); }
+    .mk-pbc .pb-step:last-child i { background: var(--pb-pink); }
+    .mk-pbc .pb-step small { font-size: clamp(9px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.15cqw; color: var(--pb-blue); text-transform: uppercase; }
+    .mk-pbc .pb-step b { font-family: var(--pb-serif); font-size: clamp(12px, 1.6cqw, 19px); line-height: 1.15; color: var(--pb-ink); }
+    .mk-pbc .pb-step span { font-size: clamp(9px, 1.05cqw, 12px); line-height: 1.35; color: var(--pb-mute); }
+    .mk-pbc .pb-fly { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9cqw; padding: 1.2cqw 1.6cqw; }
+    .mk-pbc .pb-fly .pb-lab { margin-right: 0.6cqw !important; }
+    .mk-pbc .pb-fly span { padding: 0.5cqw 1.2cqw; border-radius: 99px; border: 1.5px solid var(--pb-blue); font-size: clamp(10px, 1.15cqw, 14px); font-weight: 700; color: var(--pb-navy); animation: pbRise 0.4s ease both; animation-delay: calc(0.9s + var(--n) * 0.12s); }
+    .mk-pbc .pb-fly em { font-style: normal; color: var(--pb-pink); font-weight: 700; }
+    .mk-pbc .pb-fly p { flex-basis: 100%; margin-top: 0.3cqw !important; font-size: clamp(10px, 1.1cqw, 13px) !important; }
+
+    /* slide 8: formats as torn tabs, evidence beside them */
+    .mk-pbc .pb-formats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2cqw; }
+    .mk-pbc .pb-fmt { padding: 1.8cqw 1.8cqw; min-height: 13cqw; display: flex; flex-direction: column; gap: 0.5cqw; border-top: 0.45cqw solid var(--pb-blue); animation: pbRise 0.5s ease both; animation-delay: calc(var(--n) * 0.14s); }
+    .mk-pbc .pb-fmt:nth-child(even) { border-top-color: var(--pb-pink); }
+    .mk-pbc .pb-fmt b { font-family: var(--pb-serif); font-size: clamp(13px, 1.75cqw, 21px); line-height: 1.15; color: var(--pb-ink); }
+    .mk-pbc .pb-fmt span { font-size: clamp(9px, 1.05cqw, 12.5px); line-height: 1.4; color: var(--pb-mute); }
+    .mk-pbc .pb-ev { display: flex; flex-direction: column; gap: 1.2cqw; }
+    .mk-pbc .pb-quote { margin: 0; padding: 1.4cqw 1.6cqw; font-family: var(--pb-serif); font-style: italic; font-size: clamp(12px, 1.6cqw, 19px) !important; line-height: 1.3 !important; color: var(--pb-ink) !important; }
+    .mk-pbc .pb-quote small { display: block; margin-top: 0.7cqw; font-family: inherit; font-style: normal; font-size: clamp(9px, 0.95cqw, 11px); color: var(--pb-mute); }
+
+    /* slide 9: a world map of where the viewers are, as stacked bars */
+    .mk-pbc .pb-globe { display: grid; gap: 1.2cqw; }
+    .mk-pbc .pb-split { display: flex; height: 4cqw; border-radius: 0.6cqw; overflow: hidden; }
+    .mk-pbc .pb-split span { display: flex; align-items: center; padding-left: 1.2cqw; font-size: clamp(10px, 1.15cqw, 14px); font-weight: 700; color: #fff; transform-origin: left; animation: pbGrow 1.2s cubic-bezier(.2, .7, .2, 1) both; }
+    .mk-pbc .pb-split .us { flex: 40; background: var(--pb-sky); }
+    .mk-pbc .pb-split .world { flex: 60; background: var(--pb-blue); animation-delay: 0.3s; }
+    .mk-pbc .pb-recs { display: grid; gap: 1.4cqw; }
+    .mk-pbc .pb-recs li { padding: 1.5cqw 1.7cqw; font-size: clamp(10px, 1.2cqw, 14px) !important; color: var(--pb-ink); animation: pbRise 0.5s ease both; animation-delay: calc(0.3s + var(--n) * 0.14s); }
+    .mk-pbc .pb-recs li b { color: var(--pb-blue); }
+
+    /* slide 10: the north star, then the takeaway on the blue page */
+    .mk-pbc .pb-star { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.4cqw; align-items: center; }
+    .mk-pbc .pb-star-card { padding: 1.8cqw 2cqw; background: var(--pb-navy); border: 0; color: #fff; }
+    .mk-pbc .pb-star-card small { display: block; font-size: clamp(9px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.25cqw; color: var(--pb-sky); text-transform: uppercase; }
+    .mk-pbc .pb-star-card b { display: block; margin-top: 0.6cqw; font-family: var(--pb-serif); font-size: clamp(18px, 3cqw, 36px); line-height: 1.05; color: #fff; }
+    .mk-pbc .pb-star-card span { display: block; margin-top: 0.8cqw; font-size: clamp(10px, 1.15cqw, 14px); line-height: 1.4; color: #C9D7EC; }
+    .mk-pbc .pb-metrics { display: grid; gap: 0.8cqw; }
+    .mk-pbc .pb-metrics li { display: grid; grid-template-columns: 2.6cqw 1fr; gap: 0.8cqw; align-items: baseline; font-size: clamp(10px, 1.2cqw, 14px) !important; color: var(--pb-ink); animation: pbRise 0.5s ease both; animation-delay: calc(0.3s + var(--n) * 0.14s); }
+    .mk-pbc .pb-metrics li::before { content: "✓"; font-family: var(--pb-hand); font-weight: 700; font-size: clamp(16px, 2.2cqw, 26px); color: var(--pb-pink); line-height: 0.8; }
+    .mk-pbc .pb-cover .pb-end { margin: 0; font-family: var(--pb-serif); font-weight: 700; font-size: clamp(24px, 5.4cqw, 64px); line-height: 1.02; letter-spacing: -0.02em; color: #fff; max-width: 70cqw; }
+    .mk-pbc .pb-cover .pb-end em { --pb-hl: rgba(240, 80, 140, 0.75); }
+    .mk-pbc .pb-cover .pb-metrics li { color: #fff; }
+    .mk-pbc .pb-cover .pb-metrics li::before { color: #FFD1E3; }
+    .mk-pbc .pb-cover .pb-star-card { background: var(--pb-navy); }
+
+    .mk-pbc .mk-chapters button[aria-pressed="true"] { background: var(--pb-blue); border-color: var(--pb-blue); }
+
+    @@media (max-width: 800px) {
+        .mk-pbc .mk-stage::after { left: 8px; }
+        .mk-pbc .mk-slide { padding-left: 24px; }
+        .mk-pbc .pb-two, .mk-pbc .pb-dotwrap, .mk-pbc .pb-star, .mk-pbc .pb-formats, .mk-pbc .pb-stickies { grid-template-columns: 1fr; }
+        .mk-pbc .pb-cal, .mk-pbc .pb-probs, .mk-pbc .pb-loop { grid-template-columns: 1fr 1fr; }
+        .mk-pbc .pb-loop::before { display: none; }
+        .mk-pbc .pb-stamp, .mk-pbc .pb-page { display: none; }
+        .mk-pbc .pb-title, .mk-pbc .pb-cover .pb-lede { max-width: none; }
+        .mk-pbc .pb-sig { position: static; align-self: flex-end; }
+    }
+    @@media (prefers-reduced-motion: reduce) {
+        .mk-pbc .pb-stamp svg, .mk-pbc .pb-dots i.club { animation: none; }
+        .mk-pbc .pb-h em, .mk-pbc .pb-title em { animation: none; background-size: 100% 42%; }
+        .mk-pbc .pb-page i.hl::after { animation: none; width: calc(100% + 0.6cqw); }
+        .mk-pbc .pb-bar i::after, .mk-pbc .pb-split span { animation: none; }
+    }
+</style>
+
+@{
+    // Off Campus drew 36M viewers in its first 12 days (Deadline). At the club's ~205K Instagram followers a dot,
+    // that's about 176 dots, and the club is one of them (205K / 36M ≈ 0.6%)
+    const int dotCount = 176;
+    var hits = new[]
+    {
+        ("The Summer I Turned Pretty, S3", "70M viewers in 70 days"),
+        ("The Culpables films", "100M+ viewers"),
+        ("Off Campus", "36M viewers in 12 days"),
+        ("Verity, in theaters", "$30M, #1 opening"),
+        ("The Love Hypothesis", "#1 movie on Prime"),
+    };
+    var fall = new[]
+    {
+        ("SEP 23", "The Love Hypothesis", "Streaming", ""),
+        ("OCT 2", "Verity", "Theaters only", "th"),
+        ("OCT 7", "Carrie", "Streaming", ""),
+        ("NOV 6", "Campus Drivers", "Streaming", ""),
+    };
+    var problems = new[]
+    {
+        ("no rhythm", "No time to read", "A new title about every two weeks. A club needs weeks per book."),
+        ("not wired", "Not connected to Amazon", "No Kindle, Audible or Goodreads link. The bio link is a months-old video."),
+        ("two names", "Two brands, one fan", "Prime Book Club and Obsession is in Session chase the same reader."),
+        ("no replies", "Readers go unanswered", "Fans who say a film changed their book get no reply."),
+    };
+    var loop = new[]
+    {
+        ("8 weeks out", "Announce the pick", "One book a month, with the Kindle and Audible editions one tap away."),
+        ("Weekly", "Read together", "Chapter check-ins, theories and polls. Spoiler tags on everything."),
+        ("Premiere night", "Watch together", "A watch party for the people who read it first."),
+        ("The week after", "Book vs. screen", "The author and the screenwriter answer what changed, and why."),
+    };
+    var formats = new[]
+    {
+        ("The longing look", "A weekly cut of the slow turns, the stares and the almost-confessions. Emotional tension is what fans replay."),
+        ("Heat level on every pick", "A 1 to 5 rating, the way publishers and booksellers already label romance. Readers want to know before they start."),
+        ("Book readers know", "Spotlight the fans who catch a detail from the book. It rewards reading first."),
+        ("Superfans host", "The commenters who show up on every post become read-along hosts, with early screenings."),
+    };
+    const string sig = "<span class=\"pb-sig\" aria-hidden=\"true\">suhani ✦</span>";
+}
+<div class="mp-proj mk-pbc" id="mk-proj-primebookclub" role="tabpanel" aria-labelledby="mk-title-primebookclub" hidden>
+    <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Prime Book Club slides">
+        <div class="mk-stage">
+            <div class="mk-slide pb-cover" data-title="The hype">
+                <video class="pb-bg" src="/videos/projects/primebookclub.mp4" poster="/videos/projects/primebookclub.jpg" muted loop playsinline autoplay aria-label="Book spines drop onto three shelves, a play button lights up on every book Prime turned into a show, and a pink bookmark marks the one the club is reading"></video>
+                @Html.Raw(sig)
+                <p class="pb-kick">Prime Video community strategy, 2026</p>
+                <div>
+                    <h4 class="pb-title">Prime Book Club is all hype, <em>no club.</em></h4>
+                    <p class="pb-lede" style="margin-top:1.6cqw">Prime Video turned BookTok’s favorite books into its biggest hits. Its book club reaches under 1% of the people watching them. Here’s how to make it a real club.</p>
+                </div>
+                <p class="pb-kick" style="color:#fff !important">Suhani Tiwari</p>
+            </div>
+
+            <div class="mk-slide" data-title="The boom" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">Where it stands</p>
+                <h4 class="pb-h">Romance is publishing’s growth engine, <em>and Prime turned it into hits.</em></h4>
+                <div class="pb-two">
+                    <div>
+                        <p class="pb-lab" style="margin-bottom:1.2cqw">U.S. print sales growth</p>
+                        <div class="pb-bars">
+                            <div class="pb-bar" style="--c: var(--pb-pink)"><span>Romance, H1 2025</span><i style="--w: 100%"></i><b>+24%</b></div>
+                            <div class="pb-bar" style="--c: #8B95A8"><span>All print, 2025</span><i style="--w: 1.5%"></i><b>+0.3%</b></div>
+                        </div>
+                        <div class="pb-minis">
+                            <div class="pb-mini"><b>51M</b>romance books sold in 12 months, more than double four years earlier</div>
+                            <div class="pb-mini pink"><b>+30%</b>romance audiobook revenue in 2024, the fastest-growing genre in audio</div>
+                        </div>
+                    </div>
+                    <div class="pb-card pb-lib">
+                        <h5>Prime’s book-to-screen hits</h5>
+                        <ul>
+                            @for (var n = 0; n < hits.Length; n++)
+                            {
+                                <li style="--n: @n"><span>@hits[n].Item1</span><b>@hits[n].Item2</b></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <p class="pb-cap"><b>Sources:</b> Circana BookScan (via Publishers Lunch, Jun 2025; Publishers Weekly); Audio Publishers Association (2025); The Hollywood Reporter; Deadline; Gold Derby; CBR.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The gap" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">The problem</p>
+                <h4 class="pb-h">Tens of millions watch. <em>About 205K joined the club.</em></h4>
+                <div class="pb-dotwrap">
+                    <div>
+                        <div class="pb-dots" aria-hidden="true">
+                            @for (var n = 0; n < dotCount; n++)
+                            {
+                                <i class="@(n == 0 ? "club" : "")" style="--n: @n"></i>
+                            }
+                        </div>
+                        <div class="pb-key" style="margin-top:1.2cqw"><span>about 205K viewers</span><span class="club">the club’s whole Instagram</span></div>
+                    </div>
+                    <div>
+                        <p class="pb-lab">Off Campus, first 12 days</p>
+                        <p class="pb-big">0.6%</p>
+                        <p class="pb-lede" style="margin-top:0.8cqw">One show’s first 12 days could fill the club 176 times over. And Off Campus isn’t even Prime’s biggest hit.</p>
+                        <p class="pb-note" style="margin-top:1.2cqw">15 months after its first event</p>
+                    </div>
+                </div>
+                <p class="pb-cap"><b>Sources:</b> Deadline (36M viewers, May 2026); @@primebookclub public follower count (Oct 2026); B&amp;T (first Prime Book Club LIVE, Sydney, Jul 2025). 205K ÷ 36M ≈ 0.6%.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The diagnosis" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">Why it isn’t working</p>
+                <h4 class="pb-h">It’s a release calendar, <em>not a club.</em></h4>
+                <div class="pb-fill">
+                <div>
+                    <p class="pb-lab" style="margin-bottom:0.8cqw">This fall alone: 4 premieres in 44 days</p>
+                    <div class="pb-cal">
+                        @for (var n = 0; n < fall.Length; n++)
+                        {
+                            <div class="pb-card pb-day @fall[n].Item4" style="--n: @n"><small>@fall[n].Item1</small><b>@fall[n].Item2</b><span>@fall[n].Item3</span></div>
+                        }
+                    </div>
+                </div>
+                <div class="pb-probs">
+                    @for (var n = 0; n < problems.Length; n++)
+                    {
+                        <div class="pb-card pb-prob" style="--n: @n"><small>@problems[n].Item1</small><b>@problems[n].Item2</b><span>@problems[n].Item3</span></div>
+                    }
+                </div>
+                </div>
+                <p class="pb-cap"><b>Sources:</b> Amazon MGM Studios release dates; Amazon MGM Studios press (Obsession is in Session, May 2026); my audit of the club’s Instagram and YouTube, Oct 2026.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Verity" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">Case in point</p>
+                <h4 class="pb-h">Verity won the box office <em>and lost the club.</em></h4>
+                <div class="pb-two" style="grid-template-columns:0.9fr 1.1fr;align-items:center">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <div class="pb-score">
+                            <div class="pb-card"><b>$30M</b><span>opening weekend, #1 in the U.S.</span></div>
+                            <div class="pb-card pink"><b>41%</b><span>from critics, and fans came anyway</span></div>
+                        </div>
+                        <p class="pb-card pb-fix"><b>The fix:</b> run thrillers as debates, not clips. “Team Manuscript or Team Letter?” starts the argument without spoiling the twist.</p>
+                    </div>
+                    <div>
+                        <p class="pb-lab" style="margin-bottom:1cqw">Why the club’s posts went quiet</p>
+                        <ol class="pb-why">
+                            <li style="--n: 0"><div>A thriller in a romance club<span>The audience came for longing, and Verity has none to show.</span></div></li>
+                            <li style="--n: 1"><div>The hook is a twist<span>You can’t post the best part without spoiling it.</span></div></li>
+                            <li style="--n: 2"><div>Theaters only<span>Followers couldn’t press play. “Get tickets” asks them to leave the couch.</span></div></li>
+                            <li style="--n: 3"><div>It sold the movie, not the book<span>Nothing said “read it before you go.”</span></div></li>
+                        </ol>
+                    </div>
+                </div>
+                <p class="pb-cap"><b>Sources:</b> Gold Derby and Variety (box office, Oct 2026); Collider (Rotten Tomatoes); my audit of the club’s Verity posts.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Who it’s for" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">The audience</p>
+                <h4 class="pb-h">The club isn’t for viewers. <em>It’s for readers who feel things.</em></h4>
+                <div class="pb-fill">
+                <div class="pb-stickies">
+                    <div class="pb-sticky" style="--r: -2deg; --n: 0"><b>82%</b><span>of romance readers are women</span><small>Romance Writers of America</small></div>
+                    <div class="pb-sticky" style="--r: 1.5deg; --n: 1"><b>18–34</b><span>The women behind Prime’s records: Off Campus and The Summer I Turned Pretty both set them here</span><small>Deadline; The Hollywood Reporter</small></div>
+                    <div class="pb-sticky" style="--r: -1deg; --n: 2"><b>“Parasocial”</b><span>Word of the Year 2025, defined to include feelings for a character in a book or show</span><small>Cambridge Dictionary</small></div>
+                </div>
+                <p class="pb-note" style="margin-top:0.6cqw">the longing look beats the thirst trap</p>
+                </div>
+                <p class="pb-hyp"><b>To test:</b> the club’s office jokes (meetings, small talk, “coming off mute”) suggest young working women reading as an escape from the workday. That’s my read, so it’s the first thing to measure.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Make it a club" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">Move 01, rhythm</p>
+                <h4 class="pb-h">One book a month. <em>Read it before you watch it.</em></h4>
+                <p class="pb-lede">Every other title stays regular promotion. One pick a month gets the club.</p>
+                <div class="pb-fill">
+                <div class="pb-loop">
+                    @for (var n = 0; n < loop.Length; n++)
+                    {
+                        <div class="pb-step" style="--n: @n"><i>@(n + 1)</i><small>@loop[n].Item1</small><b>@loop[n].Item2</b><span>@loop[n].Item3</span></div>
+                    }
+                </div>
+                <div class="pb-card pb-fly">
+                    <span class="pb-lab">Wire in Amazon</span>
+                    <span style="--n: 0">Kindle</span><em>→</em><span style="--n: 1">Audible</span><em>→</em><span style="--n: 2">Goodreads</span><em>→</em><span style="--n: 3">Prime Video</span>
+                    <p>Amazon owns every step from page to screen. No other streamer can follow one fan from the book to the show.</p>
+                </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Fan language" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">Move 02, voice</p>
+                <h4 class="pb-h">Fans write the best copy. <em>Ship it in days, not weeks.</em></h4>
+                <div class="pb-two" style="grid-template-columns:1.35fr 1fr">
+                    <div class="pb-formats">
+                        @for (var n = 0; n < formats.Length; n++)
+                        {
+                            <div class="pb-card pb-fmt" style="--n: @n"><b>@formats[n].Item1</b><span>@formats[n].Item2</span></div>
+                        }
+                    </div>
+                    <div class="pb-ev">
+                        <div class="pb-minis" style="margin-top:0;grid-template-columns:1fr">
+                            <div class="pb-mini pink"><b>84%</b>trust recommendations from people they know, the most trusted source in Nielsen’s global study</div>
+                        </div>
+                        <p class="pb-card pb-quote">Prime’s head of marketing watches fans’ TikTok edits to plan its events.<small>Deadline, Obsessed Fest, Jun 2026</small></p>
+                        <p class="pb-note">so turn the edits into the plan, every week</p>
+                    </div>
+                </div>
+                <p class="pb-cap"><b>Sources:</b> Nielsen Global Trust in Advertising (2013); Deadline (via Yahoo, Jun 2026). Heat-level labels follow common publisher practice.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The originals" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">Move 03, reach</p>
+                <h4 class="pb-h">Don’t translate the hits. <em>Lead with the original.</em></h4>
+                <div class="pb-two">
+                    <div class="pb-globe">
+                        <div class="pb-minis" style="margin-top:0">
+                            <div class="pb-mini pink"><b>100M+</b>viewers for the Spanish Culpables films, Prime’s most-watched international originals ever</div>
+                            <div class="pb-mini"><b>1 in 3</b>hours on Netflix go to non-English titles, led by Korean and Spanish</div>
+                        </div>
+                        <p class="pb-lab" style="margin-top:0.6cqw">Where The Summer I Turned Pretty S3 was watched</p>
+                        <div class="pb-split"><span class="us">U.S. 40%</span><span class="world">Rest of the world 60%</span></div>
+                        <p class="pb-lede">The Spanish films proved the audience first. The English remakes came after.</p>
+                    </div>
+                    <ul class="pb-recs">
+                        <li class="pb-card" style="--n: 0"><b>Speak their language.</b> Spanish captions and Spanish-speaking creators for the Culpables and Mercedes Ron titles.</li>
+                        <li class="pb-card" style="--n: 1"><b>Frame remakes as a new chapter,</b> not a replacement for the cast fans already love.</li>
+                        <li class="pb-card" style="--n: 2"><b>Keep a sequel wish list.</b> Log what fans ask for next, then announce it back: “you asked, we made it.”</li>
+                    </ul>
+                </div>
+                <p class="pb-cap"><b>Sources:</b> Deadline (Culpables, Sep 2026); Netflix engagement report (H2 2025); The Hollywood Reporter (TSITP S3, 2025).</p>
+            </div>
+
+            <div class="mk-slide pb-cover" data-title="Measure it" hidden>
+                @Html.Raw(sig)
+                <p class="pb-kick">How to measure it, and the takeaway</p>
+                <h4 class="pb-end">Prime already makes the hits. <em>Now make the club.</em></h4>
+                <div class="pb-star">
+                    <div class="pb-card pb-star-card">
+                        <small>North star</small>
+                        <b>Readers who watch</b>
+                        <span>The share of a pick’s Kindle and Audible buyers who stream the adaptation within 30 days. Only Amazon can see both sides.</span>
+                    </div>
+                    <ul class="pb-metrics">
+                        <li style="--n: 0">Book sales lift on each monthly pick</li>
+                        <li style="--n: 1">Read-along members who come back next month</li>
+                        <li style="--n: 2">Fan questions answered within 24 hours</li>
+                        <li style="--n: 3">Sequel requests logged, and answered</li>
+                    </ul>
+                </div>
+                <p class="pb-note" style="color:#fff !important">count readers, not followers</p>
+            </div>
+        </div>
+        <div class="mk-nav-row">
+            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+            <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+        </div>
+    </div>
+
+    <div class="mk-info">
+        <div>
+            <h3 id="mk-title-primebookclub">All Hype, No Club</h3>
+            <p class="mp-proof-sub">Prime Video’s book adaptations draw tens of millions of viewers. Its Prime Book Club reaches under 1% of them. My strategy to turn the hype into a club.</p>
+        </div>
+        <ul class="mp-proof-list">
+            <li>Audited the club’s Instagram and YouTube, then built the case on industry data: Circana, Nielsen, Deadline, The Hollywood Reporter</li>
+            <li>Found the gap: Prime’s hits draw tens of millions, and the club reaches about 205K of them</li>
+            <li>Three moves: one book a month wired into Kindle and Audible, fan-written formats, and leading with the original-language hits</li>
+            <li>A north star only Amazon can measure: readers who watch</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // the shelf video only plays while its slide is on screen
+    (() => {
+        const vids = [...document.querySelectorAll('.mk-pbc video')];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { vids.forEach(v => { v.removeAttribute('autoplay'); v.pause(); }); return; }
+        setInterval(() => vids.forEach(v => {
+            const open = !v.closest('.mk-slide').hidden && !v.closest('.mp-proj').hidden;
+            if (open && v.paused) v.play().catch(() => {}); else if (!open && !v.paused) v.pause();
+        }), 500);
+    })();
+</script>
