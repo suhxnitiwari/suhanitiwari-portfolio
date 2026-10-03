@@ -20,3 +20,5 @@ wwwroot/_t.html
 
 # Sitara's Cloudflare Worker (has friends' details), pasted into Cloudflare, never published here
 sitara-worker.js
+
+.claude/
