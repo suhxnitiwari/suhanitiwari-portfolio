@@ -30,14 +30,20 @@ namespace Tiwari_Suhani_HW3.Controllers
         // open only when there's a password set and the pages made it into the build
         private bool IsOpen => (!string.IsNullOrEmpty(friendsHash) || !string.IsNullOrEmpty(familyHash)) && pages is not null;
 
-        // which role a password unlocks, or null; family is checked first, so family never lands as a friend
-        private string? RoleFor(string? password)
+        // the visitor picks a role first, then proves it. Family's password also works for Friend,
+        // but picking Friend only ever grants Friend: you get the role you asked for, never more.
+        private string? Grant(string? role, string? password)
         {
             if (string.IsNullOrEmpty(password)) return null;
             var hasher = new PasswordHasher<object>();
             bool Matches(string? hash) => !string.IsNullOrEmpty(hash)
                 && hasher.VerifyHashedPassword(new object(), hash, password) != PasswordVerificationResult.Failed;
-            return Matches(familyHash) ? Family : Matches(friendsHash) ? Friends : null;
+            return role switch
+            {
+                Family => Matches(familyHash) ? Family : null,
+                Friends => Matches(friendsHash) || Matches(familyHash) ? Friends : null,
+                _ => null
+            };
         }
 
         [HttpGet("/world/login")]
@@ -46,24 +52,28 @@ namespace Tiwari_Suhani_HW3.Controllers
             if (User.Identity?.IsAuthenticated == true) return Redirect("/world/");
             ViewBag.IsOpen = IsOpen;
             ViewBag.ReturnUrl = returnUrl;
+            // the Family Room's door sends people here with the family role already picked
+            ViewBag.Role = returnUrl is not null && returnUrl.StartsWith("/world/family", StringComparison.OrdinalIgnoreCase) ? Family : Friends;
             return View();
         }
 
         [HttpPost("/world/login")]
         [ValidateAntiForgeryToken]
         [EnableRateLimiting("world-login")]
-        public async Task<IActionResult> Login(string password, string? returnUrl = null)
+        public async Task<IActionResult> Login(string password, string? role, string? returnUrl = null)
         {
             ViewBag.IsOpen = IsOpen;
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.Role = role == Family ? Family : Friends;
             if (!IsOpen) return View();
 
-            var role = RoleFor(password);
-            if (role is null)
+            var granted = Grant(role, password);
+            if (granted is null)
             {
-                ViewBag.Error = "That's not it. Try again?";
+                ViewBag.Error = role == Family ? "That's not the family password." : "That's not it. Try again?";
                 return View();
             }
+            role = granted;
 
             var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "guest"), new Claim(ClaimTypes.Role, role) }, "World");
             await HttpContext.SignInAsync("World", new ClaimsPrincipal(identity));

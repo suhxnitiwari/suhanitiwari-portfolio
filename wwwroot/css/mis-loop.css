@@ -1,0 +1,98 @@
+/* "What I can do": six projects on one loop (markup and script in Views/Home/Coursework.cshtml).
+   Laptops: the stops sit on a ring and the panel beside it shows whichever one you're on.
+   Phones: the ring unrolls into a timeline, every stop showing its own details. */
+
+.loop {
+    display: grid;
+    grid-template-columns: 520px minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+}
+
+.loop-ring { position: relative; width: 520px; height: 520px; }
+
+.loop-track { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.loop-track circle:first-child { fill: none; stroke: var(--rose); stroke-width: 1.5; stroke-dasharray: 2 7; stroke-linecap: round; opacity: 0.7; }
+.loop-dot { fill: var(--mul); }
+
+.loop-hub {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    margin: 0; width: 180px; text-align: center;
+    font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.2; color: var(--mul);
+}
+.loop-hub span { display: block; margin-bottom: 4px; font-family: inherit; font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+
+.loop-stops { list-style: none; margin: 0; padding: 0; }
+
+/* each stop sits on the ring, 60° apart, starting at the top and going clockwise */
+.loop-stop {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(calc(var(--i) * 60deg)) translateY(-190px) rotate(calc(var(--i) * -60deg));
+}
+
+.loop-node {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    width: 128px; padding: 12px 10px 13px;
+    border: 1px solid var(--line); border-radius: 16px; background: var(--ivory);
+    box-shadow: 0 8px 22px -16px rgba(42, 24, 16, 0.45);
+    font: inherit; text-align: center; text-decoration: none; color: var(--choc);
+    cursor: var(--cursor-hot, pointer);
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.loop-n { font-family: var(--serif); font-size: 12px; color: var(--rose); }
+.loop-verb { font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mul); }
+.loop-proj { font-family: var(--serif); font-size: 15px; line-height: 1.2; }
+
+@media (min-width: 641px) {
+    .loop-stop.is-on .loop-node, .loop-node:hover, .loop-node:focus-visible { background: var(--mul); border-color: var(--mul); color: var(--ivory); transform: scale(1.05); }
+    .loop-stop.is-on .loop-node *, .loop-node:hover *, .loop-node:focus-visible * { color: inherit; }
+}
+.loop-node:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
+
+/* the details live in each stop but only show on phones; the panel borrows them on laptops */
+.loop-detail { display: none; }
+
+.loop-panel { min-height: 300px; }
+.loop-panel-k { margin: 0 0 8px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mul); }
+.loop-panel-h { margin: 0 0 14px; font-family: var(--serif); font-size: 34px; line-height: 1.15; color: var(--choc); }
+.loop-line { margin: 0 0 18px; font-size: 17px; line-height: 1.55; color: var(--ink); }
+.loop-stack { margin: 0 0 6px; font-size: 14px; line-height: 1.5; color: var(--ink); }
+.loop-stack span { display: block; margin-bottom: 2px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.loop-from { margin: 0 0 22px; font-size: 12.5px; color: var(--muted); }
+.loop-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border: 0; border-radius: 999px; background: var(--mul); color: var(--ivory);
+    font-family: var(--serif); font-style: italic; font-size: 16px; text-decoration: none; cursor: var(--cursor-hot, pointer);
+}
+.loop-cta:hover, .loop-cta:focus-visible { background: #5E2840; color: var(--ivory); }
+.loop-cta:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
+
+@media (max-width: 1100px) {
+    .loop { grid-template-columns: 1fr; justify-items: center; gap: 28px; }
+    .loop-panel { min-height: 0; max-width: 560px; text-align: center; }
+}
+
+/* phones: a timeline down the left rail, ending back where it started */
+@media (max-width: 640px) {
+    .loop { display: block; }
+    .loop-ring { width: auto; height: auto; }
+    .loop-track, .loop-panel { display: none; }
+    .loop-stops { position: relative; padding-left: 28px; }
+    .loop-stops::before { content: ""; position: absolute; left: 7px; top: 14px; bottom: 14px; border-left: 1.5px dashed var(--rose); }
+    .loop-stop { position: relative; top: auto; left: auto; transform: none; padding: 0 0 30px; }
+    .loop-stop::before { content: ""; position: absolute; left: -26px; top: 15px; width: 11px; height: 11px; border-radius: 50%; background: var(--mul); box-shadow: 0 0 0 4px var(--ivory); }
+    .loop-node { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; width: auto; padding: 0; border: 0; background: none; box-shadow: none; text-align: left; }
+    .loop-proj { flex-basis: 100%; font-size: 22px; }
+    .loop-detail { display: block; margin-top: 8px; }
+    .loop-line { font-size: 15.5px; margin-bottom: 10px; }
+    .loop-from { margin-bottom: 12px; }
+    .loop-cta { padding: 9px 16px; font-size: 15px; }
+    .loop-hub { position: static; transform: none; width: auto; padding-left: 28px; text-align: left; font-size: 19px; }
+    .loop-hub span { display: inline; margin: 0 6px 0 0; }
+    .loop-ring { display: flex; flex-direction: column-reverse; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loop-dot { display: none; }
+    .loop-node { transition: none; }
+}

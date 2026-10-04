@@ -77,21 +77,20 @@
         }).ToArray();
     }
 
-    // Further down the home page: everything Selected work didn't show, re-tiled so each row still fills 12 columns
+    // Further down the home page: the projects with no other home on the page, re-tiled so each row still fills 12 columns
     if (ViewData["Rest"] as bool? == true)
     {
-        // rows: RideFlow 7 + Netflix 5, the bag tower beside Rhode and Saturday, Personality 8 + Owala 4, then Suhaiku beside the two in the works at 4, 4 and 4
+        // only what isn't shown anywhere else: the marketing decks live in Marketing, RideFlow and Saturday in Austin on the loop.
+        // rows: the bag 7 + Personality 5, then Suhaiku beside the two in the works at 4, 4 and 4
         var order = new (string Title, int Cols)[]
         {
-            ("RideFlow", 7), ("Netflix’s $20B Leak", 5),
-            ("What’s in My Bag?", 7), ("Rhode Has a Hailey Problem", 5), ("Saturday in Austin", 5),
-            ("Soft Heart. Strong Spirit.", 8), ("Owala: The Marathon Series", 4),
+            ("What’s in My Bag?", 7), ("Soft Heart. Strong Spirit.", 5),
             ("Suhaiku", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
         };
         stories = order.Select(o =>
         {
             var story = stories.First(s => s.Title == o.Title);
-            story.Cols = o.Cols;
+            story.Cols = o.Cols; story.Rows = 1; story.Fill = false;
             return story;
         }).ToArray();
     }

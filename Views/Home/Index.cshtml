@@ -401,7 +401,7 @@
     }
 
     .selected-wrap {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
     }
 
@@ -436,9 +436,9 @@
     }
 
 
-    @@media (max-width: 700px) {
+    @@media (max-width: 860px) {
         .selected-work {
-            padding: 56px 16px 48px;
+            padding: 56px 20px 48px;
         }
     }
 
@@ -741,10 +741,13 @@
         padding-top: 80px;
     }
 
-    @@media (max-width: 800px) {
+    @@media (max-width: 860px) {
         .home-part {
             padding: 16px 20px 48px;
         }
+    }
+
+    @@media (max-width: 800px) {
 
         .home-part-head {
             flex-wrap: wrap;
@@ -2560,7 +2563,7 @@
     <div class="selected-wrap">
         <div class="selected-head">
             <div>
-                <h2 id="more-work-heading">Projects</h2>
+                <h2 id="more-work-heading">All projects</h2>
             </div>
         </div>
         <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
@@ -2615,7 +2618,7 @@
 *@
 
 @* PASSIONS: the things I make for fun (Views/Home/Make.cshtml) *@
-<partial name="Make" />
+<partial name="Make" view-data='new ViewDataDictionary(ViewData) { { "OnHome", true } }' />
 
 @* IF YOU KNOW ME, YOU KNOW... *@
 @{
@@ -2943,7 +2946,7 @@
 }
 <section class="finale" id="finale" aria-labelledby="finale-heading">
     <div class="finale-wrap">
-        <p class="finale-kicker">The short version</p>
+        <p class="finale-kicker">TL;DR</p>
         <h2 class="finale-line" id="finale-heading">
             <span class="visually-hidden">I build things people choose.</span>
             <span aria-hidden="true">I build things people<br /><em class="finale-word" data-words="@string.Join("|", finaleWords)">@finaleWords[0]</em><span class="finale-caret"></span></span>
@@ -3469,7 +3472,7 @@
     {
         ("selected-work", "Work"), ("experience", "Experience"), ("education", "Education"),
         ("why-mis", "The why"), ("coursework", "What I can do"), ("marketing-work", "Marketing"), ("projects", "More projects"), ("beyond", "Beyond the classroom"),
-        ("playground", "Passions"), ("finale", "The short version")
+        ("playground", "Passions"), ("finale", "TL;DR")
     };
 }
 <nav class="chapters" aria-label="Chapters">

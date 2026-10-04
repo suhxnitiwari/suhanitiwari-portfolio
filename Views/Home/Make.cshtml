@@ -1,5 +1,8 @@
 @{
     ViewData["Title"] = "Passions";
+    // on the home page the book already has its own story (Beyond the Classroom), so the Writing shelf leaves it out
+    var onHome = ViewData["OnHome"] as bool? == true;
+    var bookCount = onHome ? 0 : 1;
 }
 
 @functions {
@@ -560,15 +563,18 @@
             <div class="shelf-head">
                 <p class="make-q">What if I wrote it down?</p>
                 <h2 class="shelf-title">Writing</h2>
-                @if (writing.Length + 1 > 4)
+                @if (writing.Length + bookCount > 4)
                 {
-                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@(writing.Length + 1)">See all @(writing.Length + 1) →</button>
+                    <button type="button" class="shelf-see-all" aria-expanded="false" data-count="@(writing.Length + bookCount)">See all @(writing.Length + bookCount) →</button>
                 }
             </div>
             <p class="shelf-caption"><strong>Some thoughts refuse to stay thoughts.</strong> Mine have become poems, essays, stories, and eventually a children’s book. Writing is where the things I can’t fit into a dataset, design, or conversation usually end up.</p>
             <div class="shelf-rail-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Scroll Writing left">‹</button>
                 <ul class="shelf-rail" tabindex="0" aria-label="Writing">
+                    @* the book has its own story in Beyond the Classroom on the home page, so the shelf there skips it *@
+                    @if (!onHome)
+                    {
                     <li class="shelf-item">
                         <a class="writing-card" href="https://www.amazon.com/dp/B0CKXVLJ23" target="_blank" rel="noopener" draggable="false"
                            aria-label="View Girls Can Be Engineers, Too! (opens in a new tab)">
@@ -584,6 +590,7 @@
                             <span class="shelf-item-meta">Children’s book, 2023</span>
                         </a>
                     </li>
+                    }
                     @foreach (var piece in writing)
                     {
                         <li class="shelf-item">
@@ -625,7 +632,7 @@
                 <p class="make-q">What if I planned the perfect trip?</p>
                 <h2 class="shelf-title">Itineraries</h2>
             </div>
-            <p class="shelf-caption"><strong>“We’ll figure it out when we get there” is not a travel philosophy I recognize.</strong> I plan cities the way I experience them: through neighborhoods, art, architecture, food, coffee, and the places I’d regret finding out about after I left. Yes, there will be a spreadsheet. No, you may not make fun of it until we’re having the best day of the trip. It’s the same instinct behind <a href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Saturday in Austin</a>, the planner I built to do it in code.</p>
+            <p class="shelf-caption"><strong>I don’t visit cities. I study them.</strong> Every trip starts with the neighborhoods, the art, the architecture, the food and the coffee, plus the places I’d hate to find out about after I left. Each edit below is the city I’d hand a friend. I planned so many Saturdays this way that I built <a href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Saturday in Austin</a> to do it in code.</p>
             @if (trips.Length > 0)
             {
             <div class="shelf-rail-wrap">

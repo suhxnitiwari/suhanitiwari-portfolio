@@ -282,6 +282,7 @@
             text-align: left;
             border-top: 3px solid #EFCFCD;
             flex-shrink: 0;
+            position: relative;
         }
 
         /* one compact band: the headline on the left, the links on the right, the small print underneath */
@@ -389,6 +390,39 @@
             font-size: 0.85em;
             font-style: italic;
             opacity: 0.7;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        /* with a mouse, the caption lifts off its link and rides the cursor (same pill as the projects, in cream) */
+        .contact-footer.cued .contact-item:hover .contact-tag {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+
+        .contact-cue {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: #FAF1EF;
+            color: #7E3F4A;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            box-shadow: 0 6px 16px rgba(42, 24, 16, 0.3);
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -150%) scale(0.85) rotate(-3deg);
+            transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .contact-cue.on {
+            opacity: 1;
+            transform: translate(-50%, -150%) scale(1) rotate(0deg);
         }
 
         .back-to-top {
@@ -569,7 +603,7 @@
                     </li>
                     <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")" target="_blank" rel="noopener">Résumé</a></li>
                     @* last stop: the private part. /world/ asks for the password unless you're already signed in *@
-                    <li class="nav-item"><a href="/world/" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "World" ? "active" : "")">My World <span aria-hidden="true">🔒</span></a></li>
+                    <li class="nav-item"><a href="/world/" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "World" ? "active" : "")">My World <svg class="lock-ic" style="vertical-align:-0.05em" viewBox="0 0 16 16" width="0.78em" height="0.78em" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg></a></li>
                 </ul>
             </div>
         </div>
@@ -618,6 +652,8 @@
                 <a href="#top" class="back-to-top">Scroll back up. I'll wait. ↑</a>
             </div>
         </div>
+        @* the caption that follows your cursor over a link *@
+        <span class="contact-cue" aria-hidden="true"></span>
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -626,6 +662,27 @@
     <partial name="_Sitara" />
     <script src="~/js/sitara.js" asp-append-version="true"></script>
     <script src="~/js/sparkle.js" asp-append-version="true" defer></script>
+    <script>
+        // footer links: each caption rides along with the cursor, like the labels over the projects (mouse only)
+        (() => {
+            const footer = document.querySelector('.contact-footer');
+            const cue = footer?.querySelector('.contact-cue');
+            if (!cue || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+            footer.classList.add('cued');
+            footer.querySelectorAll('.contact-item').forEach(item => {
+                const tag = item.querySelector('.contact-tag').textContent;
+                const arrow = item.querySelector('.arrow').textContent;
+                item.addEventListener('pointerenter', () => { cue.textContent = `${tag} ${arrow}`; cue.classList.add('on'); });
+                item.addEventListener('pointerleave', () => cue.classList.remove('on'));
+                item.addEventListener('pointermove', e => {
+                    // kept inside the footer, so the rightmost caption never runs off the screen
+                    const box = footer.getBoundingClientRect(), half = cue.offsetWidth / 2 + 12;
+                    const x = Math.min(Math.max(e.clientX - box.left, half), box.width - half);
+                    cue.style.translate = `${x}px ${e.clientY - box.top}px`;
+                });
+            });
+        })();
+    </script>
     <script>
         // Dropdowns (Work, Study, Passions). Clicking the name goes to the top of that page;
         // the menu opens on hover. On touch screens (no hover) the first tap opens the menu and a

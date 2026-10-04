@@ -179,6 +179,7 @@
         return result;
     }
     window.sitaraAsk = ask;
+    window.sitaraOpen = open;
 
     // Bring back this tab's conversation from earlier pages
     if (msgs.length) {
