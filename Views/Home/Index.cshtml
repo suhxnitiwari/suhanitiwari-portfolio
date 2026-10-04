@@ -2379,17 +2379,10 @@
     </div>
 </section>
 
-@* MARKETING WORK: my Marketing minor's whole section, right after Selected work: the board of every project and
-   each deck (Views/Home/_MarketingWork.cshtml). Its slideshows and carousel are run by the Coursework scripts further down. *@
+@* Stylesheets for the Marketing section further down (it shares them with Coursework) *@
 <link rel="stylesheet" href="/css/coursework-responsive.css">
 <link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
-<section class="coursework-section home-marketing" id="marketing-work" aria-label="Marketing work">
-    <div class="coursework-container">
-        <partial name="_MarketingWork" />
-    </div>
-</section>
-
 @* EXPERIENCE: where I've worked, right after what I've built (Views/Home/_Experience.cshtml, shared with Work) *@
 <section class="home-part home-experience" id="experience" aria-labelledby="home-experience-heading">
     <div class="about-container">
@@ -2549,7 +2542,20 @@
     @await Html.PartialAsync("Coursework", null, new ViewDataDictionary(ViewData) { { "CourseworkOnly", "mis" } })
 </section>
 
-@* MORE PROJECTS: everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
+@* SCHOLARSHIPS: the honors, closing out the school story (Views/Home/ScholarshipsAndAwards.cshtml) *@
+<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
+    @await Html.PartialAsync("ScholarshipsAndAwards")
+</section>
+
+@* MARKETING WORK: my Marketing minor's whole section, after Scholarships and awards, with Projects right behind it: the board of every project and
+   each deck (Views/Home/_MarketingWork.cshtml). Its slideshows and carousel are run by the Coursework scripts further down. *@
+<section class="coursework-section home-marketing" id="marketing-work" aria-label="Marketing work">
+    <div class="coursework-container">
+        <partial name="_MarketingWork" />
+    </div>
+</section>
+
+@* MORE PROJECTS: after Marketing, everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
 <section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
     <div class="selected-wrap">
         <div class="selected-head">
@@ -2564,11 +2570,6 @@
 @* BEYOND THE CLASSROOM: what I do for other people, the bridge from school to the personal (the same view its old page used) *@
 <section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
     @await Html.PartialAsync("BeyondTheClassroom")
-</section>
-
-@* SCHOLARSHIPS: the honors, after what I do for other people (Views/Home/ScholarshipsAndAwards.cshtml) *@
-<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
-    @await Html.PartialAsync("ScholarshipsAndAwards")
 </section>
 
 @* ABOUT, CONTINUED is off the page: it repeated Beyond the Classroom (Girls Who Code, the book, the same photos).
@@ -3466,8 +3467,8 @@
 @{
     var chapters = new[]
     {
-        ("selected-work", "Work"), ("marketing-work", "Marketing"), ("experience", "Experience"), ("education", "Education"),
-        ("why-mis", "The why"), ("coursework", "What I can do"), ("projects", "More projects"), ("beyond", "Beyond the classroom"),
+        ("selected-work", "Work"), ("experience", "Experience"), ("education", "Education"),
+        ("why-mis", "The why"), ("coursework", "What I can do"), ("marketing-work", "Marketing"), ("projects", "More projects"), ("beyond", "Beyond the classroom"),
         ("playground", "Passions"), ("finale", "The short version")
     };
 }
