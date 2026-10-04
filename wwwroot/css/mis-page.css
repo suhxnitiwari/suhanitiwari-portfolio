@@ -296,7 +296,7 @@
 .mk-ff .ff-cover[data-scene="walk"] .ff-stat .a, .mk-ff .ff-cover[data-scene="alert"] .ff-stat .a,
 .mk-ff .ff-cover[data-scene="crash"] .ff-stat .b, .mk-ff .ff-cover[data-scene="fix"] .ff-stat .c { opacity: 1; }
 /* the map */
-.mk-ff .ff-map { flex: 1; height: auto; max-height: 100%; overflow: visible; }
+.mk-ff .ff-map { flex: 1; min-width: 0; width: 100%; height: auto; max-height: 100%; overflow: visible; }
 .mk-ff .ff-map .st { stroke: #E4DDCE; stroke-width: 14; fill: none; }
 .mk-ff .ff-map .sn { font: 600 11px system-ui, sans-serif; fill: #B3A995; letter-spacing: 0.05em; }
 .mk-ff .ff-map .bl rect { fill: #FFFFFF; stroke: #DCD3C2; stroke-width: 2; }
@@ -305,7 +305,20 @@
 .mk-ff .ff-map .food rect { fill: #FFF6EA; stroke: #E9B77D; stroke-dasharray: 5 4; }
 .mk-ff .ff-map .her rect { stroke: var(--acc); stroke-width: 3; }
 .mk-ff .ff-map .route { fill: none; stroke: #B5651D; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 6 8; opacity: 0; transition: opacity 0.3s; }
-.mk-ff .ff-map .dot { fill: #B5651D; stroke: #FFF; stroke-width: 3; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3)); }
+/* the student: backpack, hurrying; limbs swing (SMIL) only during the walk */
+.mk-ff .ff-map .walker .sh { fill: rgba(60, 45, 30, 0.18); }
+.mk-ff .ff-map .walker .leg { stroke: #3E5A80; stroke-width: 5.5; stroke-linecap: round; }
+.mk-ff .ff-map .walker .leg.back { stroke: #34496A; }
+.mk-ff .ff-map .walker .arm { stroke: #C68C67; stroke-width: 4; stroke-linecap: round; }
+.mk-ff .ff-map .walker .arm.back { stroke: #B57D5B; }
+.mk-ff .ff-map .walker .pack { fill: #B5651D; }
+.mk-ff .ff-map .walker .strap { stroke: #8C4C15; stroke-width: 2.4; stroke-linecap: round; }
+.mk-ff .ff-map .walker .shirt { fill: #F2EBDC; stroke: #D9CDB6; stroke-width: 1; }
+.mk-ff .ff-map .walker .head { fill: #D7A07B; }
+.mk-ff .ff-map .walker .hair { fill: #2E211A; }
+.mk-ff .ff-map .walker .hand-can rect { fill: #F4F1EA; stroke: #E0522F; stroke-width: 1.6; opacity: 0; transition: opacity 0.25s; }
+.mk-ff .ff-cover.canned .ff-map .walker .hand-can rect { opacity: 1; }
+.mk-ff .ff-map .walker { filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15)); }
 .mk-ff .ff-map .can { opacity: 0; transition: opacity 0.3s, transform 0.3s; }
 .mk-ff .ff-map .can rect { fill: #F4F1EA; stroke: #E0522F; stroke-width: 2.4; }
 .mk-ff .ff-map .can path { stroke: #E0522F; stroke-width: 2; }

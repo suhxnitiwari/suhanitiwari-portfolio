@@ -110,9 +110,9 @@
                             </div>
                             <p class="ff-stat" aria-live="off"><span class="a"><b>90%</b> of UT students surveyed never used the free campus pantry.</span><span class="b"><b>51%</b> of college students drink energy drinks every month instead.</span><span class="c"><b>60 sec</b> checkout, 10g+ protein, nothing over $12.50.</span></p>
                         </div>
-                        <svg class="ff-map" viewBox="0 0 600 420" role="img" aria-label="A sketch map of the blocks around McCombs. A student walks from her last class toward GSB, right past the SAC food court and the campus pantry, and buys a Celsius from a vending machine instead. Her energy spikes and then crashes. Then a FuelFlow station appears inside GSB and her energy fills back up.">
+                        <svg class="ff-map" viewBox="30 10 490 400" role="img" aria-label="A sketch map of the blocks around McCombs. A student walks from her last class toward GSB, right past the SAC food court and the campus pantry, and buys a Celsius from a vending machine instead. Her energy spikes and then crashes. Then a FuelFlow station appears inside GSB and her energy fills back up.">
                             <path class="st" d="M300 0V420M0 110H600M0 350H600"/>
-                            <text class="sn" x="306" y="404">Speedway</text><text class="sn" x="8" y="104">24th St</text><text class="sn" x="8" y="344">21st St</text>
+                            <text class="sn" x="306" y="398">Speedway</text><text class="sn" x="8" y="104">24th St</text><text class="sn" x="8" y="344">21st St</text>
                             <g class="bl food"><rect x="130" y="140" width="130" height="95" rx="10"/><text x="195" y="184">SAC</text><text class="sm" x="195" y="203">food court</text></g>
                             <g class="bl food"><rect x="40" y="20" width="150" height="66" rx="10"/><text x="115" y="50">UT Outpost</text><text class="sm" x="115" y="69">free pantry</text></g>
                             <g class="bl"><rect x="90" y="270" width="150" height="62" rx="10"/><text x="165" y="306">UTC</text></g>
@@ -121,8 +121,20 @@
                             <path class="route" d="M240 300 C268 300 286 290 300 272 L300 228 C316 214 334 206 352 204"/>
                             <g class="can" transform="translate(300 250)"><rect x="-9" y="-17" width="18" height="34" rx="4"/><path d="M-9 -6H9"/><text y="7">C</text></g>
                             <text class="cantag" x="312" y="262">Celsius</text>
-                            <g class="station" transform="translate(486 152)"><rect x="-28" y="-20" width="56" height="40" rx="9"/><text y="5">FuelFlow</text></g>
-                            <circle class="dot" r="9" cx="240" cy="300"/>
+                            <g class="station" transform="translate(462 166)"><rect x="-28" y="-20" width="56" height="40" rx="9"/><text y="5">FuelFlow</text></g>
+                            <g class="walker" transform="translate(240 300) scale(1.8)">
+                                <ellipse class="sh" cx="0" cy="1" rx="13" ry="3.5"/>
+                                <g class="limb"><path class="leg back" d="M0 -26V0"><animateTransform attributeName="transform" type="rotate" values="24 0 -26;-24 0 -26;24 0 -26" dur="0.55s" repeatCount="indefinite"/></path></g>
+                                <g class="limb"><path class="arm back" d="M1 -44V-30"><animateTransform attributeName="transform" type="rotate" values="-28 1 -44;28 1 -44;-28 1 -44" dur="0.55s" repeatCount="indefinite"/></path></g>
+                                <rect class="pack" x="-14" y="-46" width="10" height="19" rx="3.5"/>
+                                <path class="strap" d="M-4 -45L4 -33"/>
+                                <rect class="shirt" x="-5" y="-47" width="12" height="23" rx="4"/>
+                                <g class="limb"><path class="leg front" d="M0 -26V0"><animateTransform attributeName="transform" type="rotate" values="-24 0 -26;24 0 -26;-24 0 -26" dur="0.55s" repeatCount="indefinite"/></path></g>
+                                <g class="limb"><path class="arm front" d="M2 -44V-30"><animateTransform attributeName="transform" type="rotate" values="28 2 -44;-28 2 -44;28 2 -44" dur="0.55s" repeatCount="indefinite"/></path>
+                                    <g class="hand-can"><animateTransform attributeName="transform" type="rotate" values="28 2 -44;-28 2 -44;28 2 -44" dur="0.55s" repeatCount="indefinite"/><rect x="0" y="-31" width="6" height="10" rx="1.6"/></g></g>
+                                <circle class="head" cx="2" cy="-54" r="7"/>
+                                <path class="hair" d="M-5.5 -55c0-6 4-9.5 8.5-9.5s7 3 7 6.5c-2.5-1.5-6-2-9-1.5-1.5 2.5-2 7-1.5 12-3-1-5-3.5-5-7.5z"/>
+                            </g>
                         </svg>
                         <span class="ff-src">Sources: UT Student Government survey, 2022 (The Daily Texan); Malinauskas et al., Nutrition Journal, 2007. Map not to scale.</span>
                     </div>
@@ -608,12 +620,23 @@
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Owala slides">
                 <div class="mk-stage">
 
-                    @* cover: the finish-line video (tools/record/owala-cover.html) plays behind the title *@
+                    @* cover: a race podium. Three city bottles land on the steps, third, then second, then first, each over a
+                       finish-time plaque like the engraving; every loop brings a new trio of cities, because the point is collecting them *@
                     <div class="mk-slide ow-cover" data-title="Cover">
-                        <video class="ow-bg" src="/videos/projects/owala-cover.mp4" poster="/videos/projects/owala-cover.jpg" muted loop playsinline autoplay aria-label="A race clock runs to 4:12:36, the finish tape breaks, an Austin Marathon Owala bottle is engraved with a runner's name and time, then a shelf fills with eight race-city bottles"></video>
-                        <p class="ow-kick">Owala marketing strategy · MKT 337</p>
-                        <h4 class="ow-title">The bottle you <em>earn.</em></h4>
-                        <p class="ow-lede">Owala sells a bottle people buy once. The Race Series sells one they collect: city-exclusive, engraved with their finish time, and only sold to runners.</p>
+                        <div class="ow-copy">
+                            <p class="ow-kick">Owala marketing strategy · MKT 337</p>
+                            <h4 class="ow-title">The bottle you <em>earn.</em></h4>
+                            <p class="ow-lede">City-exclusive, engraved with your finish time, only sold to runners.</p>
+                        </div>
+                        <div class="ow-podium" role="img" aria-label="A three-step race podium. Race Series bottles from three marathon cities land on first, second and third place, each over a plaque with a finish time, then a new set of cities takes the podium">
+                            @foreach (var (place, cls) in new[] { (2, "p2"), (1, "p1"), (3, "p3") })
+                            {
+                                <div class="ow-step @cls">
+                                    <img class="ow-bottle" src="/images/projects/owala/bottles/boston.webp" alt="" width="246" height="922">
+                                    <div class="ow-block"><b>@place</b><span class="ow-plaque"><i data-ow-city>Boston</i><em data-ow-time>3:21:08</em></span></div>
+                                </div>
+                            }
+                        </div>
                         <span class="ow-sig" aria-hidden="true">suhani ✦</span>
                     </div>
 
@@ -820,14 +843,27 @@
                     </div>
 
                     <style>
-                        /* cover: the finish-line video fills the slide; the headline sits in the quiet top-left of the frame */
-                        .mk-owala .ow-cover { justify-content: flex-start; padding-top: 4.4cqw; }
-                        .mk-owala .ow-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-                        .mk-owala .ow-cover > p, .mk-owala .ow-cover > h4 { position: relative; z-index: 1; }
-                        .mk-owala .ow-kick { align-self: flex-start; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--acc); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFF8F6; }
-                        .mk-owala .ow-title { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 6.4cqw, 76px); line-height: 0.98; letter-spacing: -0.02em; color: var(--choc); max-width: 40cqw; }
+                        /* cover: copy on the left, the podium fills the right; bottles drop onto the steps 3, 2, 1 */
+                        .mk-owala .ow-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 0 5cqw; background: radial-gradient(70% 90% at 72% 55%, #FFF8F4 0%, #FBEDE7 60%, #F5DFD6 100%); }
+                        .mk-owala .ow-copy { flex: 0 0 38%; display: flex; flex-direction: column; gap: 1.6cqw; padding-bottom: 4cqw; }
+                        .mk-owala .ow-kick { align-self: flex-start; margin: 0; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--acc); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFF8F6; }
+                        .mk-owala .ow-title { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 6.4cqw, 76px); line-height: 0.98; letter-spacing: -0.02em; color: var(--choc); }
                         .mk-owala .ow-title em { color: var(--acc); }
-                        .mk-owala .ow-lede { max-width: 33cqw; font-size: clamp(12px, 1.45cqw, 18px) !important; line-height: 1.5 !important; color: var(--ink); }
+                        .mk-owala .ow-lede { margin: 0; font-size: clamp(12px, 1.5cqw, 19px) !important; line-height: 1.45 !important; color: var(--ink); }
+                        .mk-owala .ow-podium { flex: 1; align-self: stretch; display: flex; align-items: flex-end; justify-content: center; gap: 0.6cqw; }
+                        .mk-owala .ow-step { flex: 0 0 13cqw; display: flex; flex-direction: column; align-items: center; }
+                        .mk-owala .ow-bottle { width: auto; height: 23cqw; margin-bottom: -0.4cqw; filter: drop-shadow(0 1.2cqw 1.2cqw rgba(80, 40, 30, 0.28)); opacity: 0; transform: translateY(-14cqw); }
+                        .mk-owala .ow-step.p1 .ow-bottle { height: 27cqw; }
+                        .mk-owala .ow-step.in .ow-bottle { opacity: 1; transform: none; transition: opacity 0.2s ease, transform 0.55s cubic-bezier(.3, 1.45, .5, 1); }
+                        .mk-owala .ow-step.out .ow-bottle { opacity: 0; transform: translateY(2cqw); transition: opacity 0.35s ease, transform 0.35s ease; }
+                        .mk-owala .ow-block { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.6cqw; padding-top: 1.2cqw; border-radius: 0.8cqw 0.8cqw 0 0; background: linear-gradient(180deg, #FFFFFF, #F4E6E0); box-shadow: inset 0 0 0 1px var(--line), 0 -0.4cqw 1.6cqw -1cqw rgba(80, 40, 30, 0.3); }
+                        .mk-owala .ow-step.p1 .ow-block { height: 12cqw; background: linear-gradient(180deg, #FFF6DD, #EFD9A0); }
+                        .mk-owala .ow-step.p2 .ow-block { height: 9.5cqw; }
+                        .mk-owala .ow-step.p3 .ow-block { height: 7.6cqw; }
+                        .mk-owala .ow-block b { font-family: var(--serif); font-weight: 400; font-size: clamp(18px, 3cqw, 38px); line-height: 1; color: var(--choc); }
+                        .mk-owala .ow-plaque { display: flex; flex-direction: column; align-items: center; font-size: clamp(8px, 0.95cqw, 12px); line-height: 1.25; color: var(--muted); }
+                        .mk-owala .ow-plaque i { font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--choc); }
+                        .mk-owala .ow-plaque em { font-style: normal; font-variant-numeric: tabular-nums; }
                         .mk-owala .ow-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 1; font-family: var(--serif); font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--mul); }
 
                         /* market: growth bars and the rival scoreboard */
@@ -865,9 +901,13 @@
                         .ow-out span { font-size: clamp(10px, 1.05cqw, 13px) !important; color: var(--ink); line-height: 1.3; }
 
                         @@media (max-width: 800px) {
-                            .mk-owala .ow-cover { min-height: 0; padding-bottom: 0; }
-                            .mk-owala .ow-bg { position: relative; inset: auto; height: auto; aspect-ratio: 16 / 9; order: 9; margin: 4px -18px 0; width: calc(100% + 36px); }
-                            .mk-owala .ow-title, .mk-owala .ow-lede { max-width: none; }
+                            .mk-owala .ow-cover { flex-direction: column; align-items: stretch; min-height: 0; padding: 28px 18px 0; gap: 18px; }
+                            .mk-owala .ow-copy { flex: none; padding-bottom: 0; gap: 10px; }
+                            .mk-owala .ow-podium { gap: 4px; }
+                            .mk-owala .ow-step { flex: 0 0 30%; }
+                            .mk-owala .ow-bottle { height: 170px; } .mk-owala .ow-step.p1 .ow-bottle { height: 195px; }
+                            .mk-owala .ow-step.p1 .ow-block { height: 84px; } .mk-owala .ow-step.p2 .ow-block { height: 62px; } .mk-owala .ow-step.p3 .ow-block { height: 46px; }
+                            .mk-owala .ow-block { padding-top: 8px; gap: 3px; }
                             .mk-owala .ow-sig { display: none; }
                             .ow-two, .ow-out { grid-template-columns: 1fr; gap: 14px; }
                             .ow-bars { height: 160px; } .ow-bars li::before { height: calc(var(--h) * 3px); }
@@ -1198,21 +1238,57 @@
         new ResizeObserver(fit).observe(build);
     })();
 
+    // Owala cover: a podium. Bottles land third, second, first, hold, step off, and the next three race cities take their places.
+    (() => {
+        const podium = document.querySelector('.mk-owala .ow-podium');
+        if (!podium) return;
+        const steps = { 1: podium.querySelector('.p1'), 2: podium.querySelector('.p2'), 3: podium.querySelector('.p3') };
+        // [city label, bottle file, finish time] for 1st, 2nd, 3rd
+        const podiums = [
+            [['Boston', 'boston', '3:21:08'], ['New York', 'nyc', '3:47:52'], ['Austin', 'austin', '4:12:36']],
+            [['San Francisco', 'sf', '3:38:14'], ['Seattle', 'seattle', '3:55:40'], ['Miami', 'miami', '4:20:03']],
+            [['New Orleans', 'neworleans', '3:44:27'], ['Las Vegas', 'lasvegas', '4:02:19'], ['Austin', 'austin', '4:12:36']]
+        ];
+        const fill = set => set.forEach(([city, file, time], i) => {
+            const step = steps[i + 1];
+            step.querySelector('.ow-bottle').src = `/images/projects/owala/bottles/${file}.webp`;
+            step.querySelector('[data-ow-city]').textContent = city;
+            step.querySelector('[data-ow-time]').textContent = time;
+        });
+        let round = 0, beat = 0;
+        fill(podiums[0]);
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { Object.values(steps).forEach(s => s.classList.add('in')); return; }
+        // beats of 600ms: 3rd lands, 2nd lands, 1st lands, hold, all step off, swap cities
+        const tick = () => {
+            if (beat === 0) steps[3].classList.add('in');
+            if (beat === 1) steps[2].classList.add('in');
+            if (beat === 2) steps[1].classList.add('in');
+            if (beat === 8) Object.values(steps).forEach(s => { s.classList.remove('in'); s.classList.add('out'); });
+            if (beat === 9) { Object.values(steps).forEach(s => s.classList.remove('out')); round = (round + 1) % podiums.length; fill(podiums[round]); beat = -1; }
+            beat++;
+        };
+        // autoplay.js loads after this view
+        const start = () => window.autoplay(podium, tick, 600);
+        window.autoplay ? start() : addEventListener('load', start);
+    })();
+
     // FuelFlow cover, one loop of about 14 seconds: the watch buzzes (next class in 10), she walks past the food,
     // grabs a Celsius (energy spikes, then crashes by the time she's at GSB), then FuelFlow drops into GSB and she refuels.
     (() => {
         const cover = document.querySelector('.mk-ff .ff-cover');
         if (!cover) return;
-        const route = cover.querySelector('.route'), dot = cover.querySelector('.dot'), batt = cover.querySelector('.ff-batt'), pct = cover.querySelector('[data-ff-pct]');
+        const route = cover.querySelector('.route'), walker = cover.querySelector('.walker'), map = cover.querySelector('.ff-map'), batt = cover.querySelector('.ff-batt'), pct = cover.querySelector('[data-ff-pct]');
         const len = route.getTotalLength(), canAt = 0.62;
-        const place = p => { const pt = route.getPointAtLength(len * p); dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y); };
+        const place = p => { const pt = route.getPointAtLength(len * p); walker.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)}) scale(1.8)`); };
+        // her legs and arms only swing while she's walking
+        const stride = on => { if (map.pauseAnimations) on ? map.unpauseAnimations() : map.pauseAnimations(); };
         const charge = v => {
             v = Math.round(v);
             batt.style.setProperty('--pct', v + '%');
             batt.style.setProperty('--batt', v < 30 ? '#C0392B' : v < 60 ? '#D68A1F' : '#7B9A5C');
             pct.textContent = v + '%';
         };
-        const scene = s => { if (cover.dataset.scene !== s) cover.dataset.scene = s; };
+        const scene = s => { if (cover.dataset.scene !== s) { cover.dataset.scene = s; stride(s === 'walk'); } };
         let t = 0;
         const frame = () => {
             if (t === 0) { scene('alert'); place(0); charge(72); cover.classList.remove('canned'); cover.classList.add('buzz'); }
@@ -1231,7 +1307,7 @@
             if (t >= 90 && t < 140) { scene('fix'); cover.classList.remove('canned'); charge(Math.min(92, 22 + (t - 90) * 3.5)); }
             t = (t + 1) % 140;
         };
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { scene('fix'); place(1); charge(92); return; }
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { scene('fix'); place(1); charge(92); stride(false); return; }
         frame();
         // autoplay.js loads after this view
         const start = () => window.autoplay(cover, frame, 100);

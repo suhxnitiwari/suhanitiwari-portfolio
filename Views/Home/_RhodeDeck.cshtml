@@ -387,7 +387,7 @@
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) { prods.forEach(p => p.classList.add('her')); return; }
         let step = 0;
         const tick = () => {
-            if (step < prods.length) prods[step].classList.add('her');
+            if (step >= 0 && step < prods.length) prods[step].classList.add('her');   // negative steps are the pause after a reset
             else if (step === prods.length + 4) { prods.forEach(p => p.classList.remove('her')); step = -2; }
             step++;
         };
