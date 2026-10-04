@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Family Room";
+}
+@* What a friend's login gets at /world/family/: signed in, but the wrong role. Same card as the front door. *@
+<section class="world-door">
+    <div class="world-card">
+        <p class="world-kicker">Family only</p>
+        <h1>The Family Room <span aria-hidden="true">🔒</span></h1>
+        <p class="world-line">You’re in My World, just not this part of it. This room takes the family password.</p>
+        @* family who came in with the friends password can switch here; the login checks it like any other try *@
+        <form method="post" action="/world/login" class="world-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="returnUrl" value="/world/family/" />
+            <label for="family-password" class="visually-hidden">Family password</label>
+            <input id="family-password" name="password" type="password" autocomplete="current-password" placeholder="Family password" required />
+            <button type="submit">Come in <span aria-hidden="true">→</span></button>
+        </form>
+        <a class="world-back" href="/world/">Back to My World</a>
+    </div>
+</section>
+
+<style>
+    .world-door { min-height: 70vh; display: grid; place-items: center; padding: 60px 20px; background: radial-gradient(ellipse at 50% 0%, #F7E3E3 0%, #FAF1EF 60%); }
+    .world-card { width: min(460px, 100%); padding: 40px 36px; border-radius: var(--r-card, 18px); border: var(--card-border, 1px solid #EBD5D0); background: #FFF8F6; box-shadow: var(--shadow-card, 0 10px 30px -18px rgba(42, 24, 16, 0.3)); text-align: center; }
+    .world-kicker { margin: 0 0 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #7E3F4A; }
+    .world-card h1 { margin: 0 0 12px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 2.4rem; font-weight: 400; color: #1E100A; }
+    .world-line { margin: 0 0 26px; font-family: Georgia, serif; font-style: italic; font-size: 1.05rem; line-height: 1.5; color: #733642; }
+    .world-form { display: flex; gap: 10px; }
+    .world-form input { flex: 1; min-width: 0; padding: 13px 18px; border: 1.5px solid #E2C6C0; border-radius: 999px; background: #FFFFFF; font-size: 1rem; color: #1E100A; }
+    .world-form input:focus-visible { outline: 2px solid #76344E; outline-offset: 2px; }
+    .world-form button { padding: 13px 22px; border: none; border-radius: 999px; background: #76344E; color: #FFF8F6; font-family: Georgia, serif; font-style: italic; font-size: 1rem; cursor: pointer; }
+    .world-form button:hover, .world-form button:focus-visible { background: #5E2840; }
+    .world-back { display: inline-block; margin-top: 18px; font-size: 0.9rem; color: #7A665F; }
+    @@media (max-width: 420px) { .world-form { flex-direction: column; } }
+</style>

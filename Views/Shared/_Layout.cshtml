@@ -565,10 +565,11 @@
                             <a href="/#writing" class="dropdown-item-custom">Writing</a>
                             <a href="/#baking" class="dropdown-item-custom">Baking</a>
                             <a href="/#traveling" class="dropdown-item-custom">Itineraries</a>
-                            <a href="/world/" class="dropdown-item-custom">My World <span aria-hidden="true">🔒</span></a>
                         </div>
                     </li>
                     <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")" target="_blank" rel="noopener">Résumé</a></li>
+                    @* last stop: the private part. /world/ asks for the password unless you're already signed in *@
+                    <li class="nav-item"><a href="/world/" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "World" ? "active" : "")">My World <span aria-hidden="true">🔒</span></a></li>
                 </ul>
             </div>
         </div>

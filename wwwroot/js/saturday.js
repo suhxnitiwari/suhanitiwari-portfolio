@@ -1,21 +1,9 @@
 // Saturday in Austin ✦ runs my real Python planner (github.com/suhxnitiwari/saturday-in-austin)
 // in the visitor's browser with Pyodide. Python only downloads once the planner is on screen.
 (() => {
-    const root = document.querySelector('.sat-planner');
-    if (!root) return;
-
     const PYODIDE = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/';
     const BASE = '/py/saturday/';
     const FILES = ['__init__.py', '__main__.py', 'city.py', 'planner.py', 'spots.py', 'sass.py', 'web.py', 'data/spots.csv', 'data/shelf.json', 'data/places.json'];
-
-    const form = root.querySelector('.sat-form');
-    const out = root.querySelector('.sat-out');
-    const button = form.querySelector('button[type="submit"]');
-    const random = form.querySelector('.sat-random');
-    const hours = form.elements.hours;
-    const hoursOut = form.querySelector('.sat-hours output');
-
-    hours.addEventListener('input', () => { hoursOut.textContent = hours.value; });
 
     const loadScript = src => new Promise((resolve, reject) => {
         const s = document.createElement('script');
@@ -43,6 +31,20 @@
         python.catch(() => { python = null; });  // let the next click try again
         return python;
     }
+    // the MIS page's analysis card plans with the same Python: one download, shared
+    window.saturdayPlanner = boot;
+
+    const root = document.querySelector('.sat-planner');
+    if (!root) return;
+
+    const form = root.querySelector('.sat-form');
+    const out = root.querySelector('.sat-out');
+    const button = form.querySelector('button[type="submit"]');
+    const random = form.querySelector('.sat-random');
+    const hours = form.elements.hours;
+    const hoursOut = form.querySelector('.sat-hours output');
+
+    hours.addEventListener('input', () => { hoursOut.textContent = hours.value; });
 
     // start downloading Python as soon as the slide is on screen, so the first click is quick
     new IntersectionObserver((entries, obs) => {

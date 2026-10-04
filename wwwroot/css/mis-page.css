@@ -67,58 +67,14 @@
 .mp-hook { font-size: 18px; line-height: 1.7; color: var(--ink); margin: 0; }
 
 /* what I can do */
-.mp-caps {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
-}
-.mp-cap {
-    background: #FFF8F6;
-    border: var(--card-border);
-    border-radius: var(--r-card);
-    box-shadow: var(--shadow-card);
-    padding: var(--pad-card-sm);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s, box-shadow 0.25s;
-}
-.mp-cap:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(42, 24, 16, 0.35); }
 .mp-can-lede { max-width: 760px; margin: 14px 0 0; font-size: 18px; line-height: 1.6; color: var(--choc); }
-/* the trip across the six cards: idea in, business decision out */
+/* the trip across the six cards: idea in, decision out */
 .mp-trip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 22px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .mp-trip i { font-style: normal; color: var(--rose); }
 .mp-trip span:first-child, .mp-trip span:last-child { color: var(--mul); }
 .mp-cap-num { font-family: var(--serif); font-size: 14px; letter-spacing: 0; color: var(--rose); margin-right: 4px; }
 .mp-cap-name { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; color: var(--mul); margin: 0 0 10px; }
-/* the question a recruiter would actually ask leads each card */
-.mp-cap-q { font-family: var(--serif); font-size: 22px; line-height: 1.25; color: var(--choc); margin: 0 0 8px; }
-.mp-cap-line { font-size: 14.5px; line-height: 1.5; color: var(--muted); margin: 0 0 16px; }
-.mp-cap-key { list-style: none; padding: 0; margin: 0 0 8px; display: flex; flex-wrap: wrap; gap: 7px; }
-.mp-cap-key li { font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: var(--r-pill); background: rgba(143, 70, 97, 0.09); color: var(--mul); }
-.mp-cap-key li[hidden] { display: none; }
-.mp-cap-more { align-self: flex-start; margin: 0 0 4px; padding: 2px 0; border: none; background: none; font: inherit; font-size: 13px; font-weight: 600; color: var(--mul); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-/* the AI lifecycle: four steps with arrows between, and "judge it" set apart */
-.mp-cap-thread { list-style: none; padding: 0; margin: 0 0 6px; display: grid; gap: 18px; }
-.mp-cap-thread li { position: relative; display: grid; grid-template-columns: 82px 1fr; column-gap: 10px; font-size: 14px; line-height: 1.35; color: var(--choc); }
-.mp-cap-thread li + li::before { content: "↓"; position: absolute; left: 0; top: -17px; font-size: 12px; color: var(--rose); }
-.mp-cap-thread b { font-size: 11px; letter-spacing: 0.14em; color: var(--mul); padding-top: 2px; }
-.mp-cap-thread small { grid-column: 2; font-size: 11.5px; color: var(--muted); }
-.mp-cap-thread li.is-judge { padding: 10px 12px; margin: 0 -12px; border-radius: 12px; background: var(--mul); color: #FFF8F6; }
-.mp-cap-thread li.is-judge::before { left: 12px; top: -17px; }
-.mp-cap-thread li.is-judge b, .mp-cap-thread li.is-judge small { color: #F6E4E1; }
-.mp-cap-thread li.is-judge span { font-family: var(--serif); font-style: italic; font-size: 15.5px; }
-/* proof: the project on this site that shows it, where course numbers used to be */
-.mp-cap-proof { margin: auto 0 0; padding-top: 16px; border-top: 1px solid #EBD5D0; display: grid; gap: 2px; }
-.mp-cap-proof-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
-.mp-cap-proof a, .mp-cap-proof b { font-family: var(--serif); font-size: 17px; font-weight: 700; color: var(--mul); text-decoration: none; }
-.mp-cap-proof a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.mp-cap-proof-line { font-size: 13px; line-height: 1.4; color: var(--muted); }
 .mp-cap-from { margin: 10px 0 0; font-size: 10.5px; letter-spacing: 0.08em; color: #9A8780; font-weight: 600; }
-.mp-can-close { max-width: 820px; margin: 34px 0 0; font-family: var(--serif); font-size: 24px; line-height: 1.35; color: var(--choc); }
-.mp-can-close em { color: var(--mul); }
 
 /* RideFlow */
 .mp-proof { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 52px; align-items: start; }
@@ -274,10 +230,6 @@
 .mp-close em { color: #F3C9D5; }
 .mp-close p { margin: 22px 0 0; font-size: 12px; letter-spacing: 0.22em; color: rgba(245, 229, 225, 0.8); }
 
-@media (max-width: 1000px) {
-    .mp-caps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
 @media (max-width: 800px) {
     .mp-section { margin-bottom: 84px; }
     .mp-hero h2 { font-size: 42px; }
@@ -293,13 +245,12 @@
 }
 
 @media (max-width: 560px) {
-    .mp-caps { grid-template-columns: 1fr; }
     .mp-hero h2 { font-size: 36px; }
     .mp-erd { padding: 24px 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .mp-cap, .mp-tri-body { transition: none; }
+    .mp-tri-body { transition: none; }
 }
 
 /* the one-line summary under each course in the cycle's step card */

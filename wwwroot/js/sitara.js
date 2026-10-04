@@ -105,9 +105,11 @@
         log.scrollTop = log.scrollHeight;
     }
 
+    // returns { text, ok } for the MIS page's AI card, which asks her from inside the page; null when she can't take it
     async function ask(question) {
         question = question.trim();
-        if (!question || busy || asked >= LIMIT) return;
+        if (!question || busy || asked >= LIMIT) return null;
+        let result = null;
         busy = true;
         send.disabled = true;
         chips.hidden = true;
@@ -143,6 +145,7 @@
                     misses = data.unknown ? misses + 1 : 0;
                 }
                 add(data.reply, 'bot');
+                result = { text: data.reply, ok: true };
                 if (Array.isArray(data.suggest) && data.suggest.length) offer(data.suggest);
                 if (!data.clarify) {
                     // sig proves the answer really came from Sitara when it goes back as history
@@ -153,6 +156,7 @@
                 mood('helpful', 'your guide to all things Suhani');
             } else {
                 add(data.error || 'Something went sideways. Try again in a moment. ✦', 'bot', 'oops');
+                result = { text: data.error || 'Something went sideways. Try again in a moment. ✦', ok: false };
                 mood('tired', 'even fairy dust has its limits');
             }
         } catch {
@@ -160,6 +164,7 @@
             store.set(asked);
             dots.remove();
             add('I can’t reach my notes right now. Try again in a moment. ✦', 'bot', 'oops');
+            result = { text: 'I can’t reach my notes right now. Try again in a moment. ✦', ok: false };
             mood('tired', 'even fairy dust has its limits');
         } finally {
             root.classList.remove('thinking');
@@ -171,7 +176,9 @@
                 input.focus();
             }
         }
+        return result;
     }
+    window.sitaraAsk = ask;
 
     // Bring back this tab's conversation from earlier pages
     if (msgs.length) {

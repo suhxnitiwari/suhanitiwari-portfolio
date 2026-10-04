@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.Threading.RateLimiting;
 
 // `dotnet run -- hash-world-password` turns a password into the hash My World checks against.
-// The password is typed without echoing and never saved; only the printed hash goes into the
-// World__PasswordHash setting on Render.
+// The password is typed without echoing and never saved; only the printed hash goes into a setting
+// on Render: World__PasswordHash for friends, World__FamilyPasswordHash for family.
 if (args.Length > 0 && args[0] == "hash-world-password")
 {
     Console.Write("Password for My World: ");
@@ -68,8 +68,9 @@ builder.Services.AddRateLimiter(options =>
             : RateLimitPartition.GetNoLimiter("pages"));
 });
 
-// My World (/world) is private: one password, checked against a PBKDF2 hash (never the password itself),
-// then an encrypted cookie that only works under /world, only over HTTPS, never from another site,
+// My World (/world) is private: a friends password and a family password, each checked against a PBKDF2 hash
+// (never the password itself); the one you used decides your role. Then an encrypted cookie that only
+// works under /world, only over HTTPS, never from another site,
 // and runs out after two hours of not using it
 builder.Services.AddAuthentication("World").AddCookie("World", options =>
 {

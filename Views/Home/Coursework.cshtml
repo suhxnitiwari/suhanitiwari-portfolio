@@ -23,12 +23,6 @@
     // From = (index into themes, exact course name from that theme); those subjects' cards light up and list the courses.
     public record CwCross(string Title, string Question, (int Theme, string Course)[] From);
 
-    // "What I can do": one block per capability. Thread = the AI block's course-by-course rows instead of skill pills.
-    // one card in "What I can actually do": the job, the question a recruiter would ask, what I do, the tools,
-    // the proof (a project on this site), and the classes it came from (small, for anyone who wants the academic trail)
-    public record MisCan(string Name, string Question, string Line, string[] Key, string From,
-        string Proof, string ProofLine, string? ProofHref, (string Verb, string Text, string From)[]? Thread = null);
-
     // One step of the cycle. Left/Top = where the box sits on the diagram (its center, in % of the diagram).
     public record MisStep(string Theme, string Title, string Color, string Icon, string Left, string Top,
                           string Description, string Footer, MisCourse[] Courses);
@@ -145,32 +139,19 @@
         ("Strategy", "The strategy", "I can tell whether it’s worth building at all, and make the business case.", new[] { "MIS 375" })
     };
 
-    // What I can do, right under the intro: six blocks. Every skill comes from a course above; the full per-course list is in each course's pop-up.
-    var misCan = new[]
+    // What I can do, card 06: three features from my Starbucks deck. The visitor makes the call, then sees mine.
+    // Scores are RICE (Reach × Impact × Confidence ÷ Effort) out of ten features; quadrants are from my impact/effort matrix.
+    var misDecide = new[]
     {
-        // every tool here is from my résumé or the course lists above; every proof is a project on this site
-        new MisCan("Build it", "Can you actually ship it?", "Full-stack applications, from the database to the interface.",
-            new[] { "C#", "ASP.NET Core", "React", "Node.js", "Entity Framework Core", "JavaScript", "HTML/CSS", "REST APIs", "Git/GitHub", "Docker" },
-            "MIS 333K, MIS 372T", "RideFlow", "A full-stack rideshare app · 33 automated tests", "https://rideflow-frontend.onrender.com/"),
-        new MisCan("Structure it", "Can the data survive the idea?", "Databases I can design, query, move and actually make useful.",
-            new[] { "SQL", "PostgreSQL", "Snowflake", "Data Modeling", "PL/SQL", "ETL", "MongoDB", "Microsoft Azure" },
-            "MIS 325, MIS 333K, MIS 372T", "Heavy Rotation", "182,293 Spotify plays, stored and queried in PostgreSQL", "https://suhxnitiwari.github.io/listening-galaxy/"),
-        new MisCan("Protect it", "Can everyone see everything? Hopefully not.", "Authentication, authorization, roles and protected routes.",
-            new[] { "Authentication", "Authorization", "Role-Based Access", "Anti-Forgery Tokens" },
-            "MIS 372T, MIS 333K, MIS 325", "RideFlow", "Riders, drivers and admins, each seeing only their own side", "https://rideflow-frontend.onrender.com/"),
-        new MisCan("Put AI in it", "And know when not to.", "LLMs inside real applications, grounded in the right context and judged before anyone calls it “intelligent.”",
-            Array.Empty<string>(), "", "Sitara", "The AI guide in the corner of this page. Go on, ask her about me.", null,
-            new[] { ("Use it", "LLMs and prompting", "MIS 304"), ("Ground it", "Embeddings and vector databases", "MIS 325"),
-                    ("Build it", "AI inside applications", "MIS 333K, 372T"), ("Judge it", "Is AI even worth using here?", "MIS 375") }),
-        new MisCan("Prove it", "Did it actually work?", "Turn behavior into data, and data into a decision.",
-            new[] { "Python", "Pandas", "Tableau", "Power BI", "Matplotlib", "R", "Excel" },
-            "MIS 304, MIS 301, MIS 325, Intro to Data Science", "Saturday in Austin", "250 Austin places and an algorithm that finally picks the plan", "https://suhxnitiwari.github.io/saturday-in-austin/"),
-        new MisCan("Justify it", "Cool idea. Should we spend money on it?", "Cost, strategy, market, platform and implementation decisions.",
-            new[] { "Cost Justification", "IT Strategy", "Go-to-Market", "Platform Strategy", "Porter’s Five Forces", "ERP (Oracle NetSuite)" },
-            "MIS 301, MIS 375, Oracle", "Starbucks AI Loyalty", "RICE scoring, KANO analysis and a roadmap", "/work/starbucks")
+        new { feature = "Line Priority Boost", pitch = "Customers pay extra to jump the mobile-order line.", call = "skip", score = 4000, rank = 9,
+              quad = "Deprioritize", why = "Paid line-skipping scored near the bottom. The value is in habits: features that make the next order faster than the last." },
+        new { feature = "Drink customization profiles", pitch = "Save your usual, exactly how you like it, and reorder it in one tap.", call = "build", score = 33750, rank = 1,
+              quad = "Quick win: high impact, low effort", why = "The top RICE score of all ten. Ship it first." },
+        new { feature = "Scheduling recurring orders", pitch = "Set an order to repeat on a schedule, so a visit turns into a ritual.", call = "build", score = 20250, rank = 3,
+              quad = "Strategic bet: high impact, high effort", why = "Recurring orders turn a visit into a habit. Worth building, as a funded bet rather than a quick win." }
     };
-    // the trip the six cards take, idea to business decision
-    var misTrip = new[] { "Idea", "Build", "Data", "Security", "AI", "Analysis", "Business decision" };
+    // the trip the six cards take, idea to decision
+    var misTrip = new[] { "Idea", "Build", "Data", "Security", "AI", "Analysis", "Decision" };
 
     // Overview: the nine subjects, in catalog order
     var themes = new[]
@@ -449,6 +430,7 @@
 <link rel="stylesheet" href="~/css/mis-cycle.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-story.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/mis-page.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/mis-proofs.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/cw-overview.css" asp-append-version="true" />
 
 <div class="coursework-section page-fill">
@@ -535,14 +517,16 @@
                     <p class="mp-thesis">You don’t have to choose between someone who understands the business and someone who understands the technology.<br /><strong>I speak both.</strong></p>
                 </header>
 
-                @* 2. what I can do (the home page's "What I can do" button lands here) *@
+                @* 2. what I can do (the home page's "What I can do" button lands here).
+                   Six cards, six little working things, not six lists: each one runs, and the skill is what you notice afterward.
+                   Script: wwwroot/js/mis-proofs.js. Styles: wwwroot/css/mis-proofs.css. *@
                 <div class="mp-section" id="skills" style="scroll-margin-top:100px" aria-labelledby="mp-can-title">
                     <div class="mp-head">
                         <p class="mp-eyebrow">From classroom to capability</p>
                         <h3 class="mp-h2" id="mp-can-title">Knowing the vocabulary is cute.<br />Can you actually build the thing?</h3>
-                        <p class="mp-can-lede">I can take an idea from database to interface, secure it, put AI inside it, analyze what happens next, and tell you whether it was worth building in the first place.</p>
+                        <p class="mp-can-lede">Don’t take my word for it. Every card below is something I built, and every one of them works. Go ahead and poke at them.</p>
                     </div>
-                    @* the six cards are one trip: idea in, business decision out *@
+                    @* the six cards are one trip: idea in, decision out *@
                     <p class="mp-trip" aria-label="The trip the six cards take">
                         @for (var t = 0; t < misTrip.Length; t++)
                         {
@@ -550,69 +534,185 @@
                             if (t < misTrip.Length - 1) { <i aria-hidden="true">→</i> }
                         }
                     </p>
-                    <ol class="mp-caps">
-                        @for (var i = 0; i < misCan.Length; i++)
-                        {
-                            var cap = misCan[i];
-                            var shown = 4;
-                            <li class="mp-cap@(cap.Thread is null ? "" : " mp-cap-ai")">
-                                <p class="mp-cap-name"><span class="mp-cap-num">0@(i + 1)</span> @cap.Name.ToUpperInvariant()</p>
-                                <p class="mp-cap-q">@cap.Question</p>
-                                <p class="mp-cap-line">@cap.Line</p>
-                                @if (cap.Thread is { } thread)
-                                {
-                                    @* the AI lifecycle, top to bottom; judging it is the step that matters most *@
-                                    <ol class="mp-cap-thread">
-                                        @foreach (var row in thread)
-                                        {
-                                            <li class="@(row.Verb == "Judge it" ? "is-judge" : "")"><b>@row.Verb.ToUpperInvariant()</b><span>@row.Text</span><small>@row.From</small></li>
-                                        }
-                                    </ol>
-                                }
-                                else
-                                {
-                                    @* the top four tools, the rest one tap away *@
-                                    <ul class="mp-cap-key">
-                                        @for (var k = 0; k < cap.Key.Length; k++)
-                                        {
-                                            <li hidden="@(k >= shown ? "hidden" : null)">@cap.Key[k]</li>
-                                        }
-                                    </ul>
-                                    @if (cap.Key.Length > shown)
-                                    {
-                                        <button type="button" class="mp-cap-more" aria-expanded="false" data-more="+ @(cap.Key.Length - shown) more">+ @(cap.Key.Length - shown) more</button>
-                                    }
-                                }
-                                <div class="mp-cap-proof">
-                                    <span class="mp-cap-proof-label">Proof</span>
-                                    @if (cap.ProofHref is { } href)
-                                    {
-                                        var external = href.StartsWith("http");
-                                        <a href="@href" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)">@cap.Proof <span aria-hidden="true">@(external ? "↗" : "→")</span></a>
-                                    }
-                                    else
-                                    {
-                                        <b>@cap.Proof ✦</b>
-                                    }
-                                    <span class="mp-cap-proof-line">@cap.ProofLine</span>
+                    <ol class="pf">
+                        @* 01 BUILD: RideFlow's real fare formula and ride rules, ported from its Node server *@
+                        <li class="pf-card pf-build">
+                            <p class="mp-cap-name"><span class="mp-cap-num">01</span> BUILD IT</p>
+                            <h4 class="pf-q">Book a ride on RideFlow.</h4>
+                            <p class="pf-line">The fare math and ride rules from the app I built, running right here.</p>
+                            <div class="pf-ride" data-ride>
+                                <label class="pf-ride-miles"><span>How far?</span> <span><output>6</output> mi</span>
+                                    <input type="range" min="1" max="20" step="1" value="6" aria-label="Trip distance in miles" />
+                                </label>
+                                <dl class="pf-fare">
+                                    <div><dt>Base fare</dt><dd data-f="base">$2.50</dd></div>
+                                    <div><dt data-f="dist-label">6 mi × $1.75</dt><dd data-f="dist">$10.50</dd></div>
+                                    <div><dt>Service fee</dt><dd data-f="fee">$1.20</dd></div>
+                                    <div><dt>Texas tax (8.25%)</dt><dd data-f="tax">$1.17</dd></div>
+                                    <div class="pf-fare-total"><dt>Total</dt><dd data-f="total">$15.37</dd></div>
+                                </dl>
+                                <ol class="pf-status" aria-label="Ride status">
+                                    <li data-s="requested">Requested</li><li data-s="accepted">Accepted</li><li data-s="en_route">En route</li><li data-s="in_progress">On the trip</li><li data-s="completed">Done</li>
+                                </ol>
+                                <div class="pf-ride-acts"></div>
+                                <p class="pf-ride-msg" aria-live="polite"></p>
+                            </div>
+                            <footer class="pf-hood">
+                                <p class="pf-hood-label">Under the hood</p>
+                                <p class="pf-hood-list">C# · ASP.NET Core · React · Node.js · PostgreSQL · REST APIs · Docker</p>
+                                <p class="pf-proof"><a href="https://rideflow-frontend.onrender.com/" target="_blank" rel="noopener">Open RideFlow <span aria-hidden="true">↗</span></a><span>A full-stack rideshare app · 33 automated tests</span></p>
+                                <p class="mp-cap-from">MIS 333K, MIS 372T</p>
+                            </footer>
+                        </li>
+
+                        @* 02 DATA: real queries on my Spotify warehouse (listening-history's star schema), answered from its export *@
+                        <li class="pf-card pf-data">
+                            <p class="mp-cap-name"><span class="mp-cap-num">02</span> STRUCTURE IT</p>
+                            <h4 class="pf-q">Query four years of my music.</h4>
+                            <p class="pf-line">182,293 raw Spotify records, cleaned to 91,160 real listens and modeled in PostgreSQL. Pick a question.</p>
+                            <div class="pf-console" data-sql>
+                                <div class="pf-console-tabs" role="tablist" aria-label="Questions">
+                                    <button type="button" role="tab" aria-selected="true" data-q="artists">Top artists</button>
+                                    <button type="button" role="tab" aria-selected="false" data-q="songs">One artist’s songs</button>
+                                    <button type="button" role="tab" aria-selected="false" data-q="years">Year by year</button>
+                                    <button type="button" role="tab" aria-selected="false" data-q="streaks">Obsessions</button>
                                 </div>
-                                @if (cap.From != "")
-                                {
-                                    <p class="mp-cap-from">@cap.From</p>
-                                }
-                            </li>
-                        }
+                                <label class="pf-console-pick" hidden>artist =
+                                    <select aria-label="Artist"></select>
+                                </label>
+                                <pre class="pf-console-sql" aria-label="SQL"></pre>
+                                <button type="button" class="pf-console-run">▶ Run query</button>
+                                <div class="pf-console-out" aria-live="polite"></div>
+                            </div>
+                            <footer class="pf-hood">
+                                <p class="pf-hood-label">Under the hood</p>
+                                <p class="pf-hood-list">SQL · PostgreSQL star schema · Python ETL · Snowflake · Data modeling · MongoDB · Azure</p>
+                                <p class="pf-proof"><a href="https://suhxnitiwari.github.io/listening-galaxy/" target="_blank" rel="noopener">Heavy Rotation <span aria-hidden="true">↗</span></a><span>The same data, drawn as a galaxy</span></p>
+                                <p class="mp-cap-from">MIS 325, MIS 333K, MIS 372T</p>
+                            </footer>
+                        </li>
+
+                        @* 03 PROTECT: a locked poster that flips to show how the lock works. The demo is that you can't get in. *@
+                        <li class="pf-card pf-protect">
+                            <div class="pf-flip" data-flip>
+                                <div class="pf-face pf-front">
+                                    <p class="pf-lock-num">03</p>
+                                    <p class="pf-lock-stamp">Access: restricted</p>
+                                    <h4 class="pf-lock-title">My World <span aria-hidden="true">🔒</span></h4>
+                                    <p class="pf-lock-line">This part of suhanitiwari.com isn’t public.</p>
+                                    <p class="pf-lock-who">Friends &amp; family only.</p>
+                                    <button type="button" class="pf-lock-try" aria-expanded="false">Try to enter <span aria-hidden="true">→</span></button>
+                                </div>
+                                <div class="pf-face pf-back" inert>
+                                    <p class="mp-cap-name"><span class="mp-cap-num">03</span> PROTECT IT</p>
+                                    <h4 class="pf-q">The internet doesn’t need access to everything.</h4>
+                                    <p class="pf-line">I wanted part of this site to belong only to the people who actually know me. So I built My World: a private layer of suhanitiwari.com with protected routes and two levels of access.</p>
+                                    <ol class="pf-tiers">
+                                        <li><b>Public</b><span>Anyone can enter. You’re here.</span></li>
+                                        <li><b>Friends <span aria-hidden="true">🔐</span></b><span>One password gets you into My World.</span></li>
+                                        <li><b>Family <span aria-hidden="true">🔐</span></b><span>A different password. A different role. One more room.</span></li>
+                                    </ol>
+                                    <p class="pf-lock-note">You don’t need to get in. The fact that you can’t is the demo.</p>
+                                    <div class="pf-lock-acts">
+                                        <a class="pf-lock-door" href="/world/login">See the locked door <span aria-hidden="true">→</span></a>
+                                        <button type="button" class="pf-lock-back">Flip back</button>
+                                    </div>
+                                    <footer class="pf-hood">
+                                        <p class="pf-hood-label">Under the hood</p>
+                                        <p class="pf-hood-list">Authentication · Authorization · Role-based access · Protected routes · Anti-forgery tokens · Hashed passwords · Rate-limited logins</p>
+                                        <p class="pf-hood-also">Same idea in RideFlow: riders, drivers and admins each see only their own side.</p>
+                                        <p class="mp-cap-from">MIS 372T, MIS 333K, MIS 325</p>
+                                    </footer>
+                                </div>
+                            </div>
+                        </li>
+
+                        @* 04 AI: Sitara, asked from inside the card (wwwroot/js/sitara.js exposes sitaraAsk) *@
+                        <li class="pf-card pf-ai">
+                            <p class="mp-cap-name"><span class="mp-cap-num">04</span> PUT AI IN IT</p>
+                            <h4 class="pf-q">Talk to Sitara. Try to trip her up.</h4>
+                            <p class="pf-line">The AI guide I built for this site. She answers from what she knows about me, and knows what not to say.</p>
+                            <div class="pf-chat" data-chat>
+                                <div class="pf-chat-log" role="log" aria-live="polite">
+                                    <p class="pf-msg bot"><img src="~/images/sitara/hi.jpg" alt="" width="28" height="28" />Hi, I’m Sitara ✦ Ask me about Suhani.</p>
+                                </div>
+                                <div class="pf-chat-chips" role="group" aria-label="Questions to try">
+                                    <button type="button">What has Suhani built?</button>
+                                    <button type="button">What’s her home address?</button>
+                                    <button type="button">Should every app have AI?</button>
+                                </div>
+                                <form class="pf-chat-form">
+                                    <label class="visually-hidden" for="pfChatInput">Ask Sitara</label>
+                                    <input id="pfChatInput" type="text" maxlength="500" autocomplete="off" placeholder="Or ask your own ✦" required />
+                                    <button type="submit" aria-label="Send">↑</button>
+                                </form>
+                            </div>
+                            <ol class="pf-ai-steps" aria-label="How I put AI in a product">
+                                <li><b>Use it</b> LLMs and prompting</li>
+                                <li><b>Ground it</b> Embeddings, vector databases</li>
+                                <li><b>Build it</b> AI inside real apps</li>
+                                <li class="is-judge"><b>Judge it</b> Is AI even worth using here?</li>
+                            </ol>
+                            <footer class="pf-hood">
+                                <p class="pf-hood-label">Under the hood</p>
+                                <p class="pf-hood-list">Google’s Gemma on Cloudflare Workers AI · Notes I wrote about myself · Live Spotify · Guardrails · Usage limits</p>
+                                <p class="mp-cap-from">MIS 304, MIS 325, MIS 333K, MIS 372T, MIS 375</p>
+                            </footer>
+                        </li>
+
+                        @* 05 ANALYZE: my Saturday in Austin planner, the real Python, run in the browser (wwwroot/js/saturday.js) *@
+                        <li class="pf-card pf-analyze">
+                            <p class="mp-cap-name"><span class="mp-cap-num">05</span> PROVE IT</p>
+                            <h4 class="pf-q">Let my model plan your Saturday.</h4>
+                            <p class="pf-line">Pick a mood and how long you want to be out. My Python planner weighs 203 Austin spots, drive times and hours, then commits.</p>
+                            <form class="pf-sat" data-sat>
+                                <fieldset class="pf-sat-moods">
+                                    <legend>Mood</legend>
+                                    <label><input type="radio" name="mood" value="treat-yourself" checked /><span>Treat yourself</span></label>
+                                    <label><input type="radio" name="mood" value="adventurous" /><span>Adventurous</span></label>
+                                    <label><input type="radio" name="mood" value="cozy" /><span>Cozy &amp; creative</span></label>
+                                    <label><input type="radio" name="mood" value="foodie" /><span>Foodie</span></label>
+                                </fieldset>
+                                <label class="pf-sat-hours"><span>Out for <output>6</output> hours</span>
+                                    <input type="range" name="hours" min="3" max="10" step="1" value="6" />
+                                </label>
+                                <button type="submit">Plan it ✦</button>
+                                <div class="pf-sat-out" aria-live="polite"></div>
+                            </form>
+                            <footer class="pf-hood">
+                                <p class="pf-hood-label">Under the hood</p>
+                                <p class="pf-hood-list">Python, running in your browser · Pandas · Tableau · Power BI · Matplotlib · R · Excel</p>
+                                <p class="pf-proof"><a href="https://suhxnitiwari.github.io/saturday-in-austin/" target="_blank" rel="noopener">Saturday in Austin <span aria-hidden="true">↗</span></a><span>The full planner, with every knob</span></p>
+                                <p class="mp-cap-from">MIS 304, MIS 301, MIS 325, Intro to Data Science</p>
+                            </footer>
+                        </li>
+
+                        @* 06 DECIDE: three features from my Starbucks case; you make the call, then see mine and the RICE score behind it *@
+                        <li class="pf-card pf-decide">
+                            <p class="mp-cap-name"><span class="mp-cap-num">06</span> JUSTIFY IT</p>
+                            <h4 class="pf-q">You’re Starbucks. Do you build it?</h4>
+                            <div class="pf-memo" data-decide>
+                                <p class="pf-memo-count" aria-live="polite"></p>
+                                <p class="pf-memo-pitch"></p>
+                                <div class="pf-memo-acts">
+                                    <button type="button" data-call="build">Build it</button>
+                                    <button type="button" data-call="skip">Don’t build it</button>
+                                </div>
+                                <div class="pf-memo-verdict" aria-live="polite" hidden></div>
+                            </div>
+                            <footer class="pf-hood">
+                                <p class="pf-hood-label">Under the hood</p>
+                                <p class="pf-hood-list">RICE scoring · KANO analysis · Cost justification · IT strategy · Go-to-market · Porter’s Five Forces · ERP (Oracle NetSuite)</p>
+                                <p class="pf-proof"><a href="/work/starbucks">Starbucks AI Loyalty <span aria-hidden="true">→</span></a><span>Ten features scored, and a roadmap</span></p>
+                                <p class="mp-cap-from">MIS 301, MIS 375, Oracle</p>
+                            </footer>
+                        </li>
                     </ol>
-                    <p class="mp-can-close">That’s MIS to me. Not business <em>or</em> technology. The entire trip from <em>“what if?”</em> to <em>“was it worth it?”</em></p>
-                    <script>
-                        // "+ 5 more": show the rest of a card's tools, and fold them back
-                        document.querySelectorAll('.mp-cap-more').forEach(btn => btn.addEventListener('click', () => {
-                            const open = btn.getAttribute('aria-expanded') !== 'true';
-                            btn.closest('.mp-cap').querySelectorAll('.mp-cap-key li').forEach((li, k) => { if (k >= 4) li.hidden = !open; });
-                            btn.setAttribute('aria-expanded', String(open));
-                            btn.textContent = open ? 'Show less' : btn.dataset.more;
-                        }));
-                    </script>
+                    <div class="mp-can-close">
+                        <p>That’s MIS to me. Not memorizing six categories of technology.</p>
+                        <p>Having an idea. Building it. Giving it structure. Deciding who gets in. Making it smarter. Measuring what happened. And then asking the question technology people sometimes forget to ask: <em>was it worth building?</em></p>
+                    </div>
+                    <script type="application/json" id="pfDecide">@Json.Serialize(misDecide)</script>
                 </div>
 
                 @* 3. how the major builds it: the cycle *@
@@ -1434,3 +1534,5 @@ document.addEventListener('keydown', function(event) {
 }
 </style>
 <script src="~/js/project-carousel.js" asp-append-version="true"></script>
+<script src="~/js/saturday.js" asp-append-version="true" defer></script>
+<script src="~/js/mis-proofs.js" asp-append-version="true" defer></script>
