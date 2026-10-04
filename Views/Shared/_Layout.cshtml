@@ -385,19 +385,7 @@
             gap: 4px;
         }
 
-        .contact-tag {
-            color: #FAF1EF;
-            font-size: 0.85em;
-            font-style: italic;
-            opacity: 0.7;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        /* with a mouse, the caption lifts off its link and rides the cursor (same pill as the projects, in cream) */
-        .contact-footer.cued .contact-item:hover .contact-tag {
-            opacity: 0;
-            transform: translateY(-6px);
-        }
+        /* with a mouse, each link's caption (its data-cue) rides the cursor (same pill as the projects, in cream) */
 
         .contact-cue {
             position: absolute;
@@ -622,29 +610,25 @@
                 <p class="contact-subline">Or you're nosy. Either way, say hi.</p>
             </div>
             <div class="contact-links-wrapper">
-                <div class="contact-item">
+                <div class="contact-item" data-cue="boringly responsible">
                     <a href="mailto:suhxnitiwari@gmail.com" class="contact-link">
                         Email <span class="arrow">↗</span>
                     </a>
-                    <span class="contact-tag">boringly responsible</span>
                 </div>
-                <div class="contact-item">
+                <div class="contact-item" data-cue="dangerously personal">
                     <a href="https://www.instagram.com/suhxnitiwari/" class="contact-link" target="_blank">
                         Instagram <span class="arrow">↗</span>
                     </a>
-                    <span class="contact-tag">dangerously personal</span>
                 </div>
-                <div class="contact-item">
+                <div class="contact-item" data-cue="suspiciously professional">
                     <a href="https://www.linkedin.com/in/suhxnitiwari/" class="contact-link" target="_blank">
                         LinkedIn <span class="arrow">↗</span>
                     </a>
-                    <span class="contact-tag">suspiciously professional</span>
                 </div>
-                <div class="contact-item">
+                <div class="contact-item" data-cue="unapologetically nerdy">
                     <a href="https://github.com/suhxnitiwari" class="contact-link" target="_blank" rel="noopener">
                         GitHub <span class="arrow">↗</span>
                     </a>
-                    <span class="contact-tag">unapologetically nerdy</span>
                 </div>
             </div>
             <div class="contact-small">
@@ -670,7 +654,7 @@
             if (!cue || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
             footer.classList.add('cued');
             footer.querySelectorAll('.contact-item').forEach(item => {
-                const tag = item.querySelector('.contact-tag').textContent;
+                const tag = item.dataset.cue;
                 const arrow = item.querySelector('.arrow').textContent;
                 item.addEventListener('pointerenter', () => { cue.textContent = `${tag} ${arrow}`; cue.classList.add('on'); });
                 item.addEventListener('pointerleave', () => cue.classList.remove('on'));

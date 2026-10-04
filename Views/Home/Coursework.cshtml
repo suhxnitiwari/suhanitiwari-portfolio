@@ -532,12 +532,13 @@
                         <p class="mp-can-lede">Don’t take my word for it. Go around the loop.</p>
                     </div>
                     @* the six stops are one loop: idea in, decision out, and the decision is the next idea.
-                       Hovering a stop fills the panel beside the ring; clicking it opens the project. Styles: wwwroot/css/mis-loop.css *@
+                       The panel beside the ring follows the dot around; hovering or clicking a stop shows it there,
+                       and only the panel's button leaves the page. Styles: wwwroot/css/mis-loop.css *@
                     <div class="loop" data-loop>
                         <div class="loop-ring">
                             <svg class="loop-track" viewBox="0 0 520 520" aria-hidden="true">
                                 <circle cx="260" cy="260" r="190" />
-                                <circle class="loop-dot" r="5"><animateMotion dur="18s" repeatCount="indefinite" path="M260,70 a190,190 0 1,1 -0.01,0" /></circle>
+                                <circle class="loop-dot" r="5"><animateMotion dur="30s" repeatCount="indefinite" path="M260,70 a190,190 0 1,1 -0.01,0" /></circle>
                             </svg>
                             <p class="loop-hub" aria-hidden="true"><span>then</span>the next idea</p>
                             <ol class="loop-stops">
@@ -546,14 +547,7 @@
                                     var st = misLoop[i];
                                     var external = st.Href.StartsWith("http");
                                     <li class="loop-stop" style="--i:@i">
-                                        @if (st.Href == "#sitara")
-                                        {
-                                            <button type="button" class="loop-node" data-sitara><span class="loop-n">@st.Num</span><span class="loop-verb">@st.Verb</span><span class="loop-proj">@st.Project</span></button>
-                                        }
-                                        else
-                                        {
-                                            <a class="loop-node" href="@st.Href" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)"><span class="loop-n">@st.Num</span><span class="loop-verb">@st.Verb</span><span class="loop-proj">@st.Project</span></a>
-                                        }
+                                        <button type="button" class="loop-node"><span class="loop-n">@st.Num</span><span class="loop-verb">@st.Verb</span><span class="loop-proj">@st.Project</span></button>
                                         <div class="loop-detail">
                                             <p class="loop-line">@st.Line</p>
                                             <p class="loop-stack"><span>Built with</span>@st.Stack</p>
@@ -575,7 +569,7 @@
                             <div class="loop-intro">
                                 <p class="loop-panel-k">Six stops, one loop</p>
                                 <p class="loop-panel-h">Idea in. Decision out.</p>
-                                <p class="loop-line">And the decision is where the next idea comes from. Every stop is something I built, and every one works. Hover to look, click to open.</p>
+                                <p class="loop-line">And the decision is where the next idea comes from. Every stop is something I built, and every one works. Pick a stop to look closer.</p>
                             </div>
                         </div>
                     </div>
@@ -840,27 +834,58 @@
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
 <script>
-    // What I can do: hovering or focusing a stop shows it beside the ring; Sitara's stop opens her chat
+    // What I can do: the panel follows the dot around the ring, showing each stop as the dot reaches it.
+    // Hovering the ring holds the dot still; hovering, focusing or clicking a stop shows it, and a click
+    // moves the dot there so the loop carries on from that stop. Only the panel's button leaves the page.
     (() => {
         const loop = document.querySelector('[data-loop]');
         if (!loop) return;
         const panel = loop.querySelector('.loop-panel');
+        const ring = loop.querySelector('.loop-ring');
+        const svg = loop.querySelector('.loop-track');
         const stops = [...loop.querySelectorAll('.loop-stop')];
+        // one lap of the dot, read off its animateMotion so the two never drift apart
+        const lap = parseFloat(svg.querySelector('animateMotion')?.getAttribute('dur')) || 30, leg = lap / stops.length;
+        let current = null;
         const show = st => {
+            if (st === current) return;
+            current = st;
             stops.forEach(s => s.classList.toggle('is-on', s === st));
             const node = st.querySelector('.loop-node');
             panel.innerHTML = `<p class="loop-panel-k">${node.querySelector('.loop-n').textContent} · ${node.querySelector('.loop-verb').textContent}</p>` +
                 `<p class="loop-panel-h">${node.querySelector('.loop-proj').textContent}</p>` + st.querySelector('.loop-detail').innerHTML;
         };
-        stops.forEach(st => {
+        stops.forEach((st, i) => {
             st.addEventListener('pointerenter', () => show(st));
             st.addEventListener('focusin', () => show(st));
+            st.querySelector('.loop-node').addEventListener('click', () => { show(st); svg.setCurrentTime?.(i * leg); });
         });
         loop.addEventListener('click', e => {
             if (!e.target.closest('[data-sitara]')) return;
             if (window.sitaraOpen) window.sitaraOpen();
             else document.querySelector('.sitara-launch')?.click();
         });
+
+        // without motion (or SVG timing) the panel simply waits for a pick
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches || !svg.getCurrentTime || !('IntersectionObserver' in window)) return;
+        let held = false, timer = 0;
+        const follow = () => { if (!held) show(stops[Math.floor((svg.getCurrentTime() % lap) / leg + 0.02) % stops.length]); };
+        ring.addEventListener('pointerenter', () => { held = true; svg.pauseAnimations(); });
+        ring.addEventListener('pointerleave', () => { held = false; svg.unpauseAnimations(); });
+        // the dot only travels while the loop is on screen, and starts from 01 the first time you get there
+        svg.pauseAnimations();
+        let started = false;
+        new IntersectionObserver(([e]) => {
+            if (e.isIntersecting) {
+                if (!started) { started = true; svg.setCurrentTime(0); }
+                if (!held) svg.unpauseAnimations();
+                follow();
+                timer = setInterval(follow, 150);
+            } else {
+                svg.pauseAnimations();
+                clearInterval(timer);
+            }
+        }, { threshold: 0.35 }).observe(loop);
     })();
 </script>
 <script>

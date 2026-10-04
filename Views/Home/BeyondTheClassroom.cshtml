@@ -9,7 +9,7 @@
     public record Initiative(string Name, string Tagline = "", string[]? Tags = null,
                              string Role = "", string Years = "", string Description = "",
                              string Link = "", string LinkText = "Learn more",
-                             string Photo = "", string PhotoAlt = "", string PhotoCaption = "",
+                             string Photo = "", string PhotoAlt = "", string PhotoCaption = "", string PhotoCue = "",
                              (string Number, string Label)[]? Stats = null,
                              (string Quote, string Who)[]? Reviews = null);
 
@@ -143,6 +143,37 @@
     .project-photo:hover img {
         transform: translateY(-4px);
         box-shadow: 0 24px 50px rgba(42, 24, 16, 0.24);
+    }
+
+    /* a photo with a PhotoCue says something in a pill that rides the cursor (mouse only) */
+    .project-photo[data-cue] {
+        position: relative;
+    }
+
+    .photo-cue {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        padding: 7px 14px;
+        border-radius: var(--r-pill);
+        background: #7E3F4A;
+        color: #FFFFFF;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.25);
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -150%) scale(0.85) rotate(-3deg);
+        transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .photo-cue.on {
+        opacity: 1;
+        transform: translate(-50%, -150%) scale(1) rotate(0deg);
     }
 
     /* one line under every photo */
@@ -560,7 +591,8 @@
                     LinkText: "View the book ↗",
                     Photo: "/images/amaira-reading-book.jpg",
                     PhotoAlt: "Amaira proudly showing the character named after her in Girls Can Be Engineers Too",
-                    PhotoCaption: "Amaira proudly admiring the character named after her"),
+                    PhotoCaption: "Amaira proudly admiring the character named after her",
+                    PhotoCue: "Hi Amaira"),
 
                 new Initiative("Camp Invention",
                     Tagline: "Build it. Test it. Try again.",
@@ -605,7 +637,7 @@
                         @if (!string.IsNullOrEmpty(project.Photo))
                         {
                             <div class="project-side">
-                                <figure class="project-photo">
+                                <figure class="project-photo" data-cue="@(string.IsNullOrEmpty(project.PhotoCue) ? null : project.PhotoCue)">
                                     <img src="@project.Photo" alt="@(string.IsNullOrEmpty(project.PhotoAlt) ? project.Name : project.PhotoAlt)" loading="lazy">
                                     @if (!string.IsNullOrEmpty(project.PhotoCaption))
                                     {
@@ -706,6 +738,23 @@
 </div>
 
 <script>
+    // photos with something to say: the pill rides along with the cursor (mouse only)
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        document.querySelectorAll('.project-photo[data-cue]').forEach(fig => {
+            const cue = document.createElement('span');
+            cue.className = 'photo-cue';
+            cue.setAttribute('aria-hidden', 'true');
+            cue.textContent = fig.dataset.cue;
+            fig.append(cue);
+            fig.addEventListener('pointerenter', () => cue.classList.add('on'));
+            fig.addEventListener('pointerleave', () => cue.classList.remove('on'));
+            fig.addEventListener('pointermove', e => {
+                const box = fig.getBoundingClientRect();
+                cue.style.translate = `${e.clientX - box.left}px ${e.clientY - box.top}px`;
+            });
+        });
+    }
+
     // Numbers: three at a time, ‹ and › flip to the next three
     document.querySelectorAll('.stat-pager').forEach(box => {
         const items = [...box.querySelectorAll('.project-stats > div')];

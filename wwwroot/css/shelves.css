@@ -332,7 +332,7 @@
     border-top: 1px solid #EBD5D0;
 }
 
-.trip-emoji {
+.trip-num {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -340,7 +340,9 @@
     height: 40px;
     border-radius: 50%;
     background: #F6E4E1;
-    font-size: 1.2em;
+    font-family: Georgia, serif;
+    font-size: 0.95em;
+    color: #7E3F4A;
 }
 
 .trip-spot h3 {

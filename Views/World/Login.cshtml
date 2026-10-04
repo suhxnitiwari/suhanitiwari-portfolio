@@ -8,27 +8,31 @@
     <div class="world-card">
         <p class="world-kicker">Friends &amp; family only</p>
         <h1>My World <svg class="world-lock" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg></h1>
-        <p class="world-line">The people and places that made me, me. It’s personal, so it has a door.</p>
+        <p class="world-line">Public Instagram, public LinkedIn, public website. And you thought you’d seen everything? Cute. That’s the highlight reel. The rest of me is in here.</p>
 
         <form method="post" action="/world/login" class="world-form">
             @Html.AntiForgeryToken()
             <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
             <fieldset class="world-roles">
-                <legend>Who are you?</legend>
+                <legend>So, who are you to me?</legend>
                 <label class="world-role">
                     <input type="radio" name="role" value="friends" checked="@(role == "friends")" />
                     <span class="world-role-name">Friend</span>
+                    <span class="world-role-line">You get the real story.</span>
                     <span class="world-rooms">
-                        <span class="is-open">My World</span>
-                        <span class="is-shut">Family Room</span>
+                        <span class="is-open">Places that shaped me</span>
+                        <span class="is-open">Pieces of me</span>
+                        <span class="is-open">My 40 Acres</span>
+                        <span class="is-shut">The Family Room</span>
                     </span>
                 </label>
                 <label class="world-role">
                     <input type="radio" name="role" value="family" checked="@(role == "family")" />
                     <span class="world-role-name">Family</span>
+                    <span class="world-role-line">You knew me before any of this.</span>
                     <span class="world-rooms">
-                        <span class="is-open">My World</span>
-                        <span class="is-open">Family Room</span>
+                        <span class="is-open">Everything friends get</span>
+                        <span class="is-open">The Family Room</span>
                     </span>
                 </label>
             </fieldset>
@@ -48,11 +52,11 @@
         }
         @if (isOpen)
         {
-            <p class="world-small">If you know me, you probably know it. If not, ask.</p>
+            <p class="world-small">If you know me, you know the password. If you don’t, that’s kind of the point.</p>
         }
         else
         {
-            <p class="world-note">My World isn’t open right now. Check back soon.</p>
+            <p class="world-note">The door’s locked for now. Check back soon.</p>
         }
     </div>
 </section>
@@ -71,7 +75,7 @@
 
 <style>
     .world-door { min-height: 70vh; display: grid; place-items: center; padding: 60px 20px; background: radial-gradient(ellipse at 50% 0%, #F7E3E3 0%, #FAF1EF 60%); }
-    .world-card { width: min(480px, 100%); padding: 40px 36px; border-radius: var(--r-card, 18px); border: var(--card-border, 1px solid #EBD5D0); background: #FFF8F6; box-shadow: var(--shadow-card, 0 10px 30px -18px rgba(42, 24, 16, 0.3)); text-align: center; }
+    .world-card { width: min(520px, 100%); padding: 40px 36px; border-radius: var(--r-card, 18px); border: var(--card-border, 1px solid #EBD5D0); background: #FFF8F6; box-shadow: var(--shadow-card, 0 10px 30px -18px rgba(42, 24, 16, 0.3)); text-align: center; }
     .world-kicker { margin: 0 0 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #7E3F4A; }
     .world-card h1 { display: inline-flex; align-items: center; gap: 14px; margin: 0 0 12px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 2.6rem; font-weight: 400; color: #1E100A; }
     .world-lock { width: 0.62em; height: 0.62em; color: #76344E; }
@@ -82,9 +86,10 @@
     .world-role { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 16px 14px 14px; border: 1.5px solid #E2C6C0; border-radius: 14px; background: #FFFFFF; text-align: left; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
     .world-role input { position: absolute; opacity: 0; pointer-events: none; }
     .world-role-name { font-family: Georgia, serif; font-size: 1.2rem; color: #1E100A; }
+    .world-role-line { margin-top: -6px; font-family: Georgia, serif; font-style: italic; font-size: 0.9rem; color: #733642; }
     .world-rooms { display: flex; flex-direction: column; gap: 5px; font-size: 0.82rem; }
-    .world-rooms span { display: flex; align-items: center; gap: 8px; }
-    .world-rooms span::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; box-sizing: border-box; }
+    .world-rooms span { display: flex; align-items: baseline; gap: 8px; line-height: 1.35; }
+    .world-rooms span::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; box-sizing: border-box; transform: translateY(-1px); }
     .world-rooms .is-open { color: #2A1810; }
     .world-rooms .is-open::before { background: #76344E; }
     .world-rooms .is-shut { color: #A99790; text-decoration: line-through; text-decoration-color: rgba(169, 151, 144, 0.6); }

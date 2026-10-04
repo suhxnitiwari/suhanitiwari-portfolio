@@ -22,7 +22,7 @@
     public record Trip(string City, string Line = "", string Photo = "", TripSpot[]? Spots = null, string PhotoPosition = "");
 
     // One place on a trip. Kind = what it is and where; MustDo gets a little badge.
-    public record TripSpot(string Emoji, string Name, string Kind, string Line, bool MustDo = false);
+    public record TripSpot(string Name, string Kind, string Line, bool MustDo = false);
 }
 
 <style>
@@ -254,55 +254,55 @@
         // https://www.pexels.com/photo/stunning-chicago-skyline-at-sunset-reflecting-on-lake-28832672/
         new Trip("Chicago", "", "/images/travel/chicago-skyline-4k.jpg", new[]
         {
-            new TripSpot("☕️", "Venteux Brasserie, Cafe & Oyster Bar", "French café, inside the Pendry",
+            new TripSpot("Venteux Brasserie, Cafe & Oyster Bar", "French café, inside the Pendry",
                 "Super cute French café and brasserie. Very Parisian, with pretty interiors. Good for coffee, breakfast or brunch."),
-            new TripSpot("🎨", "Art Institute of Chicago", "Museum",
+            new TripSpot("Art Institute of Chicago", "Museum",
                 "Obviouslyyy. One of my favorite Chicago things to do. The collection is huge, and you can easily spend a few hours here."),
-            new TripSpot("🌿", "SIFR", "Middle Eastern and Mediterranean, River North",
+            new TripSpot("SIFR", "Middle Eastern and Mediterranean, River North",
                 "Modern Middle Eastern and Mediterranean with a beautiful rooftop. Lots of shareable mezze, hummus, pita and kebabs, and it has a Michelin Bib Gourmand too."),
-            new TripSpot("🌿", "Aba", "Mediterranean, West Loop",
+            new TripSpot("Aba", "Mediterranean, West Loop",
                 "THE OG ABA!!! The original Aba is in Chicago. Gorgeous greenery everywhere, a huge rooftop patio and Mediterranean food. You already know I love Aba lol."),
-            new TripSpot("⛲️", "3 Arts Club Cafe at RH Chicago", "Brunch",
+            new TripSpot("3 Arts Club Cafe at RH Chicago", "Brunch",
                 "This one is SO pretty. It’s inside RH Chicago in the historic Three Arts Club building, in a giant glass atrium with chandeliers, trees and a fountain in the middle. Very fancy, very pretty, very Chicago-girl brunch. Walk around all the RH floors afterward too.", MustDo: true),
-            new TripSpot("🥞", "Somerset", "Breakfast and brunch, inside the Viceroy in Gold Coast",
+            new TripSpot("Somerset", "Breakfast and brunch, inside the Viceroy in Gold Coast",
                 "Go for breakfast or brunch, and get the French toast. It’s the reason I had this saved.")
         }),
         // Photo: Midtown Manhattan at sunset by Andras Stefuca / Pexels, Pexels License. 3840 × 2177.
         // https://www.pexels.com/photo/skyline-of-new-york-city-at-sunset-29297529/
         new Trip("New York", "", "/images/travel/nyc-skyline-4k.jpg", new[]
         {
-            new TripSpot("🍦", "Venchi", "Italian chocolate + gelato, West Village",
+            new TripSpot("Venchi", "Italian chocolate + gelato, West Village",
                 "Italian chocolate + gelato. Get the gelato!! There are a few NYC locations, but the Bleecker Street one is perfect if you’re already wandering around the West Village."),
-            new TripSpot("🥙", "Shuka", "Mediterranean, SoHo",
+            new TripSpot("Shuka", "Mediterranean, SoHo",
                 "Mediterranean in SoHo. Super cute, amazing for lunch/brunch/dinner, and very shareable. Get a bunch of dips + pita + mezze."),
-            new TripSpot("🫒", "Ayah", "Mediterranean",
+            new TripSpot("Ayah", "Mediterranean",
                 "Mediterranean food!! Fresh pita, hummus, muhammara, falafel, shawarma, etc. The interiors are also really pretty."),
-            new TripSpot("🎨", "The Met", "Museum",
+            new TripSpot("The Met", "Museum",
                 "THE museum to do in New York. It is absolutely massive, so don’t try to see everything. Pick a few sections you actually care about and wander.", MustDo: true),
-            new TripSpot("🇮🇳", "Musaafer", "Upscale Indian",
+            new TripSpot("Musaafer", "Upscale Indian",
                 "Gorgeous upscale Indian restaurant. The interiors are INSANE. Definitely more of a fancy dinner/special occasion situation."),
-            new TripSpot("☕️", "Central Perk Coffeehouse", "FRIENDS café, Times Square",
+            new TripSpot("Central Perk Coffeehouse", "FRIENDS café, Times Square",
                 "The FRIENDS café!! There’s now a real Central Perk in Times Square with drinks inspired by the show, Friends references, merch, etc. Very touristy but very fun if you love Friends."),
-            new TripSpot("🧞‍♂️", "Aladdin on Broadway", "Broadway",
+            new TripSpot("Aladdin on Broadway", "Broadway",
                 "Jasmine is my FAVORITE Disney princess, so obviously this had to make the list. Such a fun Broadway show with huge sets, gorgeous costumes, all the songs, and full Disney spectacle. Perfect for a happy Broadway night."),
-            new TripSpot("🎀", "Ladurée SoHo", "Restaurant + tea salon, SoHo",
+            new TripSpot("Ladurée SoHo", "Restaurant + tea salon, SoHo",
                 "GO TO THE SOHO ONE. It’s the full restaurant/tea salon with the gorgeous garden, not just a little macaron counter. Very Parisian princess energy."),
-            new TripSpot("👜", "Louis Vuitton 57th Street", "Shopping + café + chocolate",
+            new TripSpot("Louis Vuitton 57th Street", "Shopping + café + chocolate",
                 "The gigantic five-floor Louis Vuitton on 57th Street. There’s a massive trunk installation inside, plus Le Café Louis Vuitton and a Louis Vuitton chocolate shop."),
-            new TripSpot("🍫", "Läderach", "Swiss chocolate",
+            new TripSpot("Läderach", "Swiss chocolate",
                 "Swiss chocolate!! Go in, pick the giant slabs of FrischSchoggi chocolate you want, and they break pieces off for you. Very good little treat/gift stop.")
         }, PhotoPosition: "22% 50%"),
         // Photo: Miami Beach coastline at sunset by Anas Hinde / Pexels, Pexels License. 2456 × 3070.
         // https://www.pexels.com/photo/aerial-shot-of-city-buildings-3927911/
         new Trip("Miami", "", "/images/travel/miami-skyline.jpg", new[]
         {
-            new TripSpot("🏨", "W South Beach", "Favorite stay", ""),
-            new TripSpot("☕️", "Cafe Americano", "Favorite café and brunch", ""),
-            new TripSpot("🛥️", "Fisher Island Boat Tour", "Favorite experience",
+            new TripSpot("W South Beach", "Favorite stay", ""),
+            new TripSpot("Cafe Americano", "Favorite café and brunch", ""),
+            new TripSpot("Fisher Island Boat Tour", "Favorite experience",
                 "The Biscayne Bay sightseeing routes pass Fisher Island."),
-            new TripSpot("🌴", "The Grove at W South Beach", "Favorite hotel hangout", ""),
-            new TripSpot("🌊", "Blue Waters Bar & Grill", "Favorite waterfront bite", ""),
-            new TripSpot("🛍️", "Aventura Mall", "Favorite shopping", "")
+            new TripSpot("The Grove at W South Beach", "Favorite hotel hangout", ""),
+            new TripSpot("Blue Waters Bar & Grill", "Favorite waterfront bite", ""),
+            new TripSpot("Aventura Mall", "Favorite shopping", "")
         })
     };
 
@@ -661,7 +661,7 @@
                                         <ul>
                                             @for (var n = 0; n < Math.Min(4, spotCount); n++)
                                             {
-                                                <li style="--n: @n">@trip.Spots![n].Emoji @trip.Spots[n].Name</li>
+                                                <li style="--n: @n">@trip.Spots![n].Name</li>
                                             }
                                             @if (spotCount > 4)
                                             {
@@ -780,10 +780,10 @@
             <h2 id="trip-title-@t">@trip.City</h2>
             <p class="recipe-line">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : (trip.Spots?.Length ?? 0) > 0 ? "Spots I’ve been to" : "Spots coming soon.")</p>
             <ul class="trip-spots">
-                @foreach (var spot in trip.Spots ?? Array.Empty<TripSpot>())
+                @foreach (var (spot, k) in (trip.Spots ?? Array.Empty<TripSpot>()).Select((spot, k) => (spot, k)))
                 {
                     <li class="trip-spot">
-                        <span class="trip-emoji" aria-hidden="true">@spot.Emoji</span>
+                        <span class="trip-num" aria-hidden="true">@((k + 1).ToString("00"))</span>
                         <div>
                             <h3>@spot.Name @if (spot.MustDo) { <span class="trip-must">Must do</span> }</h3>
                             <p class="trip-kind">@spot.Kind</p>
