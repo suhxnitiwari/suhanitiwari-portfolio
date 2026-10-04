@@ -33,15 +33,45 @@
     .mk-ae .e-cover .e-lede { color: rgba(242, 238, 230, 0.8) !important; }
     .mk-ae .e-cover .e-sig { color: #F0A55A; }
     .mk-ae .e-cover .e-src { color: rgba(242, 238, 230, 0.45); }
-    .mk-ae .e-meters { flex: 1; display: grid; gap: 2.4cqw; }
-    .mk-ae .e-meter { display: grid; gap: 0.8cqw; }
-    .mk-ae .e-meter small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(242, 238, 230, 0.6); }
-    .mk-ae .e-meter b { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 5cqw, 66px); line-height: 1; font-variant-numeric: tabular-nums; color: #FFFFFF; }
-    .mk-ae .e-meter .bar { height: 2.2cqw; border-radius: 99px; background: rgba(242, 238, 230, 0.12); overflow: hidden; }
-    .mk-ae .e-meter .bar i { display: block; height: 100%; width: var(--w, 0%); border-radius: 99px; transition: width 0.12s linear; }
-    .mk-ae .e-meter.imp .bar i { background: linear-gradient(90deg, #6F8FB8, #DCE5F0); }
-    .mk-ae .e-meter.comp b { color: #F0A55A; }
-    .mk-ae .e-meter.comp .bar i { background: #F0A55A; }
+    /* the feed: the ad's post on top, then comments and DMs flood in, half love, half rage; then it goes quiet and the +1% tag drops */
+    .mk-ae .e-feed { position: relative; flex: 1; align-self: stretch; display: flex; flex-direction: column; gap: 1cqw; min-width: 0; }
+    .mk-ae .e-count { display: flex; align-items: baseline; justify-content: flex-end; gap: 0.8cqw; }
+    .mk-ae .e-count b { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 3.8cqw, 50px); line-height: 1; font-variant-numeric: tabular-nums; color: #FFFFFF; }
+    .mk-ae .e-count small { font-size: clamp(8px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242, 238, 230, 0.6); }
+    .mk-ae .e-post { display: grid; grid-template-columns: 9cqw 1fr; gap: 1.2cqw; align-items: center; padding: 1cqw; border-radius: 1.4cqw; background: #FFFFFF; color: #111; box-shadow: 0 1.4cqw 3cqw -1.6cqw rgba(0, 0, 0, 0.6); }
+    .mk-ae .e-post .img { aspect-ratio: 4 / 5; border-radius: 0.8cqw; display: grid; place-items: center; padding: 0.6cqw; text-align: center;
+        background: repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0 0.3cqw, transparent 0.3cqw 0.9cqw), linear-gradient(160deg, #4A6E9E, #1D3557); color: #FFF; font-family: var(--serif); font-style: italic; font-size: clamp(9px, 1.15cqw, 15px); line-height: 1.1; }
+    .mk-ae .e-post .who { display: flex; align-items: center; gap: 0.6cqw; font: 700 clamp(9px, 1.05cqw, 13px) system-ui, sans-serif; }
+    .mk-ae .e-post .who i { width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: conic-gradient(#F58529, #DD2A7B, #8134AF, #F58529); box-shadow: inset 0 0 0 0.35cqw #FFF; }
+    .mk-ae .e-post .who em { font-style: normal; color: #3897F0; }
+    .mk-ae .e-post p { margin: 0.4cqw 0 0; font-size: clamp(9px, 1.05cqw, 13px); color: #262626 !important; line-height: 1.35; }
+    .mk-ae .e-post .acts { display: flex; gap: 1.4cqw; margin-top: 0.6cqw; font: 600 clamp(9px, 1cqw, 12px) system-ui, sans-serif; color: #262626; font-variant-numeric: tabular-nums; }
+    .mk-ae .e-stream { position: relative; flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.7cqw;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%); mask-image: linear-gradient(180deg, transparent 0, #000 22%); }
+    .mk-ae .e-msg { align-self: flex-start; max-width: 88%; display: flex; gap: 0.7cqw; align-items: flex-start; padding: 0.7cqw 1cqw; border-radius: 1.4cqw; background: rgba(255, 255, 255, 0.95); color: #111;
+        font: 400 clamp(9px, 1.1cqw, 14px)/1.3 system-ui, sans-serif; animation: ePop 0.35s cubic-bezier(.2, 1.4, .4, 1) both; }
+    .mk-ae .e-msg b { font-weight: 700; margin-right: 0.3em; }
+    .mk-ae .e-msg i { flex: none; width: 1.8cqw; height: 1.8cqw; border-radius: 50%; background: var(--av, #8DA7C7); }
+    .mk-ae .e-msg.hate { box-shadow: inset 0.35cqw 0 0 #E0533D; }
+    .mk-ae .e-msg.love { box-shadow: inset 0.35cqw 0 0 #3FB66B; }
+    .mk-ae .e-msg.dm { align-self: flex-end; background: #3797F0; color: #FFF; border-radius: 1.4cqw 1.4cqw 0.3cqw 1.4cqw; }
+    .mk-ae .e-msg.dm i { display: none; }
+    .mk-ae .e-msg.share { align-self: center; background: rgba(255, 255, 255, 0.14); color: #F2EEE6; font-weight: 600; }
+    .mk-ae .e-msg.share i { display: none; }
+    /* press: the story jumps from comments to headlines */
+    .mk-ae .e-msg.news { align-self: stretch; max-width: none; flex-direction: column; gap: 0.2cqw; background: #FFF7E8; box-shadow: inset 0.35cqw 0 0 #F0A55A; font-family: var(--serif); font-size: clamp(10px, 1.3cqw, 17px); font-weight: 700; }
+    .mk-ae .e-msg.news b { font: 700 clamp(8px, 0.85cqw, 11px) system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #B4442A; }
+    .mk-ae .e-msg.news i { display: none; }
+    @@keyframes ePop { from { opacity: 0; transform: translateY(1.4cqw) scale(0.94); } }
+    /* the quiet: the feed dims and one small tag drops in */
+    .mk-ae .e-feed .e-post, .mk-ae .e-feed .e-stream, .mk-ae .e-feed .e-count { transition: opacity 0.6s ease, filter 0.6s ease; }
+    .mk-ae .e-cover.quiet .e-feed .e-post, .mk-ae .e-cover.quiet .e-feed .e-stream { opacity: 0.18; filter: blur(0.15cqw); }
+    .mk-ae .e-tag { position: absolute; left: 50%; top: 52%; z-index: 3; display: grid; justify-items: center; gap: 0.3cqw; padding: 1.4cqw 2.2cqw 1.6cqw; border-radius: 0.8cqw; background: #F0A55A; color: #14213D;
+        transform: translate(-50%, -50%) rotate(-4deg) scale(0.6); opacity: 0; box-shadow: 0 1.6cqw 3cqw -1cqw rgba(0, 0, 0, 0.6); }
+    .mk-ae .e-tag::before { content: ""; position: absolute; top: 0.8cqw; left: 50%; width: 1cqw; height: 1cqw; margin-left: -0.5cqw; border-radius: 50%; background: #1A2B4A; }
+    .mk-ae .e-tag small { margin-top: 1cqw; font: 700 clamp(8px, 0.95cqw, 12px) system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; }
+    .mk-ae .e-tag b { font-family: var(--serif); font-size: clamp(34px, 6cqw, 80px); line-height: 1; }
+    .mk-ae .e-cover.quiet .e-tag { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg); transition: opacity 0.3s ease, transform 0.6s cubic-bezier(.2, 1.5, .4, 1); }
 
     /* 2. what happened: a timeline */
     .mk-ae .e-line { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6cqw; margin: auto 0; padding: 2.4cqw 0 0; list-style: none; }
@@ -138,6 +168,11 @@
 
     @@container (max-width: 640px) {
         .mk-ae .e-cover { flex-direction: column; align-items: stretch; padding: 6cqw 5cqw 10cqw; }
+        .mk-ae .e-feed { flex: none; height: 120cqw; }
+        .mk-ae .e-post { grid-template-columns: 20cqw 1fr; }
+        .mk-ae .e-msg { font-size: 11.5px; padding: 6px 9px; border-radius: 12px; }
+        .mk-ae .e-msg.news { font-size: 13px; }
+        .mk-ae .e-post p, .mk-ae .e-post .who, .mk-ae .e-post .acts { font-size: 11px; }
         .mk-ae .e-two, .mk-ae .e-vs, .mk-ae .e-kk { grid-template-columns: 1fr !important; }
         .mk-ae .e-line { grid-template-columns: 1fr 1fr; row-gap: 4cqw; }
         .mk-ae .e-board { padding: 0; gap: 3cqw; }
@@ -177,11 +212,20 @@
                     <h4 class="e-title">40 billion impressions. <em>1% growth.</em></h4>
                     <p class="e-lede">Did the Sydney Sweeney controversy sell the jeans? For one season. Here’s how to make it sell the brand.</p>
                 </div>
-                <div class="e-meters" role="img" aria-label="Two meters. Campaign impressions race to more than 40 billion. American Eagle brand comparable sales in the first full quarter of the ads reach just plus 1 percent.">
-                    <div class="e-meter imp"><small>Campaign impressions</small><b data-e-imp>0</b><div class="bar"><i></i></div></div>
-                    <div class="e-meter comp"><small>American Eagle brand comps, first full quarter</small><b data-e-comp>+0%</b><div class="bar"><i></i></div></div>
+                <div class="e-feed" role="img" aria-label="An Instagram post of the Sydney Sweeney Has Great Jeans ad floods with comments, DMs and shares, half loving it and half furious, while impressions climb past 40 billion. Then the feed goes quiet and a small tag reads: American Eagle brand comparable sales, plus 1 percent.">
+                    <div class="e-count"><small>impressions</small><b data-e-imp>0</b></div>
+                    <div class="e-post">
+                        <div class="img">Sydney Sweeney has great jeans.</div>
+                        <div>
+                            <span class="who"><i></i>americaneagle <em>✓</em></span>
+                            <p>Fall ’25. Genes are passed down from parents to offspring… 👖</p>
+                            <div class="acts"><span>♥ <i data-e-likes>0</i></span><span>💬 <i data-e-comments>0</i></span><span>↗ <i data-e-shares>0</i></span></div>
+                        </div>
+                    </div>
+                    <div class="e-stream" aria-hidden="true"></div>
+                    <div class="e-tag" aria-hidden="true"><small>AE brand comps</small><b>+1%</b></div>
                 </div>
-                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results</span>
+                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results. Headlines: NBC News, Bored Panda (2025). Comments and post counts are illustrative.</span>
                 @Html.Raw(esig)
             </div>
 
@@ -359,30 +403,64 @@
 </div>
 
 <script>
-    // Cover: the impressions counter races to 40 billion; then the brand's comps crawl to +1%; hold, and loop
+    // Cover: the feed explodes (comments, DMs, shares, love and rage) while impressions climb to 40 billion;
+    // then it all goes quiet and one tag drops: AE brand comps, +1%. Comments are illustrative, not real accounts.
     (() => {
-        const meters = document.querySelector('.mk-ae .e-meters');
-        if (!meters) return;
-        const imp = meters.querySelector('[data-e-imp]'), comp = meters.querySelector('[data-e-comp]');
-        const impBar = meters.querySelector('.imp .bar i'), compBar = meters.querySelector('.comp .bar i');
-        const show = (i, c) => {
-            imp.textContent = Math.round(40e9 * i).toLocaleString('en-US');
-            impBar.style.setProperty('--w', (i * 100) + '%');
-            comp.textContent = c >= 1 ? '+1%' : c <= 0 ? '+0%' : `+${c.toFixed(1)}%`;
-            compBar.style.setProperty('--w', (c * 2.5) + '%');   // the same scale idea: 1% fills a sliver
+        const cover = document.querySelector('.mk-ae .e-cover');
+        if (!cover) return;
+        const stream = cover.querySelector('.e-stream');
+        const n = sel => cover.querySelector(sel);
+        const msgs = [
+            ['love', 'jeanqueen', 'ok the jeans are actually cute 😍'],
+            ['hate', 'mara.k', 'jeans or GENES?? who approved this 😬'],
+            ['dm', '', 'did u see the AE ad 💀'],
+            ['love', 'tayo.fits', 'ordering rn'],
+            ['hate', 'lex_reads', 'not shopping here again. bye'],
+            ['share', '', '↗ shared to 4 group chats'],
+            ['love', 'k.brooks', 'SOLD OUT already??'],
+            ['hate', 'dee', 'the pun is doing a lot of work'],
+            ['news', 'NBC News', 'Sweeney on the ad: “I love jeans… I’m against hate.”'],
+            ['dm', '', 'omg it’s on the news now'],
+            ['love', 'sam_j', 'best jeans ad in years tbh'],
+            ['hate', 'nina.o', 'boycott 🚫'],
+            ['share', '', '↗ reposted to story · 12.4K'],
+            ['love', 'priya.p', 'the curvy straight in 6 pls 🙏'],
+            ['dm', '', 'ok but where do i get them'],
+            ['news', 'Bored Panda', '“Now I Understand Why People Hate Her”'],
+            ['hate', 'jules', 'this is a choice, AE'],
+            ['love', 'mo', 'my mom bought two pairs lol']
+        ];
+        const avatars = ['#E9A178', '#8DA7C7', '#C98FB3', '#7FBF9E', '#E6C46A', '#9C8FD1'];
+        const fmt = v => Math.round(v).toLocaleString('en-US');
+        const ease = x => 1 - Math.pow(1 - x, 2.4);
+        const counts = p => {
+            n('[data-e-imp]').textContent = fmt(40e9 * ease(p));
+            n('[data-e-likes]').textContent = fmt(2.1e6 * ease(p));
+            n('[data-e-comments]').textContent = fmt(186e3 * ease(p));
+            n('[data-e-shares]').textContent = fmt(940e3 * ease(p));
         };
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { show(1, 1); return; }
+        const add = ([kind, who, text], k) => {
+            const el = document.createElement('div');
+            el.className = `e-msg ${kind}`;
+            el.style.setProperty('--av', avatars[k % avatars.length]);
+            el.innerHTML = kind === 'news' ? `<i></i><b>${who}</b><span>${text}</span>` : `<i></i><span>${who ? `<b>${who}</b>` : ''}${text}</span>`;
+            stream.append(el);
+            while (stream.children.length > 9) stream.firstElementChild.remove();
+        };
+        const reset = () => { stream.replaceChildren(); cover.classList.remove('quiet'); counts(0); };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { msgs.slice(0, 7).forEach(add); counts(1); return; }
+        // beats of 280ms: 16 messages pour in (about 4.5s), hold a beat, go quiet with the tag for about 3s, then again
         let t = 0;
-        const ease = x => 1 - Math.pow(1 - x, 3);
         const tick = () => {
-            if (t <= 30) show(ease(t / 30), 0);                 // 3s: impressions fly up
-            else if (t <= 50) show(1, (t - 30) / 20);           // 2s: comps creep to +1%
-            if (t === 90) { show(0, 0); t = -1; }                // hold 4s, then again
+            if (t === 0) reset();
+            if (t < msgs.length) { add(msgs[t], t); counts((t + 1) / msgs.length); }
+            if (t === msgs.length + 2) cover.classList.add('quiet');
+            if (t === msgs.length + 14) { t = -1; }
             t++;
         };
-        show(0, 0);
+        reset();
         // autoplay.js loads after this view
-        const start = () => window.autoplay(meters, tick, 100);
+        const start = () => window.autoplay(cover, tick, 280);
         window.autoplay ? start() : addEventListener('load', start);
     })();
 </script>
