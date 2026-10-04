@@ -92,11 +92,39 @@
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="FuelFlow slides">
                 <div class="mk-stage">
 
-                    @* 1. a 15-second film of a UT student's day: classes stack up, lunch gets crossed out, the survey numbers,
-                       then the station and the logo (tools/record/fuelflow-cover.html, recorded with record.mjs) *@
+                    @* 1. the cover plays out the insight: her watch says next class in 10 minutes, she walks right past the food,
+                       grabs a Celsius instead (energy spikes, then crashes), then a FuelFlow station drops into the building she's
+                       walking into and her battery fills for real. The map is a sketch of the blocks around McCombs, not to scale. *@
                     <div class="mk-slide ff-cover" data-title="The day">
-                        <video class="ff-film" src="/videos/projects/fuelflow-cover.mp4" poster="/videos/projects/fuelflow-cover.jpg" muted loop playsinline autoplay
-                               aria-label="A Tuesday at UT Austin: back-to-back classes from 8 AM to 3:30 PM, lunch crossed out with no time, energy draining to 18%. Then: 32% of UT students surveyed were food insecure and 90% had never used the campus food pantry. A FuelFlow station rises into McCombs with 10g+ protein, nothing over $12.50 and a 60-second checkout, and the energy refills. It ends on the FuelFlow logo: real food where students already are."></video>
+                        <div class="ff-copy">
+                            <p class="ff-kick">FuelFlow · product pitch</p>
+                            <h4 class="ff-title">The help exists. Nobody walks to it. <em>So we put it where they already are.</em></h4>
+                            <div class="ff-status">
+                                <div class="ff-watch" aria-hidden="true">
+                                    <span class="ff-gcal">Google Calendar</span>
+                                    <b>Strategic IT Mgmt</b>
+                                    <span>11:00 · GSB 2.124</span>
+                                    <em>in 10 min</em>
+                                </div>
+                                <div class="ff-batt" aria-hidden="true"><i></i><span data-ff-pct>72%</span></div>
+                            </div>
+                            <p class="ff-stat" aria-live="off"><span class="a"><b>90%</b> of UT students surveyed never used the free campus pantry.</span><span class="b"><b>51%</b> of college students drink energy drinks every month instead.</span><span class="c"><b>60 sec</b> checkout, 10g+ protein, nothing over $12.50.</span></p>
+                        </div>
+                        <svg class="ff-map" viewBox="0 0 600 420" role="img" aria-label="A sketch map of the blocks around McCombs. A student walks from her last class toward GSB, right past the SAC food court and the campus pantry, and buys a Celsius from a vending machine instead. Her energy spikes and then crashes. Then a FuelFlow station appears inside GSB and her energy fills back up.">
+                            <path class="st" d="M300 0V420M0 110H600M0 350H600"/>
+                            <text class="sn" x="306" y="404">Speedway</text><text class="sn" x="8" y="104">24th St</text><text class="sn" x="8" y="344">21st St</text>
+                            <g class="bl food"><rect x="130" y="140" width="130" height="95" rx="10"/><text x="195" y="184">SAC</text><text class="sm" x="195" y="203">food court</text></g>
+                            <g class="bl food"><rect x="40" y="20" width="150" height="66" rx="10"/><text x="115" y="50">UT Outpost</text><text class="sm" x="115" y="69">free pantry</text></g>
+                            <g class="bl"><rect x="90" y="270" width="150" height="62" rx="10"/><text x="165" y="306">UTC</text></g>
+                            <g class="bl her"><rect x="340" y="150" width="150" height="100" rx="10"/><text x="415" y="196">GSB</text><text class="sm" x="415" y="215">her next class</text></g>
+                            <g class="bl"><rect x="340" y="268" width="150" height="66" rx="10"/><text x="415" y="306">CBA</text></g>
+                            <path class="route" d="M240 300 C268 300 286 290 300 272 L300 228 C316 214 334 206 352 204"/>
+                            <g class="can" transform="translate(300 250)"><rect x="-9" y="-17" width="18" height="34" rx="4"/><path d="M-9 -6H9"/><text y="7">C</text></g>
+                            <text class="cantag" x="312" y="262">Celsius</text>
+                            <g class="station" transform="translate(486 152)"><rect x="-28" y="-20" width="56" height="40" rx="9"/><text y="5">FuelFlow</text></g>
+                            <circle class="dot" r="9" cx="240" cy="300"/>
+                        </svg>
+                        <span class="ff-src">Sources: UT Student Government survey, 2022 (The Daily Texan); Malinauskas et al., Nutrition Journal, 2007. Map not to scale.</span>
                     </div>
 
 <div class="mk-slide" data-title="Summary" hidden>
@@ -1168,6 +1196,46 @@
         });
         fit();
         new ResizeObserver(fit).observe(build);
+    })();
+
+    // FuelFlow cover, one loop of about 14 seconds: the watch buzzes (next class in 10), she walks past the food,
+    // grabs a Celsius (energy spikes, then crashes by the time she's at GSB), then FuelFlow drops into GSB and she refuels.
+    (() => {
+        const cover = document.querySelector('.mk-ff .ff-cover');
+        if (!cover) return;
+        const route = cover.querySelector('.route'), dot = cover.querySelector('.dot'), batt = cover.querySelector('.ff-batt'), pct = cover.querySelector('[data-ff-pct]');
+        const len = route.getTotalLength(), canAt = 0.62;
+        const place = p => { const pt = route.getPointAtLength(len * p); dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y); };
+        const charge = v => {
+            v = Math.round(v);
+            batt.style.setProperty('--pct', v + '%');
+            batt.style.setProperty('--batt', v < 30 ? '#C0392B' : v < 60 ? '#D68A1F' : '#7B9A5C');
+            pct.textContent = v + '%';
+        };
+        const scene = s => { if (cover.dataset.scene !== s) cover.dataset.scene = s; };
+        let t = 0;
+        const frame = () => {
+            if (t === 0) { scene('alert'); place(0); charge(72); cover.classList.remove('canned'); cover.classList.add('buzz'); }
+            if (t === 8) cover.classList.remove('buzz');
+            if (t >= 20 && t < 70) {                                   // the walk: past SAC and the pantry, a Celsius on the way
+                scene('walk');
+                const p = (t - 20) / 49;
+                place(p);
+                if (p >= canAt) {
+                    cover.classList.add('canned');
+                    const since = (p - canAt) / (1 - canAt);         // spike to 96%, then fall to 22% by GSB
+                    charge(since < 0.2 ? 72 + 24 * (since / 0.2) : 96 - 74 * ((since - 0.2) / 0.8));
+                } else charge(72 - 18 * (p / canAt));
+            }
+            if (t >= 70 && t < 90) { scene('crash'); charge(22); }
+            if (t >= 90 && t < 140) { scene('fix'); cover.classList.remove('canned'); charge(Math.min(92, 22 + (t - 90) * 3.5)); }
+            t = (t + 1) % 140;
+        };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { scene('fix'); place(1); charge(92); return; }
+        frame();
+        // autoplay.js loads after this view
+        const start = () => window.autoplay(cover, frame, 100);
+        window.autoplay ? start() : addEventListener('load', start);
     })();
 
     // Starbucks cover: one regular's four weeks drop in cup by cup while the total climbs, then it starts over.
