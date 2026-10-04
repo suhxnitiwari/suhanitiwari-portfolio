@@ -1,0 +1,388 @@
+@* 40 Billion Impressions, 1% Growth: my American Eagle strategy, in the Marketing carousel (rendered from _MarketingWork.cshtml).
+   The look: indigo denim, cream canvas, a stitched orange seam like the thread on a pair of jeans. Same slideshow as the other decks.
+   Numbers checked Oct 2026: AEO quarterly results (Q3 FY25 through Q2 FY26), AE's own campaign disclosures (via Variety, Glossy),
+   Morning Consult (via Forbes), the stock move (Entrepreneur), Digiday on the 2026 return. *@
+<style>
+    .mk-ae { --e-ink: #14213D; --e-denim: #2F4A73; --e-wash: #6F8FB8; --e-sky: #DCE5F0; --e-cream: #F7F4EE; --e-thread: #D9822B; --e-mute: #5C6575; --e-line: #D5DCE6; --e-aerie: #C9798B; }
+
+    .mk-ae .mk-stage { border: 1px solid var(--e-line); background: radial-gradient(70% 70% at 75% 40%, #FFFFFF 0%, var(--e-cream) 60%, #ECE6DB 100%); }
+    .mk-ae .mk-slide { color: var(--e-ink); padding: 3.6cqw 4.8cqw 3cqw; gap: 1.4cqw; }
+    .mk-ae .mk-slide p { color: var(--e-mute); }
+    .mk-ae .e-kick { margin: 0; font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--e-thread) !important; }
+    .mk-ae .e-h { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(18px, 3.3cqw, 40px); line-height: 1.08; letter-spacing: -0.02em; color: var(--e-ink); }
+    .mk-ae .e-h em { font-weight: 400; font-style: italic; color: var(--e-denim); }
+    .mk-ae .e-lede { margin: 0; font-size: clamp(12px, 1.45cqw, 17px) !important; line-height: 1.55 !important; }
+    .mk-ae .e-lede b { color: var(--e-ink); }
+    /* a stitched seam under every heading, like the orange thread on denim */
+    .mk-ae .e-seam { height: 0; width: 12cqw; border-top: 2px dashed var(--e-thread); }
+    .mk-ae .e-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 4; font-family: var(--serif); font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--e-denim); }
+    .mk-ae .e-src { position: absolute; left: 4.8cqw; bottom: 2.2cqw; font-size: clamp(8px, 0.8cqw, 10px); color: #98A0AD; }
+    .mk-ae .e-card { background: rgba(255, 255, 255, 0.9); border: 1px solid var(--e-line); border-radius: 1.2cqw; box-shadow: 0 1cqw 2.4cqw -1.6cqw rgba(20, 33, 61, 0.35); }
+    .mk-ae .e-two { display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; align-items: center; flex: 1; min-height: 0; }
+    .mk-ae .e-take { margin-top: auto; padding: 1.1cqw 1.4cqw; border-left: 3px solid var(--e-thread); background: rgba(217, 130, 43, 0.08); font-size: clamp(11px, 1.3cqw, 16px); color: var(--e-ink); }
+    .mk-ae .e-take b { color: var(--e-thread); }
+    @@keyframes eRise { from { opacity: 0; transform: translateY(1.4cqw); } }
+
+    /* 1. cover: the impressions counter races to 40 billion while the brand's comps crawl to +1% */
+    .mk-ae .e-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 5cqw 5cqw;
+        background: radial-gradient(80% 90% at 78% 45%, #2C4670 0%, #1A2B4A 55%, #121E36 100%); color: #F2EEE6; }
+    .mk-ae .e-cover .e-copy { flex: 0 0 42%; display: flex; flex-direction: column; gap: 1.6cqw; }
+    .mk-ae .e-cover .e-kick { color: #F0A55A !important; }
+    .mk-ae .e-title { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(28px, 5cqw, 64px); line-height: 1; letter-spacing: -0.03em; color: #F7F4EE; }
+    .mk-ae .e-title em { display: block; font-weight: 400; font-style: italic; color: #F0A55A; }
+    .mk-ae .e-cover .e-lede { color: rgba(242, 238, 230, 0.8) !important; }
+    .mk-ae .e-cover .e-sig { color: #F0A55A; }
+    .mk-ae .e-cover .e-src { color: rgba(242, 238, 230, 0.45); }
+    .mk-ae .e-meters { flex: 1; display: grid; gap: 2.4cqw; }
+    .mk-ae .e-meter { display: grid; gap: 0.8cqw; }
+    .mk-ae .e-meter small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(242, 238, 230, 0.6); }
+    .mk-ae .e-meter b { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 5cqw, 66px); line-height: 1; font-variant-numeric: tabular-nums; color: #FFFFFF; }
+    .mk-ae .e-meter .bar { height: 2.2cqw; border-radius: 99px; background: rgba(242, 238, 230, 0.12); overflow: hidden; }
+    .mk-ae .e-meter .bar i { display: block; height: 100%; width: var(--w, 0%); border-radius: 99px; transition: width 0.12s linear; }
+    .mk-ae .e-meter.imp .bar i { background: linear-gradient(90deg, #6F8FB8, #DCE5F0); }
+    .mk-ae .e-meter.comp b { color: #F0A55A; }
+    .mk-ae .e-meter.comp .bar i { background: #F0A55A; }
+
+    /* 2. what happened: a timeline */
+    .mk-ae .e-line { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6cqw; margin: auto 0; padding: 2.4cqw 0 0; list-style: none; }
+    .mk-ae .e-line::before { content: ""; position: absolute; left: 0; right: 0; top: 0.7cqw; border-top: 2px dashed var(--e-thread); }
+    .mk-ae .e-line li { position: relative; display: flex; flex-direction: column; gap: 0.5cqw; animation: eRise 0.5s ease both; animation-delay: calc(var(--n) * 0.15s); }
+    .mk-ae .e-line li::before { content: ""; position: absolute; top: -2.3cqw; left: 0; width: 1.4cqw; height: 1.4cqw; border-radius: 50%; background: var(--e-denim); box-shadow: 0 0 0 0.4cqw var(--e-cream); }
+    .mk-ae .e-line small { font-size: clamp(9px, 1.15cqw, 14px); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--e-thread); }
+    .mk-ae .e-line b { font-family: var(--serif); font-size: clamp(15px, 2.4cqw, 30px); line-height: 1.15; color: var(--e-ink); }
+    .mk-ae .e-line span { font-size: clamp(11px, 1.45cqw, 17px); line-height: 1.4; color: var(--e-mute); }
+
+    /* 3. did people leave: favorability bars */
+    .mk-ae .e-fav { display: grid; gap: 1.1cqw; }
+    .mk-ae .e-fav li { display: grid; grid-template-columns: 14cqw 1fr 4cqw; align-items: center; gap: 1cqw; list-style: none; font-size: clamp(11px, 1.25cqw, 15px); color: var(--e-ink); }
+    .mk-ae .e-fav i { height: 2cqw; border-radius: 0.5cqw; width: calc(var(--v) * 1%); background: var(--e-denim); transform-origin: left; animation: eGrow 0.9s cubic-bezier(.2, .7, .2, 1) both; }
+    .mk-ae .e-fav li.neg i { background: var(--e-thread); }
+    .mk-ae .e-fav b { font-family: var(--serif); font-size: 1.3em; }
+    .mk-ae ul.e-fav { margin: 0; padding: 0; }
+    @@keyframes eGrow { from { transform: scaleX(0); } }
+    .mk-ae .e-quote { padding: 2cqw 2.2cqw; font-family: var(--serif); font-style: italic; font-size: clamp(16px, 2.3cqw, 28px); line-height: 1.2; color: var(--e-ink); }
+    .mk-ae .e-quote small { display: block; margin-top: 1cqw; font-family: system-ui, sans-serif; font-style: normal; font-size: clamp(9px, 1cqw, 12px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--e-mute); }
+
+    /* 4. the scoreboard: AE brand vs Aerie comps, four quarters, around a zero line */
+    .mk-ae .e-board { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.4cqw; align-items: stretch; min-height: 0; padding: 0 2cqw; }
+    .mk-ae .e-q { display: grid; grid-template-rows: 1fr auto; gap: 0.8cqw; }
+    .mk-ae .e-q .plot { position: relative; display: flex; justify-content: center; gap: 1cqw; }
+    .mk-ae .e-q .plot::after { content: ""; position: absolute; left: -1.2cqw; right: -1.2cqw; top: 80%; border-top: 1px solid var(--e-ink); }
+    .mk-ae .e-q .col { position: relative; width: 4.4cqw; }
+    .mk-ae .e-q .col i { position: absolute; left: 0; right: 0; border-radius: 0.5cqw; transform-origin: bottom; animation: eUp 1s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d, 0s); }
+    .mk-ae .e-q .col.up i { bottom: 20%; height: calc(var(--v) * 2.6%); }
+    .mk-ae .e-q .col.down i { top: 80%; height: calc(var(--v) * -2.6%); transform-origin: top; }
+    .mk-ae .e-q .col.ae i { background: var(--e-denim); }
+    .mk-ae .e-q .col.ar i { background: var(--e-aerie); }
+    .mk-ae .e-q .col b { position: absolute; left: -1cqw; right: -1cqw; text-align: center; font-family: var(--serif); font-size: clamp(12px, 1.7cqw, 21px); color: var(--e-ink); }
+    .mk-ae .e-q .col.up b { bottom: calc(20% + var(--v) * 2.6% + 0.4cqw); }
+    .mk-ae .e-q .col.down b { top: calc(80% + var(--v) * -2.6% + 0.4cqw); color: #B4442A; }
+    .mk-ae .e-q span { text-align: center; font-size: clamp(9px, 1.05cqw, 13px); line-height: 1.3; color: var(--e-mute); }
+    .mk-ae .e-q span strong { display: block; color: var(--e-ink); }
+    @@keyframes eUp { from { transform: scaleY(0); } }
+    .mk-ae .e-key { display: flex; gap: 2cqw; font-size: clamp(10px, 1.1cqw, 13px); color: var(--e-mute); }
+    .mk-ae .e-key i { display: inline-block; width: 1.1cqw; height: 1.1cqw; margin-right: 0.5cqw; border-radius: 0.3cqw; vertical-align: -0.1em; }
+
+    /* 5. buzz vs belonging */
+    .mk-ae .e-vs { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; margin-top: 1cqw; }
+    .mk-ae .e-vs > div { display: flex; flex-direction: column; gap: 1cqw; padding: 2cqw 2.2cqw; animation: eRise 0.6s ease both; }
+    .mk-ae .e-vs > div:nth-child(2) { animation-delay: 0.25s; }
+    .mk-ae .e-vs small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--e-denim); }
+    .mk-ae .e-vs .ar small { color: var(--e-aerie); }
+    .mk-ae .e-vs h5 { margin: 0; font-family: var(--serif); font-size: clamp(18px, 3cqw, 36px); line-height: 1.1; color: var(--e-ink); }
+    .mk-ae .e-vs ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 1cqw; font-size: clamp(12px, 1.6cqw, 19px); color: var(--e-ink); }
+    .mk-ae .e-vs li::before { content: "→ "; color: var(--e-thread); }
+
+    /* 6 to 8. the moves */
+    .mk-ae .e-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1cqw; }
+    .mk-ae .e-list li { padding: 1.1cqw 1.4cqw; font-size: clamp(11px, 1.35cqw, 16px); color: var(--e-ink); animation: eRise 0.45s ease both; animation-delay: calc(var(--n) * 0.18s); }
+    .mk-ae .e-list li b { color: var(--e-denim); }
+    /* move 1: a phone with the follow-up text */
+    .mk-ae .e-phone { width: 19cqw; aspect-ratio: 9 / 17; margin: 0 auto; padding: 2.4cqw 1.4cqw; border-radius: 3cqw; background: #FFFFFF; box-shadow: inset 0 0 0 0.4cqw var(--e-ink), 0 2cqw 4cqw -1.6cqw rgba(20, 33, 61, 0.5);
+        display: flex; flex-direction: column; justify-content: center; gap: 1cqw; font-size: clamp(9px, 1.05cqw, 13px); }
+    .mk-ae .e-phone p { margin: 0; padding: 0.9cqw 1.1cqw; border-radius: 1.4cqw 1.4cqw 1.4cqw 0.3cqw; background: var(--e-sky); color: var(--e-ink) !important; line-height: 1.35; animation: eRise 0.5s ease both; }
+    .mk-ae .e-phone p:nth-of-type(2) { animation-delay: 0.6s; }
+    .mk-ae .e-phone p:nth-of-type(3) { animation-delay: 1.2s; align-self: flex-end; border-radius: 1.4cqw 1.4cqw 0.3cqw 1.4cqw; background: var(--e-denim); color: #FFF !important; }
+    .mk-ae .e-phone small { color: var(--e-mute); text-align: center; }
+    /* move 2: a wall of real customers' back pockets, one celebrity tile among them */
+    .mk-ae .e-wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8cqw; }
+    .mk-ae .e-wall span { aspect-ratio: 1; display: grid; place-items: end start; padding: 0.6cqw; border-radius: 0.8cqw; font-size: clamp(8px, 0.9cqw, 11px); font-weight: 700; color: #FFF;
+        background: linear-gradient(160deg, var(--c1), var(--c2)); animation: eRise 0.45s ease both; animation-delay: calc(var(--n) * 0.06s); }
+    .mk-ae .e-wall span.star { outline: 0.3cqw solid var(--e-thread); outline-offset: -0.3cqw; }
+    /* move 3: the pun vs the plain line */
+    .mk-ae .e-ads { display: grid; gap: 1.2cqw; }
+    .mk-ae .e-ads div { padding: 1.6cqw 1.8cqw; display: flex; flex-direction: column; gap: 0.5cqw; }
+    .mk-ae .e-ads b { font-family: var(--serif); font-size: clamp(15px, 2.1cqw, 26px); color: var(--e-ink); }
+    .mk-ae .e-ads small { font-size: clamp(9px, 1.05cqw, 13px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .mk-ae .e-ads .risky b { text-decoration: line-through; text-decoration-color: var(--e-thread); text-decoration-thickness: 2px; }
+    .mk-ae .e-ads .risky small { color: #B4442A; }
+    .mk-ae .e-ads .safe small { color: var(--e-denim); }
+
+    /* 9. kill, keep */
+    .mk-ae .e-kk { display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw; margin-top: 1cqw; }
+    .mk-ae .e-kk > div { padding: 2cqw 2.2cqw; display: flex; flex-direction: column; gap: 1cqw; animation: eRise 0.6s ease both; }
+    .mk-ae .e-kk > div:nth-child(2) { animation-delay: 0.3s; }
+    .mk-ae .e-kk small { font-size: clamp(9px, 1cqw, 12px); font-weight: 700; letter-spacing: 0.3cqw; color: var(--e-thread); }
+    .mk-ae .e-kk b { font-family: var(--serif); font-size: clamp(15px, 2.3cqw, 28px); line-height: 1.25; color: var(--e-ink); }
+    .mk-ae .e-kk .kill b { text-decoration: line-through; text-decoration-color: var(--e-thread); text-decoration-thickness: 2px; }
+
+    /* 10. takeaway */
+    .mk-ae .e-end { justify-content: center; background: radial-gradient(80% 90% at 70% 40%, #2C4670 0%, #1A2B4A 55%, #121E36 100%); }
+    .mk-ae .e-end .e-kick { color: #F0A55A !important; }
+    .mk-ae .e-end .e-title { font-size: clamp(24px, 4.6cqw, 58px); max-width: 60cqw; }
+    .mk-ae .e-end .e-lede { max-width: 58cqw; color: rgba(242, 238, 230, 0.85) !important; }
+    .mk-ae .e-end .e-lede b { color: #FFFFFF; }
+    .mk-ae .e-end .e-sig { color: #F0A55A; }
+
+    .mk-ae .mk-chapters button[aria-pressed="true"] { background: var(--e-ink); border-color: var(--e-ink); }
+
+    @@container (max-width: 640px) {
+        .mk-ae .e-cover { flex-direction: column; align-items: stretch; padding: 6cqw 5cqw 10cqw; }
+        .mk-ae .e-two, .mk-ae .e-vs, .mk-ae .e-kk { grid-template-columns: 1fr !important; }
+        .mk-ae .e-line { grid-template-columns: 1fr 1fr; row-gap: 4cqw; }
+        .mk-ae .e-board { padding: 0; gap: 3cqw; }
+        .mk-ae .e-q .col { width: 6cqw; }
+        .mk-ae .e-fav li { grid-template-columns: 26cqw 1fr 8cqw; }
+        .mk-ae .e-phone { width: 46cqw; }
+        /* phones stack slides at their natural height: give the chart a real height, and put sources in the flow */
+        .mk-ae .e-board { flex: none; height: 78cqw; }
+        .mk-ae .e-src { position: static; margin-top: 3cqw; padding-right: 18cqw; }
+        .mk-ae .e-take { margin-top: 3cqw; }
+        .mk-ae .e-line { margin: 3cqw 0; }
+        .mk-ae .e-wall { grid-template-columns: repeat(6, 1fr); }
+    }
+    @@media (prefers-reduced-motion: reduce) {
+        .mk-ae .e-line li, .mk-ae .e-fav i, .mk-ae .e-q .col i, .mk-ae .e-vs > div, .mk-ae .e-list li, .mk-ae .e-phone p, .mk-ae .e-wall span, .mk-ae .e-kk > div { animation: none; }
+    }
+</style>
+
+@{
+    const string esig = "<span class=\"e-sig\" aria-hidden=\"true\">suhani ✦</span>";
+    // American Eagle brand vs Aerie comparable sales, % (AEO quarterly results)
+    var quarters = new (string Q, string When, int AE, int Aerie)[]
+    {
+        ("Q3 FY25", "Aug to Oct 2025, ads’ first full quarter", 1, 11),
+        ("Q4 FY25", "Holiday 2025", 2, 23),
+        ("Q1 FY26", "Feb to Apr 2026", -2, 25),
+        ("Q2 FY26", "May to Jul 2026", -1, 19)
+    };
+}
+<div class="mp-proj mk-ae" id="mk-proj-americaneagle" role="tabpanel" aria-labelledby="mk-title-americaneagle" hidden>
+    <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="American Eagle slides">
+        <div class="mk-stage">
+            @* the cover plays the gap: a counter races to 40 billion impressions while the brand's comps crawl to +1% *@
+            <div class="mk-slide e-cover" data-title="The gap">
+                <div class="e-copy">
+                    <p class="e-kick">American Eagle strategy, 2026</p>
+                    <h4 class="e-title">40 billion impressions. <em>1% growth.</em></h4>
+                    <p class="e-lede">Did the Sydney Sweeney controversy sell the jeans? For one season. Here’s how to make it sell the brand.</p>
+                </div>
+                <div class="e-meters" role="img" aria-label="Two meters. Campaign impressions race to more than 40 billion. American Eagle brand comparable sales in the first full quarter of the ads reach just plus 1 percent.">
+                    <div class="e-meter imp"><small>Campaign impressions</small><b data-e-imp>0</b><div class="bar"><i></i></div></div>
+                    <div class="e-meter comp"><small>American Eagle brand comps, first full quarter</small><b data-e-comp>+0%</b><div class="bar"><i></i></div></div>
+                </div>
+                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results</span>
+                @Html.Raw(esig)
+            </div>
+
+            <div class="mk-slide" data-title="What happened" hidden>
+                @Html.Raw(esig)
+                <p class="e-kick">what happened</p>
+                <h4 class="e-h">One pun, one week, <em>one very loud summer.</em></h4>
+                <div class="e-seam"></div>
+                <ol class="e-line">
+                    <li style="--n: 0"><small>July 23, 2025</small><b>“Sydney Sweeney Has Great Jeans”</b><span>AE’s fall denim campaign launches.</span></li>
+                    <li style="--n: 1"><small>Days later</small><b>Jeans, or genes?</b><span>Critics read the pun as a line about race and beauty standards. The backlash goes national.</span></li>
+                    <li style="--n: 2"><small>Within a week</small><b>Sold out</b><span>The Sweeney jeans sell out, some styles in a day.</span></li>
+                    <li style="--n: 3"><small>August 2025</small><b>Stock up about 25%</b><span>The story turns political and shares jump.</span></li>
+                    <li style="--n: 4"><small>2026</small><b>AE doubles down</b><span>Sweeney returns in April, then “Syd for Short” in July.</span></li>
+                </ol>
+                <p class="e-take"><b>By AE’s count:</b> more than 40 billion impressions and more than 700,000 new customers.</p>
+                <span class="e-src">Source: AE press release (July 2025); Washington Post; Entrepreneur; Variety; Digiday (2026)</span>
+            </div>
+
+            <div class="mk-slide" data-title="Did they leave?" hidden>
+                @Html.Raw(esig)
+                <div class="e-two" style="grid-template-columns:1.1fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="e-kick">did people leave?</p>
+                        <h4 class="e-h">The backlash was loud online. <em>It never reached the register.</em></h4>
+                        <div class="e-seam"></div>
+                        <p class="e-lede">Through the summer of the controversy, American Eagle’s favorability barely moved. Almost nobody turned hard against it.</p>
+                        <ul class="e-fav" aria-label="American Eagle favorability, June to August 2025">
+                            <li style="--v: 49"><span>Favorable</span><i></i><b>49%</b></li>
+                            <li class="neg" style="--v: 4"><span>Very unfavorable</span><i></i><b>4%</b></li>
+                        </ul>
+                    </div>
+                    <div class="e-quote e-card">“Comment sections are not customers.”<small>Digiday headline, on AE bringing Sweeney back in 2026</small></div>
+                </div>
+                <span class="e-src">Source: Morning Consult via Forbes (Aug 2025): 30% somewhat and 19% very favorable; Digiday (2026)</span>
+            </div>
+
+            <div class="mk-slide" data-title="The scoreboard" hidden>
+                @Html.Raw(esig)
+                <p class="e-kick">the scoreboard</p>
+                <h4 class="e-h">The company grew. <em>The brand in the ad didn’t.</em></h4>
+                <div class="e-key"><span><i style="background:var(--e-denim)"></i>American Eagle brand</span><span><i style="background:var(--e-aerie)"></i>Aerie, AEO’s other brand</span></div>
+                <div class="e-board" role="img" aria-label="Comparable sales by quarter. American Eagle brand: plus 1, plus 2, minus 2, minus 1 percent. Aerie: plus 11, plus 23, plus 25, plus 19 percent.">
+                    @foreach (var q in quarters)
+                    {
+                        <div class="e-q">
+                            <div class="plot">
+                                <div class="col ae @(q.AE >= 0 ? "up" : "down")" style="--v: @q.AE"><i></i><b>@(q.AE > 0 ? "+" : "")@q.AE%</b></div>
+                                <div class="col ar up" style="--v: @q.Aerie; --d: 0.25s"><i></i><b>+@q.Aerie%</b></div>
+                            </div>
+                            <span><strong>@q.Q</strong>@q.When</span>
+                        </div>
+                    }
+                </div>
+                <span class="e-src">Source: AEO quarterly results, Q3 FY2025 to Q2 FY2026 (comparable sales by brand)</span>
+            </div>
+
+            <div class="mk-slide" data-title="Why" hidden>
+                @Html.Raw(esig)
+                <p class="e-kick">why</p>
+                <h4 class="e-h">Buzz buys a first pair. <em>Belonging buys the second.</em></h4>
+                <div class="e-seam"></div>
+                <div class="e-vs">
+                    <div class="e-card"><small>American Eagle</small><h5>Sells a moment</h5><ul><li>One celebrity and a double meaning</li><li>Built for the news cycle</li><li>700,000 new customers, no reason to come back</li></ul></div>
+                    <div class="e-card ar"><small>Aerie</small><h5>Sells belonging</h5><ul><li>Aerie Real: no retouching since 2014</li><li>Customers see themselves in the ads</li><li>Double-digit comps every quarter</li></ul></div>
+                </div>
+                <p class="e-take"><b>Four quarters, four wins:</b> Aerie’s comps beat American Eagle’s by 10 to 27 points every quarter since the ads ran.</p>
+                <span class="e-src">Source: AEO quarterly results; Aerie Real (2014); author analysis</span>
+            </div>
+
+            <div class="mk-slide" data-title="Move 1" hidden>
+                @Html.Raw(esig)
+                <div class="e-two" style="grid-template-columns:1.15fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="e-kick">move 01, the second pair</p>
+                        <h4 class="e-h">Turn 700,000 first pairs <em>into second ones.</em></h4>
+                        <div class="e-seam"></div>
+                        <p class="e-lede">The campaign already did the hard part. Every new customer gave AE their size and fit. Use it.</p>
+                        <ul class="e-list">
+                            <li class="e-card" style="--n: 0"><b>Fit profile:</b> save the exact cut and size they bought</li>
+                            <li class="e-card" style="--n: 1"><b>Second-pair drop:</b> early access to the next wash in their fit</li>
+                            <li class="e-card" style="--n: 2"><b>Track it:</b> repeat rate of campaign customers, not impressions</li>
+                        </ul>
+                    </div>
+                    <div class="e-phone" aria-hidden="true">
+                        <small>AE · text</small>
+                        <p>Your Curvy Straight in 6 just came in a fall wash 👖</p>
+                        <p>Same fit, held for you until Sunday.</p>
+                        <p>Hold mine</p>
+                    </div>
+                </div>
+                <span class="e-src">Source: author recommendation; 700,000 new customers per AE (2025)</span>
+            </div>
+
+            <div class="mk-slide" data-title="Move 2" hidden>
+                @Html.Raw(esig)
+                <div class="e-two" style="grid-template-columns:1.1fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="e-kick">move 02, the playbook in-house</p>
+                        <h4 class="e-h">Borrow Aerie’s playbook. <em>Put customers in the jeans ads.</em></h4>
+                        <div class="e-seam"></div>
+                        <p class="e-lede">Keep Sweeney as the headline, and surround her with real customers in the same jeans: every size, every city, tagged and shoppable.</p>
+                        <ul class="e-list">
+                            <li class="e-card" style="--n: 0"><b>Great jeans on everyone:</b> customer photos in every campaign</li>
+                            <li class="e-card" style="--n: 1"><b>Shop the fit:</b> each photo links to that exact cut</li>
+                        </ul>
+                    </div>
+                    <div class="e-wall" aria-hidden="true">
+                        @foreach (var (label, star, n) in new[] { ("size 2", false, 0), ("Austin", false, 1), ("size 16", false, 2), ("Chicago", false, 3), ("tall", false, 4), ("the ad", true, 5), ("size 10", false, 6), ("Miami", false, 7), ("petite", false, 8), ("size 22", false, 9), ("Seattle", false, 10), ("size 6", false, 11) })
+                        {
+                            var shades = new[] { ("#3F5E8C", "#1D3150"), ("#6F8FB8", "#3A577F"), ("#2F4A73", "#14213D"), ("#8DA7C7", "#4F6E98") };
+                            var (c1, c2) = shades[n % 4];
+                            <span class="@(star ? "star" : "")" style="--n: @n; --c1: @c1; --c2: @c2">@label</span>
+                        }
+                    </div>
+                </div>
+                <span class="e-src">Source: author recommendation, modeled on Aerie Real</span>
+            </div>
+
+            <div class="mk-slide" data-title="Move 3" hidden>
+                @Html.Raw(esig)
+                <div class="e-two" style="grid-template-columns:1.1fr 1fr">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="e-kick">move 03, the line</p>
+                        <h4 class="e-h">Keep the celebrity. <em>Drop the double meaning.</em></h4>
+                        <div class="e-seam"></div>
+                        <p class="e-lede">Sweeney sold the jeans. The pun is what made the story about something else. A plain line keeps the attention on the denim.</p>
+                    </div>
+                    <div class="e-ads">
+                        <div class="e-card risky"><small>Risky: reads two ways</small><b>Sydney Sweeney has great jeans.</b></div>
+                        <div class="e-card safe"><small>Safer: about the product</small><b>The jeans Sydney wears. In your fit.</b></div>
+                    </div>
+                </div>
+                <span class="e-src">Source: author recommendation</span>
+            </div>
+
+            <div class="mk-slide" data-title="Kill, keep" hidden>
+                @Html.Raw(esig)
+                <p class="e-kick">the hard calls</p>
+                <h4 class="e-h">Less news cycle. <em>More closet.</em></h4>
+                <div class="e-seam"></div>
+                <div class="e-kk">
+                    <div class="e-card kill"><small>KILL</small><b>Lines that read two ways</b><b>Measuring success in impressions</b><b>One face carrying the whole brand</b></div>
+                    <div class="e-card"><small>KEEP</small><b>Sweeney as the headline</b><b>Denim drops that sell out</b><b>The 700,000 new customers, by name and fit</b></div>
+                </div>
+                <p class="e-take"><b>The bet:</b> the attention is already paid for. What AE hasn’t built is a reason to come back.</p>
+            </div>
+
+            <div class="mk-slide e-end" data-title="The takeaway" hidden>
+                @Html.Raw(esig)
+                <p class="e-kick">how to measure it</p>
+                <h4 class="e-title">AE doesn’t need more impressions. <em>It needs second pairs.</em></h4>
+                <p class="e-lede"><b>The one number:</b> the share of campaign-acquired customers who buy again within a year. Impressions measure the noise. Repeat buyers measure the brand.</p>
+            </div>
+        </div>
+        <div class="mk-nav-row">
+            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+            <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+        </div>
+    </div>
+
+    <div class="mk-info">
+        <div>
+            <h3 id="mk-title-americaneagle">40 Billion Impressions, 1% Growth</h3>
+            <p class="mp-proof-sub">American Eagle’s Sydney Sweeney campaign won the internet. Did it sell the brand? My plan to turn one loud season into repeat customers.</p>
+        </div>
+        <ul class="mp-proof-list">
+            <li>Tracked four quarters of results by brand: American Eagle stayed near flat while Aerie grew double digits</li>
+            <li>Separated the noise from the register with Morning Consult’s favorability data</li>
+            <li>Three moves: win the second pair, borrow Aerie’s playbook, and keep the celebrity while dropping the double meaning</li>
+            <li>One metric: the repeat rate of the 700,000 customers the campaign brought in</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Cover: the impressions counter races to 40 billion; then the brand's comps crawl to +1%; hold, and loop
+    (() => {
+        const meters = document.querySelector('.mk-ae .e-meters');
+        if (!meters) return;
+        const imp = meters.querySelector('[data-e-imp]'), comp = meters.querySelector('[data-e-comp]');
+        const impBar = meters.querySelector('.imp .bar i'), compBar = meters.querySelector('.comp .bar i');
+        const show = (i, c) => {
+            imp.textContent = Math.round(40e9 * i).toLocaleString('en-US');
+            impBar.style.setProperty('--w', (i * 100) + '%');
+            comp.textContent = c >= 1 ? '+1%' : c <= 0 ? '+0%' : `+${c.toFixed(1)}%`;
+            compBar.style.setProperty('--w', (c * 2.5) + '%');   // the same scale idea: 1% fills a sliver
+        };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { show(1, 1); return; }
+        let t = 0;
+        const ease = x => 1 - Math.pow(1 - x, 3);
+        const tick = () => {
+            if (t <= 30) show(ease(t / 30), 0);                 // 3s: impressions fly up
+            else if (t <= 50) show(1, (t - 30) / 20);           // 2s: comps creep to +1%
+            if (t === 90) { show(0, 0); t = -1; }                // hold 4s, then again
+            t++;
+        };
+        show(0, 0);
+        // autoplay.js loads after this view
+        const start = () => window.autoplay(meters, tick, 100);
+        window.autoplay ? start() : addEventListener('load', start);
+    })();
+</script>
