@@ -301,16 +301,19 @@
             <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Starbucks slides">
                 <div class="mk-stage">
 
+                    @* The cover: one regular's month, cup by cup. The same order every weekday, all of it tapped in by hand,
+                       while the total climbs. The repetition is the insight, so the wall gets half the slide. *@
                     <div class="mk-slide sb-cover" data-title="Hook">
-                        <video class="sb-bg" src="/videos/projects/starbucks-cover.mp4" poster="/videos/projects/starbucks-cover.jpg" muted loop playsinline autoplay aria-label="Four weeks of one person’s orders fill a calendar: an oat latte every weekday, a Frappuccino and cake pop on Saturday, a hazelnut latte on Sunday. A gold scan finds the three patterns and fills in next week by itself"></video>
-                        <p class="sb-kick">Starbucks app strategy</p>
-                        <h4 class="sb-title">Starbucks’ app holds $12 billion a year. <em>It’s a glorified gift card.</em></h4>
-                        <p class="sb-lede"><b>35.8M</b> people open it to pay. Almost nobody opens it to plan: regulars tap through the same order every morning, and <b>2 in 3</b> orders still aren’t placed ahead in the app. Here’s how to make it a daily ritual instead.</p>
-                        <ul class="sb-chips">
-                            <li><b>35.8M</b>active Rewards members</li>
-                            <li><b>33%</b>of orders placed in the app</li>
-                            <li><b>59%</b>of store spend from members</li>
-                        </ul>
+                        <div class="sb-copy">
+                            <p class="sb-kick">Starbucks app strategy</p>
+                            <h4 class="sb-title">Starbucks’ app holds $12 billion a year. <em>It’s a glorified gift card.</em></h4>
+                            <p class="sb-one"><b>2 in 3</b> orders still aren’t placed ahead in the app.</p>
+                        </div>
+                        <figure class="sb-wall" role="img" aria-label="One regular’s four weeks: an oat latte every weekday, a Frappuccino on Saturday, a hazelnut latte on Sunday, every order tapped in by hand, while the total climbs past one hundred dollars">
+                            <figcaption class="sb-total"><b data-sb-total>$0.00</b><span><i data-sb-count>0</i> orders · every one by hand</span></figcaption>
+                            <div class="sb-days" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span class="we">Sat</span><span class="we">Sun</span></div>
+                            <ol class="sb-cups" aria-hidden="true"></ol>
+                        </figure>
                         <span class="sb-src">Source: Starbucks Card, Loyalty &amp; Mobile dashboard, Q3 FY26 (U.S.)</span>
                         <span class="sb-sig" aria-hidden="true">suhani ✦</span>
                     </div>
@@ -1165,5 +1168,39 @@
         });
         fit();
         new ResizeObserver(fit).observe(build);
+    })();
+
+    // Starbucks cover: one regular's four weeks drop in cup by cup while the total climbs, then it starts over.
+    // An oat latte every weekday, a Frappuccino and cake pop on Saturday, a hazelnut latte on Sunday.
+    (() => {
+        const wall = document.querySelector('.sb-cover .sb-wall');
+        if (!wall) return;
+        const cups = wall.querySelector('.sb-cups'), total = wall.querySelector('[data-sb-total]'), count = wall.querySelector('[data-sb-count]');
+        const latte = (sleeve, lid) => `<svg viewBox="0 0 40 52"><path d="M7 10h26l-3 40H10z" fill="#FBF7EF"/><path d="M8.6 22h22.8l-1 13H9.6z" fill="${sleeve}"/><circle cx="20" cy="28.5" r="4" fill="#0B6B47"/><circle cx="20" cy="28.5" r="1.8" fill="#FBF7EF"/><rect x="5" y="5" width="30" height="6" rx="2" fill="${lid}"/></svg>`;
+        const frap = `<svg viewBox="0 0 40 52"><path d="M20 0v14" stroke="#0B6B47" stroke-width="2.4"/><path d="M8 14a12 9 0 0 1 24 0z" fill="#F4E7D6"/><path d="M8 14h24l-3 36H11z" fill="#C99A6B"/><path d="M8 14h24l-.7 8H8.7z" fill="#EADBC7"/><circle cx="20" cy="31" r="4" fill="#0B6B47"/><circle cx="34" cy="10" r="4" fill="#F28DB2"/><path d="M34 14v12" stroke="#FBF7EF" stroke-width="1.4"/></svg>`;
+        const order = {
+            oat: { svg: latte('#C9A27A', '#F2EBDC'), price: 5.65 },
+            frap: { svg: frap, price: 10.40 },
+            hazel: { svg: latte('#6B4630', '#F2EBDC'), price: 5.95 }
+        };
+        // 28 days, Monday first; the last weekend hasn't happened yet
+        const days = Array.from({ length: 28 }, (_, d) => d >= 26 ? null : d % 7 === 5 ? 'frap' : d % 7 === 6 ? 'hazel' : 'oat');
+        cups.innerHTML = days.map(k => `<li>${k ? order[k].svg : ''}</li>`).join('');
+        const slots = [...cups.children];
+        let next = 0, sum = 0, n = 0, rest = 0;
+        const paint = () => { total.textContent = `$${sum.toFixed(2)}`; count.textContent = n; };
+        const reset = () => { slots.forEach(s => s.classList.remove('in')); next = 0; sum = 0; n = 0; paint(); };
+        const tick = () => {
+            if (rest > 0) { if (--rest === 0) reset(); return; }
+            while (next < days.length && !days[next]) next++;
+            if (next >= days.length) { rest = 18; return; }   // hold the full month for a few seconds
+            slots[next].classList.add('in');
+            sum += order[days[next]].price; n++; next++;
+            paint();
+        };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { while (next < days.length) tick(); return; }
+        // autoplay.js loads after this view
+        const start = () => window.autoplay(wall, tick, 170);
+        window.autoplay ? start() : addEventListener('load', start);
     })();
 </script>
