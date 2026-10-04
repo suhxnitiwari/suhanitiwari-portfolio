@@ -86,6 +86,37 @@
     .mk-rh .r-sound { position: absolute; left: 50%; bottom: 1.4cqw; transform: translateX(-50%); padding: 0.6cqw 1.4cqw; border: 0; border-radius: 99px; background: rgba(43, 38, 34, 0.75); color: var(--r-cream); font: 600 clamp(10px, 1cqw, 12px) system-ui, sans-serif; white-space: nowrap; cursor: pointer; }
     .mk-rh .r-sound:focus-visible { outline: 2px solid var(--r-cream); outline-offset: 2px; }
 
+    /* the cover: a shelf of rhode products whose labels flip, one at a time, from rhode to hailey */
+    .mk-rh .r-cover-one { padding-right: 46cqw; }
+    .mk-rh .r-shelf { position: absolute !important; z-index: 1; right: 4cqw; top: 50%; transform: translateY(-50%); width: 42cqw; height: 34cqw; display: flex; align-items: flex-end; justify-content: center; gap: 1.6cqw; }
+    .mk-rh .r-shelf::after { content: ""; position: absolute; left: -2cqw; right: -2cqw; bottom: -0.6cqw; height: 0.6cqw; border-radius: 0.6cqw; background: linear-gradient(180deg, #D9CCBD, #C4B4A2); box-shadow: 0 1.4cqw 2.4cqw -1cqw rgba(90, 70, 55, 0.45); }
+    .mk-rh .r-prod { position: relative; display: grid; place-items: center; box-shadow: inset -0.8cqw 0 1.2cqw rgba(0, 0, 0, 0.08), inset 0.6cqw 0 1cqw rgba(255, 255, 255, 0.6), 0 1cqw 1.6cqw -0.8cqw rgba(90, 70, 55, 0.45);
+        background: linear-gradient(90deg, #E9E6E2, #F7F5F2 40%, #DCD8D3); }
+    .mk-rh .r-prod.tube { width: 5.4cqw; height: 22cqw; border-radius: 1cqw 1cqw 2.7cqw 2.7cqw; }
+    .mk-rh .r-prod.stick { width: 6cqw; height: 12cqw; border-radius: 1.4cqw; background: linear-gradient(90deg, #C99E80, #E3C2A7 40%, #BE9273); }
+    .mk-rh .r-prod.stick::before { content: ""; position: absolute; top: -1.6cqw; left: 0.8cqw; right: 0.8cqw; height: 2cqw; border-radius: 1cqw 1cqw 0 0; background: #B9686A; }
+    .mk-rh .r-prod.bottle { width: 8.4cqw; height: 28cqw; border-radius: 4.2cqw 4.2cqw 1.6cqw 1.6cqw; }
+    .mk-rh .r-prod.jar { width: 9cqw; height: 9cqw; border-radius: 1.6cqw; }
+    .mk-rh .r-prod.jar::before { content: ""; position: absolute; top: -1.4cqw; left: -0.3cqw; right: -0.3cqw; height: 2.2cqw; border-radius: 1cqw; background: linear-gradient(90deg, #D6D1CB, #EFECE8 40%, #CCC6BF); }
+    .mk-rh .r-prod.tint { width: 4.4cqw; height: 17cqw; border-radius: 0.8cqw 0.8cqw 2.2cqw 2.2cqw; background: linear-gradient(90deg, #D99A9A, #F0C1BD 40%, #CF8C8C); }
+    /* the label: two words stacked in a window; the shelf scrolls each one from rhode to hailey */
+    .mk-rh .r-lab { position: relative; display: block; overflow: hidden; height: 1.25em; font-family: system-ui, sans-serif; font-weight: 500; font-size: clamp(9px, 1.25cqw, 16px); letter-spacing: 0.02em; color: #6E625A; }
+    .mk-rh .r-prod.tube .r-lab, .mk-rh .r-prod.bottle .r-lab, .mk-rh .r-prod.tint .r-lab { writing-mode: vertical-rl; transform: rotate(180deg); height: auto; width: 1.25em; }
+    .mk-rh .r-lab b, .mk-rh .r-lab i { display: block; font-weight: inherit; font-style: normal; transition: transform 0.6s cubic-bezier(.6, 0, .2, 1); }
+    .mk-rh .r-lab i { position: absolute; inset: 0; transform: translateY(110%); color: var(--r-deep); font-weight: 700; }
+    .mk-rh .r-prod.tube .r-lab i, .mk-rh .r-prod.bottle .r-lab i, .mk-rh .r-prod.tint .r-lab i { transform: translateX(110%); }
+    .mk-rh .r-prod.her .r-lab b { transform: translateY(-110%); }
+    .mk-rh .r-prod.tube.her .r-lab b, .mk-rh .r-prod.bottle.her .r-lab b, .mk-rh .r-prod.tint.her .r-lab b { transform: translateX(-110%); }
+    .mk-rh .r-prod.her .r-lab i { transform: none !important; }
+    @@container (max-width: 640px) {
+        .mk-rh .r-cover-one { padding-right: 4.8cqw; padding-bottom: 50cqw; justify-content: flex-start; }
+        .mk-rh .r-shelf { top: auto; bottom: 6cqw; transform: none; left: 0; right: 0; margin: 0 auto; width: 84cqw; height: 44cqw; gap: 3cqw; }
+        .mk-rh .r-prod.tube { width: 9cqw; height: 34cqw; } .mk-rh .r-prod.stick { width: 10cqw; height: 18cqw; }
+        .mk-rh .r-prod.bottle { width: 13cqw; height: 42cqw; } .mk-rh .r-prod.jar { width: 15cqw; height: 15cqw; } .mk-rh .r-prod.tint { width: 7.5cqw; height: 27cqw; }
+        .mk-rh .mk-slide.r-cover-one .r-lede { max-width: none; }
+        .mk-rh .r-lab { font-size: 11px; }
+    }
+
     .mk-rh .mk-chapters button[aria-pressed="true"] { background: var(--r-ink); border-color: var(--r-ink); }
 
     @@media (prefers-reduced-motion: reduce) {
@@ -99,8 +130,15 @@
 <div class="mp-proj mk-rh" id="mk-proj-rhode" role="tabpanel" aria-labelledby="mk-title-rhode" hidden>
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Rhode slides">
         <div class="mk-stage">
-            <div class="mk-slide r-cover" data-title="The problem">
-                <video class="r-bg" src="/videos/projects/rhode.mp4" poster="/videos/projects/rhode.jpg" muted loop playsinline autoplay aria-label="Glossy swatches in muted blush and bronzer shades swipe in while the trends Hailey started flash past, then the frame fills with her name"></video>
+            @* The cover shows the problem: one by one, every product's label stops saying rhode and starts saying hailey *@
+            <div class="mk-slide r-cover r-cover-one" data-title="The problem">
+                <div class="r-shelf" role="img" aria-label="Five rhode products in a row, a lip treatment, a blush stick, Glazing Milk, Barrier Butter and a lip tint. One by one, the word rhode on each label changes to hailey">
+                    <div class="r-prod tube"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod stick"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod bottle"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod jar"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod tint"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                </div>
                 @Html.Raw(rsig)
                 <p class="r-kick">rhode strategy, 2026</p>
                 <h4 class="r-title">Rhode has a<br /><em>Hailey problem.</em></h4>
@@ -339,6 +377,23 @@
             const open = !v.closest('.mk-slide').hidden && !v.closest('.mp-proj').hidden;
             if (open && v.paused) v.play().catch(() => {}); else if (!open && !v.paused) v.pause();
         }), 500);
+    })();
+
+    // The cover: one label at a time stops saying rhode and starts saying hailey, holds, then the shelf resets
+    (() => {
+        const shelf = document.querySelector('.mk-rh .r-shelf');
+        if (!shelf) return;
+        const prods = [...shelf.querySelectorAll('.r-prod')];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { prods.forEach(p => p.classList.add('her')); return; }
+        let step = 0;
+        const tick = () => {
+            if (step < prods.length) prods[step].classList.add('her');
+            else if (step === prods.length + 4) { prods.forEach(p => p.classList.remove('her')); step = -2; }
+            step++;
+        };
+        // autoplay.js loads after this view
+        const start = () => window.autoplay(shelf, tick, 750);
+        window.autoplay ? start() : addEventListener('load', start);
     })();
 
     // The campaign spot has music: muted by default, one button to hear it
