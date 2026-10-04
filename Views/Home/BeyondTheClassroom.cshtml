@@ -146,7 +146,7 @@
     }
 
     /* a photo with a PhotoCue says something in a pill that rides the cursor (mouse only) */
-    .project-photo[data-cue] {
+    .project-photo[data-cue]:not([data-cue=""]) {
         position: relative;
     }
 
@@ -637,7 +637,7 @@
                         @if (!string.IsNullOrEmpty(project.Photo))
                         {
                             <div class="project-side">
-                                <figure class="project-photo" data-cue="@(string.IsNullOrEmpty(project.PhotoCue) ? null : project.PhotoCue)">
+                                <figure class="project-photo" data-cue="@project.PhotoCue">
                                     <img src="@project.Photo" alt="@(string.IsNullOrEmpty(project.PhotoAlt) ? project.Name : project.PhotoAlt)" loading="lazy">
                                     @if (!string.IsNullOrEmpty(project.PhotoCaption))
                                     {
@@ -740,7 +740,7 @@
 <script>
     // photos with something to say: the pill rides along with the cursor (mouse only)
     if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        document.querySelectorAll('.project-photo[data-cue]').forEach(fig => {
+        document.querySelectorAll('.project-photo[data-cue]:not([data-cue=""])').forEach(fig => {
             const cue = document.createElement('span');
             cue.className = 'photo-cue';
             cue.setAttribute('aria-hidden', 'true');
