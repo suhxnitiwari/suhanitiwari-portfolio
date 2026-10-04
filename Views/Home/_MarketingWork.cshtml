@@ -629,10 +629,12 @@
                     <div class="mk-slide ow-cover" data-title="Cover">
                         <div class="ow-copy">
                             <p class="ow-kick">Owala marketing strategy · MKT 337</p>
-                            <h4 class="ow-title">The bottle you <em>earn.</em></h4>
-                            <p class="ow-lede">City-exclusive, engraved with your finish time, only sold to runners.</p>
+                            <h4 class="ow-title">Nobody needs <em>a second Owala.</em></h4>
+                            <p class="ow-lede"><b>So make them earn one.</b> City-exclusive, engraved with your finish time, only sold to runners.</p>
                         </div>
-                        <div class="ow-podium" role="img" aria-label="A three-step race podium. Race Series bottles from three marathon cities land on first, second and third place, each over a plaque with a finish time, then a new set of cities takes the podium">
+                        <div class="ow-podium" role="img" aria-label="One plain gray Owala sits alone on a three-step podium, stamped one and done, while a pop-up asking to add a second bottle is turned down. Then Race Series bottles from three marathon cities land on first, second and third place over finish-time plaques.">
+                            <span class="ow-stamp" aria-hidden="true">One and done.</span>
+                            <span class="ow-cart" aria-hidden="true">Add a second FreeSip? <i>No thanks</i></span>
                             @foreach (var (place, cls) in new[] { (2, "p2"), (1, "p1"), (3, "p3") })
                             {
                                 <div class="ow-step @cls">
@@ -868,6 +870,23 @@
                         .mk-owala .ow-plaque { display: flex; flex-direction: column; align-items: center; font-size: clamp(8px, 0.95cqw, 12px); line-height: 1.25; color: var(--muted); }
                         .mk-owala .ow-plaque i { font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--choc); }
                         .mk-owala .ow-plaque em { font-style: normal; font-variant-numeric: tabular-nums; }
+                        /* the mean intro: one gray bottle alone, stamped and turned down, then the podium fills */
+                        .mk-owala .ow-podium { position: relative; }
+                        .mk-owala .ow-lede b { color: var(--acc); font-weight: 700; }
+                        .mk-owala .ow-lede { opacity: 0.35; transition: opacity 0.5s ease; }
+                        .mk-owala .ow-cover.earn .ow-lede { opacity: 1; }
+                        .mk-owala .ow-podium.lonely .ow-step.p1 .ow-bottle { filter: grayscale(1) brightness(1.05) drop-shadow(0 1.2cqw 1.2cqw rgba(80, 40, 30, 0.2)); }
+                        .mk-owala .ow-podium.lonely .ow-plaque { opacity: 0; }
+                        .mk-owala .ow-stamp { position: absolute; z-index: 3; left: 50%; top: 34%; padding: 0.6cqw 1.6cqw; border: 0.35cqw solid #C0392B; border-radius: 0.6cqw; color: #C0392B; background: rgba(255, 248, 244, 0.85);
+                            font: 900 clamp(16px, 3cqw, 38px)/1 system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; opacity: 0; transform: translate(-50%, -50%) rotate(-12deg) scale(2.2); pointer-events: none; }
+                        .mk-owala .ow-podium.stamped .ow-stamp { opacity: 1; transform: translate(-50%, -50%) rotate(-12deg) scale(1); transition: transform 0.22s cubic-bezier(.5, 0, .5, 1.4), opacity 0.1s; }
+                        .mk-owala .ow-cart { position: absolute; z-index: 3; right: 0; top: 4%; display: flex; align-items: center; gap: 1cqw; padding: 0.9cqw 1.2cqw; border-radius: 1cqw; background: #FFFFFF; box-shadow: 0 1cqw 2cqw -1cqw rgba(80, 40, 30, 0.45);
+                            font: 600 clamp(9px, 1.1cqw, 14px) system-ui, sans-serif; color: var(--choc); opacity: 0; transform: translateY(-1cqw); transition: opacity 0.3s, transform 0.3s; }
+                        .mk-owala .ow-cart i { font-style: normal; padding: 0.4cqw 0.9cqw; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); transition: background 0.15s, color 0.15s; }
+                        .mk-owala .ow-podium.lonely .ow-cart { opacity: 1; transform: none; }
+                        .mk-owala .ow-podium.nope .ow-cart i { background: var(--choc); border-color: var(--choc); color: #FFF; }
+                        .mk-owala .ow-podium.nope .ow-cart { animation: owShake 0.35s ease; }
+                        @@keyframes owShake { 25% { transform: translateX(-0.6cqw); } 75% { transform: translateX(0.6cqw); } }
                         .mk-owala .ow-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 1; font-family: var(--serif); font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--mul); }
 
                         /* market: growth bars and the rival scoreboard */
@@ -1261,14 +1280,22 @@
         });
         let round = 0, beat = 0;
         fill(podiums[0]);
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { Object.values(steps).forEach(s => s.classList.add('in')); return; }
-        // beats of 600ms: 3rd lands, 2nd lands, 1st lands, hold, all step off, swap cities
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { Object.values(steps).forEach(s => s.classList.add('in')); podium.closest('.ow-cover').classList.add('earn'); return; }
+        const cover = podium.closest('.ow-cover');
+        const intro = on => { podium.classList.toggle('lonely', on); if (!on) podium.classList.remove('stamped', 'nope'); cover.classList.toggle('earn', !on); };
+        // beats of 600ms. The mean part: one gray bottle alone, stamped, a second one turned down.
+        // Then the answer: the podium fills 3, 2, 1, holds, steps off, and the next cities come up.
         const tick = () => {
-            if (beat === 0) steps[3].classList.add('in');
-            if (beat === 1) steps[2].classList.add('in');
-            if (beat === 2) steps[1].classList.add('in');
-            if (beat === 8) Object.values(steps).forEach(s => { s.classList.remove('in'); s.classList.add('out'); });
-            if (beat === 9) { Object.values(steps).forEach(s => s.classList.remove('out')); round = (round + 1) % podiums.length; fill(podiums[round]); beat = -1; }
+            if (beat === 0) { intro(true); steps[1].classList.add('in'); }
+            if (beat === 1) podium.classList.add('stamped');
+            if (beat === 3) podium.classList.add('nope');
+            if (beat === 5) { steps[1].classList.remove('in'); steps[1].classList.add('out'); }
+            if (beat === 6) { intro(false); steps[1].classList.remove('out'); }
+            if (beat === 7) steps[3].classList.add('in');
+            if (beat === 8) steps[2].classList.add('in');
+            if (beat === 9) steps[1].classList.add('in');
+            if (beat === 16) Object.values(steps).forEach(s => { s.classList.remove('in'); s.classList.add('out'); });
+            if (beat === 17) { Object.values(steps).forEach(s => s.classList.remove('out')); round = (round + 1) % podiums.length; fill(podiums[round]); beat = -1; }
             beat++;
         };
         // autoplay.js loads after this view
