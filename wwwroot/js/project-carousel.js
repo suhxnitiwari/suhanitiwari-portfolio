@@ -1,6 +1,8 @@
 // Project carousels (MIS projects on Work, Marketing projects on Study): ‹ › and the project names show one project at a time
 // (arrow keys work on the names too). Shared by _RideFlowProof and _MarketingWork, so it lives in its own file.
-document.querySelectorAll('.mp-projects').forEach(root => {
+// It waits for the whole page: on the home page it loads before the Marketing section exists.
+const projectCarousels = () => document.querySelectorAll('.mp-projects:not([data-carousel])').forEach(root => {
+    root.dataset.carousel = '';
     const tabs = [...root.querySelectorAll('.mp-proj-tabs [role="tab"]')];
     const slides = [...root.querySelectorAll('.mp-proj')];
     if (!tabs.length) return;
@@ -49,4 +51,4 @@ document.querySelectorAll('.mp-projects').forEach(root => {
     window.addEventListener('hashchange', fromHash);
     fromHash();
 });
-
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', projectCarousels); else projectCarousels();

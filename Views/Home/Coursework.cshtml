@@ -526,14 +526,22 @@
                         <h3 class="mp-h2" id="mp-can-title">Knowing the vocabulary is cute.<br />Can you actually build the thing?</h3>
                         <p class="mp-can-lede">Don’t take my word for it. Every card below is something I built, and every one of them works. Go ahead and poke at them.</p>
                     </div>
-                    @* the six cards are one trip: idea in, decision out *@
-                    <p class="mp-trip" aria-label="The trip the six cards take">
-                        @for (var t = 0; t < misTrip.Length; t++)
-                        {
-                            <span>@misTrip[t]</span>
-                            if (t < misTrip.Length - 1) { <i aria-hidden="true">→</i> }
-                        }
-                    </p>
+                    @* the six cards are one trip: idea in, decision out. It's a slideshow: each step after Idea opens its card, and ‹ › walk the trip *@
+                    <div class="mp-trip-bar">
+                        <p class="mp-trip" aria-label="The trip the six cards take">
+                            @for (var t = 0; t < misTrip.Length; t++)
+                            {
+                                if (t == 0) { <span>@misTrip[t]</span> }
+                                else { <button type="button" class="mp-trip-step" data-step="@(t - 1)">@misTrip[t]</button> }
+                                if (t < misTrip.Length - 1) { <i aria-hidden="true">→</i> }
+                            }
+                        </p>
+                        <div class="pf-arrows" hidden>
+                            <button type="button" class="mis-nav-btn" data-go="-1" aria-label="Previous step">‹</button>
+                            <span class="pf-count" aria-live="polite">01 / 06</span>
+                            <button type="button" class="mis-nav-btn" data-go="1" aria-label="Next step">›</button>
+                        </div>
+                    </div>
                     <ol class="pf">
                         @* 01 BUILD: RideFlow's real fare formula and ride rules, ported from its Node server *@
                         <li class="pf-card pf-build">
@@ -973,6 +981,34 @@
     @@keyframes misMoreIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
+<script>
+    // What I can do as a slideshow: one card at a time; the trip's steps and ‹ › (or the arrow keys) move through it
+    (() => {
+        const deck = document.querySelector('#skills .pf');
+        const bar = document.querySelector('#skills .mp-trip-bar');
+        if (!deck || !bar) return;
+        const cards = [...deck.children];
+        const steps = [...bar.querySelectorAll('.mp-trip-step')];
+        const count = bar.querySelector('.pf-count');
+        let at = 0;
+        const pad = n => String(n).padStart(2, '0');
+        const show = i => {
+            at = (i + cards.length) % cards.length;
+            cards.forEach((c, k) => c.hidden = k !== at);
+            steps.forEach((b, k) => { b.classList.toggle('is-on', k === at); b.classList.toggle('is-past', k < at); b.setAttribute('aria-pressed', k === at); });
+            count.textContent = pad(at + 1) + ' / ' + pad(cards.length);
+        };
+        deck.classList.add('is-deck');
+        bar.querySelector('.pf-arrows').hidden = false;
+        steps.forEach((b, k) => b.addEventListener('click', () => show(k)));
+        bar.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => show(at + +b.dataset.go)));
+        bar.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') { show(at + 1); e.preventDefault(); }
+            if (e.key === 'ArrowLeft') { show(at - 1); e.preventDefault(); }
+        });
+        show(0);
+    })();
+</script>
 <script>
     // More on my MIS curriculum: opens the four levels, "Hand me a problem" and the zoom lens under the six skills; Less folds them away again
     (() => {

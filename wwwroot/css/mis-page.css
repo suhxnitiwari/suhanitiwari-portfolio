@@ -72,6 +72,15 @@
 .mp-trip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 22px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 .mp-trip i { font-style: normal; color: var(--rose); }
 .mp-trip span:first-child, .mp-trip span:last-child { color: var(--mul); }
+/* the trip is also the slideshow's controls: steps open their card, ‹ › walk it */
+.mp-trip-bar { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; margin: 0 0 22px; }
+.mp-trip-bar .mp-trip { margin: 0; }
+.mp-trip-step { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 4px 0; border-bottom: 2px solid transparent; cursor: var(--cursor-hot, pointer); transition: color 0.2s ease, border-color 0.2s ease; }
+.mp-trip-step:hover, .mp-trip-step.is-past { color: var(--choc); }
+.mp-trip-step.is-on { color: var(--mul); border-bottom-color: var(--mul); }
+.mp-trip-step:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
+.pf-arrows { display: flex; align-items: center; gap: 10px; }
+.pf-count { font-family: var(--serif); font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4.2em; text-align: center; }
 .mp-cap-num { font-family: var(--serif); font-size: 14px; letter-spacing: 0; color: var(--rose); margin-right: 4px; }
 .mp-cap-name { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; color: var(--mul); margin: 0 0 10px; }
 .mp-cap-from { margin: 10px 0 0; font-size: 10.5px; letter-spacing: 0.08em; color: #9A8780; font-weight: 600; }

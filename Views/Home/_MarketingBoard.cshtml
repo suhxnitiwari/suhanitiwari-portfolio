@@ -1,243 +1,78 @@
-@* The Marketing board: every marketing project as a pin on a two-column wall, above the decks (rendered from _MarketingWork.cshtml).
-   Each pin is the project's cover video, shown whole, on a panel in its deck's color, with a one-line caption under it.
-   Panel height follows how strong the project is (the strongest stand tallest), which staggers the two columns.
-   Filters on top narrow it by industry. Picking a pin opens its deck below by pressing that project's tab in the carousel
-   (project-carousel.js), so links like /#mk-proj-netflix keep working. *@
+@* The Marketing filters, above the project carousel (rendered from _MarketingWork.cshtml).
+   All is one carousel: ‹ project names › and one deck at a time (project-carousel.js).
+   Picking an industry swaps the carousel for every deck in it, stacked one under the other. *@
 @{
-    // In rank order, strongest first. Ratio: the panel's width / height (a taller panel = a stronger project). Bg: the deck's color.
-    var pins = new[]
+    // Key, label, and the decks in that industry (their panel ids, without "mk-proj-")
+    var filters = new (string Key, string Label, string[] Ids)[]
     {
-        (Id: "rhode", Tag: "beauty", Brand: "Rhode", Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Line: "Making the brand outlive the fame",
-            Cover: "rhode", Ratio: "16 / 12", Bg: "#EFE5DA"),
-        (Id: "glossier", Tag: "beauty", Brand: "Glossier", Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Line: "Winning back the group chat",
-            Cover: "glossier", Ratio: "16 / 11.4", Bg: "#F7DCE3"),
-        (Id: "netflix", Tag: "media", Brand: "Netflix", Kind: "Media strategy", Title: "Netflix’s $20B Leak", Line: "Keeping the fandom after the credits",
-            Cover: "netflix", Ratio: "16 / 11", Bg: "#140D0C"),
-        (Id: "primebookclub", Tag: "media", Brand: "Prime Video", Kind: "Community strategy", Title: "All Hype, No Club", Line: "Turning book-to-screen hype into a club",
-            Cover: "primebookclub", Ratio: "16 / 10.7", Bg: "#CFE3FB"),
-        (Id: "starbucks", Tag: "food", Brand: "Starbucks", Kind: "Product management", Title: "Starbucks AI Loyalty", Line: "Making the app a daily ritual",
-            Cover: "starbucks-cover", Ratio: "16 / 10.4", Bg: "#1E3A32"),
-        (Id: "owala", Tag: "lifestyle", Brand: "Owala", Kind: "Marketing strategy", Title: "Owala: The Marathon Series", Line: "A bottle you collect, not buy once",
-            Cover: "owala-cover", Ratio: "16 / 10.2", Bg: "#F5E4E5"),
-        (Id: "fuelflow", Tag: "food", Brand: "UT Austin", Kind: "Product pitch", Title: "FuelFlow", Line: "Real food where students already are",
-            Cover: "fuelflow-cover", Ratio: "16 / 10", Bg: "#EEE7DC"),
+        ("all", "All", new string[0]),
+        ("media", "Media", new[] { "netflix", "primebookclub" }),
+        ("beauty", "Beauty", new[] { "glossier", "rhode" }),
+        ("food", "Food", new[] { "starbucks", "fuelflow" }),
+        ("lifestyle", "Lifestyle", new[] { "owala" })
     };
-    var filters = new[] { ("all", "All"), ("beauty", "Beauty"), ("media", "Media"), ("food", "Food & Drink"), ("lifestyle", "Lifestyle") };
 }
 <style>
-    /* the board replaces the row of project names; the tabs stay in the page so the carousel and old links still work */
-    .mk .mp-proj-nav { display: none; }
-    .mkb { margin: 0 0 56px; }
-    .mkb-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 20px; }
+    .mkb-filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 22px; }
     .mkb-filters button { font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; padding: 8px 14px; border-radius: 99px;
         border: 1px solid #DCC3BE; background: transparent; color: #4A3530; cursor: var(--cursor-hot, pointer); transition: background 0.2s, color 0.2s, border-color 0.2s; }
     .mkb-filters button span { margin-left: 6px; opacity: 0.5; font-variant-numeric: tabular-nums; }
     .mkb-filters button:hover { border-color: #76344E; color: #76344E; }
     .mkb-filters button[aria-pressed="true"] { background: #2A1810; border-color: #2A1810; color: #FFF8F6; }
-    .mkb-filters button:focus-visible, .mkb-pin:focus-visible { outline: 2px solid #76344E; outline-offset: 4px; }
+    .mkb-filters button:focus-visible { outline: 2px solid #76344E; outline-offset: 4px; }
 
-    /* two columns, filled by script with the shorter column first, so the strongest pins stay on top */
-    .mkb-wall { display: flex; gap: 14px; align-items: flex-start; }
-    .mkb-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
-    .mkb-wall:not(.laid) { flex-wrap: wrap; }
-    .mkb-wall:not(.laid) > .mkb-pin { flex: 1 1 420px; }
+    /* one carousel: ‹ › always sit at the ends of the project names */
+    .mk .mp-proj-nav .mp-proj-arrow { display: block; }
 
-    .mkb-pin { display: block; width: 100%; padding: 0; margin: 0; border: 0; background: none; text-align: left; font: inherit; color: inherit; cursor: var(--cursor-hot, pointer); }
-    .mkb-pin[hidden] { display: none; }
-
-    /* the panel: the deck's color, with the cover video sitting whole in the middle of it */
-    .mkb-panel { position: relative; display: grid; place-items: center; aspect-ratio: var(--ratio); background: var(--bg); border-radius: 6px; overflow: hidden; transition: box-shadow 0.25s ease; }
-    .mkb-screen { position: relative; width: 90%; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #000;
-        box-shadow: 0 24px 50px -24px rgba(20, 10, 8, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06); transition: transform 0.5s cubic-bezier(.2, .7, .2, 1); }
-    .mkb-pin:hover .mkb-screen { transform: scale(1.025); }
-    .mkb-screen img, .mkb-screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-    .mkb-screen video { opacity: 0; transition: opacity 0.4s ease; }
-    .mkb-pin.playing .mkb-screen video { opacity: 1; }
-
-    /* the caption row under each pin: what it is on the left, brand and kind on the right */
-    .mkb-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 9px; }
-    .mkb-cap b { font-family: var(--serif, Georgia, serif); font-weight: 400; font-size: 16px; line-height: 1.3; color: #2A1810; }
-    .mkb-cap b span { color: #8A7470; }
-    .mkb-cap small { flex: none; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 10.5px; letter-spacing: 0.9px; text-transform: uppercase; color: #8A7470; white-space: nowrap; }
-    .mkb-pin:hover .mkb-cap b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-
-    /* the viewer: picking a pin opens its deck in a large window over the page, instead of under the board */
-    .mkb-dialog { width: min(1200px, 94vw); max-width: none; max-height: 94vh; margin: auto; padding: 0; border: 0; border-radius: 18px; background: #FFF8F6; color: inherit;
-        box-shadow: 0 40px 100px -30px rgba(30, 16, 10, 0.6); overflow: auto; overscroll-behavior: contain; }
-    .mkb-dialog::backdrop { background: rgba(30, 16, 10, 0.55); backdrop-filter: blur(6px); }
-    .mkb-dialog[open] { animation: mkbOpen 0.3s cubic-bezier(.2, .7, .2, 1); }
-    @@keyframes mkbOpen { from { opacity: 0; transform: translateY(18px) scale(0.985); } }
-    .mkb-bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 14px 22px; background: rgba(255, 248, 246, 0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #EAD9D5; }
-    .mkb-bar-title { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-    .mkb-bar-title small { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 10.5px; letter-spacing: 0.9px; text-transform: uppercase; color: #8A7470; }
-    .mkb-bar-title b { font-family: var(--serif, Georgia, serif); font-weight: 400; font-size: 20px; color: #2A1810; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mkb-bar-nav { display: flex; align-items: center; gap: 8px; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11px; color: #8A7470; }
-    .mkb-bar button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #DCC3BE; background: #FFFCFB; color: #2A1810; font-size: 18px; line-height: 1; cursor: var(--cursor-hot, pointer); }
-    .mkb-bar button:hover { border-color: #76344E; color: #76344E; }
-    .mkb-bar button:focus-visible { outline: 2px solid #76344E; outline-offset: 2px; }
-    .mkb-bar .mkb-close { margin-left: 6px; background: #2A1810; border-color: #2A1810; color: #FFF8F6; font-size: 16px; }
-    .mkb-stagebox { padding: 24px 28px 32px; }
-    .mkb-stagebox .mk-deck { margin-bottom: 28px; }
-    .mkb-stagebox .mp-proj { scroll-margin-top: 0; }
-    html.mkb-locked { overflow: hidden; }
+    /* filtered: no carousel, the industry's decks stacked, each under its project name */
+    .mk .mp-projects.is-filtered .mp-proj-nav { display: none; }
+    .mk .mp-projects.is-filtered .mp-proj:not([hidden]) ~ .mp-proj:not([hidden]) { margin-top: 72px; }
+    .mk .mp-projects.is-filtered .mp-proj:not([hidden])::before { content: attr(data-stack-label); display: block; margin: 0 0 14px; font-size: 12px; font-weight: 700;
+        letter-spacing: 0.2em; text-transform: uppercase; color: #76344E; }
 
     @@media (max-width: 700px) {
-        .mkb-dialog { width: 100vw; max-height: 100dvh; height: 100dvh; border-radius: 0; }
-        .mkb-bar { padding: 10px 14px; }
-        .mkb-bar-title b { font-size: 16px; }
-        .mkb-bar-nav span { display: none; }
-        .mkb-stagebox { padding: 14px 12px 24px; }
-        .mkb-wall { flex-direction: column; gap: 18px; }
-        .mkb-col { width: 100%; gap: 18px; }
-        .mkb-cap { flex-direction: column; gap: 3px; }
-        .mkb-screen { width: 90%; }
         .mkb-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; }
         .mkb-filters button { flex: none; }
     }
-    @@media (prefers-reduced-motion: reduce) {
-        .mkb-screen { transition: none; }
-        .mkb-pin:hover .mkb-screen { transform: none; }
-    }
 </style>
 
-<div class="mkb" id="mk-board">
-    <div class="mkb-filters" role="group" aria-label="Filter projects by industry">
-        @foreach (var (key, label) in filters)
-        {
-            var count = key == "all" ? pins.Length : pins.Count(p => p.Tag == key);
-            <button type="button" data-filter="@key" aria-pressed="@(key == "all" ? "true" : "false")">@label<span>@count</span></button>
-        }
-    </div>
-    <div class="mkb-wall">
-        @for (var n = 0; n < pins.Length; n++)
-        {
-            var p = pins[n];
-            <button type="button" class="mkb-pin" data-tag="@p.Tag" data-proj="mk-proj-@p.Id" aria-label="@p.Title: open the deck">
-                <span class="mkb-panel" style="--ratio: @p.Ratio; --bg: @p.Bg">
-                    <span class="mkb-screen">
-                        <img src="/videos/projects/@(p.Cover).jpg" alt="" loading="lazy" />
-                        <video data-src="/videos/projects/@(p.Cover).mp4" muted loop playsinline preload="none" aria-hidden="true"></video>
-                    </span>
-                </span>
-                <span class="mkb-cap"><b>@p.Title <span>· @p.Line</span></b><small>@p.Brand · @p.Kind</small></span>
-            </button>
-        }
-    </div>
-    <dialog class="mkb-dialog" aria-labelledby="mkb-dialog-title">
-        <div class="mkb-bar">
-            <div class="mkb-bar-title"><small class="mkb-dialog-kind"></small><b id="mkb-dialog-title"></b></div>
-            <div class="mkb-bar-nav">
-                <button type="button" data-step="-1" aria-label="Previous project">‹</button>
-                <span class="mkb-dialog-count"></span>
-                <button type="button" data-step="1" aria-label="Next project">›</button>
-            </div>
-            <button type="button" class="mkb-close" aria-label="Close">✕</button>
-        </div>
-        <div class="mkb-stagebox"></div>
-    </dialog>
+<div class="mkb-filters" id="mk-board" role="group" aria-label="Filter projects by industry">
+    @foreach (var f in filters)
+    {
+        var count = f.Key == "all" ? filters.Sum(x => x.Ids.Length) : f.Ids.Length;
+        <button type="button" data-filter="@f.Key" data-show="@string.Join(" ", f.Ids.Select(id => "mk-proj-" + id))" aria-pressed="@(f.Key == "all" ? "true" : "false")">@f.Label<span>@count</span></button>
+    }
 </div>
 
 <script>
-    // the project tabs come after the board in the page, so wait for the whole page before wiring it up
-    const mkBoard = () => {
-        const board = document.getElementById('mk-board');
-        if (!board) return;
-        const wall = board.querySelector('.mkb-wall');
-        const pins = [...wall.querySelectorAll('.mkb-pin')];
-        const chips = [...board.querySelectorAll('[data-filter]')];
-        const root = board.closest('.mp-projects') || document;
-        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const phone = matchMedia('(max-width: 700px)');
-
-        // masonry: each visible pin, strongest first, goes into the shorter column. Heights come from each panel's
-        // ratio (width / height), so the layout never waits on images
-        const tall = p => { const [w, h] = p.querySelector('.mkb-panel').style.getPropertyValue('--ratio').split('/').map(Number); return h ? h / w : 1; };
-        const relayout = () => {
-            const n = phone.matches ? 1 : 2;
-            const cols = Array.from({ length: n }, () => Object.assign(document.createElement('div'), { className: 'mkb-col' }));
-            const heights = new Array(n).fill(0);
-            pins.forEach(p => {
-                if (p.hidden) { wall.append(p); return; }
-                const i = heights.indexOf(Math.min(...heights));
-                cols[i].append(p);
-                heights[i] += tall(p) + 0.12;   // + the caption and gap, in panel widths
-            });
-            wall.querySelectorAll('.mkb-col').forEach(c => c.remove());
-            wall.prepend(...cols);
-            wall.classList.add('laid');
-        };
-
-        // which deck is open: follow the carousel's tabs
+    // the decks and their tabs come after the filters in the page, so wait for the whole page before wiring them up
+    const mkFilters = () => {
+        const bar = document.getElementById('mk-board');
+        const root = bar?.closest('.mp-projects');
+        if (!root) return;
+        const chips = [...bar.querySelectorAll('[data-filter]')];
         const tabs = [...root.querySelectorAll('.mp-proj-tabs [role="tab"]')];
-        const mark = () => {
-            const open = tabs.find(t => t.getAttribute('aria-selected') === 'true');
-            pins.forEach(p => p.setAttribute('aria-current', open && open.getAttribute('aria-controls') === p.dataset.proj ? 'true' : 'false'));
+        const slides = [...root.querySelectorAll('.mp-proj')];
+        // each stacked deck is labeled with its project name from the carousel
+        tabs.forEach(t => { const s = document.getElementById(t.getAttribute('aria-controls')); if (s) s.dataset.stackLabel = t.textContent.trim(); });
+        const pick = chip => {
+            chips.forEach(c => c.setAttribute('aria-pressed', c === chip));
+            if (chip.dataset.filter === 'all') {
+                root.classList.remove('is-filtered');
+                (tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0])?.click();   // back to one deck at a time
+                return;
+            }
+            const show = chip.dataset.show.split(' ');
+            root.classList.add('is-filtered');
+            slides.forEach(s => {
+                s.hidden = !show.includes(s.id);
+                s.classList.remove('entering');
+                if (!s.hidden) s.querySelectorAll('iframe[data-live]').forEach(f => { f.src = f.dataset.live; f.removeAttribute('data-live'); });
+            });
         };
-        tabs.forEach(t => new MutationObserver(mark).observe(t, { attributes: true, attributeFilter: ['aria-selected'] }));
-
-        // the decks move into the viewer, so the page under the board stays just the board
-        const dialog = board.querySelector('.mkb-dialog');
-        const stagebox = dialog.querySelector('.mkb-stagebox');
-        stagebox.append(...root.querySelectorAll(':scope > .mp-proj'));
-        const kindEl = dialog.querySelector('.mkb-dialog-kind'), titleEl = dialog.querySelector('#mkb-dialog-title'), countEl = dialog.querySelector('.mkb-dialog-count');
-        const visible = () => pins.filter(p => !p.hidden);
-        let currentPin = null;
-        const open = pin => {
-            const tab = tabs.find(t => t.getAttribute('aria-controls') === pin.dataset.proj);
-            if (!tab) return;
-            tab.click();
-            currentPin = pin;
-            kindEl.textContent = pin.querySelector('.mkb-cap small').textContent;
-            titleEl.textContent = pin.querySelector('.mkb-cap b').firstChild.textContent.trim();
-            const list = visible();
-            countEl.textContent = `${list.indexOf(pin) + 1} / ${list.length}`;
-            history.replaceState(null, '', '#' + pin.dataset.proj);
-            if (!dialog.open) { dialog.showModal(); document.documentElement.classList.add('mkb-locked'); }
-            dialog.scrollTop = 0;
-        };
-        const step = d => { const list = visible(); if (!currentPin || !list.length) return; open(list[(list.indexOf(currentPin) + d + list.length) % list.length]); };
-        dialog.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => step(+b.dataset.step)));
-        dialog.querySelector('.mkb-close').addEventListener('click', () => dialog.close());
-        // ← → flip the open deck's slides from anywhere in the viewer (inside a deck, the deck already handles them)
-        dialog.addEventListener('keydown', e => {
-            if ((e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') || e.target.closest('.mk-deck, .mp-proj-tabs')) return;
-            const deck = stagebox.querySelector('.mp-proj:not([hidden]) .mk-deck');
-            deck?.querySelector(e.key === 'ArrowRight' ? '.mk-step.next' : '.mk-step.prev')?.click();
-            e.preventDefault();
-        });
-        // a click on the dimmed backdrop (outside the window) closes it too
-        dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
-        dialog.addEventListener('close', () => {
-            document.documentElement.classList.remove('mkb-locked');
-            history.replaceState(null, '', '#marketing');
-            currentPin?.focus({ preventScroll: true });
-        });
-        pins.forEach(p => p.addEventListener('click', () => open(p)));
-        // links like /#mk-proj-netflix (the home page cards use them) open that deck in the viewer
-        const fromHash = () => { const pin = pins.find(p => '#' + p.dataset.proj === location.hash || location.hash === '#mk-title-' + p.dataset.proj.slice(8)); if (pin) open(pin); };
-        addEventListener('hashchange', fromHash);
-        setTimeout(fromHash, 0);
-
-        chips.forEach(c => c.addEventListener('click', () => {
-            const key = c.dataset.filter;
-            chips.forEach(b => b.setAttribute('aria-pressed', b === c));
-            pins.forEach(p => { p.hidden = key !== 'all' && p.dataset.tag !== key; });
-            relayout();
-        }));
-
-        // each cover video plays whole while its pin is on screen, and pauses when it scrolls away
-        const io = new IntersectionObserver(entries => entries.forEach(e => {
-            const p = e.target, v = p.querySelector('video');
-            if (e.isIntersecting && !reduce) {
-                if (!v.src) v.src = v.dataset.src;
-                v.play().then(() => p.classList.add('playing')).catch(() => {});
-            } else { v.pause(); }
-        }), { threshold: 0.3 });
-        pins.forEach(p => io.observe(p));
-
-        phone.addEventListener('change', relayout);
-        relayout();
-        mark();
+        chips.forEach(c => c.addEventListener('click', () => pick(c)));
+        // a link straight to one deck (like /#mk-proj-netflix) goes back to the carousel on that deck
+        addEventListener('hashchange', () => { if (root.querySelector(location.hash.length > 1 ? location.hash : null)) pick(chips[0]); });
     };
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mkBoard); else mkBoard();
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mkFilters); else mkFilters();
 </script>
