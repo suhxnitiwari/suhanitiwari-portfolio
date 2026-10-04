@@ -1,5 +1,7 @@
+@* Scholarships and awards, each shown where it belongs: ViewData["Honors"] = "school" puts the scholarships and
+   University Honors under Education; "service" puts the volunteer award in Beyond the Classroom; nothing shows them all. *@
 @{
-    ViewData["Title"] = "Scholarships & Awards";
+    var only = ViewData["Honors"] as string;
 }
 
 @functions {
@@ -16,130 +18,107 @@
     // Notes on the scholarships are what each award recognizes, from its McCombs description
     var scholarships = new Honor[]
     {
-        new Honor("Gerald and Linda Ridgely Endowed Presidential Scholarship", From: "McCombs School of Business", Year: "2026–2027",
+        new Honor("Gerald and Linda Ridgely Endowed Presidential Scholarship", From: "McCombs", Year: "2026–2027",
                   Note: "For McCombs students who exemplify student leadership on campus."),
-        new Honor("Scott Hemsell Memorial Scholarship", From: "McCombs School of Business", Year: "2026–2027",
+        new Honor("Scott Hemsell Memorial Scholarship", From: "McCombs", Year: "2026–2027",
                   Note: "For students who show both interest and aptitude in Management Information Systems, in the classroom and beyond it.")
     };
 
-    var awards = new Honor[]
+    var schoolAwards = new Honor[]
     {
-        new Honor("President’s Volunteer Service Award", Year: "2023",
-                  Note: "Received PVSA Gold for 350+ hours of community service in a year."),
         new Honor("University Honors", From: "UT Austin", Year: "Spring 2025",
                   Note: "Recognized for distinguished academic achievement.")
+    };
+
+    var serviceAwards = new Honor[]
+    {
+        new Honor("President’s Volunteer Service Award, Gold", Year: "2023",
+                  Note: "350+ hours of community service in a single year.")
+    };
+
+    var shown = only switch
+    {
+        "school" => scholarships.Concat(schoolAwards).ToArray(),
+        "service" => serviceAwards,
+        _ => scholarships.Concat(schoolAwards).Concat(serviceAwards).ToArray()
     };
 }
 
 <style>
-    .honors-section {
-        padding: 80px 40px 100px;
-        background: linear-gradient(135deg, #FAF1EF 0%, #F5E5E1 100%);
-    }
-
-    .honors-container {
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-
-    .honors-hero h1 {
-        margin: 0;
-        font-family: Georgia, serif;
-        font-size: 3.5em;
-        font-weight: 800;
-        color: #1E100A;
-    }
-
-    /* scholarships and awards share one grid; a small eyebrow on each card says which it is */
-    .honors-grid {
-        list-style: none;
-        margin: 32px 0 0;
-        padding: 0;
+    /* a quiet row of honors: a small label, then one column per honor, set like the rest of Education */
+    .honors {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+        gap: 48px;
+        padding: 26px 0;
+        border-bottom: 1px solid #E2C6C0;
     }
 
-    .honor-kind {
-        margin: 0 0 8px;
-        font-size: 0.7em;
+    .honors-label {
+        margin: 0;
+        font-size: 0.78rem;
         font-weight: 700;
-        letter-spacing: 2px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
-        color: #7E3F4A;
+        color: #76344E;
     }
 
-    .honor {
-        padding: var(--pad-card-sm);
-        border-radius: var(--r-card);
-        background: #FFF8F6;
-        border: var(--card-border);
-        border-top: 4px solid #7E3F4A;
-        box-shadow: var(--shadow-card);
+    .honors-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 20px 28px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
     .honor-name {
         margin: 0;
         font-family: Georgia, serif;
-        font-size: 1.3em;
+        font-size: 1.05em;
         font-weight: 700;
         line-height: 1.3;
         color: #1E100A;
     }
 
     .honor-meta {
-        margin: 10px 0 0;
-        font-size: 0.78em;
+        margin: 6px 0 0;
+        font-size: 0.68rem;
         font-weight: 700;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.2px;
         text-transform: uppercase;
-        color: #3F4A34;
+        color: #7A665F;
     }
 
     .honor-note {
-        margin: 12px 0 0;
-        line-height: 1.6;
-        color: #1E100A;
+        margin: 6px 0 0;
+        font-size: 0.88em;
+        line-height: 1.5;
+        color: #3F4A34;
     }
 
     .honor-amount {
-        margin: 14px 0 0;
+        margin: 6px 0 0;
         font-weight: 700;
         color: #733642;
     }
 
-    @@media (max-width: 768px) {
-        .honors-section {
-            padding: 50px 20px 70px;
-        }
-
-        .honors-hero h1 {
-            font-size: 2.5em;
-        }
-
-        .honors-grid {
-            grid-template-columns: 1fr;
-        }
+    @@media (max-width: 860px) {
+        .honors { grid-template-columns: 1fr; gap: 14px; }
     }
 </style>
 
-<div class="honors-section page-fill">
-    <div class="honors-container">
-        <div class="honors-hero">
-            <h1>Scholarships &amp; Awards</h1>
-        </div>
-
-        <ul class="honors-grid">
-            @foreach (var (kind, honor) in scholarships.Select(h => ("Scholarship", h)).Concat(awards.Select(h => ("Award", h))))
+@if (shown.Length > 0)
+{
+    <div class="honors honors-@(only ?? "all")">
+        <p class="honors-label">@(only switch { "school" => "Scholarships & honors", "service" => "Recognized for it", _ => "Scholarships & awards" })</p>
+        <ul class="honors-list">
+            @foreach (var honor in shown)
             {
                 var meta = string.Join(", ", new[] { honor.From, honor.Year }.Where(part => !string.IsNullOrEmpty(part)));
                 <li class="honor">
-                    <p class="honor-kind">@kind</p>
                     <h3 class="honor-name">@honor.Name</h3>
-                    @if (!string.IsNullOrEmpty(meta))
-                    {
-                        <p class="honor-meta">@meta</p>
-                    }
+                    <p class="honor-meta">@meta</p>
                     @if (!string.IsNullOrEmpty(honor.Note))
                     {
                         <p class="honor-note">@honor.Note</p>
@@ -152,4 +131,4 @@
             }
         </ul>
     </div>
-</div>
+}

@@ -515,7 +515,7 @@
         var currentPage = ViewContext.RouteData.Values["action"]?.ToString();
         string ActiveIf(string page) => currentPage == page ? "active" : "";
 
-        // Pursue, in recruiter order: proof first (experience, projects, leadership, awards), then the why,
+        // Pursue, in recruiter order: proof first (experience, projects, leadership), then education and its scholarships, the why,
         // McCombs, coursework, and how I work with people last (closed until opened).
         // The Pursue dropdown reads from this list.
         // Each item jumps to its section on the one long Pursue page.
@@ -527,8 +527,8 @@
             ("Projects", "/#selected-work", "Projects"),
             ("Marketing", "/#marketing-work", "Marketing Work"),
             ("BeyondTheClassroom", "/#beyond", "Beyond the Classroom"),
-            ("ScholarshipsAndAwards", "/#awards", "Scholarships & Awards"),
             ("Education", "/#education", "Education"),
+            ("ScholarshipsAndAwards", "/#awards", "Scholarships"),
             ("WhyMis", "/#why-mis", "Why MIS"),
             ("McCombs", "/#mccombs", "Why McCombs"),
             ("Coursework", "/#overview", "Coursework"),
@@ -537,7 +537,7 @@
         };
         // The Pursue page gets two menu headers so no dropdown has more than five items:
         // Work (what I've done) and Study (what I'm learning and why). Nothing is dropped, only regrouped.
-        var studyPages = new[] { "Education", "WhyMis", "McCombs", "Coursework", "MisMajor", "MarketingMinor" };
+        var studyPages = new[] { "Education", "ScholarshipsAndAwards", "WhyMis", "McCombs", "Coursework", "MisMajor", "MarketingMinor" };
         var work = pursue.Where(p => !studyPages.Contains(p.Page)).ToArray();
         var study = pursue.Where(p => studyPages.Contains(p.Page)).ToArray();
         var pursueIndex = Array.FindIndex(pursue, p => p.Page == currentPage);
@@ -730,7 +730,7 @@
         // in page order, top to bottom
         const spyParts = [
             ['hello', 'about'], ['work', 'selected-work'], ['work', 'experience'], ['study', 'education'],
-            ['study', 'why-mis'], ['work', 'projects'], ['study', 'coursework'], ['work', 'awards'], ['work', 'beyond'],
+            ['study', 'why-mis'], ['work', 'projects'], ['study', 'coursework'], ['work', 'beyond'],
             ['playground', 'playground'], ['hello', 'know-me'], ['hello', 'finale']
         ].map(([spy, id]) => [spy, document.getElementById(id)]).filter(([, el]) => el);
         if (spyParts.length) {

@@ -30,6 +30,8 @@
         margin: 0 auto;
     }
 
+    .beyond-section .honors-service { margin-top: 18px; padding: 16px 0; border-top: 1px solid #E2C6C0; }
+
     .beyond-hero h1 {
         font-family: Georgia, serif;
         font-size: 3.5em;
@@ -620,6 +622,8 @@
         <div class="beyond-hero">
             <h1>Beyond the Classroom</h1>
         </div>
+        @* the volunteer award sits with the work it was for (Views/Home/ScholarshipsAndAwards.cshtml) *@
+        @await Html.PartialAsync("ScholarshipsAndAwards", null, new ViewDataDictionary(ViewData) { { "Honors", "service" } })
 
         @foreach (var area in areas)
         {

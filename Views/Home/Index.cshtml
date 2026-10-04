@@ -630,7 +630,7 @@
     }
 
     .edu-row-label {
-        width: 9em;
+        width: 11em;
         white-space: nowrap;
         font-size: 0.62rem;
         font-weight: 700;
@@ -2416,7 +2416,7 @@
         ("#6", "undergrad business school in the US")
     };
     // two rows that show how the halves work together: the tech I build with, then the business and psychology of who it's for
-    var eduRows = new[] { "Build it", "Know who it’s for" };
+    var eduRows = new[] { "The tech side", "The human side" };
     // every class on the two rows: (row, short label on the button, then what its card says).
     // MIS details match Coursework (Views/Home/Coursework.cshtml).
     var eduClasses = new (int Row, string Label, string Field, string Code, string Name, string Question, string Summary, string[] Topics, string Proof, string ProofHref)[]
@@ -2534,6 +2534,10 @@
                 </script>
             </div>
         </div>
+        @* the scholarships the school story earned (Views/Home/ScholarshipsAndAwards.cshtml); old /#awards links land here *@
+        <div id="awards" style="scroll-margin-top:100px">
+            @await Html.PartialAsync("ScholarshipsAndAwards", null, new ViewDataDictionary(ViewData) { { "Honors", "school" } })
+        </div>
     </div>
 </section>
 
@@ -2546,12 +2550,7 @@
     @await Html.PartialAsync("Coursework", null, new ViewDataDictionary(ViewData) { { "CourseworkOnly", "mis" } })
 </section>
 
-@* SCHOLARSHIPS: the honors, closing out the school story (Views/Home/ScholarshipsAndAwards.cshtml) *@
-<section class="pursue-part" id="awards" aria-label="Scholarships and awards">
-    @await Html.PartialAsync("ScholarshipsAndAwards")
-</section>
-
-@* MARKETING WORK: my Marketing minor's whole section, after Scholarships and awards, with Projects right behind it: the board of every project and
+@* MARKETING WORK: my Marketing minor's whole section, after What I can do, with Projects right behind it: the board of every project and
    each deck (Views/Home/_MarketingWork.cshtml). Its slideshows and carousel are run by the Coursework scripts further down. *@
 <section class="coursework-section home-marketing" id="marketing-work" aria-label="Marketing work">
     <div class="coursework-container">
@@ -2937,7 +2936,7 @@
         // every label and every italic line is about the same length, so each card reads as two lines and two lines
         ("", 9, "", "subjects studied across four schools", "Most people pick one major. I picked two.", "/#overview"),
         ("", 240, "+", "girls I taught to code in two years", "In my AP CS class, there were three of us.", "#beyond"),
-        ("", 350, "", "hours volunteered in a single year", "Gold only required 250. I kept going.", "/#awards"),
+        ("", 350, "", "hours volunteered in a single year", "Gold only required 250. I kept going.", "#beyond"),
         ("", 1000, "", "book copies sold in the first month", "I wrote it for one reader: my sister.", "#beyond"),
         ("$", 4194, "", "given to DFW libraries for early STEM", "All of my book’s first-month profit.", "#beyond")
     };
@@ -3546,7 +3545,6 @@
         #why-mis.career-why { padding-top: 48px; padding-bottom: 48px; }
         #coursework .coursework-section { padding-top: 48px; padding-bottom: 16px; }
         #beyond .beyond-section { padding-top: 56px; padding-bottom: 32px; }
-        #awards .honors-section { padding-top: 48px; padding-bottom: 56px; }
         #playground.listen-section { padding-top: 48px; padding-bottom: 40px; }
         #finale.finale { padding-top: 56px; padding-bottom: 96px; }
         #marketing-work.coursework-section { padding-top: 36px; }
