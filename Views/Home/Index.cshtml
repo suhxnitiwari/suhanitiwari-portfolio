@@ -3509,10 +3509,29 @@
         else nav.classList.add('on');
         // sections without their own dot light up the chapter they belong to
         const partOf = { awards: 'beyond' };
-        const mark = id => links.forEach(a => a.classList.toggle('current', a.dataset.chapter === (partOf[id] || id)));
+        // the address bar and tab title follow along too, so a shared link opens where you were reading
+        const baseTitle = document.title;
+        const follow = id => {
+            const link = links.find(a => a.dataset.chapter === id);
+            // a deeper link inside this chapter (one marketing project, say) stays as it is
+            const deep = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+            const section = id && document.getElementById(id);
+            if (deep && section && section !== deep && section.contains(deep)) { document.title = `${link.textContent.trim()} - Suhani Tiwari`; return; }
+            const url = location.pathname + location.search + (id ? `#${id}` : '');
+            if (location.pathname + location.search + location.hash !== url) history.replaceState(history.state, '', url);
+            document.title = link ? `${link.textContent.trim()} - Suhani Tiwari` : baseTitle;
+        };
+        const mark = id => {
+            const chapter = partOf[id] || id;
+            links.forEach(a => a.classList.toggle('current', a.dataset.chapter === chapter));
+            follow(chapter);
+        };
         const seen = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) mark(e.target.id); }),
             { rootMargin: '-45% 0px -50% 0px' });
         [...sections, ...Object.keys(partOf).map(id => document.getElementById(id)).filter(Boolean)].forEach(s => seen.observe(s));
+        // back at the top: plain address, plain title
+        if (hero) new IntersectionObserver(([e]) => { if (e.isIntersecting) { links.forEach(a => a.classList.remove('current')); follow(''); } },
+            { rootMargin: '-45% 0px -50% 0px' }).observe(hero);
     })();
 </script>
 
