@@ -225,7 +225,7 @@
                     <div class="e-stream" aria-hidden="true"></div>
                     <div class="e-tag" aria-hidden="true"><small>AE brand comps</small><b>+1%</b></div>
                 </div>
-                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results. Headlines: NBC News, Bored Panda (2025). Comments and post counts are illustrative.</span>
+                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results. Comments: real public Instagram comments, July to Nov 2025, names removed. Headlines: The New Feminist, Leading Entrepreneurs, NBC News, Freedom Front, Bored Panda. DMs and post counts are illustrative.</span>
                 @Html.Raw(esig)
             </div>
 
@@ -410,25 +410,26 @@
         if (!cover) return;
         const stream = cover.querySelector('.e-stream');
         const n = sel => cover.querySelector(sel);
+        // Real public comments from Instagram posts about the ad (July to Nov 2025), with usernames left off;
+        // the headlines are real posts and articles; the DMs and share counts are illustrative
         const msgs = [
-            ['love', 'jeanqueen', 'ok the jeans are actually cute 😍'],
-            ['hate', 'mara.k', 'jeans or GENES?? who approved this 😬'],
+            ['love', '', 'Great ad! It’s jeans not genes!'],
+            ['news', 'The New Feminist', '“Is the new Sydney Sweeney ad a dog whistle for white supremacy?”'],
+            ['hate', '', 'I hope her career torpedoes. Karma 😂'],
             ['dm', '', 'did u see the AE ad 💀'],
-            ['love', 'tayo.fits', 'ordering rn'],
-            ['hate', 'lex_reads', 'not shopping here again. bye'],
+            ['love', '', 'Brilliant ad, a woman of beauty to promote a quality product.'],
             ['share', '', '↗ shared to 4 group chats'],
-            ['love', 'k.brooks', 'SOLD OUT already??'],
-            ['hate', 'dee', 'the pun is doing a lot of work'],
+            ['love', '', 'She doesn’t have great jeans, she has amazing jeans'],
+            ['news', 'Leading Entrepreneurs', '“This ad added $400 million to American Eagle’s market cap in 24 hours”'],
+            ['hate', '', 'It’s an annoying commercial'],
+            ['love', '', 'Good genes means she is pretty, they aren’t saying other cultures are bad'],
             ['news', 'NBC News', 'Sweeney on the ad: “I love jeans… I’m against hate.”'],
-            ['dm', '', 'omg it’s on the news now'],
-            ['love', 'sam_j', 'best jeans ad in years tbh'],
-            ['hate', 'nina.o', 'boycott 🚫'],
-            ['share', '', '↗ reposted to story · 12.4K'],
-            ['love', 'priya.p', 'the curvy straight in 6 pls 🙏'],
-            ['dm', '', 'ok but where do i get them'],
+            ['love', '', 'One of the greatest ads ever made'],
+            ['love', '', 'People who are offended by a pants commercial are the same people who think McDonald’s is a food group 🙄'],
+            ['news', 'Freedom Front', '“Sydney Sweeney refuses to apologize for ad about ‘good genes’”'],
             ['news', 'Bored Panda', '“Now I Understand Why People Hate Her”'],
-            ['hate', 'jules', 'this is a choice, AE'],
-            ['love', 'mo', 'my mom bought two pairs lol']
+            ['love', '', 'the most beautiful thing I have ever seen'],
+            ['love', '', 'this ad totally went over a lot of people’s heads 🔥🔥']
         ];
         const avatars = ['#E9A178', '#8DA7C7', '#C98FB3', '#7FBF9E', '#E6C46A', '#9C8FD1'];
         const fmt = v => Math.round(v).toLocaleString('en-US');
