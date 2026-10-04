@@ -715,7 +715,13 @@
                     <script type="application/json" id="pfDecide">@Json.Serialize(misDecide)</script>
                 </div>
 
+                @* the six skills are the headline; the four levels, "Hand me a problem" and the zoom lens wait behind More on my MIS curriculum *@
+                <div class="mis-more-bar">
+                    <button type="button" class="mis-more-btn" aria-expanded="false" aria-controls="mis-more-cycle mis-more-problem mis-more-zoom">More on my MIS curriculum <span aria-hidden="true">↓</span></button>
+                </div>
+
                 @* 3. how the major builds it: the cycle *@
+                <div class="mis-more" id="mis-more-cycle" hidden>
                 <div class="mp-head">
                     <p class="mp-eyebrow">How the curriculum built that range</p>
                     <h3 class="mp-h2">One major. Four levels of the same problem.</h3>
@@ -840,9 +846,6 @@
                 </div>
                 </div>
 
-                @* the four levels are the headline; "Hand me a problem" and the zoom lens wait behind View more *@
-                <div class="mis-more-bar">
-                    <button type="button" class="mis-more-btn" aria-expanded="false" aria-controls="mis-more-problem mis-more-zoom">View more <span aria-hidden="true">↓</span></button>
                 </div>
 
                 @* 4. my projects moved to their own Projects section on Pursue, right after Experience (Views/Home/_RideFlowProof.cshtml) *@
@@ -971,7 +974,7 @@
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
 <script>
-    // View more: opens "Hand me a problem" and the zoom lens under the four levels; View less folds them away again
+    // More on my MIS curriculum: opens the four levels, "Hand me a problem" and the zoom lens under the six skills; Less folds them away again
     (() => {
         const btn = document.querySelector('.mis-more-btn');
         if (!btn) return;
@@ -979,7 +982,7 @@
         const open = on => {
             parts.forEach(p => p.hidden = !on);
             btn.setAttribute('aria-expanded', on);
-            btn.innerHTML = on ? 'View less <span aria-hidden="true">↑</span>' : 'View more <span aria-hidden="true">↓</span>';
+            btn.innerHTML = on ? 'Less on my MIS curriculum <span aria-hidden="true">↑</span>' : 'More on my MIS curriculum <span aria-hidden="true">↓</span>';
             if (!on) btn.scrollIntoView({ block: 'center', behavior: 'smooth' });
         };
         btn.addEventListener('click', () => open(btn.getAttribute('aria-expanded') !== 'true'));
