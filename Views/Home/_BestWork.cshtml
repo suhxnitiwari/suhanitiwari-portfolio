@@ -68,9 +68,9 @@
         (Cols: 4, Rows: 1, Fill: false, Kind: "Data engineering", Title: "Double Tap", Video: (string?)"doubletap", Panel: (string?)null, Inset: false,
             Label: "Scrolling down my Instagram, rebuilt as a profile of what I like, reject and scroll past", Link: (string?)"https://suhxnitiwari.github.io/double-tap/",
             Line: "Six years of my Instagram, parsed: what I like, what I reject, how fast I decide and when I scroll.", Skills: new[] { "Python", "NLP", "Data engineering" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation" }),
-        (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
-            Label: "", Link: (string?)null,
-            Line: "My YouTube watch history as a funnel: what gets the click, what gets finished, and what brings me back.", Skills: new[] { "SQL", "Funnel analysis", "Product memo" }, Topics: new[] { "ETL & Analytics" }),
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Data story", Title: "Up Next", Video: (string?)"upnext", Panel: (string?)null, Inset: false,
+            Label: "A wine play button pops in over candlelight, then asks what my YouTube knows about me, answered beat by beat beside a gold arch", Link: (string?)"https://suhxnitiwari.github.io/up-next/",
+            Line: "Nine months of my YouTube, parsed: what I skim, what I sit through, and what it knows about me.", Skills: new[] { "Python", "Data engineering", "scikit-learn", "JavaScript" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation", "Algorithms, AI & Interactive" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
             Label: "", Link: (string?)null,
             Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation" })
@@ -108,7 +108,7 @@
             // marketing gets one row of four small tiles, my four best brand cases (Starbucks, Owala, FuelFlow and
             // Prime Book Club stay in the Marketing section only)
             ("How Glossier Lost Its Cult", 3), ("Netflix’s $20B Leak", 3), ("Rhode Has a Hailey Problem", 3), ("40 Billion Impressions, 1% Growth", 3),
-            ("RideFlow", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
+            ("RideFlow", 4), ("Up Next", 4), ("Spotify Retention Cohorts", 4)
         };
         stories = order.Select(o =>
         {
@@ -135,7 +135,8 @@
         ["Suhaiku"] = "Commission a painting ↗",
         ["The Suhani House"] = "Come on in ↗",
         ["Still Watching"] = "Press play ↗",
-        ["8,730 Questions"] = "Search my year ↗"
+        ["8,730 Questions"] = "Search my year ↗",
+        ["Up Next"] = "Ask my YouTube ↗"
     };
 }
 @{
