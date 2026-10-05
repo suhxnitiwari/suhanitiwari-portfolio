@@ -126,18 +126,22 @@ const shots = {
         }
     },
     lullabyte: {
-        // Lullabyte: past the sound gate quietly, then "Suhani" typed letter by letter and played, so its felt charms drop onto the mobile
-        url: 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800,
-        prep: async ev => { await ev(`document.getElementById('gateQuiet')?.click()`); await sleep(1500); },
+        // Lullabyte: the opening (the crib mobile lowered in on its string, its shadow swinging across the wall, the headline
+        // rising after it), then "Suhani" typed letter by letter and played, so its felt charms drop onto the mobile.
+        // LULLABYTE_URL can point at a local copy to record before it goes live.
+        url: process.env.LULLABYTE_URL || 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800, stream: true,
+        // forget any earlier visit, so the page waits behind its sound gate; the gate is then hidden without a fade
+        prep: async ev => { await ev(`localStorage.clear(); location.reload()`); await sleep(3500); await ev(`document.getElementById('gate').hidden = true; MB.setOn(false); soundUI()`); await sleep(300); },
         run: async ev => {
-            await sleep(800);
+            await ev(`enter(false)`);
+            await sleep(2300);
             for (const ch of 'Suhani') {
                 await ev(`(() => { const i = document.getElementById('heroName'); i.value += ${JSON.stringify(ch)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
                 await sleep(260);
             }
-            await sleep(600);
+            await sleep(700);
             await ev(`document.getElementById('heroPlay').click()`);
-            await sleep(7000);
+            await sleep(7500);
         }
     },
     search: {
@@ -183,7 +187,8 @@ try {
     await new Promise(r => ws.addEventListener('open', r));
     let id = 0;
     const pending = new Map();
-    ws.addEventListener('message', m => { const d = JSON.parse(m.data); if (d.id && pending.has(d.id)) { pending.get(d.id)(d); pending.delete(d.id); } });
+    const events = [];
+    ws.addEventListener('message', m => { const d = JSON.parse(m.data); if (d.id && pending.has(d.id)) { pending.get(d.id)(d); pending.delete(d.id); } else if (d.method) events.forEach(f => f(d)); });
     const send = (method, params = {}) => new Promise(r => { const i = ++id; pending.set(i, r); ws.send(JSON.stringify({ id: i, method, params })); });
     const ev = async expr => (await send('Runtime.evaluate', { expression: expr, awaitPromise: true, returnByValue: true })).result?.result?.value;
 
@@ -220,6 +225,24 @@ try {
         process.exit(0);
     }
 
+    // canvas-heavy pages stream frames as Chrome paints them (smoother than asking for one screenshot at a time)
+    if (shot.stream) {
+        const times = [];
+        let n = 0;
+        const t0 = Date.now();
+        events.push(d => {
+            if (d.method !== 'Page.screencastFrame') return;
+            writeFileSync(`${out}/${String(++n).padStart(5, '0')}.jpg`, Buffer.from(d.params.data, 'base64'));
+            times.push(Date.now() - t0);
+            send('Page.screencastFrameAck', { sessionId: d.params.sessionId });
+        });
+        await send('Page.startScreencast', { format: 'jpeg', quality: 88, maxWidth: shot.w, maxHeight: shot.h, everyNthFrame: 1 });
+        await shot.run(ev);
+        await send('Page.stopScreencast');
+        writeFileSync(`${out}/times.json`, JSON.stringify(times));
+        console.log(`${name}: ${n} frames over ${(times.at(-1) / 1000).toFixed(1)}s (${(n / (times.at(-1) / 1000)).toFixed(1)} fps)`);
+        ws.close();
+    } else {
     // capture frames as fast as Chrome gives them while the script plays
     const times = [];
     let recording = true, n = 0;
@@ -238,6 +261,7 @@ try {
     writeFileSync(`${out}/times.json`, JSON.stringify(times));
     console.log(`${name}: ${n} frames over ${(times.at(-1) / 1000).toFixed(1)}s (${(n / (times.at(-1) / 1000)).toFixed(1)} fps)`);
     ws.close();
+    }
 } finally {
     chrome.kill();
 }
