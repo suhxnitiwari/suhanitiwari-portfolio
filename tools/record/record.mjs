@@ -101,7 +101,7 @@ const shots = {
         // Still Watching: the cold open, from black. The red S glows in, then "Who's watching?" as the four profiles generate
         url: process.env.SW_URL || 'https://suhxnitiwari.github.io/still-watching/', w: 1280, h: 720,
         prep: async ev => { await ev(`sessionStorage.clear(); location.reload()`); await sleep(150); },
-        run: async ev => { await sleep(5000); await ev(`document.querySelector('#intro-start').click()`); await sleep(11000); }
+        run: async ev => { await sleep(4600); await ev(`document.querySelector('#intro-start').click()`); await sleep(13000); }
     },
     // Still Watching episodes for the montage (montage.py stitches them): the player opens on an episode the way a
     // visitor would, and the first seconds (while the player controls fade) are trimmed away afterwards
