@@ -146,166 +146,32 @@
 }
 
 /* Make > Traveling: a trip's card, one row per spot */
-/* Traveling: the next page of my travel journal, twice as wide as a trip card and just as tall.
-   Ruled cream paper, a red margin line, two strips of washi tape, a taped-in sketch of a plane
-   and a boarding pass to somewhere not decided yet. */
-.trip-journal {
-    container-type: inline-size;
-}
-
-.journal-page {
-    position: relative;
-    height: 150cqw;                     /* same 2:3 as the trip photos */
-    padding: 10% 8% 8% 14%;
-    border-radius: 3px 8px 8px 3px;
-    background:
-        linear-gradient(90deg, transparent 0 7.5%, rgba(214, 120, 120, 0.45) 7.5% calc(7.5% + 1.5px), transparent 0),
-        repeating-linear-gradient(180deg, transparent 0 25px, rgba(150, 170, 200, 0.28) 25px 26px),
-        #FFFBF4;
-    box-shadow: 0 6px 16px rgba(42, 24, 16, 0.14), inset 0 0 40px rgba(210, 180, 150, 0.18);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 4%;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.trip-journal:hover .journal-page {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 28px rgba(42, 24, 16, 0.2);
-}
-
-.journal-tape {
+/* Traveling: the next trip, a cover cut like the city photos: dusk sky, a plane leaving, the route in serif */
+.trip-next svg {
     position: absolute;
-    top: -6px;
-    width: 22%;
-    height: 22px;
-    background: rgba(225, 160, 175, 0.55);
-    box-shadow: 0 1px 2px rgba(42, 24, 16, 0.08);
-}
-
-.journal-tape.left { left: 8%; transform: rotate(-6deg); }
-.journal-tape.right { right: 6%; transform: rotate(5deg); background: rgba(160, 190, 150, 0.5); }
-
-.journal-date {
-    margin: 0;
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-size: clamp(0.72rem, 6cqw, 0.95rem);
-    color: #7E3F4A;
-}
-
-/* the sketch, taped in like a photo */
-.journal-snap {
-    width: 78%;
-    margin: 0;
-    padding: 5px 5px 16px;
-    background: #FFFFFF;
-    box-shadow: 0 3px 8px rgba(42, 24, 16, 0.18);
-}
-
-.journal-snap svg {
-    display: block;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
-/* the boarding pass: a main part and a stub, split by a dotted tear line */
-.journal-ticket {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    border-radius: var(--r-small);
-    background: #FFF4EE;
-    border: 1px solid #E9CFC6;
-    box-shadow: 0 3px 8px rgba(42, 24, 16, 0.14);
-    font-size: clamp(0.5rem, 4.4cqw, 0.72rem);
-    color: #1E100A;
-    overflow: hidden;
+.trip-next-route {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 40px 16px 16px;
+    background: linear-gradient(transparent, rgba(30, 16, 10, 0.35));
+    font-family: Georgia, serif;
+    font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+    letter-spacing: 0.04em;
+    color: #FFF8F2;
 }
 
-.ticket-main {
-    padding: 8% 8% 8% 9%;
-}
-
-.ticket-stub {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12% 10%;
-    border-left: 2px dotted #D9B8AE;
-    background: #F8E3DC;
-}
-
-.journal-ticket p { margin: 0; }
-
-.ticket-kicker {
+.trip-next-route span {
+    font-family: system-ui, sans-serif;
     font-size: 0.8em;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #733642;
-}
-
-.ticket-route {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 4px !important;
-    font-family: Georgia, serif;
-    font-size: 1.9em;
-    color: #1E100A;
-}
-
-.ticket-plane {
-    font-size: 0.7em;
-    color: #733642;
-}
-
-.ticket-meta {
-    display: grid;
-    gap: 3px;
-    margin: 6px 0 0;
-}
-
-.ticket-meta div {
-    display: flex;
-    gap: 6px;
-}
-
-.ticket-meta dt {
-    min-width: 5.2em;
-    font-weight: 700;
-    color: #7A6A64;
-}
-
-.ticket-meta dd {
-    margin: 0;
-}
-
-.ticket-gate {
-    margin-top: 2px !important;
-    font-family: Georgia, serif;
-    font-size: 1.5em;
-    font-weight: 700;
-}
-
-.ticket-barcode {
-    flex: 1;
-    width: 26px;
-    min-height: 34px;
-    margin-top: 8px;
-    background: repeating-linear-gradient(180deg, #1E100A 0 2px, transparent 2px 4px, #1E100A 4px 5px, transparent 5px 8px);
-    opacity: 0.8;
-}
-
-.journal-note {
-    margin: 0;
-    white-space: nowrap;
-    font-family: Georgia, serif;
-    font-style: italic;
-    font-size: clamp(0.68rem, 5.4cqw, 0.9rem);
-    color: #3F4A34;
+    opacity: 0.85;
 }
 
 .trip-card {

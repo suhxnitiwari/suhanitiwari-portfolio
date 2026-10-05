@@ -69,6 +69,45 @@
     }
 
     /* the four "what ifs": one row of cards under the intro, each jumping to its shelf */
+    /* the fold: shelves stay laid out (so their carousels measure right) but take no room until opened */
+    .make-fold:not(.open) {
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+    }
+
+    .make-open {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 28px auto 0;
+        padding: 12px 26px;
+        border: 1px solid #7E3F4A;
+        border-radius: var(--r-pill, 999px);
+        background: transparent;
+        font: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #7E3F4A;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .make-open:hover {
+        background: #7E3F4A;
+        color: #FFF8F6;
+    }
+
+    .make-open:focus-visible {
+        outline: 2px solid #7E3F4A;
+        outline-offset: 3px;
+    }
+
+    .make-open-sign {
+        font-size: 1.2em;
+        line-height: 1;
+    }
+
     .make-ifs {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -492,6 +531,15 @@
             </ol>
         </div>
 
+        @* On the home page the four shelves start folded, so the page reaches Experience and the rest sooner.
+           The button opens them; a link to any shelf (the menu, the "what if" list) opens them too *@
+        @if (onHome)
+        {
+            <button type="button" class="make-open" aria-expanded="false" aria-controls="make-fold">
+                <span class="make-open-label">Explore my passions</span> <span class="make-open-sign" aria-hidden="true">+</span>
+            </button>
+        }
+        <div class="make-fold@(onHome ? "" : " open")" id="make-fold">
         @* Digital Art: one gallery wall that slides sideways; each piece opens large *@
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
@@ -626,53 +674,33 @@
                             <p class="shelf-item-meta">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : spotCount > 0 ? $"the {spotCount} spots I’d send you to" : "spots coming soon")</p>
                         </li>
                     }
-                    @* The next page of the travel journal: still blank, with a sketch of a plane and a ticket to somewhere *@
-                    <li class="shelf-item trip-journal">
-                        <div class="journal-page" role="img" aria-label="A blank travel journal page with a sketch of a plane and a boarding pass to a place not decided yet">
-                            <span class="journal-tape left" aria-hidden="true"></span>
-                            <span class="journal-tape right" aria-hidden="true"></span>
-                            <p class="journal-date">next entry</p>
-                            <figure class="journal-snap" aria-hidden="true">
-                                <svg viewBox="0 0 200 150">
-                                    <defs>
-                                        <linearGradient id="journalSky" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0" stop-color="#F3C9B8" />
-                                            <stop offset="1" stop-color="#FBE9DF" />
-                                        </linearGradient>
-                                    </defs>
-                                    <rect width="200" height="150" fill="url(#journalSky)" />
-                                    <circle cx="150" cy="104" r="22" fill="#F5B98F" opacity="0.7" />
-                                    <g fill="#FFFBF6" opacity="0.9">
-                                        <ellipse cx="40" cy="110" rx="26" ry="9" /><ellipse cx="58" cy="104" rx="16" ry="9" />
-                                        <ellipse cx="160" cy="46" rx="20" ry="6" /><ellipse cx="172" cy="42" rx="11" ry="6" />
-                                    </g>
-                                    <path d="M8 128 C 50 118, 70 96, 96 80" fill="none" stroke="#733642" stroke-width="1.6" stroke-dasharray="4 5" stroke-linecap="round" />
-                                    @* the plane, drawn in ink *@
-                                    <g transform="translate(118 64) rotate(-24)" fill="#FFFBF6" stroke="#3B2A22" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-                                        <path d="M-26 0 C -18 -5, 18 -6, 26 -2 C 30 0, 30 2, 26 3 C 16 6, -18 6, -26 2 Z" />
-                                        <path d="M-2 -1 L -14 -22 L -6 -22 L 10 -1 Z" />
-                                        <path d="M-2 3 L -12 20 L -5 20 L 10 3 Z" />
-                                        <path d="M-24 0 L -30 -11 L -24 -11 L -17 -1 Z" />
-                                        <path d="M14 -3 L 19 -3" fill="none" />
-                                        <path d="M4 -2.5 h2 M-2 -2.5 h2 M-8 -2.5 h2" stroke-width="1.6" />
-                                    </g>
-                                </svg>
-                            </figure>
-                            <div class="journal-ticket" aria-hidden="true">
-                                <div class="ticket-main">
-                                    <p class="ticket-kicker">Boarding pass</p>
-                                    <p class="ticket-route"><b>AUS</b><span class="ticket-plane">✈</span><b>???</b></p>
-                                    <dl class="ticket-meta">
-                                        <div><dt>Seat</dt><dd>Window, obviously</dd></div>
-                                    </dl>
-                                </div>
-                                <div class="ticket-stub">
-                                    <p class="ticket-kicker">Gate</p>
-                                    <p class="ticket-gate">TBD</p>
-                                    <span class="ticket-barcode"></span>
-                                </div>
-                            </div>
-                            <p class="journal-note">Next page: somewhere new ✦</p>
+                    @* The next trip: still blank *@
+                    <li class="shelf-item">
+                        @* the next trip: a cover cut like the city photos (same shape, shadow and dusk light), not decided yet *@
+                        <div class="shelf-cover trip-next" role="img" aria-label="A dusk sky with a plane flying out of Austin to a place not decided yet">
+                            <svg viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                                <defs>
+                                    <linearGradient id="nextSky" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0" stop-color="#2E4057" />
+                                        <stop offset="0.45" stop-color="#8E6C84" />
+                                        <stop offset="0.75" stop-color="#E7A07A" />
+                                        <stop offset="1" stop-color="#F6CDA5" />
+                                    </linearGradient>
+                                </defs>
+                                <rect width="200" height="300" fill="url(#nextSky)" />
+                                <circle cx="132" cy="236" r="26" fill="#FBE1C2" opacity="0.55" />
+                                <g fill="#FFF3EA" opacity="0.35">
+                                    <ellipse cx="46" cy="214" rx="38" ry="7" /><ellipse cx="160" cy="190" rx="30" ry="5" /><ellipse cx="90" cy="160" rx="24" ry="4" />
+                                </g>
+                                <path d="M14 268 C 60 250, 92 196, 118 132" fill="none" stroke="#FFF3EA" stroke-width="1.4" stroke-dasharray="3 6" stroke-linecap="round" opacity="0.8" />
+                                <g transform="translate(126 114) rotate(-58) scale(0.8)" fill="#FFF8F2">
+                                    <path d="M-26 0 C -18 -5, 18 -6, 26 -2 C 30 0, 30 2, 26 3 C 16 6, -18 6, -26 2 Z" />
+                                    <path d="M-2 -1 L -14 -22 L -6 -22 L 10 -1 Z" />
+                                    <path d="M-2 3 L -12 20 L -5 20 L 10 3 Z" />
+                                    <path d="M-24 0 L -30 -11 L -24 -11 L -17 -1 Z" />
+                                </g>
+                            </svg>
+                            <p class="trip-next-route" aria-hidden="true">AUS <span>→</span> ???</p>
                         </div>
                         <p class="shelf-item-title">Where next?</p>
                         <p class="shelf-item-meta">this page is still blank</p>
@@ -681,6 +709,7 @@
                 <button type="button" class="shelf-arrow next" aria-label="Scroll Itineraries right">›</button>
             </div>
             }
+        </div>
         </div>
     </div>
 </section>
@@ -757,4 +786,39 @@
 
 <script src="~/js/shelves.js" asp-append-version="true"></script>
 <script src="~/js/trip-download.js" asp-append-version="true"></script>
+<script>
+    // Passions fold: the button opens and closes the shelves; any link to a shelf opens them first, then lands on it
+    (() => {
+        const fold = document.getElementById('make-fold');
+        const btn = document.querySelector('.make-open');
+        if (!fold || !btn) return;
+        const shelves = ['art', 'writing', 'baking', 'traveling'];
+        const set = open => {
+            fold.classList.toggle('open', open);
+            btn.setAttribute('aria-expanded', open);
+            btn.querySelector('.make-open-label').textContent = open ? 'Fold them away' : 'Explore my passions';
+            btn.querySelector('.make-open-sign').textContent = open ? '−' : '+';
+        };
+        btn.addEventListener('click', () => {
+            const open = !fold.classList.contains('open');
+            set(open);
+            if (!open) btn.scrollIntoView({ block: 'center' });
+        });
+        const openTo = id => {
+            if (!shelves.includes(id)) return false;
+            set(true);
+            requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }));
+            return true;
+        };
+        // links on this page or in the menu that point at a shelf
+        document.addEventListener('click', e => {
+            const a = e.target.closest('a[href*="#"]');
+            if (!a || a.pathname !== location.pathname) return;
+            if (openTo(a.hash.slice(1))) e.preventDefault();
+        });
+        // arriving at /#baking from another page, or the hash changing
+        openTo(location.hash.slice(1));
+        addEventListener('hashchange', () => openTo(location.hash.slice(1)));
+    })();
+</script>
 <script src="~/js/make-motion.js" asp-append-version="true"></script>
