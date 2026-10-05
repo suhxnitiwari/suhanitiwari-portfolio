@@ -819,6 +819,14 @@
         border-radius: 50%;
         background: #E2C6C0;
         cursor: var(--cursor-hot, pointer);
+        position: relative;
+    }
+
+    /* an invisible 44px tap area around each little dot, so fingers can hit it */
+    .why-dots button::before {
+        content: "";
+        position: absolute;
+        inset: -18px -4px;
     }
 
     .why-dots button[aria-current="true"] {

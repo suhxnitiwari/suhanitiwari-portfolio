@@ -307,6 +307,14 @@
         color: #9C6670;
         cursor: var(--cursor-hot, pointer);
         transition: background 0.2s ease, color 0.2s ease;
+        position: relative;
+    }
+
+    /* the arrows look 28px but take a 44px-tall tap (only 1px wider each side, so the pair never overlap) */
+    .stat-nav button::before {
+        content: "";
+        position: absolute;
+        inset: -8px -1px;
     }
 
     .stat-nav button:hover,
