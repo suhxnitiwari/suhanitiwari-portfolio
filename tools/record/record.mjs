@@ -115,6 +115,16 @@ const shots = {
         prep: async ev => { await ev(`sessionStorage.setItem('entered', '1'); location.reload()`); await sleep(4000); await ev(`document.querySelector('[data-film="copycat"]').click()`); await sleep(200); },
         run: async () => { await sleep(10000); }
     },
+    doubletap: {
+        // Double Tap: the Instagram-profile page is a phone-width column, so it's filmed narrow, scrolling from the header into the posts and back up
+        url: 'https://suhxnitiwari.github.io/double-tap/', w: 640, h: 800,
+        run: async ev => {
+            await sleep(1500);
+            const end = await ev(`document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 0); document.documentElement.scrollHeight - innerHeight`);
+            for (let y = 0; y <= end; y += 4) { await ev(`window.scrollTo(0, ${y})`); await sleep(16); }
+            await sleep(1200);
+        }
+    },
     search: {
         // 8,730 Questions: "Play my day", the hour-by-hour chart of what I search
         url: 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,

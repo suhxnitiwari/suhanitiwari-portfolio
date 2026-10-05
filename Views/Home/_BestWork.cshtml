@@ -62,8 +62,8 @@
             Label: "Walking along a gallery wall of framed paintings, stepping up to two of them as their haiku fade in", Link: "https://suhxnitiwari.github.io/suhaiku/",
             Line: "A small museum of haiku. Every painting is composed from the poem hung inside it, and Claude writes new ones while you watch.", Skills: new[] { "JavaScript", "Canvas", "Claude API" }, Topics: new[] { "Algorithms, AI & Interactive" }),
 
-        (Cols: 4, Rows: 1, Fill: false, Kind: "Data engineering", Title: "Double Tap", Video: (string?)null, Panel: (string?)"#7E3F4A", Inset: false,
-            Label: "", Link: (string?)null,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Data engineering", Title: "Double Tap", Video: (string?)"doubletap", Panel: (string?)null, Inset: false,
+            Label: "Scrolling down my Instagram, rebuilt as a profile of what I like, reject and scroll past", Link: (string?)"https://suhxnitiwari.github.io/double-tap/",
             Line: "Six years of my Instagram, parsed: what I like, what I reject, how fast I decide and when I scroll.", Skills: new[] { "Python", "NLP", "Data engineering" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
             Label: "", Link: (string?)null,
@@ -97,10 +97,11 @@
     {
         var order = new (string Title, int Cols)[]
         {
-            ("RideFlow", 8), ("Listening Galaxy", 4),
+            // Listening Galaxy leads at the biggest size, with Double Tap beside it (its phone-shaped recording suits the narrow tile)
+            ("Listening Galaxy", 8), ("Double Tap", 4),
             ("Still Watching", 6), ("8,730 Questions", 6),
             ("The Suhani House", 6), ("Suhaiku", 6),
-            ("What’s in My Bag?", 4), ("Saturday in Austin", 4), ("Double Tap", 4),
+            ("What’s in My Bag?", 4), ("Saturday in Austin", 4), ("RideFlow", 4),
             // marketing gets one row of four small tiles, my four best brand cases (Starbucks, Owala, FuelFlow and
             // Prime Book Club stay in the Marketing section only)
             ("How Glossier Lost Its Cult", 3), ("Netflix’s $20B Leak", 3), ("Rhode Has a Hailey Problem", 3), ("40 Billion Impressions, 1% Growth", 3),
