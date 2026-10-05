@@ -8,7 +8,8 @@
     // One scholarship or award. Only the name is required: anything left empty simply doesn't show.
     // From = who gave it (like UT Austin or McCombs); Note = what the award recognizes;
     // Why = why I got it, in my words (the back of the card shows Why when it's set, otherwise Note).
-    public record Honor(string Name, string From = "", string Year = "", string Note = "", string Amount = "", string Why = "");
+    // For = what it recognizes in a word or two, listed under the heading like the degrees under UT Austin.
+    public record Honor(string Name, string From = "", string Year = "", string Note = "", string Amount = "", string Why = "", string For = "");
 }
 
 @{
@@ -20,21 +21,21 @@
     var scholarships = new Honor[]
     {
         new Honor("Gerald and Linda Ridgely Endowed Presidential Scholarship", From: "McCombs", Year: "2026–2027",
-                  Note: "For McCombs students who exemplify student leadership on campus."),
+                  Note: "For McCombs students who exemplify student leadership on campus.", For: "Leadership"),
         new Honor("Scott Hemsell Memorial Scholarship", From: "McCombs", Year: "2026–2027",
-                  Note: "For students who show both interest and aptitude in Management Information Systems, in the classroom and beyond it.")
+                  Note: "For students who show both interest and aptitude in Management Information Systems, in the classroom and beyond it.", For: "MIS")
     };
 
     var schoolAwards = new Honor[]
     {
         new Honor("University Honors", From: "UT Austin", Year: "Spring 2025",
-                  Note: "Recognized for distinguished academic achievement.")
+                  Note: "Recognized for distinguished academic achievement.", For: "Academics")
     };
 
     var serviceAwards = new Honor[]
     {
         new Honor("President’s Volunteer Service Award, Gold", Year: "2023",
-                  Note: "350+ hours of community service in a single year.")
+                  Note: "350+ hours of community service in a single year.", For: "Service")
     };
 
     var shown = only switch
@@ -66,6 +67,28 @@
 
     @@media (max-width: 800px) {
         .honors-label { font-size: 2.1rem; }
+    }
+
+    /* under the heading, set like McCombs and the degree lines under UT Austin */
+    .honors-sub {
+        margin: 10px 0 0;
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #1E100A;
+    }
+
+    .honors-for {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.95em;
+        line-height: var(--edu-line, 1.65rem);
+        color: #3F4A34;
+    }
+
+    .honors-for b {
+        color: #1E100A;
     }
 
     /* flip cards: the name on the front, why I got it on the back. Both faces share one grid cell,
@@ -174,6 +197,16 @@
     <div class="honors honors-@(only ?? "all")">
         <div>
             <p class="honors-label">@(only switch { "school" => "Scholarships & Honors", "service" => "Recognized for It", _ => "Scholarships & Awards" })</p>
+            @if (only == "school")
+            {
+                <p class="honors-sub">McCombs and UT Austin</p>
+            }
+            <ul class="honors-for">
+                @foreach (var honor in shown.Where(h => !string.IsNullOrEmpty(h.For)))
+                {
+                    <li><b>@honor.For</b>, @honor.Name</li>
+                }
+            </ul>
         </div>
         <ul class="honors-list">
             @foreach (var honor in shown)
