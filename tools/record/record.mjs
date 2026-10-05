@@ -125,6 +125,21 @@ const shots = {
             await sleep(1200);
         }
     },
+    lullabyte: {
+        // Lullabyte: past the sound gate quietly, then "Suhani" typed letter by letter and played, so its felt charms drop onto the mobile
+        url: 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800,
+        prep: async ev => { await ev(`document.getElementById('gateQuiet')?.click()`); await sleep(1500); },
+        run: async ev => {
+            await sleep(800);
+            for (const ch of 'Suhani') {
+                await ev(`(() => { const i = document.getElementById('heroName'); i.value += ${JSON.stringify(ch)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+                await sleep(260);
+            }
+            await sleep(600);
+            await ev(`document.getElementById('heroPlay').click()`);
+            await sleep(7000);
+        }
+    },
     search: {
         // 8,730 Questions: "Play my day", the hour-by-hour chart of what I search
         url: 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,

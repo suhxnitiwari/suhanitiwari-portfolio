@@ -55,6 +55,9 @@
         (Cols: 4, Rows: 1, Fill: false, Kind: "Data story", Title: "Listening Galaxy", Video: "galaxy", Panel: (string?)null, Inset: false,
             Label: "Flying at warp speed into a galaxy where every song I've played is a star", Link: "https://suhxnitiwari.github.io/listening-galaxy/",
             Line: "Four years of my Spotify listening as a galaxy: every song a star, and the more I played it, the brighter it burns.", Skills: new[] { "Python", "PostgreSQL", "JavaScript" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation", "Algorithms, AI & Interactive" }),
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Generative music", Title: "Lullabyte", Video: (string?)"lullabyte", Panel: (string?)"#C9B49C", Inset: false,
+            Label: "Typing Suhani into Lullabyte while its felt charms drop onto the crib mobile", Link: "https://suhxnitiwari.github.io/baby-name-maker/",
+            Line: "Every name is a lullaby: 1.2 million names from official records and 160+ cultures, each turned into a tune by how it’s said.", Skills: new[] { "JavaScript", "Web Audio", "Python", "Phonetics" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation", "Algorithms, AI & Interactive" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
             Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
             Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }, Topics: new[] { "Algorithms, AI & Interactive" }),
@@ -99,13 +102,13 @@
         {
             // Listening Galaxy leads at the biggest size, with Double Tap beside it (its phone-shaped recording suits the narrow tile)
             ("Listening Galaxy", 8), ("Double Tap", 4),
-            ("Still Watching", 6), ("8,730 Questions", 6),
-            ("The Suhani House", 6), ("Suhaiku", 6),
-            ("What’s in My Bag?", 4), ("Saturday in Austin", 4), ("RideFlow", 4),
+            ("Still Watching", 6), ("Lullabyte", 6),
+            ("8,730 Questions", 6), ("The Suhani House", 6),
+            ("Suhaiku", 4), ("What’s in My Bag?", 4), ("Saturday in Austin", 4),
             // marketing gets one row of four small tiles, my four best brand cases (Starbucks, Owala, FuelFlow and
             // Prime Book Club stay in the Marketing section only)
             ("How Glossier Lost Its Cult", 3), ("Netflix’s $20B Leak", 3), ("Rhode Has a Hailey Problem", 3), ("40 Billion Impressions, 1% Growth", 3),
-            ("YouTube Watch Funnel", 6), ("Spotify Retention Cohorts", 6)
+            ("RideFlow", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
         };
         stories = order.Select(o =>
         {
