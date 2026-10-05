@@ -779,6 +779,14 @@
             <p class="recipe-kicker">Traveling</p>
             <h2 id="trip-title-@t">@trip.City</h2>
             <p class="recipe-line">@(!string.IsNullOrEmpty(trip.Line) ? trip.Line : (trip.Spots?.Length ?? 0) > 0 ? "Spots I’ve been to" : "Spots coming soon.")</p>
+            @if ((trip.Spots?.Length ?? 0) > 0)
+            {
+                @* saves this list as a PDF to keep while you travel (wwwroot/js/trip-download.js) *@
+                <button type="button" class="trip-download">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8.5M4.5 7.5 8 11l3.5-3.5M3 13.5h10"/></svg>
+                    <span class="trip-download-label">Download the list</span>
+                </button>
+            }
             <ul class="trip-spots">
                 @foreach (var (spot, k) in (trip.Spots ?? Array.Empty<TripSpot>()).Select((spot, k) => (spot, k)))
                 {
@@ -798,4 +806,5 @@
 <script id="recipeData" type="application/json">@Html.Raw(System.Text.Json.JsonSerializer.Serialize(bakes.Concat(cooks)))</script>
 
 <script src="~/js/shelves.js" asp-append-version="true"></script>
+<script src="~/js/trip-download.js" asp-append-version="true"></script>
 <script src="~/js/make-motion.js" asp-append-version="true"></script>
