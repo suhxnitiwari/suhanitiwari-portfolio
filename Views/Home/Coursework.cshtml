@@ -829,7 +829,7 @@
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
 <script>
-    // What I can do: the panel follows the dot around the ring, showing each stop as the dot reaches it.
+    // What I can do: the panel follows the dot around the ring, switching to a stop the moment the dot touches its card.
     // Hovering the ring holds the dot still; hovering, focusing or clicking a stop shows it, and a click
     // moves the dot there so the loop carries on from that stop. Only the panel's button leaves the page.
     (() => {
@@ -863,8 +863,20 @@
 
         // without motion (or SVG timing) the panel simply waits for a pick
         if (matchMedia('(prefers-reduced-motion: reduce)').matches || !svg.getCurrentTime || !('IntersectionObserver' in window)) return;
-        let held = false, timer = 0;
-        const follow = () => { if (!held) show(stops[Math.floor((svg.getCurrentTime() % lap) / leg + 0.02) % stops.length]); };
+        let held = false, frame = 0;
+        const dot = svg.querySelector('.loop-dot'), nodes = stops.map(st => st.querySelector('.loop-node'));
+        // checked every frame: the first card whose edge the dot is touching takes over the panel,
+        // and between cards the last one stays up
+        const follow = () => {
+            frame = requestAnimationFrame(follow);
+            if (held) return;
+            const d = dot.getBoundingClientRect();
+            const hit = nodes.findIndex(n => {
+                const r = n.getBoundingClientRect();
+                return d.right >= r.left && d.left <= r.right && d.bottom >= r.top && d.top <= r.bottom;
+            });
+            if (hit >= 0) show(stops[hit]);
+        };
         ring.addEventListener('pointerenter', () => { held = true; svg.pauseAnimations(); });
         ring.addEventListener('pointerleave', () => { held = false; svg.unpauseAnimations(); });
         // the dot only travels while the loop is on screen, and starts from 01 the first time you get there
@@ -874,11 +886,12 @@
             if (e.isIntersecting) {
                 if (!started) { started = true; svg.setCurrentTime(0); }
                 if (!held) svg.unpauseAnimations();
+                if (!current) show(stops[0]);
+                cancelAnimationFrame(frame);
                 follow();
-                timer = setInterval(follow, 150);
             } else {
                 svg.pauseAnimations();
-                clearInterval(timer);
+                cancelAnimationFrame(frame);
             }
         }, { threshold: 0.35 }).observe(loop);
     })();
