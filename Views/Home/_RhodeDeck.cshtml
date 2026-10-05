@@ -1,7 +1,7 @@
 @* Rhode Has a Hailey Problem: my Rhode strategy, the 2nd project in the Marketing carousel (rendered from _MarketingWork.cshtml).
    The look: Rhode's milky neutrals (oat, cream, espresso) with a glazed sheen. Same slideshow as the other decks.
    Numbers checked Oct 2026: e.l.f.'s deal announcement (AP, May 2025), e.l.f. fiscal 2026 results, Cosmetics Business (Sephora launch).
-   The cover: rhode products on a glossy counter whose reflection says hailey, louder and louder. *@
+   The cover video is a motion graphic I made: a glazed drop, and one name repeating until it fills the frame. *@
 <style>
     .mk-rh { --r-oat: #EFE8DF; --r-cream: #F8F4EE; --r-taupe: #9A7B62; --r-deep: #6F5644; --r-ink: #2B2622; --r-mute: #6E625A; --r-line: #DDD2C5; }
 
@@ -86,59 +86,35 @@
     .mk-rh .r-sound { position: absolute; left: 50%; bottom: 1.4cqw; transform: translateX(-50%); padding: 0.6cqw 1.4cqw; border: 0; border-radius: 99px; background: rgba(43, 38, 34, 0.75); color: var(--r-cream); font: 600 clamp(10px, 1cqw, 12px) system-ui, sans-serif; white-space: nowrap; cursor: pointer; }
     .mk-rh .r-sound:focus-visible { outline: 2px solid var(--r-cream); outline-offset: 2px; }
 
-    /* the cover: four rhode products on a glossy counter. They say rhode; their reflection says hailey,
-       and the reflection keeps getting sharper and darker until it's HAILEY and the rhode labels have faded.
-       JS drives --p from 0 to 1. Every size is in --u so the phone layout just changes --u. */
+    /* the cover: a shelf of rhode products whose labels flip, one at a time, from rhode to hailey */
     .mk-rh .r-cover-one { padding-right: 46cqw; }
-    .mk-rh .r-shelf { --u: 1cqw; --p: 0; position: absolute !important; z-index: 1; right: 5cqw; top: 50%; transform: translateY(-50%); width: 38cqw; display: flex; flex-direction: column; align-items: center; }
-    .mk-rh .r-row { display: flex; align-items: flex-end; justify-content: center; gap: calc(var(--u) * 2); height: calc(var(--u) * 22); }
-    .mk-rh .r-floor { display: block; width: 118%; height: 1px; flex: none; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.95) 70%, transparent); box-shadow: 0 0 calc(var(--u) * 1.2) rgba(255, 255, 255, 0.7); }
-    /* the reflection is two layers: the bottles stay faint and fade out like a real reflection, the word sharpens on its own */
-    .mk-rh .r-pool { position: relative; width: 100%; height: calc(var(--u) * 21); overflow: hidden; display: grid; }
-    .mk-rh .r-pool > div { grid-area: 1 / 1; }
-    .mk-rh .r-pool .r-row { transform: scaleY(-1); }
-    .mk-rh .r-ghost { opacity: calc(0.35 + 0.25 * var(--p)); filter: blur(calc(var(--u) * 0.3 * (1 - var(--p))));
-        -webkit-mask-image: linear-gradient(#000, transparent calc(45% + 25% * var(--p))); mask-image: linear-gradient(#000, transparent calc(45% + 25% * var(--p))); }
-    .mk-rh .r-echo { opacity: calc(0.3 + 0.7 * var(--p)); filter: blur(calc(var(--u) * 0.25 * (1 - var(--p))));
-        -webkit-mask-image: linear-gradient(#000 calc(10% + var(--p) * 80%), transparent calc(55% + var(--p) * 45%)); mask-image: linear-gradient(#000 calc(10% + var(--p) * 80%), transparent calc(55% + var(--p) * 45%)); }
-    .mk-rh .r-echo .r-body, .mk-rh .r-echo .r-capt { background: none !important; }
-    .mk-rh .r-echo .r-body::before, .mk-rh .r-echo .r-body::after { display: none; }
-    .mk-rh .r-ghost .r-lab { display: none; }
-    .mk-rh .r-prod { position: relative; flex: none; display: flex; flex-direction: column; align-items: center; }
-    .mk-rh .r-body { position: relative; display: block; width: 100%; flex: 1;
-        background: linear-gradient(90deg, #C3C6C8 0, #E4E6E7 16%, #FBFBFB 23%, #E6E8E9 32%, #D9DCDE 70%, #BFC2C4 100%); }
-    .mk-rh .r-capt { display: block; flex: none; background: linear-gradient(90deg, #C3C6C8 0, #E6E8E9 18%, #FBFBFB 25%, #DDE0E1 60%, #BDC0C2 100%); }
-    .mk-rh .r-prod.cream .r-body, .mk-rh .r-prod.cream .r-capt { background: linear-gradient(90deg, #D8D1C4 0, #EEE9DF 16%, #FFFDF9 23%, #F0EBE2 32%, #E6E0D5 70%, #D3CBBD 100%); }
-    /* a squeeze tube standing on its cap */
-    .mk-rh .r-prod.tube .r-body { clip-path: polygon(0 0, 100% 0, 88% 100%, 12% 100%); }
-    .mk-rh .r-prod.tube .r-body::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(var(--u) * 0.7); background: rgba(255, 255, 255, 0.55); }
-    .mk-rh .r-prod.tube .r-capt { width: 74%; height: 13%; border-radius: 0 0 calc(var(--u) * 0.6) calc(var(--u) * 0.6); }
-    .mk-rh .r-prod.big { width: calc(var(--u) * 10); height: calc(var(--u) * 20); }
-    .mk-rh .r-prod.small { width: calc(var(--u) * 7.4); height: calc(var(--u) * 15.5); }
-    /* the tall bottle, and the slanted-top stick */
-    .mk-rh .r-prod.bottle { width: calc(var(--u) * 6.4); height: calc(var(--u) * 18); }
-    .mk-rh .r-prod.bottle .r-body { border-radius: calc(var(--u) * 1.8) calc(var(--u) * 1.8) calc(var(--u) * 1) calc(var(--u) * 1); }
-    .mk-rh .r-prod.bottle .r-body::after, .mk-rh .r-prod.stick .r-body::after { content: ""; position: absolute; left: 0; right: 0; top: 24%; height: 1px; background: rgba(120, 124, 128, 0.35); }
-    .mk-rh .r-prod.stick { width: calc(var(--u) * 6.2); height: calc(var(--u) * 13); }
-    .mk-rh .r-prod.stick .r-body { border-radius: calc(var(--u) * 3.1) calc(var(--u) * 3.1) calc(var(--u) * 0.9) calc(var(--u) * 0.9); }
-    .mk-rh .r-prod.stick .r-body::before { content: ""; position: absolute; left: 6%; right: 6%; top: calc(var(--u) * 0.5); height: calc(var(--u) * 3.6); border-radius: 50%; transform: rotate(-16deg); background: radial-gradient(70% 70% at 40% 40%, #9EA2A5, #6F7377); }
-    .mk-rh .r-prod.stick .r-body::after { top: 58%; }
-    /* the labels: rhode reads up the front, like the real packaging */
-    .mk-rh .r-lab { position: absolute; left: 50%; top: 12%; transform: translateX(-50%) rotate(180deg); writing-mode: vertical-rl; font-family: system-ui, sans-serif; font-size: calc(var(--u) * 1.7); font-weight: 400; letter-spacing: 0.02em; line-height: 1; color: #A9ADB0; opacity: calc(1 - 0.85 * var(--p)); }
-    .mk-rh .r-prod.big .r-lab { font-size: calc(var(--u) * 2.2); color: #B3B9A9; }
-    .mk-rh .r-prod.stick .r-lab { top: 40%; font-size: calc(var(--u) * 1.4); }
-    /* in the reflection the word is turned back the right way round, so you can read who the brand really is */
-    .mk-rh .r-pool .r-prod .r-lab { transform: translateX(-50%) scaleY(-1); opacity: 1; display: grid; color: color-mix(in srgb, var(--r-deep) calc(var(--p) * 100%), #B8B4AF);
-        font-weight: calc(400 + 400 * var(--p)); font-size: calc(var(--u) * (1.6 + 0.5 * var(--p))); letter-spacing: 0.04em; }
-    .mk-rh .r-pool .r-lab, .mk-rh .r-pool .r-prod.stick .r-lab { top: auto; bottom: 6%; }   /* the word sits right under the counter line */
-    .mk-rh .r-pool .r-lab b, .mk-rh .r-pool .r-lab i { grid-area: 1 / 1; font: inherit; }
-    .mk-rh .r-pool .r-lab b { opacity: calc(1 - clamp(0, (var(--p) - 0.62) * 5, 1)); }
-    .mk-rh .r-pool .r-lab i { opacity: clamp(0, (var(--p) - 0.62) * 5, 1); }
+    .mk-rh .r-shelf { position: absolute !important; z-index: 1; right: 4cqw; top: 50%; transform: translateY(-50%); width: 42cqw; height: 34cqw; display: flex; align-items: flex-end; justify-content: center; gap: 1.6cqw; }
+    .mk-rh .r-shelf::after { content: ""; position: absolute; left: -2cqw; right: -2cqw; bottom: -0.6cqw; height: 0.6cqw; border-radius: 0.6cqw; background: linear-gradient(180deg, #D9CCBD, #C4B4A2); box-shadow: 0 1.4cqw 2.4cqw -1cqw rgba(90, 70, 55, 0.45); }
+    .mk-rh .r-prod { position: relative; display: grid; place-items: center; box-shadow: inset -0.8cqw 0 1.2cqw rgba(0, 0, 0, 0.08), inset 0.6cqw 0 1cqw rgba(255, 255, 255, 0.6), 0 1cqw 1.6cqw -0.8cqw rgba(90, 70, 55, 0.45);
+        background: linear-gradient(90deg, #E9E6E2, #F7F5F2 40%, #DCD8D3); }
+    .mk-rh .r-prod.tube { width: 5.4cqw; height: 22cqw; border-radius: 1cqw 1cqw 2.7cqw 2.7cqw; }
+    .mk-rh .r-prod.stick { width: 6cqw; height: 12cqw; border-radius: 1.4cqw; background: linear-gradient(90deg, #C99E80, #E3C2A7 40%, #BE9273); }
+    .mk-rh .r-prod.stick::before { content: ""; position: absolute; top: -1.6cqw; left: 0.8cqw; right: 0.8cqw; height: 2cqw; border-radius: 1cqw 1cqw 0 0; background: #B9686A; }
+    .mk-rh .r-prod.bottle { width: 8.4cqw; height: 28cqw; border-radius: 4.2cqw 4.2cqw 1.6cqw 1.6cqw; }
+    .mk-rh .r-prod.jar { width: 9cqw; height: 9cqw; border-radius: 1.6cqw; }
+    .mk-rh .r-prod.jar::before { content: ""; position: absolute; top: -1.4cqw; left: -0.3cqw; right: -0.3cqw; height: 2.2cqw; border-radius: 1cqw; background: linear-gradient(90deg, #D6D1CB, #EFECE8 40%, #CCC6BF); }
+    .mk-rh .r-prod.tint { width: 4.4cqw; height: 17cqw; border-radius: 0.8cqw 0.8cqw 2.2cqw 2.2cqw; background: linear-gradient(90deg, #D99A9A, #F0C1BD 40%, #CF8C8C); }
+    /* the label: two words stacked in a window; the shelf scrolls each one from rhode to hailey */
+    .mk-rh .r-lab { position: relative; display: block; overflow: hidden; height: 1.25em; font-family: system-ui, sans-serif; font-weight: 500; font-size: clamp(10px, 1.6cqw, 20px); letter-spacing: 0.02em; color: #6E625A; }
+    .mk-rh .r-prod.tube .r-lab, .mk-rh .r-prod.bottle .r-lab, .mk-rh .r-prod.tint .r-lab { writing-mode: vertical-rl; transform: rotate(180deg); height: auto; width: 1.25em; }
+    .mk-rh .r-lab b, .mk-rh .r-lab i { display: block; font-weight: inherit; font-style: normal; transition: transform 0.6s cubic-bezier(.6, 0, .2, 1); }
+    .mk-rh .r-lab i { position: absolute; inset: 0; transform: translateY(110%); color: var(--r-deep); font-weight: 700; }
+    .mk-rh .r-prod.tube .r-lab i, .mk-rh .r-prod.bottle .r-lab i, .mk-rh .r-prod.tint .r-lab i { transform: translateX(110%); }
+    .mk-rh .r-prod.her .r-lab b { transform: translateY(-110%); }
+    .mk-rh .r-prod.tube.her .r-lab b, .mk-rh .r-prod.bottle.her .r-lab b, .mk-rh .r-prod.tint.her .r-lab b { transform: translateX(-110%); }
+    .mk-rh .r-prod.her .r-lab i { transform: none !important; }
     @@container (max-width: 640px) {
-        .mk-rh .r-cover-one { padding-right: 4.8cqw; padding-bottom: 68cqw; justify-content: flex-start; }
-        .mk-rh .r-shelf { --u: 1.6cqw; top: auto; bottom: 4cqw; transform: none; left: 0; right: 0; margin: 0 auto; width: 84cqw; }
-        .mk-rh .r-pool { height: calc(var(--u) * 16); }
+        .mk-rh .r-cover-one { padding-right: 4.8cqw; padding-bottom: 58cqw; justify-content: flex-start; }
+        .mk-rh .r-shelf { top: auto; bottom: 6cqw; transform: none; left: 0; right: 0; margin: 0 auto; width: 84cqw; height: 44cqw; gap: 3cqw; }
+        .mk-rh .r-prod.tube { width: 9cqw; height: 34cqw; } .mk-rh .r-prod.stick { width: 10cqw; height: 18cqw; }
+        .mk-rh .r-prod.bottle { width: 13cqw; height: 42cqw; } .mk-rh .r-prod.jar { width: 15cqw; height: 15cqw; } .mk-rh .r-prod.tint { width: 7.5cqw; height: 27cqw; }
         .mk-rh .mk-slide.r-cover-one .r-lede { max-width: none; }
+        .mk-rh .r-lab { font-size: 11px; }
     }
 
     .mk-rh .mk-chapters button[aria-pressed="true"] { background: var(--r-ink); border-color: var(--r-ink); }
@@ -156,10 +132,12 @@
         <div class="mk-stage">
             @* The cover shows the problem: one by one, every product's label stops saying rhode and starts saying hailey *@
             <div class="mk-slide r-cover r-cover-one" data-title="The problem">
-                <div class="r-shelf" role="img" aria-label="Four rhode products standing on a glossy counter, each labeled rhode. In their reflection the label says hailey, and the reflection grows sharper and darker until it reads HAILEY while the word rhode fades">
-                    <div class="r-row"><div class="r-prod tube big cream"><i class="r-body"><span class="r-lab">rhode</span></i><i class="r-capt"></i></div><div class="r-prod bottle"><i class="r-body"><span class="r-lab">rhode</span></i></div><div class="r-prod stick"><i class="r-body"><span class="r-lab">rhode</span></i></div><div class="r-prod tube small"><i class="r-body"><span class="r-lab">rhode</span></i><i class="r-capt"></i></div></div>
-                    <i class="r-floor"></i>
-                    <div class="r-pool" aria-hidden="true"><div class="r-ghost"><div class="r-row"><div class="r-prod tube big cream"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i><i class="r-capt"></i></div><div class="r-prod bottle"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i></div><div class="r-prod stick"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i></div><div class="r-prod tube small"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i><i class="r-capt"></i></div></div></div><div class="r-echo"><div class="r-row"><div class="r-prod tube big cream"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i><i class="r-capt"></i></div><div class="r-prod bottle"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i></div><div class="r-prod stick"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i></div><div class="r-prod tube small"><i class="r-body"><span class="r-lab"><b>hailey</b><i>HAILEY</i></span></i><i class="r-capt"></i></div></div></div></div>
+                <div class="r-shelf" role="img" aria-label="Five rhode products in a row, a lip treatment, a blush stick, Glazing Milk, Barrier Butter and a lip tint. One by one, the word rhode on each label changes to hailey">
+                    <div class="r-prod tube"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod stick"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod bottle"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod jar"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
+                    <div class="r-prod tint"><span class="r-lab"><b>rhode</b><i>hailey</i></span></div>
                 </div>
                 @Html.Raw(rsig)
                 <p class="r-kick">rhode strategy, 2026</p>
@@ -401,21 +379,20 @@
         }), 500);
     })();
 
-    // The cover: the reflection slowly takes over. --p climbs from 0 to 1, faster as it goes, holds on HAILEY, then fades back
+    // The cover: one label at a time stops saying rhode and starts saying hailey, holds, then the shelf resets
     (() => {
         const shelf = document.querySelector('.mk-rh .r-shelf');
         if (!shelf) return;
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { shelf.style.setProperty('--p', 1); return; }
-        const RISE = 110, HOLD = 50, FALL = 16;   // ticks of 60ms: about 6.5s rising, 3s holding HAILEY, 1s back
-        let t = 0;
+        const prods = [...shelf.querySelectorAll('.r-prod')];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { prods.forEach(p => p.classList.add('her')); return; }
+        let step = 0;
         const tick = () => {
-            const p = t < RISE ? (t / RISE) ** 1.8 : t < RISE + HOLD ? 1 : 1 - (t - RISE - HOLD) / FALL;
-            shelf.style.setProperty('--p', Math.max(0, p).toFixed(3));
-            t = (t + 1) % (RISE + HOLD + FALL + 12);
+            if (step >= 0 && step < prods.length) prods[step].classList.add('her');   // negative steps are the pause after a reset
+            else if (step === prods.length + 4) { prods.forEach(p => p.classList.remove('her')); step = -2; }
+            step++;
         };
-        tick();
         // autoplay.js loads after this view
-        const start = () => window.autoplay(shelf, tick, 60);
+        const start = () => window.autoplay(shelf, tick, 750);
         window.autoplay ? start() : addEventListener('load', start);
     })();
 
