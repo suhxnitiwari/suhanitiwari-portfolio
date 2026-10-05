@@ -108,6 +108,18 @@ const shots = {
         },
         run: async () => { await sleep(20000); }
     },
+    // Still Watching episodes for the montage (montage.py stitches them): the player opens on an episode the way a
+    // visitor would, and the first seconds (while the player controls fade) are trimmed away afterwards
+    'sw-dad': {
+        url: 'https://suhxnitiwari.github.io/still-watching/', w: 1280, h: 720,
+        prep: async ev => { await ev(`sessionStorage.setItem('entered', '1'); location.reload()`); await sleep(4000); await ev(`document.querySelector('[data-film="dad"]').click()`); await sleep(200); },
+        run: async () => { await sleep(34000); }
+    },
+    'sw-copycat': {
+        url: 'https://suhxnitiwari.github.io/still-watching/', w: 1280, h: 720,
+        prep: async ev => { await ev(`sessionStorage.setItem('entered', '1'); location.reload()`); await sleep(4000); await ev(`document.querySelector('[data-film="copycat"]').click()`); await sleep(200); },
+        run: async () => { await sleep(10000); }
+    },
     search: {
         // 8,730 Questions: "Play my day", the hour-by-hour chart of what I search
         url: 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,
