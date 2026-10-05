@@ -1592,6 +1592,7 @@
 .make-page .make-caption,
 .make-page .bake-intro {
     max-width: none;   /* text runs to the edge of the column, never wrapping early */
+    text-wrap: pretty; /* and never leaves one word alone on the last line */
     margin: -6px 0 24px;
     font-size: 1rem;
     font-style: italic;
