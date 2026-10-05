@@ -23,9 +23,9 @@
             Label: "A wall of Netflix posters drifting in the dark while a red searchlight sweeps across", Link: "/#mk-proj-netflix",
             Line: "YouTube is eating Netflix’s evenings. My plan to make Netflix TV again.", Skills: new[] { "Media strategy", "Competitive analysis", "Motion graphics" }),
 
-        (Cols: 7, Rows: 2, Fill: true, Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
-            Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
-            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
+        (Cols: 7, Rows: 2, Fill: true, Kind: "3D website", Title: "The Suhani House", Video: "dollhouse", Panel: (string?)null, Inset: false,
+            Label: "Circling my 3D dollhouse with its front swung open, every room lit", Link: "https://suhxnitiwari.github.io/suhani-personality/house/",
+            Line: "A house built from my personality: my people at the front, my ambition upstairs, my brain in the attic. Open it up, or walk through it.", Skills: new[] { "Three.js", "JavaScript", "3D modeling" }),
         (Cols: 5, Rows: 1, Fill: false, Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
             Label: "A pink group chat fills with fans talking about Glossier, then goes quiet", Link: "/#mk-proj-glossier",
             Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }),
@@ -50,21 +50,35 @@
             Label: "Walking along a gallery wall of framed paintings, stepping up to two of them as their haiku fade in", Link: "https://suhxnitiwari.github.io/suhaiku/",
             Line: "A small museum of haiku. Every painting is composed from the poem hung inside it, and Claude writes new ones while you watch.", Skills: new[] { "JavaScript", "Canvas", "Claude API" }),
 
+        // My data, as things you'd actually use: Netflix as Netflix, Google as a search page. A tower beside two rows.
+        (Cols: 7, Rows: 2, Fill: true, Kind: "Data story", Title: "Still Watching", Video: "stillwatching", Panel: (string?)null, Inset: false,
+            Label: "My illustrated family dropping me off in West Campus while the opening credits roll", Link: "https://suhxnitiwari.github.io/still-watching/",
+            Line: "Eleven years of my family's Netflix as a Netflix show: four profiles, no names, and episodes the pipeline wrote from the data.", Skills: new[] { "Python", "Data engineering", "JavaScript", "SVG animation" }),
+        (Cols: 5, Rows: 1, Fill: false, Kind: "Data story", Title: "8,730 Questions", Video: "search", Panel: (string?)null, Inset: false,
+            Label: "Scrolling through my year of Google searches, laid out as a search page", Link: "https://suhxnitiwari.github.io/search-history/",
+            Line: "One person, reconstructed from the questions she asked the internet.", Skills: new[] { "Python", "Data wrangling", "JavaScript" }),
+        (Cols: 5, Rows: 1, Fill: false, Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
+            Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
+            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
+
         // In the works: no video or link yet (Video and Link stay null until they ship)
-        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Data engineering", Title: "Double Tap", Video: (string?)null, Panel: (string?)"#7E3F4A", Inset: false,
+            Label: "", Link: (string?)null,
+            Line: "Six years of my Instagram, parsed: what I like, what I reject, how fast I decide and when I scroll.", Skills: new[] { "Python", "NLP", "Data engineering" }),
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
             Label: "", Link: (string?)null,
             Line: "My YouTube watch history as a funnel: what gets the click, what gets finished, and what brings me back.", Skills: new[] { "SQL", "Funnel analysis", "Product memo" }),
-        (Cols: 6, Rows: 1, Fill: false, Kind: "Product analytics", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
             Label: "", Link: (string?)null,
             Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" })
     };
 
-    // The homepage shows only my four strongest, one per side of me: product, brand, data, heart. Two rows, 7 and 5, then 8 and 4
+    // The homepage shows only my four most clickable: the show, the brand, the data, the heart. Two rows, 7 and 5, then 8 and 4
     if (ViewData["Featured"] as bool? == true)
     {
         var picks = new (string Title, int Cols, bool Fill, string Line)[]
         {
-            ("Starbucks AI Loyalty", 7, false, "Turning the Starbucks app from a checkout tool into a daily ritual."),
+            ("Still Watching", 7, false, "My family, drawn and on Netflix. Eleven years of our viewing history, turned into episodes."),
             ("How Glossier Lost Its Cult", 5, true, "The moat was never makeup. It was the comments section."),
             ("Heavy Rotation", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
             ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have.")
@@ -81,11 +95,12 @@
     if (ViewData["Rest"] as bool? == true)
     {
         // only what isn't shown anywhere else: the marketing decks live in Marketing, RideFlow and Saturday in Austin on the loop.
-        // rows: the bag 7 + Personality 5, then Suhaiku beside the two in the works at 4, 4 and 4
+        // rows: the Suhani House 7 + Personality 5, then 8,730 Questions, the bag and Suhaiku, then the three in the works, at 4 each
         var order = new (string Title, int Cols)[]
         {
-            ("What’s in My Bag?", 7), ("Soft Heart. Strong Spirit.", 5),
-            ("Suhaiku", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
+            ("The Suhani House", 7), ("Soft Heart. Strong Spirit.", 5),
+            ("8,730 Questions", 4), ("What’s in My Bag?", 4), ("Suhaiku", 4),
+            ("Double Tap", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
         };
         stories = order.Select(o =>
         {
@@ -110,7 +125,10 @@
         ["Soft Heart. Strong Spirit."] = "Meet all ten of me ↗",
         ["Owala: The Marathon Series"] = "Run the series →",
         ["Saturday in Austin"] = "Explore Austin ↗",
-        ["Suhaiku"] = "Commission a painting ↗"
+        ["Suhaiku"] = "Commission a painting ↗",
+        ["The Suhani House"] = "Come on in ↗",
+        ["Still Watching"] = "Press play ↗",
+        ["8,730 Questions"] = "Search my year ↗"
     };
 }
 <div class="best-board">

@@ -78,6 +78,45 @@ const shots = {
             await visit(2, 5200);
         }
     },
+    dollhouse: {
+        // The Suhani House: the 3D house built from my personality, on its own guided tour
+        url: 'https://suhxnitiwari.github.io/suhani-personality/house/', w: 1280, h: 720,
+        prep: async ev => {
+            for (let i = 0; i < 40 && !(await ev(`!!document.querySelector('#tourBtn')`)); i++) await sleep(500);
+            await sleep(1500);
+            await ev(`[...document.querySelectorAll('button, a')].find(b => /open the dollhouse/i.test(b.textContent))?.click()`);
+            await sleep(4000);   // the title card lifts and the front of the house swings open
+        },
+        run: async ev => {
+            // a slow drag across the canvas orbits the camera around the open dollhouse
+            await ev(`(() => { const c = document.querySelector('canvas'), r = c.getBoundingClientRect();
+                const at = (type, x) => c.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 1, pointerType: 'mouse', isPrimary: true, button: 0, buttons: type === 'pointerup' ? 0 : 1, clientX: r.left + x, clientY: r.top + r.height * 0.55 }));
+                window.__orbit = { at, x: r.width * 0.3 }; at('pointerdown', window.__orbit.x); })()`);
+            for (let i = 0; i < 260; i++) { await ev(`window.__orbit.at('pointermove', window.__orbit.x += 2.2)`); await sleep(45); }
+            await ev(`window.__orbit.at('pointerup', window.__orbit.x)`);
+            await sleep(800);
+        }
+    },
+    stillwatching: {
+        // Still Watching: straight into S1:E1, the West Campus drop-off with the opening credits rolling
+        url: 'https://suhxnitiwari.github.io/still-watching/', w: 1280, h: 720,
+        prep: async ev => {
+            await ev(`sessionStorage.setItem('entered', '1'); location.reload()`);
+            await sleep(4000);
+            await ev(`document.querySelector('#play').click()`);
+            await sleep(300);
+        },
+        run: async () => { await sleep(20000); }
+    },
+    search: {
+        // 8,730 Questions: "Play my day", the hour-by-hour chart of what I search
+        url: 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,
+        prep: async ev => {
+            await ev(`document.documentElement.style.scrollBehavior = 'auto'; document.querySelector('#hours').scrollIntoView({block: 'center'})`);
+            await sleep(1200);
+        },
+        run: async ev => { await sleep(600); await ev(`document.querySelector('#play').click()`); await sleep(13000); }
+    },
     owala: {
         url: 'http://localhost:5142/home/study#mk-title-owala', w: 1280, h: 900, crop: '#mk-proj-owala .mk-stage',
         run: async ev => { await sleep(1500); for (let i = 0; i < 9; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-owala .mk-step[data-go="1"]').click()`); } await sleep(1500); }

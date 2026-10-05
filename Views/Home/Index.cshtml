@@ -163,16 +163,25 @@
         display: block;
     }
 
-    /* McCombs School of Business, UT Austin */
+    /* McCombs School of Business, UT Austin: always one line, so it shrinks with the cover instead of wrapping */
     .cover-school {
+        display: block;
         margin-bottom: clamp(12px, 1.3cqw, 20px);
         font-family: system-ui, sans-serif;
-        font-size: 0.62em;
+        font-size: max(10px, min(0.62em, 1.32cqw));
         font-style: normal;
         font-weight: 700;
-        letter-spacing: 3px;
+        letter-spacing: 0.16em;
+        white-space: nowrap;
         text-transform: uppercase;
         color: #FAF1EF;
+    }
+
+    /* phones: too narrow for one readable line, so it breaks cleanly at the bar */
+    @@media (max-width: 640px) {
+        .cover-school { white-space: normal; font-size: 10.5px; line-height: 1.6; }
+        .cover-school > span:not(.cover-school-bar) { display: block; }
+        .cover-tagline .cover-school-bar { display: none; }
     }
 
     /* the one line that says what I do */
@@ -2200,7 +2209,7 @@
     <div class="cover-intro">
         @* Readable in one glance: where I study, what I do in one line, and where I've already done it *@
         <p class="cover-tagline">
-            <span class="cover-school">Management Information Systems · UT Austin McCombs</span>
+            <span class="cover-school"><span>McCombs School of Business</span><span class="cover-school-bar"> | </span><span>The University of Texas at Austin</span></span>
             @{
                 // what I do, in one statement. Add more pairs here and the hero rotates through them again.
                 var coverLines = new[]
@@ -2306,6 +2315,10 @@
                 }
             }
         }
+
+        // an invisible full copy of every version stays in the same spot, so the space is held from the first
+        // letter and Work, Skills and Résumé never move while the line types (or erases) itself
+        slides.forEach(s => { const ghost = s.cloneNode(true); ghost.classList.remove('is-on'); ghost.setAttribute('aria-hidden', 'true'); line.prepend(ghost); });
 
         // start blank with just the cursor, so the first version types in rather than flashing in whole
         slides[0].querySelectorAll(':scope > span').forEach(sp => { sp.textContent = ''; });
