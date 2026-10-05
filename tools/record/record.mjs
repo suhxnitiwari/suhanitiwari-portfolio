@@ -150,6 +150,12 @@ const shots = {
         select: `document.querySelector('[aria-controls="mk-proj-rhode"]').click()`,
         run: async () => { await sleep(12000); }
     },
+    upnext: {
+        // Up Next: the opening in the player (the play mark over candlelight, the question, then the first beats), cropped to the player.
+        // UPNEXT_URL can point at a local copy to record before it goes live. Streaming ignores crop, so the frames are cropped to the player afterward
+        url: process.env.UPNEXT_URL || 'https://suhxnitiwari.github.io/up-next/', w: 760, h: 900, crop: '.stage.trailer', stream: true,
+        run: async () => { await sleep(16000); }
+    },
     search: {
         // Search History: my name drawn from my searches, then a question typed into the search bar and answered,
         // then the clock it opens, playing my day hour by hour
