@@ -145,13 +145,24 @@ const shots = {
         }
     },
     search: {
-        // 8,730 Questions: "Play my day", the hour-by-hour chart of what I search
+        // Search History: my name drawn from my searches, then a question typed into the search bar and answered,
+        // then the clock it opens, playing my day hour by hour
         url: 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,
-        prep: async ev => {
-            await ev(`document.documentElement.style.scrollBehavior = 'auto'; document.querySelector('#hours').scrollIntoView({block: 'center'})`);
-            await sleep(1200);
-        },
-        run: async ev => { await sleep(600); await ev(`document.querySelector('#play').click()`); await sleep(13000); }
+        run: async ev => {
+            await sleep(2400);
+            // the question goes in a few words at a time (one keystroke per call stalls headless capture)
+            for (const part of ['is ', 'is she ', 'is she a ', 'is she a night ', 'is she a night owl?']) {
+                await ev(`(() => { const i = document.getElementById('sq'); i.value = ${JSON.stringify(part)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+                await sleep(220);
+            }
+            await sleep(600);
+            await ev(`document.getElementById('sq').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))`);
+            await sleep(2800);
+            await ev(`document.getElementById('open').click()`);
+            await sleep(900);
+            await ev(`document.getElementById('play').click()`);
+            await sleep(9000);
+        }
     },
     owala: {
         url: 'http://localhost:5142/home/study#mk-title-owala', w: 1280, h: 900, crop: '#mk-proj-owala .mk-stage',
