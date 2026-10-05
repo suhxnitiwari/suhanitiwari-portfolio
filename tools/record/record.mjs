@@ -127,7 +127,7 @@ const shots = {
     },
     lullabyte: {
         // Lullabyte: the opening (the crib mobile lowered in on its string, its shadow swinging across the wall, the headline
-        // rising after it), then "Suhani" typed letter by letter and played, so its felt charms drop onto the mobile.
+        // rising after it), then "Amaira" typed letter by letter and played, so its felt charms drop onto the mobile.
         // LULLABYTE_URL can point at a local copy to record before it goes live.
         url: process.env.LULLABYTE_URL || 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800, stream: true,
         // forget any earlier visit, so the page waits behind its sound gate; the gate is then hidden without a fade
@@ -135,7 +135,7 @@ const shots = {
         run: async ev => {
             await ev(`enter(false)`);
             await sleep(2300);
-            for (const ch of 'Suhani') {
+            for (const ch of 'Amaira') {
                 await ev(`(() => { const i = document.getElementById('heroName'); i.value += ${JSON.stringify(ch)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
                 await sleep(260);
             }
@@ -143,6 +143,12 @@ const shots = {
             await ev(`document.getElementById('heroPlay').click()`);
             await sleep(7500);
         }
+    },
+    rhode: {
+        // Rhode Has a Hailey Problem: the deck's cover, the shelf whose labels flip from rhode to hailey one at a time
+        url: process.env.SITE_URL ? process.env.SITE_URL + '/#mk-proj-rhode' : 'http://localhost:5142/#mk-proj-rhode', w: 1280, h: 900, crop: '#mk-proj-rhode .mk-stage',
+        select: `document.querySelector('[aria-controls="mk-proj-rhode"]').click()`,
+        run: async () => { await sleep(12000); }
     },
     search: {
         // Search History: my name drawn from my searches, then a question typed into the search bar and answered,
@@ -208,8 +214,9 @@ try {
     await send('Page.navigate', { url: shot.url });
     await sleep(4000);
 
-    // crop to one element (the slide decks), measured after the page settles
+    // crop to one element (the slide decks), measured after the page settles; select runs first (e.g. opening a deck's tab)
     let clip;
+    if (shot.select) { await ev(shot.select); await sleep(1500); }
     if (shot.crop) {
         await ev(`document.querySelector(${JSON.stringify(shot.crop)}).scrollIntoView({block: 'center'})`);
         await sleep(600);
