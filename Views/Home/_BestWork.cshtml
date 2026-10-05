@@ -12,61 +12,65 @@
         // Even rows: four pairs, then three triples. Every row adds up to 12 and every tile in a row is the same height.
         (Cols: 8, Rows: 1, Fill: false, Kind: "Full-stack app", Title: "RideFlow", Video: "rideflow", Panel: (string?)"#EBC8CC", Inset: false,
             Label: "Scrolling through the live RideFlow app", Link: "https://rideflow-frontend.onrender.com/",
-            Line: "A rideshare app for riders, drivers and admins, built solo in a course designed for teams.", Skills: new[] { "React", "Node.js", "Express", "PostgreSQL" }),
+            Line: "A rideshare app for riders, drivers and admins, built solo in a course designed for teams.", Skills: new[] { "React", "Node.js", "Express", "PostgreSQL" }, Topics: new[] { "Full-Stack, Security & Privacy", "Data Modeling & Curation" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Children’s book", Title: "Girls Can Be Engineers, Too!", Video: "book", Panel: (string?)null, Inset: false,
             Label: "A young reader holding a copy of Girls Can Be Engineers, Too!", Link: "/#beyond",
-            Line: "Bedtime stories were all princesses, so I wrote one about real women engineers.", Skills: new[] { "Writing", "Illustration", "Publishing" }),
+            Line: "Bedtime stories were all princesses, so I wrote one about real women engineers.", Skills: new[] { "Writing", "Illustration", "Publishing" }, Topics: Array.Empty<string>()),
 
         (Cols: 6, Rows: 1, Fill: false, Kind: "Media strategy", Title: "Netflix’s $20B Leak", Video: "netflix", Panel: (string?)null, Inset: false,
             Label: "A wall of Netflix posters drifting in the dark while a red searchlight sweeps across", Link: "/#mk-proj-netflix",
-            Line: "YouTube is eating Netflix’s evenings. My plan to make Netflix TV again.", Skills: new[] { "Media strategy", "Competitive analysis", "Motion graphics" }),
+            Line: "YouTube is eating Netflix’s evenings. My plan to make Netflix TV again.", Skills: new[] { "Media strategy", "Competitive analysis", "Motion graphics" }, Topics: new[] { "Marketing" }),
         (Cols: 6, Rows: 1, Fill: false, Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
             Label: "A pink group chat fills with fans talking about Glossier, then goes quiet", Link: "/#mk-proj-glossier",
-            Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }),
+            Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }, Topics: new[] { "Marketing" }),
 
         (Cols: 6, Rows: 1, Fill: false, Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Video: "rhode", Panel: (string?)null, Inset: false,
             Label: "Glossy blush and bronzer swatches swipe in while the trends Hailey started flash past", Link: "/#mk-proj-rhode",
-            Line: "e.l.f. paid $1B for a face. My plan to make the product the celebrity.", Skills: new[] { "Brand strategy", "Celebrity brand", "Motion graphics" }),
+            Line: "e.l.f. paid $1B for a face. My plan to make the product the celebrity.", Skills: new[] { "Brand strategy", "Celebrity brand", "Motion graphics" }, Topics: new[] { "Marketing" }),
+        // no recording yet, so its tile is the deck's cover line set in type on its denim
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Campaign strategy", Title: "40 Billion Impressions, 1% Growth", Video: (string?)null, Panel: (string?)"#1A2B4A", Inset: false,
+            Label: "", Link: "/#mk-proj-americaneagle",
+            Line: "American Eagle’s Sydney Sweeney campaign won the internet. Did it sell the brand?", Skills: new[] { "Campaign strategy", "Brand strategy", "Market research" }, Topics: new[] { "Marketing" }),
         (Cols: 6, Rows: 1, Fill: false, Kind: "Data story", Title: "Still Watching", Video: "stillwatching", Panel: (string?)null, Inset: false,
             Label: "My illustrated family dropping me off in West Campus while the opening credits roll", Link: "https://suhxnitiwari.github.io/still-watching/",
-            Line: "Eleven years of my family's Netflix as a Netflix show: four profiles, no names, and episodes the pipeline wrote from the data.", Skills: new[] { "Python", "Data engineering", "JavaScript", "SVG animation" }),
+            Line: "Eleven years of my family's Netflix as a Netflix show: four profiles, no names, and episodes the pipeline wrote from the data.", Skills: new[] { "Python", "Data engineering", "JavaScript", "SVG animation" }, Topics: new[] { "ETL & Analytics", "Full-Stack, Security & Privacy", "Algorithms, AI & Interactive" }),
 
         (Cols: 6, Rows: 1, Fill: false, Kind: "3D website", Title: "The Suhani House", Video: "dollhouse", Panel: (string?)null, Inset: false,
             Label: "Circling my 3D dollhouse with its front swung open, every room lit", Link: "https://suhxnitiwari.github.io/suhani-personality/house/",
-            Line: "A house built from my personality: my people at the front, my ambition upstairs, my brain in the attic. Open it up, or walk through it.", Skills: new[] { "Three.js", "JavaScript", "3D modeling" }),
+            Line: "A house built from my personality: my people at the front, my ambition upstairs, my brain in the attic. Open it up, or walk through it.", Skills: new[] { "Three.js", "JavaScript", "3D modeling" }, Topics: new[] { "Algorithms, AI & Interactive" }),
         (Cols: 6, Rows: 1, Fill: false, Kind: "Data story", Title: "8,730 Questions", Video: "search", Panel: (string?)null, Inset: false,
             Label: "Scrolling through my year of Google searches, laid out as a search page", Link: "https://suhxnitiwari.github.io/search-history/",
-            Line: "One person, reconstructed from the questions she asked the internet.", Skills: new[] { "Python", "Data wrangling", "JavaScript" }),
+            Line: "One person, reconstructed from the questions she asked the internet.", Skills: new[] { "Python", "Data wrangling", "JavaScript" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation", "Full-Stack, Security & Privacy" }),
 
         (Cols: 4, Rows: 1, Fill: false, Kind: "Product management", Title: "Starbucks AI Loyalty", Video: "starbucks", Panel: (string?)"#56634A", Inset: false,
             Label: "Flipping through my Starbucks strategy deck", Link: "/work/starbucks",
-            Line: "Turning the Starbucks app from a checkout tool into a daily ritual.", Skills: new[] { "RICE scoring", "KANO analysis", "Roadmapping", "Prototyping" }),
+            Line: "Turning the Starbucks app from a checkout tool into a daily ritual.", Skills: new[] { "RICE scoring", "KANO analysis", "Roadmapping", "Prototyping" }, Topics: new[] { "Marketing", "Algorithms, AI & Interactive" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
             Label: "Flipping through my Owala Marathon Series deck", Link: "/#mk-proj-owala",
-            Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
+            Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }, Topics: new[] { "Marketing" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
             Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
-            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
+            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }, Topics: new[] { "Algorithms, AI & Interactive" }),
 
-        (Cols: 4, Rows: 1, Fill: false, Kind: "Data story", Title: "Heavy Rotation", Video: "galaxy", Panel: (string?)null, Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Data story", Title: "Listening Galaxy", Video: "galaxy", Panel: (string?)null, Inset: false,
             Label: "Flying at warp speed into a galaxy where every song I've played is a star", Link: "https://suhxnitiwari.github.io/listening-galaxy/",
-            Line: "Four years of my Spotify listening as a galaxy: every song a star, and the more I played it, the brighter it burns.", Skills: new[] { "Python", "PostgreSQL", "JavaScript" }),
+            Line: "Four years of my Spotify listening as a galaxy: every song a star, and the more I played it, the brighter it burns.", Skills: new[] { "Python", "PostgreSQL", "JavaScript" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation", "Algorithms, AI & Interactive" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Python app", Title: "Saturday in Austin", Video: "saturday", Panel: (string?)"#C27B8A", Inset: false,
             Label: "Planning a few different Saturdays in my Saturday in Austin app", Link: "https://suhxnitiwari.github.io/saturday-in-austin/",
-            Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }),
+            Line: "Tell it your hours, mood and budget, and it plans the best Saturday around Austin.", Skills: new[] { "Python", "Pyodide" }, Topics: new[] { "Algorithms, AI & Interactive" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Generative art", Title: "Suhaiku", Video: "suhaiku", Panel: (string?)"#5E4A5C", Inset: false,
             Label: "Walking along a gallery wall of framed paintings, stepping up to two of them as their haiku fade in", Link: "https://suhxnitiwari.github.io/suhaiku/",
-            Line: "A small museum of haiku. Every painting is composed from the poem hung inside it, and Claude writes new ones while you watch.", Skills: new[] { "JavaScript", "Canvas", "Claude API" }),
+            Line: "A small museum of haiku. Every painting is composed from the poem hung inside it, and Claude writes new ones while you watch.", Skills: new[] { "JavaScript", "Canvas", "Claude API" }, Topics: new[] { "Algorithms, AI & Interactive" }),
 
         (Cols: 4, Rows: 1, Fill: false, Kind: "Data engineering", Title: "Double Tap", Video: (string?)null, Panel: (string?)"#7E3F4A", Inset: false,
             Label: "", Link: (string?)null,
-            Line: "Six years of my Instagram, parsed: what I like, what I reject, how fast I decide and when I scroll.", Skills: new[] { "Python", "NLP", "Data engineering" }),
+            Line: "Six years of my Instagram, parsed: what I like, what I reject, how fast I decide and when I scroll.", Skills: new[] { "Python", "NLP", "Data engineering" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "YouTube Watch Funnel", Video: (string?)null, Panel: (string?)"#9E5A63", Inset: false,
             Label: "", Link: (string?)null,
-            Line: "My YouTube watch history as a funnel: what gets the click, what gets finished, and what brings me back.", Skills: new[] { "SQL", "Funnel analysis", "Product memo" }),
+            Line: "My YouTube watch history as a funnel: what gets the click, what gets finished, and what brings me back.", Skills: new[] { "SQL", "Funnel analysis", "Product memo" }, Topics: new[] { "ETL & Analytics" }),
         (Cols: 4, Rows: 1, Fill: false, Kind: "Product analytics", Title: "Spotify Retention Cohorts", Video: (string?)null, Panel: (string?)"#56634A", Inset: false,
             Label: "", Link: (string?)null,
-            Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" })
+            Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" }, Topics: new[] { "ETL & Analytics", "Data Modeling & Curation" })
     };
 
     // The homepage shows only my four most clickable: the show, the brand, the data, the heart. Two rows, 6 and 6, then 8 and 4
@@ -76,7 +80,7 @@
         {
             ("Still Watching", 6, false, "My family, drawn and on Netflix. Eleven years of our viewing history, turned into episodes."),
             ("How Glossier Lost Its Cult", 6, false, "The moat was never makeup. It was the comments section."),
-            ("Heavy Rotation", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
+            ("Listening Galaxy", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
             ("Girls Can Be Engineers, Too!", 4, false, "1,000 copies in its first month. The book I wanted my little sister to have.")
         };
         stories = picks.Select(p =>
@@ -87,15 +91,19 @@
         }).ToArray();
     }
 
-    // Further down the home page: the projects with no other home on the page, re-tiled so each row still fills 12 columns
-    if (ViewData["Rest"] as bool? == true)
+    // Further down the home page: every project, filterable by topic, re-tiled so each row still fills 12 columns.
+    // The book isn't here: it has its own place in Beyond the Classroom and no topic.
+    if (ViewData["All"] as bool? == true)
     {
-        // only what isn't shown anywhere else: the marketing decks live in Marketing, RideFlow and Saturday in Austin on the loop.
-        // rows: the Suhani House 6 + 8,730 Questions 6 (both 16:10 recordings, so neither gets cropped), then the bag, Suhaiku and Double Tap at 4 each, then the two in the works at 6 and 6
         var order = new (string Title, int Cols)[]
         {
-            ("The Suhani House", 6), ("8,730 Questions", 6),
-            ("What’s in My Bag?", 4), ("Suhaiku", 4), ("Double Tap", 4),
+            ("RideFlow", 8), ("Listening Galaxy", 4),
+            ("Still Watching", 6), ("8,730 Questions", 6),
+            ("The Suhani House", 6), ("Suhaiku", 6),
+            ("What’s in My Bag?", 4), ("Saturday in Austin", 4), ("Double Tap", 4),
+            // marketing gets one row of four small tiles, my four best brand cases (Starbucks, Owala, FuelFlow and
+            // Prime Book Club stay in the Marketing section only)
+            ("How Glossier Lost Its Cult", 3), ("Netflix’s $20B Leak", 3), ("Rhode Has a Hailey Problem", 3), ("40 Billion Impressions, 1% Growth", 3),
             ("YouTube Watch Funnel", 6), ("Spotify Retention Cohorts", 6)
         };
         stories = order.Select(o =>
@@ -110,7 +118,7 @@
     // what the label beside your cursor says over each project: what you'd actually do there, in that project's own words
     var cues = new Dictionary<string, string>
     {
-        ["Heavy Rotation"] = "Fly through my galaxy ↗",
+        ["Listening Galaxy"] = "Fly through my galaxy ↗",
         ["RideFlow"] = "See the whole system ↗",
         ["Girls Can Be Engineers, Too!"] = "Read the story →",
         ["Starbucks AI Loyalty"] = "Order the case study →",
@@ -126,14 +134,30 @@
         ["8,730 Questions"] = "Search my year ↗"
     };
 }
+@{
+    // the five topics people can filter every project by (docs/project-filters.md)
+    var topics = new[] { "ETL & Analytics", "Data Modeling & Curation", "Full-Stack, Security & Privacy", "Algorithms, AI & Interactive", "Marketing" };
+    var filterable = ViewData["All"] as bool? == true;
+}
+@if (filterable)
+{
+    <div class="best-filters" role="group" aria-label="Filter projects by topic">
+        <button type="button" class="best-filter" data-topic="" aria-pressed="true">All <span class="best-filter-n">@stories.Length</span></button>
+        @foreach (var topic in topics)
+        {
+            <button type="button" class="best-filter" data-topic="@topic" aria-pressed="false">@topic <span class="best-filter-n">@stories.Count(s => s.Topics.Contains(topic))</span></button>
+        }
+    </div>
+}
 <div class="best-board">
     @for (var i = 0; i < stories.Length; i++)
     {
         var story = stories[i];
+        var topicList = string.Join("|", story.Topics);
         if (story.Link == null)
         {
             @* in the works: same tile, a placeholder where the video goes, and nothing to click yet *@
-            <div class="best-story best-soon@(story.Cols <= 5 ? " best-narrow" : "")" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms">
+            <div class="best-story best-soon@(story.Cols <= 5 ? " best-narrow" : "")@(story.Cols <= 3 ? " best-small" : "")" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms" data-topics="@topicList" data-cols="@story.Cols">
                 <span class="best-media" style="--panel: @story.Panel">
                     <span class="best-soon-mark">In the works</span>
                 </span>
@@ -153,12 +177,22 @@
         }
         var external = story.Link.StartsWith("http");
         var look = story.Panel == null ? "" : story.Inset ? " inset" : " framed";
-        <a class="best-story@(story.Fill ? " best-fill" : "")@(story.Cols <= 5 ? " best-narrow" : "")" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms"
+        <a class="best-story@(story.Fill ? " best-fill" : "")@(story.Cols <= 5 ? " best-narrow" : "")@(story.Cols <= 3 ? " best-small" : "")" href="@story.Link" target="@(external ? "_blank" : null)" rel="@(external ? "noopener" : null)" style="--c: @story.Cols; --r: @story.Rows; --d: @(i % 3 * 90)ms" data-topics="@topicList" data-cols="@story.Cols"
            data-cue="@(cues.TryGetValue(story.Title, out var cue) ? cue : external ? "Open it live ↗" : story.Link.StartsWith("/work/") ? "Read the case study →" : story.Video == "book" ? "Read the story →" : "See the deck →")">
+            @if (story.Video == null)
+            {
+                @* no recording yet: the title, set large on its panel *@
+                <span class="best-media best-type" style="--panel: @story.Panel">
+                    <span class="best-type-text">@story.Title</span>
+                </span>
+            }
+            else
+            {
             <span class="best-media@(look)" style="@(story.Panel != null ? $"--panel: {story.Panel}" : null)">
                 <video src="/videos/projects/@(story.Video).mp4" poster="/videos/projects/@(story.Video).jpg"
                        muted loop playsinline preload="none" aria-label="@story.Label"></video>
             </span>
+            }
             <span class="best-caption">
                 <span class="best-title">@story.Title <span class="best-arrow" aria-hidden="true">@(external ? "↗" : "→")</span></span>
                 <span class="best-kicker">@story.Kind</span>
@@ -219,7 +253,78 @@
     });
 </script>
 
+<script>
+    // topic filters: picking one hides every project without it and re-tiles the rest so every row fills;
+    // All puts the bento back
+    document.querySelectorAll('.best-filters:not([data-wired])').forEach(bar => {
+        bar.dataset.wired = '';
+        const board = bar.nextElementSibling;
+        const buttons = bar.querySelectorAll('.best-filter');
+        buttons.forEach(btn => btn.addEventListener('click', () => {
+            const topic = btn.dataset.topic;
+            buttons.forEach(b => b.setAttribute('aria-pressed', b === btn));
+            const tiles = [...board.querySelectorAll('.best-story')];
+            const shown = tiles.filter(t => !topic || t.dataset.topics.split('|').includes(topic));
+            // rows of three, with the leftovers as pairs up top so no row is left half empty (5 → 2+3, 7 → 2+2+3)
+            const pairs = shown.length % 3 === 2 ? 2 : shown.length % 3 === 1 ? Math.min(4, shown.length) : 0;
+            tiles.forEach(t => {
+                const on = shown.includes(t);
+                t.hidden = !on;
+                const c = topic ? (shown.indexOf(t) < pairs ? 6 : 4) : +t.dataset.cols;
+                t.style.setProperty('--c', c);
+                t.classList.toggle('best-narrow', c <= 5);
+                t.classList.toggle('best-small', c <= 3);
+                if (on) t.classList.add('in');
+            });
+        }));
+    });
+</script>
+
 <style>
+    /* topic filters above the full board: quiet pills, the picked one filled */
+    .best-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: -8px 0 36px;
+    }
+
+    .best-filter {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 7px;
+        padding: 7px 15px;
+        border: 1px solid #E2CCC7;
+        border-radius: var(--r-pill, 999px);
+        background: #FFFBF9;
+        font: inherit;
+        font-size: 0.8rem;
+        color: #4A3730;
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .best-filter:hover { border-color: #7E3F4A; }
+
+    .best-filter:focus-visible {
+        outline: 2px solid #7E3F4A;
+        outline-offset: 3px;
+    }
+
+    .best-filter[aria-pressed="true"] {
+        border-color: #7E3F4A;
+        background: #7E3F4A;
+        color: #FFFFFF;
+    }
+
+    .best-filter-n {
+        font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+        font-size: 0.68rem;
+        opacity: 0.7;
+    }
+
+    .best-story[hidden] { display: none; }
+
     /* MY BEST WORK: a 12-column board where size is rank */
     .best-board {
         position: relative;
@@ -265,6 +370,34 @@
         align-items: center;
         justify-content: center;
         background: var(--panel);
+    }
+
+    /* no recording yet: the deck's title set large on its own color */
+    .best-type {
+        display: flex;
+        align-items: flex-end;
+        padding: 28px;
+        background: var(--panel);
+    }
+
+    .best-type-text {
+        font-family: Georgia, serif;
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: #F7F4EE;
+        transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transform-origin: bottom left;
+    }
+
+    .best-story:hover .best-type-text { transform: scale(1.04); }
+
+    /* small tiles (four to a row): a shorter frame, so they read as the smaller set */
+    @@media (min-width: 1001px) {
+        .best-small .best-media { height: clamp(150px, 15vw, 210px); }
+        .best-small .best-type { padding: 20px; }
+        .best-small .best-type-text { font-size: clamp(1.05rem, 1.5vw, 1.35rem); }
+        .best-small .best-title { font-size: 0.98rem; }
     }
 
     .best-soon-mark {

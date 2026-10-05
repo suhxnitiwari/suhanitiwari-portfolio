@@ -2453,7 +2453,7 @@
         (0, "Data Science", "Analytics", "", "Intro to Data Science", "What can the data actually tell us?",
             "Cleaning, exploring and modeling real data, and explaining what it means to someone who has to decide.",
             new[] { "Python", "Data cleaning", "Exploratory analysis", "Visualization", "Modeling" },
-            "Heavy Rotation", "https://suhxnitiwari.github.io/listening-galaxy/"),
+            "Listening Galaxy", "https://suhxnitiwari.github.io/listening-galaxy/"),
         (1, "Consumer Behavior", "Marketing", "", "Consumer Behavior", "Why do people buy what they buy?",
             "Needs, perception, identity and the path to a purchase, and what turns a buyer into a regular.",
             new[] { "Decision journey", "Motivation", "Identity", "Brand loyalty" },
@@ -2461,7 +2461,7 @@
         (1, "Social Psychology", "Psychology", "", "Social Psychology", "How do other people shape what we think and do?",
             "Attitudes, conformity, group behavior and social influence: why the room changes the person.",
             new[] { "Attitudes", "Conformity", "Group behavior", "Social influence" },
-            "Heavy Rotation", "https://suhxnitiwari.github.io/listening-galaxy/"),
+            "Listening Galaxy", "https://suhxnitiwari.github.io/listening-galaxy/"),
         (1, "Science of Influence", "Marketing", "", "Science of Influence", "What actually changes someone’s mind?",
             "The research behind persuasion: social proof, scarcity, commitment, authority and framing.",
             new[] { "Persuasion", "Social proof", "Scarcity", "Framing" },
@@ -2575,7 +2575,7 @@
     </div>
 </section>
 
-@* MORE PROJECTS: after Marketing, everything Selected work didn't show (Views/Home/_BestWork.cshtml) *@
+@* ALL PROJECTS: after Marketing, every project with the five topic filters (Views/Home/_BestWork.cshtml) *@
 <section class="selected-work more-work" id="projects" aria-labelledby="more-work-heading">
     <div class="selected-wrap">
         <div class="selected-head">
@@ -2583,7 +2583,7 @@
                 <h2 id="more-work-heading">All projects</h2>
             </div>
         </div>
-        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "Rest", true } }' />
+        <partial name="_BestWork" view-data='new ViewDataDictionary(ViewData) { { "All", true } }' />
     </div>
 </section>
 
