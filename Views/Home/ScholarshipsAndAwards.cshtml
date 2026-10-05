@@ -6,8 +6,9 @@
 
 @functions {
     // One scholarship or award. Only the name is required: anything left empty simply doesn't show.
-    // From = who gave it (like UT Austin or McCombs); Note = a line about it in my words.
-    public record Honor(string Name, string From = "", string Year = "", string Note = "", string Amount = "");
+    // From = who gave it (like UT Austin or McCombs); Note = what the award recognizes;
+    // Why = why I got it, in my words (the back of the card shows Why when it's set, otherwise Note).
+    public record Honor(string Name, string From = "", string Year = "", string Note = "", string Amount = "", string Why = "");
 }
 
 @{
@@ -63,26 +64,86 @@
         color: #76344E;
     }
 
+    .honors-hint {
+        margin: 8px 0 0;
+        font-size: 0.72rem;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: #9C7A70;
+    }
+
+    /* flip cards: the name on the front, why I got it on the back. Both faces share one grid cell,
+       so every card is as tall as its longest side and nothing jumps when it turns */
     .honors-list {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-        gap: 20px 28px;
+        gap: 18px;
         margin: 0;
         padding: 0;
         list-style: none;
     }
 
+    .honor-card {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: none;
+        font: inherit;
+        color: inherit;
+        text-align: left;
+        cursor: var(--cursor-hot, pointer);
+        perspective: 1000px;
+    }
+
+    .honor-inner {
+        display: grid;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+    }
+
+    .honor-card.flipped .honor-inner { transform: rotateY(180deg); }
+
+    @@media (hover: hover) {
+        .honor-card:hover .honor-inner { transform: rotateY(180deg); }
+    }
+
+    .honor-card:focus-visible { outline: 2px solid #76344E; outline-offset: 4px; border-radius: var(--r-card, 18px); }
+
+    .honor-face {
+        grid-area: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 200px;
+        padding: 20px 20px 18px;
+        border-radius: var(--r-card, 18px);
+        border: var(--card-border, 1px solid #EBD5D0);
+        box-shadow: var(--shadow-card, 0 10px 24px -18px rgba(90, 40, 40, 0.4));
+        background: #FFF8F6;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .honor-back {
+        transform: rotateY(180deg);
+        justify-content: center;
+        background: #76344E;
+        color: #FFF8F6;
+    }
+
     .honor-name {
         margin: 0;
         font-family: Georgia, serif;
-        font-size: 1.05em;
+        font-size: 1.15em;
         font-weight: 700;
-        line-height: 1.3;
+        line-height: 1.25;
         color: #1E100A;
     }
 
     .honor-meta {
-        margin: 6px 0 0;
+        margin: 8px 0 0;
         font-size: 0.68rem;
         font-weight: 700;
         letter-spacing: 1.2px;
@@ -90,17 +151,40 @@
         color: #7A665F;
     }
 
+    .honor-turn {
+        margin-top: auto;
+        padding-top: 14px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #9E5A63;
+    }
+
+    .honor-why-label {
+        margin: 0 0 8px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #F2C9B5;
+    }
+
     .honor-note {
-        margin: 6px 0 0;
-        font-size: 0.88em;
+        margin: 0;
+        font-size: 0.95em;
         line-height: 1.5;
-        color: #3F4A34;
+        color: #FFF8F6;
     }
 
     .honor-amount {
-        margin: 6px 0 0;
+        margin: 10px 0 0;
         font-weight: 700;
-        color: #733642;
+        color: #F2C9B5;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .honor-inner { transition: none; }
     }
 
     @@media (max-width: 860px) {
@@ -111,24 +195,46 @@
 @if (shown.Length > 0)
 {
     <div class="honors honors-@(only ?? "all")">
-        <p class="honors-label">@(only switch { "school" => "Scholarships & honors", "service" => "Recognized for it", _ => "Scholarships & awards" })</p>
+        <div>
+            <p class="honors-label">@(only switch { "school" => "Scholarships & honors", "service" => "Recognized for it", _ => "Scholarships & awards" })</p>
+            <p class="honors-hint">Tap a card to flip it</p>
+        </div>
         <ul class="honors-list">
             @foreach (var honor in shown)
             {
                 var meta = string.Join(", ", new[] { honor.From, honor.Year }.Where(part => !string.IsNullOrEmpty(part)));
+                var back = string.IsNullOrEmpty(honor.Why) ? honor.Note : honor.Why;
                 <li class="honor">
-                    <h3 class="honor-name">@honor.Name</h3>
-                    <p class="honor-meta">@meta</p>
-                    @if (!string.IsNullOrEmpty(honor.Note))
-                    {
-                        <p class="honor-note">@honor.Note</p>
-                    }
-                    @if (!string.IsNullOrEmpty(honor.Amount))
-                    {
-                        <p class="honor-amount">@honor.Amount</p>
-                    }
+                    <button type="button" class="honor-card" aria-pressed="false" aria-label="@honor.Name. @meta. @back">
+                        <span class="honor-inner" aria-hidden="true">
+                            <span class="honor-face honor-front">
+                                <span class="honor-name">@honor.Name</span>
+                                <span class="honor-meta">@meta</span>
+                                @if (!string.IsNullOrEmpty(back))
+                                {
+                                    <span class="honor-turn">Why I got it ↻</span>
+                                }
+                            </span>
+                            <span class="honor-face honor-back">
+                                <span class="honor-why-label">Why I got it</span>
+                                <span class="honor-note">@back</span>
+                                @if (!string.IsNullOrEmpty(honor.Amount))
+                                {
+                                    <span class="honor-amount">@honor.Amount</span>
+                                }
+                            </span>
+                        </span>
+                    </button>
                 </li>
             }
         </ul>
     </div>
 }
+
+<script>
+    // tap (or Enter) flips a card; on a mouse it also turns on hover
+    document.querySelectorAll('.honor-card:not([data-wired])').forEach(card => {
+        card.dataset.wired = '';
+        card.addEventListener('click', () => card.setAttribute('aria-pressed', card.classList.toggle('flipped')));
+    });
+</script>

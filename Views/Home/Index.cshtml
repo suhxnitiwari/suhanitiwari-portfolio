@@ -3507,7 +3507,7 @@
         if (hero) new IntersectionObserver(([e]) => nav.classList.toggle('on', !e.isIntersecting), { threshold: 0.15 }).observe(hero);
         else nav.classList.add('on');
         // sections without their own dot light up the chapter they belong to
-        const partOf = { awards: 'beyond' };
+        const partOf = { awards: 'education' };
         // the address bar and tab title follow along too, so a shared link opens where you were reading
         const baseTitle = document.title;
         const follow = id => {
