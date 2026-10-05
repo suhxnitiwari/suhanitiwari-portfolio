@@ -14,7 +14,7 @@
             @Html.AntiForgeryToken()
             <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
             <fieldset class="world-roles">
-                <legend>So, who are you to me?</legend>
+                <legend>Friend or family?</legend>
                 <label class="world-role">
                     <input type="radio" name="role" value="friends" checked="@(role == "friends")" />
                     <span class="world-role-name">Friend</span>
@@ -53,7 +53,7 @@
         }
         @if (isOpen)
         {
-            <p class="world-small">If you know me, you know the password. If you don’t, that’s kind of the point.</p>
+            <p class="world-small">The password is shared in person, never online.</p>
         }
         else
         {
