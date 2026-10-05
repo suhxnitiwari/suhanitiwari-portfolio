@@ -33,10 +33,7 @@
             Label: "Glossy blush and bronzer swatches swipe in while the trends Hailey started flash past", Link: "/#mk-proj-rhode",
             Line: "e.l.f. paid $1B for a face. My plan to make the product the celebrity.", Skills: new[] { "Brand strategy", "Celebrity brand", "Motion graphics" }),
 
-        (Cols: 8, Rows: 1, Fill: false, Kind: "Website", Title: "Soft Heart. Strong Spirit.", Video: "personality", Panel: (string?)null, Inset: false,
-            Label: "Scrolling through my personality website", Link: "https://suhxnitiwari.github.io/suhani-personality/",
-            Line: "Ten personality tests, one person: an interactive story of who I am and what drives me.", Skills: new[] { "HTML", "CSS", "JavaScript" }),
-        (Cols: 4, Rows: 1, Fill: true, Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
+        (Cols: 12, Rows: 1, Fill: false, Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
             Label: "Flipping through my Owala Marathon Series deck", Link: "/#mk-proj-owala",
             Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
 
@@ -95,12 +92,12 @@
     if (ViewData["Rest"] as bool? == true)
     {
         // only what isn't shown anywhere else: the marketing decks live in Marketing, RideFlow and Saturday in Austin on the loop.
-        // rows: the Suhani House 7 + Personality 5, then 8,730 Questions, the bag and Suhaiku, then the three in the works, at 4 each
+        // rows: the Suhani House 8 + 8,730 Questions 4, then the bag, Suhaiku and Double Tap at 4 each, then the two in the works at 6 and 6
         var order = new (string Title, int Cols)[]
         {
-            ("The Suhani House", 7), ("Soft Heart. Strong Spirit.", 5),
-            ("8,730 Questions", 4), ("What’s in My Bag?", 4), ("Suhaiku", 4),
-            ("Double Tap", 4), ("YouTube Watch Funnel", 4), ("Spotify Retention Cohorts", 4)
+            ("The Suhani House", 8), ("8,730 Questions", 4),
+            ("What’s in My Bag?", 4), ("Suhaiku", 4), ("Double Tap", 4),
+            ("YouTube Watch Funnel", 6), ("Spotify Retention Cohorts", 6)
         };
         stories = order.Select(o =>
         {
@@ -122,7 +119,6 @@
         ["What’s in My Bag?"] = "Unzip my bag ↗",
         ["How Glossier Lost Its Cult"] = "Open the group chat →",
         ["Rhode Has a Hailey Problem"] = "Swatch the plan →",
-        ["Soft Heart. Strong Spirit."] = "Meet all ten of me ↗",
         ["Owala: The Marathon Series"] = "Run the series →",
         ["Saturday in Austin"] = "Explore Austin ↗",
         ["Suhaiku"] = "Commission a painting ↗",
