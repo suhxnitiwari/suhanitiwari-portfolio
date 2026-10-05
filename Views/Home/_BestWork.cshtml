@@ -263,6 +263,8 @@
         buttons.forEach(btn => btn.addEventListener('click', () => {
             const topic = btn.dataset.topic;
             buttons.forEach(b => b.setAttribute('aria-pressed', b === btn));
+            // on phones the filters are one swipeable row: keep the picked one in view
+            bar.scrollBy({ left: btn.getBoundingClientRect().left - bar.getBoundingClientRect().left - (bar.clientWidth - btn.offsetWidth) / 2, behavior: 'smooth' });
             const tiles = [...board.querySelectorAll('.best-story')];
             const shown = tiles.filter(t => !topic || t.dataset.topics.split('|').includes(topic));
             // rows of three, with the leftovers as pairs up top so no row is left half empty (5 → 2+3, 7 → 2+2+3)
@@ -585,5 +587,29 @@
         .best-board { display: flex; flex-direction: column; gap: 36px; }
         .best-media { height: auto; aspect-ratio: 4 / 3; }
         .best-caption { flex-direction: column; gap: 2px; }
+
+        /* the full, filterable board: the filters become one row you swipe, and the projects go two across
+           with just a title and kind, so the whole list is a few thumbs long instead of a dozen screens */
+        .best-filters {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin: -8px -20px 24px;
+            padding: 0 20px 2px;
+        }
+        .best-filters::-webkit-scrollbar { display: none; }
+        .best-filter { flex: none; }
+
+        .best-filters + .best-board { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 12px; }
+        .best-filters + .best-board .best-story { grid-column: auto; }
+        .best-filters + .best-board .best-media { aspect-ratio: 1; }
+        .best-filters + .best-board .best-line,
+        .best-filters + .best-board .best-skills { display: none; }
+        .best-filters + .best-board .best-title { font-size: 0.95rem; }
+        .best-filters + .best-board .best-kicker { font-size: 0.6rem; }
+        .best-filters + .best-board .best-caption { margin-top: 8px; }
+        .best-filters + .best-board .best-type { padding: 14px; }
+        .best-filters + .best-board .best-type-text { font-size: 1rem; }
+        .best-filters + .best-board .best-soon-mark { padding: 5px 10px; font-size: 0.6rem; letter-spacing: 1.5px; }
     }
 </style>
