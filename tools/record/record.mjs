@@ -98,15 +98,10 @@ const shots = {
         }
     },
     stillwatching: {
-        // Still Watching: straight into S1:E1, the West Campus drop-off with the opening credits rolling
-        url: 'https://suhxnitiwari.github.io/still-watching/', w: 1280, h: 720,
-        prep: async ev => {
-            await ev(`sessionStorage.setItem('entered', '1'); location.reload()`);
-            await sleep(4000);
-            await ev(`document.querySelector('#play').click()`);
-            await sleep(300);
-        },
-        run: async () => { await sleep(20000); }
+        // Still Watching: the cold open, from black. The red S glows in, then "Who's watching?" as the four profiles generate
+        url: process.env.SW_URL || 'https://suhxnitiwari.github.io/still-watching/', w: 1280, h: 720,
+        prep: async ev => { await ev(`sessionStorage.clear(); location.reload()`); await sleep(150); },
+        run: async ev => { await sleep(5000); await ev(`document.querySelector('#intro-start').click()`); await sleep(11000); }
     },
     // Still Watching episodes for the montage (montage.py stitches them): the player opens on an episode the way a
     // visitor would, and the first seconds (while the player controls fade) are trimmed away afterwards

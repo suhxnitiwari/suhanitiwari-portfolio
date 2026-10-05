@@ -177,10 +177,13 @@
         color: #FAF1EF;
     }
 
+    /* its pieces stay inline (the tagline rule above would stack them, leaving the bar alone on a line) */
+    .cover-tagline .cover-school > span { display: inline; }
+
     /* phones: too narrow for one readable line, so it breaks cleanly at the bar */
     @@media (max-width: 640px) {
         .cover-school { white-space: normal; font-size: 10.5px; line-height: 1.6; }
-        .cover-school > span:not(.cover-school-bar) { display: block; }
+        .cover-tagline .cover-school > span:not(.cover-school-bar) { display: block; }
         .cover-tagline .cover-school-bar { display: none; }
     }
 

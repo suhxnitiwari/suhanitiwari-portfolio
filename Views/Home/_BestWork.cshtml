@@ -3,39 +3,50 @@
    The board is a bento: every row splits differently and never holds more than three tiles. Bigger tiles are the projects that matter most.
    Screen recordings sit in a colored panel and run off its bottom-right edge like a window; motion graphics and photos fill the whole tile. *@
 @{
-    // Cols: how many of the 12 columns the tile takes. Rows: 2 makes a tower that stands beside two rows.
-    // Fill: the tile stretches to the height its row partner sets with its shape.
-    // Rows split differently (8 and 4, 5 and 7, a tower beside two rows) and never hold more than three tiles.
+    // Cols: how many of the 12 columns the tile takes. Rows stays 1: no towers, so every row lines up.
+    // Fill: kept for older entries; every tile now shares its row's height.
+    // Rows are pairs (8 and 4, 6 and 6) or triples (4, 4, 4), so the 16:10 recordings fit without cropping.
     // Panel: the color behind a screen recording (null = the video fills the tile). Inset: the video sits inside the panel as its own card.
     var stories = new[]
     {
+        // Even rows: four pairs, then three triples. Every row adds up to 12 and every tile in a row is the same height.
         (Cols: 8, Rows: 1, Fill: false, Kind: "Full-stack app", Title: "RideFlow", Video: "rideflow", Panel: (string?)"#EBC8CC", Inset: false,
             Label: "Scrolling through the live RideFlow app", Link: "https://rideflow-frontend.onrender.com/",
             Line: "A rideshare app for riders, drivers and admins, built solo in a course designed for teams.", Skills: new[] { "React", "Node.js", "Express", "PostgreSQL" }),
-        (Cols: 4, Rows: 1, Fill: true, Kind: "Children’s book", Title: "Girls Can Be Engineers, Too!", Video: "book", Panel: (string?)null, Inset: false,
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Children’s book", Title: "Girls Can Be Engineers, Too!", Video: "book", Panel: (string?)null, Inset: false,
             Label: "A young reader holding a copy of Girls Can Be Engineers, Too!", Link: "/#beyond",
             Line: "Bedtime stories were all princesses, so I wrote one about real women engineers.", Skills: new[] { "Writing", "Illustration", "Publishing" }),
 
-        (Cols: 5, Rows: 1, Fill: true, Kind: "Product management", Title: "Starbucks AI Loyalty", Video: "starbucks", Panel: (string?)"#56634A", Inset: false,
-            Label: "Flipping through my Starbucks strategy deck", Link: "/work/starbucks",
-            Line: "Turning the Starbucks app from a checkout tool into a daily ritual.", Skills: new[] { "RICE scoring", "KANO analysis", "Roadmapping", "Prototyping" }),
-        (Cols: 7, Rows: 1, Fill: false, Kind: "Media strategy", Title: "Netflix’s $20B Leak", Video: "netflix", Panel: (string?)null, Inset: false,
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Media strategy", Title: "Netflix’s $20B Leak", Video: "netflix", Panel: (string?)null, Inset: false,
             Label: "A wall of Netflix posters drifting in the dark while a red searchlight sweeps across", Link: "/#mk-proj-netflix",
             Line: "YouTube is eating Netflix’s evenings. My plan to make Netflix TV again.", Skills: new[] { "Media strategy", "Competitive analysis", "Motion graphics" }),
-
-        (Cols: 7, Rows: 2, Fill: true, Kind: "3D website", Title: "The Suhani House", Video: "dollhouse", Panel: (string?)null, Inset: false,
-            Label: "Circling my 3D dollhouse with its front swung open, every room lit", Link: "https://suhxnitiwari.github.io/suhani-personality/house/",
-            Line: "A house built from my personality: my people at the front, my ambition upstairs, my brain in the attic. Open it up, or walk through it.", Skills: new[] { "Three.js", "JavaScript", "3D modeling" }),
-        (Cols: 5, Rows: 1, Fill: false, Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Brand strategy", Title: "How Glossier Lost Its Cult", Video: "glossier", Panel: (string?)null, Inset: false,
             Label: "A pink group chat fills with fans talking about Glossier, then goes quiet", Link: "/#mk-proj-glossier",
             Line: "The moat was never makeup. It was the comments section.", Skills: new[] { "Brand strategy", "Case analysis", "Community", "Motion graphics" }),
-        (Cols: 5, Rows: 1, Fill: false, Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Video: "rhode", Panel: (string?)null, Inset: false,
+
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Video: "rhode", Panel: (string?)null, Inset: false,
             Label: "Glossy blush and bronzer swatches swipe in while the trends Hailey started flash past", Link: "/#mk-proj-rhode",
             Line: "e.l.f. paid $1B for a face. My plan to make the product the celebrity.", Skills: new[] { "Brand strategy", "Celebrity brand", "Motion graphics" }),
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Data story", Title: "Still Watching", Video: "stillwatching", Panel: (string?)null, Inset: false,
+            Label: "My illustrated family dropping me off in West Campus while the opening credits roll", Link: "https://suhxnitiwari.github.io/still-watching/",
+            Line: "Eleven years of my family's Netflix as a Netflix show: four profiles, no names, and episodes the pipeline wrote from the data.", Skills: new[] { "Python", "Data engineering", "JavaScript", "SVG animation" }),
 
-        (Cols: 12, Rows: 1, Fill: false, Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
+        (Cols: 6, Rows: 1, Fill: false, Kind: "3D website", Title: "The Suhani House", Video: "dollhouse", Panel: (string?)null, Inset: false,
+            Label: "Circling my 3D dollhouse with its front swung open, every room lit", Link: "https://suhxnitiwari.github.io/suhani-personality/house/",
+            Line: "A house built from my personality: my people at the front, my ambition upstairs, my brain in the attic. Open it up, or walk through it.", Skills: new[] { "Three.js", "JavaScript", "3D modeling" }),
+        (Cols: 6, Rows: 1, Fill: false, Kind: "Data story", Title: "8,730 Questions", Video: "search", Panel: (string?)null, Inset: false,
+            Label: "Scrolling through my year of Google searches, laid out as a search page", Link: "https://suhxnitiwari.github.io/search-history/",
+            Line: "One person, reconstructed from the questions she asked the internet.", Skills: new[] { "Python", "Data wrangling", "JavaScript" }),
+
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Product management", Title: "Starbucks AI Loyalty", Video: "starbucks", Panel: (string?)"#56634A", Inset: false,
+            Label: "Flipping through my Starbucks strategy deck", Link: "/work/starbucks",
+            Line: "Turning the Starbucks app from a checkout tool into a daily ritual.", Skills: new[] { "RICE scoring", "KANO analysis", "Roadmapping", "Prototyping" }),
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Product marketing", Title: "Owala: The Marathon Series", Video: "owala", Panel: (string?)"#C9D4BC", Inset: false,
             Label: "Flipping through my Owala Marathon Series deck", Link: "/#mk-proj-owala",
             Line: "Turning one-time buyers into collectors with bottles runners earn at the finish line.", Skills: new[] { "Market research", "Positioning", "Go-to-market" }),
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
+            Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
+            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
 
         (Cols: 4, Rows: 1, Fill: false, Kind: "Data story", Title: "Heavy Rotation", Video: "galaxy", Panel: (string?)null, Inset: false,
             Label: "Flying at warp speed into a galaxy where every song I've played is a star", Link: "https://suhxnitiwari.github.io/listening-galaxy/",
@@ -47,18 +58,6 @@
             Label: "Walking along a gallery wall of framed paintings, stepping up to two of them as their haiku fade in", Link: "https://suhxnitiwari.github.io/suhaiku/",
             Line: "A small museum of haiku. Every painting is composed from the poem hung inside it, and Claude writes new ones while you watch.", Skills: new[] { "JavaScript", "Canvas", "Claude API" }),
 
-        // My data, as things you'd actually use: Netflix as Netflix, Google as a search page. A tower beside two rows.
-        (Cols: 7, Rows: 2, Fill: true, Kind: "Data story", Title: "Still Watching", Video: "stillwatching", Panel: (string?)null, Inset: false,
-            Label: "My illustrated family dropping me off in West Campus while the opening credits roll", Link: "https://suhxnitiwari.github.io/still-watching/",
-            Line: "Eleven years of my family's Netflix as a Netflix show: four profiles, no names, and episodes the pipeline wrote from the data.", Skills: new[] { "Python", "Data engineering", "JavaScript", "SVG animation" }),
-        (Cols: 5, Rows: 1, Fill: false, Kind: "Data story", Title: "8,730 Questions", Video: "search", Panel: (string?)null, Inset: false,
-            Label: "Scrolling through my year of Google searches, laid out as a search page", Link: "https://suhxnitiwari.github.io/search-history/",
-            Line: "One person, reconstructed from the questions she asked the internet.", Skills: new[] { "Python", "Data wrangling", "JavaScript" }),
-        (Cols: 5, Rows: 1, Fill: false, Kind: "Website", Title: "What’s in My Bag?", Video: "bag", Panel: (string?)"#EBC8CC", Inset: true,
-            Label: "My backpack tipping over and everything falling out", Link: "https://suhxnitiwari.github.io/whats-in-my-bag/",
-            Line: "Tap the backpack and everything falls out. Tap anything that falls out and it opens.", Skills: new[] { "JavaScript", "CSS", "HTML" }),
-
-        // In the works: no video or link yet (Video and Link stay null until they ship)
         (Cols: 4, Rows: 1, Fill: false, Kind: "Data engineering", Title: "Double Tap", Video: (string?)null, Panel: (string?)"#7E3F4A", Inset: false,
             Label: "", Link: (string?)null,
             Line: "Six years of my Instagram, parsed: what I like, what I reject, how fast I decide and when I scroll.", Skills: new[] { "Python", "NLP", "Data engineering" }),
@@ -70,15 +69,15 @@
             Line: "Which artists stick and which fade? A cohort analysis of my listening, ending in what Spotify should build.", Skills: new[] { "SQL", "Cohort analysis", "Product memo" })
     };
 
-    // The homepage shows only my four most clickable: the show, the brand, the data, the heart. Two rows, 7 and 5, then 8 and 4
+    // The homepage shows only my four most clickable: the show, the brand, the data, the heart. Two rows, 6 and 6, then 8 and 4
     if (ViewData["Featured"] as bool? == true)
     {
         var picks = new (string Title, int Cols, bool Fill, string Line)[]
         {
-            ("Still Watching", 7, false, "My family, drawn and on Netflix. Eleven years of our viewing history, turned into episodes."),
-            ("How Glossier Lost Its Cult", 5, true, "The moat was never makeup. It was the comments section."),
+            ("Still Watching", 6, false, "My family, drawn and on Netflix. Eleven years of our viewing history, turned into episodes."),
+            ("How Glossier Lost Its Cult", 6, false, "The moat was never makeup. It was the comments section."),
             ("Heavy Rotation", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
-            ("Girls Can Be Engineers, Too!", 4, true, "1,000 copies in its first month. The book I wanted my little sister to have.")
+            ("Girls Can Be Engineers, Too!", 4, false, "1,000 copies in its first month. The book I wanted my little sister to have.")
         };
         stories = picks.Select(p =>
         {
@@ -92,10 +91,10 @@
     if (ViewData["Rest"] as bool? == true)
     {
         // only what isn't shown anywhere else: the marketing decks live in Marketing, RideFlow and Saturday in Austin on the loop.
-        // rows: the Suhani House 8 + 8,730 Questions 4, then the bag, Suhaiku and Double Tap at 4 each, then the two in the works at 6 and 6
+        // rows: the Suhani House 6 + 8,730 Questions 6 (both 16:10 recordings, so neither gets cropped), then the bag, Suhaiku and Double Tap at 4 each, then the two in the works at 6 and 6
         var order = new (string Title, int Cols)[]
         {
-            ("The Suhani House", 8), ("8,730 Questions", 4),
+            ("The Suhani House", 6), ("8,730 Questions", 6),
             ("What’s in My Bag?", 4), ("Suhaiku", 4), ("Double Tap", 4),
             ("YouTube Watch Funnel", 6), ("Spotify Retention Cohorts", 6)
         };
@@ -230,7 +229,7 @@
         margin-bottom: 64px;
     }
 
-    .best-story { grid-column: span var(--c); grid-row: span var(--r); }
+    .best-story { grid-column: span var(--c); }
 
     .best-story {
         display: flex;
@@ -255,7 +254,8 @@
         overflow: hidden;
         border-radius: var(--r-inset);
         background: #F3E3E0;
-        aspect-ratio: 16 / 10;
+        height: clamp(220px, 24vw, 340px);
+        flex: none;
         transition: box-shadow 0.35s ease, transform 0.35s ease;
     }
 
@@ -279,7 +279,7 @@
     }
 
     /* a filling tile stretches to the height its row partner sets */
-    .best-fill .best-media { aspect-ratio: auto; flex: 1 1 auto; min-height: 240px; }
+    /* every tile in a row shares one media height, so captions line up across the row */
 
     .best-media video {
         position: absolute;
@@ -443,15 +443,14 @@
 
     /* tablets: wide tiles take the whole row, the rest go two across, and towers stop spanning */
     @@media (max-width: 1000px) {
-        .best-story { grid-column: span 6; grid-row: auto; }
-        .best-story:not(.best-narrow):not(.best-fill) { grid-column: span 12; }
-        .best-fill .best-media { aspect-ratio: 4 / 5; flex: none; min-height: 0; }
+        .best-story { grid-column: span 6; }
+        .best-media { height: clamp(200px, 34vw, 300px); }
     }
 
     /* phones: one column */
     @@media (max-width: 640px) {
         .best-board { display: flex; flex-direction: column; gap: 36px; }
-        .best-media, .best-fill .best-media { aspect-ratio: 4 / 3; flex: none; min-height: 0; }
+        .best-media { height: auto; aspect-ratio: 4 / 3; }
         .best-caption { flex-direction: column; gap: 2px; }
     }
 </style>
