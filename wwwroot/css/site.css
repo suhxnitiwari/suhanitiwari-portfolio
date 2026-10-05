@@ -284,3 +284,27 @@ html {
         --sub-size: 1.2rem;
     }
 }
+
+/* Typed asides (wwwroot/js/type-aside.js): a little confession that types itself onto the end of a sentence,
+   in mulberry Georgia italic, with a caret that keeps blinking once it's done */
+.aside-type {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: #733642;
+}
+
+.aside-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin-left: 2px;
+    vertical-align: -0.2em;
+    background: #733642;
+    animation: asideBlink 1s steps(1) infinite;
+}
+
+.aside-caret.typing { animation: none; }
+
+@keyframes asideBlink {
+    50% { opacity: 0; }
+}

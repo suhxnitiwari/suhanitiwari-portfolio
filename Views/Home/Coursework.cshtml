@@ -17,7 +17,7 @@
     public record MisCapability(string Title, string[] Items);
 
     // What I can do: one stop on the loop. Href "#sitara" opens the Sitara chat instead of a page.
-    public record LoopStop(string Num, string Verb, string Project, string Line, string Stack, string From, string Href, string Cta);
+    public record LoopStop(string Num, string Verb, string Project, string Line, string Stack, string From, string Href, string Cta, string Aside = "");
 
     // Overview: one subject (a card in the grid).
     public record CwTheme(string Short, string Name, string Subtitle, string Blurb, string Color, string[] Courses);
@@ -544,7 +544,7 @@
                                     <li class="loop-stop" style="--i:@i">
                                         <button type="button" class="loop-node"><span class="loop-n">@st.Num</span><span class="loop-verb">@st.Verb</span><span class="loop-proj">@st.Project</span></button>
                                         <div class="loop-detail">
-                                            <p class="loop-line">@st.Line</p>
+                                            <p class="loop-line">@st.Line@if (!string.IsNullOrEmpty(st.Aside)) {<span class="visually-hidden">@st.Aside</span><span class="aside-type" aria-hidden="true" data-text="@st.Aside"></span>}</p>
                                             <p class="loop-stack"><span>Built with</span>@st.Stack</p>
                                             <p class="loop-from">@st.From</p>
                                             @if (st.Href == "#sitara")

@@ -26,31 +26,6 @@
 }
 
 <style>
-    /* "…totally bragging.": typed onto the end of the Digital Art caption, in mulberry italic */
-    .brag-type {
-        font-family: Georgia, serif;
-        font-style: italic;
-        color: #733642;
-    }
-
-    .brag-caret {
-        display: inline-block;
-        width: 2px;
-        height: 1.1em;
-        margin-left: 2px;
-        vertical-align: -0.2em;
-        background: #733642;
-        animation: bragBlink 1s steps(1) infinite;
-    }
-
-    .brag-caret.typing {
-        animation: none;
-    }
-
-    @@keyframes bragBlink {
-        50% { opacity: 0; }
-    }
-
     * {
         margin: 0;
         padding: 0;
@@ -523,32 +498,7 @@
                 <p class="make-q">What if I painted where I’m from?</p>
                 <h2 class="shelf-title">Digital Art</h2>
             </div>
-            <p class="shelf-caption art-caption"><strong>I grew up between cultures. Eventually, I started drawing the space between them.</strong> My AP 2-D Art portfolio became an attempt to make cultural identity visible: the traditions I inherited, the places I’ve lived, and the strange experience of belonging to more than one world at once. Not to brag, but it earned a 5, a VASE award and a Scholastic Art Award.<span class="visually-hidden"> …totally bragging.</span><span class="brag-type" aria-hidden="true" data-text=" …totally bragging."></span></p>
-            <script>
-                // the confession types itself onto the end once you've had a chance to read the "not to brag"
-                (() => {
-                    const brag = document.currentScript.previousElementSibling.querySelector('.brag-type');
-                    const text = brag.dataset.text;
-                    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) { brag.textContent = text; return; }
-                    const wait = ms => new Promise(r => setTimeout(r, ms));
-                    const caret = document.createElement('i');
-                    caret.className = 'brag-caret typing';
-                    const seen = new IntersectionObserver(async ([e]) => {
-                        if (!e.isIntersecting) return;
-                        seen.disconnect();
-                        await wait(1800);
-                        brag.append(caret);
-                        await wait(700);
-                        for (let k = 1; k <= text.length; k++) {
-                            brag.textContent = text.slice(0, k);
-                            brag.append(caret);
-                            await wait(text[k - 1] === '…' ? 600 : 75);
-                        }
-                        caret.classList.remove('typing');
-                    }, { threshold: 1 });
-                    seen.observe(brag.parentElement);
-                })();
-            </script>
+            <p class="shelf-caption art-caption"><strong>I grew up between cultures. Eventually, I started drawing the space between them.</strong> My AP 2-D Art portfolio became an attempt to make cultural identity visible: the traditions I inherited, the places I’ve lived, and the strange experience of belonging to more than one world at once. Not to brag, but it earned a 5, a VASE award and a Scholastic Art Award.<span class="visually-hidden"> …totally bragging.</span><span class="aside-type" aria-hidden="true" data-text=" …totally bragging."></span></p>
             <div class="shelf-rail-wrap gallery-wall-wrap">
                 <button type="button" class="shelf-arrow prev" aria-label="Slide the Digital Art wall left">‹</button>
                 <div class="gallery-wall" role="group" aria-label="Digital Art" tabindex="0">
