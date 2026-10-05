@@ -55,21 +55,17 @@
         border-bottom: 1px solid #E2C6C0;
     }
 
+    /* set like the school name in Education: big Bodoni in the wine color */
     .honors-label {
         margin: 0;
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-        color: #76344E;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 2.6rem;
+        line-height: 1.05;
+        color: #733642;
     }
 
-    .honors-hint {
-        margin: 8px 0 0;
-        font-size: 0.72rem;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        color: #9C7A70;
+    @@media (max-width: 800px) {
+        .honors-label { font-size: 2.1rem; }
     }
 
     /* flip cards: the name on the front, why I got it on the back. Both faces share one grid cell,
@@ -177,8 +173,7 @@
 {
     <div class="honors honors-@(only ?? "all")">
         <div>
-            <p class="honors-label">@(only switch { "school" => "Scholarships & honors", "service" => "Recognized for it", _ => "Scholarships & awards" })</p>
-            <p class="honors-hint">Tap a card to flip it</p>
+            <p class="honors-label">@(only switch { "school" => "Scholarships & Honors", "service" => "Recognized for It", _ => "Scholarships & Awards" })</p>
         </div>
         <ul class="honors-list">
             @foreach (var honor in shown)

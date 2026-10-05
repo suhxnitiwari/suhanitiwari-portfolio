@@ -4,9 +4,9 @@
 
 @functions {
     // One project. Everything except the name is optional: anything left empty simply doesn't show.
-    // Tagline = the short line under the name; Tags = small labels.
+    // Tagline = the short line under the name.
     // Every photo shows at the same upright 3:4 size, so use 3:4 photos (or crops) here.
-    public record Initiative(string Name, string Tagline = "", string[]? Tags = null,
+    public record Initiative(string Name, string Tagline = "",
                              string Role = "", string Years = "", string Description = "",
                              string Link = "", string LinkText = "Learn more",
                              string Photo = "", string PhotoAlt = "", string PhotoCaption = "", string PhotoCue = "",
@@ -242,6 +242,9 @@
         border-bottom: 1px solid #EBD5D0;
     }
 
+    /* nothing under the numbers: no closing hairline left hanging */
+    .project-stats:last-child { border-bottom: 0; padding-bottom: 0; }
+
     .project-stats dt {
         font-family: Georgia, serif;
         font-size: 1.55em;
@@ -428,25 +431,6 @@
         color: #3F4A34;
     }
 
-    .project-tags {
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 22px 0 0;
-        padding: 0;
-    }
-
-    .project-tags li {
-        padding: 6px 14px;
-        border-radius: var(--r-pill);
-        background: rgba(158, 90, 99, 0.14);
-        color: #1E100A;
-        font-size: 0.78em;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-
     .project-link {
         display: inline-block;
         margin-top: 26px;
@@ -563,7 +547,6 @@
             new[]
             {
                 new Initiative("Girls Who Code",
-                    Tags: new[] { "Coding", "Web Development", "Mentorship" },
                     Role: "Founder & President",
                     Years: "Dallas, Texas · Aug ’22 – May ’24",
                     Description: "In 9th grade I was one of three girls in AP Computer Science Principles, and instead of banding together, we competed for the A. I spent 10th grade teaching myself more computer science and writing a curriculum from my school district’s, College Board and Girls Who Code material. Then in 11th and 12th grade I ran Girls Who Code chapters at two middle schools, to reach girls earlier and give them a community.",
@@ -583,7 +566,6 @@
 
                 // My children's book (author + illustrator). Details from its Amazon listing.
                 new Initiative("Girls Can Be Engineers Too",
-                    Tags: new[] { "Engineering", "Representation", "Early STEM" },
                     Role: "Author & Illustrator",
                     Years: "published Oct ’23",
                     Stats: new[]
@@ -612,7 +594,6 @@
 
                 new Initiative("Camp Invention",
                     Tagline: "Build it. Test it. Try again.",
-                    Tags: new[] { "Invention", "Design Thinking", "K–6 STEM" },
                     Role: "National Inventors Hall of Fame",
                     Stats: new[]
                     {
@@ -703,15 +684,6 @@
                                         </div>
                                     }
                                 </div>
-                            }
-                            @if (project.Tags is { Length: > 0 })
-                            {
-                                <ul class="project-tags">
-                                    @foreach (var tag in project.Tags)
-                                    {
-                                        <li>@tag</li>
-                                    }
-                                </ul>
                             }
                             @* with reviews, the link sits in the reviews card's bottom corner instead *@
                             @if (!string.IsNullOrEmpty(project.Link) && project.Reviews is not { Length: > 0 })
