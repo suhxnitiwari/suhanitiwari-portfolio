@@ -127,7 +127,7 @@ const shots = {
     },
     lullabyte: {
         // Lullabyte: the opening (the crib mobile lowered in on its string, its shadow swinging across the wall, the headline
-        // rising after it), then "Amaira" typed letter by letter and played, so its felt charms drop onto the mobile.
+        // rising after it), then Amaira, Maya and Asha, each typed letter by letter and played, so their felt charms drop onto the mobile.
         // LULLABYTE_URL can point at a local copy to record before it goes live.
         url: process.env.LULLABYTE_URL || 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800, stream: true,
         // forget any earlier visit, so the page waits behind its sound gate; the gate is then hidden without a fade
@@ -135,13 +135,17 @@ const shots = {
         run: async ev => {
             await ev(`enter(false)`);
             await sleep(2300);
-            for (const ch of 'Amaira') {
-                await ev(`(() => { const i = document.getElementById('heroName'); i.value += ${JSON.stringify(ch)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
-                await sleep(260);
+            // three names, one after another: each typed letter by letter, played, then cleared for the next
+            for (const [i, name] of ['Amaira', 'Maya', 'Asha'].entries()) {
+                if (i) { await ev(`(() => { const f = document.getElementById('heroName'); f.value = ''; f.dispatchEvent(new Event('input', { bubbles: true })); })()`); await sleep(500); }
+                for (const ch of name) {
+                    await ev(`(() => { const f = document.getElementById('heroName'); f.value += ${JSON.stringify(ch)}; f.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+                    await sleep(240);
+                }
+                await sleep(600);
+                await ev(`document.getElementById('heroPlay').click()`);
+                await sleep(4200);
             }
-            await sleep(700);
-            await ev(`document.getElementById('heroPlay').click()`);
-            await sleep(7500);
         }
     },
     rhode: {
