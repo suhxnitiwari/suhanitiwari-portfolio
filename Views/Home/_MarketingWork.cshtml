@@ -1379,6 +1379,18 @@
         window.autoplay ? start() : addEventListener('load', start);
     })();
 
+    // Deck videos load only when their slide is on screen (they're far down the page, most on hidden slides),
+    // then play; they pause when scrolled away. Without this the home page downloaded about 8 MB of video up front
+    (() => {
+        const vids = [...document.querySelectorAll('.mk-deck video[data-src]')];
+        if (!vids.length) return;
+        const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const wake = v => { if (!v.src) { v.src = v.dataset.src; v.preload = 'auto'; } if (!still) v.play().catch(() => {}); };
+        if (!('IntersectionObserver' in window)) { vids.forEach(wake); return; }
+        const io = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting ? wake(e.target) : e.target.pause()), { rootMargin: '200px 0px' });
+        vids.forEach(v => io.observe(v));
+    })();
+
     // Marketing decks: one slide at a time, ‹ › on the stage, arrow keys, and a chapter dot per slide (built from data-title)
     // It lives with the decks, so they turn on every page that shows Marketing Work (home and Coursework)
     document.querySelectorAll('.mk-deck').forEach(deck => {

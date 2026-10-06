@@ -179,7 +179,7 @@
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Netflix slides">
         <div class="mk-stage">
             <div class="mk-slide nf-cover" data-title="The leak">
-                <video class="nf-bg" src="/videos/projects/netflix.mp4" poster="/videos/projects/netflix.jpg" muted loop playsinline autoplay aria-label="A wall of Netflix posters drifting in the dark while a red searchlight sweeps across"></video>
+                <video class="nf-bg" data-src="/videos/projects/netflix.mp4" preload="none" poster="/videos/projects/netflix.jpg" muted loop playsinline autoplay aria-label="A wall of Netflix posters drifting in the dark while a red searchlight sweeps across"></video>
                 <span class="nf-beam" aria-hidden="true"></span>
                 @Html.Raw(deco)
                 <p class="nf-kick">Netflix strategy, 2026</p>
@@ -227,7 +227,7 @@
                 <p class="nf-lede">It doesn’t have a content problem. It has a continuity problem: the show drops Friday, and by Saturday the conversation lives somewhere else.</p>
                 <div class="nf-leak">
                     <canvas aria-hidden="true"></canvas>
-                    <div class="nf-hits" aria-hidden="true"><img src="/images/posters/ginny-and-georgia.jpg" alt="" style="--k: 0" /><img src="/images/posters/bridgerton.jpg" alt="" style="--k: 1" /><img src="/images/posters/gilmore-girls.jpg" alt="" style="--k: 2" /><img src="/images/posters/masaba-masaba.jpg" alt="" style="--k: 3" /><img src="/images/posters/mismatched.jpg" alt="" style="--k: 4" /></div>
+                    <div class="nf-hits" aria-hidden="true"><img loading="lazy" decoding="async" src="/images/posters/ginny-and-georgia.jpg" alt="" style="--k: 0" /><img loading="lazy" decoding="async" src="/images/posters/bridgerton.jpg" alt="" style="--k: 1" /><img loading="lazy" decoding="async" src="/images/posters/gilmore-girls.jpg" alt="" style="--k: 2" /><img loading="lazy" decoding="async" src="/images/posters/masaba-masaba.jpg" alt="" style="--k: 3" /><img loading="lazy" decoding="async" src="/images/posters/mismatched.jpg" alt="" style="--k: 4" /></div>
                     <div class="nf-dst" style="top:0"><b>YouTube</b><span>reactions, interviews</span></div>
                     <div class="nf-dst" style="top:26%"><b>TikTok</b><span>edits, memes</span></div>
                     <div class="nf-dst" style="top:52%"><b>Reddit</b><span>theories, threads</span></div>
@@ -261,7 +261,7 @@
                 <p class="nf-kick">Move 01, cadence</p>
                 <h4 class="nf-h">Make Netflix <em>TV again.</em></h4>
                 <p class="nf-lede">Netflix Nights: something live most weeks, so people ask “what’s on Netflix tonight?” again. Own events, not leagues. It already holds U.S. Women’s World Cup rights for 2027 and 2031.</p>
-                <div class="nf-strip" aria-hidden="true"><img src="/images/posters/homecoming-king.jpg" alt="" style="--k: 0" /><img src="/images/posters/papa-yaar.jpg" alt="" style="--k: 1" /><img src="/images/posters/ladies-up.jpg" alt="" style="--k: 2" /><img src="/images/posters/family-tandoncies.jpg" alt="" style="--k: 3" /><img src="/images/posters/great-indian-kapil-show.jpg" alt="" style="--k: 4" /><p class="nf-lede">It already has the comedy and talk shows people would gather for. It just releases them like files, not events.</p></div>
+                <div class="nf-strip" aria-hidden="true"><img loading="lazy" decoding="async" src="/images/posters/homecoming-king.jpg" alt="" style="--k: 0" /><img loading="lazy" decoding="async" src="/images/posters/papa-yaar.jpg" alt="" style="--k: 1" /><img loading="lazy" decoding="async" src="/images/posters/ladies-up.jpg" alt="" style="--k: 2" /><img loading="lazy" decoding="async" src="/images/posters/family-tandoncies.jpg" alt="" style="--k: 3" /><img loading="lazy" decoding="async" src="/images/posters/great-indian-kapil-show.jpg" alt="" style="--k: 4" /><p class="nf-lede">It already has the comedy and talk shows people would gather for. It just releases them like files, not events.</p></div>
                 <div class="nf-week">
                     @for (var d = 0; d < nights.Length; d++)
                     {
@@ -278,7 +278,7 @@
                         <h4 class="nf-h">Steal the conversation <em>back from TikTok.</em></h4>
                         <p class="nf-lede">Every big title becomes a world: aftershows, cast, games, events. The TV is for watching; the phone is for joining in.</p>
                     </div>
-                    <video src="/videos/projects/netflix-world.mp4" poster="/videos/projects/netflix-world.jpg" muted loop playsinline autoplay aria-label="Concept: a Bridgerton title page cycling through Watch, World, Cast, Talk, Play and Experience tabs"></video>
+                    <video data-src="/videos/projects/netflix-world.mp4" preload="none" poster="/videos/projects/netflix-world.jpg" muted loop playsinline autoplay aria-label="Concept: a Bridgerton title page cycling through Watch, World, Cast, Talk, Play and Experience tabs"></video>
                 </div>
             </div>
 
@@ -292,7 +292,7 @@
                         <div class="nf-mini" style="grid-template-columns:1fr 1fr;margin-top:0"><div class="red"><b>~60%</b>more new Dove buyers from its Bridgerton campaign</div><div><b>$39</b>tickets at Netflix House, plus food and merch</div></div>
                     </div>
                     <div class="nf-orbit">
-                        <img src="/images/posters/bridgerton.jpg" alt="Bridgerton poster" />
+                        <img loading="lazy" decoding="async" src="/images/posters/bridgerton.jpg" alt="Bridgerton poster" />
                         <div class="nf-ring">
                             @for (var k = 0; k < streams.Length; k++)
                             {
@@ -339,7 +339,7 @@
             </div>
 
             <div class="mk-slide nf-cover" data-title="The takeaway" hidden>
-                <video class="nf-bg" src="/videos/projects/netflix.mp4" poster="/videos/projects/netflix.jpg" muted loop playsinline autoplay aria-hidden="true"></video>
+                <video class="nf-bg" data-src="/videos/projects/netflix.mp4" preload="none" poster="/videos/projects/netflix.jpg" muted loop playsinline autoplay aria-hidden="true"></video>
                 @Html.Raw(deco)
                 <p class="nf-kick">The takeaway</p>
                 <h4 class="nf-title" style="font-size:clamp(24px, 5.6cqw, 64px)">Netflix doesn’t need more hits. <em>It needs to stop wasting them.</em></h4>

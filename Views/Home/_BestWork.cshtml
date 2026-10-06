@@ -191,7 +191,7 @@
             else
             {
             <span class="best-media@(look)" style="@(story.Panel != null ? $"--panel: {story.Panel}" : null)">
-                <video src="/videos/projects/@(story.Video).mp4" poster="/videos/projects/@(story.Video).jpg"
+                <video src="/videos/projects/@(story.Video).mp4" data-poster="/videos/projects/@(story.Video).jpg"
                        muted loop playsinline preload="none" aria-label="@story.Label"></video>
             </span>
             }
@@ -232,6 +232,16 @@
 </script>
 
 <script>
+    // each tile's cover image loads only as you get near it (a screen ahead), so the page doesn't fetch every cover up front
+    document.querySelectorAll('.best-board:not([data-postered])').forEach(board => {
+        board.dataset.postered = '';
+        const vids = [...board.querySelectorAll('video[data-poster]')];
+        const show = v => { v.poster = v.dataset.poster; v.removeAttribute('data-poster'); };
+        if (!('IntersectionObserver' in window)) { vids.forEach(show); return; }
+        const near = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { show(e.target); near.unobserve(e.target); } }), { rootMargin: '900px 0px' });
+        vids.forEach(v => near.observe(v));
+    });
+
     // each video plays only while it's on screen, and each tile rises in as you reach it, a beat after its neighbor
     // (none of it for people who asked for less motion; without this script every tile simply shows)
     document.querySelectorAll('.best-board:not([data-played])').forEach(board => {

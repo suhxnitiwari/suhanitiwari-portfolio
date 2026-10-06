@@ -1,0 +1,5 @@
+# suhanitiwari.com: everything public can be indexed; Invite Only (/world) is private and stays out of search
+User-agent: *
+Disallow: /world/
+
+Sitemap: https://suhanitiwari.com/sitemap.xml
