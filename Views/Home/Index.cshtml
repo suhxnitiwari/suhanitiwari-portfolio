@@ -115,16 +115,16 @@
     /* Entrance: each letter rises into place from behind the line, sharpening as it arrives */
     .cover-name .ch {
         display: inline-block;
-        animation: coverLetterIn 1.25s cubic-bezier(0.19, 1, 0.22, 1) backwards;
-        animation-delay: calc(var(--start) + var(--i) * 75ms);
+        animation: coverLetterIn 0.7s cubic-bezier(0.19, 1, 0.22, 1) backwards;
+        animation-delay: calc(var(--start) + var(--i) * 40ms);
     }
 
     .cover-name.left .ch {
-        --start: 0.3s;
+        --start: 0.05s;
     }
 
     .cover-name.right .ch {
-        --start: 0.75s;
+        --start: 0.25s;
     }
 
     @@keyframes coverLetterIn {
@@ -1231,6 +1231,11 @@
 </style>
 <link rel="preload" as="image" href="/images/hero-suhani.jpg" fetchpriority="high">
 
+@* SPEED: the browser lays out only the sections near the screen, so the top shows first instead of after the whole page.
+   Coursework is left out: its course pop-up is a plain fixed box that this would trap inside the section *@
+<style>
+    main > section:not(.cover-hero):not(#coursework) { content-visibility: auto; contain-intrinsic-size: auto 1200px; }
+</style>
 <section class="cover-hero" aria-label="Suhani Tiwari">
     <div class="cover-media">
         <img class="cover-photo" src="/images/hero-suhani.jpg" width="1672" height="941"
@@ -1932,15 +1937,15 @@
             // the mash keeps the sentence's spaces, so it wraps like the real words and never runs past the edge
             const mashLine = full.replace(/[^ ]/g, () => junk(1));
             const typeMash = () => {
-                typed = Math.min(full.length, typed + 3);
+                typed = Math.min(full.length, typed + 6);
                 line.innerHTML = '<span class="x">' + esc(mashLine.slice(0, typed)) + '</span>';
                 word.innerHTML = '';
-                if (typed < full.length) setTimeout(typeMash, 18);
-                else setTimeout(() => decode(line, full, 1500, () => decode(word, words[0], 500, () => {
+                if (typed < full.length) setTimeout(typeMash, 10);
+                else setTimeout(() => decode(line, full, 700, () => decode(word, words[0], 300, () => {
                     caret.classList.add('done');
                     let now = 0;
                     if (window.autoplay) autoplay(document.querySelector('.about-tagline'), () => { now = (now + 1) % words.length; decode(word, words[now], 550); }, 2600);
-                })), 250);
+                })), 80);
             };
             typeMash();
         };
