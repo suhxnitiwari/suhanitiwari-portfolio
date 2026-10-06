@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "My World";
+    ViewData["Title"] = "Invite Only";
     var isOpen = ViewBag.IsOpen as bool? ?? false;
     var role = ViewBag.Role as string ?? "friends";
 }
@@ -7,7 +7,7 @@
 <section class="world-door">
     <div class="world-card">
         <p class="world-kicker">Friends &amp; family only</p>
-        <h1>My World <svg class="world-lock" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg></h1>
+        <h1>Invite Only <svg class="world-lock" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg></h1>
         <p class="world-line">The rest of this site is public. This corner is private, kept for the people closest to me.</p>
 
         <form method="post" action="/world/login" class="world-form">
@@ -42,7 +42,7 @@
             {
                 <div class="world-entry">
                     @* a username the visitor never sees, so the browser's password manager can save the friends and family passwords as two separate entries *@
-                    <input id="world-user" name="username" type="text" autocomplete="username" value="@(role == "family" ? "My World (family)" : "My World (friends)")" class="visually-hidden" tabindex="-1" aria-hidden="true" readonly />
+                    <input id="world-user" name="username" type="text" autocomplete="username" value="@(role == "family" ? "Invite Only (family)" : "Invite Only (friends)")" class="visually-hidden" tabindex="-1" aria-hidden="true" readonly />
                     <label for="world-password" class="visually-hidden">Password</label>
                     <input id="world-password" name="password" type="password" autocomplete="current-password" placeholder="@(role == "family" ? "Family password" : "Friend password")" required autofocus />
                     <button type="submit">Let me in <span aria-hidden="true">→</span></button>
@@ -72,7 +72,7 @@
         document.querySelectorAll('.world-roles input').forEach(r => r.addEventListener('change', () => {
             box.placeholder = r.value === 'family' ? 'Family password' : 'Friend password';
             const user = document.getElementById('world-user');
-            if (user) user.value = r.value === 'family' ? 'My World (family)' : 'My World (friends)';
+            if (user) user.value = r.value === 'family' ? 'Invite Only (family)' : 'Invite Only (friends)';
             box.focus();
         }));
     })();

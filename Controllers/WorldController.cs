@@ -92,6 +92,26 @@ namespace Tiwari_Suhani_HW3.Controllers
             return View("YouKnow");
         }
 
+        // Faces: photos with my friends, for friends and family only
+        [Authorize(AuthenticationSchemes = "World")]
+        [HttpGet("/world/faces")]
+        public IActionResult Faces()
+        {
+            Response.Headers.CacheControl = "private, no-store";
+            Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
+            return View("Faces");
+        }
+
+        // Words: the handmade cards and letters, for friends and family only
+        [Authorize(AuthenticationSchemes = "World")]
+        [HttpGet("/world/words")]
+        public IActionResult Words()
+        {
+            Response.Headers.CacheControl = "private, no-store";
+            Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
+            return View("Words");
+        }
+
         // log out: forget the My World cookie and go back to the main site
         [HttpPost("/world/logout")]
         public async Task<IActionResult> Logout()

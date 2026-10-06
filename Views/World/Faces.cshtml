@@ -1,0 +1,76 @@
+@* FACES: photos with my friends, behind Invite Only's password. The photos live in My World's private folder
+   (PrivateContent/world/published/images/faces), so they only load for someone signed in.
+   WorldController serves it at /world/faces. Add a photo: drop it in that folder and add a line below. *@
+@{
+    ViewData["Title"] = "Faces";
+    var faces = new (string File, int W, int H)[]
+    {
+                ("01.jpg", 787, 1400),
+                ("02.jpg", 788, 1400),
+                ("03.jpg", 1400, 1050),
+                ("04.jpg", 787, 1400),
+                ("05.jpg", 1400, 1050)
+    };
+}
+<section class="faces-page">
+    <div class="about-container">
+        <a class="fc-back" href="/world/">← Back to Invite Only</a>
+        <h1 class="fc-title">Faces</h1>
+        <p class="fc-hint">Tap one to open it.</p>
+        @* a Pinterest-style board: every photo at its own shape, nothing cropped *@
+        <div class="fc-board">
+            @for (var i = 0; i < faces.Length; i++)
+            {
+                var f = faces[i];
+                <button type="button" class="fc-shot" data-i="@i" aria-haspopup="dialog">
+                    <img src="/world/images/faces/@f.File" width="@f.W" height="@f.H" alt="Me with friends" loading="lazy" decoding="async" />
+                </button>
+            }
+        </div>
+    </div>
+</section>
+<dialog class="fc-view" aria-label="Photo">
+    <img alt="" />
+    <button type="button" class="fc-prev" aria-label="Previous photo">‹</button>
+    <button type="button" class="fc-next" aria-label="Next photo">›</button>
+    <button type="button" class="fc-close" aria-label="Close">×</button>
+</dialog>
+<script>
+    // tap a photo to see it big; the arrows and arrow keys move through them, Esc, the × or a tap outside closes
+    (() => {
+        const view = document.querySelector('.fc-view');
+        if (!view?.showModal) return;
+        const big = view.querySelector('img');
+        const shots = [...document.querySelectorAll('.fc-shot img')];
+        let at = 0;
+        const show = i => { at = (i + shots.length) % shots.length; big.src = shots[at].src; big.alt = shots[at].alt; };
+        document.querySelectorAll('.fc-shot').forEach(b => b.addEventListener('click', () => { show(+b.dataset.i); view.showModal(); }));
+        view.querySelector('.fc-prev').addEventListener('click', () => show(at - 1));
+        view.querySelector('.fc-next').addEventListener('click', () => show(at + 1));
+        view.querySelector('.fc-close').addEventListener('click', () => view.close());
+        view.addEventListener('click', e => { if (e.target === view) view.close(); });
+        view.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') show(at - 1); if (e.key === 'ArrowRight') show(at + 1); });
+    })();
+</script>
+<style>
+    .faces-page { padding: 0 40px 100px; background: #FAF1EF; }
+    .fc-back { display: block; width: fit-content; margin: 110px 0 0; color: #8A4D57; font-weight: 600; text-decoration: none; }
+    .fc-back:hover, .fc-back:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+    .fc-title { margin: 30px 0 10px; font-family: Georgia, serif; font-size: 1.9em; font-style: italic; font-weight: 400; color: #733642; }
+    .fc-hint { margin: 0 0 30px; font-size: 0.85em; letter-spacing: 1.5px; text-transform: uppercase; color: #7E3F4A; }
+    .fc-board { columns: 3 260px; column-gap: 18px; }
+    .fc-shot { display: block; width: 100%; margin: 0 0 18px; padding: 0; border: 0; border-radius: var(--r-card, 16px); background: none; overflow: hidden; cursor: zoom-in;
+        break-inside: avoid; box-shadow: var(--shadow-card); }
+    .fc-shot img { display: block; width: 100%; height: auto; transition: transform 0.6s cubic-bezier(.2, .7, .2, 1); }
+    .fc-shot:hover img { transform: scale(1.03); }
+    .fc-shot:focus-visible { outline: 2px solid #7E3F4A; outline-offset: 4px; }
+    .fc-view { padding: 0; border: 0; background: none; max-width: 100vw; max-height: 100vh; overflow: visible; }
+    .fc-view::backdrop { background: rgba(30, 16, 10, 0.88); }
+    .fc-view img { display: block; max-width: min(92vw, 1100px); max-height: 86vh; border-radius: 12px; }
+    .fc-view button { position: fixed; width: 48px; height: 48px; border: 0; border-radius: 50%; background: rgba(255, 251, 249, 0.92); color: #2A1810; font-size: 1.5rem; cursor: pointer; }
+    .fc-close { top: 16px; right: 16px; }
+    .fc-prev { left: 16px; top: 50%; translate: 0 -50%; }
+    .fc-next { right: 16px; top: 50%; translate: 0 -50%; }
+    @@media (max-width: 860px) { .faces-page { padding: 0 20px 70px; } .fc-board { columns: 2; column-gap: 10px; } .fc-shot { margin-bottom: 10px; } }
+    @@media (prefers-reduced-motion: reduce) { .fc-shot img { transition: none; } .fc-shot:hover img { transform: none; } }
+</style>
