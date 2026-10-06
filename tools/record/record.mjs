@@ -29,7 +29,7 @@ const shots = {
     bag: {
         // What's in My Bag?: filmed wide to match its tile. The page is zoomed out a little and scrolled so the backpack
         // sits in the middle of the frame; it opens on the closed backpack for a beat, then it tips and everything falls out
-        url: 'https://suhxnitiwari.github.io/whats-in-my-bag/', w: 1280, h: 800, stream: true,
+        url: 'https://suhxnitiwari.github.io/whats-in-my-bag/', w: 1280, h: 800,
         prep: async ev => {
             await ev(`document.documentElement.style.zoom = '0.62'; document.documentElement.style.scrollBehavior = 'auto'`);
             await sleep(400);
@@ -137,7 +137,7 @@ const shots = {
         // Lullabyte: the opening (the crib mobile lowered in on its string, its shadow swinging across the wall, the headline
         // rising after it), then Amaira, Maya and Asha, each typed letter by letter and played, so their felt charms drop onto the mobile.
         // LULLABYTE_URL can point at a local copy to record before it goes live.
-        url: process.env.LULLABYTE_URL || 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800, stream: true,
+        url: process.env.LULLABYTE_URL || 'https://suhxnitiwari.github.io/baby-name-maker/', w: 1280, h: 800,
         // forget any earlier visit, so the page waits behind its sound gate; the gate is then hidden without a fade
         prep: async ev => { await ev(`localStorage.clear(); location.reload()`); await sleep(3500); await ev(`document.getElementById('gate').hidden = true; MB.setOn(false); soundUI()`); await sleep(300); },
         run: async ev => {
@@ -181,7 +181,9 @@ const shots = {
         // SEARCH_URL can point at a local copy when GitHub Pages is still serving a cached page
         url: process.env.SEARCH_URL || 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,
         run: async ev => {
-            await sleep(2400);
+            // reload once frames are rolling so the whole SUHANI doodle is drawn on camera (about five seconds)
+            await ev('setTimeout(() => location.reload(), 50)');
+            await sleep(6800);
             // the question goes in a few words at a time (one keystroke per call stalls headless capture)
             for (const part of ['is ', 'is she ', 'is she a ', 'is she a night ', 'is she a night owl?']) {
                 await ev(`(() => { const i = document.getElementById('sq'); i.value = ${JSON.stringify(part)}; i.dispatchEvent(new Event('input', { bubbles: true })); })()`);
@@ -293,7 +295,8 @@ try {
     const t0 = Date.now();
     const grab = (async () => {
         while (recording) {
-            const res = await send('Page.captureScreenshot', { format: 'jpeg', quality: 85, ...(clip ? { clip } : {}) });
+            // a screenshot asked for mid-reload never answers, so give up on it after a moment
+            const res = await Promise.race([send('Page.captureScreenshot', { format: 'jpeg', quality: 85, ...(clip ? { clip } : {}) }), sleep(500).then(() => ({}))]);
             if (!res.result) continue;
             writeFileSync(`${out}/${String(++n).padStart(5, '0')}.jpg`, Buffer.from(res.result.data, 'base64'));
             times.push(Date.now() - t0);
