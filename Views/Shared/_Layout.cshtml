@@ -597,8 +597,17 @@
                         </div>
                     </li>
                     <li class="nav-item"><a href="/resume" class="nav-link @ActiveIf("Resume")" target="_blank" rel="noopener">Résumé</a></li>
-                    @* last stop: the private part. /world/ asks for the password unless you're already signed in *@
-                    <li class="nav-item"><a href="/world/" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "World" ? "active" : "")">My World <svg class="lock-ic" style="vertical-align:-0.05em" viewBox="0 0 16 16" width="0.78em" height="0.78em" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg></a></li>
+                    @* the private part, with its rooms underneath; each asks for the password unless you're already signed in *@
+                    <li class="nav-item nav-dropdown" id="worldNav">
+                        <a href="/world/" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "World" ? "active" : "")" style="display: flex; align-items: center; gap: 4px;">
+                            My World <svg class="lock-ic" style="vertical-align:-0.05em" viewBox="0 0 16 16" width="0.78em" height="0.78em" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg><span class="nav-arrow">▼</span>
+                        </a>
+                        <div class="dropdown-menu-custom">
+                            <a href="/world/family/" class="dropdown-item-custom">Family Room</a>
+                            <a href="/world/" class="dropdown-item-custom">Places That Shaped Me</a>
+                            <a href="/world/you-know" class="dropdown-item-custom">Inner Circle</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
