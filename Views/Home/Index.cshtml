@@ -1229,7 +1229,8 @@
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
 </style>
-<link rel="preload" as="image" href="/images/hero-suhani.jpg" fetchpriority="high">
+@* the hero fills the screen, so on a tall phone it is as wide as 1.78 screen heights; the browser picks the size it needs *@
+<link rel="preload" as="image" href="/images/hero-suhani-1600.jpg" imagesrcset="/images/hero-suhani-1600.jpg 1600w, /images/hero-suhani-2400.jpg 2400w, /images/hero-suhani-3200.jpg 3200w" imagesizes="max(100vw, 178vh)" fetchpriority="high">
 
 @* SPEED: the browser lays out only the sections near the screen, so the top shows first instead of after the whole page.
    Coursework is left out: its course pop-up is a plain fixed box that this would trap inside the section *@
@@ -1238,7 +1239,7 @@
 </style>
 <section class="cover-hero" aria-label="Suhani Tiwari">
     <div class="cover-media">
-        <img class="cover-photo" src="/images/hero-suhani.jpg" width="1672" height="941"
+        <img class="cover-photo" src="/images/hero-suhani-1600.jpg" srcset="/images/hero-suhani-1600.jpg 1600w, /images/hero-suhani-2400.jpg 2400w, /images/hero-suhani-3200.jpg 3200w" sizes="max(100vw, 178vh)" width="1600" height="900"
              alt="Suhani sitting at a café table among flowers and an olive tree" fetchpriority="high" decoding="async">
         <div class="cover-scrim" aria-hidden="true"></div>
     </div>
