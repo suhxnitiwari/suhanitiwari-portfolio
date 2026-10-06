@@ -170,7 +170,8 @@ const shots = {
     search: {
         // Search History: my name drawn from my searches, then a question typed into the search bar and answered,
         // then the clock it opens, playing my day hour by hour
-        url: 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,
+        // SEARCH_URL can point at a local copy when GitHub Pages is still serving a cached page
+        url: process.env.SEARCH_URL || 'https://suhxnitiwari.github.io/search-history/', w: 1280, h: 800,
         run: async ev => {
             await sleep(2400);
             // the question goes in a few words at a time (one keystroke per call stalls headless capture)
