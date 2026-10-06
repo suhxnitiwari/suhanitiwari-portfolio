@@ -103,6 +103,8 @@
         outline-offset: 3px;
     }
 
+    .make-close { margin-top: 40px; }
+
     .make-open-sign {
         font-size: 1.2em;
         line-height: 1;
@@ -708,6 +710,11 @@
             </div>
             }
         </div>
+        @* the way out at the bottom of the shelves, so nobody has to scroll back up to fold them *@
+        @if (onHome)
+        {
+            <button type="button" class="make-open make-close" aria-controls="make-fold">Fold them away <span class="make-open-sign" aria-hidden="true">−</span></button>
+        }
         </div>
     </div>
 </section>
@@ -785,7 +792,7 @@
 <script src="~/js/shelves.js" asp-append-version="true"></script>
 <script src="~/js/trip-download.js" asp-append-version="true"></script>
 <script>
-    // Passions fold: the button opens and closes the shelves; any link to a shelf opens them first, then lands on it
+    // Passions fold: the button opens and closes the shelves (a second one at the bottom folds them too); any link to a shelf opens them first, then lands on it
     (() => {
         const fold = document.getElementById('make-fold');
         const btn = document.querySelector('.make-open');
@@ -802,6 +809,8 @@
             set(open);
             if (!open) btn.scrollIntoView({ block: 'center' });
         });
+        // the bottom one only ever folds, then brings you back up to where Passions starts
+        document.querySelector('.make-close')?.addEventListener('click', () => { set(false); btn.scrollIntoView({ block: 'center' }); });
         const openTo = id => {
             if (!shelves.includes(id)) return false;
             set(true);

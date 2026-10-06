@@ -1,7 +1,7 @@
 @* WORDS: the handmade cards and letters between my friends and me, behind Invite Only's password.
    WorldController serves it at /world/words only to a signed-in visitor. *@
 @{
-    ViewData["Title"] = "Words";
+    ViewData["Title"] = "The Words That Stayed";
 }
 <section class="words-page">
     <div class="about-container">
@@ -16,7 +16,7 @@
                 ("little-miss-international.jpg", "For Hana", "Little Miss International: where in the world is Hana?")
             };
         }
-        <h1 class="duality-title cards-title">Words</h1>
+        <h1 class="duality-title cards-title">The Words That Stayed</h1>
         <p class="kn-hint">Tap one to open it.</p>
         <ul class="hm-cards">
             @foreach (var (file, who, what) in cards)

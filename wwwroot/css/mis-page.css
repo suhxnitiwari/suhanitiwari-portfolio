@@ -682,13 +682,20 @@
 .mk-step { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; color: var(--mul); font-size: 20px; line-height: 1; cursor: var(--cursor-hot, pointer); }
 .mk-step:hover { border-color: var(--acc); }
 .mk-step:focus-visible { outline: 2px solid var(--mul); outline-offset: 2px; }
-.mk-chapters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; justify-content: center; }
-.mk-chapters button { font: inherit; font-size: 12.5px; font-weight: 600; padding: 7px 11px; border-radius: var(--r-pill); border: 1.5px solid var(--line); background: #fff; color: var(--ink); cursor: var(--cursor-hot, pointer); }
-.mk-chapters button span { color: var(--acc); margin-right: 6px; font-variant-numeric: tabular-nums; }
-.mk-chapters button:hover { border-color: var(--acc); }
-.mk-chapters button[aria-pressed="true"] { background: var(--mul); border-color: var(--mul); color: #FFF8F6; }
-.mk-chapters button[aria-pressed="true"] span { color: inherit; opacity: 0.8; }
-.mk-chapters button:focus-visible { outline: 2px solid var(--mul); outline-offset: 2px; }
+/* chapter dots, like the tracker down the page's edge: small dots, the current one a long pill in the deck's color */
+.mk-chapters { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; }
+.mk-chapters button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: var(--r-pill); background: #D9C2C4; cursor: var(--cursor-hot, pointer);
+    position: relative; transition: width 0.3s cubic-bezier(.2, .8, .2, 1), background 0.2s ease; }
+/* a bigger tap area than the dot itself */
+.mk-chapters button::before { content: ""; position: absolute; inset: -12px -4px; }
+.mk-chapters button:hover { background: var(--acc); }
+.mk-chapters button[aria-pressed="true"] { width: 30px; background: var(--mul); }
+.mk-chapters button:focus-visible { outline: 2px solid var(--mul); outline-offset: 3px; }
+/* the current chapter, named under the dots in small caps */
+.mk-chapter-now { margin: 10px 0 0; text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mul); }
+.mk-chapter-now b { margin-right: 6px; font-variant-numeric: tabular-nums; color: var(--acc); }
+.mk-chapter-now span { margin-left: 8px; font-weight: 600; letter-spacing: 0.12em; color: #A88A8F; }
+@media (prefers-reduced-motion: reduce) { .mk-chapters button { transition: none; } }
 
 /* summary under each deck */
 .mk-info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 52px; align-items: start; }

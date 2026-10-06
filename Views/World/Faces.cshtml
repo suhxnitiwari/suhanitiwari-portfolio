@@ -2,7 +2,7 @@
    (PrivateContent/world/published/images/faces), so they only load for someone signed in.
    WorldController serves it at /world/faces. Add a photo: drop it in that folder and add a line below. *@
 @{
-    ViewData["Title"] = "Faces";
+    ViewData["Title"] = "Who Has My Heart";
     var faces = new (string File, int W, int H)[]
     {
                 ("01.jpg", 787, 1400),
@@ -15,7 +15,7 @@
 <section class="faces-page">
     <div class="about-container">
         <a class="fc-back" href="/world/">← Back to Invite Only</a>
-        <h1 class="fc-title">Faces</h1>
+        <h1 class="fc-title">Who Has My Heart</h1>
         <p class="fc-hint">Tap one to open it.</p>
         @* a Pinterest-style board: every photo at its own shape, nothing cropped *@
         <div class="fc-board">
