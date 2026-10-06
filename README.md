@@ -24,6 +24,7 @@ This site brings together my work, education, projects, interests and personalit
 
 - ASP.NET Core MVC (.NET 10) and C#
 - JavaScript, HTML and CSS (no front-end framework)
+- Bootstrap 5.3.3 with the Bootswatch Pulse theme, customized with my own colors in site.css
 - Spotify Web API, MusicBrainz API and Wikipedia API
 - Docker, deployed on Render
 
