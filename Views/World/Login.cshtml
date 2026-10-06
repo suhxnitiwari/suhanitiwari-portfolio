@@ -41,6 +41,8 @@
             @if (isOpen)
             {
                 <div class="world-entry">
+                    @* a username the visitor never sees, so the browser's password manager can save the friends and family passwords as two separate entries *@
+                    <input id="world-user" name="username" type="text" autocomplete="username" value="@(role == "family" ? "My World (family)" : "My World (friends)")" class="visually-hidden" tabindex="-1" aria-hidden="true" readonly />
                     <label for="world-password" class="visually-hidden">Password</label>
                     <input id="world-password" name="password" type="password" autocomplete="current-password" placeholder="@(role == "family" ? "Family password" : "Friend password")" required autofocus />
                     <button type="submit">Let me in <span aria-hidden="true">→</span></button>
@@ -63,12 +65,14 @@
 </section>
 
 <script>
-    // the password box says which password it wants
+    // the password box says which password it wants, and the hidden username follows the role so each password saves on its own
     (() => {
         const box = document.getElementById('world-password');
         if (!box) return;
         document.querySelectorAll('.world-roles input').forEach(r => r.addEventListener('change', () => {
             box.placeholder = r.value === 'family' ? 'Family password' : 'Friend password';
+            const user = document.getElementById('world-user');
+            if (user) user.value = r.value === 'family' ? 'My World (family)' : 'My World (friends)';
             box.focus();
         }));
     })();

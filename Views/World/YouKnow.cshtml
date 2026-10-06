@@ -1,0 +1,1541 @@
+@* IF YOU KNOW ME: the personal part of the home page, moved behind My World's password (friends and family both get in).
+   If you know me, you know..., If I were a..., The Duality of a Woman and the How Well Do You Know Me? quiz.
+   WorldController serves it at /world/you-know only to a signed-in visitor. *@
+@{
+    ViewData["Title"] = "If You Know Me";
+}
+<style>
+    /* ===== THE DUALITY OF A WOMAN: same flip-card carousel as "If you know me" ===== */
+    .duality {
+        padding: 0 40px 90px;
+        background: #FAF1EF;
+    }
+
+    .duality-title {
+        margin: 0 0 10px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-style: italic;
+        font-weight: 400;
+        text-align: center;
+        color: #733642;
+    }
+
+    /* the stories are longer than the "If you know me" backs, so these cards are taller */
+    .duality .kn-card {
+        height: 280px;
+    }
+
+    .dp-front {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* the little "AND" between the two sides of each card */
+    .dp-and {
+        font-family: system-ui, sans-serif;
+        font-size: 0.55em;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .dp-other {
+        font-style: italic;
+        color: #733642;
+    }
+
+    .duality-note {
+        max-width: 620px;
+        margin: 30px auto 0;
+        font-size: 1.05em;
+        line-height: 1.8;
+        text-align: center;
+        color: #1E100A;
+    }
+
+    .duality-note strong {
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-weight: 700;
+        color: #7E3F4A;
+    }
+
+    @@media (max-width: 860px) {
+        .duality {
+            padding: 0 20px 60px;
+        }
+
+        .duality-title {
+            font-size: 1.5em;
+        }
+
+        .duality-note {
+            font-size: 1em;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .duality .kn-card {
+            height: 260px;
+        }
+    }
+
+    /* ===== IF YOU KNOW ME, YOU KNOW...: little flip cards, gently tilted ===== */
+    .know-me {
+        padding: 10px 40px 60px;
+        background: #FAF1EF;
+    }
+
+    .tp-lead {
+        margin: 0 0 10px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-style: italic;
+        font-weight: 400;
+        text-align: center;
+        color: #733642;
+    }
+
+    .kn-hint {
+        margin: 0 0 30px;
+        font-size: 0.85em;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-align: center;
+        color: #7E3F4A;
+    }
+
+    /* one row of cards that scrolls sideways, with arrows on either side */
+    /* the cards run edge to edge; the arrows sit on the outer edges, half over the first and last card */
+    .kn-carousel {
+        position: relative;
+    }
+
+    .kn-cards {
+        list-style: none;
+        flex: 1;
+        display: flex;
+        gap: 24px;
+        margin: 0;
+        padding: 8px 0 20px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .kn-cards::-webkit-scrollbar {
+        display: none;
+    }
+
+    .kn-item {
+        flex: 0 0 calc((100% - 72px) / 4);
+        scroll-snap-align: start;
+    }
+
+    .kn-arrow {
+        position: absolute;
+        top: calc(50% - 6px);
+        z-index: 1;
+        transform: translate(-50%, -50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid #EBD5D0;
+        background: #FFF8F6;
+        color: #7E3F4A;
+        font-size: 1.6em;
+        line-height: 1;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .kn-arrow.kn-next {
+        left: 100%;
+    }
+
+    .kn-arrow.kn-prev {
+        left: 0;
+    }
+
+    .kn-arrow:hover:not(:disabled) {
+        background: #F6E4E1;
+    }
+
+    .kn-arrow:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+
+    .kn-card {
+        display: block;
+        width: 100%;
+        height: 230px;
+        padding: 0;
+        border: 0;
+        background: none;
+        font: inherit;
+        color: inherit;
+        cursor: var(--cursor-hot, pointer);
+        perspective: 1000px;
+    }
+
+    .kn-inner {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+    }
+
+    .kn-card.flipped .kn-inner {
+        transform: rotateY(180deg);
+    }
+
+    @@media (hover: hover) {
+        .kn-card:hover .kn-inner {
+            transform: rotateY(180deg);
+        }
+    }
+
+    .kn-card:focus-visible {
+        outline: 2px solid #7E3F4A;
+        outline-offset: 4px;
+        border-radius: var(--r-card);
+    }
+
+    .kn-face {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--pad-card-sm);
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
+        text-align: center;
+        color: #1E100A;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .kn-front {
+        font-family: Georgia, serif;
+        font-size: 1.3em;
+        line-height: 1.35;
+    }
+
+    .kn-item.n0 .kn-front, .kn-item.n3 .kn-front { background: #FFF8F6; }
+    .kn-item.n1 .kn-front { background: #F6E4E1; }
+    .kn-item.n2 .kn-front { background: #EEF1E8; }
+
+    .kn-back {
+        transform: rotateY(180deg);
+        background: #7E3F4A;
+        border-color: #7E3F4A;
+        color: #FFF8F6;
+        font-size: 0.95em;
+        line-height: 1.55;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .kn-inner {
+            transition: none;
+        }
+    }
+
+    @@media (max-width: 1000px) {
+        .kn-item {
+            flex-basis: calc((100% - 24px) / 2);
+        }
+    }
+
+    @@media (max-width: 860px) {
+        .know-me {
+            padding: 0 20px 60px;
+        }
+
+        .about-lead,
+        .tp-lead {
+            font-size: 1.5em;
+        }
+
+        .kn-front {
+            font-size: 1.15em;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .kn-item {
+            flex-basis: 100%;
+        }
+
+        .kn-arrow {
+            width: 36px;
+            height: 36px;
+        }
+
+        .kn-card {
+            height: 200px;
+        }
+    }
+
+    /* ===== IF I WERE A...: same flip-card carousel as "If you know me" ===== */
+    .if-i-were {
+        padding: 10px 40px 90px;
+        background: #FAF1EF;
+    }
+
+    .if-i-were .kn-card {
+        height: 260px;
+    }
+
+    .iw-front {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .iw-category {
+        font-family: system-ui, sans-serif;
+        font-size: 0.55em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .iw-answer {
+        font-size: 1.2em;
+        font-style: italic;
+        color: #1E100A;
+    }
+
+    .iw-back {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .iw-aspect {
+        font-family: Georgia, serif;
+        font-size: 1.1em;
+        font-style: italic;
+    }
+
+    @@media (max-width: 860px) {
+        .if-i-were {
+            padding: 0 20px 60px;
+        }
+    }
+
+    @@media (max-width: 520px) {
+        .if-i-were .kn-card {
+            height: 250px;
+        }
+    }
+
+    /* ===== THIS OR THAT: inside View more, my pick filled in rose ===== */
+    .tot-title {
+        margin: 60px 0 24px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-style: italic;
+        font-weight: 400;
+        text-align: center;
+        color: #733642;
+    }
+
+    .tot-grid {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .tot-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        flex: 0 0 calc((100% - 48px) / 4);
+        padding: 18px 14px;
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+        text-align: center;
+    }
+
+    .tot-pair {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tot-option {
+        padding: 6px 14px;
+        border-radius: var(--r-pill);
+        font-family: Georgia, serif;
+        font-size: 1.02em;
+        color: #B89A96;
+    }
+
+    .tot-option.picked {
+        background: #7E3F4A;
+        color: #FFF8F6;
+    }
+
+    .tot-or {
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .tot-line {
+        font-size: 0.88em;
+        font-style: italic;
+        color: #3F4A34;
+    }
+
+    @@media (max-width: 860px) {
+        .tot-title {
+            font-size: 1.5em;
+        }
+
+        .tot-card {
+            flex-basis: calc((100% - 16px) / 2);
+        }
+    }
+
+    @@media (max-width: 420px) {
+        .tot-card {
+            flex-basis: 100%;
+        }
+    }
+
+    /* Duality paragraph on the left, the quiz on the right */
+    .duality-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+        gap: 56px;
+        align-items: stretch;   /* the paragraph runs as tall as the quiz card beside it, top to bottom */
+        max-width: 1100px;
+        margin: 56px auto 0;
+    }
+
+    .duality-row .duality-note {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: none;
+        margin: 0;
+        padding-left: 24px;
+        border-left: 3px solid #EBD5D0;
+        font-size: 1.2em;
+        text-align: left;
+    }
+
+    .duality-row .duality-note strong {
+        display: block;
+        font-size: 1.15em;
+        line-height: 1.4;
+    }
+
+    .duality-row .tot-title {
+        margin-top: 0;
+    }
+
+    .quiz-col { scroll-margin-top: 90px; }
+
+    /* leaderboard under the quiz */
+    .quiz-board {
+        margin: 22px auto 0;
+        max-width: 340px;
+        padding: 16px 20px 12px;
+        border-radius: var(--r-card);
+        background: #FFF8F6;
+        border: var(--card-border);
+        box-shadow: var(--shadow-card);
+    }
+    .quiz-board-title {
+        margin: 0 0 8px;
+        font-size: 0.78em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        text-align: center;
+        color: #7E3F4A;
+    }
+    .quiz-board ol { margin: 0; padding: 0; list-style: none; counter-reset: rank; }
+    .quiz-board li {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        padding: 7px 0;
+        border-top: 1px dashed #EBD5D0;
+        counter-increment: rank;
+        color: #1E100A;
+    }
+    .quiz-board li:first-child { border-top: 0; }
+    .quiz-board li::before { content: counter(rank); min-width: 1.4em; font-family: Georgia, serif; color: #733642; }
+    .quiz-board li span { flex: 1; }
+    .quiz-board li b { font-family: Georgia, serif; font-weight: 400; color: #733642; }
+    .quiz-rank { margin: 10px 0 0; font-style: italic; color: #733642; }
+    /* with the script on, the leaderboard opens inside the quiz card, in place of your score */
+    .quiz-card .quiz-board {
+        margin: 0;
+        max-width: none;
+        padding: 18px 24px 24px;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        animation: boardIn 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .quiz-card .quiz-board-title { margin-bottom: 14px; }
+    @@keyframes boardIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: none; }
+    }
+    @@media (prefers-reduced-motion: reduce) { .quiz-card .quiz-board { animation: none; } }
+
+    @@media (max-width: 860px) {
+        .duality-row {
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-top: 36px;
+        }
+
+        .duality-row .duality-note {
+            font-size: 1.05em;
+        }
+    }
+
+    /* ===== HOW WELL DO YOU KNOW SUHANI?: one question at a time ===== */
+    .quiz [hidden],
+    .tot-grid[hidden] {
+        display: none !important;
+    }
+
+    .quiz {
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    /* the quiz sheet: a mulberry header band, a row of steps, then one question at a time */
+    .quiz-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--r-card);
+        border: var(--card-border);
+        background: #FFF8F6;
+        box-shadow: var(--shadow-card);
+        text-align: left;
+    }
+
+    /* the title and hint, moved inside the card by the script */
+    .quiz-head { padding: 22px 24px 4px; text-align: center; }
+    .quiz-card .tot-title { margin: 0 0 4px; font-size: 1.45em; }
+    .quiz-card .kn-hint { margin: 0; font-size: 0.72em; }
+    /* the pop-quiz setup, left of the quiz: short serif lines, the joke last and smallest */
+    .quiz-intro {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        color: #2A1810;
+    }
+    .quiz-intro p { margin: 0 0 12px; }
+    .quiz-intro .quiz-intro-lead { font-size: 1.25em; font-style: italic; color: #733642; }
+    .quiz-intro .quiz-intro-aside { margin: 0; font-size: 0.85em; font-style: italic; color: #7E3F4A; }
+
+    .quiz-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        padding: 20px 24px 0;
+    }
+
+    .quiz-count {
+        font-size: 0.75em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #7E3F4A;
+    }
+
+    .quiz-tally {
+        font-family: Georgia, serif;
+        font-size: 1.05em;
+        color: #733642;
+    }
+
+    /* one step per question: grey until answered, sage when right, rose when wrong */
+    .quiz-steps {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 5px;
+        margin: 0;
+        padding: 10px 24px 0;
+        list-style: none;
+    }
+
+    .quiz-steps li {
+        height: 6px;
+        border-radius: var(--r-pill);
+        background: #EBD5D0;
+        transition: background 0.3s ease;
+    }
+
+    .quiz-steps li.now { background: #C9969E; }
+    .quiz-steps li.right { background: #7F9A6B; }
+    .quiz-steps li.wrong { background: #C27B8A; }
+
+    .quiz-play,
+    .quiz-result {
+        padding: 18px 24px 24px;
+    }
+
+    .quiz-qnum {
+        display: none;
+    }
+
+    /* the question, big and centered: "Coffee or Tea?" */
+    .quiz-question {
+        margin: 0 0 18px;
+        font-family: Georgia, serif;
+        font-size: 1.9em;
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
+        color: #1E100A;
+    }
+
+    /* this or that: two big tiles side by side, an "or" between them */
+    .quiz-options {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .quiz-options.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .quiz-or {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: #733642;
+        box-shadow: 0 0 0 5px #FFF8F6;
+        font-family: Georgia, serif;
+        font-style: italic;
+        color: #FFF8F6;
+        pointer-events: none;
+    }
+
+    .quiz-options.three .quiz-or {
+        display: none;
+    }
+
+    .quiz-option {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 170px;
+        padding: 18px 14px;
+        border-radius: var(--r-card);
+        border: 1.5px solid #E2C6C0;
+        background: #FFFFFF;
+        box-shadow: 0 6px 16px rgba(42, 24, 16, 0.06);
+        font-family: Georgia, serif;
+        font-size: 1.35em;
+        font-weight: 700;
+        color: #1E100A;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* the drawings: thin mulberry lines, white on the picked tile */
+    .quiz-icon {
+        width: 58px;
+        height: 58px;
+        fill: none;
+        stroke: #733642;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .quiz-icon .fill {
+        fill: #733642;
+        stroke: none;
+    }
+
+    .quiz-option.picked .quiz-icon {
+        stroke: #FFF8F6;
+    }
+
+    .quiz-option.picked .quiz-icon .fill {
+        fill: #FFF8F6;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+        border-color: #733642;
+        transform: translateY(-4px);
+        box-shadow: 0 14px 26px rgba(42, 24, 16, 0.12);
+    }
+
+    /* Correct! or Nope, right under the answers */
+    .quiz-result-chip {
+        display: table;
+        margin: 16px auto 0;
+        padding: 4px 14px;
+        border-radius: var(--r-pill);
+        font-size: 0.78em;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .quiz-result-chip:empty {
+        display: none;
+    }
+
+    .quiz-result-chip.right {
+        background: #E3EADB;
+        color: #34422F;
+    }
+
+    .quiz-result-chip.wrong {
+        background: #F5E0DB;
+        color: #733642;
+    }
+
+
+    .quiz-end-actions {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .quiz-btn.ghost {
+        background: transparent;
+        color: #733642;
+        border: 1.5px solid #733642;
+    }
+
+    .quiz-option:focus-visible {
+        outline: 2px solid #733642;
+        outline-offset: 3px;
+    }
+
+    .quiz-option:disabled {
+        cursor: default;
+        opacity: 0.45;
+    }
+
+    /* after a guess: my pick fills in mulberry, the one you tapped gets a ✓ or ✗ */
+    .quiz-option.picked:disabled,
+    .quiz-option.chosen:disabled {
+        opacity: 1;
+    }
+
+    .quiz-option.picked {
+        background: #733642;
+        border-color: #733642;
+        color: #FFF8F6;
+    }
+
+    .quiz-option.chosen {
+        animation: quizBounce 0.35s ease;
+    }
+
+    .quiz-mark {
+        position: absolute;
+        top: 10px;
+        right: 14px;
+        font-family: system-ui, sans-serif;
+        font-weight: 700;
+    }
+
+    .quiz-line {
+        min-height: 1.6em;
+        line-height: 1.55;
+        margin: 10px 0 0;
+        text-align: center;
+        font-style: italic;
+        color: #3F4A34;
+        opacity: 0;
+        transition: opacity 0.45s ease;
+    }
+
+    .quiz-line.show,
+    .quiz-reveal.show {
+        opacity: 1;
+    }
+
+    .quiz-line:empty,
+    .quiz-reveal:empty {
+        display: none;
+    }
+
+    /* the lake house reveal: set apart under the reply */
+    .quiz-reveal {
+        margin: 12px 0 0;
+        padding: 12px 16px;
+        border-radius: var(--r-inset);
+        background: #F6E4E1;
+        color: #1E100A;
+        line-height: 1.55;
+        opacity: 0;
+        transition: opacity 0.45s ease 0.25s;
+    }
+
+    .quiz-reveal strong {
+        color: #733642;
+    }
+
+    /* Next sits on the right, where the eye goes after reading */
+    .quiz-next {
+        display: block;
+        margin-left: auto;
+    }
+
+    .quiz-btn {
+        margin-top: 14px;
+        padding: 10px 26px;
+        border-radius: var(--r-pill);
+        border: 1px solid #EBD5D0;
+        background: #F6E4E1;
+        font-family: Georgia, serif;
+        font-size: 1em;
+        font-style: italic;
+        color: #733642;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease;
+    }
+
+    .quiz-btn:hover {
+        background: #EFD3D0;
+    }
+
+    .quiz-btn:focus-visible {
+        outline: 2px solid #7E3F4A;
+        outline-offset: 3px;
+    }
+
+    .quiz-score {
+        margin: 0;
+        font-family: Georgia, serif;
+        font-size: 2.2em;
+        color: #1E100A;
+    }
+
+    .quiz-verdict {
+        margin: 6px 0 10px;
+        font-family: Georgia, serif;
+        font-size: 1.2em;
+        font-style: italic;
+        color: #7E3F4A;
+    }
+
+    .quiz-verdict-body p {
+        margin: 0 0 8px;
+        line-height: 1.55;
+        color: #1E100A;
+    }
+
+    .quiz-verdict-body p:last-child {
+        margin-bottom: 4px;
+    }
+
+    /* a little burst of hearts on a right guess, in rose and gold */
+    .quiz-heart {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-size: 14px;
+        pointer-events: none;
+        animation: quizHeart 0.8s ease-out forwards;
+    }
+
+    @@keyframes quizBounce {
+        0% { transform: scale(1); }
+        40% { transform: scale(0.93); }
+        75% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @@keyframes quizHeart {
+        from { transform: translate(-50%, -50%) scale(0.6); opacity: 1; }
+        to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity: 0; }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .quiz-option.chosen {
+            animation: none;
+        }
+
+        .quiz-steps li,
+        .quiz-line,
+        .quiz-reveal {
+            transition: none;
+        }
+    }
+
+    /* "View more…" under If you know me... */
+    .view-more {
+        display: block;
+        margin: 30px auto 0;
+        padding: 10px 26px;
+        border-radius: var(--r-pill);
+        border: 1px solid #EBD5D0;
+        background: #FFF8F6;
+        font-family: Georgia, serif;
+        font-size: 1.05em;
+        font-style: italic;
+        color: #7E3F4A;
+        cursor: var(--cursor-hot, pointer);
+        transition: background 0.2s ease;
+    }
+
+    .view-more[hidden] {
+        display: none;
+    }
+
+    .view-more:hover {
+        background: #F6E4E1;
+    }
+
+    .view-more:focus-visible {
+        outline: 2px solid #7E3F4A;
+        outline-offset: 3px;
+    }
+
+    /* "a little more about me": a quiet door from the polished part of the site into the rest of me, a line of text rather than a button */
+    .view-more.come-far {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 44px auto 0;
+        padding: 4px 2px;
+        border: 0;
+        border-radius: 0;
+        background: none;
+        font-family: Georgia, serif;
+        font-size: 1.05rem;
+        font-style: italic;
+        color: #7E3F4A;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 5px;
+        transition: text-decoration-color 0.2s ease, color 0.2s ease;
+    }
+
+    .view-more.come-far:hover {
+        background: none;
+        color: #5E2A36;
+        text-decoration-color: #C9969E;
+    }
+
+    .view-more.come-far[hidden] {
+        display: none;
+    }
+
+    .come-far-row {
+        text-align: center;
+    }
+
+    .come-far-arrow {
+        font-style: normal;
+        font-size: 0.9em;
+        opacity: 0.7;
+    }
+
+</style>
+
+<a class="yk-back" href="/world/">← Back to My World</a>
+
+@* IF YOU KNOW ME, YOU KNOW... *@
+@{
+    // Flip cards: (front, back). Add or remove freely.
+    var knowMe = new[]
+    {
+        ("cries in movies… even happy tears", "Hero declares his love, family reunites, someone gets what they worked for, immediate tears."),
+        ("will tell you 6 stories in 15 minutes", "There is a point. The route to that point just has several detours."),
+        ("constantly has 74 tabs open mentally", "Assignments, ideas, conversations, restaurants, questions, plans, random Google searches. None have been closed."),
+        ("will ask “but how do you know that FOR SURE?”", "Not argumentative for the sake of it. I just want to know whether the reasoning underneath an answer actually holds up."),
+        ("gets ridiculously curious about random things", "One innocent question can become a 45-minute investigation, because once I realize I don’t understand something, I suddenly need to."),
+        ("is incapable of pretending to be chill", "When I love something, I LOVE ITTTTT. Seventeen extra letters, immediate enthusiasm, zero attempt at looking disinterested."),
+        ("will happily be a beginner", "Violin, art, programming, psychology, writing, whatever comes next. I’d rather temporarily suck at something interesting than only do things I already know how to do."),
+        ("can’t watch horror movies", "Absolutely not. I’ll cover my eyes, ask everyone what happened, and somehow still be traumatized by the scene I didn’t technically watch.")
+    };
+}
+<section class="know-me" id="know-me">
+    <div class="about-container">
+        <h2 class="tp-lead">If you know me, you know…</h2>
+        <p class="kn-hint">Tap a card to flip it.</p>
+        <div class="kn-carousel">
+        <button type="button" class="kn-arrow kn-prev" aria-label="Previous cards">‹</button>
+        <ul class="kn-cards">
+            @for (var i = 0; i < knowMe.Length; i++)
+            {
+                var (front, back) = knowMe[i];
+                <li class="kn-item n@(i % 4)">
+                    <button type="button" class="kn-card" aria-pressed="false">
+                        <span class="kn-inner">
+                            <span class="kn-face kn-front">@front</span>
+                            <span class="kn-face kn-back">@back</span>
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+        <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
+        </div>
+        <div class="come-far-row"><button type="button" class="view-more come-far" aria-expanded="false" aria-controls="moreAboutMe">a little more about me <span class="come-far-arrow" aria-hidden="true">↓</span></button></div>
+    </div>
+</section>
+
+@* A LITTLE MORE ABOUT ME: If I were a..., The Duality of a Woman and the quiz stay tucked away until it’s clicked *@
+<div class="more-about-me" id="moreAboutMe" hidden>
+@* IF I WERE A... *@
+@{
+    // (category, answer, aspect of me, note). Add or remove freely.
+    // A card with no note yet has no back, so it doesn't flip until one is added.
+    var ifIWere = new[]
+    {
+        ("Color", "Mulberry", "Femininity and depth", "Feminine without being delicate. Warm and expressive, but darker and more substantial than something sugary or pastel."),
+        ("Flower", "Peony", "Love and relationships", "I love abundantly. I get attached, remember the little things, and put a lot of myself into the people I care about."),
+        ("Season", "Autumn", "Tradition and security", "I like growth, but I also like roots. Familiar places, rituals, traditions and things I can return to matter enormously to me."),
+        ("Weather", "Sunshower", "Emotional complexity", "I can be genuinely cheerful and deeply emotional at the exact same time. Apparently the forecast is complicated."),
+        ("Feeling", "Anticipation", "Ambition and curiosity", "Curiosity, hope, planning and excitement about what’s next."),
+        ("Element", "Hearth fire", "Leadership and community", "I like taking charge and making things happen, but I want people gathered around me while I do it. Assertive doesn’t mean solitary."),
+        ("Drink", "Vanilla Latte", "Social warmth and energy", "Warm, familiar and a little sweet, with considerably more caffeine underneath than the first impression suggests."),
+        ("Dessert", "Tiramisu", "Complexity and contrast", "Sweet, bitter, soft, strong, layered. No single flavor gets to explain the whole thing."),
+        ("Gemstone", "Ruby", "Drive and resilience", "Beautiful, yes, but also hard and durable. Achievement matters to me, and I’m considerably more determined than the packaging suggests."),
+        ("City", "New Delhi", "Heart and ambition", "Dilli dilwalon ki: the city of the big-hearted, and also the one running the country. Old traditions and new ambition on the same street, and none of it happens quietly."),
+        ("Language", "Italian", "Expression and conviction", "Warm, expressive, a little dramatic, and physically incapable of having an opinion quietly. Beauty matters. Words matter. People matter."),
+        ("Word", "Earnest", "Core character", "I mean things. I care about people, ideas, promises, what I make and what I’m becoming. Very little ironic detachment over here.")
+    };
+}
+<section class="if-i-were">
+    <div class="about-container">
+        <h2 class="tp-lead">If I were a…</h2>
+        <p class="kn-hint">Tap a card to see why.</p>
+        <div class="kn-carousel">
+        <button type="button" class="kn-arrow kn-prev" aria-label="Previous cards">‹</button>
+        <ul class="kn-cards">
+            @for (var i = 0; i < ifIWere.Length; i++)
+            {
+                var (category, answer, aspect, note) = ifIWere[i];
+                <li class="kn-item n@(i % 4)">
+                    <button type="button" class="kn-card" aria-pressed="false">
+                        <span class="kn-inner">
+                            <span class="kn-face kn-front iw-front">
+                                <span class="iw-category">If I were @(category == "Element" ? "an" : "a") @category.ToLower()</span>
+                                <span class="iw-answer">@answer</span>
+                            </span>
+                            @if (!string.IsNullOrEmpty(note))
+                            {
+                                <span class="kn-face kn-back iw-back">
+                                    <span class="iw-aspect">@aspect</span>
+                                    <span>@note</span>
+                                </span>
+                            }
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+        <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
+        </div>
+    </div>
+</section>
+@* THE DUALITY OF A WOMAN *@
+@{
+    // This or That (inside View more, under Duality): (this, that, which one I pick (or something else entirely), optional line). Add or remove freely.
+    // How Well Do You Know Me?: (option A, option B, my pick, what you see if you guessed right,
+    // if you guessed A and it's wrong, if you guessed B and it's wrong, the reveal).
+    // A pick that's neither option (Beach or Mountains → lake house) adds a "Neither?" button,
+    // and its reveal shows after any guess.
+    var thisOrThat = new[]
+    {
+        ("Coffee", "Tea", "Coffee",
+            "Correct. Preferably a hot vanilla latte. Coffee is less of a beverage choice and more of an ongoing relationship at this point.",
+            "",
+            "Tea? Have we met? I am emotionally, socially, and academically supported by coffee.",
+            ""),
+        ("Sunrise", "Sunset", "Sunset",
+            "Correct. Golden hour, pretty skies, and absolutely no requirement that I be awake at 6 a.m. This one was made for me.",
+            "Sunrise is beautiful. Unfortunately, it occurs during hours in which I do not wish to participate.",
+            "",
+            ""),
+        ("Beach", "Mountains", "Lake house",
+            "",
+            "Beach? Too hot, too sandy, too chaotic. I love the view, but after twenty minutes I’m overstimulated, covered in sand, and wondering why relaxation requires this much effort. Give me a lake house.",
+            "Mountains? Gorgeous. Peaceful. Maybe a little TOO peaceful. What am I supposed to do up there after I’ve admired the view??? I need nature, not isolation. Give me a lake house.",
+            "Lake house. Water without the beach chaos. Nature without disappearing into the wilderness. Pretty, peaceful, but still enough going on that I don’t lose my mind. Perfect middle ground."),
+        ("Sweet", "Savory", "Savory",
+            "Correct. Give me an actual meal over dessert. The aesthetic may say pastry. The appetite says savory.",
+            "You looked at me and thought dessert girl? Understandable aesthetically. Incorrect gastronomically. Give me the savory option.",
+            "",
+            ""),
+        ("Morning", "Night", "Night",
+            "Correct. My brain apparently considers midnight an excellent time to become curious about seventeen completely unrelated things.",
+            "Morning? Ambitious assumption. I have a deep appreciation for mornings in theory. Experiencing them personally is where you lose me.",
+            "",
+            ""),
+        ("Books", "Movies", "Movies",
+            "Correct. Give me the whole production: the costumes, the soundtrack, the set design, the little world someone built from scratch. Books are lovely. Movies are the whole package.",
+            "I love a good book, but you can’t watch a book with your friends and scream at the same scene together. Movies win.",
+            "",
+            ""),
+        ("Rom-Com", "Horror", "Rom-Com",
+            "Free points. I’m here for the banter, the yearning, and the airport confession scene. I love love, and I’m not embarrassed about it.",
+            "",
+            "HORROR?! Absolutely not. I’ll be under a blanket, covering my eyes, asking everyone what happened, and somehow still be traumatized by the scene I didn’t even watch.",
+            ""),
+        ("City", "Country", "City",
+            "Correct. I need cafés, people, things happening, and approximately seventeen plans I could make within walking distance.",
+            "",
+            "Country? For a weekend, adorable. Permanently? Where are my cafés? Where are my people? What am I supposed to DO? HOW AM I SUPPOSED TO GET OVERSTIMULATED???",
+            ""),
+        ("Dogs", "Cats", "Dogs",
+            "Correct. Loyalty is basically my whole personality, so obviously I want a pet who’s just as loyal back and acts thrilled every time I walk through the door.",
+            "",
+            "Cats are lovely, independent, and mysterious. I, however, would like to be greeted at the door like a celebrity.",
+            ""),
+        ("Road Trip", "Flight", "Flight",
+            "Flight. Always. I’m here for the destination, not the gas station snacks. Put me on the plane and get me there by lunch.",
+            "Road trip? Nine hours in a car is cute in a movie. In real life, I have places to be and very little patience for “are we there yet?”",
+            "",
+            "")
+    };
+
+    // What you get for each score, 0 to 10: a headline, then a few short lines
+    // Leaderboard for How Well Do You Know Me? (name, score out of 10). Add friends as they play.
+    var quizLeaders = new[]
+    {
+        ("Amaira", 10),
+        ("Hana", 8),
+        ("Nathalia", 8),
+        ("Sara", 7),
+    }.OrderByDescending(l => l.Item2).ToArray();
+
+    var quizVerdicts = new[]
+    {
+        new[] { "Oh, this is extraordinary.", "Statistically, I feel like you should have gotten one by accident. You have apparently invented an entirely different woman in your head.", "Hi. I’m Suhani. Nice to meet you. ♡" },
+        new[] { "One point. ONE.", "You know exactly one thing about me and approached the remaining nine with confidence I genuinely admire.", "We have some catching up to do." },
+        new[] { "We’ve met before, right?", "You know just enough about me to make the other eight answers significantly more concerning." },
+        new[] { "Acquaintance behavior.", "You know enough to recognize me in public and perhaps order me a beverage.", "I would not yet let you order the entire meal." },
+        new[] { "Okayyyy, you KINDA know me. Emphasis on kinda.", "Some excellent instincts. Some answers that made me wonder who exactly you thought you were taking this quiz about.", "I’ll allow it." },
+        new[] { "Exactly half. Fascinating.", "You understand one version of me.", "Unfortunately, as the rest of this website has probably established, there are several." },
+        new[] { "Okay, you actually know me.", "Not quite “I trust you to order for me without asking” territory, but you’ve clearly been paying attention.", "I’ll give you that." },
+        new[] { "Oh, you’ve been LISTENING.", "Seven out of ten? You know me well enough that I’m starting to take the wrong three personally." },
+        new[] { "Suspiciously good.", "Either you know me very well or I’ve made myself alarmingly predictable on this website.", "Both possibilities concern me slightly." },
+        new[] { "ONE WRONG?!", "You were one answer away from knowing me better than I apparently know how to conceal myself.", "Now I desperately need to know which one got you." },
+        new[] { "Okay, this is getting invasive.", "You’re either inner circle, you studied this website like there was going to be an exam, or you’re me.", "Disturbing work. 10/10. No notes. ♡" }
+    };
+
+    // (one side, the other side, what I mean). Add or remove freely.
+    var dualities = new[]
+    {
+        ("Practical", "Romantic", "I’ll tell my friends their boyfriends aren’t all that and declare modern dating doomed. I’ll think nothing is going to work out and somehow believe everything will work out at the exact same time. Prince Charming included."),
+        ("Analytical", "Creative", "I’ll spend four hours figuring out why something works and sixteen thinking, “okay, but what if we made this?” I like understanding the system. I love imagining what else it could be."),
+        ("Ambitious", "Sentimental", "I’m always thinking about the next goal, the next opportunity, the next version of my life. I’m also keeping the card, the photo, the receipt, and probably the random little thing you gave me six years ago."),
+        ("Compassionate", "Materialistic", "I’ll cry when I see a homeless person, think hard about how hard his life must be and why he suffers, and give money even when I don’t have a lot. I also come across as materialistic, because I’m sooo into the best clothes, handbags, coffee and lifestyle."),
+        ("Social", "Introspective", "I can talk to basically anyone. Big on small talk. Then I’ll go home and overthink the conversation, analyze the person, and wonder why humans are the way they are."),
+        ("Decisive", "Indecisive", "Ask me which dress, restaurant, font, or shade of pink is better and I have an answer immediately. Ask me one major life question and suddenly I need a committee, seventeen tabs, and 3–5 business days."),
+        ("Habitual", "Spontaneous", "Same hot vanilla latte every day. Same favorite colors. Same few foods on repeat. New restaurant tonight? Absolutely. Chicago in four hours? Apparently we’re going to Chicago."),
+        ("Independent", "Attached", "I want my own career, my own interests, my own opinions, and a life that is completely mine. I also get ridiculously attached to my people and care about my relationships more than almost anything."),
+        ("Techy", "Traditional", "I’m fascinated by AI, emerging technology, and whatever comes next. I’m equally fascinated by traditions that have survived for generations and why people still choose to carry them forward."),
+        ("Sensitive", "Direct", "Please phrase my feedback gently. Yours is coming with sharp bullet points. I know, the irony is not lost on me. I’m working on meeting somewhere in the middle."),
+        ("Polished", "Unfiltered", "I’ll edit the work seventeen times. My hair will be perfectly curled. My words? Considerably less edited. Perfectionism applies to the output, not always the commentary.")
+    };
+}
+<section class="duality" id="duality">
+    <div class="about-container">
+        <h2 class="duality-title">The Duality of a Woman™</h2>
+        <p class="kn-hint">Tap a card to see what I mean.</p>
+        <div class="kn-carousel">
+        <button type="button" class="kn-arrow kn-prev" aria-label="Previous cards">‹</button>
+        <ul class="kn-cards">
+            @for (var i = 0; i < dualities.Length; i++)
+            {
+                var (one, other, story) = dualities[i];
+                <li class="kn-item n@(i % 4)">
+                    <button type="button" class="kn-card" aria-pressed="false">
+                        <span class="kn-inner">
+                            <span class="kn-face kn-front dp-front">
+                                <span class="dp-one">@one</span>
+                                <span class="dp-and">and</span>
+                                <span class="dp-other">@other</span>
+                            </span>
+                            <span class="kn-face kn-back">@story</span>
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+        <button type="button" class="kn-arrow kn-next" aria-label="Next cards">›</button>
+        </div>
+        @* the paragraph wraps up Duality and sets up the quiz beside it (stacks on phones) *@
+        <div class="duality-row">
+            @* the setup before the quiz: you've read the whole site, so here's the pop quiz *@
+            <div class="duality-note quiz-intro">
+                <p class="quiz-intro-lead">Well, you’ve made it this far.</p>
+                <p>You’ve read about my work, my degree, my projects, my hobbies, and probably more of my personality than you expected when you opened this website.</p>
+                <p>Might as well find out if you retained any of it.</p>
+                <p><strong>Pop quiz. Ten questions. No notes.</strong></p>
+                <p class="quiz-intro-aside">This is mildly embarrassing if you get a 2.</p>
+            </div>
+            <div class="quiz-col">
+                <h3 class="tot-title">How Well Do You Know Me?</h3>
+                <p class="kn-hint">This or that? Guess my pick.</p>
+
+                @* the quiz (built by the script below); the grid underneath is the no-JavaScript version *@
+                <div class="quiz" id="quiz" data-questions="@Json.Serialize(thisOrThat.Select(t => new { a = t.Item1, b = t.Item2, pick = t.Item3, right = t.Item4, wrongA = t.Item5, wrongB = t.Item6, reveal = t.Item7 })).ToString()"
+                     data-verdicts="@Json.Serialize(quizVerdicts).ToString()"
+                     data-leaders="@Json.Serialize(quizLeaders.Select(l => new { name = l.Item1, score = l.Item2 })).ToString()" hidden>
+                    <div class="quiz-card">
+                        @* a quiz sheet: the header band, one step per question, then the question *@
+                        <div class="quiz-top">
+                            <span class="quiz-count" aria-live="polite"></span>
+                            <span class="quiz-tally" aria-live="polite">Score 0</span>
+                        </div>
+                        <ol class="quiz-steps" aria-hidden="true"></ol>
+                        <div class="quiz-play">
+                            <p class="quiz-qnum"></p>
+                            <p class="quiz-question"></p>
+                            <div class="quiz-options" role="group" aria-label="Your guess"></div>
+                            <p class="quiz-result-chip" aria-live="polite"></p>
+                            <div aria-live="polite">
+                                <p class="quiz-line"></p>
+                                <p class="quiz-reveal"></p>
+                            </div>
+                            <button type="button" class="quiz-btn quiz-next" hidden>Next</button>
+                        </div>
+                        <div class="quiz-result" hidden>
+                            <p class="quiz-score" aria-live="polite"></p>
+                            <p class="quiz-verdict"></p>
+                            <div class="quiz-verdict-body"></div>
+                            <p class="quiz-rank"></p>
+                            <div class="quiz-end-actions">
+                                <button type="button" class="quiz-btn quiz-show-board" aria-expanded="false">View leaderboard</button>
+                                <button type="button" class="quiz-btn quiz-again ghost">Play again</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-board">
+                    <p class="quiz-board-title">Leaderboard ✦</p>
+                    <ol>
+                        @foreach (var (name, points) in quizLeaders)
+                        {
+                            <li><span>@name</span><b>@points/10</b></li>
+                        }
+                    </ol>
+                    <div class="quiz-end-actions">
+                        <button type="button" class="quiz-btn quiz-board-back ghost" hidden>‹ Back</button>
+                    </div>
+                </div>
+
+                <ul class="tot-grid">
+                    @foreach (var (one, other, pick, _, _, _, reveal) in thisOrThat)
+                    {
+                        <li class="tot-card">
+                            <span class="tot-pair">
+                                <span class="tot-option@(pick == one ? " picked" : "")">@one</span>
+                                <span class="tot-or">or</span>
+                                <span class="tot-option@(pick == other ? " picked" : "")">@other</span>
+                            </span>
+                            <span class="visually-hidden">My pick: @pick.</span>
+                            @if (!string.IsNullOrEmpty(reveal))
+                            {
+                                <span class="tot-line">@reveal</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<script>
+    // How Well Do You Know Me?: one This or That at a time. Guess, see my pick, get a score at the end.
+    // A card whose pick isn't either option (Beach or Mountains → lake house) gets a "Neither?" button.
+    (() => {
+        const quiz = document.getElementById('quiz');
+        if (!quiz) return;
+        const questions = JSON.parse(quiz.dataset.questions);
+        const verdicts = JSON.parse(quiz.dataset.verdicts);
+        const $ = sel => quiz.querySelector(sel);
+        const options = $('.quiz-options'), line = $('.quiz-line'), reveal = $('.quiz-reveal'), next = $('.quiz-next');
+        const play = $('.quiz-play'), result = $('.quiz-result'), chip = $('.quiz-result-chip');
+        // the title and hint move inside the quiz card, so the quiz takes no extra space above it
+        const col = quiz.closest('.quiz-col');
+        if (col) {
+            const head = document.createElement('div');
+            head.className = 'quiz-head';
+            head.append(...col.querySelectorAll(':scope > .tot-title, :scope > .kn-hint'));
+            $('.quiz-card').prepend(head);
+        }
+        // a small line drawing for every option, drawn in the page's mulberry (no emoji)
+        const dot = (x, y, r = 1.6) => `<circle cx="${x}" cy="${y}" r="${r}" class="fill"/>`;
+        const ICONS = {
+            'Coffee': '<circle cx="22" cy="30" r="12"/><circle cx="22" cy="30" r="9"/><path d="M34 26h3a4 4 0 0 1 0 8h-3"/><path d="M22 35s-5-3-5-6a2.5 2.5 0 0 1 5-1 2.5 2.5 0 0 1 5 1c0 3-5 6-5 6z"/><path d="M17 6c-2 2 2 4 0 7M23 4c-2 2 2 4 0 7M29 6c-2 2 2 4 0 7"/>',
+            'Tea': '<path d="M14 18h20l-3.5 24h-13z"/><path d="M14.6 23h18.8"/><path d="M20 27l.8 11M24 27v11M28 27l-.8 11"/><path d="M20 5c-2 2 2 4 0 7M27 4c-2 2 2 4 0 7"/>',
+            'Sunrise': '<path d="M4 32h40"/><path d="M14.5 32a9.5 9.5 0 0 1 19 0"/><path d="M24 11v6M12.5 16.5l4 4M35.5 16.5l-4 4M7 24.5h5M36 24.5h5"/><path d="M11 37h26M16 42h16"/><path d="M33 9q2-2 4 0q2-2 4 0"/>',
+            'Sunset': '<path d="M4 30h40"/><path d="M16.5 30a7.5 7.5 0 0 1 15 0"/><path d="M7 19h15M27 15.5h13M11 23.5h8"/><path d="M17 35h14M20 39h8M22.5 43h3"/>',
+            'Beach': '<path d="M8 20a16 12 0 0 1 32 0q-4-3-8 0q-4-3-8 0q-4-3-8 0q-4-3-8 0z"/><path d="M24 20v18"/><path d="M4 41q4-3 8 0t8 0t8 0t8 0t8 0"/>',
+            'Mountains': '<path d="M4 40L18 14l9 14 5-8 12 20z"/><path d="M13.2 22.5l2.3 2 2.5-2.5 2.5 2.5 2.1-1.8"/>',
+            'Sweet': '<path d="M13 26h22l-3 14H16z"/><path d="M20 26l1 14M28 26l-1 14"/><path d="M12 26c-2-6 4-9 7-8 1-5 9-5 10 0 3-1 9 2 7 8z"/>' + dot(24, 11, 2),
+            'Savory': '<path d="M24 43L8 13q16-8 32 0z"/><path d="M9.8 16.4q14.2-6.6 28.4 0"/><circle cx="19.5" cy="21" r="2.8"/><circle cx="29" cy="22.5" r="2.5"/><circle cx="24" cy="31" r="2.3"/>',
+            'Morning': '<circle cx="24" cy="24" r="7"/><path d="M24 8v5M24 35v5M8 24h5M35 24h5M13 13l3 3M32 32l3 3M35 13l-3 3M16 32l-3 3"/>',
+            'Night': '<path d="M29 8a15 15 0 1 0 11 25A12 12 0 0 1 29 8z"/><path d="M38 9l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>',
+            'Books': '<path d="M24 14v27"/><path d="M24 14c-5-3-12-4-18-3v27c6-1 13 0 18 3"/><path d="M24 14c5-3 12-4 18-3v27c-6-1-13 0-18 3"/><path d="M10 18.5h9M10 23.5h9M10 28.5h6M29 18.5h9M29 23.5h9M29 28.5h6"/><path d="M34 10.5v9l2-2 2 2v-9.5"/>',
+            'Movies': '<path d="M8 20h32v20H8z"/><path d="M8 13h32v7H8z"/><path d="M15 13l-3 7M23 13l-3 7M31 13l-3 7M39 13l-3 7"/>',
+            'Rom-Com': '<path d="M22 40s-14-8-14-17a7 7 0 0 1 14-3 7 7 0 0 1 14 3c0 9-14 17-14 17z"/><path d="M38 8c-1.5 0-3 1.2-3 3 0 3 5 5 5 5s5-2 5-5c0-1.8-1.5-3-3-3-1 0-1.6.6-2 1.2-.4-.6-1-1.2-2-1.2z"/>',
+            'Horror': '<path d="M12 42V22a12 12 0 0 1 24 0v20l-4-3-4 3-4-3-4 3-4-3z"/>' + dot(20, 22) + dot(28, 22),
+            'City': '<path d="M4 42h40"/><path d="M8 42V24h8v18M16 42V12h10v30M26 42V18h8v24M34 42V28h8v14"/><path d="M20 18h2M20 24h2M20 30h2M30 24h1M30 30h1"/>',
+            'Country': '<path d="M4 42h40"/><path d="M8 42V25l10-8 10 8v17"/><path d="M14 42v-9h8v9M14 33l8 9M22 33l-8 9"/><path d="M16 25h4v3.5h-4z"/><path d="M31 42V22a4.5 4.5 0 0 1 9 0v20"/><path d="M31 28.5h9M31 35h9"/>',
+            'Dogs': '<path d="M15 20a9 9 0 0 1 18 0v9a9 9 0 0 1-18 0z"/><path d="M15 18c-4 0-6 6-4 12 2-1 4-4 4-8M33 18c4 0 6 6 4 12-2-1-4-4-4-8"/><path d="M22 31h4l-2 2z"/>' + dot(20, 25) + dot(28, 25),
+            'Cats': '<path d="M12 18l6 5h12l6-5v16a12 9 0 0 1-24 0z"/><path d="M22 31h4l-2 2z"/><path d="M6 30h7M6 34h7M35 30h7M35 34h7"/>' + dot(19, 27) + dot(29, 27),
+            'Road Trip': '<path d="M5 33v-6l5-8h21l7 8h5v6z"/><path d="M13 19v8M22 19v8"/><circle cx="14" cy="34" r="4"/><circle cx="35" cy="34" r="4"/>',
+            'Flight': '<path d="M6 27l30-6c4-.8 7 1 7 3s-3 3.8-7 3z"/><path d="M19 25l7-12h4l-3 10M20 29l5 11h4l-3-12M9 26l-3-6h3l5 5"/>',
+            'Neither?': '<circle cx="24" cy="24" r="17"/><path d="M19 19a5 5 0 1 1 7 4.5c-1.5.7-2 2-2 3.5v1"/>' + dot(24, 33, 1.8),
+            'Lake house': '<path d="M14 28V19l10-8 10 8v9z"/><path d="M22 28v-5h4v5"/><path d="M6 34q4-3 8 0t8 0t8 0t8 0t8 0M10 41q4-3 8 0t8 0t8 0t8 0"/>'
+        };
+        const tile = c => `<svg class="quiz-icon" viewBox="0 0 48 48" aria-hidden="true">${ICONS[c] || ICONS['Neither?']}</svg><span class="quiz-label">${c}</span>`;
+        const steps = $('.quiz-steps');
+        steps.innerHTML = questions.map(() => '<li></li>').join('');
+        const step = i => steps.children[i];
+        const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let current = 0, score = 0;
+
+        quiz.hidden = false;
+        document.querySelector('.tot-grid').hidden = true;
+
+        const curveball = q => q.pick !== q.a && q.pick !== q.b;
+
+        function show(i) {
+            current = i;
+            clearHearts();
+            const q = questions[i];
+            $('.quiz-count').textContent = `Question ${i + 1} of ${questions.length}`;
+            $('.quiz-tally').textContent = `Score ${score}`;
+            $('.quiz-qnum').textContent = `Question ${i + 1}`;
+            $('.quiz-question').textContent = `${q.a} or ${q.b}?`;
+            step(i).classList.add('now');
+            chip.textContent = '';
+            chip.className = 'quiz-result-chip';
+            const choices = curveball(q) ? [q.a, q.b, 'Neither?'] : [q.a, q.b];
+            options.classList.toggle('three', choices.length === 3);
+            options.innerHTML = choices.map((c, n) =>
+                `<button type="button" class="quiz-option" data-choice="${n}" data-value="${c}">${tile(c)}</button>`).join('') +
+                '<span class="quiz-or" aria-hidden="true">or</span>';
+            options.querySelectorAll('.quiz-option').forEach(btn => btn.addEventListener('click', () => guess(btn)));
+            line.textContent = '';
+            line.classList.remove('show');
+            reveal.textContent = '';
+            reveal.classList.remove('show');
+            next.hidden = true;
+            next.textContent = i === questions.length - 1 ? 'See my score' : 'Next';
+        }
+
+        function guess(btn) {
+            const q = questions[current];
+            const buttons = [...options.querySelectorAll('.quiz-option')];
+            // the right answer: my pick, or "Neither?" on a curveball card
+            const right = curveball(q) ? buttons[2] : buttons.find(b => b.dataset.value === q.pick);
+            const correct = btn === right;
+            if (correct) score++;
+            $('.quiz-tally').textContent = `Score ${score}`;
+            buttons.forEach(b => b.disabled = true);
+            right.classList.add('picked');
+            if (curveball(q)) right.innerHTML = tile(q.pick);
+            btn.classList.add('chosen');
+            btn.insertAdjacentHTML('beforeend', `<span class="quiz-mark" aria-hidden="true">${correct ? '✓' : '✗'}</span>`);
+            // what I say back depends on what you guessed; a curveball also reveals the real answer
+            line.textContent = correct ? q.right : (btn === buttons[0] ? q.wrongA : q.wrongB);
+            reveal.innerHTML = '';
+            if (q.reveal) {
+                const label = document.createElement('strong');
+                label.textContent = 'The actual answer: ';
+                reveal.append(label, q.reveal);
+            }
+            requestAnimationFrame(() => {
+                line.classList.add('show');
+                reveal.classList.add('show');
+            });
+            if (correct && !calm) hearts(btn);
+            step(current).classList.remove('now');
+            step(current).classList.add(correct ? 'right' : 'wrong');
+            chip.textContent = correct ? 'Correct ✓' : 'Nope ✗';
+            chip.classList.add(correct ? 'right' : 'wrong');
+            next.hidden = false;
+            next.focus({ preventScroll: true });
+        }
+
+        const clearHearts = () => quiz.querySelectorAll('.quiz-heart').forEach(h => h.remove());
+
+        function hearts(btn) {
+            const card = $('.quiz-card');
+            const box = btn.getBoundingClientRect(), base = card.getBoundingClientRect();
+            for (let n = 0; n < 8; n++) {
+                const heart = document.createElement('span');
+                const angle = (n / 8) * Math.PI * 2;
+                heart.className = 'quiz-heart';
+                heart.textContent = '♥';
+                heart.style.color = n % 2 ? '#E0567F' : '#C98A9A';
+                heart.style.left = `${box.left - base.left + box.width / 2}px`;
+                heart.style.top = `${box.top - base.top + box.height / 2}px`;
+                heart.style.setProperty('--dx', `${Math.cos(angle) * 46}px`);
+                heart.style.setProperty('--dy', `${Math.sin(angle) * 34}px`);
+                card.appendChild(heart);
+                heart.addEventListener('animationend', () => heart.remove());
+            }
+        }
+
+        function finish() {
+            const total = questions.length, pct = score / total;
+            clearHearts();
+            play.hidden = true;
+            result.hidden = false;
+            $('.quiz-count').textContent = 'Done';
+            $('.quiz-score').textContent = `You got ${score}/${total}.`;
+            // one verdict per score (0 to 10); if the quiz ever changes length, scale to the closest one
+            const [headline, ...lines] = verdicts[Math.round(pct * (verdicts.length - 1))];
+            $('.quiz-verdict').textContent = headline;
+            const body = $('.quiz-verdict-body');
+            body.innerHTML = '';
+            lines.forEach(text => {
+                const p = document.createElement('p');
+                p.textContent = text;
+                body.appendChild(p);
+            });
+            // where you'd land on the leaderboard
+            const leaders = JSON.parse(quiz.dataset.leaders || '[]');
+            const place = leaders.filter(l => l.score > score).length + 1;
+            const tied = leaders.find(l => l.score === score);
+            $('.quiz-rank').textContent = !leaders.length ? ''
+                : place === 1 && !tied ? `That's the top score. Move over, ${leaders[0].name} ✦`
+                : tied ? `That ties you with ${tied.name} for #${place} on the leaderboard ✦`
+                : `That would put you #${place} on the leaderboard ✦`;
+            $('.quiz-again').focus({ preventScroll: true });
+        }
+
+        // the leaderboard stays out of the way until you've played, then opens inside the quiz card
+        // in place of your score; Back takes you to your score again
+        const board = document.querySelector('.quiz-board');
+        const boardBtn = $('.quiz-show-board');
+        const boardBack = board && board.querySelector('.quiz-board-back');
+        if (board) {
+            board.hidden = true;
+            $('.quiz-card').appendChild(board);
+            boardBack.hidden = false;
+        }
+        const openBoard = on => {
+            board.hidden = !on;
+            result.hidden = on;
+            boardBtn.setAttribute('aria-expanded', on);
+            (on ? boardBack : boardBtn).focus({ preventScroll: true });
+        };
+        boardBtn.addEventListener('click', () => openBoard(true));
+        if (boardBack) boardBack.addEventListener('click', () => openBoard(false));
+
+        next.addEventListener('click', () => current === questions.length - 1 ? finish() : show(current + 1));
+        $('.quiz-again').addEventListener('click', () => {
+            score = 0;
+            [...steps.children].forEach(li => li.className = '');
+            if (board) { board.hidden = true; boardBtn.setAttribute('aria-expanded', false); }
+            result.hidden = true;
+            play.hidden = false;
+            show(0);
+            options.querySelector('.quiz-option').focus({ preventScroll: true });
+        });
+        show(0);
+    })();
+
+    // "a little more about me" under If you know me... opens If I were a..., The Duality of a Woman and the quiz (it stays open)
+    (() => {
+        const more = document.querySelector('.view-more');
+        if (!more) return;
+        const target = document.getElementById(more.getAttribute('aria-controls'));
+        more.addEventListener('click', () => {
+            target.hidden = false;
+            more.hidden = true;
+            more.setAttribute('aria-expanded', true);
+            window.dispatchEvent(new Event('resize')); // its arrows were measured while hidden
+        });
+        // suhanitiwari.com/quiz (or /#quiz): open this section and go straight to the quiz
+        const openQuiz = () => {
+            if (location.hash !== '#quiz') return;
+            more.click();
+            const jump = () => document.querySelector('.quiz-col').scrollIntoView({ behavior: 'instant', block: 'start' });
+            setTimeout(jump, 0);
+            window.addEventListener('load', jump, { once: true });
+        };
+        openQuiz();
+        window.addEventListener('hashchange', openQuiz);
+    })();
+
+    // arrows scroll each row by one card; they fade out at either end
+    document.querySelectorAll('.kn-carousel').forEach(carousel => {
+        const row = carousel.querySelector('.kn-cards');
+        const prev = carousel.querySelector('.kn-prev');
+        const next = carousel.querySelector('.kn-next');
+        const step = () => row.querySelector('.kn-item').offsetWidth + 24;
+        const smooth = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+        prev.addEventListener('click', () => row.scrollBy({ left: -step(), behavior: smooth }));
+        next.addEventListener('click', () => row.scrollBy({ left: step(), behavior: smooth }));
+        const update = () => {
+            prev.disabled = row.scrollLeft <= 2;
+            next.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+        };
+        row.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    });
+
+    document.querySelectorAll('.kn-card').forEach(card => {
+        card.addEventListener('click', () => {
+            if (!card.querySelector('.kn-back')) return;   // nothing written on the back yet
+            const flipped = card.classList.toggle('flipped');
+            card.setAttribute('aria-pressed', flipped);
+        });
+    });
+</script>
+
+<style>
+    /* the way back to My World, and room above the first section under the fixed nav */
+    .yk-back { display: block; width: fit-content; margin: 110px auto 0; color: #8A4D57; font-weight: 600; text-decoration: none; }
+    .yk-back:hover, .yk-back:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+</style>

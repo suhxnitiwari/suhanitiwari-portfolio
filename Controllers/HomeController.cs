@@ -58,7 +58,7 @@ public class HomeController : Controller
     // "Résumé": my résumé once wwwroot/resume.pdf exists, a short holding page until then
     // suhanitiwari.com/quiz: a direct link for people who just want to take How Well Do You Know Me?
     [Route("quiz")]
-    public IActionResult Quiz() => Redirect("/#quiz");
+    public IActionResult Quiz() => Redirect("/world/you-know");
 
     // suhanitiwari.com/mis: how I define the MIS major, opened straight to the MIS Major tab of Coursework
     [Route("mis")]

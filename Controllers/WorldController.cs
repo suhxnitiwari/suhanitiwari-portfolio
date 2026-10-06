@@ -81,6 +81,24 @@ namespace Tiwari_Suhani_HW3.Controllers
             return Redirect(returnUrl is not null && returnUrl.StartsWith("/world/") && !returnUrl.StartsWith("//") ? returnUrl : "/world/");
         }
 
+        // If You Know Me: the personal part of the home page (the flip cards and the quiz), for friends and family only
+        [Authorize(AuthenticationSchemes = "World")]
+        [HttpGet("/world/you-know")]
+        public IActionResult YouKnow()
+        {
+            Response.Headers.CacheControl = "private, no-store";
+            Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
+            return View("YouKnow");
+        }
+
+        // log out: forget the My World cookie and go back to the main site
+        [HttpPost("/world/logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("World");
+            return Redirect("/");
+        }
+
         // who's visiting, so the page can show family the door to the Family Room (the room itself checks again below)
         [Authorize(AuthenticationSchemes = "World")]
         [HttpGet("/world/me")]
