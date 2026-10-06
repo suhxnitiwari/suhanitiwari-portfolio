@@ -696,6 +696,12 @@
 .mk-chapter-now b { margin-right: 6px; font-variant-numeric: tabular-nums; color: var(--acc); }
 .mk-chapter-now span { margin-left: 8px; font-weight: 600; letter-spacing: 0.12em; color: #A88A8F; }
 @media (prefers-reduced-motion: reduce) { .mk-chapters button { transition: none; } }
+/* phones: smaller dots, closer together, so a ten-slide deck stays on one line */
+@media (max-width: 800px) {
+    .mk-chapters { gap: 7px; flex-wrap: nowrap; }
+    .mk-chapters button { width: 8px; height: 8px; }
+    .mk-chapters button[aria-pressed="true"] { width: 24px; }
+}
 
 /* summary under each deck */
 .mk-info { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 52px; align-items: start; }

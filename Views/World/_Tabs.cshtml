@@ -1,0 +1,41 @@
+@* Invite Only's tabs, as a second bar under the main menu on the rooms the portfolio serves (You Had to Be There,
+   Who Has My Heart, The Words That Stayed), so the way around Invite Only never disappears.
+   Pass the current room as the model: "you-know", "faces" or "words". Talkin' Tiwari Tales shows only for family. *@
+@model string
+@{
+    var tabs = new (string Key, string Href, string Label)[]
+    {
+        ("family", "/world/family/", "Talkin’ Tiwari Tales"),
+        ("places", "/world/", "Where I’m Really From"),
+        ("you-know", "/world/you-know", "You Had to Be There"),
+        ("faces", "/world/faces", "Who Has My Heart"),
+        ("words", "/world/words", "The Words That Stayed")
+    };
+}
+<nav class="io-tabs" aria-label="Invite Only">
+    @foreach (var t in tabs)
+    {
+        <a href="@t.Href" class="@(t.Key == Model ? "on" : null)" aria-current="@(t.Key == Model ? "page" : null)" id="@(t.Key == "family" ? "ioFamily" : null)" hidden="@(t.Key == "family")">@t.Label</a>
+    }
+    <form method="post" action="/world/logout"><button type="submit">Lock up</button></form>
+</nav>
+<script>
+    // sit just under the main menu, whatever its height; and family sees Talkin' Tiwari Tales (the room checks again on the server)
+    (() => {
+        const bar = document.querySelector('.io-tabs'), nav = document.querySelector('nav.navbar');
+        const place = () => bar.style.top = `${nav ? nav.offsetHeight : 0}px`;
+        place(); addEventListener('resize', place);
+        fetch('/world/me', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null)
+            .then(me => { if (me?.role === 'family') document.getElementById('ioFamily').hidden = false; }).catch(() => {});
+    })();
+</script>
+<style>
+    .io-tabs { position: sticky; top: 72px; z-index: 900; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 26px; padding: 12px 20px;
+        background: rgba(250, 241, 239, 0.95); border-bottom: 1px solid #EBD5D0; backdrop-filter: blur(6px); }
+    .io-tabs a, .io-tabs button { padding: 0; border: 0; background: none; font: 500 0.78rem system-ui, sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #2A1810; text-decoration: none; cursor: pointer; }
+    .io-tabs a:hover, .io-tabs button:hover { color: #8A4D57; }
+    .io-tabs .on { color: #8A4D57; box-shadow: 0 2px 0 #C9969E; }
+    .io-tabs a[hidden] { display: none; }
+    .io-tabs form { margin: 0; }
+    @@media (max-width: 760px) { .io-tabs { gap: 8px 16px; padding: 10px 14px; } .io-tabs a, .io-tabs button { font-size: 0.7rem; } }
+</style>

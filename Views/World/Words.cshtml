@@ -3,9 +3,10 @@
 @{
     ViewData["Title"] = "The Words That Stayed";
 }
+<partial name="_Tabs" model="@("words")" />
 <section class="words-page">
     <div class="about-container">
-        <a class="yk-back" href="/world/">← Back to Invite Only</a>
+        
         @* WORDS: the cards and letters my friends and I make each other. The photos live in My World's private folder,
            so they only load for someone signed in. Add one: drop the photo in PrivateContent/world/published/images/cards *@
         @{
@@ -17,7 +18,6 @@
             };
         }
         <h1 class="duality-title cards-title">The Words That Stayed</h1>
-        <p class="kn-hint">Tap one to open it.</p>
         <ul class="hm-cards">
             @foreach (var (file, who, what) in cards)
             {

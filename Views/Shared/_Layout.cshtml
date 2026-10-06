@@ -727,10 +727,12 @@
             });
         });
 
-        // On phones, close the menu after picking a page (matters for #listen/#watch/#read on the same page)
+        // On phones, close the menu after picking a page (matters for #listen/#watch/#read on the same page).
+        // A tap that only opened a dropdown (Work, Study, Passions, Invite Only) was cancelled above, so it's skipped here
         const navMenu = document.getElementById('navMenu');
         document.querySelectorAll('#navMenu a:not([href^="javascript"])').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', e => {
+                if (e.defaultPrevented) return;
                 if (navMenu.classList.contains('show')) {
                     bootstrap.Collapse.getOrCreateInstance(navMenu, { toggle: false }).hide();
                 }
