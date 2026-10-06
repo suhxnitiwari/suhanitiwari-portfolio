@@ -77,8 +77,9 @@ namespace Tiwari_Suhani_HW3.Controllers
 
             var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "guest"), new Claim(ClaimTypes.Role, role) }, "World");
             await HttpContext.SignInAsync("World", new ClaimsPrincipal(identity));
-            // only ever send people somewhere inside My World
-            return Redirect(returnUrl is not null && returnUrl.StartsWith("/world/") && !returnUrl.StartsWith("//") ? returnUrl : "/world/");
+            // only ever send people somewhere inside My World; with nowhere asked for, family starts in the Family Room and friends on My World
+            if (returnUrl is not null && returnUrl.StartsWith("/world/") && !returnUrl.StartsWith("//")) return Redirect(returnUrl);
+            return Redirect(role == Family ? "/world/family/" : "/world/");
         }
 
         // If You Know Me: the personal part of the home page (the flip cards and the quiz), for friends and family only
