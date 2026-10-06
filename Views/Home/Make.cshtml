@@ -226,11 +226,13 @@
     var softlyIBelong = new Artwork("Softly, I Belong", "She blossoms as she holds the flower, symbolizing how embracing cultural identity empowers children", "/images/art/embracing-cultural-identity.jpg", 0.931);
     var inheritedLight = new Artwork("Inherited Light", "A young girl excitedly putting on her earrings is symbolic of her cherishing her Indian heritage", "/images/art/embracing-indian-heritage.jpg", 0.883);
     var unraveled = new Artwork("Unraveled", "", "/images/art/flowing-hair.jpg", 0.6);
+    var chai = new Artwork("Chai Ka Time", "", "/images/art/chai.jpg", 0.667);
 
     // The headliners (What I Carry, Keeping the Light) get columns of their own; Getting Ready was made to sit under In Full Bloom
     var artWall = new[]
     {
         new[] { oldAndNew, betweenTwoWorlds },
+        new[] { chai },
         new[] { whatICarry },
         new[] { wovenTogether },
         new[] { inFullBloom, gettingReady },
@@ -525,7 +527,7 @@
             @* the four shelves, each with what's on it; each one jumps to its shelf (and opens the fold) *@
             <ol class="make-ifs" aria-label="On this page">
                 @foreach (var (num, shelf, holds, id) in new[] {
-                    ("01", "Digital Art", "9 pieces", "art"),
+                    ("01", "Digital Art", $"{artWall.Sum(c => c.Length)} pieces", "art"),
                     ("02", "Writing", "4 pieces", "writing"),
                     ("03", "Baking", "3 cakes, 6 recipes", "baking"),
                     ("04", "Itineraries", "3 cities", "traveling") })
