@@ -156,6 +156,13 @@ const shots = {
         url: process.env.UPNEXT_URL || 'https://suhxnitiwari.github.io/up-next/', w: 760, h: 900, crop: '.stage.trailer', stream: true,
         run: async () => { await sleep(16000); }
     },
+    americaneagle: {
+        // 40 Billion Impressions, 1% Growth: the American Eagle deck's cover, comments, headlines and reactions flooding in
+        // while impressions climb to 40 billion. SITE_URL can point at a local copy of the site
+        url: (process.env.SITE_URL || 'http://localhost:5142') + '/#mk-proj-americaneagle', w: 1280, h: 900, crop: '#mk-proj-americaneagle .mk-stage',
+        select: `document.querySelector('[aria-controls="mk-proj-americaneagle"]').click()`,
+        run: async () => { await sleep(13000); }
+    },
     search: {
         // Search History: my name drawn from my searches, then a question typed into the search bar and answered,
         // then the clock it opens, playing my day hour by hour

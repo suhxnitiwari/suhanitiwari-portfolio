@@ -23,7 +23,7 @@
     .mk-ae .e-take b { color: var(--e-thread); }
     @@keyframes eRise { from { opacity: 0; transform: translateY(1.4cqw); } }
 
-    /* 1. cover: the impressions counter races to 40 billion while the brand's comps crawl to +1% */
+    /* 1. cover: the impressions counter races to 40 billion while the words pour in: comments, headlines, reactions, love and rage */
     .mk-ae .e-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 5cqw 5cqw;
         background: radial-gradient(80% 90% at 78% 45%, #2C4670 0%, #1A2B4A 55%, #121E36 100%); color: #F2EEE6; }
     .mk-ae .e-cover .e-copy { flex: 0 0 42%; display: flex; flex-direction: column; gap: 1.6cqw; }
@@ -33,45 +33,34 @@
     .mk-ae .e-cover .e-lede { color: rgba(242, 238, 230, 0.8) !important; }
     .mk-ae .e-cover .e-sig { color: #F0A55A; }
     .mk-ae .e-cover .e-src { color: rgba(242, 238, 230, 0.45); }
-    /* the feed: the ad's post on top, then comments and DMs flood in, half love, half rage; then it goes quiet and the +1% tag drops */
-    .mk-ae .e-feed { position: relative; flex: 1; align-self: stretch; display: flex; flex-direction: column; gap: 1cqw; min-width: 0; }
-    .mk-ae .e-count { display: flex; align-items: baseline; justify-content: flex-end; gap: 0.8cqw; }
-    .mk-ae .e-count b { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 3.8cqw, 50px); line-height: 1; font-variant-numeric: tabular-nums; color: #FFFFFF; }
+    .mk-ae .e-flood { position: relative; flex: 1; align-self: stretch; min-width: 0; }
+    .mk-ae .e-count { position: absolute; top: 0; right: 0; z-index: 3; display: flex; align-items: baseline; gap: 0.8cqw; padding: 0.4cqw 0 0.6cqw 1.4cqw;
+        background: linear-gradient(90deg, transparent, #1A2B4A 22%); }
+    .mk-ae .e-count b { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 4.2cqw, 56px); line-height: 1; font-variant-numeric: tabular-nums; color: #FFFFFF; }
     .mk-ae .e-count small { font-size: clamp(8px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242, 238, 230, 0.6); }
-    .mk-ae .e-post { display: grid; grid-template-columns: 9cqw 1fr; gap: 1.2cqw; align-items: center; padding: 1cqw; border-radius: 1.4cqw; background: #FFFFFF; color: #111; box-shadow: 0 1.4cqw 3cqw -1.6cqw rgba(0, 0, 0, 0.6); }
-    .mk-ae .e-post .img { aspect-ratio: 4 / 5; border-radius: 0.8cqw; display: grid; place-items: center; padding: 0.6cqw; text-align: center;
-        background: repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0 0.3cqw, transparent 0.3cqw 0.9cqw), linear-gradient(160deg, #4A6E9E, #1D3557); color: #FFF; font-family: var(--serif); font-style: italic; font-size: clamp(9px, 1.15cqw, 15px); line-height: 1.1; }
-    .mk-ae .e-post .who { display: flex; align-items: center; gap: 0.6cqw; font: 700 clamp(9px, 1.05cqw, 13px) system-ui, sans-serif; }
-    .mk-ae .e-post .who i { width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: conic-gradient(#F58529, #DD2A7B, #8134AF, #F58529); box-shadow: inset 0 0 0 0.35cqw #FFF; }
-    .mk-ae .e-post .who em { font-style: normal; color: #3897F0; }
-    .mk-ae .e-post p { margin: 0.4cqw 0 0; font-size: clamp(9px, 1.05cqw, 13px); color: #262626 !important; line-height: 1.35; }
-    .mk-ae .e-post .acts { display: flex; gap: 1.4cqw; margin-top: 0.6cqw; font: 600 clamp(9px, 1cqw, 12px) system-ui, sans-serif; color: #262626; font-variant-numeric: tabular-nums; }
-    .mk-ae .e-stream { position: relative; flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.7cqw;
-        -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%); mask-image: linear-gradient(180deg, transparent 0, #000 22%); }
-    .mk-ae .e-msg { align-self: flex-start; max-width: 88%; display: flex; gap: 0.7cqw; align-items: flex-start; padding: 0.7cqw 1cqw; border-radius: 1.4cqw; background: rgba(255, 255, 255, 0.95); color: #111;
-        font: 400 clamp(9px, 1.1cqw, 14px)/1.3 system-ui, sans-serif; animation: ePop 0.35s cubic-bezier(.2, 1.4, .4, 1) both; }
-    .mk-ae .e-msg b { font-weight: 700; margin-right: 0.3em; }
-    .mk-ae .e-msg i { flex: none; width: 1.8cqw; height: 1.8cqw; border-radius: 50%; background: var(--av, #8DA7C7); }
-    .mk-ae .e-msg.hate { box-shadow: inset 0.35cqw 0 0 #E0533D; }
-    .mk-ae .e-msg.love { box-shadow: inset 0.35cqw 0 0 #3FB66B; }
-    .mk-ae .e-msg.dm { align-self: flex-end; background: #3797F0; color: #FFF; border-radius: 1.4cqw 1.4cqw 0.3cqw 1.4cqw; }
-    .mk-ae .e-msg.dm i { display: none; }
-    .mk-ae .e-msg.share { align-self: center; background: rgba(255, 255, 255, 0.14); color: #F2EEE6; font-weight: 600; }
-    .mk-ae .e-msg.share i { display: none; }
-    /* press: the story jumps from comments to headlines */
-    .mk-ae .e-msg.news { align-self: stretch; max-width: none; flex-direction: column; gap: 0.2cqw; background: #FFF7E8; box-shadow: inset 0.35cqw 0 0 #F0A55A; font-family: var(--serif); font-size: clamp(10px, 1.3cqw, 17px); font-weight: 700; }
-    .mk-ae .e-msg.news b { font: 700 clamp(8px, 0.85cqw, 11px) system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #B4442A; }
-    .mk-ae .e-msg.news i { display: none; }
-    @@keyframes ePop { from { opacity: 0; transform: translateY(1.4cqw) scale(0.94); } }
-    /* the quiet: the feed dims and one small tag drops in */
-    .mk-ae .e-feed .e-post, .mk-ae .e-feed .e-stream, .mk-ae .e-feed .e-count { transition: opacity 0.6s ease, filter 0.6s ease; }
-    .mk-ae .e-cover.quiet .e-feed .e-post, .mk-ae .e-cover.quiet .e-feed .e-stream { opacity: 0.18; filter: blur(0.15cqw); }
-    .mk-ae .e-tag { position: absolute; left: 50%; top: 52%; z-index: 3; display: grid; justify-items: center; gap: 0.3cqw; padding: 1.4cqw 2.2cqw 1.6cqw; border-radius: 0.8cqw; background: #F0A55A; color: #14213D;
-        transform: translate(-50%, -50%) rotate(-4deg) scale(0.6); opacity: 0; box-shadow: 0 1.6cqw 3cqw -1cqw rgba(0, 0, 0, 0.6); }
-    .mk-ae .e-tag::before { content: ""; position: absolute; top: 0.8cqw; left: 50%; width: 1cqw; height: 1cqw; margin-left: -0.5cqw; border-radius: 50%; background: #1A2B4A; }
-    .mk-ae .e-tag small { margin-top: 1cqw; font: 700 clamp(8px, 0.95cqw, 12px) system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; }
-    .mk-ae .e-tag b { font-family: var(--serif); font-size: clamp(34px, 6cqw, 80px); line-height: 1; }
-    .mk-ae .e-cover.quiet .e-tag { opacity: 1; transform: translate(-50%, -50%) rotate(-4deg); transition: opacity 0.3s ease, transform 0.6s cubic-bezier(.2, 1.5, .4, 1); }
+    /* the words: each lands somewhere in the field, tilted a little; older ones sink back as new ones pile on */
+    .mk-ae .e-words { position: absolute; inset: 6cqw 0 5cqw 0; overflow: hidden;
+        -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent); mask-image: linear-gradient(180deg, #000 82%, transparent); }
+    .mk-ae .e-w { position: absolute; left: var(--x); top: var(--y); max-width: var(--mw, 22cqw); transform: rotate(var(--r, 0deg)); transition: opacity 0.9s ease, filter 0.9s ease;
+        animation: eIn 0.45s cubic-bezier(.2, 1.4, .4, 1) both; }
+    .mk-ae .e-w.old { opacity: 0.22; filter: blur(0.06cqw); }
+    .mk-ae .e-flood.clear .e-w { opacity: 0; transition-duration: 0.5s; }
+    @@keyframes eIn { from { opacity: 0; transform: rotate(var(--r, 0deg)) translateY(1.2cqw) scale(0.9); } }
+    /* headlines: big cream serif */
+    .mk-ae .e-w.head { font: 700 var(--fs, clamp(11px, 1.5cqw, 20px))/1.15 var(--serif); color: #F7F4EE; text-shadow: 0 0.3cqw 1.2cqw rgba(10, 18, 35, 0.8); }
+    .mk-ae .e-w.head small { display: block; margin-bottom: 0.2cqw; font: 800 clamp(7px, 0.75cqw, 10px) system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #F0A55A; }
+    /* reported reactions: italic, in the stitch orange */
+    .mk-ae .e-w.react { font: italic 400 var(--fs, clamp(10px, 1.3cqw, 17px))/1.2 var(--serif); color: #F6C796; text-shadow: 0 0.3cqw 1.2cqw rgba(10, 18, 35, 0.8); }
+    .mk-ae .e-w.react small { display: block; font: 700 clamp(7px, 0.7cqw, 9px) system-ui, sans-serif; font-style: normal; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242, 238, 230, 0.55); }
+    /* comments: white chips with a green (love) or red (hate) edge; DMs blue */
+    .mk-ae .e-w.c { padding: 0.5cqw 0.8cqw; border-radius: 1.2cqw; background: rgba(255, 255, 255, 0.95); color: #111111; font: 400 clamp(8px, 1cqw, 13px)/1.3 system-ui, sans-serif;
+        box-shadow: 0 0.8cqw 1.6cqw -0.8cqw rgba(0, 0, 0, 0.6); }
+    .mk-ae .e-w.c.love { box-shadow: inset 0.35cqw 0 0 #3FB66B, 0 0.8cqw 1.6cqw -0.8cqw rgba(0, 0, 0, 0.6); }
+    .mk-ae .e-w.c.hate { box-shadow: inset 0.35cqw 0 0 #E0533D, 0 0.8cqw 1.6cqw -0.8cqw rgba(0, 0, 0, 0.6); }
+    .mk-ae .e-w.c.dm { background: #3797F0; color: #FFFFFF; border-radius: 1.2cqw 1.2cqw 0.3cqw 1.2cqw; }
+    .mk-ae .e-w.c.share { background: rgba(255, 255, 255, 0.16); color: #F2EEE6; font-weight: 600; box-shadow: none; }
+    /* every time a message names her, "Sydney" lights up */
+    .mk-ae .e-w mark { padding: 0 0.12em; border-radius: 0.2em; background: rgba(240, 165, 90, 0.4); color: inherit; }
 
     /* 2. what happened: a timeline */
     .mk-ae .e-line { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6cqw; margin: auto 0; padding: 2.4cqw 0 0; list-style: none; }
@@ -168,11 +157,9 @@
 
     @@container (max-width: 640px) {
         .mk-ae .e-cover { flex-direction: column; align-items: stretch; padding: 6cqw 5cqw 10cqw; }
-        .mk-ae .e-feed { flex: none; height: 120cqw; }
-        .mk-ae .e-post { grid-template-columns: 20cqw 1fr; }
-        .mk-ae .e-msg { font-size: 11.5px; padding: 6px 9px; border-radius: 12px; }
-        .mk-ae .e-msg.news { font-size: 13px; }
-        .mk-ae .e-post p, .mk-ae .e-post .who, .mk-ae .e-post .acts { font-size: 11px; }
+        .mk-ae .e-flood { flex: none; height: 120cqw; }
+        .mk-ae .e-w { max-width: 52cqw !important; }
+        .mk-ae .e-w.c { font-size: 10.5px; padding: 5px 8px; }
         .mk-ae .e-two, .mk-ae .e-vs, .mk-ae .e-kk { grid-template-columns: 1fr !important; }
         .mk-ae .e-line { grid-template-columns: 1fr 1fr; row-gap: 4cqw; }
         .mk-ae .e-board { padding: 0; gap: 3cqw; }
@@ -205,27 +192,19 @@
 <div class="mp-proj mk-ae" id="mk-proj-americaneagle" role="tabpanel" aria-labelledby="mk-title-americaneagle" hidden>
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="American Eagle slides">
         <div class="mk-stage">
-            @* the cover plays the gap: a counter races to 40 billion impressions while the brand's comps crawl to +1% *@
+            @* the cover: the talk floods in from everywhere while impressions race to 40 billion *@
             <div class="mk-slide e-cover" data-title="The gap">
                 <div class="e-copy">
                     <p class="e-kick">American Eagle strategy, 2026</p>
                     <h4 class="e-title">40 billion impressions. <em>1% growth.</em></h4>
                     <p class="e-lede">Did the Sydney Sweeney controversy sell the jeans? For one season. Here’s how to make it sell the brand.</p>
                 </div>
-                <div class="e-feed" role="img" aria-label="An Instagram post of the Sydney Sweeney Has Great Jeans ad floods with comments, DMs and shares, half loving it and half furious, while impressions climb past 40 billion. Then the feed goes quiet and a small tag reads: American Eagle brand comparable sales, plus 1 percent.">
+                @* the flood: comments, headlines and reactions pour in, love and rage, until there's no room left, while impressions race to 40 billion *@
+                <div class="e-flood" role="img" aria-label="Comments, headlines and reactions about the Sydney Sweeney Has Great Jeans ad pour in until they fill the space: Instagram comments that love it or hate it, headlines asking if it's a dog whistle and saying Trump praised it, reports of critics calling it eugenics and tone-deaf, parodies by Doja Cat and Lizzo, while impressions climb past 40 billion.">
                     <div class="e-count"><small>impressions</small><b data-e-imp>0</b></div>
-                    <div class="e-post">
-                        <div class="img">Sydney Sweeney has great jeans.</div>
-                        <div>
-                            <span class="who"><i></i>americaneagle <em>✓</em></span>
-                            <p>Fall ’25. Genes are passed down from parents to offspring…</p>
-                            <div class="acts"><span>♥ <i data-e-likes>0</i></span><span><svg class="ae-ic" style="vertical-align:-0.15em" viewBox="0 0 16 16" width="0.95em" height="0.95em" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.2c3.3 0 5.8 2.3 5.8 5.2S11.3 12.6 8 12.6c-.8 0-1.5-.1-2.2-.3L2.4 13.6l1-2.7C2.6 10 2.2 8.8 2.2 7.4 2.2 4.5 4.7 2.2 8 2.2Z"/></svg> <i data-e-comments>0</i></span><span>↗ <i data-e-shares>0</i></span></div>
-                        </div>
-                    </div>
-                    <div class="e-stream" aria-hidden="true"></div>
-                    <div class="e-tag" aria-hidden="true"><small>AE brand comps</small><b>+1%</b></div>
+                    <div class="e-words" data-words aria-hidden="true"></div>
                 </div>
-                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results. Comments: real public Instagram comments, July to Nov 2025, names removed. Headlines: The New Feminist, Leading Entrepreneurs, NBC News, Freedom Front, Bored Panda. DMs and post counts are illustrative.</span>
+                <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results. Comments: real public Instagram comments, July to Nov 2025, names removed. Headlines and reported reactions: The New Feminist, Leading Entrepreneurs, NBC News, Newsweek, Rolling Stone, Fox News, AOL, mxdwn, Freedom Front, Bored Panda. DMs are illustrative.</span>
                 @Html.Raw(esig)
             </div>
 
@@ -403,65 +382,81 @@
 </div>
 
 <script>
-    // Cover: the feed explodes (comments, DMs, shares, love and rage) while impressions climb to 40 billion;
-    // then it all goes quiet and one tag drops: AE brand comps, +1%. Comments are illustrative, not real accounts.
+    // Cover: the flood. Comments, headlines and reactions pour in from everywhere, love and rage, piling up until there's no room
+    // left, while impressions race to 40 billion. Every message that names her lights up "Sydney". Then it clears and starts again.
     (() => {
         const cover = document.querySelector('.mk-ae .e-cover');
         if (!cover) return;
-        const stream = cover.querySelector('.e-stream');
-        const n = sel => cover.querySelector(sel);
-        // Real public comments from Instagram posts about the ad (July to Nov 2025), with usernames left off;
-        // the headlines are real posts and articles; the DMs and share counts are illustrative
+        const flood = cover.querySelector('.e-flood'), field = cover.querySelector('[data-words]'), imp = cover.querySelector('[data-e-imp]');
+        // phone = real public Instagram comments on posts about the ad (July to Nov 2025), usernames left off; DMs and shares are illustrative.
+        // tv = real headlines. lap = reactions as reported by the outlet named (the words in quotes are theirs).
         const msgs = [
-            ['love', '', 'Great ad! It’s jeans not genes!'],
-            ['news', 'The New Feminist', '“Is the new Sydney Sweeney ad a dog whistle for white supremacy?”'],
-            ['hate', '', 'I hope her career torpedoes. Karma'],
-            ['dm', '', 'did u see the AE ad'],
-            ['love', '', 'Brilliant ad, a woman of beauty to promote a quality product.'],
-            ['share', '', '↗ shared to 4 group chats'],
-            ['love', '', 'She doesn’t have great jeans, she has amazing jeans'],
-            ['news', 'Leading Entrepreneurs', '“This ad added $400 million to American Eagle’s market cap in 24 hours”'],
-            ['hate', '', 'It’s an annoying commercial'],
-            ['love', '', 'Good genes means she is pretty, they aren’t saying other cultures are bad'],
-            ['news', 'NBC News', 'Sweeney on the ad: “I love jeans… I’m against hate.”'],
-            ['love', '', 'One of the greatest ads ever made'],
-            ['love', '', 'People who are offended by a pants commercial are the same people who think McDonald’s is a food group'],
-            ['news', 'Freedom Front', '“Sydney Sweeney refuses to apologize for ad about ‘good genes’”'],
-            ['news', 'Bored Panda', '“Now I Understand Why People Hate Her”'],
-            ['love', '', 'the most beautiful thing I have ever seen'],
-            ['love', '', 'this ad totally went over a lot of people’s heads']
+            ['phone', 'love', 'Great ad! It’s jeans not genes!'],
+            ['tv', 'The New Feminist', 'Is the new Sydney Sweeney ad a dog whistle for white supremacy?'],
+            ['lap', 'NBC News', 'Critics on TikTok, X and Threads call the Sydney Sweeney ad “eugenics” and “Nazi propaganda”'],
+            ['phone', 'hate', 'I hope her career torpedoes. Karma'],
+            ['phone', 'dm', 'did u see the AE ad'],
+            ['lap', 'AOL', 'Doja Cat mocks the Sydney Sweeney ad in a southern drawl: 26.4M views'],
+            ['tv', 'Leading Entrepreneurs', 'This ad added $400 million to American Eagle’s market cap in 24 hours'],
+            ['phone', 'love', 'Brilliant ad, a woman of beauty to promote a quality product.'],
+            ['lap', 'Newsweek', 'An ad professor calls the Sweeney pun “tone-deaf” and “historically loaded”'],
+            ['phone', 'share', '↗ shared to 4 group chats'],
+            ['tv', 'Rolling Stone', 'Trump praises the Sydney Sweeney ad after learning she’s a registered Republican'],
+            ['phone', 'hate', 'It’s an annoying commercial'],
+            ['lap', 'mxdwn', 'Lizzo answers the Sweeney ad: “My jeans are black”'],
+            ['phone', 'love', 'She doesn’t have great jeans, she has amazing jeans'],
+            ['tv', 'NBC News', 'American Eagle: the campaign “is and always was about the jeans”'],
+            ['lap', 'Newsweek', 'A TikTok creator compares the Sweeney ad to Calvin Klein’s ads with a 14-year-old Brooke Shields'],
+            ['phone', 'love', 'Good genes means she is pretty, they aren’t saying other cultures are bad'],
+            ['tv', 'NBC News', 'Sweeney on the ad: “I love jeans… I’m against hate.”'],
+            ['lap', 'Fox News', 'Fans defend Sydney Sweeney’s “anti-woke” ad'],
+            ['phone', 'love', 'One of the greatest ads ever made'],
+            ['tv', 'Freedom Front', 'Sydney Sweeney refuses to apologize for ad about ‘good genes’'],
+            ['phone', 'love', 'People who are offended by a pants commercial are the same people who think McDonald’s is a food group'],
+            ['tv', 'Bored Panda', 'Now I Understand Why People Hate Her'],
+            ['lap', 'Rolling Stone', 'Sweeney calls Trump and Vance weighing in on her ad “surreal”'],
+            ['phone', 'love', 'this ad totally went over a lot of people’s heads']
         ];
-        const avatars = ['#E9A178', '#8DA7C7', '#C98FB3', '#7FBF9E', '#E6C46A', '#9C8FD1'];
+        const lit = t => t.replace(/(Sydney|Sweeney)/g, '<mark>$1</mark>');
+        // a small seeded random, so every loop lands the words in the same lively places
+        let seed = 7;
+        const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+        const slots = [...Array(21).keys()];
+        for (let i = slots.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [slots[i], slots[j]] = [slots[j], slots[i]]; }
         const fmt = v => Math.round(v).toLocaleString('en-US');
-        const ease = x => 1 - Math.pow(1 - x, 2.4);
-        const counts = p => {
-            n('[data-e-imp]').textContent = fmt(40e9 * ease(p));
-            n('[data-e-likes]').textContent = fmt(2.1e6 * ease(p));
-            n('[data-e-comments]').textContent = fmt(186e3 * ease(p));
-            n('[data-e-shares]').textContent = fmt(940e3 * ease(p));
-        };
-        const add = ([kind, who, text], k) => {
+        const ease = x => 1 - Math.pow(1 - x, 2.2);
+        const ROUNDS = 2.4, total = Math.round(msgs.length * ROUNDS);   // each message comes back around, the way they did
+        const drop = k => {
+            const [where, a, text] = msgs[k % msgs.length];
             const el = document.createElement('div');
-            el.className = `e-msg ${kind}`;
-            el.style.setProperty('--av', avatars[k % avatars.length]);
-            el.innerHTML = kind === 'news' ? `<i></i><b>${who}</b><span>${text}</span>` : `<i></i><span>${who ? `<b>${who}</b>` : ''}${text}</span>`;
-            stream.append(el);
-            while (stream.children.length > 9) stream.firstElementChild.remove();
+            if (where === 'tv') { el.className = 'e-w head'; el.innerHTML = `<small>${a}</small>${lit(text)}`; el.style.setProperty('--mw', '26cqw'); el.style.setProperty('--fs', `clamp(11px, ${(1.3 + rnd() * 0.8).toFixed(2)}cqw, 24px)`); }
+            else if (where === 'lap') { el.className = 'e-w react'; el.innerHTML = `<small>${a}</small>${lit(text)}`; el.style.setProperty('--mw', '24cqw'); el.style.setProperty('--fs', `clamp(10px, ${(1.1 + rnd() * 0.5).toFixed(2)}cqw, 18px)`); }
+            else { el.className = `e-w c ${a}`; el.innerHTML = lit(text); el.style.setProperty('--mw', '20cqw'); }
+            // spread over a loose 3 x 7 grid in a shuffled order, so the field fills evenly instead of clumping
+            const slot = slots[k % slots.length], col = slot % 3, row = Math.floor(slot / 3);
+            el.style.setProperty('--x', `${(col * 31 + rnd() * 6 - 1).toFixed(1)}%`);
+            el.style.setProperty('--y', `${(row * 13.2 + rnd() * 4).toFixed(1)}%`);
+            el.style.setProperty('--r', `${(rnd() * 6 - 3).toFixed(1)}deg`);
+            field.append(el);
+            // newer words stay bright; the older ones sink back; the oldest leave
+            const all = field.children;
+            for (let i = 0; i < all.length - 7; i++) all[i].classList.add('old');
+            while (all.length > 46) all[0].remove();
         };
-        const reset = () => { stream.replaceChildren(); cover.classList.remove('quiet'); counts(0); };
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { msgs.slice(0, 7).forEach(add); counts(1); return; }
-        // beats of 280ms: 16 messages pour in (about 4.5s), hold a beat, go quiet with the tag for about 3s, then again
+        const reset = () => { field.replaceChildren(); flood.classList.remove('clear'); seed = 7; imp.textContent = '0'; };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { reset(); for (let k = 0; k < 30; k++) drop(k); imp.textContent = fmt(40e9); return; }
+        // beats of 150ms: about 60 words pour in (9s) while the counter climbs, hold the full field, clear, then again
         let t = 0;
         const tick = () => {
             if (t === 0) reset();
-            if (t < msgs.length) { add(msgs[t], t); counts((t + 1) / msgs.length); }
-            if (t === msgs.length + 2) cover.classList.add('quiet');
-            if (t === msgs.length + 14) { t = -1; }
+            if (t < total) { drop(t); imp.textContent = fmt(40e9 * ease((t + 1) / total)); }
+            if (t === total + 12) flood.classList.add('clear');
+            if (t === total + 17) { t = -1; }
             t++;
         };
         reset();
         // autoplay.js loads after this view
-        const start = () => window.autoplay(cover, tick, 280);
+        const start = () => window.autoplay(cover, tick, 150);
         window.autoplay ? start() : addEventListener('load', start);
     })();
 </script>

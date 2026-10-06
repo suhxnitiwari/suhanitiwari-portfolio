@@ -27,9 +27,8 @@
         (Cols: 6, Rows: 1, Fill: false, Kind: "Celebrity brand", Title: "Rhode Has a Hailey Problem", Video: "rhode", Panel: (string?)null, Inset: false,
             Label: "Glossy blush and bronzer swatches swipe in while the trends Hailey started flash past", Link: "/#mk-proj-rhode",
             Line: "e.l.f. paid $1B for a face. My plan to make the product the celebrity.", Skills: new[] { "Brand strategy", "Celebrity brand", "Motion graphics" }, Topics: new[] { "Marketing" }),
-        // no recording yet, so its tile is the deck's cover line set in type on its denim
-        (Cols: 4, Rows: 1, Fill: false, Kind: "Campaign strategy", Title: "40 Billion Impressions, 1% Growth", Video: (string?)null, Panel: (string?)"#1A2B4A", Inset: false,
-            Label: "", Link: "/#mk-proj-americaneagle",
+        (Cols: 4, Rows: 1, Fill: false, Kind: "Campaign strategy", Title: "40 Billion Impressions, 1% Growth", Video: (string?)"americaneagle", Panel: (string?)null, Inset: false,
+            Label: "The American Eagle deck's cover: the feed floods with love and rage while impressions climb to 40 billion, then a +1% tag drops", Link: "/#mk-proj-americaneagle",
             Line: "American Eagle’s Sydney Sweeney campaign won the internet. Did it sell the brand?", Skills: new[] { "Campaign strategy", "Brand strategy", "Market research" }, Topics: new[] { "Marketing" }),
         (Cols: 6, Rows: 1, Fill: false, Kind: "Data story", Title: "Still Watching", Video: "stillwatching", Panel: (string?)null, Inset: false,
             Label: "My illustrated family dropping me off in West Campus while the opening credits roll", Link: "https://suhxnitiwari.github.io/still-watching/",
@@ -101,11 +100,11 @@
             ("Listening Galaxy", 8), ("Suhaiku", 4),
             ("Still Watching", 6), ("Lullabyte", 6),
             ("Search History", 6), ("The Suhani House", 6),
-            // Double Tap sits with the smaller projects, not up top
-            ("What’s in My Bag?", 4), ("Saturday in Austin", 4), ("Double Tap", 4),
-            // marketing gets one row of four small tiles, my four best brand cases (Starbucks, Owala, FuelFlow and
+            // Rhode sits in the middle of this row; Double Tap joins the small tiles
+            ("What’s in My Bag?", 4), ("Rhode Has a Hailey Problem", 4), ("Saturday in Austin", 4),
+            // a row of four small tiles: three brand cases and Double Tap (Starbucks, Owala, FuelFlow and
             // Prime Book Club stay in the Marketing section only)
-            ("How Glossier Lost Its Cult", 3), ("Netflix’s $20B Leak", 3), ("Rhode Has a Hailey Problem", 3), ("40 Billion Impressions, 1% Growth", 3),
+            ("How Glossier Lost Its Cult", 3), ("Netflix’s $20B Leak", 3), ("Double Tap", 3), ("40 Billion Impressions, 1% Growth", 3),
             // Up Next gets twice RideFlow's width
             ("RideFlow", 4), ("Up Next", 8)
         };
@@ -258,7 +257,7 @@
 </script>
 
 <script>
-    // topic filters: picking one hides every project without it and re-tiles the rest so every row fills;
+    // topic filters: picking one hides every project without it and re-tiles the rest as a bento where every row fills;
     // All puts the bento back
     document.querySelectorAll('.best-filters:not([data-wired])').forEach(bar => {
         bar.dataset.wired = '';
@@ -271,12 +270,21 @@
             bar.scrollBy({ left: btn.getBoundingClientRect().left - bar.getBoundingClientRect().left - (bar.clientWidth - btn.offsetWidth) / 2, behavior: 'smooth' });
             const tiles = [...board.querySelectorAll('.best-story')];
             const shown = tiles.filter(t => !topic || t.dataset.topics.split('|').includes(topic));
-            // rows of three, with the leftovers as pairs up top so no row is left half empty (5 → 2+3, 7 → 2+2+3)
-            const pairs = shown.length % 3 === 2 ? 2 : shown.length % 3 === 1 ? Math.min(4, shown.length) : 0;
+            // a bento like the full board: mostly pairs that alternate big/small (8+4, 5+7, 6+6, 4+8, 7+5), and with an odd
+            // count a single row of three in the middle, so it's never even rows of the same size
+            const shapes = [[8, 4], [5, 7], [6, 6], [4, 8], [7, 5]];
+            const n = shown.length, rows = [];
+            if (n === 1) rows.push([12]);
+            else {
+                const pairCount = n % 2 ? (n - 3) / 2 : n / 2;
+                for (let r = 0; r < pairCount; r++) rows.push(shapes[r % shapes.length]);
+                if (n % 2) rows.splice(Math.ceil(pairCount / 2), 0, [4, 4, 4]);
+            }
+            const sizes = rows.flat();
             tiles.forEach(t => {
                 const on = shown.includes(t);
                 t.hidden = !on;
-                const c = topic ? (shown.indexOf(t) < pairs ? 6 : 4) : +t.dataset.cols;
+                const c = topic ? sizes[shown.indexOf(t)] : +t.dataset.cols;
                 t.style.setProperty('--c', c);
                 t.classList.toggle('best-narrow', c <= 5);
                 t.classList.toggle('best-small', c <= 3);

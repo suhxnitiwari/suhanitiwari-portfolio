@@ -145,20 +145,18 @@
         color: #C27B8A;
     }
 
-    .make-if-q {
-        flex: 1;
-        margin: 8px 0 14px;
+    /* the shelf's name, then what's on it */
+    .make-if-shelf {
+        margin-top: 10px;
         font-family: Georgia, serif;
-        font-size: 1.05rem;
-        font-style: italic;
-        line-height: 1.35;
-        color: #7E3F4A;
+        font-size: 1.15rem;
+        font-weight: 700;
     }
 
-    .make-if-shelf {
-        font-family: Georgia, serif;
-        font-size: 1rem;
-        font-weight: 700;
+    .make-if-holds {
+        margin-top: 4px;
+        font-size: 0.85rem;
+        color: #6B5A53;
     }
 
     .make-if-shelf span {
@@ -517,16 +515,16 @@
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
             <h1 class="section-title">Passions</h1>
-            <p class="shelf-caption make-caption"><strong>Nobody asked me to make any of this. That’s kind of the point.</strong> When I’m interested in something, consuming it is rarely enough. I want to make my own version, pull it apart, improve it, or take the idea somewhere it wasn’t supposed to go. These are the things I make when there is no assignment attached.</p>
-            @* the "what if" behind each shelf, so the intro leads straight into them; each one jumps to its shelf *@
+            <p class="shelf-caption make-caption">These are the things I make when there is no assignment attached.</p>
+            @* the four shelves, each with what's on it; each one jumps to its shelf (and opens the fold) *@
             <ol class="make-ifs" aria-label="On this page">
-                @foreach (var (num, question, shelf, id) in new[] {
-                    ("01", "I painted where I’m from?", "Digital Art", "art"),
-                    ("02", "I wrote it down?", "Writing", "writing"),
-                    ("03", "I followed the recipe, then didn’t?", "Baking", "baking"),
-                    ("04", "I planned the perfect trip?", "Itineraries", "traveling") })
+                @foreach (var (num, shelf, holds, id) in new[] {
+                    ("01", "Digital Art", "9 pieces", "art"),
+                    ("02", "Writing", "4 pieces", "writing"),
+                    ("03", "Baking", "3 cakes, 6 recipes", "baking"),
+                    ("04", "Itineraries", "3 cities", "traveling") })
                 {
-                    <li><a href="#@id"><span class="make-if-num">@num</span><span class="make-if-q">…@question</span><span class="make-if-shelf">@shelf <span aria-hidden="true">↓</span></span></a></li>
+                    <li><a href="#@id"><span class="make-if-num">@num</span><span class="make-if-shelf">@shelf <span aria-hidden="true">↓</span></span><span class="make-if-holds">@holds</span></a></li>
                 }
             </ol>
         </div>
