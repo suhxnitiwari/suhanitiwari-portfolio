@@ -105,6 +105,8 @@
 
     .make-close { margin-top: 40px; }
 
+    .make-open[hidden] { display: none; }
+
     .make-open-sign {
         font-size: 1.2em;
         line-height: 1;
@@ -801,14 +803,10 @@
         const set = open => {
             fold.classList.toggle('open', open);
             btn.setAttribute('aria-expanded', open);
-            btn.querySelector('.make-open-label').textContent = open ? 'Fold them away' : 'Explore my passions';
-            btn.querySelector('.make-open-sign').textContent = open ? '−' : '+';
+            // once the shelves are open the top button steps aside; the one at the bottom folds them back up
+            btn.hidden = open;
         };
-        btn.addEventListener('click', () => {
-            const open = !fold.classList.contains('open');
-            set(open);
-            if (!open) btn.scrollIntoView({ block: 'center' });
-        });
+        btn.addEventListener('click', () => set(true));
         // the bottom one only ever folds, then brings you back up to where Passions starts
         document.querySelector('.make-close')?.addEventListener('click', () => { set(false); btn.scrollIntoView({ block: 'center' }); });
         const openTo = id => {

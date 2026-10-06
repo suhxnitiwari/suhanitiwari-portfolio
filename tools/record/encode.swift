@@ -45,7 +45,12 @@ writer.add(input_)
 writer.startWriting()
 writer.startSession(atSourceTime: .zero)
 
+// frames captured almost on top of each other (a millisecond apart) make the H.264 encoder fail,
+// so any frame less than 1/120 s after the last one kept is skipped; nobody can see the difference
+var lastKept = -1.0
 for (n, (path, t)) in frames.enumerated() {
+    if lastKept >= 0 && t - lastKept < 1.0 / 120 { continue }
+    lastKept = t
     while !input_.isReadyForMoreMediaData { usleep(2000) }
     var pb: CVPixelBuffer?
     CVPixelBufferPoolCreatePixelBuffer(nil, adaptor.pixelBufferPool!, &pb)

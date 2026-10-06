@@ -27,9 +27,17 @@ const shots = {
         run: async () => { await sleep(20000); }
     },
     bag: {
-        url: 'https://suhxnitiwari.github.io/whats-in-my-bag/', w: 1000, h: 1000,
+        // What's in My Bag?: filmed wide to match its tile. The page is zoomed out a little and scrolled so the backpack
+        // sits in the middle of the frame; it opens on the closed backpack for a beat, then it tips and everything falls out
+        url: 'https://suhxnitiwari.github.io/whats-in-my-bag/', w: 1280, h: 800, stream: true,
+        prep: async ev => {
+            await ev(`document.documentElement.style.zoom = '0.62'; document.documentElement.style.scrollBehavior = 'auto'`);
+            await sleep(400);
+            await ev(`(() => { const r = document.getElementById('bag').getBoundingClientRect(); window.scrollBy(0, r.top + r.height / 2 - innerHeight / 2); })()`);
+            await sleep(600);
+        },
         run: async ev => {
-            await sleep(1800);
+            await sleep(2200);
             await ev(`(() => { const b = document.querySelector('#unzip-all'); b.hidden = false; b.dataset.mode = 'dump'; b.click(); })()`);
             await sleep(6500);
         }
