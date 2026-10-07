@@ -179,6 +179,10 @@ const shots = {
         // for LinkedIn: the home page from the top (SUHANI TIWARI lands), a slow scroll down the site,
         // a visible cursor clicking "More on my MIS curriculum", then on into Marketing
         url: process.env.SITE_URL || 'https://suhanitiwari.com/', w: 1280, h: 800, stream: true,
+        // the About tagline starts its keyboard-mash typing as soon as the page loads (off screen), so it has settled by the time we get there
+        preload: `{ const IO = window.IntersectionObserver; window.IntersectionObserver = class extends IO {
+            constructor(cb, o) { super(cb, o); this.cb = cb; }
+            observe(el) { if (el.classList && el.classList.contains('about-tagline')) setTimeout(() => this.cb([{ isIntersecting: true, target: el }], this), 0); else super.observe(el); } }; }`,
         run: async ev => {
             const T0 = Date.now(), mark = k => console.log('mark', k, ((Date.now() - T0) / 1000).toFixed(2));
             await ev('setTimeout(() => location.reload(), 50)');
@@ -285,6 +289,7 @@ try {
 
     await send('Emulation.setDeviceMetricsOverride', { width: shot.w, height: shot.h, deviceScaleFactor: 1, mobile: false });
     await send('Page.enable');
+    if (shot.preload) await send('Page.addScriptToEvaluateOnNewDocument', { source: shot.preload });
     await send('Page.navigate', { url: shot.url });
     await sleep(4000);
 
