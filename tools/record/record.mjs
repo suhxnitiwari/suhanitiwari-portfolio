@@ -203,8 +203,12 @@ const shots = {
             // show what opened, then on to Marketing
             await glide(btnY - 60, 1800);
             await glide(btnY + 520, 1800);
-            await glide((await at('#marketing-work')) + 40, 2200);
-            await sleep(600);
+            await glide((await at('#marketing-work')) + 40, 2400);
+            // then all of a sudden: a fast run to the very bottom of the site
+            await ev(`(() => { const start = scrollY, end = document.documentElement.scrollHeight - innerHeight, t0 = performance.now(), d = 1300;
+                const step = now => { const k = Math.min(1, (now - t0) / d), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; scrollTo(0, start + (end - start) * e); if (k < 1) requestAnimationFrame(step); };
+                requestAnimationFrame(step); })()`);
+            await sleep(2600);
         }
     },
     search: {
