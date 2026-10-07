@@ -41,13 +41,13 @@
   // [start, end] in seconds of the site recording (from tools/record's marks)
   const caps = [
     [0.00, 3.55, '“MIS? So… business and <em>computer science</em>?”'],
-    [3.55, 4.86, 'Every MIS major has heard it.'],
-    [4.86, 6.28, 'Couldn’t be further from the <em>truth</em>.'],
-    [6.28, 8.11, 'It’s about…'],
-    [8.11, 9.53, 'finding the problem <em>worth solving</em>,'],
+    [3.55, 4.87, 'Every MIS major has heard it.'],
+    [4.87, 6.28, 'Couldn’t be further from the <em>truth</em>.'],
+    [6.28, 8.12, 'It’s about…'],
+    [8.12, 9.53, 'finding the problem <em>worth solving</em>,'],
     [9.53, 12.43, 'turning <b class="m">information</b> into answers,'],
-    [12.43, 21.94, 'designing the <b class="m">systems</b> behind it,'],
-    [21.94, 23.33, 'getting people to <em>choose</em> it,'],
+    [12.43, 21.95, 'designing the <b class="m">systems</b> behind it,'],
+    [21.95, 23.33, 'getting people to <em>choose</em> it,'],
     [23.33, 26.46, '<b class="m">managing</b> it as it grows,'],
     [26.46, 28.13, 'and teaching the <em>next generation</em> to build too.'],
     [28.13, 99.00, 'So I <em>built</em> my answer.']
@@ -58,7 +58,7 @@
   const v = document.getElementById('v'), win = document.getElementById('win'), cta = document.getElementById('cta');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const VSTART = 0.3, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 30.69, CTA = 2.0;     // the recording's last useful second, then the end card
+  const VEND = 30.70, CTA = 2.0;     // the recording's last useful second, then the end card
   window.DUR = VSTART + VEND - SKIP + CTA;
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
   window.ready = loaded(v);
