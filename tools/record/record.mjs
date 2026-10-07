@@ -184,11 +184,11 @@ const shots = {
             constructor(cb, o) { super(cb, o); this.cb = cb; }
             observe(el) { if (el.classList && el.classList.contains('about-tagline')) setTimeout(() => this.cb([{ isIntersecting: true, target: el }], this), 0); else super.observe(el); } };
             // and its scrambled letters stay hidden, so on camera it simply types out
-            addEventListener('DOMContentLoaded', () => { const st = document.createElement('style'); st.textContent = '.about-tagline .x { visibility: hidden; }'; document.head.appendChild(st); }); }`,
+            addEventListener('DOMContentLoaded', () => { const st = document.createElement('style'); st.textContent = '.about-tagline .x { visibility: hidden; } .sitara.tucked .sitara-launch { transform: none !important; opacity: 1 !important; }'; document.head.appendChild(st); }); }`,
         run: async ev => {
             const T0 = Date.now(), marks = {}, mark = k => { marks[k] = +((Date.now() - T0) / 1000).toFixed(2); console.log('mark', k, marks[k]); };
             await ev('setTimeout(() => location.reload(), 50)');
-            await sleep(3200);
+            await sleep(3000);
             // an eased scroll of exactly `ms`, re-aiming every frame so sections that shift above can't throw it off
             const go = (sel, off, ms) => ev(`new Promise(res => { const s = scrollY, t0 = performance.now(), d = ${ms};
                 const tgt = () => { const e = document.querySelector(${JSON.stringify(sel)}); return Math.min(e.getBoundingClientRect().top + scrollY + ${off}, document.documentElement.scrollHeight - innerHeight); };
@@ -216,19 +216,22 @@ const shots = {
             mark('itsabout'); await go('#selected-work', 10, 1300); await hold(500);
             mark('experience'); await go('#experience', -70, 650); await hold(750);
             mark('education'); await go('#education', -70, 650); await hold(750);
-            mark('why'); await go('#why-heading', -90, 700); await hold(750);
+            mark('why'); await go('#why-heading', -90, 700); await hold(600);
             // MIS: the project map, then the button, then each of the four levels for the same beat, then Hand me a problem
-            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(1300);
+            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(1100);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
-            await go('#mis-more-cycle', -70, 800);
-            for (let i = 0; i < 4; i++) { await tap(`.mis-box[data-step="${i}"] .mis-box-main`, 400); await hold(650); }
-            await hideCursor();
-            await go('.mp-section.mis-more', -70, 700); await hold(900);
-            mark('marketing'); await go('#marketing-work', 40, 700); await hold(650);
-            mark('projects'); await go('#projects', -70, 700); await hold(600);
+            // the cycle: let the ball travel from Business strategy to Technical skills on its own
+            await go('#mis-more-cycle', -70, 800); await hold(3600);
+            // Hand me a problem: one click on the triangle's next problem
+            await go('.mp-section.mis-more', -70, 700); await hold(500);
+            await tap('.mp-tabs button:nth-child(2)', 420); await hold(1200); await hideCursor();
+            // Marketing: click over to Prime Book Club
+            mark('marketing'); await go('#marketing-work', 40, 700); await hold(400);
+            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(1300); await hideCursor();
+            mark('projects'); await go('#projects', -70, 700); await hold(500);
             await go('#projects', 650, 1300); await hold(500);
-            mark('beyond'); await go('#beyond', -70, 750); await hold(900);
-            mark('finale'); await go('#finale-heading', -110, 900); await hold(2400);
+            mark('beyond'); await go('#beyond', -70, 750); await hold(800);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(2200);
             mark('end');
             writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
