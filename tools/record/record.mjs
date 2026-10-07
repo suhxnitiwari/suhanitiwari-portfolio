@@ -182,22 +182,25 @@ const shots = {
         // the About tagline starts its keyboard-mash typing as soon as the page loads (off screen), so it has settled by the time we get there
         preload: `{ const IO = window.IntersectionObserver; window.IntersectionObserver = class extends IO {
             constructor(cb, o) { super(cb, o); this.cb = cb; }
-            observe(el) { if (el.classList && el.classList.contains('about-tagline')) setTimeout(() => this.cb([{ isIntersecting: true, target: el }], this), 0); else super.observe(el); } }; }`,
+            observe(el) { if (el.classList && el.classList.contains('about-tagline')) setTimeout(() => this.cb([{ isIntersecting: true, target: el }], this), 0); else super.observe(el); } };
+            // and its scrambled letters stay hidden, so on camera it simply types out
+            addEventListener('DOMContentLoaded', () => { const st = document.createElement('style'); st.textContent = '.about-tagline .x { visibility: hidden; }'; document.head.appendChild(st); }); }`,
         run: async ev => {
             const T0 = Date.now(), marks = {}, mark = k => { marks[k] = +((Date.now() - T0) / 1000).toFixed(2); console.log('mark', k, marks[k]); };
             await ev('setTimeout(() => location.reload(), 50)');
-            await sleep(2600);
+            await sleep(3600);
             // an eased scroll of exactly `ms`, re-aiming every frame so sections that shift above can't throw it off
             const go = (sel, off, ms) => ev(`new Promise(res => { const s = scrollY, t0 = performance.now(), d = ${ms};
                 const tgt = () => { const e = document.querySelector(${JSON.stringify(sel)}); return Math.min(e.getBoundingClientRect().top + scrollY + ${off}, document.documentElement.scrollHeight - innerHeight); };
                 const f = n => { const k = Math.min(1, (n - t0) / d), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; scrollTo({ top: s + (tgt() - s) * e, behavior: 'instant' }); k < 1 ? requestAnimationFrame(f) : res(); };
                 requestAnimationFrame(f); })`);
             const hold = ms => sleep(ms);
-            mark('about'); await go('#about', -70, 700); await hold(450);
-            mark('truth'); await go('#selected-work', -70, 700); await hold(500);
-            mark('itsabout'); await hold(900);
-            mark('experience'); await go('#experience', -70, 650); await hold(550);
-            mark('education'); await go('#education', -70, 650); await hold(550);
+            mark('about'); await go('#about', -70, 700); await hold(600);
+            mark('truth'); await go('#selected-work', -70, 700); await hold(650);
+            mark('itsabout'); await hold(800);
+            mark('experience'); await go('#experience', -70, 650); await hold(750);
+            mark('education'); await go('#education', -70, 650); await hold(750);
+            mark('why'); await go('#why-heading', -90, 700); await hold(1500);
             // MIS: straight to the button, a quick click, and the curriculum that opens
             mark('mis'); await go('.mis-more-btn', -560, 800);
             await ev(`(() => {
@@ -210,11 +213,11 @@ const shots = {
             await sleep(480);
             await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => { c.style.transform = ''; c.style.opacity = '0'; }, 160); document.querySelector('.mis-more-btn').click(); })()`);
             await sleep(250);
-            await go('.mis-more', -70, 800); await hold(700);
-            mark('marketing'); await go('#marketing-work', 40, 700); await hold(550);
-            mark('projects'); await go('#projects', -70, 700); await hold(550);
-            mark('beyond'); await go('#beyond', -70, 750); await hold(600);
-            mark('finale'); await go('#finale-heading', -110, 900); await hold(2000);
+            await go('.mis-more', -70, 800); await hold(900);
+            mark('marketing'); await go('#marketing-work', 40, 700); await hold(750);
+            mark('projects'); await go('#projects', -70, 700); await hold(750);
+            mark('beyond'); await go('#beyond', -70, 750); await hold(800);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(3500);
             mark('end');
             writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
