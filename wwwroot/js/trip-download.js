@@ -47,7 +47,7 @@
         doc.setCharSpace(2.5).text('TRAVELING', M, y).setCharSpace(0);
         y += 34;
         doc.setFont('times', 'normal').setFontSize(34).setTextColor(...ink);
-        doc.text(`My ${city} Edit`, M, y);
+        doc.text(`${city} Edit`, M, y);
         y += 22;
         doc.setFont('helvetica', 'italic').setFontSize(11).setTextColor(...mute);
         doc.text(`The ${spots.length} spots I'd send you to`, M, y);
