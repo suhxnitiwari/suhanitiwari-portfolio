@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; }
+  body { background: radial-gradient(120% 80% at 20% 0%, #8A4D57 0%, #5A2533 45%, #2A1810 100%); font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; color: #FFF8F6; position: relative; }
+  .glow { position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(243,201,207,0.35), transparent 65%); right: -220px; top: 380px; filter: blur(10px); }
+  .top { position: absolute; left: 70px; right: 70px; top: 78px; }
+  .kick { font-size: 22px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #F3C9CF; opacity: 0; }
+  h1 { position: relative; margin: 22px 0 0; height: 290px; font-family: Georgia, serif; font-size: 66px; line-height: 1.12; font-weight: 700; letter-spacing: -0.5px; }
+  h1 .cap { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+  h1 .w { display: inline-block; opacity: 0; transform: translateY(18px); }
+  h1 em { color: #F3C9CF; }
+  .win { position: absolute; left: 60px; top: 470px; width: 960px; border-radius: 22px; overflow: hidden; background: #FAF1EF; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.12); opacity: 0; transform: translateY(60px) scale(0.96); }
+  .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 18px; background: #F3E3E0; }
+  .bar i { width: 13px; height: 13px; border-radius: 50%; background: #E0A9B1; } .bar i:nth-child(2) { background: #E8C987; } .bar i:nth-child(3) { background: #A9BFA0; }
+  .url { margin-left: 18px; flex: 1; height: 28px; border-radius: 99px; background: #FFFBF9; display: flex; align-items: center; padding: 0 16px; font-size: 17px; font-weight: 600; color: #733642; }
+  video { display: block; width: 960px; height: 600px; object-fit: cover; }
+  .bottom { position: absolute; left: 70px; right: 70px; top: 1150px; display: flex; align-items: center; justify-content: center; opacity: 0; }
+  .pills { display: flex; gap: 14px; }
+  .pill { padding: 14px 24px; border-radius: 99px; background: rgba(255,248,246,0.12); border: 1px solid rgba(243,201,207,0.45); font-size: 24px; font-weight: 600; }
+  .pill b { font-family: Georgia, serif; color: #F3C9CF; margin-right: 8px; }
+  .site { font-family: Georgia, serif; font-size: 34px; font-weight: 700; }
+  .site span { display: block; font-family: -apple-system, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #F3C9CF; margin-bottom: 6px; text-align: center; }
+  .spark { position: absolute; color: #E8C987; font-size: 40px; opacity: 0; }
+</style></head>
+<body>
+  <div class="glow"></div>
+  <div class="top">
+    <div class="kick">MIS at UT Austin McCombs</div>
+    <h1 id="h"></h1>
+  </div>
+  <div class="win" id="win">
+    <div class="bar"><i></i><i></i><i></i><div class="url">suhanitiwari.com</div></div>
+    <video id="v" src="li-site.mp4" muted playsinline preload="auto"></video>
+  </div>
+  <div class="bottom" id="bot">
+        <div class="site"><span>See it live</span>suhanitiwari.com</div>
+  </div>
+  <div class="spark" id="s1" style="left: 960px; top: 150px">✦</div>
+  <div class="spark" id="s2" style="left: 40px; top: 430px; font-size: 26px">✦</div>
+<script>
+  // the headline changes as the site scrolls: [start, end] in seconds of the site video
+  const caps = [
+    [0, 2.6, '“So it’s like… business and <em>computer science</em>?”'],
+    [2.6, 5.2, 'Couldn’t be further from the truth.'],
+    [5.2, 8.6, 'It’s deciding what’s <em>worth building</em>,'],
+    [8.6, 12.2, '<em>who</em> it’s for,'],
+    [12.2, 19.4, 'and whether it <em>actually works</em>.'],
+    [19.4, 99, 'So I <em>built</em> it.']
+  ];
+  const h = document.getElementById('h');
+  h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
+  const capEls = [...h.querySelectorAll('.cap')];
+  const v = document.getElementById('v'), win = document.getElementById('win'), bot = document.getElementById('bot');
+  const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
+  const VSTART = 1.0, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
+  window.DUR = VSTART + 25.3 - SKIP;
+  window.ready = new Promise(r => { if (v.readyState >= 2) r(); else v.addEventListener('loadeddata', r, { once: true }); });
+  window.render = t => new Promise(resolve => {
+    document.querySelector('.kick').style.opacity = ease(t / 0.4);
+    const vtime = Math.max(0, t - VSTART);   // where we are in the site video
+    capEls.forEach((el, i) => { const [a, b] = caps[i]; const k = Math.min(ease((vtime - a + (i === 0 ? VSTART : 0)) / 0.45), 1 - ease((vtime - b + 0.25) / 0.35)); el.style.opacity = i === 0 && t < VSTART ? ease(t / 0.5) : Math.max(0, k); el.style.transform = `translateY(${(1 - Math.max(0, Math.min(1, k))) * 14}px)`; });
+    const kw = ease((t - 0.5) / 0.7); win.style.opacity = kw; win.style.transform = `translateY(${(1 - kw) * 60}px) scale(${0.96 + kw * 0.04})`;
+    bot.style.opacity = ease((t - 1.0) / 0.6);
+    ['s1','s2'].forEach((id, i) => { const el = document.getElementById(id); el.style.opacity = 0.35 + 0.45 * Math.abs(Math.sin(t * 1.4 + i * 2)); el.style.transform = `scale(${0.85 + 0.25 * Math.abs(Math.sin(t * 1.4 + i * 2))})`; });
+    const vt = Math.max(SKIP, Math.min(t - VSTART + SKIP, v.duration - 0.05));
+    if (Math.abs(v.currentTime - vt) < 0.001) return resolve();
+    v.addEventListener('seeked', () => resolve(), { once: true });
+    v.currentTime = vt;
+  });
+</script>
+</body></html>

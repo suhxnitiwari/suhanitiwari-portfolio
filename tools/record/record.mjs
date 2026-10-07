@@ -176,17 +176,35 @@ const shots = {
         run: async () => { await sleep(13000); }
     },
     linkedin: {
-        // for LinkedIn: the home page from the top (SUHANI TIWARI lands), then a slow scroll down the site
+        // for LinkedIn: the home page from the top (SUHANI TIWARI lands), a slow scroll down the site,
+        // a visible cursor clicking "More on my MIS curriculum", then on into Marketing
         url: process.env.SITE_URL || 'https://suhanitiwari.com/', w: 1280, h: 800, stream: true,
         run: async ev => {
             await ev('setTimeout(() => location.reload(), 50)');
             await sleep(4200);
-            // ease down the page a screen at a time, pausing on each part
-            for (let i = 0; i < 9; i++) {
-                await ev('window.scrollBy({ top: Math.round(innerHeight * 0.85), behavior: "smooth" })');
-                await sleep(1500);
-            }
-            await sleep(800);
+            const glide = async (y, ms) => { await ev(`window.scrollTo({ top: ${y}, behavior: "smooth" })`); await sleep(ms); };
+            const at = sel => ev(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : 0; })()`);
+            for (const sel of ['#about', '#selected-work', '#experience', '#education']) { await glide((await at(sel)) - 70, 1700); }
+            // the MIS section, then the button in the middle of the screen
+            const btnY = await at('.mis-more-btn');
+            await glide(btnY - 360, 1800);
+            // a soft cursor glides to the button and clicks it
+            await ev(`(() => {
+                const b = document.querySelector('.mis-more-btn').getBoundingClientRect();
+                const c = document.createElement('div'); c.id = 'fakecursor';
+                c.style.cssText = 'position:fixed;z-index:99999;left:' + (innerWidth - 160) + 'px;top:' + (innerHeight - 120) + 'px;width:26px;height:26px;border-radius:50%;background:rgba(115,54,66,.85);box-shadow:0 0 0 6px rgba(243,201,207,.6);transition:left .9s cubic-bezier(.3,.7,.2,1),top .9s cubic-bezier(.3,.7,.2,1),transform .15s;pointer-events:none';
+                document.body.appendChild(c);
+                requestAnimationFrame(() => { c.style.left = (b.left + b.width / 2 - 13) + 'px'; c.style.top = (b.top + b.height / 2 - 13) + 'px'; });
+            })()`);
+            await sleep(1100);
+            await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => c.style.transform = '', 160); document.querySelector('.mis-more-btn').click(); })()`);
+            await sleep(900);
+            await ev(`document.getElementById('fakecursor').style.opacity = '0'`);
+            // show what opened, then on to Marketing
+            await glide(btnY - 60, 1800);
+            await glide(btnY + 520, 1800);
+            await glide((await at('#marketing-work')) + 40, 2200);
+            await sleep(600);
         }
     },
     search: {
