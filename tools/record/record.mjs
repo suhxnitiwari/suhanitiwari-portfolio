@@ -222,20 +222,20 @@ const shots = {
             mark('mis'); await go('.mis-more-btn', -926, 800); await hold(500);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
             // the cycle, with a little room above its heading; the ball travels on to Technical skills
-            await go('#mis-more-cycle', -120, 700); await hold(700);
+            await go('#mis-more-cycle', -120, 700); await hold(500);
             await ev(`document.querySelector('.mis-box[data-step="1"] .mis-box-main').click()`); await hold(900);
             // Hand me a problem: one click on the triangle's next problem
             await go('.mp-section.mis-more', -110, 650); await hold(200);
-            await tap('.mp-tabs button:nth-child(2)', 400); await hold(700);
+            await tap('.mp-tabs button:nth-child(2)', 400); await hold(600);
             // From one line of code: a quick turn of the dial
             await go('#zoom-heading', -330, 650); await hold(150);
-            await tap('.zoom-tick[data-zoom="2"]', 400); await hold(600); await hideCursor();
+            await tap('.zoom-tick[data-zoom="2"]', 400); await hold(500); await hideCursor();
             // Marketing: the project tabs with the whole deck under them, then a click over to Prime Book Club
-            mark('marketing'); await go('.mp-proj-tabs', -90, 750); await hold(250);
+            mark('marketing'); await go('.mp-proj-tabs', -90, 750); await hold(150);
             await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(900); await hideCursor();
             // All projects, slowly enough for every card to load
-            mark('projects'); await go('#projects', -70, 750); await hold(700);
-            await go('#projects', 650, 1600); await hold(500);
+            mark('projects'); await go('#projects', -70, 750); await hold(900);
+            await go('#projects', 650, 1900); await hold(600);
             mark('beyond'); await go('#beyond', -70, 750); await hold(500);
             mark('finale'); await go('#finale-heading', -110, 900); await hold(2300);
             mark('end');

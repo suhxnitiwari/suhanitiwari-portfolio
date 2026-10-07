@@ -22,3 +22,6 @@ wwwroot/_t.html
 sitara-worker.js
 
 .claude/
+
+# the LinkedIn video ending photo is UT's, kept local only
+tools/record/tower.jpg
