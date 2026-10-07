@@ -1,6 +1,6 @@
 @* SUHANI'S SPHERE: photos of me, the concerts I've been to and my favorites, behind Invite Only's password (friends and family).
    The photos live in My World's private folder (PrivateContent/world/published/images/sphere), so they only load for someone signed in.
-   WorldController serves it at /world/sphere. The favorites are the ones Sitara knows (sitara-worker.js), so the two agree.
+   WorldController serves it at /world/sphere. The food list is what Sitara knows (sitara-worker.js); Watch and Read are the old Off the Clock shelves (_SphereShelves).
    Add a photo: drop it in that folder and add a line below. *@
 @{
     ViewData["Title"] = "Suhani’s Sphere";
@@ -15,21 +15,25 @@
         ("Sept 22, 2025", "Addison Rae", "", "ACL Live at the Moody Theater", "Megan", null),
         ("Oct 4, 2025", "ACL Festival", "Sabrina Carpenter, MARINA and Joe Keery", "Zilker Park", "", null),
         ("Nov 4, 2025", "Maroon 5", "", "Moody Center", "", null),
-        ("Apr 10, 2026", "Zara Larsson", "", "Stubb’s", "Reese", null),
+        ("Apr 10, 2026", "Zara Larsson", "", "Stubb’s", "Reese", "concert-zara-larsson.jpg"),
         ("June 8, 2026", "Madison Beer", "", "Moody Center", "", null),
         ("June 26, 2026", "Ariana Grande", "the Eternal Sunshine tour, Amaira’s first concert", "Moody Center", "Amaira", null)
     };
-    var shelves = new (string Title, string Note, string[] Items)[]
+    // food photos, each with its caption
+    var foodPhotos = new (string File, int W, int H, string Caption)[]
     {
-        ("Comfort shows", "for sad days, lazy days and couch-potato days", new[] { "Gossip Girl", "Jane the Virgin", "Modern Family", "Friends", "Desperate Housewives" }),
-        ("Romance movies", "for nights I’m feeling a little delusional", new[] { "Yeh Jawaani Hai Deewani", "How to Lose a Guy in 10 Days", "Jab We Met", "Voicemails for Isabelle", "Tu Jhoothi Main Makkaar", "Rocky Aur Rani Kii Prem Kahaani", "Student of the Year" }),
-        ("The desi edit", "", new[] { "Don’t Be Shy", "Dil Dosti Dilemma", "Call Me Bae", "Mind the Malhotras", "Mismatched", "Masaba Masaba" }),
-        ("Childhood shows", "", new[] { "Sofia the First", "Jessie", "Good Luck Charlie", "Liv and Maddie", "Full House", "Lab Rats" }),
-        ("Comedy that never misses", "", new[] { "Zakir Khan: Papa Yaar", "Amit Tandon: Family Tandoncies", "Hasan Minhaj: Homecoming King", "Ladies Up", "The Great Indian Kapil Show" }),
-        ("Books I’ll never shut up about", "", new[] { "The Hating Game", "The Unhoneymooners", "People We Meet on Vacation", "You Deserve Each Other", "The Spanish Love Deception", "By a Thread", "The Devil You Know", "The Ex Talk", "Funny Story", "The American Roommate Experiment", "The Worst Best Man", "The Deal", "The Love Hypothesis" }),
-        ("Books that changed how I live", "", new[] { "Atomic Habits", "The Let Them Theory", "How to Win Friends and Influence People", "Ikigai", "The 48 Laws of Power" }),
-        ("Comfort TED talks", "some people have comfort shows; I have comfort TED talks", new[] { "Change Your Mindset, Change the Game", "What Makes a Good Life?", "Grit", "The Power of Believing That You Can Improve", "How to Make Learning as Addictive as Social Media", "There’s More to Life Than Being Happy" }),
-        ("Board games", "", new[] { "Clue", "Monopoly" })
+        ("food-indian-junk-food.jpg", 1050, 1400, "Indian junk food"),
+        ("food-tarka.jpg", 787, 1400, "Tarka"),
+        ("food-azul-rooftop.jpg", 788, 1400, "Azul Rooftop"),
+        ("food-yamas-salad.jpg", 1049, 1400, "Yamas salad"),
+        ("food-yamas-fries.jpg", 1191, 1400, "Yamas fries"),
+        ("food-veracruz-fonda.jpg", 788, 1400, "Veracruz Fonda"),
+        ("food-de-nada.jpg", 788, 1400, "De Nada"),
+        ("food-mexican-sugar-flight.jpg", 787, 1400, "Mexican Sugar flight"),
+        ("food-rumis-kitchen.jpg", 787, 1400, "Rumi’s Kitchen, Houston"),
+        ("food-rumis-kitchen-2.jpg", 788, 1400, "Rumi’s Kitchen, Houston"),
+        ("food-ema.jpg", 787, 1400, "Ema at the Domain, Austin"),
+        ("food-snooze-flight.jpg", 1050, 1400, "Snooze pancake flight")
     };
     var food = new (string Label, string Value)[]
     {
@@ -79,34 +83,28 @@
         </ol>
 
         <h2 class="sp-h">Food</h2>
-        <div class="sp-food">
-            <figure class="sp-food-photo">
-                <button type="button" class="fc-shot" aria-haspopup="dialog">
-                    <img src="/world/images/sphere/food-indian-junk-food.jpg" width="1050" height="1400" alt="Hakka noodles and a stuffed bun" loading="lazy" decoding="async" />
-                </button>
-                <figcaption>Indian junk food</figcaption>
-            </figure>
-            <dl class="sp-food-list">
-                @foreach (var f in food)
-                {
-                    <div><dt>@f.Label</dt><dd>@f.Value</dd></div>
-                }
-            </dl>
-        </div>
-
-        <h2 class="sp-h">Favorites</h2>
-        <div class="sp-shelves">
-            @foreach (var s in shelves)
+        <div class="sp-food-photos">
+            @foreach (var f in foodPhotos)
             {
-                <section class="sp-shelf">
-                    <h3>@s.Title</h3>
-                    @if (s.Note != "") { <p class="sp-shelf-note">@s.Note</p> }
-                    <ul>@foreach (var item in s.Items) { <li>@item</li> }</ul>
-                </section>
+                <figure class="sp-food-photo" style="--ar: @((f.W / (double)f.H).ToString("0.###", inv))">
+                    <button type="button" class="fc-shot" aria-haspopup="dialog">
+                        <img src="/world/images/sphere/@f.File" width="@f.W" height="@f.H" alt="@f.Caption" loading="lazy" decoding="async" />
+                    </button>
+                    <figcaption>@f.Caption</figcaption>
+                </figure>
             }
         </div>
+        <dl class="sp-food-list">
+            @foreach (var f in food)
+            {
+                <div><dt>@f.Label</dt><dd>@f.Value</dd></div>
+            }
+        </dl>
+
     </div>
 </section>
+@* Watch and Read: the poster and book shelves and the comfort TED talks *@
+<partial name="_SphereShelves" />
 <dialog class="fc-view" aria-label="Photo">
     <img alt="" />
     <button type="button" class="fc-prev" aria-label="Previous photo">‹</button>
@@ -156,23 +154,16 @@
     .sp-note { margin-top: 4px !important; font-family: Georgia, serif; font-style: italic; color: #733642; }
     .sp-venue { margin-top: 10px !important; font-size: 0.88em; color: #7A665F; }
 
-    /* food: the photo with its caption, then the list */
-    .sp-food { display: grid; grid-template-columns: minmax(220px, 340px) 1fr; gap: 32px; align-items: start; }
-    .sp-food-photo { margin: 0; }
-    .sp-food-photo .fc-shot { display: block; width: 100%; --ar: 0.75; aspect-ratio: 0.75; flex: none; }
-    .sp-food-photo figcaption { margin-top: 10px; font-family: Georgia, serif; font-style: italic; color: #733642; }
-    .sp-food-list { margin: 0; display: grid; gap: 14px; }
+    /* food: a row of captioned photos (each keeps its shape), then the list */
+    .sp-food-photos { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 28px; }
+    .sp-food-photo { margin: 0; flex: var(--ar) 1 calc(var(--ar) * 240px); }
+    .sp-food-photo .fc-shot { display: block; width: 100%; aspect-ratio: var(--ar); }
+    .sp-food-photo figcaption { margin-top: 8px; font-family: Georgia, serif; font-style: italic; color: #733642; }
+    .sp-food-list { margin: 0; max-width: 760px; display: grid; gap: 14px; }
     .sp-food-list div { display: grid; grid-template-columns: 9.5em 1fr; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid #EBD5D0; }
     .sp-food-list dt { font-size: 0.72em; letter-spacing: 1.4px; text-transform: uppercase; color: #8A4D57; padding-top: 4px; }
     .sp-food-list dd { margin: 0; font-family: Georgia, serif; font-size: 1.1em; color: #1E100A; }
 
-    /* favorites: shelves in columns */
-    .sp-shelves { columns: 3 260px; column-gap: 14px; }
-    .sp-shelf { break-inside: avoid; margin: 0 0 14px; padding: 18px 20px; border-radius: var(--r-card, 16px); background: #FFFBF9; border: 1px solid #EBD5D0; }
-    .sp-shelf h3 { margin: 0; font-family: Georgia, serif; font-size: 1.2em; font-weight: 400; color: #1E100A; }
-    .sp-shelf-note { margin: 4px 0 0; font-family: Georgia, serif; font-style: italic; font-size: 0.92em; color: #733642; }
-    .sp-shelf ul { margin: 12px 0 0; padding: 0; list-style: none; }
-    .sp-shelf li { padding: 5px 0; border-top: 1px solid #F1E2DE; font-size: 0.95em; }
 
     .fc-view { padding: 0; border: 0; background: none; max-width: 100vw; max-height: 100vh; overflow: visible; }
     .fc-view::backdrop { background: rgba(30, 16, 10, 0.88); }
@@ -184,7 +175,7 @@
     @@media (max-width: 860px) {
         .sphere-page { padding: 0 20px 70px; }
         .sp-photos .fc-shot { flex: 1 1 100%; max-width: none; }
-        .sp-food { grid-template-columns: 1fr; }
+        .sp-food-photo { flex-basis: calc(50% - 7px); }
         .sp-food-list div { grid-template-columns: 1fr; gap: 4px; }
     }
     @@media (prefers-reduced-motion: reduce) { .fc-shot img { transition: none; } .fc-shot:hover img { transform: none; } }
