@@ -1984,13 +1984,13 @@
     </ol>
 </nav>
 <style>
-    .chapters { position: fixed; right: 18px; top: 50%; z-index: 40; transform: translateY(-50%); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .chapters { position: fixed; left: 18px; top: 50%; z-index: 40; transform: translateY(-50%); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .chapters.on { opacity: 1; pointer-events: auto; }
-    .chapters ol { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; margin: 0; padding: 0; list-style: none; }
-    .chapters a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none; }
-    .chapters a::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: rgba(118, 52, 78, 0.28); transition: background 0.2s ease, height 0.2s ease; }
-    .chapters span { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #76344E; white-space: nowrap;
-        opacity: 0; transform: translateX(6px); transition: opacity 0.2s ease, transform 0.2s ease; }
+    .chapters ol { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .chapters a { display: flex; flex-direction: row-reverse; align-items: center; justify-content: flex-end; gap: 10px; text-decoration: none; }
+    .chapters a::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: rgba(118, 52, 78, 0.28); transition: background 0.2s ease, height 0.2s ease; }
+    .chapters span { font-size: 0.82rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #76344E; white-space: nowrap;
+        opacity: 0; transform: translateX(-6px); transition: opacity 0.2s ease, transform 0.2s ease; }
     .chapters a:hover span, .chapters a:focus-visible span, .chapters a.current span { opacity: 1; transform: none; }
     .chapters a:hover::after, .chapters a.current::after { background: #76344E; }
     .chapters a.current::after { height: 18px; border-radius: 4px; }
