@@ -64,6 +64,8 @@
 .mk .mp-hero-fill .mp-thesis { font-size: clamp(1.15rem, 3.25cqi, 1.9rem); max-width: 30.4em; }   /* a slightly longer sentence */
 /* on wide screens the size stops growing and the width (in em) keeps it at two full lines */
 .mp-hero-fill .mp-thesis strong { display: block; text-wrap: balance; }
+/* a plain line under the pitch: who I build for (MIS), which brands I study (Marketing) */
+.mp-hero-line { font-size: 18px; line-height: 1.6; color: var(--muted); margin: 0; max-width: 46em; }
 .mp-hook { font-size: 18px; line-height: 1.7; color: var(--ink); margin: 0; }
 
 /* what I can do */
