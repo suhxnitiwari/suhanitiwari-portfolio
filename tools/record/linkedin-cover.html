@@ -15,13 +15,16 @@
   h1 .cap { position: absolute; left: 0; right: 0; top: 0; opacity: 0; text-wrap: balance; }
   h1 em { color: #F3C9CF; }
   h1 .m { color: #F3C9CF; font-size: 1.12em; text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 10px; text-decoration-color: rgba(243,201,207,.55); }
-  /* the end */
-  .cta { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; }
-  .cta-name { margin: 0; font-family: Georgia, serif; font-size: 120px; line-height: 1; font-weight: 700; }
-  .cta-k { margin: 26px 0 0; font-size: 26px; font-weight: 700; letter-spacing: 7px; text-transform: uppercase; color: #F3C9CF; }
-  .cta-line { width: 120px; height: 2px; margin: 60px 0 0; background: rgba(243,201,207,0.5); }
-  .cta-s { margin: 60px 0 0; font-size: 28px; color: #FBE9EC; }
-  .cta-url { margin: 20px 0 0; padding: 20px 46px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 52px; font-weight: 700; box-shadow: 0 0 0 8px rgba(243,201,207,0.18); }
+  /* the end: the Tower at golden hour, the motto, then my name */
+  .end { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
+  .end img { position: absolute; left: -54px; top: -68px; width: 1188px; height: 1485px; }
+  .end .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(42,24,16,0) 30%, rgba(42,24,16,0.55) 62%, rgba(30,16,12,0.88) 100%), linear-gradient(90deg, rgba(42,24,16,0.35), rgba(42,24,16,0) 60%); }
+  .end .card { position: absolute; left: 80px; right: 80px; bottom: 120px; opacity: 0; }
+  .end h2 { margin: 0; font-family: Georgia, serif; font-weight: 400; font-size: 104px; line-height: 1.04; color: #FFF8F6; letter-spacing: -1px; }
+  .end h2 em { color: #F3C9CF; }
+  .end .k { margin: 34px 0 0; font-size: 28px; font-weight: 600; letter-spacing: 6px; text-transform: uppercase; color: #FBE9EC; line-height: 1.5; }
+  .end .rule { width: 110px; height: 2px; margin: 34px 0 0; background: rgba(255,248,246,0.75); }
+  .end .u { margin: 30px 0 0; font-size: 40px; font-weight: 600; letter-spacing: 1px; color: #FFF8F6; }
 </style></head>
 <body>
   <div class="glow"></div>
@@ -30,27 +33,26 @@
     <video id="v" src="li-site.mp4" muted playsinline preload="auto"></video>
   </div>
   <h1 id="h"></h1>
-  <div class="cta" id="cta">
-    <p class="cta-name">Suhani Tiwari</p>
-    <p class="cta-k">MIS at McCombs</p>
-    <div class="cta-line"></div>
-    <p class="cta-s">See it live at</p>
-    <p class="cta-url">suhanitiwari.com</p>
+  <div class="end" id="cta">
+    <img src="tower.jpg" alt="">
+    <div class="shade"></div>
+    <div class="card" id="c1"><h2>What Starts Here<br><em>Changes<br>the World.</em></h2></div>
+    <div class="card" id="c2"><h2>Suhani<br>Tiwari</h2><p class="k">MIS at McCombs<br>School of Business</p><div class="rule"></div><p class="u">suhanitiwari.com</p></div>
   </div>
 <script>
   // [start, end] in seconds of the site recording (from tools/record's marks)
   const caps = [
-    [0.00, 3.35, '“MIS? So… business and <em>computer science</em>?”'],
-    [3.35, 4.72, 'Every MIS major has heard it.'],
-    [4.72, 6.14, 'Couldn’t be further from the <em>truth</em>.'],
-    [6.14, 7.97, 'It’s about…'],
-    [7.97, 10.82, 'finding the problem <em>worth solving</em>,'],
-    [10.82, 13.56, 'turning <b class="m">information</b> into answers,'],
-    [13.56, 24.63, 'designing the <b class="m">systems</b> behind it,'],
-    [24.63, 27.67, 'getting people to <em>choose</em> it,'],
-    [27.67, 32.12, '<b class="m">managing</b> it as it grows,'],
-    [32.12, 33.69, 'and teaching the <em>next generation</em> to build too.'],
-    [33.69, 99.00, 'So I <em>built</em> my answer.']
+    [0.00, 2.65, '“MIS? So… business and <em>computer science</em>?”'],
+    [2.65, 3.92, 'Every MIS major has heard it.'],
+    [3.92, 5.23, 'Couldn’t be further from the <em>truth</em>.'],
+    [5.23, 6.57, 'It’s about…'],
+    [6.57, 9.02, 'finding the problem <em>worth solving</em>,'],
+    [9.02, 10.33, 'turning <b class="m">information</b> into answers,'],
+    [10.33, 18.52, 'designing the <b class="m">systems</b> behind it,'],
+    [18.52, 20.88, 'getting people to <em>choose</em> it,'],
+    [20.88, 24.48, '<b class="m">managing</b> it as it grows,'],
+    [24.48, 25.75, 'and teaching the <em>next generation</em> to build too.'],
+    [25.75, 99.00, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
   h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
@@ -58,10 +60,11 @@
   const v = document.getElementById('v'), win = document.getElementById('win'), cta = document.getElementById('cta');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const VSTART = 0.3, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 36.05, CTA = 2.0;     // the recording's last useful second, then the end card
+  const VEND = 28.6, CTA = 2.0;     // the recording's last useful second, then the end card
   window.DUR = VSTART + VEND - SKIP + CTA;
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
-  window.ready = loaded(v);
+  const tw = document.querySelector('.end img');
+  window.ready = Promise.all([loaded(v), tw.decode()]);
   const seek = (el, time) => new Promise(r => { if (Math.abs(el.currentTime - time) < 0.001) return r(); el.addEventListener('seeked', () => r(), { once: true }); el.currentTime = time; });
   window.render = t => new Promise(resolve => {
     const vtime = Math.max(0, t - VSTART) + SKIP;
@@ -72,10 +75,14 @@
       el.style.transform = `translateY(${(1 - Math.max(0, Math.min(1, k))) * 12}px)`;
     });
     const kw = ease(t / 0.4); win.style.opacity = kw;
-    const ctaT = VSTART + VEND - SKIP, kc = ease((t - ctaT) / 0.5);
+    const ctaT = VSTART + VEND - SKIP, kc = ease((t - ctaT) / 0.3), et = Math.max(0, t - ctaT);
     cta.style.opacity = kc;
-    cta.style.transform = `translateY(${(1 - kc) * 24}px)`;
-    if (kc > 0) { win.style.opacity = 1 - kc; win.style.transform = `translateY(${-kc * 40}px)`; h.style.opacity = 1 - kc; }
+    tw.style.transform = `scale(${1 + et * 0.03})`;   // a slow push-in on the Tower
+    const k1 = Math.min(ease((et - 0.15) / 0.25), 1 - ease((et - 0.95) / 0.2)), k2 = ease((et - 1.05) / 0.25);
+    const c1 = document.getElementById('c1'), c2 = document.getElementById('c2');
+    c1.style.opacity = Math.max(0, k1); c1.style.transform = `translateY(${(1 - Math.max(0, Math.min(1, k1))) * 16}px)`;
+    c2.style.opacity = k2; c2.style.transform = `translateY(${(1 - k2) * 16}px)`;
+    if (kc > 0) { win.style.opacity = 1 - kc; h.style.opacity = 1 - kc; }
     seek(v, Math.max(SKIP, Math.min(vtime, v.duration - 0.05))).then(resolve);
   });
 </script>

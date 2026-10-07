@@ -188,7 +188,7 @@ const shots = {
         run: async ev => {
             const T0 = Date.now(), marks = {}, mark = k => { marks[k] = +((Date.now() - T0) / 1000).toFixed(2); console.log('mark', k, marks[k]); };
             await ev('setTimeout(() => location.reload(), 50)');
-            await sleep(3000);
+            await sleep(2300);
             // an eased scroll of exactly `ms`, re-aiming every frame so sections that shift above can't throw it off
             const go = (sel, off, ms) => ev(`new Promise(res => { const s = scrollY, t0 = performance.now(), d = ${ms};
                 const tgt = () => { const e = document.querySelector(${JSON.stringify(sel)}); return Math.min(e.getBoundingClientRect().top + scrollY + ${off}, document.documentElement.scrollHeight - innerHeight); };
@@ -211,35 +211,33 @@ const shots = {
             };
             const hideCursor = () => ev(`(() => { const c = document.getElementById('fakecursor'); if (c) c.style.opacity = '0'; })()`);
             // About on its own, before Selected work comes into view
-            mark('about'); await go('#about', -370, 700); await hold(650);
-            mark('truth'); await go('#selected-work', -70, 700); await hold(700);
+            mark('about'); await go('#about', -370, 700); await hold(550);
+            mark('truth'); await go('#selected-work', -70, 700); await hold(600);
             // a soft drift down so Still Watching and Listening Galaxy are both in full view
-            mark('itsabout'); await go('#selected-work', 10, 1300); await hold(500);
-            mark('experience'); await go('#experience', -70, 650); await hold(750);
-            await go('#education', -70, 650); await hold(750);
-            // The Why, then a click over to Why McCombs
-            mark('why'); await go('#why-heading', -90, 700); await hold(500);
-            await tap('.why-tab:nth-of-type(2)', 420); await hold(1100); await hideCursor();
+            mark('itsabout'); await go('#selected-work', 10, 1000); await hold(300);
+            mark('experience'); await go('#experience', -70, 650); await hold(550);
+            await go('#education', -70, 650); await hold(550);
+            mark('why'); await go('#why-heading', -90, 700); await hold(600);
             // MIS: the project map, then the button
-            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(1100);
+            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(500);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
             // the cycle, with a little room above its heading; the ball travels on to Technical skills
-            await go('#mis-more-cycle', -120, 800); await hold(1200);
-            await ev(`document.querySelector('.mis-box[data-step="1"] .mis-box-main').click()`); await hold(1300);
+            await go('#mis-more-cycle', -120, 700); await hold(700);
+            await ev(`document.querySelector('.mis-box[data-step="1"] .mis-box-main').click()`); await hold(900);
             // Hand me a problem: one click on the triangle's next problem
-            await go('.mp-section.mis-more', -110, 700); await hold(400);
-            await tap('.mp-tabs button:nth-child(2)', 420); await hold(1100);
+            await go('.mp-section.mis-more', -110, 650); await hold(200);
+            await tap('.mp-tabs button:nth-child(2)', 400); await hold(700);
             // From one line of code: a quick turn of the dial
-            await go('#zoom-heading', -330, 700); await hold(300);
-            await tap('.zoom-tick[data-zoom="2"]', 420); await hold(1000); await hideCursor();
+            await go('#zoom-heading', -330, 650); await hold(150);
+            await tap('.zoom-tick[data-zoom="2"]', 400); await hold(600); await hideCursor();
             // Marketing: the project tabs with the whole deck under them, then a click over to Prime Book Club
-            mark('marketing'); await go('.mp-proj-tabs', -90, 800); await hold(400);
-            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(1400); await hideCursor();
+            mark('marketing'); await go('.mp-proj-tabs', -90, 750); await hold(250);
+            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(900); await hideCursor();
             // All projects, slowly enough for every card to load
-            mark('projects'); await go('#projects', -70, 800); await hold(900);
-            await go('#projects', 650, 2000); await hold(700);
-            mark('beyond'); await go('#beyond', -70, 750); await hold(800);
-            mark('finale'); await go('#finale-heading', -110, 900); await hold(2200);
+            mark('projects'); await go('#projects', -70, 750); await hold(700);
+            await go('#projects', 650, 1600); await hold(500);
+            mark('beyond'); await go('#beyond', -70, 750); await hold(500);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(2300);
             mark('end');
             writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
