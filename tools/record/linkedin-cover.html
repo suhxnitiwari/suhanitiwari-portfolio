@@ -5,9 +5,12 @@
   body { background: radial-gradient(120% 80% at 20% 0%, #8A4D57 0%, #5A2533 45%, #2A1810 100%); font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; color: #FFF8F6; position: relative; }
   .glow { position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(243,201,207,0.35), transparent 65%); right: -220px; top: 380px; filter: blur(10px); }
   .top { position: absolute; left: 70px; right: 70px; top: 78px; }
-  .kick { font-size: 22px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #F3C9CF; opacity: 0; }
-  h1 { position: relative; margin: 22px 0 0; height: 290px; font-family: Georgia, serif; font-size: 66px; line-height: 1.12; font-weight: 700; letter-spacing: -0.5px; }
-  h1 .cap { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
+  .kick { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 18px; border-bottom: 1px solid rgba(243,201,207,0.28); opacity: 0; }
+  .kick b { font-family: Georgia, serif; font-size: 34px; font-weight: 700; letter-spacing: 0.5px; color: #FFF8F6; }
+  .kick span { font-size: 19px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #F3C9CF; }
+  h1 { position: relative; margin: 22px 0 0; height: 262px; font-family: Georgia, serif; font-size: 66px; line-height: 1.12; font-weight: 700; letter-spacing: -0.5px; }
+  h1 .cap { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: flex-end; opacity: 0; }
+  h1 .cap > span { display: block; text-wrap: balance; }
   h1 .w { display: inline-block; opacity: 0; transform: translateY(18px); }
   h1 em { color: #F3C9CF; }
   h1 .m { color: #F3C9CF; font-size: 1.14em; text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 10px; text-decoration-color: rgba(243,201,207,.55); }
@@ -27,17 +30,20 @@
   .site { font-family: Georgia, serif; font-size: 34px; font-weight: 700; }
   .site span { display: block; font-family: -apple-system, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #F3C9CF; margin-bottom: 6px; text-align: center; }
   .cta { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; padding: 0 80px; }
-  .cta-k { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #F3C9CF; }
-  .cta-h { margin: 0; font-family: Georgia, serif; font-size: 64px; color: #F3C9CF; line-height: 1.05; font-weight: 700; }
+  .cta-k { margin: 0 0 34px; font-size: 22px; font-weight: 700; letter-spacing: 7px; text-transform: uppercase; color: #F3C9CF; }
+  .cta-h { margin: 56px 0 0; font-family: Georgia, serif; font-size: 96px; line-height: 1; font-weight: 700; color: #FFF8F6; }
+  .cta-win { width: 760px; border-radius: 20px; overflow: hidden; background: #FAF1EF; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.14); }
+  .cta-win video { width: 760px; height: 475px; object-fit: cover; }
   .cta-h em { color: #F3C9CF; }
-  .cta-url { margin: 34px 0 0; padding: 30px 60px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 76px; font-weight: 700; }
+  .cta-url { margin: 38px 0 0; padding: 20px 44px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 46px; font-weight: 700; box-shadow: 0 0 0 8px rgba(243,201,207,0.18); }
+  .cta-url span { font-family: -apple-system, sans-serif; font-size: 34px; margin-left: 6px; }
   .cta-s { margin: 28px 0 0; font-size: 26px; color: #FBE9EC; }
   .spark { position: absolute; color: #E8C987; font-size: 40px; opacity: 0; }
 </style></head>
 <body>
   <div class="glow"></div>
   <div class="top">
-    <div class="kick">MIS at UT Austin McCombs</div>
+    <div class="kick"><b>Suhani Tiwari</b><span>MIS at UT Austin McCombs</span></div>
     <h1 id="h"></h1>
   </div>
   <div class="win" id="win">
@@ -50,17 +56,20 @@
         <div class="site"><span>See it live</span>suhanitiwari.com</div>
   </div>
   <div class="cta" id="cta">
-    <p class="cta-h">Take a look.</p>
-    <p class="cta-url">suhanitiwari.com</p>
+    <p class="cta-k">Suhani Tiwari</p>
+    <div class="cta-win"><div class="bar"><i></i><i></i><i></i><div class="url">suhanitiwari.com</div></div><video id="cv" src="li-site.mp4" muted playsinline preload="auto"></video></div>
+    <p class="cta-h">Take a <em>look</em>.</p>
+    <p class="cta-url">suhanitiwari.com <span>↗</span></p>
   </div>
-  <div class="spark" id="s1" style="left: 990px; top: 70px">✦</div>
+  <div class="spark" id="s1" style="left: 1000px; top: 1190px">✦</div>
   <div class="spark" id="s2" style="left: 40px; top: 430px; font-size: 26px">✦</div>
 <script>
   // the headline changes as the site scrolls: [start, end] in seconds of the site video
   const caps = [
     [0, 2.6, '“MIS? So… business and <em>computer science</em>?”'],
     [2.6, 4.2, 'Every MIS major has heard it.'],
-    [4.2, 8.8, 'Couldn’t be further from the truth.<br>It’s about'],
+    [4.2, 6.6, 'Couldn’t be further from the <em>truth</em>.'],
+    [6.6, 8.8, 'It’s about…'],
     [8.8, 11.1, 'finding the problem <em>worth solving</em>,'],
     [11.1, 13.4, 'turning <b class="m">information</b> into answers,'],
     [13.4, 22.6, 'designing the <b class="m">systems</b> behind it,'],
@@ -70,7 +79,7 @@
     [34.0, 99, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
-  h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
+  h.innerHTML = caps.map(c => `<span class="cap"><span>${c[2]}</span></span>`).join('');
   const capEls = [...h.querySelectorAll('.cap')];
   const v = document.getElementById('v'), win = document.getElementById('win'), bot = document.getElementById('bot');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
@@ -80,7 +89,8 @@
   const monts = [...document.querySelectorAll('.mont')];
   const MSTART = 4.2, MEACH = 0.74;   // the project montage, in site-recording seconds, while the caption says "worth building"
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
-  window.ready = Promise.all([v, ...monts.map(m => m.querySelector('video'))].map(loaded));
+  const cv = document.getElementById('cv');
+  window.ready = Promise.all([v, cv, ...monts.map(m => m.querySelector('video'))].map(loaded)).then(() => seek(cv, 3.2));
   const seek = (el, time) => new Promise(r => { if (Math.abs(el.currentTime - time) < 0.001) return r(); el.addEventListener('seeked', () => r(), { once: true }); el.currentTime = time; });
   window.render = t => new Promise(resolve => {
     document.querySelector('.kick').style.opacity = ease(t / 0.4);
@@ -93,6 +103,7 @@
     const kc = ease((t - ctaT) / 0.6);
     document.getElementById('cta').style.opacity = kc;
     document.querySelector('.cta-h').style.transform = `translateY(${(1 - kc) * 30}px)`;
+    document.querySelector('.cta-win').style.transform = `translateY(${(1 - kc) * 50}px) scale(${0.94 + kc * 0.06})`;
     if (kc > 0) { win.style.opacity = 1 - kc; win.style.transform = `translateY(${-kc * 40}px) scale(${1 - kc * 0.05})`; document.querySelector('.top').style.opacity = 1 - kc; bot.style.opacity = 1 - kc; }
     else document.querySelector('.top').style.opacity = 1;
     const vt = Math.max(SKIP, Math.min(t - VSTART + SKIP, v.duration - 0.05));
