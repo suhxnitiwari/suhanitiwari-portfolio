@@ -72,15 +72,15 @@
             Line: "Nine months of my YouTube, parsed: what I skim, what I sit through, and what it knows about me.", Skills: new[] { "Python", "Data engineering", "scikit-learn", "JavaScript" }, Topics: new[] { "ETL & Analytics", "Algorithms, AI & Interactive" }),
     };
 
-    // The homepage shows only my four most clickable: the show, the brand, the data, the heart. Two rows, 6 and 6, then 8 and 4
+    // The homepage shows only my four most clickable: the show, the brand, the heart, the data. Two rows, 7 and 5, then 4 and 8
     if (ViewData["Featured"] as bool? == true)
     {
         var picks = new (string Title, int Cols, bool Fill, string Line)[]
         {
-            ("Still Watching", 6, false, "My family, drawn and on Netflix. Eleven years of our viewing history, turned into episodes."),
-            ("How Glossier Lost Its Cult", 6, false, "The moat was never makeup. It was the comments section."),
-            ("Listening Galaxy", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?"),
-            ("Girls Can Be Engineers, Too!", 4, false, "1,000 copies in its first month. The book I wanted my little sister to have.")
+            ("Still Watching", 7, false, "My family, drawn and on Netflix. Eleven years of our viewing history, turned into episodes."),
+            ("How Glossier Lost Its Cult", 5, false, "The moat was never makeup. It was the comments section."),
+            ("Girls Can Be Engineers, Too!", 4, false, "1,000 copies in its first month. The book I wanted my little sister to have."),
+            ("Listening Galaxy", 8, false, "182,293 plays over four years. What does my music know about me that Wrapped never asks?")
         };
         stories = picks.Select(p =>
         {
