@@ -3,120 +3,80 @@
 <style>
   html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; }
   body { background: radial-gradient(120% 80% at 20% 0%, #8A4D57 0%, #5A2533 45%, #2A1810 100%); font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; color: #FFF8F6; position: relative; }
-  .glow { position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(243,201,207,0.35), transparent 65%); right: -220px; top: 380px; filter: blur(10px); }
-  .top { position: absolute; left: 70px; right: 70px; top: 78px; }
-  .kick { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 18px; border-bottom: 1px solid rgba(243,201,207,0.28); opacity: 0; }
-  .kick b { font-family: Georgia, serif; font-size: 34px; font-weight: 700; letter-spacing: 0.5px; color: #FFF8F6; }
-  .kick span { font-size: 19px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #F3C9CF; }
-  h1 { position: relative; margin: 22px 0 0; height: 262px; font-family: Georgia, serif; font-size: 66px; line-height: 1.12; font-weight: 700; letter-spacing: -0.5px; }
-  h1 .cap { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: flex-end; opacity: 0; }
-  h1 .cap > span { display: block; text-wrap: balance; }
-  h1 .w { display: inline-block; opacity: 0; transform: translateY(18px); }
-  h1 em { color: #F3C9CF; }
-  h1 .m { color: #F3C9CF; font-size: 1.14em; text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 10px; text-decoration-color: rgba(243,201,207,.55); }
-  .win { position: absolute; left: 60px; top: 470px; width: 960px; border-radius: 22px; overflow: hidden; background: #FAF1EF; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.12); opacity: 0; transform: translateY(60px) scale(0.96); }
+  .glow { position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(243,201,207,0.3), transparent 65%); right: -260px; bottom: -200px; filter: blur(10px); }
+  /* the site on top */
+  .win { position: absolute; left: 60px; top: 64px; width: 960px; border-radius: 22px; overflow: hidden; background: #FAF1EF; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.12); opacity: 0; }
   .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 18px; background: #F3E3E0; }
   .bar i { width: 13px; height: 13px; border-radius: 50%; background: #E0A9B1; } .bar i:nth-child(2) { background: #E8C987; } .bar i:nth-child(3) { background: #A9BFA0; }
   .url { margin-left: 18px; flex: 1; height: 28px; border-radius: 99px; background: #FFFBF9; display: flex; align-items: center; padding: 0 16px; font-size: 17px; font-weight: 600; color: #733642; }
-  .screen { position: relative; width: 960px; height: 600px; }
-  video { display: block; width: 960px; height: 600px; object-fit: cover; }
-  .mont { position: absolute; inset: 0; opacity: 0; background: #1E100A; }
-  .mont video { width: 100%; height: 100%; }
-  .mont::after { content: attr(data-name); position: absolute; left: 24px; bottom: 24px; padding: 12px 22px; border-radius: 99px; background: rgba(255,248,246,0.94); color: #733642; font-family: Georgia, serif; font-size: 30px; font-weight: 700; box-shadow: 0 10px 30px -12px rgba(0,0,0,.6); }
-  .bottom { position: absolute; left: 70px; right: 70px; top: 1150px; display: flex; align-items: center; justify-content: center; opacity: 0; }
-  .pills { display: flex; gap: 14px; }
-  .pill { padding: 14px 24px; border-radius: 99px; background: rgba(255,248,246,0.12); border: 1px solid rgba(243,201,207,0.45); font-size: 24px; font-weight: 600; }
-  .pill b { font-family: Georgia, serif; color: #F3C9CF; margin-right: 8px; }
-  .site { font-family: Georgia, serif; font-size: 34px; font-weight: 700; }
-  .site span { display: block; font-family: -apple-system, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #F3C9CF; margin-bottom: 6px; text-align: center; }
-  .cta { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; padding: 0 80px; }
-  .cta-k { margin: 0 0 34px; font-size: 22px; font-weight: 700; letter-spacing: 7px; text-transform: uppercase; color: #F3C9CF; }
-  .cta-h { margin: 56px 0 0; font-family: Georgia, serif; font-size: 96px; line-height: 1; font-weight: 700; color: #FFF8F6; }
-  .cta-win { width: 760px; border-radius: 20px; overflow: hidden; background: #FAF1EF; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.14); }
-  .cta-win video { width: 760px; height: 475px; object-fit: cover; }
-  .cta-h em { color: #F3C9CF; }
-  .cta-url { margin: 38px 0 0; padding: 20px 44px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 46px; font-weight: 700; box-shadow: 0 0 0 8px rgba(243,201,207,0.18); }
-  .cta-url span { font-family: -apple-system, sans-serif; font-size: 34px; margin-left: 6px; }
-  .cta-s { margin: 28px 0 0; font-size: 26px; color: #FBE9EC; }
-  .spark { position: absolute; color: #E8C987; font-size: 40px; opacity: 0; }
+  video { display: block; width: 960px; height: 750px; object-fit: cover; }
+  /* the caption underneath */
+  h1 { position: absolute; left: 70px; right: 70px; top: 930px; height: 360px; margin: 0; font-family: Georgia, serif; font-size: 76px; line-height: 1.12; font-weight: 700; letter-spacing: -0.5px; }
+  h1 .cap { position: absolute; left: 0; right: 0; top: 0; opacity: 0; text-wrap: balance; }
+  h1 em { color: #F3C9CF; }
+  h1 .m { color: #F3C9CF; font-size: 1.12em; text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 10px; text-decoration-color: rgba(243,201,207,.55); }
+  /* the end */
+  .cta { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; }
+  .cta-name { margin: 0; font-family: Georgia, serif; font-size: 120px; line-height: 1; font-weight: 700; }
+  .cta-k { margin: 26px 0 0; font-size: 26px; font-weight: 700; letter-spacing: 7px; text-transform: uppercase; color: #F3C9CF; }
+  .cta-line { width: 120px; height: 2px; margin: 60px 0 0; background: rgba(243,201,207,0.5); }
+  .cta-s { margin: 60px 0 0; font-size: 28px; color: #FBE9EC; }
+  .cta-url { margin: 20px 0 0; padding: 20px 46px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 52px; font-weight: 700; box-shadow: 0 0 0 8px rgba(243,201,207,0.18); }
 </style></head>
 <body>
   <div class="glow"></div>
-  <div class="top">
-    <div class="kick"><b>Suhani Tiwari</b><span>MIS at UT Austin McCombs</span></div>
-    <h1 id="h"></h1>
-  </div>
   <div class="win" id="win">
     <div class="bar"><i></i><i></i><i></i><div class="url">suhanitiwari.com</div></div>
-    <div class="screen">
-      <video id="v" src="li-site.mp4" muted playsinline preload="auto"></video>
-    </div>
+    <video id="v" src="li-site.mp4" muted playsinline preload="auto"></video>
   </div>
-  <div class="bottom" id="bot">
-        <div class="site"><span>See it live</span>suhanitiwari.com</div>
-  </div>
+  <h1 id="h"></h1>
   <div class="cta" id="cta">
-    <p class="cta-k">Suhani Tiwari</p>
-    <div class="cta-win"><div class="bar"><i></i><i></i><i></i><div class="url">suhanitiwari.com</div></div><video id="cv" src="li-site.mp4" muted playsinline preload="auto"></video></div>
-    <p class="cta-h">Take a <em>look</em>.</p>
-    <p class="cta-url">suhanitiwari.com <span>↗</span></p>
+    <p class="cta-name">Suhani Tiwari</p>
+    <p class="cta-k">MIS at McCombs</p>
+    <div class="cta-line"></div>
+    <p class="cta-s">See it live at</p>
+    <p class="cta-url">suhanitiwari.com</p>
   </div>
-  <div class="spark" id="s1" style="left: 1000px; top: 1190px">✦</div>
-  <div class="spark" id="s2" style="left: 40px; top: 430px; font-size: 26px">✦</div>
 <script>
-  // the headline changes as the site scrolls: [start, end] in seconds of the site video
+  // [start, end] in seconds of the site recording (from tools/record's marks)
   const caps = [
-    [0, 2.6, '“MIS? So… business and <em>computer science</em>?”'],
-    [2.6, 4.2, 'Every MIS major has heard it.'],
-    [4.2, 6.6, 'Couldn’t be further from the <em>truth</em>.'],
-    [6.6, 8.8, 'It’s about…'],
-    [8.8, 11.1, 'finding the problem <em>worth solving</em>,'],
-    [11.1, 13.4, 'turning <b class="m">information</b> into answers,'],
-    [13.4, 22.6, 'designing the <b class="m">systems</b> behind it,'],
-    [22.6, 25.8, 'getting people to <em>choose</em> it,'],
-    [25.8, 30.3, '<b class="m">managing</b> it as it grows,'],
-    [30.3, 34.0, 'and teaching the <em>next generation</em> to build too.'],
-    [34.0, 99, 'So I <em>built</em> my answer.']
+    [0.00, 2.60, '“MIS? So… business and <em>computer science</em>?”'],
+    [2.60, 4.12, 'Every MIS major has heard it.'],
+    [4.12, 5.34, 'Couldn’t be further from the <em>truth</em>.'],
+    [5.34, 6.24, 'It’s about…'],
+    [6.24, 7.46, 'finding the problem <em>worth solving</em>,'],
+    [7.46, 8.69, 'turning <b class="m">information</b> into answers,'],
+    [8.69, 11.77, 'designing the <b class="m">systems</b> behind it,'],
+    [11.77, 13.06, 'getting people to <em>choose</em> it,'],
+    [13.06, 14.32, '<b class="m">managing</b> it as it grows,'],
+    [14.32, 15.69, 'and teaching the <em>next generation</em> to build too.'],
+    [15.69, 99.00, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
-  h.innerHTML = caps.map(c => `<span class="cap"><span>${c[2]}</span></span>`).join('');
+  h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
   const capEls = [...h.querySelectorAll('.cap')];
-  const v = document.getElementById('v'), win = document.getElementById('win'), bot = document.getElementById('bot');
+  const v = document.getElementById('v'), win = document.getElementById('win'), cta = document.getElementById('cta');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
-  const VSTART = 1.0, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 39.5, CTA = 3.0;   // the site video's last useful second, then the call to action
+  const VSTART = 0.4, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
+  const VEND = 18.1, CTA = 2.3;     // the recording's last useful second, then the end card
   window.DUR = VSTART + VEND - SKIP + CTA;
-  const monts = [...document.querySelectorAll('.mont')];
-  const MSTART = 4.2, MEACH = 0.74;   // the project montage, in site-recording seconds, while the caption says "worth building"
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
-  const cv = document.getElementById('cv');
-  window.ready = Promise.all([v, cv, ...monts.map(m => m.querySelector('video'))].map(loaded)).then(() => seek(cv, 3.2));
+  window.ready = loaded(v);
   const seek = (el, time) => new Promise(r => { if (Math.abs(el.currentTime - time) < 0.001) return r(); el.addEventListener('seeked', () => r(), { once: true }); el.currentTime = time; });
   window.render = t => new Promise(resolve => {
-    document.querySelector('.kick').style.opacity = ease(t / 0.4);
-    const vtime = Math.max(0, t - VSTART) + SKIP;   // where we are in the site recording
-    capEls.forEach((el, i) => { const [a, b] = caps[i]; const k = Math.min(ease((vtime - a + (i === 0 ? VSTART : 0)) / 0.45), 1 - ease((vtime - b + 0.25) / 0.35)); el.style.opacity = i === 0 && t < VSTART ? ease(t / 0.5) : Math.max(0, k); el.style.transform = `translateY(${(1 - Math.max(0, Math.min(1, k))) * 14}px)`; });
-    const kw = ease((t - 0.5) / 0.7); win.style.opacity = kw; win.style.transform = `translateY(${(1 - kw) * 60}px) scale(${0.96 + kw * 0.04})`;
-    bot.style.opacity = ease((t - 1.0) / 0.6);
-    ['s1','s2'].forEach((id, i) => { const el = document.getElementById(id); el.style.opacity = 0.35 + 0.45 * Math.abs(Math.sin(t * 1.4 + i * 2)); el.style.transform = `scale(${0.85 + 0.25 * Math.abs(Math.sin(t * 1.4 + i * 2))})`; });
-    const ctaT = VSTART + VEND - SKIP;   // when the call to action takes over
-    const kc = ease((t - ctaT) / 0.6);
-    document.getElementById('cta').style.opacity = kc;
-    document.querySelector('.cta-h').style.transform = `translateY(${(1 - kc) * 30}px)`;
-    document.querySelector('.cta-win').style.transform = `translateY(${(1 - kc) * 50}px) scale(${0.94 + kc * 0.06})`;
-    if (kc > 0) { win.style.opacity = 1 - kc; win.style.transform = `translateY(${-kc * 40}px) scale(${1 - kc * 0.05})`; document.querySelector('.top').style.opacity = 1 - kc; bot.style.opacity = 1 - kc; }
-    else document.querySelector('.top').style.opacity = 1;
-    const vt = Math.max(SKIP, Math.min(t - VSTART + SKIP, v.duration - 0.05));
-    const mi = Math.floor((vtime - MSTART) / MEACH);
-    const waits = [seek(v, vt)];
-    monts.forEach((m, i) => {
-      const on = i === mi;
-      const into = vtime - MSTART - i * MEACH;
-      // the clip before stays fully on underneath while the next fades in, so the site never shows through mid-montage
-      m.style.opacity = on ? Math.min(1, i === 0 ? into / 0.12 : 1) : (i === mi - 1 && mi < monts.length ? 1 : 0);
-      if (on || (i === mi - 1 && mi < monts.length)) waits.push(seek(m.querySelector('video'), Math.min(0.8 + into * 1.6, m.querySelector('video').duration - 0.05)));
+    const vtime = Math.max(0, t - VSTART) + SKIP;
+    capEls.forEach((el, i) => {
+      const [a, b] = caps[i];
+      const k = i === 0 ? Math.min(ease(t / 0.35), 1 - ease((vtime - b + 0.12) / 0.2)) : Math.min(ease((vtime - a) / 0.22), 1 - ease((vtime - b + 0.12) / 0.2));
+      el.style.opacity = Math.max(0, k);
+      el.style.transform = `translateY(${(1 - Math.max(0, Math.min(1, k))) * 12}px)`;
     });
-    Promise.all(waits).then(() => resolve());
+    const kw = ease(t / 0.4); win.style.opacity = kw;
+    const ctaT = VSTART + VEND - SKIP, kc = ease((t - ctaT) / 0.5);
+    cta.style.opacity = kc;
+    cta.style.transform = `translateY(${(1 - kc) * 24}px)`;
+    if (kc > 0) { win.style.opacity = 1 - kc; win.style.transform = `translateY(${-kc * 40}px)`; h.style.opacity = 1 - kc; }
+    seek(v, Math.max(SKIP, Math.min(vtime, v.duration - 0.05))).then(resolve);
   });
 </script>
 </body></html>

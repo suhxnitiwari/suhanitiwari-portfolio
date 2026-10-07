@@ -178,47 +178,45 @@ const shots = {
     linkedin: {
         // for LinkedIn: the home page from the top (SUHANI TIWARI lands), a slow scroll down the site,
         // a visible cursor clicking "More on my MIS curriculum", then on into Marketing
-        url: process.env.SITE_URL || 'https://suhanitiwari.com/', w: 1280, h: 800, stream: true,
+        url: process.env.SITE_URL || 'https://suhanitiwari.com/', w: 1280, h: 1000, stream: true,
         // the About tagline starts its keyboard-mash typing as soon as the page loads (off screen), so it has settled by the time we get there
         preload: `{ const IO = window.IntersectionObserver; window.IntersectionObserver = class extends IO {
             constructor(cb, o) { super(cb, o); this.cb = cb; }
             observe(el) { if (el.classList && el.classList.contains('about-tagline')) setTimeout(() => this.cb([{ isIntersecting: true, target: el }], this), 0); else super.observe(el); } }; }`,
         run: async ev => {
-            const T0 = Date.now(), mark = k => console.log('mark', k, ((Date.now() - T0) / 1000).toFixed(2));
+            const T0 = Date.now(), marks = {}, mark = k => { marks[k] = +((Date.now() - T0) / 1000).toFixed(2); console.log('mark', k, marks[k]); };
             await ev('setTimeout(() => location.reload(), 50)');
-            await sleep(4200);
-            const glide = async (y, ms) => { await ev(`window.scrollTo({ top: ${y}, behavior: "smooth" })`); await sleep(ms); };
-            const at = sel => ev(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : 0; })()`);
-            for (const sel of ['#about', '#selected-work', '#experience', '#education']) { mark(sel); await glide((await at(sel)) - 70, 1700); }
-            mark('mis');
-            // the MIS section, then the button in the middle of the screen
-            const btnY = await at('.mis-more-btn');
-            await glide(btnY - 360, 1800);
-            // a soft cursor glides to the button and clicks it
+            await sleep(2600);
+            // an eased scroll of exactly `ms`, re-aiming every frame so sections that shift above can't throw it off
+            const go = (sel, off, ms) => ev(`new Promise(res => { const s = scrollY, t0 = performance.now(), d = ${ms};
+                const tgt = () => { const e = document.querySelector(${JSON.stringify(sel)}); return Math.min(e.getBoundingClientRect().top + scrollY + ${off}, document.documentElement.scrollHeight - innerHeight); };
+                const f = n => { const k = Math.min(1, (n - t0) / d), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; scrollTo({ top: s + (tgt() - s) * e, behavior: 'instant' }); k < 1 ? requestAnimationFrame(f) : res(); };
+                requestAnimationFrame(f); })`);
+            const hold = ms => sleep(ms);
+            mark('about'); await go('#about', -70, 700); await hold(450);
+            mark('truth'); await go('#selected-work', -70, 700); await hold(500);
+            mark('itsabout'); await hold(900);
+            mark('experience'); await go('#experience', -70, 650); await hold(550);
+            mark('education'); await go('#education', -70, 650); await hold(550);
+            // MIS: straight to the button, a quick click, and the curriculum that opens
+            mark('mis'); await go('.mis-more-btn', -560, 800);
             await ev(`(() => {
                 const b = document.querySelector('.mis-more-btn').getBoundingClientRect();
                 const c = document.createElement('div'); c.id = 'fakecursor';
-                c.style.cssText = 'position:fixed;z-index:99999;left:' + (innerWidth - 160) + 'px;top:' + (innerHeight - 120) + 'px;width:26px;height:26px;border-radius:50%;background:rgba(115,54,66,.85);box-shadow:0 0 0 6px rgba(243,201,207,.6);transition:left .9s cubic-bezier(.3,.7,.2,1),top .9s cubic-bezier(.3,.7,.2,1),transform .15s;pointer-events:none';
+                c.style.cssText = 'position:fixed;z-index:99999;left:' + (b.right + 90) + 'px;top:' + (b.bottom + 70) + 'px;width:30px;height:30px;border-radius:50%;background:rgba(115,54,66,.9);box-shadow:0 0 0 7px rgba(243,201,207,.7);transition:left .4s cubic-bezier(.3,.7,.2,1),top .4s cubic-bezier(.3,.7,.2,1),transform .15s,opacity .25s;pointer-events:none';
                 document.body.appendChild(c);
-                requestAnimationFrame(() => { c.style.left = (b.left + b.width / 2 - 13) + 'px'; c.style.top = (b.top + b.height / 2 - 13) + 'px'; });
+                requestAnimationFrame(() => requestAnimationFrame(() => { c.style.left = (b.left + b.width / 2 - 15) + 'px'; c.style.top = (b.top + b.height / 2 - 15) + 'px'; }));
             })()`);
-            await sleep(1100);
-            await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => c.style.transform = '', 160); document.querySelector('.mis-more-btn').click(); })()`);
-            await sleep(900);
-            await ev(`document.getElementById('fakecursor').style.opacity = '0'`);
-            // show what opened, then on to Marketing
-            await glide(btnY - 60, 1800);
-            await glide(btnY + 520, 1800);
-            mark('marketing'); await glide((await at('#marketing-work')) + 40, 2400);
-            // then the projects, Beyond the Classroom, and the finale with its numbers
-            mark('projects'); await glide((await at('#projects')) - 70, 2000);
-            await glide((await at('#projects')) + 500, 1400);
-            mark('beyond'); await glide((await at('#beyond')) - 70, 2800);
-            // the page shifts as sections above render, so aim at the heading, then settle on it again once it's in place
-            mark('finale'); await glide((await at('#finale-heading')) - 90, 1700);
-            await glide((await at('#finale-heading')) - 90, 700);
-            mark('settled'); await sleep(2200);
+            await sleep(480);
+            await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => { c.style.transform = ''; c.style.opacity = '0'; }, 160); document.querySelector('.mis-more-btn').click(); })()`);
+            await sleep(250);
+            await go('.mis-more', -70, 800); await hold(700);
+            mark('marketing'); await go('#marketing-work', 40, 700); await hold(550);
+            mark('projects'); await go('#projects', -70, 700); await hold(550);
+            mark('beyond'); await go('#beyond', -70, 750); await hold(600);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(2000);
             mark('end');
+            writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
     },
     search: {
