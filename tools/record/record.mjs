@@ -211,13 +211,14 @@ const shots = {
             };
             const hideCursor = () => ev(`(() => { const c = document.getElementById('fakecursor'); if (c) c.style.opacity = '0'; })()`);
             mark('about'); await go('#about', -70, 700); await hold(600);
-            mark('truth'); await go('#selected-work', -70, 700); await hold(800);
-            mark('itsabout'); await hold(900);
+            mark('truth'); await go('#selected-work', -70, 700); await hold(700);
+            // a soft drift down so Still Watching and Listening Galaxy are both in full view
+            mark('itsabout'); await go('#selected-work', 10, 1300); await hold(500);
             mark('experience'); await go('#experience', -70, 650); await hold(750);
             mark('education'); await go('#education', -70, 650); await hold(750);
             mark('why'); await go('#why-heading', -90, 700); await hold(750);
             // MIS: the project map, then the button, then each of the four levels for the same beat, then Hand me a problem
-            mark('mis'); await go('.mis-more-btn', -860, 800); await hold(1300);
+            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(1300);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
             await go('#mis-more-cycle', -70, 800);
             for (let i = 0; i < 4; i++) { await tap(`.mis-box[data-step="${i}"] .mis-box-main`, 400); await hold(650); }
