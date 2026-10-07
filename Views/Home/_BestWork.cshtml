@@ -445,6 +445,9 @@
         object-position: center top;
         transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
+    /* the Glossier tile is narrower than its video: show all of it (the readers count and the chat), on its own blush */
+    .best-media:has(video[src$="/glossier.mp4"]) { background: #F7E5E2; }
+    .best-media video[src$="/glossier.mp4"] { object-fit: contain; }
 
     /* screen recordings: a colored panel, the recording set in from the left and running off the bottom-right edge */
     .best-media.framed {
