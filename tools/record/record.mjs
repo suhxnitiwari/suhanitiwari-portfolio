@@ -217,7 +217,7 @@ const shots = {
             mark('education'); await go('#education', -70, 650); await hold(750);
             mark('why'); await go('#why-heading', -90, 700); await hold(750);
             // MIS: the project map, then the button, then each of the four levels for the same beat, then Hand me a problem
-            mark('mis'); await go('.mis-more-btn', -560, 800); await hold(1300);
+            mark('mis'); await go('.mis-more-btn', -860, 800); await hold(1300);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
             await go('#mis-more-cycle', -70, 800);
             for (let i = 0; i < 4; i++) { await tap(`.mis-box[data-step="${i}"] .mis-box-main`, 400); await hold(750); }
