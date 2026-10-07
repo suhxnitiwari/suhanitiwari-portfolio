@@ -14,6 +14,10 @@ namespace Tiwari_Suhani_HW3.Controllers
     // Two passwords, two roles: friends see My World, family sees it plus the Family Room (/world/family/).
     public class WorldController : Controller
     {
+        // the locked pages (You Had to Be There, Who Has My Heart, The Words That Stayed, Suhani's Sphere) live in the private
+        // suhani-world repo, so their words stay out of this public one; they're compiled in (see the .csproj) and served only after login
+        private const string Locked = "~/PrivateContent/world/portfolio-views/";
+
         private const string Family = "family", Friends = "friends";
         private readonly string? friendsHash, familyHash;
         private readonly PhysicalFileProvider? pages;
@@ -89,7 +93,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         {
             Response.Headers.CacheControl = "private, no-store";
             Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
-            return View("YouKnow");
+            return View(Locked + "YouKnow.cshtml");
         }
 
         // Faces: photos with my friends, for friends and family only
@@ -99,7 +103,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         {
             Response.Headers.CacheControl = "private, no-store";
             Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
-            return View("Faces");
+            return View(Locked + "Faces.cshtml");
         }
 
         // Words: the handmade cards and letters, for friends and family only
@@ -109,7 +113,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         {
             Response.Headers.CacheControl = "private, no-store";
             Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
-            return View("Words");
+            return View(Locked + "Words.cshtml");
         }
 
         // Suhani's Sphere: photos of me, my concerts and my favorites, for friends and family only
@@ -119,7 +123,7 @@ namespace Tiwari_Suhani_HW3.Controllers
         {
             Response.Headers.CacheControl = "private, no-store";
             Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
-            return View("Sphere");
+            return View(Locked + "Sphere.cshtml");
         }
 
         // log out: forget the My World cookie and go back to the main site

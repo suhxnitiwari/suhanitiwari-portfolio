@@ -21,6 +21,8 @@
     <None Remove="PrivateContent\**" />
     <EmbeddedResource Remove="PrivateContent\**" />
     <Content Include="PrivateContent\world\published\**" CopyToPublishDirectory="PreserveNewest" />
+    <!-- the locked Invite Only pages: Razor views kept in the private repo, compiled into the site -->
+    <Content Include="PrivateContent\world\portfolio-views\**\*.cshtml" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
 </Project>
