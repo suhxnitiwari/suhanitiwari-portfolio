@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=block" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=block" rel="stylesheet">
 <style>
   html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; }
   body { background: radial-gradient(120% 80% at 20% 0%, #8A4D57 0%, #5A2533 45%, #2A1810 100%); font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; color: #FFF8F6; position: relative; }
@@ -20,12 +20,13 @@
   .end { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
   .end img { position: absolute; left: -54px; top: -68px; width: 1188px; height: 1485px; }
   .end .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(42,24,16,0) 28%, rgba(60,20,20,0.35) 58%, rgba(50,16,20,0.72) 100%), linear-gradient(90deg, rgba(42,24,16,0.4), rgba(42,24,16,0) 62%); }
-  .ttl { position: absolute; left: 0; right: 0; bottom: 170px; margin: 0; text-align: center; color: #FFF8F6; opacity: 0; text-shadow: 0 4px 30px rgba(40,10,10,0.45); }
-  #motto { bottom: 330px; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 64px; line-height: 1.2; text-transform: uppercase; }
-  #motto em { font-style: normal; color: #FFD9DE; }
-  #name .nm { margin: 0; font-family: 'Cinzel', Georgia, serif; font-weight: 700; font-size: 86px; text-transform: uppercase; white-space: nowrap; }
-  #name .k { margin: 18px 0 0; font-family: 'Cinzel', Georgia, serif; font-weight: 600; font-size: 28px; letter-spacing: 5px; text-transform: uppercase; color: #FFE4E1; }
-  #name .u { margin: 46px 0 0; font-family: Georgia, serif; font-weight: 700; font-size: 70px; color: #FFD9DE; }
+  .ttl { position: absolute; left: 0; right: 0; margin: 0; text-align: center; color: #FFF8F6; text-shadow: 0 4px 30px rgba(40,10,20,0.5); }
+  #code { bottom: 330px; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 50px; line-height: 1.35; white-space: pre; text-align: left; left: 50%; right: auto; transform: translateX(-50%); }
+  #code .p { color: #F3C9CF; }
+  .caret { display: inline-block; width: 0.55em; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: #F3C9CF; }
+  #name { bottom: 350px; font-family: 'Cinzel', Georgia, serif; font-weight: 700; font-size: 86px; white-space: pre; }
+  #k { bottom: 300px; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 33px; letter-spacing: 1px; color: #FFE4E1; white-space: pre; }
+  #u { bottom: 170px; font-family: Georgia, serif; font-weight: 700; font-size: 72px; color: #FFD9DE; opacity: 0; }
 </style></head>
 <body>
   <div class="glow"></div>
@@ -37,23 +38,25 @@
   <div class="end" id="cta">
     <img src="tower.jpg" alt="">
     <div class="shade"></div>
-    <p class="ttl" id="motto">What Starts Here<br><em>Changes the World</em></p>
-    <div class="ttl" id="name"><p class="nm">Suhani Tiwari</p><p class="k">MIS at McCombs School of Business</p><p class="u">suhanitiwari.com</p></div>
+    <p class="ttl" id="code"></p>
+    <p class="ttl" id="name"></p>
+    <p class="ttl" id="k"></p>
+    <p class="ttl" id="u">suhanitiwari.com</p>
   </div>
 <script>
   // [start, end] in seconds of the site recording (from tools/record's marks)
   const caps = [
     [0.00, 2.65, '“MIS? So… business and <em>computer science</em>?”'],
-    [2.65, 3.93, 'Every MIS major has heard it.'],
-    [3.93, 5.24, 'Couldn’t be further from the <em>truth</em>.'],
+    [2.65, 3.92, 'Every MIS major has heard it.'],
+    [3.92, 5.24, 'Couldn’t be further from the <em>truth</em>.'],
     [5.24, 6.57, 'It’s about…'],
     [6.57, 9.02, 'finding the problem <em>worth solving</em>,'],
     [9.02, 10.34, 'turning <b class="m">information</b> into answers,'],
     [10.34, 18.12, 'designing the <b class="m">systems</b> behind it,'],
     [18.12, 20.39, 'getting people to <em>choose</em> it,'],
-    [20.39, 24.58, '<b class="m">managing</b> it as it grows,'],
-    [24.58, 25.85, 'and teaching the <em>next generation</em> to build too.'],
-    [25.85, 99.00, 'So I <em>built</em> my answer.']
+    [20.39, 23.94, '<b class="m">managing</b> it as it grows,'],
+    [23.94, 25.69, 'and teaching the <em>next generation</em> to build too.'],
+    [25.69, 99.00, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
   h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
@@ -61,7 +64,7 @@
   const v = document.getElementById('v'), win = document.getElementById('win'), cta = document.getElementById('cta');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const VSTART = 0.3, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 28.6, CTA = 2.0;     // the recording's last useful second, then the end card
+  const VEND = 28.45, CTA = 2.15;     // the recording's last useful second, then the end card
   window.DUR = VSTART + VEND - SKIP + CTA;
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
   const tw = document.querySelector('.end img');
@@ -79,14 +82,32 @@
     const ctaT = VSTART + VEND - SKIP, kc = ease((t - ctaT) / 0.3), et = Math.max(0, t - ctaT);
     cta.style.opacity = kc;
     tw.style.transform = `scale(${1 + et * 0.03})`;   // a slow push-in on the Tower
-    // the motto, then it blurs and spreads apart as my name sharpens into focus in its place
-    const mo = document.getElementById('motto'), nm = document.getElementById('name');
-    const xo = ease((et - 0.75) / 0.55), xi = ease((et - 0.85) / 0.55);
-    mo.style.opacity = Math.min(ease((et - 0.1) / 0.3), 1 - xo);
-    mo.style.filter = `blur(${xo * 14}px)`; mo.style.letterSpacing = `${4 + xo * 18}px`;
-    nm.style.opacity = xi; nm.style.filter = `blur(${(1 - xi) * 14}px)`;
-    nm.querySelector('.nm').style.letterSpacing = `${6 + (1 - xi) * 22}px`;
-    nm.querySelector('.u').style.opacity = ease((et - 1.25) / 0.35);
+    // the motto types out like code, glitches, and decodes into my name; then the line under it types and the link lands
+    const L1 = 'What Starts Here', L2 = 'Changes the World', NAME = 'SUHANI TIWARI', K = 'MIS at McCombs School of Business';
+    const GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#$%&<>/{}[]=+';
+    const rnd = (i, j) => { const x = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return x - Math.floor(x); };
+    const tick = Math.floor(et * 24);
+    const esc = c => c.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const code = document.getElementById('code'), name = document.getElementById('name'), kk = document.getElementById('k'), uu = document.getElementById('u');
+    const caret = on => on ? '<span class="caret"></span>' : '';
+    const blink = Math.floor(et * 4) % 2 === 0;
+    // 1. typing, 0.12 to 0.72s
+    const full = L1.length + L2.length, typed = Math.max(0, Math.min(full, Math.floor((et - 0.12) / 0.6 * full)));
+    const t1 = L1.slice(0, typed), t2 = L2.slice(0, Math.max(0, typed - L1.length));
+    // 2. glitch, 0.75 to 0.95s: the motto's letters flip to random glyphs and it fades out
+    const g = Math.max(0, Math.min(1, (et - 0.75) / 0.2));
+    const glitch = str => [...str].map((c, i) => c !== ' ' && rnd(i, tick) < g ? GLYPHS[Math.floor(rnd(i + 9, tick) * GLYPHS.length)] : c).join('');
+    code.innerHTML = `<span class="p">&gt; </span>${esc(glitch(t1))}${typed <= L1.length ? caret(true) : ''}\n  ${esc(glitch(t2))}${typed > L1.length && g === 0 ? caret(blink || typed < full) : ''}`;
+    code.style.opacity = et < 0.12 ? 0 : 1 - g;
+    // 3. decode, 0.82 to 1.35s: my name resolves left to right out of scrambled letters
+    const d = Math.max(0, Math.min(1, (et - 0.82) / 0.53)), settled = Math.floor(d * NAME.length);
+    name.textContent = et < 0.82 ? '' : [...NAME].map((c, i) => i < settled || c === ' ' ? c : GLYPHS[Math.floor(rnd(i, tick) * GLYPHS.length)]).join('');
+    name.style.opacity = ease((et - 0.82) / 0.12);
+    name.style.filter = `blur(${(1 - Math.min(1, d * 1.6)) * 3}px)`;
+    // 4. the line types, 1.35 to 1.7s, and the link lands
+    const kt = Math.max(0, Math.min(K.length, Math.floor((et - 1.35) / 0.35 * K.length)));
+    kk.innerHTML = esc(K.slice(0, kt)) + (et > 1.35 && kt < K.length ? caret(true) : '');
+    const ku = ease((et - 1.5) / 0.3); uu.style.opacity = ku; uu.style.transform = `translateY(${(1 - ku) * 22}px)`;
     if (kc > 0) { win.style.opacity = 1 - kc; h.style.opacity = 1 - kc; }
     seek(v, Math.max(SKIP, Math.min(vtime, v.duration - 0.05))).then(resolve);
   });
