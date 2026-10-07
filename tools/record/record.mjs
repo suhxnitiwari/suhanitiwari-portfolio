@@ -210,26 +210,34 @@ const shots = {
                 await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => c.style.transform = '', 160); document.querySelector(${JSON.stringify(sel)}).click(); })()`);
             };
             const hideCursor = () => ev(`(() => { const c = document.getElementById('fakecursor'); if (c) c.style.opacity = '0'; })()`);
-            mark('about'); await go('#about', -70, 700); await hold(600);
+            // About on its own, before Selected work comes into view
+            mark('about'); await go('#about', -370, 700); await hold(650);
             mark('truth'); await go('#selected-work', -70, 700); await hold(700);
             // a soft drift down so Still Watching and Listening Galaxy are both in full view
             mark('itsabout'); await go('#selected-work', 10, 1300); await hold(500);
             mark('experience'); await go('#experience', -70, 650); await hold(750);
-            mark('education'); await go('#education', -70, 650); await hold(750);
-            mark('why'); await go('#why-heading', -90, 700); await hold(600);
-            // MIS: the project map, then the button, then each of the four levels for the same beat, then Hand me a problem
+            await go('#education', -70, 650); await hold(750);
+            // The Why, then a click over to Why McCombs
+            mark('why'); await go('#why-heading', -90, 700); await hold(500);
+            await tap('.why-tab:nth-of-type(2)', 420); await hold(1100); await hideCursor();
+            // MIS: the project map, then the button
             mark('mis'); await go('.mis-more-btn', -926, 800); await hold(1100);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
-            // the cycle: let the ball travel from Business strategy to Technical skills on its own
-            await go('#mis-more-cycle', -70, 800); await hold(3600);
+            // the cycle, with a little room above its heading; the ball travels on to Technical skills
+            await go('#mis-more-cycle', -120, 800); await hold(1200);
+            await ev(`document.querySelector('.mis-box[data-step="1"] .mis-box-main').click()`); await hold(1300);
             // Hand me a problem: one click on the triangle's next problem
-            await go('.mp-section.mis-more', -70, 700); await hold(500);
-            await tap('.mp-tabs button:nth-child(2)', 420); await hold(1200); await hideCursor();
-            // Marketing: click over to Prime Book Club
-            mark('marketing'); await go('#marketing-work', 40, 700); await hold(400);
-            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(1300); await hideCursor();
-            mark('projects'); await go('#projects', -70, 700); await hold(500);
-            await go('#projects', 650, 1300); await hold(500);
+            await go('.mp-section.mis-more', -110, 700); await hold(400);
+            await tap('.mp-tabs button:nth-child(2)', 420); await hold(1100);
+            // From one line of code: a quick turn of the dial
+            await go('#zoom-heading', -330, 700); await hold(300);
+            await tap('.zoom-tick[data-zoom="2"]', 420); await hold(1000); await hideCursor();
+            // Marketing: the project tabs with the whole deck under them, then a click over to Prime Book Club
+            mark('marketing'); await go('.mp-proj-tabs', -90, 800); await hold(400);
+            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(1400); await hideCursor();
+            // All projects, slowly enough for every card to load
+            mark('projects'); await go('#projects', -70, 800); await hold(900);
+            await go('#projects', 650, 2000); await hold(700);
             mark('beyond'); await go('#beyond', -70, 750); await hold(800);
             mark('finale'); await go('#finale-heading', -110, 900); await hold(2200);
             mark('end');
