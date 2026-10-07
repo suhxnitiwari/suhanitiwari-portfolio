@@ -175,6 +175,20 @@ const shots = {
         select: `document.querySelector('[aria-controls="mk-proj-americaneagle"]').click()`,
         run: async () => { await sleep(13000); }
     },
+    linkedin: {
+        // for LinkedIn: the home page from the top (SUHANI TIWARI lands), then a slow scroll down the site
+        url: process.env.SITE_URL || 'https://suhanitiwari.com/', w: 1280, h: 800, stream: true,
+        run: async ev => {
+            await ev('setTimeout(() => location.reload(), 50)');
+            await sleep(4200);
+            // ease down the page a screen at a time, pausing on each part
+            for (let i = 0; i < 9; i++) {
+                await ev('window.scrollBy({ top: Math.round(innerHeight * 0.85), behavior: "smooth" })');
+                await sleep(1500);
+            }
+            await sleep(800);
+        }
+    },
     search: {
         // Search History: my name drawn from my searches, then a question typed into the search bar and answered,
         // then the clock it opens, playing my day hour by hour
@@ -201,6 +215,10 @@ const shots = {
     owala: {
         url: 'http://localhost:5142/home/study#mk-title-owala', w: 1280, h: 900, crop: '#mk-proj-owala .mk-stage',
         run: async ev => { await sleep(1500); for (let i = 0; i < 9; i++) { await sleep(1700); await ev(`document.querySelector('#mk-proj-owala .mk-step[data-go="1"]').click()`); } await sleep(1500); }
+    },
+    'linkedin-cover': {
+        // the LinkedIn post video, 4:5: the hook, my site scrolling in a browser window, Read it / Use it
+        url: new URL('./linkedin-cover.html', import.meta.url).href, w: 1080, h: 1350, fps: 30
     },
     'owala-cover': {
         // the Owala deck's cover: an animation page stepped frame by frame through window.render(t), so it plays smoothly
