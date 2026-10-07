@@ -10,6 +10,7 @@
   h1 .cap { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
   h1 .w { display: inline-block; opacity: 0; transform: translateY(18px); }
   h1 em { color: #F3C9CF; }
+  h1 .m { color: #F3C9CF; font-size: 1.14em; text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 10px; text-decoration-color: rgba(243,201,207,.55); }
   .win { position: absolute; left: 60px; top: 470px; width: 960px; border-radius: 22px; overflow: hidden; background: #FAF1EF; box-shadow: 0 40px 90px -30px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.12); opacity: 0; transform: translateY(60px) scale(0.96); }
   .bar { height: 46px; display: flex; align-items: center; gap: 9px; padding: 0 18px; background: #F3E3E0; }
   .bar i { width: 13px; height: 13px; border-radius: 50%; background: #E0A9B1; } .bar i:nth-child(2) { background: #E8C987; } .bar i:nth-child(3) { background: #A9BFA0; }
@@ -27,9 +28,9 @@
   .site span { display: block; font-family: -apple-system, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #F3C9CF; margin-bottom: 6px; text-align: center; }
   .cta { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; padding: 0 80px; }
   .cta-k { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #F3C9CF; }
-  .cta-h { margin: 26px 0 0; font-family: Georgia, serif; font-size: 112px; line-height: 1.05; font-weight: 700; }
+  .cta-h { margin: 0; font-family: Georgia, serif; font-size: 64px; color: #F3C9CF; line-height: 1.05; font-weight: 700; }
   .cta-h em { color: #F3C9CF; }
-  .cta-url { margin: 40px 0 0; padding: 22px 46px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 54px; font-weight: 700; }
+  .cta-url { margin: 34px 0 0; padding: 30px 60px; border-radius: 99px; background: #FFF8F6; color: #733642; font-family: Georgia, serif; font-size: 76px; font-weight: 700; }
   .cta-s { margin: 28px 0 0; font-size: 26px; color: #FBE9EC; }
   .spark { position: absolute; color: #E8C987; font-size: 40px; opacity: 0; }
 </style></head>
@@ -54,23 +55,24 @@
         <div class="site"><span>See it live</span>suhanitiwari.com</div>
   </div>
   <div class="cta" id="cta">
-    <p class="cta-k">Management Information Systems, explained</p>
-    <p class="cta-h">See it for <em>yourself</em>.</p>
+    <p class="cta-h">Take a look.</p>
     <p class="cta-url">suhanitiwari.com</p>
-    <p class="cta-s">Link in the comments</p>
   </div>
-  <div class="spark" id="s1" style="left: 960px; top: 150px">✦</div>
+  <div class="spark" id="s1" style="left: 990px; top: 70px">✦</div>
   <div class="spark" id="s2" style="left: 40px; top: 430px; font-size: 26px">✦</div>
 <script>
   // the headline changes as the site scrolls: [start, end] in seconds of the site video
   const caps = [
-    [0, 2.6, '“So it’s like… business and <em>computer science</em>?”'],
-    [2.6, 4.2, 'Couldn’t be further from the truth.'],
-    [4.2, 8.8, 'It’s deciding what’s <em>worth building</em>,'],
-    [8.8, 13.8, '<em>who</em> it’s for,'],
-    [13.8, 22.6, 'whether it <em>actually works</em>,'],
-    [22.6, 25.9, 'and how to <em>sell</em> it.'],
-    [25.9, 99, 'So I <em>built</em> it.']
+    [0, 2.6, '“MIS? So… business and <em>computer science</em>?”'],
+    [2.6, 4.2, 'Every MIS major has heard it.'],
+    [4.2, 8.8, 'Couldn’t be further from the truth.<br>It’s about'],
+    [8.8, 11.1, 'finding the problem <em>worth solving</em>,'],
+    [11.1, 13.4, 'turning <b class="m">information</b> into answers,'],
+    [13.4, 22.6, 'designing the <b class="m">systems</b> behind it,'],
+    [22.6, 25.8, 'getting people to <em>choose</em> it,'],
+    [25.8, 30.3, '<b class="m">managing</b> it as it grows,'],
+    [30.3, 34.0, 'and teaching the <em>next generation</em> to build too.'],
+    [34.0, 99, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
   h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
@@ -78,7 +80,7 @@
   const v = document.getElementById('v'), win = document.getElementById('win'), bot = document.getElementById('bot');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const VSTART = 1.0, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 27.9, CTA = 3.6;   // the site video's last useful second, then the call to action
+  const VEND = 39.6, CTA = 3.0;   // the site video's last useful second, then the call to action
   window.DUR = VSTART + VEND - SKIP + CTA;
   const monts = [...document.querySelectorAll('.mont')];
   const MSTART = 4.2, MEACH = 0.74;   // the project montage, in site-recording seconds, while the caption says "worth building"

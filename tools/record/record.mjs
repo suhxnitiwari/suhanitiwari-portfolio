@@ -180,11 +180,13 @@ const shots = {
         // a visible cursor clicking "More on my MIS curriculum", then on into Marketing
         url: process.env.SITE_URL || 'https://suhanitiwari.com/', w: 1280, h: 800, stream: true,
         run: async ev => {
+            const T0 = Date.now(), mark = k => console.log('mark', k, ((Date.now() - T0) / 1000).toFixed(2));
             await ev('setTimeout(() => location.reload(), 50)');
             await sleep(4200);
             const glide = async (y, ms) => { await ev(`window.scrollTo({ top: ${y}, behavior: "smooth" })`); await sleep(ms); };
             const at = sel => ev(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); return e ? Math.round(e.getBoundingClientRect().top + scrollY) : 0; })()`);
-            for (const sel of ['#about', '#selected-work', '#experience', '#education']) { await glide((await at(sel)) - 70, 1700); }
+            for (const sel of ['#about', '#selected-work', '#experience', '#education']) { mark(sel); await glide((await at(sel)) - 70, 1700); }
+            mark('mis');
             // the MIS section, then the button in the middle of the screen
             const btnY = await at('.mis-more-btn');
             await glide(btnY - 360, 1800);
@@ -203,12 +205,16 @@ const shots = {
             // show what opened, then on to Marketing
             await glide(btnY - 60, 1800);
             await glide(btnY + 520, 1800);
-            await glide((await at('#marketing-work')) + 40, 2400);
-            // then all of a sudden: a fast run to the very bottom of the site
-            await ev(`(() => { const start = scrollY, end = document.documentElement.scrollHeight - innerHeight, t0 = performance.now(), d = 1300;
-                const step = now => { const k = Math.min(1, (now - t0) / d), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; scrollTo(0, start + (end - start) * e); if (k < 1) requestAnimationFrame(step); };
-                requestAnimationFrame(step); })()`);
-            await sleep(2600);
+            mark('marketing'); await glide((await at('#marketing-work')) + 40, 2400);
+            // then the projects, Beyond the Classroom, and the finale with its numbers
+            mark('projects'); await glide((await at('#projects')) - 70, 2000);
+            await glide((await at('#projects')) + 500, 1400);
+            mark('beyond'); await glide((await at('#beyond')) - 70, 2800);
+            // the page shifts as sections above render, so aim at the heading, then settle on it again once it's in place
+            mark('finale'); await glide((await at('#finale-heading')) - 90, 1700);
+            await glide((await at('#finale-heading')) - 90, 700);
+            mark('settled'); await sleep(2200);
+            mark('end');
         }
     },
     search: {
