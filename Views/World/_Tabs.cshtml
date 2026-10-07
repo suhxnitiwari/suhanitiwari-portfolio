@@ -1,11 +1,11 @@
 @* Invite Only's tabs, as a second bar under the main menu on the rooms the portfolio serves (You Had to Be There,
    Who Has My Heart, The Words That Stayed, Suhani’s Sphere), so the way around Invite Only never disappears.
-   Pass the current room as the model: "you-know", "faces", "words" or "sphere". Talkin' Tiwari Tales shows only for family. *@
+   Pass the current room as the model: "you-know", "faces", "words" or "sphere". Just Tiwari Tales shows only for family. *@
 @model string
 @{
     var tabs = new (string Key, string Href, string Label)[]
     {
-        ("family", "/world/family/", "Talkin’ Tiwari Tales"),
+        ("family", "/world/family/", "Just Tiwari Tales"),
         ("places", "/world/", "Where I’m Really From"),
         ("you-know", "/world/you-know", "You Had to Be There"),
         ("faces", "/world/faces", "Who Has My Heart"),
@@ -21,7 +21,7 @@
     <form method="post" action="/world/logout"><button type="submit">Lock up</button></form>
 </nav>
 <script>
-    // sit just under the main menu, whatever its height; and family sees Talkin' Tiwari Tales (the room checks again on the server)
+    // sit just under the main menu, whatever its height; and family sees Just Tiwari Tales (the room checks again on the server)
     (() => {
         const bar = document.querySelector('.io-tabs'), nav = document.querySelector('nav.navbar');
         const place = () => bar.style.top = `${nav ? nav.offsetHeight : 0}px`;
@@ -40,3 +40,58 @@
     .io-tabs form { margin: 0; }
     @@media (max-width: 760px) { .io-tabs { gap: 8px 16px; padding: 10px 14px; } .io-tabs a, .io-tabs button { font-size: 0.7rem; } }
 </style>
+    <script>
+    /* Lock up: a padlock drops in, its shackle clicks shut, then the sign-out goes through. */
+    (() => {
+        const forms = document.querySelectorAll('form[action="/world/logout"]');
+        if (!forms.length || window.__lockup) return;
+        window.__lockup = true;
+        const style = document.createElement("style");
+        style.textContent = `
+            .lockup { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; align-content: center; gap: 14px;
+                background: rgba(248, 236, 233, .94); backdrop-filter: blur(6px); opacity: 0; animation: lu-in .25s ease forwards; }
+            .lockup svg { width: 112px; height: 136px; overflow: visible; animation: lu-drop .6s cubic-bezier(.3, 1.5, .5, 1) both; }
+            .lockup .lu-shackle { transform-box: fill-box; transform-origin: 85% 100%; transform: translateY(-18px) rotate(-28deg);
+                animation: lu-shut .22s cubic-bezier(.6, 0, .9, .5) .75s forwards; }
+            .lockup .lu-body { transform-box: fill-box; transform-origin: center; animation: lu-thunk .3s ease .97s; }
+            .lockup .lu-glint { opacity: 0; animation: lu-glint .5s ease 1.05s forwards; }
+            .lockup .lu-ring { transform-box: fill-box; transform-origin: center; opacity: 0; animation: lu-ring .7s ease-out .97s; }
+            .lockup p { margin: 0; text-align: center; font-family: Georgia, serif; color: #733642; opacity: 0; animation: lu-text .5s ease forwards; }
+            .lockup .lu-title { font-size: 1.9rem; animation-delay: 1.05s; }
+            .lockup .lu-sub { font-style: italic; font-size: 1.05rem; color: #8A4D57; animation-delay: 1.25s; }
+            .lockup.is-out { animation: lu-out .35s ease forwards; }
+            @@keyframes lu-in { to { opacity: 1; } }
+            @@keyframes lu-out { from { opacity: 1; } to { opacity: 0; } }
+            @@keyframes lu-drop { from { transform: translateY(-60vh) rotate(-8deg); } to { transform: none; } }
+            @@keyframes lu-shut { to { transform: none; } }
+            @@keyframes lu-thunk { 40% { transform: scale(1.06, .94); } 100% { transform: none; } }
+            @@keyframes lu-glint { 50% { opacity: 1; } 100% { opacity: .55; } }
+            @@keyframes lu-ring { 0% { opacity: .7; transform: scale(.7); } 100% { opacity: 0; transform: scale(1.7); } }
+            @@keyframes lu-text { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }`;
+        document.head.appendChild(style);
+        const lock = `<div class="lockup" role="status" aria-live="polite">
+            <svg viewBox="0 0 112 136" aria-hidden="true">
+                <defs><linearGradient id="lu-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B97979"/><stop offset="1" stop-color="#733642"/></linearGradient></defs>
+                <circle class="lu-ring" cx="56" cy="92" r="46" fill="none" stroke="#B97979" stroke-width="3"/>
+                <path class="lu-shackle" d="M30 62V40a26 26 0 0 1 52 0v22" fill="none" stroke="#C9A35C" stroke-width="11" stroke-linecap="round"/>
+                <g class="lu-body">
+                    <rect x="12" y="58" width="88" height="70" rx="16" fill="url(#lu-g)"/>
+                    <rect x="20" y="66" width="72" height="54" rx="11" fill="none" stroke="#F3D9D4" stroke-opacity=".35" stroke-width="2"/>
+                    <circle cx="56" cy="88" r="9" fill="#2E141A"/><path d="M52 92h8l-2 16h-4Z" fill="#2E141A"/>
+                    <circle class="lu-glint" cx="85" cy="70" r="4" fill="#FFF4E8"/>
+                </g>
+            </svg>
+            <p class="lu-title">Locked up.</p>
+            <p class="lu-sub">See you soon.</p>
+        </div>`;
+        forms.forEach((f) => f.addEventListener("submit", (e) => {
+            if (f.dataset.locking || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+            e.preventDefault();
+            f.dataset.locking = "1";
+            document.body.insertAdjacentHTML("beforeend", lock);
+            const el = document.body.lastElementChild;
+            setTimeout(() => el.classList.add("is-out"), 1900);
+            setTimeout(() => f.submit(), 2150);
+        }));
+    })();
+    </script>
