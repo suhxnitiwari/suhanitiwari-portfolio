@@ -112,6 +112,16 @@ namespace Tiwari_Suhani_HW3.Controllers
             return View("Words");
         }
 
+        // Suhani's Sphere: photos of me, my concerts and my favorites, for friends and family only
+        [Authorize(AuthenticationSchemes = "World")]
+        [HttpGet("/world/sphere")]
+        public IActionResult Sphere()
+        {
+            Response.Headers.CacheControl = "private, no-store";
+            Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
+            return View("Sphere");
+        }
+
         // log out: forget the My World cookie and go back to the main site
         [HttpPost("/world/logout")]
         public async Task<IActionResult> Logout()

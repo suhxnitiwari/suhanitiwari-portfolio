@@ -1,6 +1,6 @@
 @* Invite Only's tabs, as a second bar under the main menu on the rooms the portfolio serves (You Had to Be There,
-   Who Has My Heart, The Words That Stayed), so the way around Invite Only never disappears.
-   Pass the current room as the model: "you-know", "faces" or "words". Talkin' Tiwari Tales shows only for family. *@
+   Who Has My Heart, The Words That Stayed, Suhani’s Sphere), so the way around Invite Only never disappears.
+   Pass the current room as the model: "you-know", "faces", "words" or "sphere". Talkin' Tiwari Tales shows only for family. *@
 @model string
 @{
     var tabs = new (string Key, string Href, string Label)[]
@@ -9,7 +9,8 @@
         ("places", "/world/", "Where I’m Really From"),
         ("you-know", "/world/you-know", "You Had to Be There"),
         ("faces", "/world/faces", "Who Has My Heart"),
-        ("words", "/world/words", "The Words That Stayed")
+        ("words", "/world/words", "The Words That Stayed"),
+        ("sphere", "/world/sphere", "Suhani’s Sphere")
     };
 }
 <nav class="io-tabs" aria-label="Invite Only">
