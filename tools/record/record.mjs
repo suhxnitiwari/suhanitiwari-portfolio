@@ -188,36 +188,45 @@ const shots = {
         run: async ev => {
             const T0 = Date.now(), marks = {}, mark = k => { marks[k] = +((Date.now() - T0) / 1000).toFixed(2); console.log('mark', k, marks[k]); };
             await ev('setTimeout(() => location.reload(), 50)');
-            await sleep(3600);
+            await sleep(3400);
             // an eased scroll of exactly `ms`, re-aiming every frame so sections that shift above can't throw it off
             const go = (sel, off, ms) => ev(`new Promise(res => { const s = scrollY, t0 = performance.now(), d = ${ms};
                 const tgt = () => { const e = document.querySelector(${JSON.stringify(sel)}); return Math.min(e.getBoundingClientRect().top + scrollY + ${off}, document.documentElement.scrollHeight - innerHeight); };
                 const f = n => { const k = Math.min(1, (n - t0) / d), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; scrollTo({ top: s + (tgt() - s) * e, behavior: 'instant' }); k < 1 ? requestAnimationFrame(f) : res(); };
                 requestAnimationFrame(f); })`);
             const hold = ms => sleep(ms);
+            // a soft cursor that glides to an element and clicks it
+            const tap = async (sel, ms = 420) => {
+                await ev(`(() => {
+                    const b = document.querySelector(${JSON.stringify(sel)}).getBoundingClientRect();
+                    let c = document.getElementById('fakecursor');
+                    if (!c) { c = document.createElement('div'); c.id = 'fakecursor';
+                        c.style.cssText = 'position:fixed;z-index:99999;left:' + (b.right + 90) + 'px;top:' + (b.bottom + 70) + 'px;width:30px;height:30px;border-radius:50%;background:rgba(115,54,66,.9);box-shadow:0 0 0 7px rgba(243,201,207,.7);transition:left .4s cubic-bezier(.3,.7,.2,1),top .4s cubic-bezier(.3,.7,.2,1),transform .15s,opacity .25s;pointer-events:none';
+                        document.body.appendChild(c); }
+                    c.style.opacity = '1';
+                    requestAnimationFrame(() => requestAnimationFrame(() => { c.style.left = (b.left + b.width / 2 - 15) + 'px'; c.style.top = (b.top + b.height / 2 - 15) + 'px'; }));
+                })()`);
+                await sleep(ms);
+                await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => c.style.transform = '', 160); document.querySelector(${JSON.stringify(sel)}).click(); })()`);
+            };
+            const hideCursor = () => ev(`(() => { const c = document.getElementById('fakecursor'); if (c) c.style.opacity = '0'; })()`);
             mark('about'); await go('#about', -70, 700); await hold(600);
-            mark('truth'); await go('#selected-work', -70, 700); await hold(650);
-            mark('itsabout'); await hold(800);
+            mark('truth'); await go('#selected-work', -70, 700); await hold(800);
+            mark('itsabout'); await hold(900);
             mark('experience'); await go('#experience', -70, 650); await hold(750);
             mark('education'); await go('#education', -70, 650); await hold(750);
-            mark('why'); await go('#why-heading', -90, 700); await hold(1500);
-            // MIS: straight to the button, a quick click, and the curriculum that opens
-            mark('mis'); await go('.mis-more-btn', -560, 800);
-            await ev(`(() => {
-                const b = document.querySelector('.mis-more-btn').getBoundingClientRect();
-                const c = document.createElement('div'); c.id = 'fakecursor';
-                c.style.cssText = 'position:fixed;z-index:99999;left:' + (b.right + 90) + 'px;top:' + (b.bottom + 70) + 'px;width:30px;height:30px;border-radius:50%;background:rgba(115,54,66,.9);box-shadow:0 0 0 7px rgba(243,201,207,.7);transition:left .4s cubic-bezier(.3,.7,.2,1),top .4s cubic-bezier(.3,.7,.2,1),transform .15s,opacity .25s;pointer-events:none';
-                document.body.appendChild(c);
-                requestAnimationFrame(() => requestAnimationFrame(() => { c.style.left = (b.left + b.width / 2 - 15) + 'px'; c.style.top = (b.top + b.height / 2 - 15) + 'px'; }));
-            })()`);
-            await sleep(480);
-            await ev(`(() => { const c = document.getElementById('fakecursor'); c.style.transform = 'scale(.7)'; setTimeout(() => { c.style.transform = ''; c.style.opacity = '0'; }, 160); document.querySelector('.mis-more-btn').click(); })()`);
-            await sleep(250);
-            await go('.mis-more', -70, 800); await hold(900);
+            mark('why'); await go('#why-heading', -90, 700); await hold(750);
+            // MIS: the project map, then the button, then each of the four levels for the same beat, then Hand me a problem
+            mark('mis'); await go('.mis-more-btn', -560, 800); await hold(1300);
+            await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
+            await go('#mis-more-cycle', -70, 800);
+            for (let i = 0; i < 4; i++) { await tap(`.mis-box[data-step="${i}"] .mis-box-main`, 400); await hold(750); }
+            await hideCursor();
+            await go('.mp-section.mis-more', -70, 700); await hold(900);
             mark('marketing'); await go('#marketing-work', 40, 700); await hold(750);
             mark('projects'); await go('#projects', -70, 700); await hold(750);
-            mark('beyond'); await go('#beyond', -70, 750); await hold(800);
-            mark('finale'); await go('#finale-heading', -110, 900); await hold(3500);
+            mark('beyond'); await go('#beyond', -70, 750); await hold(900);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(2600);
             mark('end');
             writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
