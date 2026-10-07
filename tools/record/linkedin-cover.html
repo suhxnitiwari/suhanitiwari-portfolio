@@ -40,17 +40,17 @@
 <script>
   // [start, end] in seconds of the site recording (from tools/record's marks)
   const caps = [
-    [0.00, 3.75, '“MIS? So… business and <em>computer science</em>?”'],
-    [3.75, 5.07, 'Every MIS major has heard it.'],
-    [5.07, 6.60, 'Couldn’t be further from the <em>truth</em>.'],
-    [6.60, 7.51, 'It’s about…'],
-    [7.51, 8.92, 'finding the problem <em>worth solving</em>,'],
-    [8.92, 11.82, 'turning <b class="m">information</b> into answers,'],
-    [11.82, 21.74, 'designing the <b class="m">systems</b> behind it,'],
-    [21.74, 23.22, 'getting people to <em>choose</em> it,'],
-    [23.22, 24.69, '<b class="m">managing</b> it as it grows,'],
-    [24.69, 26.35, 'and teaching the <em>next generation</em> to build too.'],
-    [26.35, 99.00, 'So I <em>built</em> my answer.']
+    [0.00, 3.55, '“MIS? So… business and <em>computer science</em>?”'],
+    [3.55, 4.87, 'Every MIS major has heard it.'],
+    [4.87, 6.39, 'Couldn’t be further from the <em>truth</em>.'],
+    [6.39, 7.29, 'It’s about…'],
+    [7.29, 8.70, 'finding the problem <em>worth solving</em>,'],
+    [8.70, 11.60, 'turning <b class="m">information</b> into answers,'],
+    [11.60, 21.12, 'designing the <b class="m">systems</b> behind it,'],
+    [21.12, 22.50, 'getting people to <em>choose</em> it,'],
+    [22.50, 25.64, '<b class="m">managing</b> it as it grows,'],
+    [25.64, 27.30, 'and teaching the <em>next generation</em> to build too.'],
+    [27.30, 99.00, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
   h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
@@ -58,7 +58,7 @@
   const v = document.getElementById('v'), win = document.getElementById('win'), cta = document.getElementById('cta');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const VSTART = 0.3, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 29.12, CTA = 2.0;     // the recording's last useful second, then the end card
+  const VEND = 29.87, CTA = 2.0;     // the recording's last useful second, then the end card
   window.DUR = VSTART + VEND - SKIP + CTA;
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
   window.ready = loaded(v);

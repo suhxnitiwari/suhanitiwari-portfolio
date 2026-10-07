@@ -188,7 +188,7 @@ const shots = {
         run: async ev => {
             const T0 = Date.now(), marks = {}, mark = k => { marks[k] = +((Date.now() - T0) / 1000).toFixed(2); console.log('mark', k, marks[k]); };
             await ev('setTimeout(() => location.reload(), 50)');
-            await sleep(3400);
+            await sleep(3200);
             // an eased scroll of exactly `ms`, re-aiming every frame so sections that shift above can't throw it off
             const go = (sel, off, ms) => ev(`new Promise(res => { const s = scrollY, t0 = performance.now(), d = ${ms};
                 const tgt = () => { const e = document.querySelector(${JSON.stringify(sel)}); return Math.min(e.getBoundingClientRect().top + scrollY + ${off}, document.documentElement.scrollHeight - innerHeight); };
@@ -220,13 +220,14 @@ const shots = {
             mark('mis'); await go('.mis-more-btn', -860, 800); await hold(1300);
             await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
             await go('#mis-more-cycle', -70, 800);
-            for (let i = 0; i < 4; i++) { await tap(`.mis-box[data-step="${i}"] .mis-box-main`, 400); await hold(750); }
+            for (let i = 0; i < 4; i++) { await tap(`.mis-box[data-step="${i}"] .mis-box-main`, 400); await hold(650); }
             await hideCursor();
             await go('.mp-section.mis-more', -70, 700); await hold(900);
-            mark('marketing'); await go('#marketing-work', 40, 700); await hold(750);
-            mark('projects'); await go('#projects', -70, 700); await hold(750);
+            mark('marketing'); await go('#marketing-work', 40, 700); await hold(650);
+            mark('projects'); await go('#projects', -70, 700); await hold(600);
+            await go('#projects', 650, 1300); await hold(500);
             mark('beyond'); await go('#beyond', -70, 750); await hold(900);
-            mark('finale'); await go('#finale-heading', -110, 900); await hold(2600);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(2400);
             mark('end');
             writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
