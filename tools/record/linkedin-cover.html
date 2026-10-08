@@ -20,13 +20,18 @@
   .end { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
   .end img { position: absolute; left: -54px; top: -68px; width: 1188px; height: 1485px; }
   .end .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(42,24,16,0) 28%, rgba(60,20,20,0.35) 58%, rgba(50,16,20,0.72) 100%), linear-gradient(90deg, rgba(42,24,16,0.4), rgba(42,24,16,0) 62%); }
-  .ttl { position: absolute; left: 0; right: 0; margin: 0; text-align: center; color: #FFF8F6; text-shadow: 0 4px 30px rgba(40,10,20,0.5); }
-  #code { bottom: 330px; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 50px; line-height: 1.35; white-space: pre; text-align: left; left: 50%; right: auto; transform: translateX(-50%); }
-  #code .p { color: #F3C9CF; }
-  .caret { display: inline-block; width: 0.55em; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: #F3C9CF; }
-  #name { bottom: 350px; font-family: 'Cinzel', Georgia, serif; font-weight: 700; font-size: 86px; white-space: pre; }
-  #k { bottom: 300px; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 33px; letter-spacing: 1px; color: #FFE4E1; white-space: pre; }
-  #u { bottom: 170px; font-family: Georgia, serif; font-weight: 700; font-size: 72px; color: #FFD9DE; opacity: 0; }
+  .term { position: absolute; left: 64px; right: 64px; bottom: 110px; border-radius: 22px; overflow: hidden; background: rgba(28,10,18,0.74); backdrop-filter: blur(14px); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8), 0 0 0 1px rgba(243,201,207,0.18); font-family: 'JetBrains Mono', monospace; color: #FFF1EE; opacity: 0; }
+  .term .tbar { height: 50px; display: flex; align-items: center; gap: 10px; padding: 0 20px; background: rgba(255,255,255,0.06); border-bottom: 1px solid rgba(243,201,207,0.12); }
+  .term .tbar i { width: 13px; height: 13px; border-radius: 50%; background: #E0A9B1; } .term .tbar i:nth-child(2) { background: #E8C987; } .term .tbar i:nth-child(3) { background: #A9BFA0; }
+  .term .tab { margin-left: 16px; padding: 6px 16px; border-radius: 8px; background: rgba(243,201,207,0.12); font-size: 20px; color: #F3C9CF; }
+  .term .body { padding: 34px 40px 40px; min-height: 420px; }
+  .ln { margin: 0; font-size: 46px; line-height: 1.38; white-space: pre; }
+  .ln .n { display: inline-block; width: 1.6em; color: rgba(243,201,207,0.35); }
+  .v { color: #FFF1EE; } .f { color: #F3A6C0; } .st { color: #F6D59A; } .pu { color: rgba(255,241,238,0.6); } .cm { color: #C9A3AE; font-style: italic; }
+  .out { margin: 6px 0 0; font-weight: 700; font-size: 96px; letter-spacing: 2px; color: #FFFFFF; white-space: pre; text-shadow: 0 0 30px rgba(243,201,207,0.45); }
+  .cmt { margin: 14px 0 0; font-size: 31px; color: #E7BFC8; white-space: pre; }
+  .lnk { margin: 26px 0 0; font-size: 62px; font-weight: 700; color: #F3A6C0; white-space: pre; }
+  .caret { display: inline-block; width: 0.55em; height: 1em; margin-left: 4px; vertical-align: -0.12em; background: #F3A6C0; }
 </style></head>
 <body>
   <div class="glow"></div>
@@ -38,25 +43,22 @@
   <div class="end" id="cta">
     <img src="tower.jpg" alt="">
     <div class="shade"></div>
-    <p class="ttl" id="code"></p>
-    <p class="ttl" id="name"></p>
-    <p class="ttl" id="k"></p>
-    <p class="ttl" id="u">suhanitiwari.com</p>
+    <div class="term" id="term"><div class="tbar"><i></i><i></i><i></i><span class="tab">suhani.js</span></div><div class="body" id="tb"></div></div>
   </div>
 <script>
   // [start, end] in seconds of the site recording (from tools/record's marks)
   const caps = [
     [0.00, 2.65, '“MIS? So… business and <em>computer science</em>?”'],
-    [2.65, 3.92, 'Every MIS major has heard it.'],
-    [3.92, 5.24, 'Couldn’t be further from the <em>truth</em>.'],
-    [5.24, 6.57, 'It’s about…'],
-    [6.57, 9.02, 'finding the problem <em>worth solving</em>,'],
-    [9.02, 10.34, 'turning <b class="m">information</b> into answers,'],
-    [10.34, 18.12, 'designing the <b class="m">systems</b> behind it,'],
-    [18.12, 20.39, 'getting people to <em>choose</em> it,'],
-    [20.39, 23.94, '<b class="m">managing</b> it as it grows,'],
-    [23.94, 25.69, 'and teaching the <em>next generation</em> to build too.'],
-    [25.69, 99.00, 'So I <em>built</em> my answer.']
+    [2.65, 3.91, 'Every MIS major has heard it.'],
+    [3.91, 5.23, 'Couldn’t be further from the <em>truth</em>.'],
+    [5.23, 6.55, 'It’s about…'],
+    [6.55, 9.00, 'finding the problem <em>worth solving</em>,'],
+    [9.00, 10.32, 'turning <b class="m">information</b> into answers,'],
+    [10.32, 17.74, 'designing the <b class="m">systems</b> behind it,'],
+    [17.74, 20.00, 'getting people to <em>choose</em> it,'],
+    [20.00, 23.55, '<b class="m">managing</b> it as it grows,'],
+    [23.55, 25.65, 'and teaching the <em>next generation</em> to build too.'],
+    [25.65, 99.00, 'So I <em>built</em> my answer.']
   ];
   const h = document.getElementById('h');
   h.innerHTML = caps.map(c => `<span class="cap">${c[2]}</span>`).join('');
@@ -64,7 +66,7 @@
   const v = document.getElementById('v'), win = document.getElementById('win'), cta = document.getElementById('cta');
   const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   const VSTART = 0.3, SKIP = 0.9;   // SKIP: the blank moment while the site reloads
-  const VEND = 28.45, CTA = 2.15;     // the recording's last useful second, then the end card
+  const VEND = 28.4, CTA = 2.2;     // the recording's last useful second, then the end card
   window.DUR = VSTART + VEND - SKIP + CTA;
   const loaded = el => new Promise(r => { if (el.readyState >= 2) r(); else el.addEventListener('loadeddata', r, { once: true }); });
   const tw = document.querySelector('.end img');
@@ -82,32 +84,32 @@
     const ctaT = VSTART + VEND - SKIP, kc = ease((t - ctaT) / 0.3), et = Math.max(0, t - ctaT);
     cta.style.opacity = kc;
     tw.style.transform = `scale(${1 + et * 0.03})`;   // a slow push-in on the Tower
-    // the motto types out like code, glitches, and decodes into my name; then the line under it types and the link lands
-    const L1 = 'What Starts Here', L2 = 'Changes the World', NAME = 'SUHANI TIWARI', K = 'MIS at McCombs School of Business';
+    // a code window over the Tower: the motto is typed as code, glitches, and compiles into my name
     const GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#$%&<>/{}[]=+';
     const rnd = (i, j) => { const x = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return x - Math.floor(x); };
-    const tick = Math.floor(et * 24);
-    const esc = c => c.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-    const code = document.getElementById('code'), name = document.getElementById('name'), kk = document.getElementById('k'), uu = document.getElementById('u');
-    const caret = on => on ? '<span class="caret"></span>' : '';
-    const blink = Math.floor(et * 4) % 2 === 0;
-    // 1. typing, 0.12 to 0.72s
-    const full = L1.length + L2.length, typed = Math.max(0, Math.min(full, Math.floor((et - 0.12) / 0.6 * full)));
-    const t1 = L1.slice(0, typed), t2 = L2.slice(0, Math.max(0, typed - L1.length));
-    // 2. glitch, 0.75 to 0.95s: the motto's letters flip to random glyphs and it fades out
-    const g = Math.max(0, Math.min(1, (et - 0.75) / 0.2));
-    const glitch = str => [...str].map((c, i) => c !== ' ' && rnd(i, tick) < g ? GLYPHS[Math.floor(rnd(i + 9, tick) * GLYPHS.length)] : c).join('');
-    code.innerHTML = `<span class="p">&gt; </span>${esc(glitch(t1))}${typed <= L1.length ? caret(true) : ''}\n  ${esc(glitch(t2))}${typed > L1.length && g === 0 ? caret(blink || typed < full) : ''}`;
-    code.style.opacity = et < 0.12 ? 0 : 1 - g;
-    // 3. decode, 0.82 to 1.35s: my name resolves left to right out of scrambled letters
-    const d = Math.max(0, Math.min(1, (et - 0.82) / 0.53)), settled = Math.floor(d * NAME.length);
-    name.textContent = et < 0.82 ? '' : [...NAME].map((c, i) => i < settled || c === ' ' ? c : GLYPHS[Math.floor(rnd(i, tick) * GLYPHS.length)]).join('');
-    name.style.opacity = ease((et - 0.82) / 0.12);
-    name.style.filter = `blur(${(1 - Math.min(1, d * 1.6)) * 3}px)`;
-    // 4. the line types, 1.35 to 1.7s, and the link lands
-    const kt = Math.max(0, Math.min(K.length, Math.floor((et - 1.35) / 0.35 * K.length)));
-    kk.innerHTML = esc(K.slice(0, kt)) + (et > 1.35 && kt < K.length ? caret(true) : '');
-    const ku = ease((et - 1.5) / 0.3); uu.style.opacity = ku; uu.style.transform = `translateY(${(1 - ku) * 22}px)`;
+    const tick = Math.floor(et * 24), esc = c => c.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const caret = '<span class="caret"></span>';
+    document.getElementById('term').style.opacity = ease((et - 0.05) / 0.2);
+    document.getElementById('term').style.transform = `translateY(${(1 - ease((et - 0.05) / 0.25)) * 30}px)`;
+    // 1. type the code, 0.15 to 0.75s, highlighted token by token
+    const toks = [['v', 'whatStartsHere'], ['br', ''], ['pu', '  .'], ['f', 'changes'], ['pu', '('], ['st', '"the world"'], ['pu', ');']];
+    const total = toks.reduce((n, t) => n + t[1].length, 0), typed = Math.max(0, Math.min(total, Math.floor((et - 0.15) / 0.6 * total)));
+    const g = Math.max(0, Math.min(1, (et - 0.78) / 0.18));   // 2. the glitch
+    let left = typed, line = 1, html = '<p class="ln"><span class="n">1</span>';
+    toks.forEach(([c, str], ti) => {
+      if (c === 'br') { line = 2; html += '</p><p class="ln"><span class="n">2</span>'; return; }
+      const part = str.slice(0, Math.max(0, left)); left -= str.length;
+      const shown = [...part].map((ch, i) => ch !== ' ' && rnd(i + ti * 40, tick) < g ? GLYPHS[Math.floor(rnd(i + ti * 40 + 7, tick) * GLYPHS.length)] : ch).join('');
+      html += `<span class="${c}">${esc(shown)}</span>`;
+    });
+    html += (typed < total || (Math.floor(et * 4) % 2 === 0 && g === 0) ? caret : '') + '</p>';
+    let codeOp = 1 - ease((et - 0.9) / 0.12);
+    // 3. the output compiles: my name decodes, then the comment types and the link lands
+    const NAME = 'SUHANI TIWARI', d = Math.max(0, Math.min(1, (et - 0.92) / 0.5)), settled = Math.floor(d * NAME.length);
+    const nameTxt = [...NAME].map((c, i) => i < settled || c === ' ' ? c : GLYPHS[Math.floor(rnd(i, tick) * GLYPHS.length)]).join('');
+    const K = '// MIS @ McCombs School of Business', kt = Math.max(0, Math.min(K.length, Math.floor((et - 1.4) / 0.35 * K.length)));
+    const out = et < 0.92 ? '' : `<p class="out">${esc(nameTxt)}</p><p class="cmt">${esc(K.slice(0, kt))}${et > 1.4 && kt < K.length ? caret : ''}</p><p class="lnk" style="opacity:${ease((et - 1.6) / 0.25)}">→ suhanitiwari.com</p>`;
+    document.getElementById('tb').innerHTML = (codeOp > 0.02 ? `<div style="opacity:${codeOp}">${html}</div>` : '') + (et >= 0.92 ? `<div style="margin-top:${codeOp > 0.02 ? -150 : 0}px">${out}</div>` : '');
     if (kc > 0) { win.style.opacity = 1 - kc; h.style.opacity = 1 - kc; }
     seek(v, Math.max(SKIP, Math.min(vtime, v.duration - 0.05))).then(resolve);
   });
