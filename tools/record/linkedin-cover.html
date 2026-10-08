@@ -77,11 +77,11 @@
     const vtime = Math.max(0, t - VSTART) + SKIP;
     capEls.forEach((el, i) => {
       const [a, b] = caps[i];
-      const k = i === 0 ? Math.min(ease(t / 0.35), 1 - ease((vtime - b + 0.12) / 0.2)) : Math.min(ease((vtime - a) / 0.22), 1 - ease((vtime - b + 0.12) / 0.2));
+      const k = i === 0 ? Math.min(1, 1 - ease((vtime - b + 0.12) / 0.2)) : Math.min(ease((vtime - a) / 0.22), 1 - ease((vtime - b + 0.12) / 0.2));
       el.style.opacity = Math.max(0, k);
       el.style.transform = `translateY(${(1 - Math.max(0, Math.min(1, k))) * 12}px)`;
     });
-    const kw = ease(t / 0.4); win.style.opacity = kw;
+    win.style.opacity = 1;   // no fade in: frame one is the thumbnail LinkedIn shows
     const ctaT = VSTART + VEND - SKIP, kc = ease((t - ctaT) / 0.3), et = Math.max(0, t - ctaT);
     cta.style.opacity = kc;
     tw.style.transform = `scale(${1 + et * 0.03})`;   // a slow push-in on the Tower
