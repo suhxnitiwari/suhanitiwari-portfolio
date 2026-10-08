@@ -211,34 +211,27 @@ const shots = {
             };
             const hideCursor = () => ev(`(() => { const c = document.getElementById('fakecursor'); if (c) c.style.opacity = '0'; })()`);
             // About on its own, before Selected work comes into view
-            mark('about'); await go('#about', -370, 700); await hold(550);
-            mark('truth'); await go('#selected-work', -70, 700); await hold(600);
+            mark('about'); await go('#about', -370, 700); await hold(950);
+            mark('truth'); await go('#selected-work', -70, 700); await hold(950);
             // a soft drift down so Still Watching and Listening Galaxy are both in full view
-            mark('itsabout'); await go('#selected-work', 10, 1000); await hold(300);
-            mark('experience'); await go('#experience', -70, 650); await hold(550);
-            await go('#education', -70, 650); await hold(550);
-            mark('why'); await go('#why-heading', -90, 700); await hold(600);
-            // MIS: the project map, then the button
-            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(350);
-            await tap('.mis-more-btn', 480); await sleep(250); await hideCursor();
-            // the cycle, with a little room above its heading; the ball travels on to Technical skills
-            await go('#mis-more-cycle', -120, 700); await hold(500);
-            await ev(`document.querySelector('.mis-box[data-step="1"] .mis-box-main').click()`); await hold(900);
-            // Hand me a problem: one click on the triangle's next problem
-            await go('.mp-section.mis-more', -110, 650); await hold(200);
-            await tap('.mp-tabs button:nth-child(2)', 400); await hold(600);
-            // From one line of code: a quick turn of the dial
-            await go('#zoom-heading', -330, 650); await hold(150);
-            await tap('.zoom-tick[data-zoom="2"]', 400); await hold(300); await hideCursor();
+            mark('itsabout'); await go('#selected-work', 10, 1000); await hold(850);
+            mark('experience'); await go('#experience', -70, 650); await hold(700);
+            await go('#education', -70, 650); await hold(700);
+            mark('why'); await go('#why-heading', -90, 700); await hold(900);
+            // MIS: the project map (still under "information"), then the click, the cycle and the ball moving on to Technical skills
+            mark('mis'); await go('.mis-more-btn', -926, 800); await hold(450);
+            mark('systems'); await tap('.mis-more-btn', 420); await sleep(200); await hideCursor();
+            await go('#mis-more-cycle', -120, 650); await hold(500);
+            await ev(`document.querySelector('.mis-box[data-step="1"] .mis-box-main').click()`); await hold(850);
             // Marketing: the project tabs with the whole deck under them, then a click over to Prime Book Club
             mark('marketing'); await go('.mp-proj-tabs', -90, 750); await hold(150);
-            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(900); await hideCursor();
+            await tap('[aria-controls="mk-proj-primebookclub"]', 420); await hold(1200); await hideCursor();
             // All projects, slowly enough for every card to load
             // All projects, then one steady scroll through the whole grid down to Beyond the Classroom
             mark('projects'); await go('#projects', -70, 750); await hold(600);
             await go('#beyond', -70, 3400, true);
-            mark('beyond'); await hold(850);
-            mark('finale'); await go('#finale-heading', -110, 900); await hold(2300);
+            mark('beyond'); await hold(1000);
+            mark('finale'); await go('#finale-heading', -110, 900); await hold(2500);
             mark('end');
             writeFileSync('/tmp/rec/linkedin-marks.json', JSON.stringify(marks));
         }
