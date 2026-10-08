@@ -265,7 +265,7 @@ const shots = {
     },
     'linkedin-cover': {
         // the LinkedIn post video, 4:5: the hook, my site scrolling in a browser window, Read it / Use it
-        url: new URL('./linkedin-cover.html', import.meta.url).href, w: 1080, h: 1350, fps: 30
+        url: new URL('./linkedin-cover.html', import.meta.url).href, w: 1080, h: 1160, fps: 30
     },
     'owala-cover': {
         // the Owala deck's cover: an animation page stepped frame by frame through window.render(t), so it plays smoothly
