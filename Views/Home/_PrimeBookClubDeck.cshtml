@@ -191,6 +191,10 @@
         .mk-pbc .pb-title, .mk-pbc .pb-cover .pb-lede { max-width: none; }
         .mk-pbc .pb-sig { position: static; align-self: flex-end; }
     }
+    @@container (max-width: 560px) {
+        .mk-pbc .pb-cover .pb-lede { display: none; }
+        .mk-pbc .pb-cover .pb-title { max-width: 44cqw !important; font-size: clamp(22px, 6.6cqw, 36px); }
+    }
     @@media (prefers-reduced-motion: reduce) {
         .mk-pbc .pb-stamp svg, .mk-pbc .pb-dots i.club { animation: none; }
         .mk-pbc .pb-h em, .mk-pbc .pb-title em { animation: none; background-size: 100% 42%; }

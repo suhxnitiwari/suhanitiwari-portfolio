@@ -119,6 +119,11 @@
         animation-delay: calc(var(--start) + var(--i) * 40ms);
     }
 
+    /* each letter is its own box for the entrance, which drops the font's W to A kerning, so it's put back by hand */
+    .cover-name .ch.kern {
+        margin-right: -0.09em;
+    }
+
     .cover-name.left .ch {
         --start: 0.05s;
     }
@@ -185,7 +190,7 @@
     @@media (max-width: 640px) {
         .cover-school { white-space: normal; font-size: 10.5px; line-height: 1.6; }
         .cover-tagline .cover-school > span:not(.cover-school-bar) { display: block; }
-        .cover-tagline .cover-school-bar { display: none; }
+        .cover-tagline .cover-school > .cover-school-bar { display: none; }
     }
 
     /* the one line that says what I do */
@@ -332,6 +337,9 @@
         .cover-name {
             font-size: 23cqw;
             top: auto;
+            /* at this size the hairline serifs of neighboring letters touched and read as stray lines */
+            letter-spacing: 0.015em;
+            font-weight: 600;
         }
 
         .cover-name.left {
@@ -1244,7 +1252,7 @@
     </div>
     <h1 class="visually-hidden">Suhani Tiwari</h1>
     <span class="cover-name left" aria-hidden="true">@for (var i = 0; i < "Suhani".Length; i++) {<span class="ch" style="--i: @i">@("Suhani"[i])</span>}</span>
-    <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch" style="--i: @i">@("Tiwari"[i])</span>}</span>
+    <span class="cover-name right" aria-hidden="true">@for (var i = 0; i < "Tiwari".Length; i++) {<span class="ch@(i == 2 ? " kern" : "")" style="--i: @i">@("Tiwari"[i])</span>}</span>
     <div class="cover-intro">
         @* Readable in one glance: where I study, what I do in one line, and where I've already done it *@
         <p class="cover-tagline">

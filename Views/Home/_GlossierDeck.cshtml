@@ -130,6 +130,10 @@
 
     .mk-gls .mk-chapters button[aria-pressed="true"] { background: var(--g-red); border-color: var(--g-red); }
 
+    @@container (max-width: 560px) {
+        .mk-gls .mk-slide.g-cover .g-lede { display: none; }
+        .mk-gls .g-cover .g-title { max-width: 52cqw; font-size: clamp(24px, 8cqw, 40px); }
+    }
     @@media (prefers-reduced-motion: reduce) {
         .mk-gls .g-tube, .mk-gls .g-doodle, .mk-gls .g-msg, .mk-gls .g-step, .mk-gls .g-list li, .mk-gls .g-orb, .mk-gls .g-vote i::after, .mk-gls .g-donut .arc, .mk-gls .g-line .ln, .mk-gls .g-line .dt { animation: none; }
         .mk-gls .g-donut .arc { stroke-dasharray: 40 100; }
