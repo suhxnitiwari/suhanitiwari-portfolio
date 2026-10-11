@@ -128,7 +128,18 @@ app.Use(async (context, next) =>
 // serve my Python files too (wwwroot/py), so the Saturday planner can run in the browser
 var contentTypes = new FileExtensionContentTypeProvider();
 contentTypes.Mappings[".py"] = "text/plain; charset=utf-8";
-app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
+// images, video and fonts are cached for a day (and reused while a fresh copy loads for a week), so a return visit
+// doesn't download them again; CSS and JS are left alone, since they change with every push
+var mediaTypes = new[] { ".mp4", ".webm", ".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".woff", ".woff2", ".pdf" };
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = contentTypes,
+    OnPrepareResponse = ctx =>
+    {
+        if (mediaTypes.Contains(Path.GetExtension(ctx.File.Name).ToLowerInvariant()))
+            ctx.Context.Response.Headers["Cache-Control"] = "public, max-age=86400, stale-while-revalidate=604800";
+    }
+});
 
 app.UseRouting();
 app.UseCors();

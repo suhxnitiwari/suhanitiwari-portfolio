@@ -33,6 +33,7 @@ let w = Int(Double(first.width) * scale) & ~1, h = Int(Double(first.height) * sc
 
 try? FileManager.default.removeItem(atPath: output)
 let writer = try! AVAssetWriter(outputURL: URL(fileURLWithPath: output), fileType: .mp4)
+writer.shouldOptimizeForNetworkUse = true   // index at the front, so a browser can start playing before the whole file arrives
 let input_ = AVAssetWriterInput(mediaType: .video, outputSettings: [
     AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: w, AVVideoHeightKey: h,
     AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: w * h * 3, AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel]
