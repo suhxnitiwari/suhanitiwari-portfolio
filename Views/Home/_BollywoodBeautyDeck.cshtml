@@ -1,11 +1,12 @@
 @* Same Fame, Different Fates: my case study of three A-list Bollywood beauty brands, the 3rd project in the Marketing carousel
    (rendered from _MarketingWork.cshtml). One winner (Kay Beauty), one exit (Anomaly, sold to Reliance) and one loser (82°E),
    measured in audited revenue and profit. The look: bridal wine and antique gold on ivory, framed like a wedding card.
-   The cover video is a motion graphic I made (tools/record/bollywood-cover.html): three dressing-room mirrors whose lights tell each fate.
+   The cover video is a motion graphic I made (tools/record/bollywood-cover.html): three dressing-room mirrors, each framing its founder's
+   photo (Wikimedia Commons, CC BY 3.0, credited on the slide), whose lights tell each fate.
    Numbers checked Oct 2026: Nykaa FY26 annual report (Form AOC-1) and half-yearly related-party filings on NSE, CRISIL rating notes,
    MCA filings for 82°E as reported by MediaNama and TechStory, brand stores for prices, Google Trends for search. *@
 @{
-    const string bsig = "<span class=\"b-sig\" aria-hidden=\"true\">suhani ✦</span>";
+    const string bsig = "<span class=\"b-sig\" aria-hidden=\"true\">suhani</span>";
     // audited revenue, ₹ crore (Kay: CRISIL for FY20 and FY21, Nykaa's annual report after that; 82°E: MCA filings)
     var years = new[] { "FY20", "FY21", "FY22", "FY23", "FY24", "FY25", "FY26" };
     var kayRev = new double?[] { 14.94, 23.14, 27.56, 60.56, 88.24, 131.76, 211.65 };
@@ -183,11 +184,12 @@
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Same Fame, Different Fates slides">
         <div class="mk-stage">
             <div class="mk-slide b-cover" data-title="Same fame">
-                <video class="b-bg" data-src="/videos/projects/bollywood-cover.mp4" preload="none" poster="/videos/projects/bollywood-cover.jpg" muted loop playsinline autoplay aria-label="Three dressing-room mirrors on a vanity shelf. Kay Beauty's stays lit as its revenue counts to 211.65 crore. Anomaly's dims to a steady glow and is sold. 82°E's bulbs flicker and go out as its revenue falls."></video>
+                <video class="b-bg" data-src="/videos/projects/bollywood-cover.mp4" preload="none" poster="/videos/projects/bollywood-cover.jpg" muted loop playsinline autoplay aria-label="Three dressing-room mirrors on a vanity shelf, each framing a photo of its founder. Kay Beauty’s, with Katrina Kaif, stays lit as its revenue counts to 211.65 crore. Anomaly’s, with Priyanka Chopra Jonas, settles to a steady glow and is sold. 82°E’s, with Deepika Padukone, fades to grey as its bulbs go out and its revenue lands at 14.66 crore."></video>
                 @Html.Raw(bsig)
                 <p class="b-kick">bollywood beauty case study, 2026</p>
                 <h4 class="b-title">Same fame,<br /><em>different fates.</em></h4>
                 <p class="b-lede">Three A-list actresses launched beauty brands. One grew, one was sold, one is shrinking. Why?</p>
+                <p class="b-src">Photos via Wikimedia Commons, CC BY 3.0: Katrina Kaif and Priyanka Chopra Jonas by Bollywood Hungama; Deepika Padukone from Narendra Modi’s YouTube channel.</p>
             </div>
 
             <div class="mk-slide" data-title="The answer" hidden>

@@ -2,7 +2,7 @@
    Built from my one-page competitive activities map: Wendy's core position, the activities that hold it up today (red)
    and six new ones I proposed (blue). Every number and name here is from that slide. The full map is in the archive under the slideshow.
    The look: Wendy's red on a blush background, with my proposals in blue. The cover video is a motion graphic I made
-   (tools/record/wendys-cover.html): a nod to the 1984 "Where's the beef?" ad, then the square-patty burger as the answer. *@
+   (tools/record/wendys-cover.html): a Dave's Single falling into place, layer by layer, around its square patty. *@
 <style>
     .mk-wd { --w-red: #C8102E; --w-deep: #A50E26; --w-blue: #2F86D0; --w-bluedeep: #1F6FB5; --w-blush: #FCEFEF; --w-ink: #2A1810; --w-mute: #6E5A55; --w-cheese: #F2C94C; }
     .mk-wd .mk-stage { background: radial-gradient(34cqw 26cqw at 100% 0%, rgba(200, 16, 46, 0.12), rgba(200, 16, 46, 0)), radial-gradient(30cqw 24cqw at 0% 100%, rgba(47, 134, 208, 0.1), rgba(47, 134, 208, 0)), var(--w-blush); border: 1px solid #F1D2D2; }
@@ -39,10 +39,10 @@
 
     /* the core: a square patty that hangs over the bun */
     .mk-wd .w-core { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3cqw; align-items: center; flex: 1; }
-    .mk-wd .w-burger { width: 26cqw; margin: 0 auto; filter: drop-shadow(0 1.4cqw 1.4cqw rgba(120, 40, 20, 0.25)); }
+    .mk-wd .w-burger { width: 36cqw; margin: 0 auto; filter: drop-shadow(0 1.4cqw 1.4cqw rgba(120, 40, 20, 0.25)); }
     .mk-wd .w-burger svg { width: 100%; height: auto; display: block; overflow: visible; }
-    .mk-wd .w-burger .layer { animation: wDrop 0.6s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: calc(var(--n) * 0.14s); }
-    @@keyframes wDrop { from { opacity: 0; transform: translateY(-12px); } }
+    .mk-wd .mk-slide:not([hidden]) .w-burger .layer { animation: wDrop 0.55s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: calc(var(--n) * 0.32s); }
+    @@keyframes wDrop { from { opacity: 0; transform: translateY(-40px); } }
     .mk-wd .w-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1cqw; }
     .mk-wd .w-pillar { padding: 1.2cqw; text-align: center; animation: wPop 0.45s ease both; animation-delay: calc(var(--n) * 0.15s + 0.6s); }
     .mk-wd .w-pillar b { display: block; font-size: clamp(12px, 1.5cqw, 18px); font-weight: 900; color: var(--w-red); }
@@ -105,7 +105,7 @@
     }
 </style>
 @{
-    const string wdSig = "<span class=\"w-sig\" aria-hidden=\"true\">suhani ✦</span>";
+    const string wdSig = "<span class=\"w-sig\" aria-hidden=\"true\">suhani</span>";
     // the map slide: the same 19 activities as the archive's map, in the same clockwise order (Future = my proposal)
     var wdMap = new (string Title, bool Future)[]
     {
@@ -138,7 +138,7 @@
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Wendy’s slides">
         <div class="mk-stage">
             <div class="mk-slide w-cover" data-title="The beef">
-                <video class="w-bg" data-src="/videos/projects/wendys-cover.mp4" preload="none" poster="/videos/projects/wendys-cover.jpg" muted loop playsinline autoplay aria-label="A giant bun lifts its lid on a tiny patty and asks, Where’s the beef? Then a Wendy’s burger builds itself around a square patty whose corners hang over the bun, and red activity bubbles and dashed blue new ones pop up around it"></video>
+                <video class="w-bg" data-src="/videos/projects/wendys-cover.mp4" preload="none" poster="/videos/projects/wendys-cover.jpg" muted loop playsinline autoplay aria-label="A Wendy’s Dave’s Single falls into place one layer at a time: bottom bun, a square patty that hangs over the bun, melting cheese, lettuce, tomato, onion, pickles, sauce and the top bun."></video>
                 @Html.Raw(wdSig)
                 <p class="w-kick">Competitive activities, 2026</p>
                 <h4 class="w-title">Wendy’s: everything <em>ties back to the beef.</em></h4>
@@ -159,13 +159,29 @@
                         </div>
                     </div>
                     <div class="w-burger" aria-hidden="true">
-                        <svg viewBox="0 0 120 92">
-                            <path class="layer" style="--n: 5" d="M10 40 C10 10 110 10 110 40 Z" fill="#E7A24A" />
-                            <g class="layer" style="--n: 5"><ellipse cx="40" cy="24" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="60" cy="19" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="80" cy="24" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="50" cy="31" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="72" cy="31" rx="2.4" ry="1.4" fill="#FFF3D6" /></g>
-                            <path class="layer" style="--n: 4" d="M8 42 h104 l-5 7 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 z" fill="#6BAF4A" />
-                            <path class="layer" style="--n: 3" d="M2 48 h116 l-6 6 h-104 z" fill="#F2C94C" />
-                            <rect class="layer" style="--n: 2" x="0" y="52" width="120" height="14" rx="2" fill="#6B3A22" />
-                            <path class="layer" style="--n: 1" d="M12 68 h96 a8 8 0 0 1 -8 12 h-80 a8 8 0 0 1 -8 -12 z" fill="#E7A24A" />
+                        <svg viewBox="0 0 150 150">
+                            <defs>
+                                <linearGradient id="wTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0B86A" /><stop offset="0.6" stop-color="#DE9440" /><stop offset="1" stop-color="#C97A2F" /></linearGradient>
+                                <linearGradient id="wBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2BC70" /><stop offset="1" stop-color="#C9762E" /></linearGradient>
+                                <linearGradient id="wBeef" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6A3720" /><stop offset="0.5" stop-color="#4E2815" /><stop offset="1" stop-color="#33190C" /></linearGradient>
+                            </defs>
+                            @* bottom up, each layer drops in one at a time *@
+                            <path class="layer" style="--n: 0" d="M20 118 h110 q4 0 3 6 q-3 16 -18 16 h-80 q-15 0 -18 -16 q-1 -6 3 -6 z" fill="url(#wBot)" />
+                            <g class="layer" style="--n: 1">
+                                <path d="M4 96 l6 -5 h130 l6 5 v20 h-142 z" fill="url(#wBeef)" />
+                                <circle cx="22" cy="104" r="1.6" fill="#8C4E2C" /><circle cx="48" cy="109" r="1.4" fill="#2A1208" /><circle cx="70" cy="101" r="1.8" fill="#8C4E2C" /><circle cx="96" cy="108" r="1.5" fill="#2A1208" /><circle cx="120" cy="102" r="1.7" fill="#8C4E2C" /><circle cx="36" cy="112" r="1.3" fill="#8C4E2C" /><circle cx="84" cy="113" r="1.4" fill="#8C4E2C" /><circle cx="132" cy="111" r="1.4" fill="#2A1208" />
+                            </g>
+                            <path class="layer" style="--n: 2" d="M8 88 h134 v5 h-10 l-6 12 -6 -12 h-20 l-6 9 -6 -9 h-24 l-6 13 -6 -13 h-22 l-6 9 -6 -9 h-14 z" fill="#F8B21C" />
+                            <path class="layer" style="--n: 3" d="M5 86 q8 -10 16 -2 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -6 8 2 l-2 4 h-136 z" fill="#5FA334" />
+                            <rect class="layer" style="--n: 4" x="22" y="72" width="106" height="9" rx="4.5" fill="#D93A2B" />
+                            <g class="layer" style="--n: 5"><rect x="18" y="66" width="56" height="6" rx="3" fill="#F7F3EA" stroke="#DCCFE6" /><rect x="76" y="66" width="56" height="6" rx="3" fill="#F7F3EA" stroke="#DCCFE6" /></g>
+                            <g class="layer" style="--n: 6"><ellipse cx="44" cy="63" rx="15" ry="3.4" fill="#7E9A3A" /><ellipse cx="78" cy="62" rx="15" ry="3.4" fill="#7E9A3A" /><ellipse cx="110" cy="63" rx="14" ry="3.2" fill="#7E9A3A" /></g>
+                            <g class="layer" style="--n: 7"><ellipse cx="34" cy="58" rx="12" ry="2.6" fill="#FFF8EC" /><ellipse cx="62" cy="58" rx="10" ry="2.4" fill="#C1271B" /><ellipse cx="92" cy="58" rx="13" ry="2.6" fill="#FFF8EC" /><ellipse cx="118" cy="58" rx="9" ry="2.4" fill="#C1271B" /></g>
+                            <g class="layer" style="--n: 8">
+                                <path d="M14 55 C14 6 136 6 136 55 q0 4 -5 4 h-112 q-5 0 -5 -4 z" fill="url(#wTop)" />
+                                <ellipse cx="56" cy="24" rx="26" ry="9" fill="#FFF0D6" opacity="0.45" />
+                                <ellipse cx="46" cy="30" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="62" cy="22" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="78" cy="28" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="94" cy="21" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="106" cy="33" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="38" cy="41" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="74" cy="40" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="116" cy="44" rx="2.6" ry="1.4" fill="#FFF3D6" />
+                            </g>
                         </svg>
                     </div>
                 </div>

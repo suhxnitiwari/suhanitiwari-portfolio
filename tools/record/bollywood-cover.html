@@ -30,21 +30,23 @@
         background: linear-gradient(165deg, #FDF9F4 0%, #F1E6DA 48%, #E6D6C6 100%); box-shadow: inset 0 0 22px rgba(110, 30, 48, 0.12); }
     .glass::before { content: ""; position: absolute; left: -30%; top: -10%; width: 60%; height: 130%; transform: rotate(18deg); background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)); opacity: 0.55; }
     .sheen { position: absolute; top: -20%; width: 46%; height: 140%; transform: rotate(18deg); background: linear-gradient(90deg, rgba(255, 236, 190, 0), rgba(255, 236, 190, 0.85), rgba(255, 236, 190, 0)); }
+    .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos); filter: sepia(0.14) saturate(0.92) contrast(1.02); }
     .shade { position: absolute; inset: 0; background: #2A1F20; opacity: 0; }
-    .label { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); text-align: center; display: grid; gap: 8px; }
-    .label small { padding: 0 18px; text-wrap: balance; line-height: 1.5; font-size: 10.5px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
-    .label b { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: 33px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; }
-    .label i { font-family: 'Bodoni Moda', Georgia, serif; font-size: 15px; color: var(--mute); }
+    .label { position: absolute; left: 0; right: 0; bottom: 0; padding: 54px 8px 16px; text-align: center; display: grid; gap: 5px; background: linear-gradient(180deg, rgba(248, 242, 234, 0) 0%, rgba(248, 242, 234, 0.9) 42%, rgba(248, 242, 234, 0.97) 100%); }
+    .label small { padding: 0 4px; text-wrap: balance; line-height: 1.5; font-size: 10px; letter-spacing: 0.16em !important; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+    .label b { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: 27px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; }
+    .label i { font-family: 'Bodoni Moda', Georgia, serif; font-size: 13px; color: var(--mute); }
     .bulb { position: absolute; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; }
 
     .num { position: absolute; top: 552px; width: 240px; text-align: center; }
     .num b { display: block; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: 34px; line-height: 1; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
     .num span { display: block; margin-top: 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute); }
-    .tag { position: absolute; top: 640px; width: 240px; display: flex; justify-content: center; }
-    .tag em { font-style: normal; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; letter-spacing: 0.24em; text-transform: uppercase; }
-    .tag.up em { background: var(--wine); color: #FBEFDF; box-shadow: 0 10px 18px -10px rgba(110, 30, 48, 0.7); }
-    .tag.down em { border: 1.5px solid var(--gold); color: var(--ink); }
-    .tag.mid em { background: #EADBB9; color: var(--ink); }
+    .tag { position: absolute; top: 628px; width: 240px; display: flex; justify-content: center; }
+    /* the fate, as plain words in italic: no pills */
+    .tag em { font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; font-weight: 600; font-size: 22px; letter-spacing: 0.01em; }
+    .tag.up em { color: var(--wine); }
+    .tag.mid em { color: var(--gold); }
+    .tag.down em { color: var(--mute); }
 
     .dust { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #E9CF94; box-shadow: 0 0 8px 2px rgba(233, 207, 148, 0.7); }
     #veil { position: absolute; inset: 0; background: var(--ivory); pointer-events: none; }
@@ -65,9 +67,9 @@ const easeInOut = p => p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2
 const rand = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 
 const STARS = [
-    { name: 'Kay Beauty', who: 'Katrina Kaif', cat: 'makeup', x: 548, value: 211.65, cap: 'FY26 revenue', fate: 'growing', up: true },
-    { name: 'Anomaly', who: 'Priyanka Chopra Jonas', cat: 'haircare', x: 784, value: null, cap: 'sold to Reliance, 2026', fate: 'sold' },
-    { name: '82°E', who: 'Deepika Padukone', cat: 'skincare', x: 1020, value: 14.66, cap: 'FY25 revenue, down 30%', fate: 'shrinking' }
+    { name: 'Kay Beauty', who: 'Katrina Kaif', cat: 'makeup', photo: 'bollywood/katrina.jpg', pos: '50% 12%', x: 548, value: 211.65, cap: 'FY26 revenue', fate: 'growing', up: true },
+    { name: 'Anomaly', who: 'Priyanka Chopra Jonas', cat: 'haircare', photo: 'bollywood/priyanka.jpg', pos: '50% 10%', x: 784, value: null, cap: 'sold to Reliance, 2026', fate: 'sold' },
+    { name: '82°E', who: 'Deepika Padukone', cat: 'skincare', photo: 'bollywood/deepika.png', pos: '57% 18%', x: 1020, value: 14.66, cap: 'FY25 revenue, down 30%', fate: 'shrinking' }
 ];
 
 // bulb positions around an arched frame (196 x 372, arch radius 98): up the left side, over the arch, down the right
@@ -80,7 +82,7 @@ const stage = $('stage');
 STARS.forEach((s, k) => {
     const m = document.createElement('div');
     m.className = 'mirror'; m.style.left = s.x + 'px';
-    m.innerHTML = `<div class="frame"><div class="glass"><div class="sheen"></div><div class="shade"></div><div class="label"><small>${s.who}</small><b>${s.name}</b><i>${s.cat}</i></div></div></div>` +
+    m.innerHTML = `<div class="frame"><div class="glass"><img class="photo" src="${s.photo}" style="--pos:${s.pos}" alt=""><div class="shade"></div><div class="sheen"></div><div class="label"><small>${s.who}</small><b>${s.name}</b><i>${s.cat}</i></div></div></div>` +
         BULBS.map(([x, y]) => `<span class="bulb" style="left:${x}px;top:${y}px"></span>`).join('');
     stage.append(m);
     const n = document.createElement('div');
@@ -126,9 +128,9 @@ window.render = t => {
         if (s.k === 0) { const p = (t - 5.2) % 3.2 / 1.4; sheen.style.left = (-60 + 190 * clamp(p)) + '%'; sheen.style.opacity = t > 5.2 && p <= 1 ? 1 : 0; }
         else sheen.style.opacity = 0;
         const shade = s.m.querySelector('.shade');
-        shade.style.opacity = s.k === 2 ? 0.62 * easeInOut(win(t, 6.0, 7.6)) : s.k === 1 ? 0.12 * easeInOut(win(t, 5.4, 6.6)) : 0;
-        s.m.querySelector('.label b').style.color = s.k === 2 && t > 6.6 ? `rgba(248,242,234,${0.55 + 0.35 * win(t, 6.6, 7.6)})` : '';
-        s.m.querySelector('.label small').style.opacity = s.k === 2 ? 1 - 0.5 * win(t, 6.6, 7.6) : 1;
+        shade.style.opacity = s.k === 2 ? 0.38 * easeInOut(win(t, 6.0, 7.6)) : s.k === 1 ? 0.08 * easeInOut(win(t, 5.4, 6.6)) : 0;
+        s.m.querySelector('.photo').style.filter = s.k === 2 ? `sepia(0.14) saturate(${0.92 - 0.92 * easeInOut(win(t, 6.0, 7.6))}) contrast(1.02)` : '';
+        
         s.m.querySelector('.frame').style.filter = s.k === 0 ? `drop-shadow(0 0 ${28 * win(t, 5.0, 6.2)}px rgba(233, 207, 148, 0.85))` : s.k === 2 ? `saturate(${1 - 0.5 * win(t, 6.0, 7.6)})` : '';
 
         // the numbers count up under each mirror
@@ -157,7 +159,7 @@ window.render = t => {
     $('veil').style.opacity = Math.max(1 - win(t, 0, 0.35), win(t, DUR - 0.7, DUR));
 };
 window.DUR = DUR;
-window.ready = document.fonts.ready;
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]);
 render(new URLSearchParams(location.search).has('t') ? +new URLSearchParams(location.search).get('t') : 9.5);
 </script>
 </body>
