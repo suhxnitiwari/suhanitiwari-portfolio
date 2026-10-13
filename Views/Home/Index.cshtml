@@ -2019,15 +2019,26 @@
         else nav.classList.add('on');
         // sections without their own dot light up the chapter they belong to
         const partOf = { awards: 'education' };
-        // the address bar and tab title follow along too, so a shared link opens where you were reading
-        const baseTitle = document.title;
+        // the address bar and tab title follow along too, so a shared link opens where you were reading.
+        // On Marketing, that's the open study's own link (/marketing/glossier), and it changes as you switch studies.
+        // (This page is also served at /marketing/{study}, so the plain address is always "/".)
+        const baseTitle = @Html.Raw(Json.Serialize(ViewData["FullTitle"] as string ?? "Suhani Tiwari"));
+        const studies = document.querySelector('#marketing-work .mp-projects');
+        let chapterNow = '', studyTitle = '';
         const follow = id => {
+            chapterNow = id;
             const link = links.find(a => a.dataset.chapter === id);
-            // a deeper link inside this chapter (one marketing project, say) stays as it is
+            if (id === 'marketing-work' && studies?.dataset.study) {
+                const url = `/marketing/${studies.dataset.study}`;
+                if (location.pathname + location.search + location.hash !== url) history.replaceState(history.state, '', url);
+                document.title = `${studyTitle || link.textContent.trim()} - Suhani Tiwari`;
+                return;
+            }
+            // a deeper link inside this chapter stays as it is
             const deep = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
             const section = id && document.getElementById(id);
             if (deep && section && section !== deep && section.contains(deep)) { document.title = `${link.textContent.trim()} - Suhani Tiwari`; return; }
-            const url = location.pathname + location.search + (id ? `#${id}` : '');
+            const url = '/' + location.search + (id ? `#${id}` : '');
             if (location.pathname + location.search + location.hash !== url) history.replaceState(history.state, '', url);
             document.title = link ? `${link.textContent.trim()} - Suhani Tiwari` : baseTitle;
         };
@@ -2039,6 +2050,14 @@
         const seen = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) mark(e.target.id); }),
             { rootMargin: '-45% 0px -50% 0px' });
         [...sections, ...Object.keys(partOf).map(id => document.getElementById(id)).filter(Boolean)].forEach(s => seen.observe(s));
+        // switching studies while reading Marketing moves the address bar to the new study
+        addEventListener('study:change', e => { studyTitle = e.detail.title; if (chapterNow === 'marketing-work') follow('marketing-work'); });
+        // this page can be open at /marketing/{study}: a link to a part of it ("/#experience") should scroll, not reload
+        document.addEventListener('click', e => {
+            const a = e.target.closest?.('a[href]');
+            if (a && a.origin === location.origin && a.pathname === '/' && a.hash && location.pathname !== '/' && document.getElementById(decodeURIComponent(a.hash.slice(1))))
+                history.replaceState(history.state, '', '/' + location.search + location.hash);
+        }, true);
         // back at the top: plain address, plain title
         if (hero) new IntersectionObserver(([e]) => { if (e.isIntersecting) { links.forEach(a => a.classList.remove('current')); follow(''); } },
             { rootMargin: '-45% 0px -50% 0px' }).observe(hero);

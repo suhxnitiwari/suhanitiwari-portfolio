@@ -28,6 +28,18 @@ public class HomeController : Controller
     [Route("marketing")]
     public IActionResult Marketing() => View();
 
+    // one marketing study, shareable: suhanitiwari.com/marketing/glossier is the home page opened to the Glossier deck,
+    // and its link preview shows that study's title, cover line and cover (the address bar shows the same link while you read it)
+    [Route("marketing/{study}")]
+    public IActionResult MarketingStudy(string study)
+    {
+        var found = MarketingStudies.Find(study);
+        if (found is null) return Redirect("/#marketing-work");
+        if (found.Slug != study) return RedirectPermanent($"/marketing/{found.Slug}");   // one spelling per study
+        ViewData["Study"] = found;
+        return View("Index");
+    }
+
     public IActionResult Education() => ToHome("education");
 
     public IActionResult Coursework() => ToHome("coursework");

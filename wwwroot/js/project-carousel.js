@@ -18,6 +18,13 @@ const projectCarousels = () => document.querySelectorAll('.mp-projects:not([data
         // live previews marked data-live (Saturday in Austin, Personality Site) only load once their slide is opened
         slides[current].querySelectorAll('iframe[data-live]').forEach(f => { f.src = f.dataset.live; f.removeAttribute('data-live'); });
         if (focus) tabs[current].focus();
+        // a marketing study has its own address (/marketing/glossier): say which one is open, so the home page can show it in the address bar
+        const study = tabs[current].dataset.study;
+        if (study) {
+            root.dataset.study = study;
+            const title = slides[current].querySelector('[id^="mk-title-"]')?.textContent.trim() || tabs[current].textContent.trim();
+            window.dispatchEvent(new CustomEvent('study:change', { detail: { study, title } }));
+        }
         // keep the chosen tab in view when the row scrolls
         const row = tabs[current].parentElement;
         const tab = tabs[current].getBoundingClientRect(), box = row.getBoundingClientRect();
@@ -50,5 +57,23 @@ const projectCarousels = () => document.querySelectorAll('.mp-projects:not([data
     };
     window.addEventListener('hashchange', fromHash);
     fromHash();
+    // a shared study link (/marketing/glossier) opens that deck and lands on it: instantly (the site scrolls smoothly, which can
+    // stall on load), and once more after images settle, unless the visitor has already started scrolling on their own
+    const shared = location.pathname.match(/^\/marketing\/([^/]+)\/?$/);
+    const tab = shared && tabs.find(t => t.dataset.study === shared[1]);
+    if (tab) {
+        show(tabs.indexOf(tab));
+        const land = () => (root.closest('section') || root).scrollIntoView({ behavior: 'instant' });
+        let moved = false;
+        ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, () => moved = true, { once: true, passive: true }));
+        setTimeout(land, 0);
+        if (document.readyState === 'complete') setTimeout(() => { if (!moved) land(); }, 400);
+        else addEventListener('load', () => { if (!moved) land(); }, { once: true });
+    } else if (tabs[0].dataset.study && !root.dataset.study) {
+        // nothing picked yet: the first study is the open one
+        const title = slides[current].querySelector('[id^="mk-title-"]')?.textContent.trim() || tabs[current].textContent.trim();
+        root.dataset.study = tabs[current].dataset.study;
+        window.dispatchEvent(new CustomEvent('study:change', { detail: { study: root.dataset.study, title } }));
+    }
 });
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', projectCarousels); else projectCarousels();

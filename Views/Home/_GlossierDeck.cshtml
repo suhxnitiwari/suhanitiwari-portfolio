@@ -24,7 +24,7 @@
     @@keyframes gTwinkle { 50% { transform: scale(1.18); } }
     .mk-gls .mk-slide { color: var(--g-ink); padding: 3.4cqw 4.6cqw 3cqw; gap: 1.4cqw; }
     .mk-gls .mk-slide p { color: var(--g-mute); }
-    .mk-gls .g-kick { align-self: flex-start; display: inline-block; margin: 0; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--puff); border: 0.25cqw solid #FFF; box-shadow: 0 0.4cqw 1cqw rgba(180, 80, 90, 0.25); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFF !important; }
+    .mk-gls .g-kick { margin: 0; font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: var(--g-red) !important; }
     .mk-gls .g-h { margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: clamp(18px, 3.4cqw, 40px); line-height: 1.08; color: var(--g-ink); letter-spacing: -0.02em; }
     .mk-gls .g-h em { color: var(--g-red); }
     .mk-gls .g-lede { font-size: clamp(12px, 1.5cqw, 18px) !important; line-height: 1.5 !important; max-width: 70cqw; }
@@ -182,9 +182,8 @@
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Glossier slides">
         <div class="mk-stage">
             <div class="mk-slide g-cover" data-title="The cult">
-                <video class="g-bg" data-src="/videos/projects/glossier.mp4" preload="none" poster="/videos/projects/glossier.jpg" muted loop playsinline autoplay aria-label="A pink group chat fills with fans talking about Glossier, then goes quiet"></video>
+                <video class="g-bg" data-src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/glossier.mp4")" preload="none" poster="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/glossier.jpg")" muted loop playsinline autoplay aria-label="A pink group chat fills with fans talking about Glossier, then goes quiet"></video>
                 @Html.Raw(sig)
-                <p class="g-kick">Glossier strategy, 2026</p>
                 <h4 class="g-title">How Glossier <em>lost its cult.</em></h4>
                 <p class="g-lede">First it lost the group chat. Glossier was built by its comments section, then handed its fans to Sephora and TikTok. Here’s how to win them back.</p>
             </div>

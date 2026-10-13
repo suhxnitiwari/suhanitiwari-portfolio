@@ -82,7 +82,7 @@ const stage = $('stage');
 STARS.forEach((s, k) => {
     const m = document.createElement('div');
     m.className = 'mirror'; m.style.left = s.x + 'px';
-    m.innerHTML = `<div class="frame"><div class="glass"><img class="photo" src="${s.photo}" style="--pos:${s.pos}" alt=""><div class="shade"></div><div class="sheen"></div><div class="label"><small>${s.who}</small><b>${s.name}</b><i>${s.cat}</i></div></div></div>` +
+    m.innerHTML = `<div class="frame"><div class="glass"><img class="photo" src="${s.photo}" style="--pos:${s.pos}" alt=""><div class="shade"></div><div class="sheen"></div><div class="label"><small>${s.who.replace(' ', '<br>')}</small><b>${s.name}</b><i>${s.cat}</i></div></div></div>` +
         BULBS.map(([x, y]) => `<span class="bulb" style="left:${x}px;top:${y}px"></span>`).join('');
     stage.append(m);
     const n = document.createElement('div');

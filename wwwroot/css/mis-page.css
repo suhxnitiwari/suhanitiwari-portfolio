@@ -528,7 +528,6 @@
     background: radial-gradient(60% 80% at 78% 45%, #1E4A40 0%, #12302A 60%, #0E2621 100%); }
 .sb-cover > * { position: relative; z-index: 1; }
 .sb-cover .sb-copy { flex: 0 0 40%; display: flex; flex-direction: column; gap: 1.8cqw; }
-.sb-cover .sb-kick { align-self: flex-start; padding: 0.45cqw 1.1cqw; border-radius: var(--r-pill); border: 1px solid rgba(226, 190, 114, 0.6); font-size: clamp(9px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #E2BE72; }
 .sb-cover .sb-title { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 4.4cqw, 58px); line-height: 1.02; letter-spacing: -0.02em; color: #F2EBDC; }
 .sb-cover .sb-title em { display: block; font-style: italic; color: #E2BE72; }
 .sb-cover .sb-one { margin: 0; padding-left: 1.2cqw; border-left: 2px solid #E2BE72; font-size: clamp(13px, 1.6cqw, 20px); line-height: 1.35; color: rgba(242, 235, 220, 0.85); }

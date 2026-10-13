@@ -1,3 +1,6 @@
 ﻿@using Tiwari_Suhani_HW3
 @using Tiwari_Suhani_HW3.Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@* Versions: adds ?v=<hash of the file> to a video or poster address, so a re-recorded video reaches everyone at once
+   instead of waiting out the day Cloudflare and browsers keep the old one *@
+@inject Microsoft.AspNetCore.Mvc.ViewFeatures.IFileVersionProvider Versions

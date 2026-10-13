@@ -5,23 +5,28 @@
     <meta name="author" content="Suhani Tiwari" />
     <meta name="copyright" content="© 2026 Suhani Tiwari. All rights reserved." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @* the home page sets FullTitle for search results; every other page reads "Page - Suhani Tiwari" *@
-    <title>@(ViewData["FullTitle"] as string ?? $"{ViewData["Title"]} - Suhani Tiwari")</title>
+    @* the home page sets FullTitle for search results; every other page reads "Page - Suhani Tiwari".
+       A shared marketing study (/marketing/glossier) is the home page, but its title and link preview are that study's *@
+    @{ var study = ViewData["Study"] as MarketingStudy; }
+    <title>@(study is not null ? $"{study.Title} - Suhani Tiwari" : ViewData["FullTitle"] as string ?? $"{ViewData["Title"]} - Suhani Tiwari")</title>
     <link rel="canonical" href="https://suhanitiwari.com@(Context.Request.Path == "/" ? "/" : Context.Request.Path.Value)" />
     @* Link previews (LinkedIn, iMessage, Slack, X): the card image and text shown when someone shares the site *@
-    <meta name="description" content="MIS and Psychology student at UT Austin building products, data stories and brand strategies at the intersection of technology and human behavior." />
+    <meta name="description" content="@(study?.Line ?? "MIS and Psychology student at UT Austin building products, data stories and brand strategies at the intersection of technology and human behavior.")" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Suhani Tiwari" />
-    <meta property="og:title" content="Suhani Tiwari | Product, Technology &amp; Brand Strategy" />
-    <meta property="og:description" content="My corner of the internet, built from scratch: MIS projects, product and marketing strategy, my résumé, and Sitara, my AI guide." />
+    <meta property="og:title" content="@(study is not null ? $"{study.Title} | Suhani Tiwari" : "Suhani Tiwari | Product, Technology & Brand Strategy")" />
+    <meta property="og:description" content="@(study?.Line ?? "My corner of the internet, built from scratch: MIS projects, product and marketing strategy, my résumé, and Sitara, my AI guide.")" />
     <meta property="og:url" content="https://suhanitiwari.com@(Context.Request.Path)" />
-    <meta property="og:image" content="https://suhanitiwari.com/images/social-card-8.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The front page of suhanitiwari.com: Suhani Tiwari in a sunlit café, studying Management Information Systems at McCombs, UT Austin" />
+    <meta property="og:image" content="https://suhanitiwari.com@(study?.Image ?? "/images/social-card-8.jpg")" />
+    @if (study is null)
+    {
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+    }
+    <meta property="og:image:alt" content="@(study is not null ? $"The cover of {study.Title}, a marketing study by Suhani Tiwari" : "The front page of suhanitiwari.com: Suhani Tiwari in a sunlit café, studying Management Information Systems at McCombs, UT Austin")" />
     <meta name="twitter:card" content="summary_large_image" />
     @Html.Raw("<script type=\"application/ld+json\">"){"@@context":"https://schema.org","@@type":"Person","name":"Suhani Tiwari","url":"https://suhanitiwari.com/","image":"https://suhanitiwari.com/images/social-card-8.jpg","jobTitle":"Management Information Systems student","alumniOf":{"@@type":"CollegeOrUniversity","name":"The University of Texas at Austin"},"sameAs":["https://www.linkedin.com/in/suhxnitiwari/","https://github.com/suhxnitiwari"]}</script>
-    <meta name="twitter:image" content="https://suhanitiwari.com/images/social-card-8.jpg" />
+    <meta name="twitter:image" content="https://suhanitiwari.com@(study?.Image ?? "/images/social-card-8.jpg")" />
     @* Bootswatch "Pulse" theme (Bootstrap 5.3.3), saved locally in wwwroot/css; site.css keeps my own colors on top *@
     <link rel="stylesheet" href="~/css/bootswatch.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />

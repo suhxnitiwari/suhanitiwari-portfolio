@@ -469,10 +469,13 @@
             el.style.setProperty('--y', `${(row * 13.2 + rnd() * 4).toFixed(1)}%`);
             el.style.setProperty('--r', `${(rnd() * 6 - 3).toFixed(1)}deg`);
             field.append(el);
-            // the newest three burn bright, the next few dim, everything older sinks right back; the oldest leave
-            const all = field.children;
-            while (all.length > 48) all[0].remove();
-            for (let i = 0, n = all.length; i < n; i++) { const age = n - 1 - i; all[i].classList.toggle('mid', age >= 3 && age < 9); all[i].classList.toggle('old', age >= 9); }
+        };
+        // after each beat: the newest burn bright, the next few dim, everything older sinks right back; the oldest leave.
+        // The bright window grows with the pace, so by the end the whole field is lit and nobody can read any of it.
+        const settle = rate => {
+            const all = field.children, bright = Math.max(3, Math.round(rate * 1.5)), dim = bright * 3;
+            while (all.length > 150) all[0].remove();
+            for (let i = 0, n = all.length; i < n; i++) { const age = n - 1 - i; all[i].classList.toggle('mid', age >= bright && age < dim); all[i].classList.toggle('old', age >= dim); }
         };
         let t = 0, k = 0, acc = 0;
         const reset = () => {
@@ -490,16 +493,18 @@
                     { duration: 1300, easing: 'cubic-bezier(.7, 0, .15, 1)' });
             }
         };
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { reset(); for (; k < 30; k++) drop(k); imp.textContent = fmt(40e9); cover.classList.add('big'); return; }
-        // beats of 100ms. The flood (7s) starts as a trickle and ends as a torrent, about 64 words, each message coming back around
-        // the way they did, while the counter accelerates to 40 billion. Then the takeover, a held beat, clear, and again.
-        const FLOOD = 70, BIG = FLOOD + 4, CLEAR = BIG + 52, OUT = CLEAR + 6, LOOP = OUT + 6;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { reset(); for (; k < 30; k++) drop(k); settle(1); imp.textContent = fmt(40e9); cover.classList.add('big'); return; }
+        // beats of 100ms. The flood (9s) never stops speeding up: it opens at about two words a second, readable, and every beat
+        // comes faster than the last until it's over a hundred a second, about 230 words, each message coming back around the way
+        // they did, and nobody can keep up. The counter accelerates with it to 40 billion. Then the takeover, a held beat, clear, again.
+        const FLOOD = 90, BIG = FLOOD + 4, CLEAR = BIG + 52, OUT = CLEAR + 6, LOOP = OUT + 6;
         const tick = () => {
             if (t === 0) reset();
             if (t < FLOOD) {
-                const p = (t + 1) / FLOOD;
-                for (acc += 0.22 + 1.9 * Math.pow(p, 1.7); acc >= 1; acc--) drop(k++);
-                imp.textContent = fmt(40e9 * Math.pow(p, 1.8));
+                const p = (t + 1) / FLOOD, rate = 0.2 * Math.pow(60, Math.pow(p, 1.3));   // words per beat: 0.2, then 1, 3, 12 at the end
+                for (acc += rate; acc >= 1; acc--) drop(k++);
+                settle(rate);
+                imp.textContent = fmt(40e9 * Math.pow(p, 2.6));
                 flood.style.setProperty('--p', p.toFixed(3));
             }
             if (t === BIG) takeover();

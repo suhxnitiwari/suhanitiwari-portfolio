@@ -8,8 +8,8 @@
     .mk-wd .mk-stage { background: radial-gradient(34cqw 26cqw at 100% 0%, rgba(200, 16, 46, 0.12), rgba(200, 16, 46, 0)), radial-gradient(30cqw 24cqw at 0% 100%, rgba(47, 134, 208, 0.1), rgba(47, 134, 208, 0)), var(--w-blush); border: 1px solid #F1D2D2; }
     .mk-wd .mk-slide { color: var(--w-ink); padding: 3.4cqw 4.6cqw 3cqw; gap: 1.4cqw; }
     .mk-wd .mk-slide p { color: var(--w-mute); }
-    .mk-wd .w-kick { align-self: flex-start; margin: 0; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--w-red); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFFFFF !important; }
-    .mk-wd .w-kick.blue { background: var(--w-blue); }
+    .mk-wd .w-kick { margin: 0; font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: var(--w-red) !important; }
+    .mk-wd .w-kick.blue { color: var(--w-blue) !important; }
     .mk-wd .w-h { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-weight: 900; font-size: clamp(18px, 3.3cqw, 40px); line-height: 1.06; letter-spacing: -0.02em; color: var(--w-ink); }
     .mk-wd .w-h em { font-style: normal; color: var(--w-red); }
     .mk-wd .w-h em.blue { color: var(--w-blue); }
@@ -143,9 +143,8 @@
     <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Wendy’s slides">
         <div class="mk-stage">
             <div class="mk-slide w-cover" data-title="The beef">
-                <video class="w-bg" data-src="/videos/projects/wendys-cover.mp4" preload="none" poster="/videos/projects/wendys-cover.jpg" muted loop playsinline autoplay aria-label="A Wendy’s Dave’s Single falls into place one layer at a time: bottom bun, a square patty that hangs over the bun, melting cheese, lettuce, tomato, onion, pickles, sauce and the top bun."></video>
+                <video class="w-bg" data-src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/wendys-cover.mp4")" preload="none" poster="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/wendys-cover.jpg")" muted loop playsinline autoplay aria-label="A Wendy’s Dave’s Single falls into place one layer at a time: bottom bun, a square patty that hangs over the bun, melting cheese, lettuce, tomato, onion, pickles, sauce and the top bun."></video>
                 @Html.Raw(wdSig)
-                <p class="w-kick">Competitive activities, 2026</p>
                 <h4 class="w-title">Wendy’s: everything <em>ties back to the beef.</em></h4>
                 <p class="w-lede">Fresh quality, everyday value and convenience: Wendy’s position since 1969. I mapped every activity that holds it up, and six new ones I’d add.</p>
             </div>

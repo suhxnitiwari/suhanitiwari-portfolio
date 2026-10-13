@@ -64,17 +64,17 @@
         <div class="mp-proj-nav">
             <button type="button" class="mp-proj-arrow" data-go="-1" aria-label="Previous project">‹</button>
             <div class="mp-proj-tabs" role="tablist" aria-label="Choose a project">
-                <button type="button" role="tab" aria-selected="true" aria-controls="mk-proj-glossier">Brand Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-rhode" tabindex="-1">Celebrity Brand</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-bollywood" tabindex="-1">Competitive Analysis</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-americaneagle" tabindex="-1">Campaign Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-netflix" tabindex="-1">Media Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-primebookclub" tabindex="-1">Community Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-fuelflow" tabindex="-1">Product Pitch</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-starbucks" tabindex="-1">Product Management</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-owala" tabindex="-1">Marketing Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-wendys" tabindex="-1">Competitive Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-crowdstrike" tabindex="-1">Industry Analysis</button>
+                <button type="button" role="tab" aria-selected="true" aria-controls="mk-proj-glossier" data-study="glossier">Brand Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-rhode" data-study="rhode" tabindex="-1">Celebrity Brand</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-bollywood" data-study="bollywood-beauty" tabindex="-1">Competitive Analysis</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-americaneagle" data-study="american-eagle" tabindex="-1">Campaign Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-netflix" data-study="netflix" tabindex="-1">Media Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-primebookclub" data-study="prime-book-club" tabindex="-1">Community Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-fuelflow" data-study="fuelflow" tabindex="-1">Product Pitch</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-starbucks" data-study="starbucks" tabindex="-1">Product Management</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-owala" data-study="owala" tabindex="-1">Marketing Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-wendys" data-study="wendys" tabindex="-1">Competitive Strategy</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-crowdstrike" data-study="crowdstrike" tabindex="-1">Industry Analysis</button>
             </div>
             <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
         </div>
@@ -355,7 +355,6 @@
                        while the total climbs. The repetition is the insight, so the wall gets half the slide. *@
                     <div class="mk-slide sb-cover" data-title="Hook">
                         <div class="sb-copy">
-                            <p class="sb-kick">Starbucks app strategy</p>
                             <h4 class="sb-title">Starbucks’ app holds $12 billion a year. <em>It’s a glorified gift card.</em></h4>
                             <p class="sb-one"><b>2 in 3</b> orders still aren’t placed ahead in the app.</p>
                         </div>
@@ -634,7 +633,6 @@
                        finish-time plaque like the engraving; every loop brings a new trio of cities, because the point is collecting them *@
                     <div class="mk-slide ow-cover" data-title="Cover">
                         <div class="ow-copy">
-                            <p class="ow-kick">Owala marketing strategy · MKT 337</p>
                             <h4 class="ow-title">Nobody needs <em>a second Owala.</em></h4>
                             <p class="ow-lede"><b>So make them earn one.</b> City-exclusive, engraved with your finish time, only sold to runners.</p>
                         </div>
@@ -858,7 +856,6 @@
                         /* cover: copy on the left, the podium fills the right; bottles drop onto the steps 3, 2, 1 */
                         .mk-owala .ow-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 0 5cqw; background: radial-gradient(70% 90% at 72% 55%, #FFF8F4 0%, #FBEDE7 60%, #F5DFD6 100%); }
                         .mk-owala .ow-copy { flex: 0 0 38%; display: flex; flex-direction: column; gap: 1.6cqw; padding-bottom: 4cqw; }
-                        .mk-owala .ow-kick { align-self: flex-start; margin: 0; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--acc); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFF8F6; }
                         .mk-owala .ow-title { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 6.4cqw, 76px); line-height: 0.98; letter-spacing: -0.02em; color: var(--choc); }
                         .mk-owala .ow-title em { color: var(--acc); }
                         .mk-owala .ow-lede { margin: 0; font-size: clamp(12px, 1.5cqw, 19px) !important; line-height: 1.45 !important; color: var(--ink); }
