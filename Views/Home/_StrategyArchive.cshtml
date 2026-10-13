@@ -346,26 +346,43 @@
             </div>
 
             <div class="gl-view" data-view="pos">
+                @* every line opens in place; a row or column title focuses it (the rest dims) and opens all its lines *@
                 <div class="gl-grid">
-                    <span class="gl-colhead"></span><span class="gl-colhead">Positioning, today</span><span class="gl-colhead next">Adjacency, next</span>
-                    @foreach (var row in glRows)
+                    <span class="gl-corner" aria-hidden="true"></span>
+                    <button type="button" class="gl-colhead" data-col="now" aria-pressed="false">Positioning, today</button>
+                    <button type="button" class="gl-colhead next" data-col="next" aria-pressed="false">Adjacency, next</button>
+                    @for (var r = 0; r < glRows.Length; r++)
                     {
-                        <span class="gl-rowhead">@row.Row</span>
-                        <ul class="gl-cell"><li class="gl-mobile-head">Today</li>
-                            @foreach (var it in row.Now) { <li><b>@it.K</b> @it.V</li> }
-                        </ul>
-                        <ul class="gl-cell next"><li class="gl-mobile-head">Next</li>
-                            @foreach (var it in row.Next) { <li><b>@it.K</b> @it.V</li> }
-                        </ul>
+                        var row = glRows[r];
+                        <button type="button" class="gl-rowhead" data-row="@r" aria-pressed="false"><span>@row.Row</span></button>
+                        foreach (var cell in new[] { (Col: "now", Head: "Today", Items: row.Now), (Col: "next", Head: "Next", Items: row.Next) })
+                        {
+                            <ul class="gl-cell @(cell.Col == "next" ? "next" : "")" data-row="@r" data-col="@cell.Col">
+                                <li class="gl-mobile-head">@cell.Head</li>
+                                @for (var i = 0; i < cell.Items.Length; i++)
+                                {
+                                    var id = $"gl-{r}-{cell.Col}-{i}";
+                                    <li>
+                                        <button type="button" class="gl-item" aria-expanded="false" aria-controls="@id"><b>@cell.Items[i].K</b><span class="gl-pv" aria-hidden="true">@cell.Items[i].V</span><span class="gl-caret" aria-hidden="true"></span></button>
+                                        <p class="gl-full" id="@id" hidden>@cell.Items[i].V</p>
+                                    </li>
+                                }
+                            </ul>
+                        }
                     }
                 </div>
                 <div class="gl-trades">
                     <p class="gl-trades-h">The trade-offs</p>
-                    @foreach (var t in glTrades)
+                    @for (var t = 0; t < glTrades.Length; t++)
                     {
-                        <p><b>@t.K</b> @t.V</p>
+                        var id = $"gl-t-{t}";
+                        <div class="gl-trade">
+                            <button type="button" class="gl-item" aria-expanded="false" aria-controls="@id"><b>@glTrades[t].K</b><span class="gl-caret" aria-hidden="true"></span><span class="gl-pv" aria-hidden="true">@glTrades[t].V</span></button>
+                            <p class="gl-full" id="@id" hidden>@glTrades[t].V</p>
+                        </div>
                     }
                 </div>
+                <p class="gl-hint">Tap a row or column title to focus it, or any line to open it.</p>
             </div>
 
             <div class="gl-view" data-view="seg" hidden>
@@ -373,12 +390,12 @@
                     @foreach (var seg in glSegs)
                     {
                         <div class="gl-seg @(seg.Future ? "next" : "")">
-                            <div class="gl-who">
+                            <button type="button" class="gl-who" aria-pressed="false">
                                 @if (seg.Future) { <i>Potential</i> } else { <i>Current</i> }
                                 <b>@seg.Name</b>
-                                <p>@seg.Who</p>
+                                <span class="gl-who-p">@seg.Who</span>
                                 <small>vs. @seg.Rivals</small>
-                            </div>
+                            </button>
                             <ul class="gl-chans">
                                 @foreach (var c in seg.Channels)
                                 {
@@ -392,6 +409,7 @@
                         </div>
                     }
                 </div>
+                <p class="gl-hint">Tap a segment to focus it and its channels.</p>
             </div>
         </div>
     </div>
@@ -504,27 +522,53 @@
     .gl-views { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
     .gl-views button[aria-pressed="true"] { background: #3B1424; border-color: #3B1424; color: #FFFFFF; }
     .gl-grid { display: grid; grid-template-columns: 120px minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
-    .gl-colhead { padding: 12px 16px; border-radius: 12px; background: #3B1424; color: #FFFFFF; font-family: 'Bodoni Moda', Georgia, serif; font-size: 18px; font-weight: 700; text-align: center; }
-    .gl-colhead:first-child { background: none; }
+    .gl-colhead, .gl-rowhead { border: 0; border-radius: 12px; background: #3B1424; color: #FFFFFF; font: inherit; cursor: var(--cursor-hot, pointer); transition: background 0.2s, box-shadow 0.2s, opacity 0.25s; }
+    .gl-colhead { padding: 12px 16px; font-family: 'Bodoni Moda', Georgia, serif; font-size: 18px; font-weight: 700; text-align: center; }
     .gl-colhead.next { background: #B23A6E; }
-    .gl-rowhead { display: flex; align-items: center; justify-content: center; padding: 10px; border-radius: 12px; background: #3B1424; color: #FFFFFF; font-weight: 800; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; writing-mode: vertical-rl; rotate: 180deg; }
-    .gl-cell { list-style: none; margin: 0; padding: 14px 16px; border-radius: 12px; background: #6E2A43; color: #FFF1F5; display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; line-height: 1.45; }
+    .gl-rowhead { display: flex; align-items: center; justify-content: center; padding: 10px; font-weight: 800; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; }
+    .gl-rowhead span { writing-mode: vertical-rl; rotate: 180deg; }
+    .gl-colhead:hover, .gl-rowhead:hover { background: #55203A; }
+    .gl-colhead.next:hover { background: #C44F80; }
+    .gl-colhead[aria-pressed="true"], .gl-rowhead[aria-pressed="true"] { box-shadow: 0 0 0 3px #FFF6F8, 0 0 0 5px #B23A6E; }
+    .gl-colhead.next[aria-pressed="true"] { box-shadow: 0 0 0 3px #FFF6F8, 0 0 0 5px #3B1424; }
+    .gl-colhead:focus-visible, .gl-rowhead:focus-visible, .gl-who:focus-visible { outline: 2px solid #3B1424; outline-offset: 6px; }
+    .gl-cell { list-style: none; margin: 0; padding: 8px; border-radius: 12px; background: #6E2A43; color: #FFF1F5; display: flex; flex-direction: column; gap: 1px; font-size: 13.5px; line-height: 1.45; transition: opacity 0.25s; }
     .gl-cell.next { background: #B54C70; }
     .gl-cell b { color: #FFFFFF; }
-    .gl-cell b::after { content: " >"; opacity: 0.7; }
     .gl-mobile-head { display: none; }
-    .gl-trades { margin-top: 10px; padding: 16px 18px; border-radius: 12px; background: #3B1424; color: #FFE7EF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 18px; font-size: 13.5px; line-height: 1.45; }
+    /* one line each: the name and a preview; open it to read the whole line */
+    .gl-item { display: flex; align-items: center; gap: 8px; width: 100%; padding: 6px 8px; border: 0; border-radius: 8px; background: none; color: inherit; font: inherit; text-align: left; cursor: var(--cursor-hot, pointer); transition: background 0.15s; }
+    .gl-item b { flex: 0 1 auto; }
+    .gl-pv { flex: 1 1 0; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; opacity: 0.72; }
+    .gl-item[aria-expanded="true"] .gl-pv { display: none; }
+    .gl-caret { flex: none; width: 7px; height: 7px; margin: 0 2px 0 auto; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; rotate: -45deg; opacity: 0.8; transition: rotate 0.2s; }
+    .gl-item[aria-expanded="true"] .gl-caret { rotate: 45deg; }
+    .gl-item:hover { background: rgba(255, 255, 255, 0.1); }
+    .gl-cell li:has(> .gl-item[aria-expanded="true"]), .gl-trade:has(> .gl-item[aria-expanded="true"]) { border-radius: 8px; background: rgba(255, 255, 255, 0.08); }
+    .gl-item:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 1px; }
+    .gl-full { margin: 0; padding: 4px 8px 8px; animation: gl-open 0.2s ease-out; }
+    @@keyframes gl-open { from { opacity: 0; translate: 0 -3px; } }
+    .gl-dim { opacity: 0.3; }
+    .gl-dim:hover { opacity: 0.6; }
+    .gl-trades { margin-top: 10px; padding: 12px 10px; border-radius: 12px; background: #3B1424; color: #FFE7EF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 10px; align-items: start; font-size: 13.5px; line-height: 1.45; }
     .gl-trades p { margin: 0; }
-    .gl-trades b { display: block; color: #FFFFFF; font-family: 'Bodoni Moda', Georgia, serif; font-size: 17px; }
-    .gl-trades .gl-trades-h { grid-column: 1 / -1; font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #F7B3C8; }
+    .gl-trades b { color: #FFFFFF; font-family: 'Bodoni Moda', Georgia, serif; font-size: 17px; }
+    .gl-trades .gl-trades-h { grid-column: 1 / -1; padding: 0 8px; font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #F7B3C8; }
+    .gl-trade { min-width: 0; }
+    .gl-trade .gl-item { flex-wrap: wrap; row-gap: 2px; }
+    .gl-trade .gl-caret { margin-left: 0; }
+    .gl-trade .gl-pv { flex: 1 0 100%; }
+    .gl-hint { margin: 14px 0 0; font-size: 14px; color: var(--sa-muted); text-align: center; }
     .gl-segs { display: flex; flex-direction: column; gap: 10px; }
-    .gl-seg { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 10px; }
-    .gl-who { padding: 14px 16px; border-radius: 12px; background: #3B1424; color: #FFE7EF; }
+    .gl-seg { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 10px; transition: opacity 0.25s; }
+    .gl-who { display: block; width: 100%; padding: 14px 16px; border: 0; border-radius: 12px; background: #3B1424; color: #FFE7EF; font: inherit; text-align: left; cursor: var(--cursor-hot, pointer); transition: box-shadow 0.2s; }
+    .gl-who:hover { box-shadow: 0 0 0 2px #F7B3C8; }
+    .gl-who[aria-pressed="true"] { box-shadow: 0 0 0 3px #FFF6F8, 0 0 0 5px #B23A6E; }
     .gl-seg.next .gl-who { background: #FFFFFF; color: var(--sa-ink); border: 2px dashed #B23A6E; }
     .gl-who i, .gl-chans i { font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #F7B3C8; }
     .gl-seg.next .gl-who i, .gl-chans li.next i { color: #B23A6E; }
     .gl-who b { display: block; margin-top: 2px; font-family: 'Bodoni Moda', Georgia, serif; font-size: 18px; line-height: 1.15; }
-    .gl-who p { margin: 6px 0 0; font-size: 13.5px; line-height: 1.45; }
+    .gl-who .gl-who-p { display: block; margin: 6px 0 0; font-size: 13.5px; line-height: 1.45; }
     .gl-who small { display: block; margin-top: 6px; font-size: 12.5px; font-weight: 700; opacity: 0.85; }
     .gl-chans { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
     .gl-chans li { display: flex; flex-direction: column; gap: 4px; padding: 13px 15px; border-radius: 12px; background: #FFFFFF; border: 1px solid #F1D2DC; }
@@ -553,19 +597,27 @@
         .cs-rivals { grid-column: 1 / -1; grid-row: 1; }
         .cs-arrow { display: none; }
         .cs-facts { grid-template-columns: 1fr; }
-        .gl-grid { grid-template-columns: 1fr; }
-        .gl-colhead { display: none; }
-        .gl-rowhead { writing-mode: horizontal-tb; rotate: none; justify-content: flex-start; padding: 10px 14px; margin-top: 8px; }
-        .gl-mobile-head { display: block; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #F7B3C8; }
+        /* the two column titles stay on top as a pair of focus buttons; each row then stacks */
+        .gl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+        .gl-corner { display: none; }
+        .gl-colhead { padding: 10px 12px; font-size: 15px; }
+        .gl-rowhead, .gl-cell { grid-column: 1 / -1; }
+        .gl-rowhead { justify-content: flex-start; padding: 10px 14px; margin-top: 8px; }
+        .gl-rowhead span { writing-mode: horizontal-tb; rotate: none; }
+        .gl-mobile-head { display: block; padding: 4px 8px 2px; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #F7B3C8; }
         .gl-cell.next .gl-mobile-head { color: #FFE0EA; }
-        .gl-trades { grid-template-columns: 1fr; }
+        .gl-trades { grid-template-columns: minmax(0, 1fr); }
         .gl-chans { grid-template-columns: 1fr; }
     }
     @@media (max-width: 640px) {
         .sa-tabs { grid-template-columns: 1fr; gap: 8px; }
         .sa-tabs button { flex-direction: row; align-items: baseline; justify-content: space-between; padding: 12px 16px; }
     }
-    @@media (prefers-reduced-motion: reduce) { .cs-force, .wd-act { transition: none; } .cs-force:hover, .wd-act:hover { transform: none; } }
+    @@media (prefers-reduced-motion: reduce) {
+        .cs-force, .wd-act, .gl-item, .gl-caret, .gl-colhead, .gl-rowhead, .gl-cell, .gl-seg, .gl-who { transition: none; }
+        .cs-force:hover, .wd-act:hover { transform: none; }
+        .gl-full { animation: none; }
+    }
 </style>
 
 <script>
@@ -656,6 +708,46 @@
         views.forEach(b => b.addEventListener('click', () => {
             views.forEach(x => x.setAttribute('aria-pressed', x === b));
             panes.forEach(p => p.hidden = p.dataset.view !== b.dataset.view);
+        }));
+
+        // Glossier: every line and trade-off opens in place
+        const setOpen = (b, open) => {
+            b.setAttribute('aria-expanded', open);
+            document.getElementById(b.getAttribute('aria-controls')).hidden = !open;
+        };
+        root.querySelectorAll('.sa-gl .gl-item').forEach(b => b.addEventListener('click', () => setOpen(b, b.getAttribute('aria-expanded') !== 'true')));
+
+        // Glossier: a row or column title focuses it, dims the rest and opens all its lines; again (or Escape) clears it
+        const grid = root.querySelector('.gl-grid');
+        const heads = [...grid.querySelectorAll('.gl-rowhead, .gl-colhead')], cells = [...grid.querySelectorAll('.gl-cell')];
+        let focused = null;
+        const focusOn = h => {
+            focused = h;
+            const isRow = x => x.classList.contains('gl-rowhead');
+            heads.forEach(x => {
+                x.setAttribute('aria-pressed', x === h);
+                x.classList.toggle('gl-dim', !!h && x !== h && isRow(x) === isRow(h));
+            });
+            cells.forEach(c => {
+                const on = !!h && (isRow(h) ? c.dataset.row === h.dataset.row : c.dataset.col === h.dataset.col);
+                c.classList.toggle('gl-dim', !!h && !on);
+                c.querySelectorAll('.gl-item').forEach(b => setOpen(b, on));
+            });
+        };
+        heads.forEach(h => h.addEventListener('click', () => focusOn(focused === h ? null : h)));
+        grid.addEventListener('keydown', e => {
+            if (e.key !== 'Escape' || !focused) return;
+            const h = focused; focusOn(null); h.focus();
+        });
+
+        // Glossier: tap a segment to focus it and its channels; tap it again to see them all
+        const segs = [...root.querySelectorAll('.gl-seg')];
+        segs.forEach(s => s.querySelector('.gl-who').addEventListener('click', e => {
+            const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+            segs.forEach(x => {
+                x.querySelector('.gl-who').setAttribute('aria-pressed', on && x === s);
+                x.classList.toggle('gl-dim', on && x !== s);
+            });
         }));
     })();
 </script>

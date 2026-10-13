@@ -26,26 +26,55 @@
     /* 1. cover: the impressions counter races to 40 billion while the words pour in: comments, headlines, reactions, love and rage */
     .mk-ae .e-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 5cqw 5cqw;
         background: radial-gradient(80% 90% at 78% 45%, #2C4670 0%, #1A2B4A 55%, #121E36 100%); color: #F2EEE6; }
-    .mk-ae .e-cover .e-copy { flex: 0 0 42%; display: flex; flex-direction: column; gap: 1.6cqw; }
+    .mk-ae .e-cover .e-copy { flex: 0 0 42%; display: flex; flex-direction: column; gap: 1.6cqw; transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease; }
     .mk-ae .e-cover .e-kick { color: #F0A55A !important; }
     .mk-ae .e-title { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(28px, 5cqw, 64px); line-height: 1; letter-spacing: -0.03em; color: #F7F4EE; }
     .mk-ae .e-title em { display: block; font-weight: 400; font-style: italic; color: #F0A55A; }
     .mk-ae .e-cover .e-lede { color: rgba(242, 238, 230, 0.8) !important; }
     .mk-ae .e-cover .e-sig { color: #F0A55A; }
-    .mk-ae .e-cover .e-src { color: rgba(242, 238, 230, 0.45); }
-    .mk-ae .e-flood { position: relative; flex: 1; align-self: stretch; min-width: 0; }
+    .mk-ae .e-cover .e-src { color: rgba(242, 238, 230, 0.45); transition: opacity 0.9s ease; }
+    /* --p is how far the flood has got (0 to 1): the camera leans in and the counter swells as it climbs */
+    .mk-ae .e-flood { --p: 0; position: relative; flex: 1; align-self: stretch; min-width: 0; }
     .mk-ae .e-count { position: absolute; top: 0; right: 0; z-index: 3; display: flex; align-items: baseline; gap: 0.8cqw; padding: 0.4cqw 0 0.6cqw 1.4cqw;
-        background: linear-gradient(90deg, transparent, #1A2B4A 22%); }
-    .mk-ae .e-count b { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 4.2cqw, 56px); line-height: 1; font-variant-numeric: tabular-nums; color: #FFFFFF; }
+        background: linear-gradient(90deg, transparent, #1A2B4A 22%); transform: scale(calc(1 + var(--p) * 0.32)); transform-origin: 100% 0;
+        transition: transform 0.25s linear, opacity 0.6s ease; }
+    .mk-ae .e-count b { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 4.2cqw, 56px); line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: #FFFFFF;
+        text-shadow: 0 0 calc(var(--p) * 2.4cqw) rgba(240, 165, 90, calc(var(--p) * 0.7)); }
     .mk-ae .e-count small { font-size: clamp(8px, 0.95cqw, 12px); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242, 238, 230, 0.6); }
-    /* the words: each lands somewhere in the field, tilted a little; older ones sink back as new ones pile on */
-    .mk-ae .e-words { position: absolute; inset: 6cqw 0 5cqw 0; overflow: hidden;
+    /* the words: each slams down somewhere in the field, tilted a little; the newest burn bright, the rest sink back fast as more pile on */
+    .mk-ae .e-words { position: absolute; inset: 6cqw 0 5cqw 0; overflow: hidden; transform: scale(calc(1 + var(--p) * 0.07)); transform-origin: 55% 45%;
+        transition: transform 0.25s linear;
         -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent); mask-image: linear-gradient(180deg, #000 82%, transparent); }
-    .mk-ae .e-w { position: absolute; left: var(--x); top: var(--y); max-width: var(--mw, 22cqw); transform: rotate(var(--r, 0deg)); transition: opacity 0.9s ease, filter 0.9s ease;
-        animation: eIn 0.45s cubic-bezier(.2, 1.4, .4, 1) both; }
-    .mk-ae .e-w.old { opacity: 0.22; filter: blur(0.06cqw); }
+    .mk-ae .e-w { position: absolute; left: var(--x); top: var(--y); max-width: var(--mw, 22cqw); transform: rotate(var(--r, 0deg)); transition: opacity 0.6s ease, filter 0.6s ease;
+        animation: eIn 0.38s cubic-bezier(.2, .9, .3, 1) both; }
+    .mk-ae .e-w.mid { opacity: 0.42; }
+    .mk-ae .e-w.old { opacity: 0.13; filter: blur(0.08cqw) saturate(0.5); }
     .mk-ae .e-flood.clear .e-w { opacity: 0; transition-duration: 0.5s; }
-    @@keyframes eIn { from { opacity: 0; transform: rotate(var(--r, 0deg)) translateY(1.2cqw) scale(0.9); } }
+    @@keyframes eIn { from { opacity: 0; transform: rotate(var(--r, 0deg)) translateY(-0.8cqw) scale(1.22); } }
+
+    /* the takeover: the flood falls back, the title steps aside, and the counter lifts out of its corner to fill the slide */
+    .mk-ae .e-cover.big .e-copy { opacity: 0; transform: translateX(-3cqw); filter: blur(0.3cqw); }
+    .mk-ae .e-cover.big .e-src { opacity: 0; }
+    .mk-ae .e-cover.big .e-count { opacity: 0; }
+    .mk-ae .e-cover.big .e-count b { visibility: hidden; }
+    .mk-ae .e-cover.big .e-words { transform: scale(1.16); filter: blur(0.45cqw) brightness(0.55); opacity: 0.5;
+        transition: transform 1.6s cubic-bezier(.2, .7, .2, 1), filter 1.1s ease, opacity 1.1s ease; }
+    .mk-ae .e-big { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.4cqw;
+        padding: 0 4cqw; text-align: center; pointer-events: none; }
+    .mk-ae .e-big::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 0.6s ease;
+        background: radial-gradient(60% 55% at 50% 50%, rgba(18, 30, 54, 0.82) 0%, rgba(18, 30, 54, 0.55) 60%, rgba(18, 30, 54, 0.25) 100%); }
+    .mk-ae .e-big > * { opacity: 0; transition: opacity 0.5s ease, transform 0.5s ease; }
+    .mk-ae .e-big small { font-size: clamp(10px, 1.35cqw, 17px); font-weight: 700; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(242, 238, 230, 0.7); }
+    .mk-ae .e-big b { font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 11cqw, 150px); line-height: 1; letter-spacing: -0.02em; white-space: nowrap;
+        font-variant-numeric: lining-nums tabular-nums; color: #F7F4EE; text-shadow: 0 0 4cqw rgba(240, 165, 90, 0.35); }
+    .mk-ae .e-big i { width: 14cqw; height: 0; border-top: 2px dashed #F0A55A; transform: scaleX(0); }
+    .mk-ae .e-big em { font-family: var(--serif); font-weight: 400; font-style: italic; font-size: clamp(24px, 5.2cqw, 68px); line-height: 1; letter-spacing: -0.02em; color: #F0A55A;
+        transform: translateY(1.4cqw); }
+    .mk-ae .e-cover.big .e-big::before { opacity: 1; transition-duration: 1.2s; }
+    .mk-ae .e-cover.big .e-big b { opacity: 1; transition: none; }
+    .mk-ae .e-cover.big .e-big small { opacity: 1; transition: opacity 0.7s ease 1.1s; }
+    .mk-ae .e-cover.big .e-big i { opacity: 1; transform: none; transition: opacity 0.3s ease 1.5s, transform 0.8s cubic-bezier(.6, 0, .2, 1) 1.5s; }
+    .mk-ae .e-cover.big .e-big em { opacity: 1; transform: none; transition: opacity 0.8s ease 2s, transform 0.8s cubic-bezier(.2, .7, .2, 1) 2s; }
     /* headlines: big cream serif */
     .mk-ae .e-w.head { font: 700 var(--fs, clamp(11px, 1.5cqw, 20px))/1.15 var(--serif); color: #F7F4EE; text-shadow: 0 0.3cqw 1.2cqw rgba(10, 18, 35, 0.8); }
     .mk-ae .e-w.head small { display: block; margin-bottom: 0.2cqw; font: 800 clamp(7px, 0.75cqw, 10px) system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #F0A55A; }
@@ -175,6 +204,8 @@
     }
     @@media (prefers-reduced-motion: reduce) {
         .mk-ae .e-line li, .mk-ae .e-fav i, .mk-ae .e-q .col i, .mk-ae .e-vs > div, .mk-ae .e-list li, .mk-ae .e-phone p, .mk-ae .e-wall span, .mk-ae .e-kk > div { animation: none; }
+        /* the cover sits still on its last frame: 40 billion over the settled flood */
+        .mk-ae .e-cover *, .mk-ae .e-cover .e-big::before { animation: none !important; transition: none !important; }
     }
 </style>
 
@@ -204,6 +235,8 @@
                     <div class="e-count"><small>impressions</small><b data-e-imp>0</b></div>
                     <div class="e-words" data-words aria-hidden="true"></div>
                 </div>
+                @* the last beat: the counter takes over the slide *@
+                <div class="e-big" aria-hidden="true"><small>impressions</small><b data-e-big>40,000,000,000</b><i></i><em>1% growth.</em></div>
                 <span class="e-src">Source: AE campaign disclosures via Variety and Glossy (2025); AEO Q3 FY2025 results. Comments: real public Instagram comments, July to Nov 2025, names removed. Headlines and reported reactions: The New Feminist, Leading Entrepreneurs, NBC News, Newsweek, Rolling Stone, Fox News, AOL, mxdwn, Freedom Front, Bored Panda. DMs are illustrative.</span>
                 @Html.Raw(esig)
             </div>
@@ -387,7 +420,7 @@
     (() => {
         const cover = document.querySelector('.mk-ae .e-cover');
         if (!cover) return;
-        const flood = cover.querySelector('.e-flood'), field = cover.querySelector('[data-words]'), imp = cover.querySelector('[data-e-imp]');
+        const flood = cover.querySelector('.e-flood'), field = cover.querySelector('[data-words]'), imp = cover.querySelector('[data-e-imp]'), big = cover.querySelector('[data-e-big]');
         // phone = real public Instagram comments on posts about the ad (July to Nov 2025), usernames left off; DMs and shares are illustrative.
         // tv = real headlines. lap = reactions as reported by the outlet named (the words in quotes are theirs).
         const msgs = [
@@ -424,8 +457,6 @@
         const slots = [...Array(21).keys()];
         for (let i = slots.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [slots[i], slots[j]] = [slots[j], slots[i]]; }
         const fmt = v => Math.round(v).toLocaleString('en-US');
-        const ease = x => 1 - Math.pow(1 - x, 2.2);
-        const ROUNDS = 2.4, total = Math.round(msgs.length * ROUNDS);   // each message comes back around, the way they did
         const drop = k => {
             const [where, a, text] = msgs[k % msgs.length];
             const el = document.createElement('div');
@@ -438,25 +469,48 @@
             el.style.setProperty('--y', `${(row * 13.2 + rnd() * 4).toFixed(1)}%`);
             el.style.setProperty('--r', `${(rnd() * 6 - 3).toFixed(1)}deg`);
             field.append(el);
-            // newer words stay bright; the older ones sink back; the oldest leave
+            // the newest three burn bright, the next few dim, everything older sinks right back; the oldest leave
             const all = field.children;
-            for (let i = 0; i < all.length - 7; i++) all[i].classList.add('old');
-            while (all.length > 46) all[0].remove();
+            while (all.length > 48) all[0].remove();
+            for (let i = 0, n = all.length; i < n; i++) { const age = n - 1 - i; all[i].classList.toggle('mid', age >= 3 && age < 9); all[i].classList.toggle('old', age >= 9); }
         };
-        const reset = () => { field.replaceChildren(); flood.classList.remove('clear'); seed = 7; imp.textContent = '0'; };
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { reset(); for (let k = 0; k < 30; k++) drop(k); imp.textContent = fmt(40e9); return; }
-        // beats of 150ms: about 60 words pour in (9s) while the counter climbs, hold the full field, clear, then again
-        let t = 0;
+        let t = 0, k = 0, acc = 0;
+        const reset = () => {
+            field.replaceChildren(); flood.classList.remove('clear'); cover.classList.remove('big');
+            flood.style.setProperty('--p', 0); seed = 7; k = 0; acc = 0; imp.textContent = '0';
+        };
+        // the takeover: the big figure starts exactly where the corner counter is, then grows into the middle of the slide
+        const takeover = () => {
+            const a = imp.getBoundingClientRect();
+            cover.classList.add('big');
+            const b = big.getBoundingClientRect();
+            if (a.width && b.width && big.animate) {
+                const dx = a.left + a.width / 2 - (b.left + b.width / 2), dy = a.top + a.height / 2 - (b.top + b.height / 2);
+                big.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${a.width / b.width})` }, { transform: 'none' }],
+                    { duration: 1300, easing: 'cubic-bezier(.7, 0, .15, 1)' });
+            }
+        };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { reset(); for (; k < 30; k++) drop(k); imp.textContent = fmt(40e9); cover.classList.add('big'); return; }
+        // beats of 100ms. The flood (7s) starts as a trickle and ends as a torrent, about 64 words, each message coming back around
+        // the way they did, while the counter accelerates to 40 billion. Then the takeover, a held beat, clear, and again.
+        const FLOOD = 70, BIG = FLOOD + 4, CLEAR = BIG + 52, OUT = CLEAR + 6, LOOP = OUT + 6;
         const tick = () => {
             if (t === 0) reset();
-            if (t < total) { drop(t); imp.textContent = fmt(40e9 * ease((t + 1) / total)); }
-            if (t === total + 12) flood.classList.add('clear');
-            if (t === total + 17) { t = -1; }
+            if (t < FLOOD) {
+                const p = (t + 1) / FLOOD;
+                for (acc += 0.22 + 1.9 * Math.pow(p, 1.7); acc >= 1; acc--) drop(k++);
+                imp.textContent = fmt(40e9 * Math.pow(p, 1.8));
+                flood.style.setProperty('--p', p.toFixed(3));
+            }
+            if (t === BIG) takeover();
+            if (t === CLEAR) flood.classList.add('clear');
+            if (t === OUT) reset();
+            if (t === LOOP) t = -1;
             t++;
         };
         reset();
         // autoplay.js loads after this view
-        const start = () => window.autoplay(cover, tick, 150);
+        const start = () => window.autoplay(cover, tick, 100);
         window.autoplay ? start() : addEventListener('load', start);
     })();
 </script>
