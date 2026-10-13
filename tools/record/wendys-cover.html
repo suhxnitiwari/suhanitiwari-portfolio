@@ -1,0 +1,224 @@
+<!doctype html>
+<!-- The Wendy's deck's cover video, as a page. A nod to the 1984 ad first: a giant bun drops in, its lid lifts on a tiny
+     round patty, and a speech bubble asks "Where's the beef?" Then the answer: a Dave's Single builds itself, layer by layer,
+     around a square patty whose corners hang over the bun (the cheese melts once it lands). A note points at the corners,
+     then the 13 activities that hold up Wendy's position pop up around it in red and my six proposals in dashed blue.
+     It holds, then fades back to the empty frame so it loops. Illustrations I drew, not product photos or ad footage.
+     window.render(t) draws the frame at t seconds, so record.mjs can step through it frame by frame.
+     The left side stays plain blush for the slide's headline. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; background: #FCEFEF; }
+    canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1280" height="720"></canvas>
+<script>
+const W = 1280, H = 720, DUR = 12;
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const clamp = x => Math.min(1, Math.max(0, x));
+const win = (t, a, b) => clamp((t - a) / (b - a));
+const easeOut = x => 1 - Math.pow(1 - x, 3);
+const easeIn = x => x * x * x;
+const back = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const rnd = (a, b) => { const x = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return x - Math.floor(x); };
+
+const CX = 965, CY = 372, S = 1.42;   // the burger's center and scale (burger units are about 320 wide)
+const B = 3.6;                         // when the Wendy's burger starts building, after the "Where's the beef?" beat
+// the 19 activities clockwise from the top left, same order as the deck's map; true = my proposal (blue)
+const acts = [true, false, false, true, false, false, true, false, true, false, false, false, false, false, true, false, false, false, true];
+const ring = acts.map((next, i) => { const a = -Math.PI * 0.86 + i * 2 * Math.PI / acts.length; return { next, x: CX + Math.cos(a) * 300, y: CY + Math.sin(a) * 292 }; });
+let ri = 0, bi = 0;
+ring.forEach(n => n.at = n.next ? B + 5.0 + (bi++) * 0.2 : B + 3.5 + (ri++) * 0.1);
+
+function lin(y0, y1, stops) { const g = ctx.createLinearGradient(0, y0, 0, y1); stops.forEach(([o, c]) => g.addColorStop(o, c)); return g; }
+
+// each layer drops in from above with a little bounce; the patty lands with a squash
+function drop(t, at, draw, squash) {
+    const k = win(t, at, at + 0.5); if (k <= 0) return;
+    const p = back(k), y = (1 - p) * -330;
+    const s = squash ? 1 + 0.08 * Math.sin(win(t, at + 0.32, at + 0.62) * Math.PI) : 1;
+    ctx.save(); ctx.globalAlpha = clamp(k * 3); ctx.translate(0, y); ctx.scale(1 + (s - 1) * 0.6, 2 - s); draw(); ctx.restore();
+}
+
+// ===== the 1984 gag: a giant fluffy bun with a tiny round patty inside =====
+function bigBun(t) {
+    const k = win(t, 0.3, 0.85); if (k <= 0) return;
+    const leave = easeIn(win(t, 3.0, 3.5));   // then it slides off to the right
+    ctx.save(); ctx.translate(CX + leave * 700, CY + 20 + (1 - back(k)) * -360); ctx.scale(S, S);
+    ctx.fillStyle = 'rgba(110, 40, 20, 0.14)'; ctx.beginPath(); ctx.ellipse(0, 112, 170, 13, 0, 0, 7); ctx.fill();
+    // bottom half
+    ctx.fillStyle = lin(40, 110, [[0, '#F6CC86'], [1, '#D99A4C']]);
+    ctx.beginPath(); ctx.moveTo(-170, 46); ctx.lineTo(170, 46); ctx.quadraticCurveTo(176, 110, 110, 110); ctx.lineTo(-110, 110); ctx.quadraticCurveTo(-176, 110, -170, 46); ctx.fill();
+    // the tiny round patty: a thin disc in the middle
+    ctx.fillStyle = '#4E2815'; ctx.beginPath(); ctx.ellipse(0, 42, 36, 8, 0, 0, 7); ctx.fill();
+    // the lid lifts, the way it does in the ad
+    const lift = easeOut(win(t, 1.1, 1.6)) * (1 - easeIn(win(t, 2.75, 3.0)));
+    ctx.save(); ctx.translate(-150, 40); ctx.rotate(-0.5 * lift); ctx.translate(150, -40 - 30 * lift);
+    ctx.fillStyle = lin(-110, 40, [[0, '#F7CF8E'], [1, '#DDA052']]);
+    ctx.beginPath(); ctx.moveTo(-172, 40); ctx.bezierCurveTo(-176, -110, 176, -110, 172, 40); ctx.closePath(); ctx.fill();
+    const g = ctx.createRadialGradient(-40, -48, 4, -40, -48, 110); g.addColorStop(0, 'rgba(255, 245, 220, 0.8)'); g.addColorStop(1, 'rgba(255, 245, 220, 0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(-40, -40, 120, 44, -0.1, 0, 7); ctx.fill();
+    ctx.restore();
+    ctx.restore();
+}
+function beefBubble(t) {
+    const k = back(win(t, 1.55, 1.95)) * (1 - win(t, 2.95, 3.25)); if (k <= 0) return;
+    const x = 900, y = 112;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
+    ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#C8102E'; ctx.lineWidth = 5;
+    ctx.shadowColor = 'rgba(120, 30, 30, 0.25)'; ctx.shadowBlur = 20; ctx.shadowOffsetY = 8;
+    ctx.beginPath(); ctx.roundRect(-250, -62, 500, 112, 56); ctx.fill(); ctx.shadowColor = 'transparent'; ctx.stroke();
+    // the tail, pointing down at the bun
+    ctx.beginPath(); ctx.moveTo(70, 46); ctx.lineTo(118, 112); ctx.lineTo(128, 46); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(66, 40, 66, 9);
+    ctx.fillStyle = '#C8102E'; ctx.font = '900 50px system-ui, -apple-system, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Where’s the beef?', 0, -4);
+    ctx.restore();
+    // a small tag under it
+    const tg = win(t, 2.0, 2.3) * (1 - win(t, 2.95, 3.25));
+    if (tg) { ctx.globalAlpha = tg; ctx.fillStyle = '#6E5A55'; ctx.font = '800 15px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('WENDY’S, 1984', 900, 214); ctx.globalAlpha = 1; }
+}
+
+// ===== the answer: a Dave's Single around a square patty =====
+const bottomBun = () => {
+    ctx.fillStyle = lin(64, 122, [[0, '#F4BE72'], [0.35, '#E59A45'], [1, '#C9762E']]);
+    ctx.beginPath(); ctx.moveTo(-134, 70); ctx.lineTo(134, 70); ctx.quadraticCurveTo(140, 70, 138, 84); ctx.quadraticCurveTo(130, 122, 96, 122); ctx.lineTo(-96, 122); ctx.quadraticCurveTo(-130, 122, -138, 84); ctx.quadraticCurveTo(-140, 70, -134, 70); ctx.fill();
+    ctx.fillStyle = 'rgba(255, 236, 200, 0.55)'; ctx.fillRect(-128, 70, 256, 5);
+};
+// flat ends with square corners that stick out past the bun on both sides, its top face showing
+const patty = () => {
+    ctx.fillStyle = '#4A2614';
+    ctx.beginPath(); ctx.moveTo(-160, 40); ctx.lineTo(-146, 30); ctx.lineTo(146, 30); ctx.lineTo(160, 40); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = lin(40, 76, [[0, '#6A3720'], [0.5, '#4E2815'], [1, '#33190C']]);
+    ctx.beginPath(); ctx.moveTo(-160, 40); ctx.lineTo(160, 40); ctx.lineTo(158, 74); ctx.lineTo(-158, 74); ctx.closePath(); ctx.fill();
+    for (let i = 0; i < 140; i++) {
+        const x = -154 + rnd(i, 1) * 308, y = 33 + rnd(i, 2) * 40;
+        ctx.fillStyle = rnd(i, 3) < 0.5 ? 'rgba(140, 78, 44, 0.55)' : 'rgba(24, 10, 4, 0.5)';
+        ctx.beginPath(); ctx.ellipse(x, y, 1.5 + rnd(i, 4) * 3.5, 1 + rnd(i, 5) * 1.6, 0, 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(255, 210, 160, 0.18)'; ctx.fillRect(-150, 42, 300, 3);
+};
+const cheese = (melt) => {
+    ctx.fillStyle = '#F8B21C';
+    ctx.fillRect(-150, 34, 300, 8);
+    [[-118, 26], [-60, 16], [-10, 30], [44, 20], [104, 28]].forEach(([x, len]) => {
+        const l = 6 + len * melt;
+        ctx.beginPath(); ctx.moveTo(x - 16, 41); ctx.lineTo(x + 16, 41); ctx.quadraticCurveTo(x + 6, 41 + l * 0.6, x, 41 + l); ctx.quadraticCurveTo(x - 6, 41 + l * 0.6, x - 16, 41); ctx.fill();
+    });
+    ctx.fillStyle = 'rgba(255, 236, 160, 0.7)'; ctx.fillRect(-140, 35, 280, 2.5);
+    ctx.fillStyle = '#F8B21C'; ctx.beginPath(); ctx.moveTo(150, 34); ctx.lineTo(166, 40); ctx.lineTo(158, 40 + 12 * melt); ctx.lineTo(148, 42); ctx.fill();
+};
+const lettuce = () => {
+    ctx.fillStyle = '#5FA334';
+    ctx.beginPath(); ctx.moveTo(-166, 32);
+    for (let x = -166; x <= 166; x += 12) ctx.quadraticCurveTo(x + 6, 40 + (rnd(x, 7) * 8), x + 12, 31 + rnd(x, 8) * 4);
+    ctx.lineTo(160, 14); ctx.quadraticCurveTo(0, 6, -160, 14); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(190, 235, 140, 0.55)';
+    for (let x = -150; x <= 150; x += 26) { ctx.beginPath(); ctx.ellipse(x, 22, 10, 4, 0.4, 0, 7); ctx.fill(); }
+};
+const tomato = () => {
+    ctx.fillStyle = '#D93A2B'; ctx.beginPath(); ctx.roundRect(-112, 2, 226, 16, 8); ctx.fill();
+    ctx.fillStyle = '#F2675A'; ctx.beginPath(); ctx.roundRect(-104, 5, 210, 6, 3); ctx.fill();
+    ctx.fillStyle = 'rgba(255, 220, 200, 0.6)'; [-70, -20, 30, 80].forEach(x => { ctx.beginPath(); ctx.ellipse(x, 8, 4, 2, 0, 0, 7); ctx.fill(); });
+};
+const onion = () => {
+    ctx.fillStyle = '#F7F3EA'; ctx.strokeStyle = '#E3D9EE'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(-128, -8, 150, 12, 6); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(-10, -6, 138, 11, 6); ctx.fill(); ctx.stroke();
+};
+const pickles = () => {
+    [[-58, -12], [36, -14], [96, -11]].forEach(([x, y]) => {
+        ctx.fillStyle = '#7E9A3A'; ctx.beginPath(); ctx.ellipse(x, y, 36, 7, 0, 0, 7); ctx.fill();
+        ctx.strokeStyle = 'rgba(200, 220, 120, 0.7)'; ctx.lineWidth = 1.5;
+        for (let i = -28; i <= 28; i += 8) { ctx.beginPath(); ctx.moveTo(x + i, y - 5); ctx.lineTo(x + i + 2, y + 5); ctx.stroke(); }
+    });
+};
+const sauces = () => {
+    ctx.fillStyle = '#FFF8EC'; [[-100, -24, 30], [-20, -25, 24], [70, -24, 34]].forEach(([x, y, r]) => { ctx.beginPath(); ctx.ellipse(x, y, r, 6, 0, 0, 7); ctx.fill(); });
+    ctx.fillStyle = '#C1271B'; [[-58, -24, 18], [24, -25, 22], [118, -23, 14]].forEach(([x, y, r]) => { ctx.beginPath(); ctx.ellipse(x, y, r, 5, 0, 0, 7); ctx.fill(); });
+};
+const topBun = () => {
+    ctx.fillStyle = lin(-144, -30, [[0, '#E9A85A'], [0.55, '#D98C3A'], [1, '#C77A2E']]);
+    ctx.beginPath(); ctx.moveTo(-140, -32); ctx.bezierCurveTo(-142, -134, 142, -134, 140, -32); ctx.quadraticCurveTo(140, -26, 130, -26); ctx.lineTo(-130, -26); ctx.quadraticCurveTo(-140, -26, -140, -32); ctx.fill();
+    const g = ctx.createRadialGradient(-30, -102, 4, -30, -102, 90); g.addColorStop(0, 'rgba(255, 238, 205, 0.75)'); g.addColorStop(1, 'rgba(255, 238, 205, 0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(-30, -92, 96, 34, -0.1, 0, 7); ctx.fill();
+};
+
+window.render = t => {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = '#FCEFEF'; ctx.fillRect(0, 0, W, H);
+    let g = ctx.createRadialGradient(1180, 40, 10, 1180, 40, 540); g.addColorStop(0, 'rgba(200, 16, 46, 0.16)'); g.addColorStop(1, 'rgba(200, 16, 46, 0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    g = ctx.createRadialGradient(760, 760, 10, 760, 760, 460); g.addColorStop(0, 'rgba(47, 134, 208, 0.12)'); g.addColorStop(1, 'rgba(47, 134, 208, 0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+    // 1. Where's the beef?
+    bigBun(t);
+    beefBubble(t);
+
+    // 2. lines from each activity to the burger (drawn first, so the burger sits on top of them)
+    ring.forEach(n => {
+        const p = easeOut(win(t, n.at - 0.1, n.at + 0.35)); if (!p) return;
+        ctx.strokeStyle = n.next ? 'rgba(47, 134, 208, 0.6)' : 'rgba(200, 16, 46, 0.35)'; ctx.lineWidth = 3; ctx.setLineDash(n.next ? [8, 7] : []);
+        ctx.beginPath(); ctx.moveTo(CX, CY); ctx.lineTo(CX + (n.x - CX) * p, CY + (n.y - CY) * p); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    // 3. here's the beef: the burger builds itself, bottom up
+    const bob = Math.sin(t * 2.6) * 4 * win(t, B + 3.8, B + 4.4);
+    ctx.save(); ctx.translate(CX, CY + bob); ctx.scale(S, S);
+    ctx.fillStyle = `rgba(110, 40, 20, ${0.16 * win(t, B + 0.3, B + 0.8)})`; ctx.beginPath(); ctx.ellipse(0, 128, 150, 12, 0, 0, 7); ctx.fill();
+    const melt = easeOut(win(t, B + 1.6, B + 2.6));
+    drop(t, B + 0.3, bottomBun);
+    drop(t, B + 0.75, patty, true);
+    drop(t, B + 1.25, () => cheese(melt));
+    drop(t, B + 1.7, lettuce);
+    drop(t, B + 1.95, tomato);
+    drop(t, B + 2.2, onion);
+    drop(t, B + 2.45, pickles);
+    drop(t, B + 2.7, sauces);
+    drop(t, B + 3.0, topBun);
+    ctx.restore();
+
+    // the note: the corners hang over the bun
+    const note = win(t, B + 1.1, B + 1.4) * (1 - win(t, B + 3.1, B + 3.4));
+    if (note) {
+        ctx.globalAlpha = note;
+        const px = CX + 158 * S, py = CY + 58 * S;
+        ctx.strokeStyle = '#C8102E'; ctx.lineWidth = 3; ctx.setLineDash([6, 5]);
+        ctx.beginPath(); ctx.arc(px, py, 26, 0, 7); ctx.stroke();
+        ctx.beginPath(); ctx.arc(CX - 158 * S, py, 26, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+        ctx.beginPath(); ctx.moveTo(px - 4, py + 26); ctx.lineTo(px - 30, py + 70); ctx.stroke();
+        ctx.fillStyle = '#C8102E'; ctx.font = '900 28px system-ui, -apple-system, sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('Square, so the corners', px - 70, py + 102); ctx.fillText('hang over the bun.', px - 70, py + 134);
+        ctx.globalAlpha = 1;
+    }
+
+    // 4. the activity bubbles
+    ring.forEach((n, i) => {
+        const p = back(win(t, n.at, n.at + 0.4)); if (p <= 0) return;
+        const pulse = 1 + 0.04 * Math.sin((t - n.at) * 4 + i);
+        ctx.save(); ctx.translate(n.x, n.y + Math.sin(t * 2.2 + i) * 3 * win(t, B + 6.4, B + 7)); ctx.scale(p * pulse, p * pulse);
+        ctx.beginPath(); ctx.arc(0, 0, n.next ? 28 : 24, 0, 7);
+        ctx.fillStyle = n.next ? '#F5FAFF' : '#FFFFFF'; ctx.shadowColor = 'rgba(120, 30, 30, 0.22)'; ctx.shadowBlur = 14; ctx.shadowOffsetY = 6; ctx.fill(); ctx.shadowColor = 'transparent';
+        ctx.lineWidth = 5; ctx.strokeStyle = n.next ? '#2F86D0' : '#C8102E'; ctx.setLineDash(n.next ? [9, 6] : []); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = ctx.strokeStyle = n.next ? '#2F86D0' : '#C8102E';
+        if (n.next) { ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-9, 0); ctx.lineTo(9, 0); ctx.moveTo(0, -9); ctx.lineTo(0, 9); ctx.stroke(); }
+        else { ctx.beginPath(); ctx.arc(0, 0, 7, 0, 7); ctx.fill(); }
+        ctx.restore();
+    });
+
+    // fade in from blush and back out, so the loop is seamless
+    const veil = Math.max(1 - win(t, 0, 0.3), win(t, DUR - 0.8, DUR));
+    if (veil) { ctx.fillStyle = `rgba(252, 239, 239, ${veil})`; ctx.fillRect(0, 0, W, H); }
+};
+window.DUR = DUR;
+window.ready = document.fonts.ready;
+render(new URLSearchParams(location.search).has('t') ? +new URLSearchParams(location.search).get('t') : 7.8);
+</script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+@* Wendy's: Competitive Activities, a project in the Marketing carousel (rendered from _MarketingWork.cshtml).
+   Built from my one-page competitive activities map: Wendy's core position, the activities that hold it up today (red)
+   and six new ones I proposed (blue). Every number and name here is from that slide. The full map is in the archive under the slideshow.
+   The look: Wendy's red on a blush background, with my proposals in blue. The cover video is a motion graphic I made
+   (tools/record/wendys-cover.html): a nod to the 1984 "Where's the beef?" ad, then the square-patty burger as the answer. *@
+<style>
+    .mk-wd { --w-red: #C8102E; --w-deep: #A50E26; --w-blue: #2F86D0; --w-bluedeep: #1F6FB5; --w-blush: #FCEFEF; --w-ink: #2A1810; --w-mute: #6E5A55; --w-cheese: #F2C94C; }
+    .mk-wd .mk-stage { background: radial-gradient(34cqw 26cqw at 100% 0%, rgba(200, 16, 46, 0.12), rgba(200, 16, 46, 0)), radial-gradient(30cqw 24cqw at 0% 100%, rgba(47, 134, 208, 0.1), rgba(47, 134, 208, 0)), var(--w-blush); border: 1px solid #F1D2D2; }
+    .mk-wd .mk-slide { color: var(--w-ink); padding: 3.4cqw 4.6cqw 3cqw; gap: 1.4cqw; }
+    .mk-wd .mk-slide p { color: var(--w-mute); }
+    .mk-wd .w-kick { align-self: flex-start; margin: 0; padding: 0.45cqw 1.1cqw; border-radius: 99px; background: var(--w-red); font-size: clamp(9px, 0.95cqw, 12px) !important; font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: #FFFFFF !important; }
+    .mk-wd .w-kick.blue { background: var(--w-blue); }
+    .mk-wd .w-h { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-weight: 900; font-size: clamp(18px, 3.3cqw, 40px); line-height: 1.06; letter-spacing: -0.02em; color: var(--w-ink); }
+    .mk-wd .w-h em { font-style: normal; color: var(--w-red); }
+    .mk-wd .w-h em.blue { color: var(--w-blue); }
+    .mk-wd .w-lede { margin: 0; font-size: clamp(12px, 1.45cqw, 18px) !important; line-height: 1.5 !important; max-width: 66cqw; }
+    .mk-wd .w-cap { margin: 0; font-size: clamp(8px, 0.9cqw, 11px) !important; color: #8A7671 !important; }
+    .mk-wd .w-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 4; font-family: Georgia, serif; font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--w-red); }
+    .mk-wd .w-card { background: #FFFFFF; border: 2px solid #F0CFCF; border-radius: 1.4cqw; box-shadow: 0 1cqw 2.4cqw -1.4cqw rgba(140, 30, 30, 0.35); }
+    .mk-wd .w-card.now { border-color: var(--w-red); }
+    .mk-wd .w-card.next { border: 2px dashed var(--w-blue); background: #F5FAFF; }
+    .mk-wd .w-grid { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); gap: 1.2cqw; flex: 1; align-content: center; }
+    .mk-wd .w-act { padding: 1.4cqw 1.5cqw; display: flex; flex-direction: column; gap: 0.5cqw; animation: wPop 0.45s cubic-bezier(.2, .8, .2, 1.2) both; animation-delay: calc(var(--n) * 0.12s); }
+    .mk-wd .w-act i { align-self: flex-start; font-style: normal; font-size: clamp(8px, 0.85cqw, 10.5px); font-weight: 800; letter-spacing: 0.15cqw; text-transform: uppercase; color: var(--w-red); }
+    .mk-wd .w-act.next i { color: var(--w-blue); }
+    .mk-wd .w-act b { font-family: system-ui, sans-serif; font-weight: 800; font-size: clamp(12px, 1.6cqw, 19px); line-height: 1.15; color: var(--w-deep); }
+    .mk-wd .w-act.next b { color: var(--w-bluedeep); }
+    .mk-wd .w-act span { font-size: clamp(10px, 1.15cqw, 13.5px); line-height: 1.45; color: var(--w-ink); }
+    .mk-wd .w-big { font-family: system-ui, sans-serif; font-weight: 900; font-size: clamp(20px, 3.6cqw, 44px) !important; line-height: 1; letter-spacing: -0.02em; color: var(--w-red) !important; }
+    @@keyframes wPop { from { opacity: 0; transform: translateY(1cqw) scale(0.96); } }
+
+    /* cover */
+    .mk-wd .w-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .mk-wd .w-cover > p, .mk-wd .w-cover > h4 { position: relative; z-index: 1; }
+    .mk-wd .w-cover { justify-content: center; }
+    .mk-wd .w-title { margin: 0; font-family: system-ui, sans-serif; font-weight: 900; font-size: clamp(28px, 6.2cqw, 74px); line-height: 0.96; letter-spacing: -0.03em; color: var(--w-red); max-width: 46cqw; }
+    .mk-wd .w-title em { font-style: normal; color: var(--w-ink); }
+    .mk-wd .w-cover .w-lede { max-width: 38cqw; color: var(--w-ink) !important; }
+
+    /* the core: a square patty that hangs over the bun */
+    .mk-wd .w-core { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3cqw; align-items: center; flex: 1; }
+    .mk-wd .w-burger { width: 26cqw; margin: 0 auto; filter: drop-shadow(0 1.4cqw 1.4cqw rgba(120, 40, 20, 0.25)); }
+    .mk-wd .w-burger svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .mk-wd .w-burger .layer { animation: wDrop 0.6s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: calc(var(--n) * 0.14s); }
+    @@keyframes wDrop { from { opacity: 0; transform: translateY(-12px); } }
+    .mk-wd .w-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1cqw; }
+    .mk-wd .w-pillar { padding: 1.2cqw; text-align: center; animation: wPop 0.45s ease both; animation-delay: calc(var(--n) * 0.15s + 0.6s); }
+    .mk-wd .w-pillar b { display: block; font-size: clamp(12px, 1.5cqw, 18px); font-weight: 900; color: var(--w-red); }
+    .mk-wd .w-pillar span { font-size: clamp(9px, 1.05cqw, 12.5px); color: var(--w-mute); line-height: 1.35; }
+
+    /* the map: 13 red bubbles today, 6 blue ones I'd add, all wired to the core */
+    .mk-wd .w-map { position: relative; flex: 1; }
+    .mk-wd .w-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .mk-wd .w-map line { stroke-width: 2; vector-effect: non-scaling-stroke; }
+    .mk-wd .w-map line.now { stroke: rgba(200, 16, 46, 0.4); }
+    .mk-wd .w-map line.next { stroke: rgba(47, 134, 208, 0.6); stroke-dasharray: 5 4; }
+    .mk-wd .w-node { position: absolute; translate: -50% -50%; width: 11.5%; padding: 0.5cqw 0.6cqw; border-radius: 99px; background: #FFFFFF; border: 2px solid var(--w-red); text-align: center; font-size: clamp(7px, 0.95cqw, 11.5px); font-weight: 800; line-height: 1.15; color: var(--w-deep); animation: wPop 0.4s ease both; animation-delay: calc(var(--n) * 0.06s); }
+    .mk-wd .w-node.next { border: 2px dashed var(--w-blue); color: var(--w-bluedeep); background: #F5FAFF; animation-delay: calc(var(--n) * 0.06s + 1s); }
+    .mk-wd .w-hub { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 26%; padding: 1.4cqw; border-radius: 50%; aspect-ratio: 1.7; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #FFFFFF; border: 3px solid var(--w-red); box-shadow: 0 1.4cqw 2.6cqw -1.6cqw rgba(140, 30, 30, 0.5); }
+    .mk-wd .w-hub b { font-size: clamp(10px, 1.4cqw, 17px); font-weight: 900; line-height: 1.15; color: var(--w-red); }
+    .mk-wd .w-hub span { margin-top: 0.4cqw; font-size: clamp(8px, 0.95cqw, 11.5px); color: var(--w-mute); }
+    .mk-wd .w-legend { display: flex; gap: 1.6cqw; font-size: clamp(9px, 1cqw, 12px); font-weight: 700; color: var(--w-ink); }
+    .mk-wd .w-legend i { display: inline-block; width: 1cqw; height: 1cqw; min-width: 8px; min-height: 8px; margin-right: 0.5cqw; border-radius: 50%; vertical-align: -0.1em; }
+
+    /* breakfast: 7% vs 25% */
+    .mk-wd .w-vs { display: flex; flex-direction: column; gap: 1cqw; }
+    .mk-wd .w-bar { display: grid; grid-template-columns: 10cqw 1fr 5cqw; gap: 1cqw; align-items: center; font-size: clamp(10px, 1.2cqw, 14px); font-weight: 700; color: var(--w-ink); }
+    .mk-wd .w-bar i { height: 2.2cqw; border-radius: 99px; background: var(--c); width: var(--w); transform-origin: left; animation: wGrow 1s cubic-bezier(.2, .7, .2, 1) both 0.3s; }
+    .mk-wd .w-bar b { color: var(--c); font-size: 1.2em; }
+    @@keyframes wGrow { from { transform: scaleX(0); } }
+
+    /* scale: the restaurant count */
+    .mk-wd .w-nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; }
+    .mk-wd .w-num { padding: 1.4cqw 1.5cqw; animation: wPop 0.45s ease both; animation-delay: calc(var(--n) * 0.12s); }
+    .mk-wd .w-num b { display: block; font-family: system-ui, sans-serif; font-weight: 900; font-size: clamp(20px, 3.4cqw, 42px); line-height: 1; color: var(--w-red); letter-spacing: -0.02em; }
+    .mk-wd .w-num span { display: block; margin-top: 0.6cqw; font-size: clamp(10px, 1.15cqw, 13.5px); line-height: 1.35; color: var(--w-ink); }
+    .mk-wd .mk-chapters button[aria-pressed="true"] { background: var(--w-red); border-color: var(--w-red); }
+
+    @@container (max-width: 560px) {
+        .mk-wd .w-grid { grid-template-columns: 1fr; gap: 8px; }
+        .mk-wd .w-core { grid-template-columns: 1fr; }
+        .mk-wd .w-burger { width: 50cqw; }
+        .mk-wd .w-nums { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .mk-wd .w-bar { grid-template-columns: 80px 1fr 44px; }
+        .mk-wd .w-bar i { height: 14px; }
+        .mk-wd .mk-slide.w-cover .w-lede { display: none; }
+        .mk-wd .w-cover .w-title { max-width: 60cqw; font-size: clamp(26px, 9cqw, 44px); }
+        .mk-wd .w-act, .mk-wd .w-num { padding: 10px 12px; }
+        /* the map is too dense for a phone: the bubbles become a wrapped list under the core */
+        .mk-wd .w-map { display: flex; flex-wrap: wrap; gap: 6px; }
+        .mk-wd .w-map svg { display: none; }
+        .mk-wd .w-hub, .mk-wd .w-node { position: static; translate: none; }
+        .mk-wd .w-hub { width: 100%; aspect-ratio: auto; border-radius: 16px; padding: 14px; margin-bottom: 4px; }
+        .mk-wd .w-node { width: auto; padding: 6px 10px; font-size: 12px; }
+    }
+    /* phones: the video sits in a strip across the top of the cover, focused on the right where the motion is,
+       and the words go underneath it, so nothing overlaps */
+    @@media (max-width: 800px) {
+        .mk-wd .w-cover { padding-top: calc(56vw + 14px) !important; justify-content: flex-start; }
+        .mk-wd .w-bg { height: 56vw; bottom: auto; object-position: 82% 50%; }
+        .mk-wd .w-cover::after { display: none; }
+    }
+    @@media (prefers-reduced-motion: reduce) {
+        .mk-wd .w-act, .mk-wd .w-burger .layer, .mk-wd .w-pillar, .mk-wd .w-node, .mk-wd .w-bar i, .mk-wd .w-num { animation: none; }
+    }
+</style>
+@{
+    const string wdSig = "<span class=\"w-sig\" aria-hidden=\"true\">suhani ✦</span>";
+    // the map slide: the same 19 activities as the archive's map, in the same clockwise order (Future = my proposal)
+    var wdMap = new (string Title, bool Future)[]
+    {
+        ("“Happy Hour” pricing", true), ("Barbell pricing", false), ("Digital menu boards", false), ("Seasonal collab calendar", true),
+        ("Sassy social voice", false), ("Pop culture collabs", false), ("Kids’ Rewards club", true), ("Rewards app", false),
+        ("Frosty Pass", true), ("Kids’ meals, Boo! Books", false), ("International growth", false), ("Franchise model", false),
+        ("Fresh beef co-op", false), ("Drive-thru and FreshAI", false), ("AI breakfast habit", true), ("Breakfast daypart", false),
+        ("Late-night meals", false), ("Iconic menu", false), ("Rewards price-lock", true)
+    };
+    // spaced evenly around the hub, measured in bubble sizes (they're wide and short)
+    var wdMapPos = new (double X, double Y)[wdMap.Length];
+    {
+        int n = 2000; var pts = new (double x, double y, double len)[n + 1]; double total = 0;
+        for (int k = 0; k <= n; k++)
+        {
+            var t = -Math.PI * 0.86 + k * 2 * Math.PI / n;
+            var x = Math.Cos(t) * 43; var y = Math.Sin(t) * 41;
+            if (k > 0) total += Math.Sqrt(Math.Pow((x - pts[k - 1].x) / 11.5, 2) + Math.Pow((y - pts[k - 1].y) / 12, 2));
+            pts[k] = (x, y, total);
+        }
+        for (int i = 0, k = 0; i < wdMap.Length; i++)
+        {
+            while (k < n && pts[k].len < total * i / wdMap.Length) k++;
+            wdMapPos[i] = (50 + pts[k].x, 50 + pts[k].y);
+        }
+    }
+    var wInv = System.Globalization.CultureInfo.InvariantCulture;
+}
+<div class="mp-proj mk-wd" id="mk-proj-wendys" role="tabpanel" aria-labelledby="mk-title-wendys" hidden>
+    <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Wendy’s slides">
+        <div class="mk-stage">
+            <div class="mk-slide w-cover" data-title="The beef">
+                <video class="w-bg" data-src="/videos/projects/wendys-cover.mp4" preload="none" poster="/videos/projects/wendys-cover.jpg" muted loop playsinline autoplay aria-label="A giant bun lifts its lid on a tiny patty and asks, Where’s the beef? Then a Wendy’s burger builds itself around a square patty whose corners hang over the bun, and red activity bubbles and dashed blue new ones pop up around it"></video>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Competitive activities, 2026</p>
+                <h4 class="w-title">Wendy’s: everything <em>ties back to the beef.</em></h4>
+                <p class="w-lede">Fresh quality, everyday value and convenience: Wendy’s position since 1969. I mapped every activity that holds it up, and six new ones I’d add.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The core" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">The core position</p>
+                <h4 class="w-h">Square, fresh, <em>and hanging over the bun.</em></h4>
+                <div class="w-core">
+                    <div style="display:flex;flex-direction:column;gap:1.4cqw">
+                        <p class="w-lede">Wendy’s core position since 1969: square fresh beef patties that hang over the bun, everyday value, and drive-thru speed. Every activity on the map reinforces it.</p>
+                        <div class="w-pillars">
+                            <div class="w-pillar w-card now" style="--n: 0"><b>Fresh quality</b><span>never frozen beef; the 1984 “Where’s the Beef?” ad lifted revenue 31%</span></div>
+                            <div class="w-pillar w-card now" style="--n: 1"><b>Everyday value</b><span>about $5 Biggie Bags</span></div>
+                            <div class="w-pillar w-card now" style="--n: 2"><b>Convenience</b><span>drive-thru since 1970</span></div>
+                        </div>
+                    </div>
+                    <div class="w-burger" aria-hidden="true">
+                        <svg viewBox="0 0 120 92">
+                            <path class="layer" style="--n: 5" d="M10 40 C10 10 110 10 110 40 Z" fill="#E7A24A" />
+                            <g class="layer" style="--n: 5"><ellipse cx="40" cy="24" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="60" cy="19" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="80" cy="24" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="50" cy="31" rx="2.4" ry="1.4" fill="#FFF3D6" /><ellipse cx="72" cy="31" rx="2.4" ry="1.4" fill="#FFF3D6" /></g>
+                            <path class="layer" style="--n: 4" d="M8 42 h104 l-5 7 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 -7 5 -7 -5 z" fill="#6BAF4A" />
+                            <path class="layer" style="--n: 3" d="M2 48 h116 l-6 6 h-104 z" fill="#F2C94C" />
+                            <rect class="layer" style="--n: 2" x="0" y="52" width="120" height="14" rx="2" fill="#6B3A22" />
+                            <path class="layer" style="--n: 1" d="M12 68 h96 a8 8 0 0 1 -8 12 h-80 a8 8 0 0 1 -8 -12 z" fill="#E7A24A" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="The map" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">The activity map</p>
+                <h4 class="w-h">13 activities hold it up. <em class="blue">I’d add six.</em></h4>
+                <div class="w-map">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        @for (var i = 0; i < wdMap.Length; i++)
+                        {
+                            @Html.Raw(string.Format(wInv, "<line class=\"{0}\" x1=\"50\" y1=\"50\" x2=\"{1:0.##}\" y2=\"{2:0.##}\" />", wdMap[i].Future ? "next" : "now", wdMapPos[i].X, wdMapPos[i].Y))
+                        }
+                    </svg>
+                    <div class="w-hub"><b>Fresh quality, everyday value, convenience</b><span>since 1969</span></div>
+                    @for (var i = 0; i < wdMap.Length; i++)
+                    {
+                        <span class="w-node @(wdMap[i].Future ? "next" : "")" style="@string.Format(wInv, "left:{0:0.##}%;top:{1:0.##}%;--n: {2}", wdMapPos[i].X, wdMapPos[i].Y, i)">@wdMap[i].Title</span>
+                    }
+                </div>
+                <p class="w-legend"><span><i style="background:#C8102E"></i>Today</span><span><i style="background:#2F86D0"></i>My proposals</span></p>
+            </div>
+
+            <div class="mk-slide" data-title="Value" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Everyday value</p>
+                <h4 class="w-h">Value at both ends of the menu, <em>without a surge.</em></h4>
+                <div class="w-grid">
+                    <div class="w-act w-card now" style="--n: 0"><i>Today</i><b>Barbell pricing</b><span class="w-big">$5 to $8.19</span><span>About $5 Biggie Bags at one end and the $8.19 Pretzel Baconator at the other, keeping price-sensitive guests while premium items lift the check.</span></div>
+                    <div class="w-act w-card next" style="--n: 1"><i>Proposal</i><b>“Happy Hour” pricing, tested first</b><span>Cut prices only in slow hours (2 to 5 pm, late night), never surge. Test in matched groups of stores, measuring profit and repeat visits, before any rollout; it avoids Coca-Cola’s 1999 backlash.</span></div>
+                    <div class="w-act w-card next" style="--n: 2"><i>Proposal</i><b>Rewards price-lock promise</b><span>Lock core menu prices for a year for Rewards members, rebuilding trust after the surge-pricing backlash that Burger King used to give away free Whoppers.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Breakfast" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Menu and dayparts</p>
+                <h4 class="w-h">Breakfast is the gap: <em>7% of sales vs. 25% at McDonald’s.</em></h4>
+                <div class="w-vs">
+                    <div class="w-bar" style="--c: #C8102E; --w: 28%"><span>Wendy’s</span><i></i><b>7%</b></div>
+                    <div class="w-bar" style="--c: #8A7671; --w: 100%"><span>McDonald’s</span><i></i><b>25%</b></div>
+                </div>
+                <div class="w-grid" style="--cols: 4">
+                    <div class="w-act w-card now" style="--n: 0"><i>Today</i><b>Breakfast daypart</b><span>The highest-margin meal; relaunched in 2020 with French toast sticks, a 2 for $3 bundle and a $55M ad push.</span></div>
+                    <div class="w-act w-card now" style="--n: 1"><i>Today</i><b>Late-night meals</b><span>Baconator territory; $5 Moonlight Meal Deals after 10 pm to fill slow hours and win the after-party crowd.</span></div>
+                    <div class="w-act w-card now" style="--n: 2"><i>Today</i><b>Iconic menu</b><span>The Frosty (since 1969), chili, the Baconator, Dave’s Single and Saucy Nuggs, all built on fresh beef.</span></div>
+                    <div class="w-act w-card next" style="--n: 3"><i>Proposal</i><b>AI breakfast habit builder</b><span>Use app history and FreshAI to send lunch and dinner regulars breakfast deals, then taper the discounts once the habit sticks.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Digital" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Convenience, digitized</p>
+                <h4 class="w-h">The drive-thru learns <em>who you are.</em></h4>
+                <div class="w-grid" style="--cols: 4">
+                    <div class="w-act w-card now" style="--n: 0"><i>Today</i><b>Drive-thru and FreshAI</b><span class="w-big">500+</span><span>restaurants with FreshAI voice ordering (Google Cloud) by 2025: it takes orders, upsells and knows regulars. Drive-thru since 1970.</span></div>
+                    <div class="w-act w-card now" style="--n: 1"><i>Today</i><b>Wendy’s Rewards app</b><span class="w-big">11% → 13%</span><span>of revenue from digital (2022 to 2023), after a $15M AI upgrade that personalizes offers like a free birthday Frosty.</span></div>
+                    <div class="w-act w-card now" style="--n: 2"><i>Today</i><b>Digital menu boards</b><span class="w-big">$30M</span><span>rollout ($20M U.S., $10M global) to swap items by time of day, put high-margin items where eyes land, and test AI suggestive selling.</span></div>
+                    <div class="w-act w-card next" style="--n: 3"><i>Proposal</i><b>Frosty Pass subscription</b><span class="w-big" style="color:#2F86D0 !important">$3/mo</span><span>A small Frosty every day in the app, filling slow afternoons and locking in loyalty, like Taco Bell’s Taco Lover’s Pass.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="The voice" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Brand voice</p>
+                <h4 class="w-h">The burger brand <em>that talks back.</em></h4>
+                <div class="w-grid">
+                    <div class="w-act w-card now" style="--n: 0"><i>Today</i><b>Sassy social media voice</b><span>The 2017 nuggets tweet became the most-retweeted ever (profits up about 50%); the “We Beefin?” mixtape hit #1 on Spotify’s Global Viral 50; now an album, “Songs To Listen To In A Wendy’s Parking Lot.”</span></div>
+                    <div class="w-act w-card now" style="--n: 1"><i>Today</i><b>Pop culture collabs</b><span>Viral limited drops: Netflix’s Wednesday “Meal of Misfortune” (Aug 2025), the SpongeBob Krabby Patty Kollab (Oct 2025) and Lisa Barlow’s “Baby Gorgeous Meal.”</span></div>
+                    <div class="w-act w-card next" style="--n: 2"><i>Proposal</i><b>Seasonal collab calendar</b><span>More show collabs like Wednesday, plus color-changing holiday packaging and Frosty flavors for Halloween, Thanksgiving and Christmas; Rewards members get 48-hour early access.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Families" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Families</p>
+                <h4 class="w-h">Win the kids, <em class="blue">keep the family.</em></h4>
+                <div class="w-grid" style="--cols: 2">
+                    <div class="w-act w-card now" style="--n: 0"><i>Today</i><b>Kids’ meals and Boo! Books</b><span class="w-big">35 cards</span><span>Collectible kids’ meal collabs like Sonic the Hedgehog trading cards across 7 sets (summer 2026) keep kids coming back for the full set; $1 Boo! Books of Jr. Frosty coupons support the Dave Thomas Foundation for Adoption.</span></div>
+                    <div class="w-act w-card next" style="--n: 1"><i>Proposal</i><b>Kids’ Rewards club</b><span class="w-big" style="color:#2F86D0 !important">Straight A’s</span><span>A free Jr. Frosty for every straight-A report card, a free kids’ meal on their birthday, and toy codes that unlock a digital collection in the app.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Scale" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick">Fresh beef, at scale</p>
+                <h4 class="w-h">Fresh, never frozen, <em>at 7,240 restaurants.</em></h4>
+                <div class="w-nums">
+                    <div class="w-num w-card now" style="--n: 0"><b>94%</b><span>franchised</span></div>
+                    <div class="w-num w-card now" style="--n: 1"><b>6,030</b><span>U.S. restaurants (2023)</span></div>
+                    <div class="w-num w-card now" style="--n: 2"><b>1,210</b><span>international restaurants (2023)</span></div>
+                    <div class="w-num w-card now" style="--n: 3"><b>1,000</b><span>new restaurants planned by 2028, 70% abroad</span></div>
+                </div>
+                <div class="w-grid">
+                    <div class="w-act w-card now" style="--n: 4"><i>Today</i><b>Fresh beef supply co-op</b><span>An independent purchasing co-op (QSCC) buys for nearly every U.S. restaurant, keeping fresh beef consistent and costs down.</span></div>
+                    <div class="w-act w-card now" style="--n: 5"><i>Today</i><b>Franchise model</b><span>Project Fresh (2025) closes 5% to 6% of weak U.S. stores to lift sales per store.</span></div>
+                    <div class="w-act w-card now" style="--n: 6"><i>Today</i><b>International growth</b><span>170 in Italy (Milan opens 2026), over 60 in Mexico, 200 planned in Australia, over 160 in India.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Six proposals" hidden>
+                @Html.Raw(wdSig)
+                <p class="w-kick blue">My proposals</p>
+                <h4 class="w-h">Six new activities, <em>one position.</em></h4>
+                <div class="w-grid">
+                    <div class="w-act w-card next" style="--n: 0"><i>Everyday value</i><b>“Happy Hour” pricing, tested first</b><span>Discounts only in slow hours, never surge.</span></div>
+                    <div class="w-act w-card next" style="--n: 1"><i>Everyday value</i><b>Rewards price-lock promise</b><span>Core prices locked for a year for members.</span></div>
+                    <div class="w-act w-card next" style="--n: 2"><i>Convenience</i><b>Frosty Pass subscription</b><span>About $3 a month for a daily small Frosty.</span></div>
+                    <div class="w-act w-card next" style="--n: 3"><i>Convenience</i><b>AI breakfast habit builder</b><span>Breakfast deals for lunch and dinner regulars.</span></div>
+                    <div class="w-act w-card next" style="--n: 4"><i>Brand</i><b>Seasonal collab calendar</b><span>Holiday drops, members get 48-hour early access.</span></div>
+                    <div class="w-act w-card next" style="--n: 5"><i>Families</i><b>Kids’ Rewards club</b><span>Straight A’s earn a Jr. Frosty.</span></div>
+                </div>
+                <p class="w-lede">Each one plugs into something Wendy’s already does well: the app, the Frosty, the collabs, the value menu.</p>
+            </div>
+        </div>
+        <div class="mk-nav-row">
+            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+            <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+        </div>
+    </div>
+
+    <div class="mk-info">
+        <div>
+            <h3 id="mk-title-wendys">Wendy’s: Everything Ties Back to the Beef</h3>
+            <p class="mp-proof-sub">A competitive activities map: Wendy’s core position, the 13 activities that hold it up, and six new ones I’d add.</p>
+        </div>
+        <ul class="mp-proof-list">
+            <li>Defined Wendy’s core position: fresh quality, everyday value and convenience, since 1969</li>
+            <li>Mapped 13 activities that reinforce it, from barbell pricing and FreshAI to the beef co-op and the franchise model</li>
+            <li>Found the gap: breakfast is Wendy’s highest-margin meal but only 7% of revenue, vs. 25% at McDonald’s</li>
+            <li>Proposed six new activities, each tied to the core: Happy Hour pricing, a price-lock promise, a Frosty Pass, an AI breakfast habit builder, a seasonal collab calendar and a Kids’ Rewards club</li>
+            <li><a class="mk-archive-link" href="#mk-archive" data-sa-open="sa-tab-wd">See the full one-page map ↓</a></li>
+        </ul>
+    </div>
+</div>

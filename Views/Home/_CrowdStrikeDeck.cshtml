@@ -1,0 +1,271 @@
+@* CrowdStrike: Porter's Five Forces, a project in the Marketing carousel (rendered from _MarketingWork.cshtml).
+   Built from my one-page Five Forces analysis: the course case (FY21) brought up to July 2026. Every number and name here is
+   from that slide; "(case)" and "(2026)" mark which. The full one-pager is in the archive under the slideshow.
+   The look: black, Falcon red and falling binary, like the slide. The cover video is a motion graphic I made (tools/record/crowdstrike-cover.html). *@
+<style>
+    .mk-cs { --c-bg: #0B0809; --c-card: #17100F; --c-red: #E0262E; --c-hot: #FF4D4D; --c-pink: #FFB3B3; --c-ink: #F4ECEC; --c-mute: #BDAAAA; }
+    .mk-cs .mk-stage { background: radial-gradient(40cqw 30cqw at 100% 0%, rgba(224, 38, 46, 0.22), rgba(224, 38, 46, 0)), radial-gradient(36cqw 26cqw at 0% 100%, rgba(224, 38, 46, 0.14), rgba(224, 38, 46, 0)), var(--c-bg); border: 1px solid #2A1414; }
+    .mk-cs .mk-slide { color: var(--c-ink); padding: 3.4cqw 4.6cqw 3cqw; gap: 1.4cqw; }
+    .mk-cs .mk-slide p { color: var(--c-mute); }
+    .mk-cs .c-kick { align-self: flex-start; margin: 0; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: clamp(9px, 1cqw, 12px) !important; font-weight: 700; letter-spacing: 0.25cqw; text-transform: uppercase; color: var(--c-hot) !important; }
+    .mk-cs .c-kick::before { content: "> "; opacity: 0.7; }
+    .mk-cs .c-h { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-weight: 800; font-size: clamp(18px, 3.3cqw, 40px); line-height: 1.08; letter-spacing: -0.02em; color: #FFFFFF; }
+    .mk-cs .c-h em { font-style: normal; color: var(--c-hot); }
+    .mk-cs .c-lede { margin: 0; font-size: clamp(12px, 1.45cqw, 18px) !important; line-height: 1.5 !important; max-width: 64cqw; }
+    .mk-cs .c-cap { margin: 0; font-family: ui-monospace, Menlo, monospace; font-size: clamp(8px, 0.9cqw, 11px) !important; letter-spacing: 0.1cqw; color: #8E7B7B !important; }
+    .mk-cs .c-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 4; font-family: ui-monospace, Menlo, monospace; font-size: clamp(9px, 1cqw, 12px); color: var(--c-hot); }
+    .mk-cs .c-card { background: var(--c-card); border: 1px solid rgba(255, 77, 77, 0.28); border-radius: 1.2cqw; }
+    .mk-cs .c-two { display: grid; grid-template-columns: 1fr 1fr; gap: 2.4cqw; flex: 1; align-items: center; }
+    .mk-cs .c-lvl { display: inline-block; padding: 0.25cqw 0.9cqw; border-radius: 99px; background: rgba(255, 77, 77, 0.16); font-size: clamp(8px, 0.9cqw, 11px); font-weight: 800; letter-spacing: 0.1cqw; text-transform: uppercase; color: var(--c-pink); white-space: nowrap; }
+    .mk-cs .c-lvl.hi { background: var(--c-red); color: #FFFFFF; }
+    .mk-cs .c-lvl.lo { background: rgba(255, 255, 255, 0.08); color: #CFC0C0; }
+    .mk-cs .c-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.8cqw; }
+    .mk-cs .c-rows li { display: grid; grid-template-columns: 1fr auto; gap: 0.3cqw 1.2cqw; align-items: start; padding: 0.9cqw 1.2cqw; animation: cIn 0.4s ease both; animation-delay: calc(var(--n) * 0.1s); }
+    .mk-cs .c-rows b { font-size: clamp(11px, 1.3cqw, 15px); color: #FFFFFF; }
+    .mk-cs .c-rows span:not(.c-lvl) { grid-column: 1 / -1; font-size: clamp(10px, 1.15cqw, 13.5px); line-height: 1.4; color: var(--c-mute); }
+    .mk-cs .c-rows small { color: var(--c-hot); }
+    @@keyframes cIn { from { opacity: 0; transform: translateY(0.8cqw); } }
+
+    /* cover */
+    .mk-cs .c-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .mk-cs .c-cover > p, .mk-cs .c-cover > h4 { position: relative; z-index: 1; }
+    .mk-cs .c-cover { justify-content: center; }
+    .mk-cs .c-cover::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(90deg, rgba(11, 8, 9, 0.9) 0%, rgba(11, 8, 9, 0.55) 42%, rgba(11, 8, 9, 0) 66%); }
+    .mk-cs .c-title { margin: 0; font-family: system-ui, sans-serif; font-weight: 900; font-size: clamp(28px, 6cqw, 72px); line-height: 0.98; letter-spacing: -0.03em; color: #FFFFFF; max-width: 46cqw; }
+    .mk-cs .c-title em { font-style: normal; color: var(--c-hot); }
+    .mk-cs .c-cover .c-lede { max-width: 40cqw; color: #E9DCDC !important; }
+
+    /* big numbers */
+    .mk-cs .c-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2cqw; }
+    .mk-cs .c-stat { padding: 1.4cqw 1.6cqw; animation: cIn 0.4s ease both; animation-delay: calc(var(--n) * 0.12s); }
+    .mk-cs .c-stat b { display: block; font-family: system-ui, sans-serif; font-weight: 900; font-size: clamp(20px, 3.8cqw, 46px); line-height: 1; color: #FFFFFF; letter-spacing: -0.02em; }
+    .mk-cs .c-stat.red b { color: var(--c-hot); }
+    .mk-cs .c-stat span { display: block; margin-top: 0.6cqw; font-size: clamp(10px, 1.15cqw, 14px); line-height: 1.35; color: var(--c-mute); }
+    .mk-cs .c-stat i { display: block; margin-bottom: 0.4cqw; font-style: normal; font-family: ui-monospace, Menlo, monospace; font-size: clamp(8px, 0.85cqw, 10px); letter-spacing: 0.1cqw; color: var(--c-pink); text-transform: uppercase; }
+
+    /* the verdict: five meters */
+    .mk-cs .c-meters { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2cqw; }
+    .mk-cs .c-meter { padding: 1.4cqw 1.2cqw; display: flex; flex-direction: column; gap: 0.6cqw; animation: cIn 0.4s ease both; animation-delay: calc(var(--n) * 0.12s); }
+    .mk-cs .c-meter b { font-size: clamp(11px, 1.35cqw, 16px); color: #FFFFFF; }
+    .mk-cs .c-meter .bars { display: flex; gap: 0.4cqw; }
+    .mk-cs .c-meter .bars i { flex: 1; height: 0.7cqw; border-radius: 99px; background: rgba(255, 255, 255, 0.12); }
+    .mk-cs .c-meter .bars i.on { background: var(--c-hot); transform-origin: left; animation: cBar 0.6s ease both; animation-delay: calc(var(--n) * 0.12s + 0.3s); }
+    @@keyframes cBar { from { transform: scaleX(0); } }
+    .mk-cs .c-meter span { font-size: clamp(9px, 1cqw, 12px); font-weight: 800; letter-spacing: 0.1cqw; text-transform: uppercase; color: var(--c-pink); }
+    .mk-cs .c-meter.hi { background: #3A0F12; border-color: var(--c-hot); }
+    .mk-cs .c-verdict { padding: 1.6cqw 2cqw; font-size: clamp(12px, 1.5cqw, 18px) !important; line-height: 1.5; color: var(--c-ink) !important; }
+    .mk-cs .c-verdict b { color: #FFFFFF; }
+
+    /* rivalry: three threat tiers and the share bar */
+    .mk-cs .c-tiers { display: flex; flex-direction: column; gap: 0.9cqw; }
+    .mk-cs .c-tier { display: grid; grid-template-columns: 9cqw 1fr; gap: 1cqw; align-items: center; animation: cIn 0.4s ease both; animation-delay: calc(var(--n) * 0.15s); }
+    .mk-cs .c-tier > span { font-family: ui-monospace, Menlo, monospace; font-size: clamp(8px, 0.9cqw, 11px); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08cqw; color: var(--c-pink); }
+    .mk-cs .c-chips { display: flex; flex-wrap: wrap; gap: 0.6cqw; }
+    .mk-cs .c-chip { padding: 0.7cqw 1.1cqw; border-radius: 0.8cqw; font-size: clamp(10px, 1.15cqw, 14px); color: #FFFFFF; }
+    .mk-cs .c-chip small { display: block; font-size: 0.82em; color: var(--c-mute); }
+    .mk-cs .c-tier.t1 .c-chip { background: #5A1216; border-color: var(--c-hot); }
+    .mk-cs .c-tier.t3 .c-chip { opacity: 0.6; }
+
+    /* four forces, one company */
+    .mk-cs .c-ms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; flex: 1; align-content: center; }
+    .mk-cs .c-m { padding: 1.6cqw 1.4cqw; display: flex; flex-direction: column; gap: 0.6cqw; animation: cIn 0.4s ease both; animation-delay: calc(var(--n) * 0.15s); }
+    .mk-cs .c-m i { font-style: normal; font-family: ui-monospace, Menlo, monospace; font-size: clamp(8px, 0.9cqw, 11px); letter-spacing: 0.1cqw; text-transform: uppercase; color: var(--c-hot); }
+    .mk-cs .c-m b { font-size: clamp(13px, 1.7cqw, 20px); line-height: 1.15; color: #FFFFFF; }
+    .mk-cs .c-m span { font-size: clamp(10px, 1.15cqw, 13.5px); line-height: 1.45; color: var(--c-mute); }
+
+    /* the takeaway: the moat */
+    .mk-cs .c-moat { display: flex; flex-wrap: wrap; gap: 0.8cqw; }
+    .mk-cs .c-moat span { padding: 0.8cqw 1.3cqw; border-radius: 99px; border: 1px solid var(--c-hot); font-size: clamp(10px, 1.2cqw, 14px); font-weight: 700; color: #FFFFFF; animation: cIn 0.4s ease both; animation-delay: calc(var(--n) * 0.1s); }
+    .mk-cs .mk-chapters button[aria-pressed="true"] { background: var(--c-red); border-color: var(--c-red); }
+
+    @@container (max-width: 560px) {
+        .mk-cs .c-two, .mk-cs .c-ms { grid-template-columns: 1fr !important; }   /* beats the per-slide column splits */
+        .mk-cs .c-stats, .mk-cs .c-meters { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+        .mk-cs .c-tier { grid-template-columns: 1fr; }
+        .mk-cs .mk-slide.c-cover .c-lede { display: none; }
+        .mk-cs .c-cover .c-title { max-width: 60cqw; font-size: clamp(26px, 9cqw, 44px); }
+        .mk-cs .c-rows li, .mk-cs .c-stat, .mk-cs .c-meter, .mk-cs .c-m { padding: 10px 12px; }
+    }
+    /* phones: the video sits in a strip across the top of the cover, focused on the right where the motion is,
+       and the words go underneath it, so nothing overlaps */
+    @@media (max-width: 800px) {
+        .mk-cs .c-cover { padding-top: calc(56vw + 14px) !important; justify-content: flex-start; }
+        .mk-cs .c-bg { height: 56vw; bottom: auto; object-position: 82% 50%; }
+        .mk-cs .c-cover::after { display: none; }
+    }
+    @@media (prefers-reduced-motion: reduce) {
+        .mk-cs .c-rows li, .mk-cs .c-stat, .mk-cs .c-meter, .mk-cs .c-meter .bars i.on, .mk-cs .c-tier, .mk-cs .c-m, .mk-cs .c-moat span { animation: none; }
+    }
+</style>
+@{
+    const string csSig = "<span class=\"c-sig\" aria-hidden=\"true\">suhani ✦</span>";
+}
+<div class="mp-proj mk-cs" id="mk-proj-crowdstrike" role="tabpanel" aria-labelledby="mk-title-crowdstrike" hidden>
+    <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="CrowdStrike slides">
+        <div class="mk-stage">
+            <div class="mk-slide c-cover" data-title="Five forces">
+                <video class="c-bg" data-src="/videos/projects/crowdstrike-cover.mp4" preload="none" poster="/videos/projects/crowdstrike-cover.jpg" muted loop playsinline autoplay aria-label="Ones and zeros fall in red; five forces light up around CrowdStrike, their threat meters fill, and the screen glitches on July 2024"></video>
+                @Html.Raw(csSig)
+                <p class="c-kick">Porter’s Five Forces, 2026</p>
+                <h4 class="c-title">CrowdStrike, and the rival <em>in every force.</em></h4>
+                <p class="c-lede">How much can a cloud security company earn? I mapped the five forces around CrowdStrike, from the 2021 case to July 2026. One name kept showing up: Microsoft.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The situation" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">The situation</p>
+                <h4 class="c-h">From a $1B case <em>to a $5.8B company,</em> through one very bad day.</h4>
+                <div class="c-stats">
+                    <div class="c-stat c-card" style="--n: 0"><i>Case, FY21</i><b>$874M</b><span>revenue</span></div>
+                    <div class="c-stat c-card" style="--n: 1"><i>Case, FY21</i><b>$1.05B</b><span>annual recurring revenue (ARR)</span></div>
+                    <div class="c-stat c-card" style="--n: 2"><i>Case, FY21</i><b>98%</b><span>gross retention</span></div>
+                    <div class="c-stat c-card red" style="--n: 3"><i>July 2026</i><b>$5.84B</b><span>ARR, up 25%</span></div>
+                    <div class="c-stat c-card red" style="--n: 4"><i>July 2024</i><b>8M+</b><span>Windows PCs crashed by one faulty update</span></div>
+                    <div class="c-stat c-card" style="--n: 5"><i>Industry</i><b>Cyber&shy;security</b><span>cloud-native endpoint protection</span></div>
+                </div>
+                <p class="c-cap">Sources: the course case (FY21); company results to July 2026.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The verdict" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">The verdict</p>
+                <h4 class="c-h">A moderate industry: <em>steady demand, capped pricing.</em></h4>
+                <div class="c-meters">
+                    <div class="c-meter c-card" style="--n: 0"><b>Supplier power</b><div class="bars"><i class="on"></i><i class="on"></i><i></i></div><span>Moderate</span></div>
+                    <div class="c-meter c-card" style="--n: 1"><b>Buyer power</b><div class="bars"><i class="on"></i><i class="on"></i><i></i></div><span>Moderate</span></div>
+                    <div class="c-meter c-card hi" style="--n: 2"><b>Rivalry</b><div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i></div><span>High</span></div>
+                    <div class="c-meter c-card" style="--n: 3"><b>New entrants</b><div class="bars"><i class="on"></i><i class="on"></i><i></i></div><span>Moderate</span></div>
+                    <div class="c-meter c-card" style="--n: 4"><b>Substitutes</b><div class="bars"><i class="on"></i><i class="on"></i><i></i></div><span>Moderate</span></div>
+                </div>
+                <p class="c-verdict c-card"><b>Industry attractiveness: Moderate.</b> Steady demand, subscriptions and high switching costs support profits, but Microsoft’s bundling, big buyers and heavy R&amp;D cap pricing power.</p>
+            </div>
+
+            <div class="mk-slide" data-title="Rivalry" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">Competitors: high rivalry</p>
+                <h4 class="c-h">Rivalry is high, <em>and Microsoft is #1.</em></h4>
+                <div class="c-tiers">
+                    <div class="c-tier t1" style="--n: 0"><span>High threat</span><div class="c-chips"><b class="c-chip c-card">Microsoft Defender<small>bundled in Microsoft 365 E5, #1 share</small></b><b class="c-chip c-card">Palo Alto Networks<small>Cortex XSIAM, fights for the whole platform</small></b><b class="c-chip c-card">SentinelOne<small>closest AI-native rival, cheaper</small></b></div></div>
+                    <div class="c-tier" style="--n: 1"><span>Medium threat</span><div class="c-chips"><b class="c-chip c-card">Trend Micro<small>Gartner Leader, strong in Asia</small></b><b class="c-chip c-card">Sophos<small>small-business and MDR favorite</small></b><b class="c-chip c-card">Fortinet<small>firewall giant adding endpoint</small></b></div></div>
+                    <div class="c-tier t3" style="--n: 2"><span>Little to none</span><div class="c-chips"><b class="c-chip c-card">Trellix<small>McAfee’s enterprise arm, legacy</small></b><b class="c-chip c-card">Broadcom and Symantec<small>legacy antivirus</small></b><b class="c-chip c-card">McAfee<small>consumer only</small></b></div></div>
+                </div>
+                <div class="c-stats" style="grid-template-columns:1fr 1fr 2fr">
+                    <div class="c-stat c-card red" style="--n: 3"><i>IDC 2024</i><b>28.6%</b><span>Microsoft’s share, #1</span></div>
+                    <div class="c-stat c-card" style="--n: 4"><i>IDC 2024</i><b>#2</b><span>CrowdStrike; the two are each about double any rival</span></div>
+                    <div class="c-stat c-card" style="--n: 5"><i>Why rivalry is high</i><span style="margin-top:0;color:#F4ECEC">Look-alike “buzzword-compliant” products drive price fights (case); Microsoft can accept thin endpoint margins to sell its wider ecosystem; outages hand rivals an opening.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Buyers" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">Buyer power: moderate</p>
+                <h4 class="c-h">Big buyers have leverage. <em>Switching costs take it back.</em></h4>
+                <div class="c-two" style="grid-template-columns:1.15fr 1fr;align-items:start">
+                    <ul class="c-rows">
+                        <li class="c-card" style="--n: 0"><b>Government agencies</b><span class="c-lvl hi">High</span><span>Huge budgets and rules like FedRAMP; Kurtz testified to the Senate after SolarWinds <small>(case)</small>.</span></li>
+                        <li class="c-card" style="--n: 1"><b>Critical infrastructure</b><span class="c-lvl hi">Mod. to high</span><span>After 2024 they demand liability terms; Delta’s $500M+ suit was allowed to proceed in 2025 <small>(2026)</small>.</span></li>
+                        <li class="c-card" style="--n: 2"><b>Large enterprises and the Fortune 500</b><span class="c-lvl">Moderate</span><span>Only 176 customers spent over $1M a year <small>(case)</small>, so a few big accounts hold the leverage.</span></li>
+                        <li class="c-card" style="--n: 3"><b>Small businesses, MSSPs, consumers</b><span class="c-lvl lo">Low to mod.</span><span>Many small buyers who want easy products; resellers can swap in SentinelOne or Microsoft.</span></li>
+                    </ul>
+                    <div class="c-stats" style="grid-template-columns:1fr 1fr">
+                        <div class="c-stat c-card" style="--n: 1"><i>Case</i><b>66%</b><span>used 4+ modules</span></div>
+                        <div class="c-stat c-card red" style="--n: 2"><i>2026</i><b>51%</b><span>now use 6+ modules</span></div>
+                        <div class="c-stat c-card red" style="--n: 3"><i>2026</i><b>$2.29B</b><span>ARR in Falcon Flex accounts</span></div>
+                        <div class="c-stat c-card" style="--n: 4"><i>Case</i><b>Breach</b><span>can now put a company out of business, so buyers pay for proof</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Suppliers" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">Supplier power: moderate</p>
+                <h4 class="c-h">Its biggest supplier <em>is also its biggest rival.</em></h4>
+                <div class="c-two" style="grid-template-columns:1fr 1fr;align-items:start">
+                    <ul class="c-rows">
+                        <li class="c-card" style="--n: 0"><b>Microsoft (Windows OS, Azure cloud)</b><span class="c-lvl hi">High</span><span>Falcon runs on Windows; after the 2024 outage Microsoft is moving security vendors out of the Windows kernel, while selling Defender <small>(2026)</small>.</span></li>
+                        <li class="c-card" style="--n: 1"><b>Cybersecurity and AI talent</b><span class="c-lvl hi">High</span><span>The case calls hiring hypergrowth talent one of CrowdStrike’s biggest challenges <small>(case)</small>.</span></li>
+                        <li class="c-card" style="--n: 2"><b>Cloud infrastructure (AWS, Google Cloud)</b><span class="c-lvl">Moderate</span><span>Falcon is cloud-only, so it depends on a few hyperscalers <small>(case)</small>.</span></li>
+                    </ul>
+                    <ul class="c-rows">
+                        <li class="c-card" style="--n: 3"><b>AI chips (NVIDIA GPUs)</b><span class="c-lvl">Moderate</span><span>Charlotte AI and agentic security need a near-monopoly supplier <small>(2026)</small>.</span></li>
+                        <li class="c-card" style="--n: 4"><b>Other OS owners and channel partners</b><span class="c-lvl">Moderate</span><span>Apple, Google and Linux each hold only part of the endpoints; resellers open doors, but CrowdStrike also sells direct.</span></li>
+                        <li class="c-card" style="--n: 5"><b>Dell, the only PC maker partner</b><span class="c-lvl lo">Low</span><span>Resells Falcon since 2023, but needs CrowdStrike as much as CrowdStrike needs Dell <small>(2026)</small>.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="New entrants" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">New entrants: moderate</p>
+                <h4 class="c-h">Google bought its way in. <em>It still has no endpoint agent.</em></h4>
+                <div class="c-two" style="grid-template-columns:1.2fr 1fr;align-items:start">
+                    <ul class="c-rows">
+                        <li class="c-card" style="--n: 0"><b>Google (Wiz, Mandiant, SecOps)</b><span class="c-lvl hi">Biggest</span><span>Wiz for $32B (closed March 2026) plus Mandiant: cloud security, incident response and a SIEM, the threat the case predicted. Held back: no endpoint agent yet.</span></li>
+                        <li class="c-card" style="--n: 1"><b>Amazon Web Services</b><span class="c-lvl">Frenemy</span><span>GuardDuty and Security Hub, built into the cloud. Held back: they only cover AWS, and AWS also sells Falcon.</span></li>
+                        <li class="c-card" style="--n: 2"><b>Huntress, Arctic Wolf, AI-native startups, PE roll-ups</b><span class="c-lvl lo">Niche</span><span>Cheaper managed security, AI analysts and stitched-together platforms. Held back: no Threat Graph-scale data, years of trust to earn, slow mergers.</span></li>
+                    </ul>
+                    <div style="display:flex;flex-direction:column;gap:1.2cqw">
+                        <div class="c-stat c-card red" style="--n: 1"><i>Why entry is tempting</i><b>$36B → $106B</b><span>the market forecast from 2021 to FY2025 (case forecast)</span></div>
+                        <div class="c-stat c-card" style="--n: 2"><i>Barriers to entry</i><b>6T+</b><span>Threat Graph events a week, a network effect, plus a hard-to-copy cloud-native agent, brand trust, 98% retention and FedRAMP</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Substitutes" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">Substitutes: moderate</p>
+                <h4 class="c-h">The biggest competitor? <em>Doing nothing.</em></h4>
+                <div class="c-ms" style="grid-template-columns:repeat(3, 1fr)">
+                    <div class="c-m c-card" style="--n: 0;border-color:var(--c-hot)"><i>Kurtz calls it “our biggest competitor”</i><b>“Doing nothing”</b><span>The buyer who never buys at all (case).</span></div>
+                    <div class="c-m c-card" style="--n: 1"><i>Free</i><b>Built-in OS security</b><span>Windows Defender, Apple XProtect: “good enough” for small buyers.</span></div>
+                    <div class="c-m c-card" style="--n: 2"><i>Old school</i><b>On-premise security</b><span>Full control; one bank refused cloud-only Falcon, then came back (case).</span></div>
+                    <div class="c-m c-card" style="--n: 3"><i>Outsourced</i><b>MDR services</b><span>Expel, eSentire and ReliaQuest run security for you.</span></div>
+                    <div class="c-m c-card" style="--n: 4"><i>Do it yourself</i><b>An in-house SOC on a SIEM</b><span>Elastic, Google SecOps, Microsoft Sentinel.</span></div>
+                    <div class="c-m c-card" style="--n: 5"><i>A different model</i><b>Network-first zero trust</b><span>Zscaler and Cloudflare guard access, not each device.</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="Microsoft, everywhere" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">The pattern</p>
+                <h4 class="c-h">One company shows up <em>in four of the five forces.</em></h4>
+                <div class="c-ms">
+                    <div class="c-m c-card" style="--n: 0"><i>Supplier</i><b>Windows and Azure</b><span>Falcon runs on Windows, and Microsoft is moving security vendors out of the Windows kernel.</span></div>
+                    <div class="c-m c-card" style="--n: 1;border-color:var(--c-hot);background:#3A0F12"><i>Rival</i><b>Defender, #1 at 28.6%</b><span>It can accept thin endpoint margins to sell its wider ecosystem.</span></div>
+                    <div class="c-m c-card" style="--n: 2"><i>Buyers’ leverage</i><b>The E5 bundle</b><span>Big buyers get Defender cheaply in Microsoft 365 E5, which caps what CrowdStrike can charge.</span></div>
+                    <div class="c-m c-card" style="--n: 3"><i>Substitute</i><b>Free Windows Defender</b><span>“Good enough” for small buyers, already on the machine.</span></div>
+                </div>
+                <p class="c-lede">That’s why the verdict is moderate, not high: the company that makes the ground CrowdStrike stands on also sells against it.</p>
+            </div>
+
+            <div class="mk-slide" data-title="The takeaway" hidden>
+                @Html.Raw(csSig)
+                <p class="c-kick">The takeaway</p>
+                <h4 class="c-title" style="font-size:clamp(22px, 4.6cqw, 56px);max-width:70cqw">The moat is the data. <em>The risk is the bundle.</em></h4>
+                <p class="c-lede">CrowdStrike keeps customers because every module is another workflow to rip out, and every customer feeds the Threat Graph. What caps it is a rival that owns the operating system and gives security away in a bundle.</p>
+                <div class="c-moat">
+                    <span style="--n: 0">Threat Graph network effects</span><span style="--n: 1">A hard-to-copy cloud-native agent</span><span style="--n: 2">98% retention</span><span style="--n: 3">51% use 6+ modules</span><span style="--n: 4">Brand trust</span><span style="--n: 5">FedRAMP</span>
+                </div>
+            </div>
+        </div>
+        <div class="mk-nav-row">
+            <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+            <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+            <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+        </div>
+    </div>
+
+    <div class="mk-info">
+        <div>
+            <h3 id="mk-title-crowdstrike">CrowdStrike: The Rival in Every Force</h3>
+            <p class="mp-proof-sub">A Five Forces analysis of a cloud security company, from the course case to July 2026.</p>
+        </div>
+        <ul class="mp-proof-list">
+            <li>Mapped Porter’s Five Forces for CrowdStrike from the FY21 case, then brought every force up to July 2026</li>
+            <li>Rated each force and the players inside it, from governments and Delta to NVIDIA, Dell and Google’s $32B Wiz deal</li>
+            <li>Found the pattern: Microsoft shows up as supplier, rival, buyers’ leverage and substitute</li>
+            <li>Called the industry moderately attractive: switching costs and the Threat Graph protect profits; bundling and big buyers cap pricing</li>
+            <li><a class="mk-archive-link" href="#mk-archive" data-sa-open="sa-tab-cs">See the full one-page map ↓</a></li>
+        </ul>
+    </div>
+</div>

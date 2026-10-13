@@ -267,9 +267,21 @@ const shots = {
         // the LinkedIn post video, 4:5: the hook, my site scrolling in a browser window, Read it / Use it
         url: new URL('./linkedin-cover.html', import.meta.url).href, w: 1080, h: 1160, fps: 30
     },
+    'crowdstrike-cover': {
+        // the CrowdStrike deck's cover: red binary, the five forces and their meters, Microsoft in four of them, the July 2024 glitch
+        url: new URL('./crowdstrike-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
+    },
+    'wendys-cover': {
+        // the Wendy's deck's cover: a burger stacks itself, then 13 red activities and my 6 blue ones pop up around it
+        url: new URL('./wendys-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
+    },
     'owala-cover': {
         // the Owala deck's cover: an animation page stepped frame by frame through window.render(t), so it plays smoothly
         url: new URL('./owala-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
+    },
+    'bollywood-cover': {
+        // the Same Fame, Different Fates deck's cover: three vanity mirrors whose lights tell each brand's fate
+        url: new URL('./bollywood-cover.html', import.meta.url).href, w: 1280, h: 720, fps: 30
     },
     'fuelflow-cover': {
         // the FuelFlow deck's 15-second cover: a Tuesday at UT, the survey numbers, the station, the logo

@@ -642,6 +642,15 @@
         const filt = [...root.querySelectorAll('.wd-filter button')];
         filt.forEach(b => b.addEventListener('click', () => { filt.forEach(x => x.setAttribute('aria-pressed', x === b)); map.dataset.show = b.dataset.show; }));
 
+        // "See the full one-page map" under a deck opens that framework here
+        document.addEventListener('click', e => {
+            const a = e.target.closest('[data-sa-open]');
+            if (!a) return;
+            e.preventDefault();
+            const t = document.getElementById(a.dataset.saOpen);
+            if (t) { pick(t); root.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+
         // Glossier: two views of the same strategy
         const views = [...root.querySelectorAll('.gl-views button')], panes = [...root.querySelectorAll('.gl-view')];
         views.forEach(b => b.addEventListener('click', () => {
