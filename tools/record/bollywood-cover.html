@@ -1,0 +1,164 @@
+<!doctype html>
+<!-- The Same Fame, Different Fates deck's cover video, as a page. Three arched vanity mirrors, one per star, ringed with
+     dressing-room bulbs. The bulbs come on, each brand's revenue counts up under its mirror, then the fates split:
+     Kay's mirror stays lit and catches a gold shimmer (the winner), Anomaly's settles to a steady low glow and is sold (the exit),
+     82°E's bulbs flicker, then go dark one by one (the loser).
+     The left side stays quiet for the slide's headline. window.render(t) draws the frame at t seconds (window.DUR = 13.5),
+     so record.mjs can step through it frame by frame. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    @font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 900; src: url(../../wwwroot/fonts/bodoni-moda-latin-normal.woff2) format('woff2'); }
+    @font-face { font-family: 'Bodoni Moda'; font-style: italic; font-weight: 400 900; src: url(../../wwwroot/fonts/bodoni-moda-latin-italic.woff2) format('woff2'); }
+    :root { --ivory: #F8F2EA; --blush: #EFE2D6; --wine: #6E1E30; --gold: #A9844A; --gold-2: #D9BE87; --ink: #2A1F20; --mute: #6B5A57; }
+    html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; }
+    body { position: relative; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink);
+        background: radial-gradient(circle at 92% 4%, rgba(217, 190, 135, 0.38) 0, rgba(217, 190, 135, 0) 40%), radial-gradient(circle at 2% 100%, var(--blush) 0, rgba(239, 226, 214, 0) 46%), var(--ivory); }
+    .blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+    .b1 { width: 520px; height: 420px; left: 640px; top: 240px; background: rgba(110, 30, 48, 0.10); }
+    .b2 { width: 380px; height: 380px; left: 1000px; top: -120px; background: rgba(217, 190, 135, 0.35); }
+
+    /* the dressing table: one long walnut shelf under the three mirrors */
+    #shelf { position: absolute; left: 520px; width: 720px; top: 520px; height: 14px; border-radius: 7px; background: linear-gradient(180deg, #8A5E3C, #5C3B26); box-shadow: 0 22px 30px -18px rgba(42, 31, 32, 0.6); }
+
+    .mirror { position: absolute; top: 132px; width: 196px; height: 372px; }
+    .frame { position: absolute; inset: 0; border-radius: 98px 98px 12px 12px; padding: 11px;
+        background: linear-gradient(140deg, #F1DDAE 0%, #B8914F 30%, #E9D3A0 52%, #9C7840 78%, #D9BE87 100%);
+        box-shadow: 0 30px 40px -26px rgba(42, 31, 32, 0.65), inset 0 0 0 1px rgba(255, 255, 255, 0.45); }
+    .glass { position: relative; width: 100%; height: 100%; border-radius: 87px 87px 6px 6px; overflow: hidden;
+        background: linear-gradient(165deg, #FDF9F4 0%, #F1E6DA 48%, #E6D6C6 100%); box-shadow: inset 0 0 22px rgba(110, 30, 48, 0.12); }
+    .glass::before { content: ""; position: absolute; left: -30%; top: -10%; width: 60%; height: 130%; transform: rotate(18deg); background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)); opacity: 0.55; }
+    .sheen { position: absolute; top: -20%; width: 46%; height: 140%; transform: rotate(18deg); background: linear-gradient(90deg, rgba(255, 236, 190, 0), rgba(255, 236, 190, 0.85), rgba(255, 236, 190, 0)); }
+    .shade { position: absolute; inset: 0; background: #2A1F20; opacity: 0; }
+    .label { position: absolute; left: 0; right: 0; top: 46%; transform: translateY(-50%); text-align: center; display: grid; gap: 8px; }
+    .label small { padding: 0 18px; text-wrap: balance; line-height: 1.5; font-size: 10.5px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+    .label b { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: 33px; line-height: 1; color: var(--ink); letter-spacing: -0.01em; }
+    .label i { font-family: 'Bodoni Moda', Georgia, serif; font-size: 15px; color: var(--mute); }
+    .bulb { position: absolute; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; }
+
+    .num { position: absolute; top: 552px; width: 240px; text-align: center; }
+    .num b { display: block; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 600; font-size: 34px; line-height: 1; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
+    .num span { display: block; margin-top: 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mute); }
+    .tag { position: absolute; top: 640px; width: 240px; display: flex; justify-content: center; }
+    .tag em { font-style: normal; padding: 6px 16px; border-radius: 99px; font-size: 12px; font-weight: 800; letter-spacing: 0.24em; text-transform: uppercase; }
+    .tag.up em { background: var(--wine); color: #FBEFDF; box-shadow: 0 10px 18px -10px rgba(110, 30, 48, 0.7); }
+    .tag.down em { border: 1.5px solid var(--gold); color: var(--ink); }
+    .tag.mid em { background: #EADBB9; color: var(--ink); }
+
+    .dust { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #E9CF94; box-shadow: 0 0 8px 2px rgba(233, 207, 148, 0.7); }
+    #veil { position: absolute; inset: 0; background: var(--ivory); pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div id="shelf"></div>
+<div id="stage"></div>
+<div id="veil"></div>
+<script>
+const DUR = 13.5;
+const $ = id => document.getElementById(id);
+const clamp = v => Math.max(0, Math.min(1, v));
+const win = (t, a, b) => clamp((t - a) / (b - a));
+const easeOut = p => 1 - Math.pow(1 - p, 3);
+const easeInOut = p => p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+const rand = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+const STARS = [
+    { name: 'Kay Beauty', who: 'Katrina Kaif', cat: 'makeup', x: 548, value: 211.65, cap: 'FY26 revenue', fate: 'growing', up: true },
+    { name: 'Anomaly', who: 'Priyanka Chopra Jonas', cat: 'haircare', x: 784, value: null, cap: 'sold to Reliance, 2026', fate: 'sold' },
+    { name: '82°E', who: 'Deepika Padukone', cat: 'skincare', x: 1020, value: 14.66, cap: 'FY25 revenue, down 30%', fate: 'shrinking' }
+];
+
+// bulb positions around an arched frame (196 x 372, arch radius 98): up the left side, over the arch, down the right
+const W = 196, H = 372, R = 98, BULBS = [];
+for (let i = 0; i < 4; i++) BULBS.push([4, H - 26 - i * 62]);
+for (let i = 0; i <= 8; i++) { const a = Math.PI - i * Math.PI / 8; BULBS.push([R + Math.cos(a) * (R - 4), R - Math.sin(a) * (R - 4)]); }
+for (let i = 3; i >= 0; i--) BULBS.push([W - 4, H - 26 - i * 62]);
+
+const stage = $('stage');
+STARS.forEach((s, k) => {
+    const m = document.createElement('div');
+    m.className = 'mirror'; m.style.left = s.x + 'px';
+    m.innerHTML = `<div class="frame"><div class="glass"><div class="sheen"></div><div class="shade"></div><div class="label"><small>${s.who}</small><b>${s.name}</b><i>${s.cat}</i></div></div></div>` +
+        BULBS.map(([x, y]) => `<span class="bulb" style="left:${x}px;top:${y}px"></span>`).join('');
+    stage.append(m);
+    const n = document.createElement('div');
+    n.className = 'num'; n.style.left = (s.x + W / 2 - 120) + 'px';
+    n.innerHTML = `<b></b><span>${s.cap}</span>`;
+    stage.append(n);
+    const g = document.createElement('div');
+    g.className = 'tag ' + (s.up ? 'up' : s.fate === 'sold' ? 'mid' : 'down'); g.style.left = (s.x + W / 2 - 120) + 'px';
+    g.innerHTML = `<em>${s.fate}</em>`;
+    stage.append(g);
+    s.m = m; s.n = n; s.g = g; s.k = k;
+});
+// gold dust rising from Kay's mirror while it holds
+const DUST = Array.from({ length: 26 }, (_, i) => { const d = document.createElement('span'); d.className = 'dust'; stage.append(d); return d; });
+
+const lit = (el, on) => {
+    // on: 0 = off, 1 = full glow
+    const o = clamp(on);
+    el.style.background = `radial-gradient(circle at 38% 35%, rgba(255,255,250,${0.5 + 0.5 * o}), rgba(${Math.round(217 + 38 * o)},${Math.round(203 + 33 * o)},${Math.round(184 - 10 * o)},1) 70%)`;
+    el.style.boxShadow = o > 0.02 ? `0 0 ${6 + 14 * o}px ${2 + 4 * o}px rgba(255, 214, 140, ${0.75 * o}), inset 0 -2px 3px rgba(0,0,0,0.12)` : 'inset 0 -2px 3px rgba(0,0,0,0.18)';
+};
+
+window.render = t => {
+    STARS.forEach(s => {
+        const bulbs = [...s.m.querySelectorAll('.bulb')];
+        const start = 0.5 + s.k * 0.45;
+        // the mirror rises in, then its bulbs come on around the frame
+        const rise = easeOut(win(t, start - 0.3, start + 0.5));
+        s.m.style.opacity = rise; s.m.style.transform = `translateY(${(1 - rise) * 24}px)`;
+        s.m.querySelector('.label').style.opacity = win(t, start + 0.6, start + 1.2);
+        bulbs.forEach((b, i) => {
+            let on = win(t, start + 0.4 + i * 0.07, start + 0.55 + i * 0.07);
+            if (s.k === 0 && t > 6) on = 0.82 + 0.18 * Math.sin(t * 3 + i * 0.9);                       // Kay: a soft twinkle
+            if (s.k === 1 && t > 5.4) on = 1 - 0.3 * easeInOut(win(t, 5.4, 6.6));                     // Anomaly: settles to a steady low glow
+            if (s.k === 2 && t > 5.2) {                                                                // 82°E: flickers, then out one by one
+                const flick = rand(i + Math.floor(t * 14)) > 0.4 ? 1 : 0.2;
+                on = t < 6.0 ? flick : 1 - win(t, 6.0 + i * 0.08, 6.15 + i * 0.08);
+            }
+            lit(b, on);
+        });
+        // the glass: Kay's catches a gold shimmer, Anomaly's goes dark
+        const sheen = s.m.querySelector('.sheen');
+        if (s.k === 0) { const p = (t - 5.2) % 3.2 / 1.4; sheen.style.left = (-60 + 190 * clamp(p)) + '%'; sheen.style.opacity = t > 5.2 && p <= 1 ? 1 : 0; }
+        else sheen.style.opacity = 0;
+        const shade = s.m.querySelector('.shade');
+        shade.style.opacity = s.k === 2 ? 0.62 * easeInOut(win(t, 6.0, 7.6)) : s.k === 1 ? 0.12 * easeInOut(win(t, 5.4, 6.6)) : 0;
+        s.m.querySelector('.label b').style.color = s.k === 2 && t > 6.6 ? `rgba(248,242,234,${0.55 + 0.35 * win(t, 6.6, 7.6)})` : '';
+        s.m.querySelector('.label small').style.opacity = s.k === 2 ? 1 - 0.5 * win(t, 6.6, 7.6) : 1;
+        s.m.querySelector('.frame').style.filter = s.k === 0 ? `drop-shadow(0 0 ${28 * win(t, 5.0, 6.2)}px rgba(233, 207, 148, 0.85))` : s.k === 2 ? `saturate(${1 - 0.5 * win(t, 6.0, 7.6)})` : '';
+
+        // the numbers count up under each mirror
+        const c = easeOut(win(t, 3.2 + s.k * 0.25, 4.8 + s.k * 0.25));
+        s.n.style.opacity = win(t, 3.0 + s.k * 0.25, 3.4 + s.k * 0.25);
+        s.n.querySelector('b').textContent = s.value == null ? 'not disclosed' : '₹' + (s.value * c).toFixed(2) + ' cr';
+        s.n.querySelector('b').style.fontSize = s.value == null ? '26px' : '';
+        // then the fate under each one
+        const g = easeOut(win(t, 6.0 + s.k * 0.55, 6.5 + s.k * 0.55));
+        s.g.style.opacity = g; s.g.style.transform = `translateY(${(1 - g) * 10}px)`;
+    });
+    $('shelf').style.opacity = easeOut(win(t, 0.2, 0.9));
+    $('shelf').style.transform = `scaleX(${0.7 + 0.3 * easeOut(win(t, 0.2, 0.9))})`;
+
+    // gold dust drifts up from Kay's mirror once it wins
+    const d0 = win(t, 6.0, 7.0) * (1 - win(t, DUR - 1.2, DUR - 0.6));
+    DUST.forEach((d, i) => {
+        const life = 3.2 + rand(i) * 2, ph = ((t + rand(i + 9) * life) % life) / life;
+        d.style.left = (548 + 20 + rand(i + 3) * 156 + Math.sin(t * 1.4 + i) * 8) + 'px';
+        d.style.top = (480 - ph * 400) + 'px';
+        d.style.opacity = d0 * Math.sin(ph * Math.PI) * 0.9;
+        d.style.transform = `scale(${0.6 + rand(i + 5) * 0.8})`;
+    });
+
+    // fade in from, and back out to, the empty ivory frame so the loop is seamless
+    $('veil').style.opacity = Math.max(1 - win(t, 0, 0.35), win(t, DUR - 0.7, DUR));
+};
+window.DUR = DUR;
+window.ready = document.fonts.ready;
+render(new URLSearchParams(location.search).has('t') ? +new URLSearchParams(location.search).get('t') : 9.5);
+</script>
+</body>
+</html>
