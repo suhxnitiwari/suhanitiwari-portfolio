@@ -2051,7 +2051,12 @@
             { rootMargin: '-45% 0px -50% 0px' });
         [...sections, ...Object.keys(partOf).map(id => document.getElementById(id)).filter(Boolean)].forEach(s => seen.observe(s));
         // switching studies while reading Marketing moves the address bar to the new study
-        addEventListener('study:change', e => { studyTitle = e.detail.title; if (chapterNow === 'marketing-work') follow('marketing-work'); });
+        // (measured right then, so it never waits on the scroll tracker)
+        addEventListener('study:change', e => {
+            studyTitle = e.detail.title;
+            const r = document.getElementById('marketing-work')?.getBoundingClientRect();
+            if (chapterNow === 'marketing-work' || (r && r.top < innerHeight * 0.55 && r.bottom > innerHeight * 0.45)) follow('marketing-work');
+        });
         // this page can be open at /marketing/{study}: a link to a part of it ("/#experience") should scroll, not reload
         document.addEventListener('click', e => {
             const a = e.target.closest?.('a[href]');

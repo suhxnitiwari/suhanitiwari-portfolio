@@ -69,6 +69,11 @@ const projectCarousels = () => document.querySelectorAll('.mp-projects:not([data
         setTimeout(land, 0);
         if (document.readyState === 'complete') setTimeout(() => { if (!moved) land(); }, 400);
         else addEventListener('load', () => { if (!moved) land(); }, { once: true });
+        // the decks above size themselves to the window, so a late reflow (fonts, a rotated phone) would leave the page somewhere
+        // else: for the first few seconds, land again whenever the page changes height, until the visitor scrolls
+        const until = Date.now() + 5000;
+        const steady = new ResizeObserver(() => { if (moved || Date.now() > until) return steady.disconnect(); land(); });
+        steady.observe(document.body);
     } else if (tabs[0].dataset.study && !root.dataset.study) {
         // nothing picked yet: the first study is the open one
         const title = slides[current].querySelector('[id^="mk-title-"]')?.textContent.trim() || tabs[current].textContent.trim();
