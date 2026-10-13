@@ -1,5 +1,6 @@
 @* How Glossier Lost Its Cult: my Glossier strategy, the 1st project in the Marketing carousel (rendered from _MarketingWork.cshtml).
    Built from the HBS case I studied in MIS 375 (Glossier: Co-Creating a Cult Brand with a Digital Community, 2019) and followed to 2026.
+   The segments, next offerings and trade-offs come from my Glossier strategy analysis package (positioning, adjacency, segmentation).
    The look: Glossier pink, bubble wrap, chat bubbles and Bodoni. Same slideshow as the other decks (Coursework.cshtml builds the chapters).
    Numbers checked Oct 2026: the case; TechCrunch and Glossy (2022 layoffs); WWD (Colin Walsh); Inside Retail and BoF (2026 store
    closures, fragrance about 40% of sales). Glossier is private, so valuations are as reported. The cover video is a motion graphic I made. *@
@@ -128,14 +129,41 @@
     .mk-gls .g-acts li small { display: block; margin-top: 0.3cqw; font-size: 0.8em; color: var(--g-mute); }
     .mk-gls .g-tag { align-self: flex-start; padding: 0.4cqw 1cqw; border-radius: 99px; background: var(--g-pink2); font-size: clamp(10px, 1.1cqw, 13px); font-weight: 700; color: var(--g-red); }
 
+    /* who it sells to: six customers, four today and two to win next */
+    .mk-gls .g-segs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2cqw; flex: 1; align-content: center; }
+    .mk-gls .g-seg { padding: 1.3cqw 1.5cqw; display: flex; flex-direction: column; gap: 0.4cqw; animation: gPop 0.4s ease both; animation-delay: calc(var(--n) * 0.12s); }
+    .mk-gls .g-seg.next { background: #FFF7F9; border-style: dashed; border-color: #E9A9BD; }
+    .mk-gls .g-seg i { align-self: flex-start; font-style: normal; font-size: clamp(8px, 0.85cqw, 11px); font-weight: 800; letter-spacing: 0.15cqw; text-transform: uppercase; color: var(--g-red); }
+    .mk-gls .g-seg b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(12px, 1.55cqw, 19px); line-height: 1.12; color: var(--g-ink); }
+    .mk-gls .g-seg span { font-size: clamp(10px, 1.1cqw, 13px); line-height: 1.35; color: var(--g-mute); }
+    .mk-gls .g-seg small { margin-top: auto; padding-top: 0.4cqw; font-size: clamp(9px, 1cqw, 12px); font-weight: 700; color: var(--g-ink); }
+
+    /* what to sell next, and where: three columns of picks */
+    .mk-gls .g-next { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; flex: 1; align-content: center; }
+    .mk-gls .g-next > div { display: flex; flex-direction: column; gap: 0.8cqw; }
+    .mk-gls .g-next h5 { margin: 0 0 0.2cqw; font-size: clamp(9px, 1cqw, 12px); font-weight: 800; letter-spacing: 0.2cqw; text-transform: uppercase; color: var(--g-red); }
+    .mk-gls .g-next li { padding: 1cqw 1.2cqw; }
+
+    /* the trade-offs: four verdicts */
+    .mk-gls .g-trades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2cqw; flex: 1; align-content: center; }
+    .mk-gls .g-trade { padding: 1.6cqw 1.4cqw; display: flex; flex-direction: column; gap: 0.6cqw; animation: gPop 0.4s ease both; animation-delay: calc(var(--n) * 0.15s); }
+    .mk-gls .g-trade b { font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(16px, 2.6cqw, 30px); line-height: 1; color: var(--g-red); }
+    .mk-gls .g-trade p { margin: 0; font-size: clamp(10px, 1.2cqw, 14px); line-height: 1.4; color: var(--g-ink) !important; }
+    .mk-gls .g-trade small { font-size: clamp(9px, 1cqw, 12px); line-height: 1.35; color: var(--g-mute); }
+
     .mk-gls .mk-chapters button[aria-pressed="true"] { background: var(--g-red); border-color: var(--g-red); }
 
     @@container (max-width: 560px) {
+        .mk-gls .g-segs, .mk-gls .g-trades { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .mk-gls .g-next { grid-template-columns: 1fr; gap: 12px; }
+        .mk-gls .g-seg, .mk-gls .g-trade, .mk-gls .g-next li { padding: 10px 12px; }
+        .mk-gls .g-seg b { font-size: 15px; } .mk-gls .g-seg span, .mk-gls .g-trade small { font-size: 12px; } .mk-gls .g-seg small, .mk-gls .g-trade p { font-size: 12.5px; }
+        .mk-gls .g-trade b { font-size: 20px; }
         .mk-gls .mk-slide.g-cover .g-lede { display: none; }
         .mk-gls .g-cover .g-title { max-width: 52cqw; font-size: clamp(24px, 8cqw, 40px); }
     }
     @@media (prefers-reduced-motion: reduce) {
-        .mk-gls .g-tube, .mk-gls .g-doodle, .mk-gls .g-msg, .mk-gls .g-step, .mk-gls .g-list li, .mk-gls .g-orb, .mk-gls .g-vote i::after, .mk-gls .g-donut .arc, .mk-gls .g-line .ln, .mk-gls .g-line .dt { animation: none; }
+        .mk-gls .g-seg, .mk-gls .g-trade, .mk-gls .g-tube, .mk-gls .g-doodle, .mk-gls .g-msg, .mk-gls .g-step, .mk-gls .g-list li, .mk-gls .g-orb, .mk-gls .g-vote i::after, .mk-gls .g-donut .arc, .mk-gls .g-line .ln, .mk-gls .g-line .dt { animation: none; }
         .mk-gls .g-donut .arc { stroke-dasharray: 40 100; }
         .mk-gls .g-line .ln { stroke-dashoffset: 0; }
         .mk-gls .g-line .ln.est, .mk-gls .g-line .dt { opacity: 1; }
@@ -241,6 +269,20 @@
                 </div>
             </div>
 
+            <div class="mk-slide" data-title="Who buys" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">Who it sells to</p>
+                <h4 class="g-h">Four customers today, <em>and two to win next.</em></h4>
+                <div class="g-segs">
+                    <div class="g-seg g-card" style="--n: 0"><i>Today</i><b>Glossier Originals who grew up</b><span>Ages 28 to 40, found Glossier years ago, now want sophisticated, effortless beauty. Up against MERIT and Summer Fridays.</span><small>Buys at Glossier.com and the flagships</small></div>
+                    <div class="g-seg g-card" style="--n: 1"><i>Today</i><b>Early-career professionals</b><span>Ages 23 to 30, want a polished five-minute routine for work. Up against MERIT, Saie and ILIA.</span><small>Buys at Sephora, in store and in the app</small></div>
+                    <div class="g-seg g-card" style="--n: 2"><i>Today</i><b>Gen Z and college beauty explorers</b><span>Ages 18 to 24, discover beauty on TikTok and buy one hero product at a time. Up against Rhode, Rare Beauty and Tower 28.</span><small>Buys on TikTok Shop</small></div>
+                    <div class="g-seg g-card" style="--n: 3"><i>Today</i><b>Fragrance-led customers</b><span>All genders, ages 25 to 45, who know Glossier mainly through Glossier You. Up against traditional fragrance houses.</span><small>Finds it at Sephora’s fragrance wall</small></div>
+                    <div class="g-seg g-card next" style="--n: 4"><i>Next</i><b>Performance-focused minimalists</b><span>Want the Glossier look with longer wear, more shades and sensitive-skin options. Up against Kosas, ILIA and Saie.</span><small>Won with an AI shade match in the app</small></div>
+                    <div class="g-seg g-card next" style="--n: 5"><i>Next</i><b>International shoppers</b><span>Beauty fans in Europe, Asia, Canada and Mexico who know Glossier from social media. Up against local brands and K-beauty.</span><small>Won with new stores and local creators</small></div>
+                </div>
+            </div>
+
             <div class="mk-slide" data-title="The comeback" hidden>
                 @Html.Raw(sig)
                 <p class="g-kick">The comeback idea</p>
@@ -257,9 +299,9 @@
                     <div style="display:flex;flex-direction:column;gap:1.2cqw">
                         <p class="g-cap">The campaign: Back in the chat</p>
                         <ul class="g-list g-acts">
-                            <li class="g-card" style="--n: 2"><span>Act 1 · The text</span>One text to every past customer. Reply and you’re in the Club.<small>Runs Move 01</small></li>
-                            <li class="g-card" style="--n: 3"><span>Act 2 · The vote</span>Creators host the Club’s first vote. The winner ships in 90 days.<small>Runs Move 02</small></li>
-                            <li class="g-card" style="--n: 4"><span>Act 3 · The label</span>Your group chat names your You, and their words go on the bottle.<small>Runs Move 03</small></li>
+                            <li class="g-card" style="--n: 2"><span>Act 1: The text</span>One text to every past customer. Reply and you’re in the Club.<small>Runs Move 01</small></li>
+                            <li class="g-card" style="--n: 3"><span>Act 2: The vote</span>Creators host the Club’s first vote. The winner ships in 90 days.<small>Runs Move 02</small></li>
+                            <li class="g-card" style="--n: 4"><span>Act 3: The label</span>Your group chat names your You, and their words go on the bottle.<small>Runs Move 03</small></li>
                         </ul>
                     </div>
                 </div>
@@ -271,7 +313,7 @@
                     <div style="display:flex;flex-direction:column;gap:1.4cqw">
                         <p class="g-kick">Move 01, community</p>
                         <h4 class="g-h">Reopen <em>the comments section.</em></h4>
-                        <p class="g-lede">The Glossier Club: Into The Gloss reborn as a members’ app. Vote on the next launch, post your Top Shelf, get early access and invites to the three flagships.</p>
+                        <p class="g-lede">The Glossier Club: Into The Gloss reborn as a members’ app. Vote on the next launch, post your Top Shelf, get early access and invites to the flagships.</p>
                         <p class="g-lede">It opens with one text to every past customer: “hey. it’s been a while.” Reply and you’re in. It’s the loyalty program the 2018 team debated and never built, and every vote is first-party data Sephora can’t see.</p>
                         <span class="g-tag">Target: 10% of past customers reply</span>
                     </div>
@@ -307,11 +349,55 @@
                     <div style="display:flex;flex-direction:column;gap:1.4cqw">
                         <p class="g-kick">Move 03, the hero</p>
                         <h4 class="g-h">Make You a world, <em>not a perfume.</em></h4>
-                        <p class="g-lede">You is designed to smell different on everyone. Lean in: layering sets, refills sold only through the Club, and the three flagships rebuilt as scent labs.</p>
+                        <p class="g-lede">You is designed to smell different on everyone. Lean in: layering sets, refills sold only through the Club, and the flagships rebuilt as scent labs.</p>
                         <p class="g-lede">The hook: ask your group chat what you smell like. Their words get printed on your bottle, and every post links back to Glossier. Sephora sells the first bottle. Glossier owns every bottle after it.</p>
                         <div style="display:flex;flex-wrap:wrap;gap:0.8cqw"><span class="g-tag">#WhatDoISmellLike</span><span class="g-tag">Target: 25% of new customers from a friend</span></div>
                     </div>
                     <div class="g-scents" aria-hidden="true"><span class="g-orb">You</span><span class="g-orb">+ a flanker</span><span class="g-orb">= yours</span></div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="What’s next" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">Right next to the core</p>
+                <h4 class="g-h">What to sell next, <em>and where.</em></h4>
+                <div class="g-next">
+                    <div>
+                        <h5>Products</h5>
+                        <ul class="g-list">
+                            <li class="g-card" style="--n: 0"><b>Masks and pimple patches.</b> Glossier sells none today, and they’re repeat buys.</li>
+                            <li class="g-card" style="--n: 1"><b>A $25 mini quad</b> of makeup and skincare as an easy first buy, like the $15 fragrance Discovery Kit.</li>
+                            <li class="g-card" style="--n: 2"><b>Refillable cases</b> for Balm Dotcom and Stretch Concealer.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Services</h5>
+                        <ul class="g-list">
+                            <li class="g-card" style="--n: 3"><b>Club tiers.</b> Free to join, $250 a year to move up, $500 unlocks a suggestion box for new products and shades.</li>
+                            <li class="g-card" style="--n: 4"><b>The Glossier app,</b> with an AI skin quiz, shade match and 15% off the first order.</li>
+                            <li class="g-card" style="--n: 5"><b>Creator University:</b> get-ready-with-me series from 10 top campuses and the flagship cities.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Places</h5>
+                        <ul class="g-list">
+                            <li class="g-card" style="--n: 6"><b>Four big flagships:</b> NYC, LA, Boston and San Francisco.</li>
+                            <li class="g-card" style="--n: 7"><b>Test cities:</b> Paris and Barcelona, Tokyo, Singapore, Toronto and Mexico City.</li>
+                            <li class="g-card" style="--n: 8"><b>A yearly cloud pop-up tour</b> at Ohio State, UT Austin, Vanderbilt and Michigan.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mk-slide" data-title="The trade-offs" hidden>
+                @Html.Raw(sig)
+                <p class="g-kick">Strategy is what you give up</p>
+                <h4 class="g-h">Four things to say no to, <em>on purpose.</em></h4>
+                <div class="g-trades">
+                    <div class="g-trade g-card" style="--n: 0"><b>Stop</b><p>The Pink Capsule pet line.</p><small>Off-brand for a beauty company.</small></div>
+                    <div class="g-trade g-card" style="--n: 1"><b>Close</b><p>7 smaller US stores: Atlanta, Brooklyn, Dallas, DC, Las Vegas, Philadelphia and Seattle.</p><small>The savings fund four big flagships.</small></div>
+                    <div class="g-trade g-card" style="--n: 2"><b>Never</b><p>Ulta.</p><small>Discount-heavy, and it conflicts with Sephora.</small></div>
+                    <div class="g-trade g-card" style="--n: 3"><b>Not now</b><p>Delhi and Jakarta, Seoul, and wellness ingestibles.</p><small>Price-sensitive markets that need halal products and wider shades; K-beauty’s home turf; regulated and off-core.</small></div>
                 </div>
             </div>
 
@@ -340,7 +426,7 @@
                 <p class="g-kick">How to measure it</p>
                 <h4 class="g-title" style="font-size:clamp(22px, 4.6cqw, 54px);max-width:40cqw">Glossier doesn’t need to be cool again. <em>It needs its friends back.</em></h4>
                 <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>The one number:</b> community-sourced revenue, the share of sales that start in Glossier’s own channels (the Club, creators, the flagships). Today Sephora owns that start. The target: 35% by the end of 2027.</p>
-                <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>What to stop:</b> chasing TikTok trends against Rhode, opening more stores, and treating Sephora as home.</p>
+                <p class="g-lede" style="max-width:36cqw;color:#2A1810 !important"><b>What to stop:</b> chasing TikTok trends against Rhode, keeping small stores open, and treating Sephora as home.</p>
             </div>
         </div>
         <div class="mk-nav-row">
@@ -358,7 +444,9 @@
         <ul class="mp-proof-list">
             <li>Started from the HBS case I studied in MIS 375 and followed the story from 2018 to 2026</li>
             <li>Found the turn the case predicts: the tech team that built Glossier’s platform was cut, then discovery moved to Sephora</li>
+            <li>Mapped who Glossier sells to: four customer segments today, two to win next, and the channel each one buys through</li>
             <li>Three moves: a members’ club, creators paid per sale, and fragrance as a world</li>
+            <li>Set what to add right next to the core (masks, refills, Club tiers, four flagships) and four trade-offs: what to stop, close, never do and leave for later</li>
             <li>Tied them into one campaign, Back in the chat: a text to every past fan, a creator-run vote, and a perfume your friends name</li>
             <li>Invented community-sourced revenue, the share of sales that start in Glossier’s own channels</li>
         </ul>

@@ -1,0 +1,652 @@
+@* FROM THE ARCHIVE: my one-page strategy frameworks, each rebuilt from its slide as something you can click through.
+   CrowdStrike (Porter's Five Forces), Wendy's (competitive activities map) and Glossier (positioning, adjacency and segmentation).
+   Rendered under the Marketing slideshow in _MarketingWork.cshtml. Every line comes from my original slides; the source tags
+   (case, 2026) are mine too: "case" is the course case, "2026" is what I found when I brought it up to date. *@
+@{
+    // ===== CrowdStrike: each force, its level (1 low, 2 moderate, 3 high), its players and a few notes =====
+    var csFacts = new (string K, string V)[]
+    {
+        ("Industry", "Cybersecurity"),
+        ("Case, FY21", "$874M revenue, $1.05B ARR, 98% gross retention"),
+        ("Now, July 2026", "$5.84B ARR, up 25%"),
+        ("July 2024", "A faulty update crashed 8M+ Windows PCs")
+    };
+    var csForces = new (string Key, string Name, string Level, int Bars, (string Who, string Tag, string Text, string Src)[] Items, (string Label, string Text)[] Notes)[]
+    {
+        ("entrants", "New entrants", "Moderate", 2, new[]
+        {
+            ("Google (Wiz, Mandiant, Google SecOps)", "Held back: no endpoint agent yet", "Bought Wiz for $32B (closed March 2026) and Mandiant, so it now owns cloud security, incident response and a SIEM, exactly the threat the case predicted.", "2026"),
+            ("Amazon Web Services", "Held back: only covers AWS, and AWS also sells Falcon on its Marketplace, so it is a frenemy", "GuardDuty and Security Hub come built into the cloud where customers already run, cheap and one click away.", ""),
+            ("Huntress and Arctic Wolf", "Held back: no Threat Graph-scale data", "Cheaper managed security for small businesses and MSSPs, the low-price challengers Kurtz warned about.", "case"),
+            ("AI-native startups (Torq, Dropzone AI)", "Held back: still need years of data and enterprise trust", "AI agents that do a security analyst’s job, making it cheap to enter one niche.", "2026"),
+            ("Private-equity roll-ups (Thoma Bravo with Darktrace, Proofpoint)", "Held back: merging products is slow", "Deep pockets buy and stitch firms into new platforms.", "")
+        }, new[]
+        {
+            ("Why entry is tempting", "The market was forecast to grow from $36B (2021) to $106B by FY2025 (case forecast)."),
+            ("Barriers to entry", "Threat Graph network effects (6T+ events a week), a hard-to-copy cloud-native agent, brand trust, 98% retention (case) and FedRAMP certification.")
+        }),
+        ("suppliers", "Supplier power", "Moderate", 2, new[]
+        {
+            ("Microsoft (Windows OS, Azure cloud)", "High", "Falcon runs on Windows, and after the July 2024 outage crashed 8M+ PCs, Microsoft is moving security vendors out of the Windows kernel. Microsoft is supplier and rival at once, selling Defender.", "2026"),
+            ("Other OS owners (Apple, Google, Linux)", "Moderate", "Falcon needs their system access to protect each device, but no single one controls most endpoints.", ""),
+            ("Cybersecurity and AI talent", "High", "Threat hunters, AI engineers, and enterprise and SMB sales: the case calls hiring hypergrowth talent one of CrowdStrike’s biggest challenges in a tight labor market.", "case"),
+            ("Cloud infrastructure (AWS, Google Cloud)", "Moderate", "Falcon is cloud-only and never offered on-premise, so it depends on a few hyperscalers; AWS is also a sales partner through AWS Marketplace.", "case"),
+            ("AI chips and compute (NVIDIA GPUs)", "Moderate", "Charlotte AI and agentic security need GPU capacity from a near-monopoly supplier.", "2026"),
+            ("Dell, the only PC maker partner", "Low", "Resells Falcon on Dell commercial PCs and runs MDR on it since 2023, but needs CrowdStrike as much as CrowdStrike needs Dell.", "2026"),
+            ("Channel partners (AWS Marketplace, CDW, Optiv, SHI)", "Moderate", "Open doors to mid-market and SMB buyers, but CrowdStrike also sells direct with free and in-app trials.", "case")
+        }, new (string, string)[0]),
+        ("rivals", "Competitors", "High rivalry", 3, new[]
+        {
+            ("Microsoft Defender", "High threat", "Bundled in Microsoft 365 E5, #1 share.", ""),
+            ("Palo Alto Networks", "High threat", "Cortex XSIAM, fights for the whole platform.", ""),
+            ("SentinelOne", "High threat", "The closest AI-native rival, and cheaper.", ""),
+            ("Trend Micro", "Medium threat", "Gartner Leader, strong in Asia.", ""),
+            ("Sophos", "Medium threat", "The small-business and MDR favorite.", ""),
+            ("Fortinet", "Medium threat", "A firewall giant adding endpoint.", ""),
+            ("Trellix", "Little to no threat", "McAfee’s enterprise arm, legacy.", ""),
+            ("Broadcom and Symantec", "Little to no threat", "Legacy antivirus, little new investment.", ""),
+            ("McAfee", "Little to no threat", "Consumer only, and Kurtz’s old employer.", "")
+        }, new[]
+        {
+            ("Who shares the pie (IDC 2024)", "Microsoft is #1 at 28.6% and CrowdStrike #2, each about double any rival; the rest is fragmented."),
+            ("Why rivalry is high", "Look-alike “buzzword-compliant” products drive price fights (case); Microsoft can accept thin endpoint margins to sell its wider ecosystem; outages hand rivals an opening.")
+        }),
+        ("buyers", "Buyer power", "Moderate", 2, new[]
+        {
+            ("Government agencies (CISA, federal and state, foreign allies)", "High", "Huge budgets and rules like FedRAMP; Kurtz testified to the Senate after SolarWinds.", "case"),
+            ("Critical infrastructure (Delta, Colonial Pipeline, utilities)", "Moderate to high", "After the 2024 outage these buyers demand liability terms; Delta’s $500M+ gross-negligence suit was allowed to proceed in 2025.", "2026"),
+            ("Large enterprises, banks and the Fortune 500 (Goldman Sachs)", "Moderate", "Only 176 customers spent over $1M a year vs. 1,569 at $100K to $1M and 8,151 under $100K, so a few big accounts hold the leverage, and Microsoft E5 bundles Defender cheaply.", "case"),
+            ("Managed security providers (MSSPs) who resell Falcon", "Moderate", "Bundle CrowdStrike for many small clients and can swap in SentinelOne or Microsoft if margins shrink.", ""),
+            ("Mid-market, small businesses and universities (Harvard, MIT)", "Low", "Many small buyers with no security expert who want easy products (Falcon Go, freemium trials).", "case"),
+            ("Consumers (Falcon for Mobile)", "Low", "Tiny individual spend; the case floats going direct-to-consumer to own the “full stack.”", "case")
+        }, new[]
+        {
+            ("Why buyer power stays in check: switching costs", "66% used 4+ modules (case); now 51% use 6+ and Falcon Flex accounts hold $2.29B ARR (2026). Each module is another workflow to rip out, so threats to leave are weak."),
+            ("Why buyer power stays in check: breach costs", "A breach can now put a company out of business (case), so risk-averse buyers pay for proven protection instead of the cheapest option.")
+        }),
+        ("subs", "Substitutes", "Moderate", 2, new[]
+        {
+            ("“Doing nothing”", "", "Kurtz calls it “our biggest competitor.”", "case"),
+            ("Free built-in OS security", "", "Windows Defender and Apple XProtect: “good enough” for small buyers.", ""),
+            ("Traditional on-premise security", "", "Full control; one bank refused cloud-only Falcon, then came back.", "case"),
+            ("Outsourced MDR services", "", "Expel, eSentire and ReliaQuest run security for you.", ""),
+            ("An in-house SOC on a SIEM", "", "Elastic, Google SecOps, Microsoft Sentinel.", ""),
+            ("Network-first zero trust", "", "Zscaler and Cloudflare guard access, not each device.", "")
+        }, new (string, string)[0])
+    };
+
+    // ===== Wendy's: the activities around its core position, clockwise from the top left; Future = a new activity I proposed =====
+    var wdActs = new (string Title, string Text, bool Future)[]
+    {
+        ("“Happy Hour” pricing, tested first", "Cut prices only in slow hours (2 to 5 pm, late night), never surge; test in matched groups of stores, measuring profit and repeat visits, before any rollout. It avoids Coca-Cola’s 1999 backlash.", true),
+        ("Barbell pricing", "About $5 Biggie Bags at one end and the $8.19 Pretzel Baconator at the other, keeping price-sensitive guests while premium items lift the check.", false),
+        ("Digital menu boards and AI menus", "A $20M U.S. and $10M global rollout to swap featured items by time of day, put high-margin items where eyes land, and test AI suggestive selling.", false),
+        ("Seasonal collab calendar", "More show collabs like Wednesday, plus color-changing holiday packaging and Frosty flavors for Halloween, Thanksgiving and Christmas; Rewards members get 48-hour early access.", true),
+        ("Sassy social media voice", "The 2017 nuggets tweet became the most-retweeted ever (profits up about 50%); the “We Beefin?” mixtape hit #1 on Spotify’s Global Viral 50; now an album, “Songs To Listen To In A Wendy’s Parking Lot.”", false),
+        ("Pop culture collabs", "Viral limited drops: Netflix’s Wednesday “Meal of Misfortune” (Aug 2025), the SpongeBob Krabby Patty Kollab (Oct 2025) and Lisa Barlow’s “Baby Gorgeous Meal.”", false),
+        ("Kids’ Rewards club", "A free Jr. Frosty for every straight-A report card, a free kids’ meal on their birthday, and toy codes that unlock a digital collection in the app.", true),
+        ("Wendy’s Rewards app", "A $15M AI upgrade (2024) personalizes offers like a free birthday Frosty or a BOGO Baconator; digital sales rose from 11% to 13% of revenue (2022 to 2023).", false),
+        ("Frosty Pass subscription", "About $3 a month in the app for a small Frosty every day, filling slow afternoons and locking in loyalty, like Taco Bell’s Taco Lover’s Pass.", true),
+        ("Kids’ meals and Boo! Books", "Collectible kids’ meal collabs like 35 Sonic the Hedgehog trading cards across 7 sets (summer 2026) keep kids coming back for the full set; $1 Boo! Books of Jr. Frosty coupons support the Dave Thomas Foundation for Adoption.", false),
+        ("International growth", "1,000 new restaurants planned by 2028, 70% abroad: 170 in Italy (Milan opens 2026), over 60 in Mexico, 200 planned in Australia, over 160 in India.", false),
+        ("Franchise model", "94% franchised, with 6,030 U.S. and 1,210 international restaurants (2023); Project Fresh (2025) closes 5% to 6% of weak U.S. stores to lift sales per store.", false),
+        ("Fresh beef supply co-op", "Wendy’s independent purchasing co-op (QSCC) buys for nearly every U.S. restaurant, keeping fresh, never frozen beef consistent and costs down at scale.", false),
+        ("Drive-thru and FreshAI", "Drive-thru since 1970, fast food’s most profitable channel; FreshAI voice ordering (Google Cloud) takes orders, upsells and knows regulars, in over 500 restaurants by 2025.", false),
+        ("AI breakfast habit builder", "Use app history and FreshAI to send lunch and dinner regulars breakfast deals, then taper the discounts once the habit sticks, as the case suggests.", true),
+        ("Breakfast daypart", "The highest-margin meal but only 7% of Wendy’s revenue vs. 25% at McDonald’s; relaunched in 2020 with French toast sticks, a 2 for $3 bundle and a $55M ad push.", false),
+        ("Late-night meals", "Late night is Baconator territory; Wendy’s tested $5 Moonlight Meal Deals after 10 pm to fill slow hours and win the after-party crowd.", false),
+        ("Iconic menu", "Signatures rivals can’t copy: the Frosty (since 1969), chili, the Baconator, Dave’s Single and Saucy Nuggs, all built on the fresh beef promise.", false),
+        ("Rewards price-lock promise", "Lock core menu prices for a year for Rewards members, rebuilding trust after the surge-pricing backlash that Burger King used to give away free Whoppers.", true)
+    };
+    const string wdCore = "Wendy’s core position since 1969: square fresh beef patties that hang over the bun (the 1984 “Where’s the Beef?” ad lifted revenue 31%), everyday value from about $5 Biggie Bags, and drive-thru speed. Every activity here reinforces it.";
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+    // where each activity sits: evenly spaced along an ellipse, measured in bubble sizes (they're wide and short), so none crowd
+    var wdPos = new (double X, double Y)[wdActs.Length];
+    {
+        const double rx = 43, ry = 43;   // in % of the map's width and height
+        int n = 2000; var pts = new (double x, double y, double len)[n + 1]; double total = 0;
+        for (int k = 0; k <= n; k++)
+        {
+            var t = -Math.PI * 0.86 + k * 2 * Math.PI / n;
+            var x = Math.Cos(t) * rx; var y = Math.Sin(t) * ry;
+            if (k > 0) total += Math.Sqrt(Math.Pow((x - pts[k - 1].x) / 12.4, 2) + Math.Pow((y - pts[k - 1].y) / 9.5, 2));   // measured in bubble widths and heights
+            pts[k] = (x, y, total);
+        }
+        for (int i = 0, k = 0; i < wdActs.Length; i++)
+        {
+            var want = total * i / wdActs.Length;
+            while (k < n && pts[k].len < want) k++;
+            wdPos[i] = (50 + pts[k].x, 50 + pts[k].y);
+        }
+    }
+
+    // ===== Glossier: positioning (today) and adjacency (next), by products, services and geography =====
+    var glRows = new (string Row, (string K, string V)[] Now, (string K, string V)[] Next)[]
+    {
+        ("Products", new[]
+        {
+            ("Skincare", "Milky Jelly, After Baume, Futuredew, Super serums, SPF 50, Solution"),
+            ("Makeup", "Boy Brow, Cloud Paint blush and bronzer, Lash Slick, Ultralip, Lip Glaze, Skin Tint"),
+            ("Balms", "Balm Dotcom flavors (Birthday, Black Cherry, I ♥ NY apple)"),
+            ("Body", "Body Hero, Crème de You, hand cream, deodorant"),
+            ("Fragrance", "The Glossier You family (You, Doux, Rêve, Soie, Fleur), a $15 Discovery Kit"),
+            ("Goods and sets", "Hoodies, the Smiley Mug, beauty bags, candles, trios, the Face Kit"),
+            ("Pricing", "About $15 to $116, between drugstore and luxury")
+        }, new[]
+        {
+            ("Masks and patches", "Snowflake pimple patches for winter, avocado under-eye masks, face packs; Glossier sells none today, and they are repeat buys"),
+            ("Makeup", "A pomegranate lip tint (builds on the food-flavored Balm Dotcoms), limited Cloud Paint shades each season"),
+            ("Sets", "A $25 makeup and skincare mini quad as an easy first buy, like the $15 fragrance Discovery Kit"),
+            ("Mug series", "“I Love Myself,” “Self Love Club,” “Comfortable in My Skin” in hot red and baby pink; Glossier sells only one mug today"),
+            ("Apparel", "“Boy Bye” shorts (a Boy Brow pun), sweatpants to match the hoodies, scrunchies"),
+            ("Refills", "Refillable Balm Dotcom and Stretch Concealer cases; Glossier already sells deodorant and perfume refills")
+        }),
+        ("Services", new[]
+        {
+            ("Direct-to-consumer", "glossier.com, built on Glossier’s own e-commerce platform"),
+            ("TikTok Shop", "Selling in the app since July 2025"),
+            ("Personalization", "“Engrave it” on Glossier You and Balm Dotcom"),
+            ("Buy online, pick up in store", "At every Glossier store"),
+            ("Shipping", "Free standard shipping on orders over $40"),
+            ("Gifting", "A seasonal gift guide, digital gift cards from $15 to $200"),
+            ("Community", "Customer-inspired products, reviews and “skin first, makeup second” content")
+        }, new[]
+        {
+            ("Immersive cloud flagships", "A cloud room, life-size products, a pink hot-air balloon, a giant-letter “dotcom” wall to spell your own (like boybye.com); every photo is free marketing"),
+            ("In-store exclusives", "Bag color drops with paid initial stamping, Cloud Paint engraving and a matching keychain"),
+            ("Glossier app", "A new shopping app with 15% off your first in-app order, app-only customizations, and an AI skin quiz and shade match"),
+            ("Tiered membership", "Join free for early access and a birthday gift; spend $250+ a year to move up a tier; spend $500+ to unlock a suggestion box for requesting new products and shades"),
+            ("Flagship bookings", "Scheduled pickup, plus private birthday and group parties from 8 to 10 am or after 7 pm"),
+            ("Creator University", "TikTok and Reels get-ready-with-me series starring college women at 10 top campuses and working women in the 5 flagship cities; the new “Top Shelf”")
+        }),
+        ("Geography", new[]
+        {
+            ("Glossier stores", "11 cities: NYC, Brooklyn, LA, Seattle, Atlanta, Boston, Dallas, DC, Las Vegas, Philadelphia, London"),
+            ("Wholesale", "Every freestanding Sephora in the US and Canada"),
+            ("Online", "glossier.com"),
+            ("Core customers", "Gen Z and millennials, strongest in big coastal cities")
+        }, new[]
+        {
+            ("US flagships", "Immersive stores only in NYC, LA, Boston (students and young professionals) and San Francisco (affluent minimalists)"),
+            ("North America", "First Glossier stores in Toronto and Mexico City, where Glossier is sold only through Sephora today"),
+            ("Europe", "Paris and Barcelona join London to test more European markets"),
+            ("East Asia", "A Tokyo store to test East Asia"),
+            ("Southeast Asia", "A Singapore store to test Southeast Asia"),
+            ("College towns", "A yearly cloud pop-up tour at Ohio State, UT Austin, Vanderbilt and Michigan")
+        })
+    };
+    var glTrades = new (string K, string V)[]
+    {
+        ("Stop", "The Pink Capsule pet line (off-brand for a beauty company)"),
+        ("Close", "7 smaller US stores (Atlanta, Brooklyn, Dallas, DC, Las Vegas, Philadelphia, Seattle) to fund 4 big flagships"),
+        ("Never", "Ulta (discount-heavy, conflicts with Sephora)"),
+        ("Not now", "Delhi and Jakarta (price-sensitive; need halal products and wider shades), Seoul (K-beauty’s home turf), wellness ingestibles (regulated, off-core)")
+    };
+    // segments and the channels that reach each one; Future marks what doesn't exist yet
+    var glSegs = new (string Name, string Who, string Rivals, bool Future, (string Ch, string What, string Role, bool Future)[] Channels)[]
+    {
+        ("Glossier Originals who grew up", "Ages 28 to 40 who found Glossier years ago and now want sophisticated, effortless beauty", "MERIT, Summer Fridays", false, new[]
+        {
+            ("Glossier.com", "Hero products, the full lineup and “Engrave it”", "Purchase and retention", false),
+            ("Glossier flagships", "NYC, LA, London; buy online, pick up in store", "Engagement and purchase", false),
+            ("Tiered membership", "A birthday gift; tiers at $250 and $500; the top tier requests new shades", "Retention", true)
+        }),
+        ("Early-career professionals", "Ages 23 to 30 who want a polished five-minute routine for work", "MERIT, Saie, ILIA", false, new[]
+        {
+            ("Sephora stores and app", "Test shades in person at every freestanding US and Canada store", "Discovery and purchase", false),
+            ("Sets and kits", "The Face Kit, Skincare Icons, trios", "Purchase", false),
+            ("Working-women GRWM", "Creator University videos from NYC, LA, Boston, SF and London", "Discovery", true)
+        }),
+        ("Gen Z and college beauty explorers", "Ages 18 to 24 who discover beauty on TikTok and buy one hero product at a time", "Rhode, Rare Beauty, Tower 28", false, new[]
+        {
+            ("TikTok Shop", "In-app shopping since July 2025", "Discovery and purchase", false),
+            ("Instagram, TikTok, word of mouth", "Creators, customer posts and friends’ reviews", "Discovery", false),
+            ("Creator University", "Campus GRWMs and a cloud pop-up tour at 10 top schools", "Discovery and engagement", true)
+        }),
+        ("Fragrance-led customers", "All genders, ages 25 to 45, who know Glossier mainly through Glossier You", "Traditional fragrance houses", false, new[]
+        {
+            ("Sephora fragrance wall", "Try scents before buying", "Discovery", false),
+            ("Discovery Kit and sets", "The $15 Discovery Kit, the Fragrance Trio", "Purchase", false),
+            ("Gifting", "The gift guide, engraving, digital gift cards", "Purchase and new-customer discovery", false)
+        }),
+        ("Performance-focused minimalists", "Want the Glossier look with longer wear, more shades and sensitive-skin options", "Kosas, ILIA, Saie", true, new[]
+        {
+            ("AI shade match", "A skin quiz and virtual try-on in the Glossier app", "Discovery and purchase", true),
+            ("Reviews by skin type", "Shoppable community reviews", "Engagement", true),
+            ("Glossier app", "15% off the first in-app order; app-only customizations", "Purchase and retention", true)
+        }),
+        ("International shoppers", "Beauty fans in Europe, Asia, Canada and Mexico who know Glossier from social media", "Local brands and K-beauty", true, new[]
+        {
+            ("New stores", "Paris, Barcelona, Tokyo, Singapore, Toronto, Mexico City", "Discovery and engagement", true),
+            ("Retail partners abroad", "Sephora UK, France and Mexico; Space NK; MECCA", "Purchase", false),
+            ("Local social", "Spanish, French and Japanese content and creators", "Discovery", true)
+        })
+    };
+}
+<div class="mp-section sa" id="mk-archive">
+    <div class="mp-head">
+        <p class="mp-eyebrow">From the archive</p>
+        <h3 class="mp-h2">One page, one framework.</h3>
+        <p class="sa-line">Strategy one-pagers: the forces around a company, the activities that hold up its position, and where it should grow next. Pick one and click through it.</p>
+    </div>
+
+    <div class="sa-tabs" role="tablist" aria-label="Choose a framework">
+        <button type="button" role="tab" id="sa-tab-cs" aria-controls="sa-cs" aria-selected="true"><b>CrowdStrike</b><span>Five Forces</span></button>
+        <button type="button" role="tab" id="sa-tab-wd" aria-controls="sa-wd" aria-selected="false" tabindex="-1"><b>Wendy’s</b><span>Competitive activities</span></button>
+        <button type="button" role="tab" id="sa-tab-gl" aria-controls="sa-gl" aria-selected="false" tabindex="-1"><b>Glossier</b><span>Positioning and segments</span></button>
+    </div>
+
+    @* ===================== CrowdStrike: Porter's Five Forces ===================== *@
+    <div class="sa-panel sa-cs" id="sa-cs" role="tabpanel" aria-labelledby="sa-tab-cs">
+        <canvas class="sa-rain" aria-hidden="true"></canvas>
+        <div class="sa-in">
+            <p class="sa-kick">Porter’s Five Forces</p>
+            <h4 class="sa-title">CrowdStrike</h4>
+            <dl class="cs-facts">
+                @foreach (var f in csFacts)
+                {
+                    <div><dt>@f.K</dt><dd>@f.V</dd></div>
+                }
+            </dl>
+            <p class="cs-verdict"><b>Industry attractiveness: Moderate.</b> Steady demand, subscriptions and high switching costs support profits, but Microsoft’s bundling, big buyers and heavy R&amp;D cap pricing power.</p>
+
+            <div class="cs-map" role="group" aria-label="The five forces. Pick one to read it.">
+                @foreach (var f in csForces)
+                {
+                    <button type="button" class="cs-force cs-@f.Key" data-force="@f.Key" aria-pressed="@(f.Key == "rivals" ? "true" : "false")">
+                        <span class="cs-name">@f.Name</span>
+                        <span class="cs-level">@f.Level</span>
+                        <span class="cs-bars" aria-hidden="true">@for (var b = 1; b <= 3; b++) {<i class="@(b <= f.Bars ? "on" : "")"></i>}</span>
+                    </button>
+                }
+                <span class="cs-arrow a1" aria-hidden="true"></span><span class="cs-arrow a2" aria-hidden="true"></span>
+                <span class="cs-arrow a3" aria-hidden="true"></span><span class="cs-arrow a4" aria-hidden="true"></span>
+            </div>
+
+            @foreach (var f in csForces)
+            {
+                <div class="cs-detail" data-force="@f.Key" @(f.Key == "rivals" ? "" : "hidden")>
+                    <h5>@f.Name: <em>@f.Level</em></h5>
+                    <ul class="cs-items">
+                        @foreach (var it in f.Items)
+                        {
+                            <li>
+                                <b>@it.Who</b>
+                                @if (it.Tag != "") { <span class="cs-tag @(it.Tag.StartsWith("Held") ? "held" : "")">@it.Tag</span> }
+                                <p>@it.Text @if (it.Src != "") { <small>(@it.Src)</small> }</p>
+                            </li>
+                        }
+                    </ul>
+                    @foreach (var n in f.Notes)
+                    {
+                        <p class="cs-note"><b>@n.Label.</b> @n.Text</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    @* ===================== Wendy's: competitive activities map ===================== *@
+    <div class="sa-panel sa-wd" id="sa-wd" role="tabpanel" aria-labelledby="sa-tab-wd" hidden>
+        <div class="sa-in">
+            <div class="wd-head">
+                <div>
+                    <p class="sa-kick">Competitive activities map</p>
+                    <h4 class="sa-title">Wendy’s</h4>
+                </div>
+                <div class="wd-filter" role="group" aria-label="Show activities">
+                    <button type="button" data-show="all" aria-pressed="true">All</button>
+                    <button type="button" data-show="now" aria-pressed="false"><i class="dot now"></i>Today</button>
+                    <button type="button" data-show="next" aria-pressed="false"><i class="dot next"></i>My proposals</button>
+                </div>
+            </div>
+            <div class="wd-map" data-show="all">
+                <svg class="wd-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    @for (var i = 0; i < wdActs.Length; i++)
+                    {
+                        @Html.Raw(string.Format(inv, "<line class=\"{0}\" x1=\"50\" y1=\"50\" x2=\"{1:0.##}\" y2=\"{2:0.##}\" />", wdActs[i].Future ? "next" : "now", wdPos[i].X, wdPos[i].Y))
+                    }
+                </svg>
+                <div class="wd-core" aria-live="polite">
+                    <svg class="wd-burger" viewBox="0 0 64 44" aria-hidden="true">
+                        <path d="M6 20 C6 6 58 6 58 20 Z" fill="#E7A24A" /><circle cx="22" cy="12" r="1.3" fill="#FFF3D6" /><circle cx="32" cy="9.5" r="1.3" fill="#FFF3D6" /><circle cx="42" cy="12" r="1.3" fill="#FFF3D6" />
+                        <path d="M5 22 h54 l-3 4 -4 -3 -4 3 -4 -3 -4 3 -4 -3 -4 3 -4 -3 -4 3 -4 -3 -4 3 -4 -3 z" fill="#6BAF4A" />
+                        <rect x="3" y="25" width="58" height="7" rx="2" fill="#6B3A22" /><path d="M3 32 h58 l-2 3 h-54 z" fill="#F2C94C" />
+                        <path d="M7 35 h50 a4 4 0 0 1 -4 5 h-42 a4 4 0 0 1 -4 -5 z" fill="#E7A24A" />
+                    </svg>
+                    <b class="wd-core-title">Fresh quality, everyday value, convenience</b>
+                    <p class="wd-core-text">@wdCore</p>
+                </div>
+                @for (var i = 0; i < wdActs.Length; i++)
+                {
+                    var a = wdActs[i];
+                    var (x, y) = wdPos[i];
+                    <button type="button" class="wd-act @(a.Future ? "next" : "now")" style="@string.Format(inv, "left:{0:0.##}%;top:{1:0.##}%", x, y)" data-text="@a.Text" aria-pressed="false">
+                        @if (a.Future) { <i>Future</i> }@a.Title
+                    </button>
+                }
+            </div>
+            <p class="wd-hint">Red: what Wendy’s does today. Blue: new activities I proposed. Tap one to see how it holds up the core.</p>
+        </div>
+    </div>
+
+    @* ===================== Glossier: positioning, adjacency and segmentation ===================== *@
+    <div class="sa-panel sa-gl" id="sa-gl" role="tabpanel" aria-labelledby="sa-tab-gl" hidden>
+        <div class="sa-in">
+            <p class="sa-kick">Positioning, adjacency and segmentation</p>
+            <h4 class="sa-title">Glossier</h4>
+            <div class="gl-dna">
+                <p><b>Mission</b> Give voice to beauty.</p>
+                <p><b>Values</b> Inclusive, devoted to the customer, courageous, curious, discerning.</p>
+                <p><b>Differentiation</b> Skin first, makeup second; community-built products; “brand as peer,” unlike Estée Lauder and L’Oréal’s top-down celebrity model; signature pink; $15 to $116 accessible prestige.</p>
+            </div>
+            <div class="gl-views" role="group" aria-label="Choose a view">
+                <button type="button" data-view="pos" aria-pressed="true">Positioning and adjacency</button>
+                <button type="button" data-view="seg" aria-pressed="false">Segments and channels</button>
+            </div>
+
+            <div class="gl-view" data-view="pos">
+                <div class="gl-grid">
+                    <span class="gl-colhead"></span><span class="gl-colhead">Positioning, today</span><span class="gl-colhead next">Adjacency, next</span>
+                    @foreach (var row in glRows)
+                    {
+                        <span class="gl-rowhead">@row.Row</span>
+                        <ul class="gl-cell"><li class="gl-mobile-head">Today</li>
+                            @foreach (var it in row.Now) { <li><b>@it.K</b> @it.V</li> }
+                        </ul>
+                        <ul class="gl-cell next"><li class="gl-mobile-head">Next</li>
+                            @foreach (var it in row.Next) { <li><b>@it.K</b> @it.V</li> }
+                        </ul>
+                    }
+                </div>
+                <div class="gl-trades">
+                    <p class="gl-trades-h">The trade-offs</p>
+                    @foreach (var t in glTrades)
+                    {
+                        <p><b>@t.K</b> @t.V</p>
+                    }
+                </div>
+            </div>
+
+            <div class="gl-view" data-view="seg" hidden>
+                <div class="gl-segs">
+                    @foreach (var seg in glSegs)
+                    {
+                        <div class="gl-seg @(seg.Future ? "next" : "")">
+                            <div class="gl-who">
+                                @if (seg.Future) { <i>Potential</i> } else { <i>Current</i> }
+                                <b>@seg.Name</b>
+                                <p>@seg.Who</p>
+                                <small>vs. @seg.Rivals</small>
+                            </div>
+                            <ul class="gl-chans">
+                                @foreach (var c in seg.Channels)
+                                {
+                                    <li class="@(c.Future ? "next" : "")">
+                                        <b>@if (c.Future) { <i>Future</i> }@c.Ch</b>
+                                        <span>@c.What</span>
+                                        <small>@c.Role</small>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .sa { --sa-ink: #1E100A; --sa-muted: #5E4A45; }
+    .sa-line { max-width: 640px; margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--muted, #5E4A45); }
+    .sa-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 18px; }
+    .sa-tabs button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 18px; border-radius: 16px; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: var(--sa-ink); font: inherit; text-align: left; cursor: var(--cursor-hot, pointer); transition: background 0.2s, border-color 0.2s, color 0.2s; }
+    .sa-tabs button b { font-family: var(--serif, Georgia, serif); font-size: 1.15em; }
+    .sa-tabs button span { font-size: 0.78em; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; opacity: 0.75; }
+    .sa-tabs button:hover { border-color: #76344E; }
+    .sa-tabs button[aria-selected="true"] { background: #76344E; border-color: #76344E; color: #FFF8F6; }
+    .sa-tabs button:focus-visible { outline: 2px solid #76344E; outline-offset: 3px; }
+    .sa-panel { position: relative; border-radius: var(--r-card, 20px); overflow: hidden; container-type: inline-size; box-shadow: 0 30px 60px -35px rgba(42, 24, 16, 0.45); }
+    .sa-in { position: relative; z-index: 1; padding: clamp(22px, 4cqw, 48px); }
+    .sa-kick { margin: 0 0 6px; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .sa-title { margin: 0; font-family: var(--serif, Georgia, serif); font-size: clamp(30px, 5cqw, 52px); line-height: 1.05; }
+
+    /* ---- CrowdStrike: black and red, falling binary behind it ---- */
+    .sa-cs { background: #0B0809; color: #F4ECEC; }
+    .sa-cs .sa-rain { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.55; }
+    .sa-cs .sa-kick { color: #FF4D4D; }
+    .sa-cs .sa-title { font-family: system-ui, sans-serif; font-weight: 800; letter-spacing: -0.02em; color: #FFFFFF; }
+    .cs-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 22px 0 14px; }
+    .cs-facts div { padding: 12px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 77, 77, 0.25); }
+    .cs-facts dt { font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FF6B6B; }
+    .cs-facts dd { margin: 4px 0 0; font-size: 14px; line-height: 1.4; color: #F4ECEC; }
+    .cs-verdict { margin: 0 0 26px; font-size: 15.5px; line-height: 1.55; color: #E9DCDC; }
+    .cs-verdict b { color: #FFFFFF; }
+    .cs-map { position: relative; display: grid; grid-template-columns: 1fr 1.15fr 1fr; grid-template-rows: auto auto auto; gap: 26px 40px; max-width: 900px; margin: 0 auto 26px; }
+    .cs-force { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 14px; border-radius: 14px; border: 1.5px solid rgba(255, 77, 77, 0.45); background: #17100F; color: #F4ECEC; font: inherit; cursor: var(--cursor-hot, pointer); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+    .cs-force:hover { border-color: #FF4D4D; transform: translateY(-2px); }
+    .cs-force[aria-pressed="true"] { background: #C8161D; border-color: #FF4D4D; box-shadow: 0 0 0 4px rgba(255, 77, 77, 0.18), 0 14px 30px -14px rgba(200, 22, 29, 0.9); }
+    .cs-force:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+    .cs-name { font-family: system-ui, sans-serif; font-size: 16px; font-weight: 800; }
+    .cs-level { font-size: 12px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #FFB3B3; }
+    .cs-force[aria-pressed="true"] .cs-level { color: #FFFFFF; }
+    .cs-bars { display: flex; gap: 4px; margin-top: 4px; }
+    .cs-bars i { width: 22px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.15); }
+    .cs-bars i.on { background: #FF4D4D; }
+    .cs-force[aria-pressed="true"] .cs-bars i.on { background: #FFFFFF; }
+    .cs-entrants { grid-column: 2; grid-row: 1; }
+    .cs-suppliers { grid-column: 1; grid-row: 2; }
+    .cs-rivals { grid-column: 2; grid-row: 2; padding: 26px 14px; }
+    .cs-rivals .cs-name { font-size: 19px; }
+    .cs-buyers { grid-column: 3; grid-row: 2; }
+    .cs-subs { grid-column: 2; grid-row: 3; }
+    /* arrows from each outer force into the middle */
+    .cs-arrow { position: absolute; z-index: 0; background: rgba(255, 77, 77, 0.55); }
+    .cs-arrow.a1, .cs-arrow.a4 { left: 50%; width: 2px; height: 26px; translate: -1px 0; }
+    .cs-arrow.a1 { top: calc(33.3% - 24px); }
+    .cs-arrow.a4 { bottom: calc(33.3% - 24px); }
+    .cs-arrow.a2, .cs-arrow.a3 { top: 50%; height: 2px; width: 40px; }
+    .cs-arrow.a2 { left: calc(31.25% - 0px); }
+    .cs-arrow.a3 { right: calc(31.25% - 0px); }
+    .cs-detail { max-width: 1000px; margin: 0 auto; padding: 22px 24px; border-radius: 16px; background: rgba(23, 16, 15, 0.92); border: 1px solid rgba(255, 77, 77, 0.3); }
+    .cs-detail h5 { margin: 0 0 14px; font-family: system-ui, sans-serif; font-size: 20px; font-weight: 800; color: #FFFFFF; }
+    .cs-detail h5 em { font-style: normal; color: #FF6B6B; }
+    .cs-items { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 22px; }
+    .cs-items li { padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+    .cs-items b { display: block; font-size: 15px; color: #FFFFFF; }
+    .cs-tag { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 99px; background: rgba(255, 77, 77, 0.18); font-size: 11.5px; font-weight: 700; letter-spacing: 0.5px; color: #FFB3B3; }
+    .cs-tag.held { background: rgba(255, 255, 255, 0.08); color: #D8C8C8; letter-spacing: 0; font-weight: 600; }
+    .cs-items p { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: #D9CACA; }
+    .cs-items small, .cs-note small { color: #FF8A8A; }
+    .cs-note { margin: 16px 0 0; padding: 12px 14px; border-radius: 12px; background: rgba(200, 22, 29, 0.16); font-size: 14px; line-height: 1.55; color: #EADADA; }
+    .cs-note b { color: #FFFFFF; }
+
+    /* ---- Wendy's: red for today, blue for my proposals, around one core ---- */
+    .sa-wd { background: #FCEFEF; color: var(--sa-ink); }
+    .sa-wd .sa-kick { color: #C8102E; }
+    .sa-wd .sa-title { font-family: system-ui, sans-serif; font-weight: 900; letter-spacing: -0.02em; color: #C8102E; }
+    .wd-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+    .wd-filter { display: flex; gap: 8px; flex-wrap: wrap; }
+    .wd-filter button, .gl-views button { display: inline-flex; align-items: center; gap: 7px; padding: 9px 15px; border-radius: 99px; border: 1.5px solid #E2B9B9; background: #FFFFFF; color: var(--sa-ink); font: inherit; font-size: 13px; font-weight: 700; cursor: var(--cursor-hot, pointer); }
+    .wd-filter button[aria-pressed="true"] { background: #2A1810; border-color: #2A1810; color: #FFFFFF; }
+    .wd-filter .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.now { background: #C8102E; } .dot.next { background: #2F86D0; }
+    .wd-map { position: relative; aspect-ratio: 16 / 10.5; }
+    .wd-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .wd-lines line { stroke-width: 0.35; vector-effect: non-scaling-stroke; stroke-width: 2; }
+    .wd-lines line.now { stroke: rgba(200, 16, 46, 0.35); }
+    .wd-lines line.next { stroke: rgba(47, 134, 208, 0.45); stroke-dasharray: 5 4; }
+    .wd-core { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 46%; min-height: 44%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 22px 26px; border-radius: 50%; background: #FFFFFF; border: 4px solid #C8102E; text-align: center; box-shadow: 0 20px 40px -24px rgba(120, 20, 20, 0.5); transition: border-color 0.25s; }
+    .wd-core.next { border-color: #2F86D0; }
+    .wd-burger { width: 58px; height: auto; }
+    .wd-core-title { font-family: system-ui, sans-serif; font-size: clamp(14px, 1.9cqw, 19px); font-weight: 900; line-height: 1.2; color: #C8102E; }
+    .wd-core.next .wd-core-title { color: #2F86D0; }
+    .wd-core-text { margin: 0; max-width: 34ch; font-size: clamp(12px, 1.35cqw, 14px); line-height: 1.5; color: var(--sa-ink); }
+    .wd-act { position: absolute; translate: -50% -50%; width: 11.8%; min-height: 8.4%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 8px; border-radius: 999px; border: 3px solid #C8102E; background: #FFFFFF; color: #A50E26; font: inherit; font-size: clamp(10px, 1.15cqw, 13px); font-weight: 800; line-height: 1.2; text-align: center; cursor: var(--cursor-hot, pointer); transition: transform 0.2s, background 0.2s, color 0.2s, opacity 0.25s; }
+    .wd-act.next { border-color: #2F86D0; color: #1F6FB5; }
+    .wd-act i { font-style: normal; font-size: 0.78em; letter-spacing: 1px; text-transform: uppercase; opacity: 0.85; }
+    .wd-act:hover { transform: scale(1.06); }
+    .wd-act[aria-pressed="true"] { background: #C8102E; color: #FFFFFF; }
+    .wd-act.next[aria-pressed="true"] { background: #2F86D0; }
+    .wd-act:focus-visible { outline: 2px solid #2A1810; outline-offset: 3px; }
+    .wd-map[data-show="now"] .wd-act.next, .wd-map[data-show="next"] .wd-act.now,
+    .wd-map[data-show="now"] .wd-lines .next, .wd-map[data-show="next"] .wd-lines .now { opacity: 0.15; }
+    .wd-hint { margin: 16px 0 0; font-size: 14px; color: var(--sa-muted); text-align: center; }
+
+    /* ---- Glossier: plum and Glossier pink ---- */
+    .sa-gl { background: #FFF6F8; color: var(--sa-ink); }
+    .sa-gl .sa-kick { color: #B23A6E; }
+    .sa-gl .sa-title { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 700; color: #3B1424; }
+    .gl-dna { display: grid; grid-template-columns: 0.7fr 1fr 1.6fr; gap: 12px; margin: 20px 0 18px; }
+    .gl-dna p { margin: 0; padding: 14px 16px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F1D2DC; font-size: 14px; line-height: 1.5; color: var(--sa-ink); }
+    .gl-dna b { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #B23A6E; }
+    .gl-views { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .gl-views button[aria-pressed="true"] { background: #3B1424; border-color: #3B1424; color: #FFFFFF; }
+    .gl-grid { display: grid; grid-template-columns: 120px minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+    .gl-colhead { padding: 12px 16px; border-radius: 12px; background: #3B1424; color: #FFFFFF; font-family: 'Bodoni Moda', Georgia, serif; font-size: 18px; font-weight: 700; text-align: center; }
+    .gl-colhead:first-child { background: none; }
+    .gl-colhead.next { background: #B23A6E; }
+    .gl-rowhead { display: flex; align-items: center; justify-content: center; padding: 10px; border-radius: 12px; background: #3B1424; color: #FFFFFF; font-weight: 800; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; writing-mode: vertical-rl; rotate: 180deg; }
+    .gl-cell { list-style: none; margin: 0; padding: 14px 16px; border-radius: 12px; background: #6E2A43; color: #FFF1F5; display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; line-height: 1.45; }
+    .gl-cell.next { background: #B54C70; }
+    .gl-cell b { color: #FFFFFF; }
+    .gl-cell b::after { content: " >"; opacity: 0.7; }
+    .gl-mobile-head { display: none; }
+    .gl-trades { margin-top: 10px; padding: 16px 18px; border-radius: 12px; background: #3B1424; color: #FFE7EF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 18px; font-size: 13.5px; line-height: 1.45; }
+    .gl-trades p { margin: 0; }
+    .gl-trades b { display: block; color: #FFFFFF; font-family: 'Bodoni Moda', Georgia, serif; font-size: 17px; }
+    .gl-trades .gl-trades-h { grid-column: 1 / -1; font-size: 11px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #F7B3C8; }
+    .gl-segs { display: flex; flex-direction: column; gap: 10px; }
+    .gl-seg { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: 10px; }
+    .gl-who { padding: 14px 16px; border-radius: 12px; background: #3B1424; color: #FFE7EF; }
+    .gl-seg.next .gl-who { background: #FFFFFF; color: var(--sa-ink); border: 2px dashed #B23A6E; }
+    .gl-who i, .gl-chans i { font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #F7B3C8; }
+    .gl-seg.next .gl-who i, .gl-chans li.next i { color: #B23A6E; }
+    .gl-who b { display: block; margin-top: 2px; font-family: 'Bodoni Moda', Georgia, serif; font-size: 18px; line-height: 1.15; }
+    .gl-who p { margin: 6px 0 0; font-size: 13.5px; line-height: 1.45; }
+    .gl-who small { display: block; margin-top: 6px; font-size: 12.5px; font-weight: 700; opacity: 0.85; }
+    .gl-chans { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .gl-chans li { display: flex; flex-direction: column; gap: 4px; padding: 13px 15px; border-radius: 12px; background: #FFFFFF; border: 1px solid #F1D2DC; }
+    .gl-chans li.next { background: #FFF0F5; border: 1.5px dashed #E39AB5; }
+    .gl-chans b { display: flex; flex-direction: column; font-size: 14.5px; color: #3B1424; }
+    .gl-chans span { font-size: 13.5px; line-height: 1.45; color: var(--sa-ink); }
+    .gl-chans small { margin-top: auto; padding-top: 4px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; color: #B23A6E; }
+
+    /* ---- narrower: everything stacks ---- */
+    @@container (max-width: 820px) {
+        .cs-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .cs-items { grid-template-columns: 1fr; }
+        .gl-dna { grid-template-columns: 1fr; }
+        .gl-trades { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .gl-seg { grid-template-columns: 1fr; }
+        /* the map becomes a list: the core first, then every activity as a tappable row */
+        .wd-map { aspect-ratio: auto; display: flex; flex-direction: column; gap: 8px; }
+        .wd-lines { display: none; }
+        .wd-core { position: static; translate: none; width: auto; min-height: 0; border-radius: 22px; margin-bottom: 6px; }
+        .wd-act { position: static; translate: none; width: auto; min-height: 0; border-radius: 14px; padding: 12px 14px; flex-direction: row; justify-content: flex-start; gap: 8px; text-align: left; font-size: 14px; border-width: 2px; }
+        .wd-act:hover { transform: none; }
+    }
+    @@container (max-width: 600px) {
+        .cs-map { grid-template-columns: 1fr 1fr; gap: 10px; }
+        .cs-entrants, .cs-suppliers, .cs-buyers, .cs-subs { grid-column: auto; grid-row: auto; }
+        .cs-rivals { grid-column: 1 / -1; grid-row: 1; }
+        .cs-arrow { display: none; }
+        .cs-facts { grid-template-columns: 1fr; }
+        .gl-grid { grid-template-columns: 1fr; }
+        .gl-colhead { display: none; }
+        .gl-rowhead { writing-mode: horizontal-tb; rotate: none; justify-content: flex-start; padding: 10px 14px; margin-top: 8px; }
+        .gl-mobile-head { display: block; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #F7B3C8; }
+        .gl-cell.next .gl-mobile-head { color: #FFE0EA; }
+        .gl-trades { grid-template-columns: 1fr; }
+        .gl-chans { grid-template-columns: 1fr; }
+    }
+    @@media (max-width: 640px) {
+        .sa-tabs { grid-template-columns: 1fr; gap: 8px; }
+        .sa-tabs button { flex-direction: row; align-items: baseline; justify-content: space-between; padding: 12px 16px; }
+    }
+    @@media (prefers-reduced-motion: reduce) { .cs-force, .wd-act { transition: none; } .cs-force:hover, .wd-act:hover { transform: none; } }
+</style>
+
+<script>
+    (() => {
+        const root = document.getElementById('mk-archive');
+        if (!root || root.dataset.wired) return;
+        root.dataset.wired = '1';
+
+        // the three frameworks, one at a time (arrow keys move between tabs)
+        const tabs = [...root.querySelectorAll('.sa-tabs [role="tab"]')];
+        const pick = t => tabs.forEach(b => {
+            const on = b === t;
+            b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1;
+            document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
+        });
+        tabs.forEach((t, i) => {
+            t.addEventListener('click', () => pick(t));
+            t.addEventListener('keydown', e => {
+                const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+                if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; pick(n); n.focus(); }
+            });
+        });
+
+        // CrowdStrike: pick a force to read it
+        const forces = [...root.querySelectorAll('.cs-force')], details = [...root.querySelectorAll('.cs-detail')];
+        forces.forEach(f => f.addEventListener('click', () => {
+            forces.forEach(x => x.setAttribute('aria-pressed', x === f));
+            details.forEach(d => d.hidden = d.dataset.force !== f.dataset.force);
+        }));
+
+        // CrowdStrike: falling binary behind the panel, only while it's on screen
+        const cv = root.querySelector('.sa-rain'), ctx = cv.getContext('2d');
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let cols = [], seen = false, w = 0, h = 0;
+        const size = () => {
+            const r = cv.getBoundingClientRect(); if (!r.width) return;
+            w = cv.width = Math.round(r.width); h = cv.height = Math.round(r.height);
+            cols = Array.from({ length: Math.ceil(w / 22) }, () => Math.random() * h);
+        };
+        const draw = () => {
+            if (!w) size(); if (!w) return;
+            ctx.fillStyle = 'rgba(11, 8, 9, 0.18)'; ctx.fillRect(0, 0, w, h);
+            ctx.font = '15px ui-monospace, monospace';
+            cols.forEach((y, i) => {
+                ctx.fillStyle = Math.random() < 0.06 ? 'rgba(255, 90, 90, 0.9)' : 'rgba(200, 22, 29, 0.55)';
+                ctx.fillText(Math.random() < 0.5 ? '0' : '1', i * 22, y);
+                cols[i] = y > h + Math.random() * 400 ? 0 : y + 18;
+            });
+        };
+        if (reduce) { size(); for (let i = 0; i < 60; i++) draw(); }
+        else {
+            new IntersectionObserver(([e]) => seen = e.isIntersecting).observe(cv);
+            setInterval(() => { if (seen && !cv.closest('.sa-panel').hidden && !document.hidden) draw(); }, 70);
+        }
+        new ResizeObserver(() => { w = 0; }).observe(cv);
+
+        // Wendy's: tap an activity to read it in the core; tap it again (or the core) to go back
+        const core = root.querySelector('.wd-core'), coreTitle = core.querySelector('.wd-core-title'), coreText = core.querySelector('.wd-core-text');
+        const home = { title: coreTitle.textContent, text: coreText.textContent };
+        const acts = [...root.querySelectorAll('.wd-act')];
+        const show = a => {
+            acts.forEach(x => x.setAttribute('aria-pressed', x === a));
+            core.classList.toggle('next', !!a && a.classList.contains('next'));
+            coreTitle.textContent = a ? a.textContent.replace(/^\s*Future/, '').trim() : home.title;
+            coreText.textContent = a ? a.dataset.text : home.text;
+        };
+        acts.forEach(a => a.addEventListener('click', () => {
+            show(a.getAttribute('aria-pressed') === 'true' ? null : a);
+            // on a phone the core sits above the list, so bring it into view
+            if (core.getBoundingClientRect().top < 0) core.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }));
+        core.addEventListener('click', () => show(null));
+        const map = root.querySelector('.wd-map');
+        const filt = [...root.querySelectorAll('.wd-filter button')];
+        filt.forEach(b => b.addEventListener('click', () => { filt.forEach(x => x.setAttribute('aria-pressed', x === b)); map.dataset.show = b.dataset.show; }));
+
+        // Glossier: two views of the same strategy
+        const views = [...root.querySelectorAll('.gl-views button')], panes = [...root.querySelectorAll('.gl-view')];
+        views.forEach(b => b.addEventListener('click', () => {
+            views.forEach(x => x.setAttribute('aria-pressed', x === b));
+            panes.forEach(p => p.hidden = p.dataset.view !== b.dataset.view);
+        }));
+    })();
+</script>
