@@ -38,8 +38,9 @@
     to { transform: scale(1.1); }
 }
 
-/* the cake gallery cross-fades as it turns by itself: the cakes are stacked, so the old one slowly fades out
-   while the new one fades in over it, with no blank moment in between */
+/* the cake gallery cross-fades as it turns by itself: the cakes are stacked, and the new one slowly fades in
+   on top while the old one stays fully visible underneath until it's covered, so it never dips to dark.
+   Every cake loads up front (no lazy loading), so the next one is ready before its turn */
 .make-page .cake-slides {
     position: relative;
 }
@@ -47,16 +48,24 @@
 .make-page .cake-slide {
     position: absolute;
     inset: 0;
-    opacity: 1;
+    z-index: 1;
     visibility: visible;
-    transition: opacity 1.6s ease-in-out, visibility 0s;
+}
+
+.make-page .cake-slide:not([hidden]) {
+    animation: cake-in 1.8s ease-in-out both;
 }
 
 .make-page .cake-slide[hidden] {
     display: block;
-    opacity: 0;
+    z-index: 0;
     visibility: hidden;
-    transition: opacity 1.6s ease-in-out, visibility 0s linear 1.6s;
+    transition: visibility 0s linear 1.8s;
+}
+
+@keyframes cake-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ITINERARIES: the cards sit straight and level. Each city's edit slides up over its photo, one card after
@@ -148,7 +157,7 @@
     .make-page .bake-tile img,
     .make-page .trip-open img,
     .make-page .ticket-plane { animation: none; }
-    .make-page .cake-slide, .make-page .cake-slide[hidden] { transition: none; }
+    .make-page .cake-slide, .make-page .cake-slide[hidden] { transition: none; animation: none; }
     .trip-peek, .trip-peek li { transition: none; }
 }
 

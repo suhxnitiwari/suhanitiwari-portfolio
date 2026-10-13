@@ -466,7 +466,7 @@
                                     var cake = cakes[c];
                                     <li class="cake-slide" hidden="@(c != 0)" aria-roledescription="slide" aria-label="@(c + 1) of @cakes.Length">
                                         <button type="button" class="art-open bake-tile" data-kind="Cake Gallery" data-image="@cake.Image" data-title="@cake.Title" data-idea="@cake.Idea" aria-label="View @cake.Title larger">
-                                            <img src="@cake.Image" alt="@cake.Title" loading="lazy" draggable="false">
+                                            <img src="@cake.Image" alt="@cake.Title" decoding="async" draggable="false">
                                             <span class="bake-tile-label">
                                                 <span class="bake-tile-title">@cake.Title</span>
                                                 <span class="bake-tile-meta">@(c + 1) / @cakes.Length</span>

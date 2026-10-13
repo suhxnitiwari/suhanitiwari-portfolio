@@ -224,6 +224,9 @@
     };
 }
 <div class="mp-section sa" id="mk-archive">
+    @* the archive stays folded away under one small button, so the main scroll is just the slideshow *@
+    <button type="button" class="sa-toggle" aria-expanded="false" aria-controls="sa-body"><span class="sa-toggle-label">Strategy archive</span><span class="sa-toggle-arrow" aria-hidden="true">↓</span></button>
+    <div class="sa-body" id="sa-body" hidden>
     <div class="mp-head">
         <p class="mp-eyebrow">From the archive</p>
         <h3 class="mp-h2">One page, one framework.</h3>
@@ -413,10 +416,19 @@
             </div>
         </div>
     </div>
+    </div>
 </div>
 
 <style>
     .sa { --sa-ink: #1E100A; --sa-muted: #5E4A45; }
+    .sa-toggle { display: inline-flex; align-items: baseline; gap: 10px; padding: 6px 0; border: 0; border-bottom: 1px solid currentColor; background: none; color: #76344E;
+        font-family: inherit; font-size: 12px; font-weight: 700; line-height: 1.2; letter-spacing: 0.16em; text-transform: uppercase; cursor: var(--cursor-hot, pointer); transition: color 0.2s; }
+    .sa-toggle:hover { color: #4E1F33; }
+    .sa-toggle:focus-visible { outline: 2px solid #76344E; outline-offset: 4px; }
+    .sa-toggle-arrow { display: inline-block; transition: transform 0.3s ease; }
+    .sa-toggle[aria-expanded="true"] .sa-toggle-arrow { transform: rotate(180deg); }
+    .sa-body { margin-top: 28px; }
+    @@media (prefers-reduced-motion: reduce) { .sa-toggle-arrow { transition: none; } }
     .sa-line { max-width: 640px; margin: 14px 0 0; font-size: 17px; line-height: 1.6; color: var(--muted, #5E4A45); }
     .sa-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 18px; }
     .sa-tabs button { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 18px; border-radius: 16px; border: 1.5px solid #D9B8B3; background: #FFF8F6; color: var(--sa-ink); font: inherit; text-align: left; cursor: var(--cursor-hot, pointer); transition: background 0.2s, border-color 0.2s, color 0.2s; }
@@ -626,6 +638,15 @@
         if (!root || root.dataset.wired) return;
         root.dataset.wired = '1';
 
+        // the small button folds the whole archive open or closed
+        const tog = root.querySelector('.sa-toggle'), body = document.getElementById('sa-body');
+        const openArchive = on => {
+            body.hidden = !on;
+            tog.setAttribute('aria-expanded', on);
+            tog.querySelector('.sa-toggle-label').textContent = on ? 'Close the archive' : 'Strategy archive';
+        };
+        tog.addEventListener('click', () => openArchive(body.hidden));
+
         // the three frameworks, one at a time (arrow keys move between tabs)
         const tabs = [...root.querySelectorAll('.sa-tabs [role="tab"]')];
         const pick = t => tabs.forEach(b => {
@@ -700,7 +721,7 @@
             if (!a) return;
             e.preventDefault();
             const t = document.getElementById(a.dataset.saOpen);
-            if (t) { pick(t); root.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            if (t) { openArchive(true); pick(t); root.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         });
 
         // Glossier: two views of the same strategy
