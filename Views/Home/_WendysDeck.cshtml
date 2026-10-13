@@ -39,10 +39,15 @@
 
     /* the core: a square patty that hangs over the bun */
     .mk-wd .w-core { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3cqw; align-items: center; flex: 1; }
-    .mk-wd .w-burger { width: 36cqw; margin: 0 auto; filter: drop-shadow(0 1.4cqw 1.4cqw rgba(120, 40, 20, 0.25)); }
+    .mk-wd .w-burger { width: 30cqw; margin: 0 auto; filter: drop-shadow(0 1.4cqw 1.4cqw rgba(120, 40, 20, 0.25)); }
     .mk-wd .w-burger svg { width: 100%; height: auto; display: block; overflow: visible; }
-    .mk-wd .mk-slide:not([hidden]) .w-burger .layer { animation: wDrop 0.55s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: calc(var(--n) * 0.32s); }
-    @@keyframes wDrop { from { opacity: 0; transform: translateY(-40px); } }
+    .mk-wd .w-burger .w-top { transform-box: fill-box; transform-origin: center; }
+    .mk-wd .mk-slide:not([hidden]) .w-burger .w-top { animation: wLand 0.6s cubic-bezier(.3, 1.4, .5, 1) both; animation-delay: calc(var(--n) * 0.45s); }
+    .mk-wd .mk-slide:not([hidden]) .w-burger .w-spin { animation-name: wSpin; }
+    .mk-wd .mk-slide:not([hidden]) .w-burger svg { animation: wTurn 14s linear 1.8s infinite; }
+    @@keyframes wLand { from { opacity: 0; transform: scale(1.35); } }
+    @@keyframes wSpin { from { opacity: 0; transform: rotate(-60deg) scale(1.2); } }
+    @@keyframes wTurn { to { transform: rotate(360deg); } }
     .mk-wd .w-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1cqw; }
     .mk-wd .w-pillar { padding: 1.2cqw; text-align: center; animation: wPop 0.45s ease both; animation-delay: calc(var(--n) * 0.15s + 0.6s); }
     .mk-wd .w-pillar b { display: block; font-size: clamp(12px, 1.5cqw, 18px); font-weight: 900; color: var(--w-red); }
@@ -101,7 +106,7 @@
         .mk-wd .w-cover::after { display: none; }
     }
     @@media (prefers-reduced-motion: reduce) {
-        .mk-wd .w-act, .mk-wd .w-burger .layer, .mk-wd .w-pillar, .mk-wd .w-node, .mk-wd .w-bar i, .mk-wd .w-num { animation: none; }
+        .mk-wd .w-act, .mk-wd .w-burger .w-top, .mk-wd .w-burger svg, .mk-wd .w-pillar, .mk-wd .w-node, .mk-wd .w-bar i, .mk-wd .w-num { animation: none; }
     }
 </style>
 @{
@@ -159,28 +164,21 @@
                         </div>
                     </div>
                     <div class="w-burger" aria-hidden="true">
-                        <svg viewBox="0 0 150 150">
+                        @* the view from above: a round bun, and the square patty's corners poking out past it on every side *@
+                        <svg viewBox="0 0 160 160">
                             <defs>
-                                <linearGradient id="wTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F0B86A" /><stop offset="0.6" stop-color="#DE9440" /><stop offset="1" stop-color="#C97A2F" /></linearGradient>
-                                <linearGradient id="wBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2BC70" /><stop offset="1" stop-color="#C9762E" /></linearGradient>
-                                <linearGradient id="wBeef" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6A3720" /><stop offset="0.5" stop-color="#4E2815" /><stop offset="1" stop-color="#33190C" /></linearGradient>
+                                <radialGradient id="wBunTop" cx="0.38" cy="0.32" r="0.75"><stop offset="0" stop-color="#F7CF8E" /><stop offset="0.55" stop-color="#E29A45" /><stop offset="1" stop-color="#B9672A" /></radialGradient>
+                                <linearGradient id="wBeefTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6A3720" /><stop offset="1" stop-color="#3A1C0E" /></linearGradient>
                             </defs>
-                            @* bottom up, each layer drops in one at a time *@
-                            <path class="layer" style="--n: 0" d="M20 118 h110 q4 0 3 6 q-3 16 -18 16 h-80 q-15 0 -18 -16 q-1 -6 3 -6 z" fill="url(#wBot)" />
-                            <g class="layer" style="--n: 1">
-                                <path d="M4 96 l6 -5 h130 l6 5 v20 h-142 z" fill="url(#wBeef)" />
-                                <circle cx="22" cy="104" r="1.6" fill="#8C4E2C" /><circle cx="48" cy="109" r="1.4" fill="#2A1208" /><circle cx="70" cy="101" r="1.8" fill="#8C4E2C" /><circle cx="96" cy="108" r="1.5" fill="#2A1208" /><circle cx="120" cy="102" r="1.7" fill="#8C4E2C" /><circle cx="36" cy="112" r="1.3" fill="#8C4E2C" /><circle cx="84" cy="113" r="1.4" fill="#8C4E2C" /><circle cx="132" cy="111" r="1.4" fill="#2A1208" />
+                            <g class="w-top" style="--n: 0">
+                                <rect x="24" y="24" width="112" height="112" rx="7" fill="url(#wBeefTop)" />
+                                <circle cx="31" cy="34" r="1.6" fill="#8C4E2C" /><circle cx="128" cy="30" r="1.4" fill="#8C4E2C" /><circle cx="33" cy="127" r="1.5" fill="#8C4E2C" /><circle cx="126" cy="129" r="1.7" fill="#8C4E2C" /><circle cx="36" cy="40" r="1.2" fill="#2A1208" /><circle cx="122" cy="124" r="1.2" fill="#2A1208" />
                             </g>
-                            <path class="layer" style="--n: 2" d="M8 88 h134 v5 h-10 l-6 12 -6 -12 h-20 l-6 9 -6 -9 h-24 l-6 13 -6 -13 h-22 l-6 9 -6 -9 h-14 z" fill="#F8B21C" />
-                            <path class="layer" style="--n: 3" d="M5 86 q8 -10 16 -2 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -8 16 0 q8 -6 8 2 l-2 4 h-136 z" fill="#5FA334" />
-                            <rect class="layer" style="--n: 4" x="22" y="72" width="106" height="9" rx="4.5" fill="#D93A2B" />
-                            <g class="layer" style="--n: 5"><rect x="18" y="66" width="56" height="6" rx="3" fill="#F7F3EA" stroke="#DCCFE6" /><rect x="76" y="66" width="56" height="6" rx="3" fill="#F7F3EA" stroke="#DCCFE6" /></g>
-                            <g class="layer" style="--n: 6"><ellipse cx="44" cy="63" rx="15" ry="3.4" fill="#7E9A3A" /><ellipse cx="78" cy="62" rx="15" ry="3.4" fill="#7E9A3A" /><ellipse cx="110" cy="63" rx="14" ry="3.2" fill="#7E9A3A" /></g>
-                            <g class="layer" style="--n: 7"><ellipse cx="34" cy="58" rx="12" ry="2.6" fill="#FFF8EC" /><ellipse cx="62" cy="58" rx="10" ry="2.4" fill="#C1271B" /><ellipse cx="92" cy="58" rx="13" ry="2.6" fill="#FFF8EC" /><ellipse cx="118" cy="58" rx="9" ry="2.4" fill="#C1271B" /></g>
-                            <g class="layer" style="--n: 8">
-                                <path d="M14 55 C14 6 136 6 136 55 q0 4 -5 4 h-112 q-5 0 -5 -4 z" fill="url(#wTop)" />
-                                <ellipse cx="56" cy="24" rx="26" ry="9" fill="#FFF0D6" opacity="0.45" />
-                                <ellipse cx="46" cy="30" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="62" cy="22" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="78" cy="28" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="94" cy="21" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="106" cy="33" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="38" cy="41" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="74" cy="40" rx="2.6" ry="1.4" fill="#FFF3D6" /><ellipse cx="116" cy="44" rx="2.6" ry="1.4" fill="#FFF3D6" />
+                            <g class="w-top w-spin" style="--n: 1"><rect x="26" y="26" width="108" height="108" rx="3" transform="rotate(45 80 80)" fill="#F8B21C" /><rect x="30" y="30" width="100" height="100" rx="2" transform="rotate(45 80 80)" fill="#FFC93C" opacity="0.5" /></g>
+                            <g class="w-top" style="--n: 2">
+                                <circle cx="80" cy="83" r="64" fill="#7A3E1A" opacity="0.25" /><circle cx="80" cy="80" r="64" fill="url(#wBunTop)" />
+                                <ellipse cx="64" cy="58" rx="28" ry="15" fill="#FFF1D8" opacity="0.35" />
+                                <ellipse cx="50" cy="46" rx="3.2" ry="1.7" transform="rotate(20 50 46)" fill="#FFF3D6" /><ellipse cx="74" cy="36" rx="3.2" ry="1.7" transform="rotate(-10 74 36)" fill="#FFF3D6" /><ellipse cx="100" cy="44" rx="3.2" ry="1.7" transform="rotate(35 100 44)" fill="#FFF3D6" /><ellipse cx="118" cy="66" rx="3.2" ry="1.7" transform="rotate(-25 118 66)" fill="#FFF3D6" /><ellipse cx="38" cy="72" rx="3.2" ry="1.7" transform="rotate(15 38 72)" fill="#FFF3D6" /><ellipse cx="62" cy="64" rx="3.2" ry="1.7" transform="rotate(60 62 64)" fill="#FFF3D6" /><ellipse cx="90" cy="68" rx="3.2" ry="1.7" transform="rotate(-40 90 68)" fill="#FFF3D6" /><ellipse cx="110" cy="92" rx="3.2" ry="1.7" transform="rotate(10 110 92)" fill="#FFF3D6" /><ellipse cx="46" cy="98" rx="3.2" ry="1.7" transform="rotate(-30 46 98)" fill="#FFF3D6" /><ellipse cx="72" cy="90" rx="3.2" ry="1.7" transform="rotate(25 72 90)" fill="#FFF3D6" /><ellipse cx="96" cy="110" rx="3.2" ry="1.7" transform="rotate(-15 96 110)" fill="#FFF3D6" /><ellipse cx="66" cy="118" rx="3.2" ry="1.7" transform="rotate(40 66 118)" fill="#FFF3D6" /><ellipse cx="120" cy="114" rx="3.2" ry="1.7" transform="rotate(-5 120 114)" fill="#FFF3D6" /><ellipse cx="82" cy="126" rx="3.2" ry="1.7" transform="rotate(0 82 126)" fill="#FFF3D6" />
                             </g>
                         </svg>
                     </div>
