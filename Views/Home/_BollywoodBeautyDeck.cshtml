@@ -55,7 +55,7 @@
     /* cover: the mirrors video fills the slide; the headline sits in its quiet left side */
     .mk-bw .b-cover { justify-content: center; padding-right: 58cqw; }
     .mk-bw .b-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-    .mk-bw .b-cover > :not(.b-bg) { position: relative; z-index: 1; }
+    .mk-bw .b-cover > :not(.b-bg):not(.b-sig) { position: relative; z-index: 1; }
     .mk-bw .b-title { margin: 0; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-weight: 700; font-size: clamp(28px, 5.6cqw, 68px); line-height: 0.98; color: var(--b-ink); letter-spacing: -0.03em; }
     .mk-bw .b-title em { color: var(--b-wine); font-weight: 600; }
     .mk-bw .b-cover .b-lede { color: var(--b-ink) !important; }
@@ -140,9 +140,9 @@
     .mk-bw .b-more li b { color: var(--b-wine); }
 
     /* the scorecard */
-    .mk-bw .b-score { width: 100%; border-collapse: collapse; font-size: clamp(9px, 1cqw, 13px); }
-    .mk-bw .b-score th, .mk-bw .b-score td { text-align: left; padding: 0.55cqw 1cqw; border-bottom: 1px solid var(--b-line); vertical-align: top; }
-    .mk-bw .b-score th { font-size: clamp(8px, 0.88cqw, 11px); letter-spacing: 0.15em; text-transform: uppercase; color: var(--b-gold); font-weight: 700; }
+    .mk-bw .b-score { width: 100%; border-collapse: collapse; font-size: clamp(9px, 1.2cqw, 15px); }
+    .mk-bw .b-score th, .mk-bw .b-score td { text-align: left; padding: 1.05cqw 1cqw; border-bottom: 1px solid var(--b-line); vertical-align: top; }
+    .mk-bw .b-score th { font-size: clamp(8px, 0.95cqw, 12px); letter-spacing: 0.15em; text-transform: uppercase; color: var(--b-gold); font-weight: 700; }
     .mk-bw .b-score td:first-child { color: var(--b-ink); font-weight: 600; width: 27%; }
     .mk-bw .b-score td { color: var(--b-mute); }
     .mk-bw .b-score .y { color: var(--b-wine); font-weight: 700; }
