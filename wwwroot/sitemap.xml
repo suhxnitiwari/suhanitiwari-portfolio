@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://suhanitiwari.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://suhanitiwari.com/Tiwari_Suhani_Resume.pdf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://suhanitiwari.com/work/starbucks</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/</loc><lastmod>2026-10-13</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://suhanitiwari.com/resume</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://suhanitiwari.com/work/starbucks</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/glossier</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/rhode</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/bollywood-beauty</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/american-eagle</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/netflix</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/prime-book-club</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/fuelflow</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/starbucks</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/owala</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/wendys</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/marketing/crowdstrike</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://suhanitiwari.com/Tiwari_Suhani_Resume.pdf</loc><lastmod>2026-10-13</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
