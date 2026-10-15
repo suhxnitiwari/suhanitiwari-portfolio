@@ -308,3 +308,49 @@ html {
 @keyframes asideBlink {
     50% { opacity: 0; }
 }
+
+/* Random "pick something" block on the home page: warm maroon, cream and gold accents */
+.pick-section {
+  background: #FFF8EE;
+  border-top: 1px solid #EBD5D0;
+  border-bottom: 1px solid #EBD5D0;
+  padding: 56px 20px;
+  text-align: center;
+}
+.pick-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.pick-section h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #7E3F4A;
+  font-size: 2rem;
+  margin: 0 0 8px;
+}
+.pick-sub {
+  color: #5C4A42;
+  margin: 0 0 20px;
+}
+.pick-btn {
+  background: #7E3F4A;
+  color: #FFF8EE;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(126, 63, 74, 0.25);
+}
+.pick-btn:hover { background: #652F3A; }
+.pick-btn:focus-visible { outline: 3px solid #D9A441; outline-offset: 3px; }
+.pick-result { min-height: 1.6em; margin: 18px 0 0; }
+.pick-link {
+  color: #7E3F4A;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid #D9A441;
+  padding-bottom: 2px;
+}
+.pick-link:hover { color: #652F3A; }

@@ -1614,6 +1614,43 @@
 </section>
 
 @* BEYOND THE CLASSROOM: what I do for other people, the bridge from school to the personal (the same view its old page used) *@
+<section class="pick-section" id="pick" aria-labelledby="pick-heading">
+    <div class="pick-inner">
+        <h2 id="pick-heading">Not sure where to start?</h2>
+        <p class="pick-sub">Let the picker choose a corner of the site for you.</p>
+        <button type="button" class="pick-btn" id="pick-btn">Pick something for me</button>
+        <p class="pick-result" id="pick-result" aria-live="polite"></p>
+    </div>
+</section>
+<script>
+    (function () {
+        var stops = [
+            { label: "My experience", href: "/#experience" },
+            { label: "Education and coursework", href: "/#education" },
+            { label: "Selected work", href: "/#selected-work" },
+            { label: "Marketing work", href: "/#marketing-work" },
+            { label: "Beyond the classroom", href: "/#beyond" },
+            { label: "My résumé", href: "/resume" },
+            { label: "The world I'm building", href: "/world/" }
+        ];
+        var btn = document.getElementById("pick-btn");
+        var out = document.getElementById("pick-result");
+        var last = -1;
+        if (!btn || !out) return;
+        btn.addEventListener("click", function () {
+            var i;
+            do { i = Math.floor(Math.random() * stops.length); } while (stops.length > 1 && i === last);
+            last = i;
+            out.innerHTML = "";
+            var a = document.createElement("a");
+            a.href = stops[i].href;
+            a.className = "pick-link";
+            a.textContent = "Go to " + stops[i].label + " →";
+            out.appendChild(a);
+        });
+    })();
+</script>
+
 <section class="pursue-part" id="beyond" aria-label="Beyond the classroom">
     @await Html.PartialAsync("BeyondTheClassroom")
 </section>
