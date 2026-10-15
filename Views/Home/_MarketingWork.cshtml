@@ -70,7 +70,6 @@
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-americaneagle" data-study="american-eagle" tabindex="-1">Campaign Strategy</button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-netflix" data-study="netflix" tabindex="-1">Media Strategy</button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-primebookclub" data-study="prime-book-club" tabindex="-1">Community Strategy</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-owala" data-study="owala" tabindex="-1">Marketing Strategy</button>
             </div>
             <button type="button" class="mp-proj-arrow" data-go="1" aria-label="Next project">›</button>
         </div>
@@ -93,346 +92,6 @@
         @* ===================== Prime Book Club ===================== *@
         <partial name="_PrimeBookClubDeck" />
 
-        @* ===================== Owala ===================== *@
-        <div class="mp-proj mk-owala" id="mk-proj-owala" role="tabpanel" aria-labelledby="mk-title-owala" hidden>
-            <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Owala slides">
-                <div class="mk-stage">
-
-                    @* cover: a race podium. Three city bottles land on the steps, third, then second, then first, each over a
-                       finish-time plaque like the engraving; every loop brings a new trio of cities, because the point is collecting them *@
-                    <div class="mk-slide ow-cover" data-title="Cover">
-                        <div class="ow-copy">
-                            <h4 class="ow-title">Nobody needs <em>a second Owala.</em></h4>
-                            <p class="ow-lede"><b>So make them earn one.</b> City-exclusive, engraved with your finish time, only sold to runners.</p>
-                        </div>
-                        <div class="ow-podium" role="img" aria-label="One plain gray Owala sits alone on a three-step podium, stamped one and done, while a pop-up asking to add a second bottle is turned down. Then Race Series bottles from three marathon cities land on first, second and third place over finish-time plaques.">
-                            <span class="ow-stamp" aria-hidden="true">One and done.</span>
-                            <span class="ow-cart" aria-hidden="true">Add a second FreeSip? <i>No thanks</i></span>
-                            @foreach (var (place, cls) in new[] { (2, "p2"), (1, "p1"), (3, "p3") })
-                            {
-                                <div class="ow-step @cls">
-                                    <img class="ow-bottle" src="/images/projects/owala/bottles/boston.webp" alt="" width="246" height="922">
-                                    <div class="ow-block"><b>@place</b><span class="ow-plaque"><i data-ow-city>Boston</i><em data-ow-time>3:21:08</em></span></div>
-                                </div>
-                            }
-                        </div>
-                        <span class="ow-sig" aria-hidden="true">suhani</span>
-                    </div>
-
-                    <div class="mk-slide" data-title="Summary" hidden>
-                        @Html.Raw(Top(owalaSections, 0, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">Owala can turn one-time buyers into <em>collectors</em> by selling bottles runners earn at the finish line.</h4>
-                        <ol class="mk-scr">
-                            <li><span>the situation</span><p>Owala’s online sales volume rose <b>400%+</b> from January to August 2024 with no discounting, on color drops that sell out in under an hour. Nothing brings a buyer back for a second bottle.</p></li>
-                            <li><span>the catch</span><p>The boom is cooling: bottle sales growth at U.S. sporting-goods stores fell from <b>38%</b> to <b>14%</b>, then turned negative, and Stanley’s direct sales fell about <b>20%</b> in 2025.</p></li>
-                            <li><span>the fix</span><p>Launch the <b>Race Series</b>: race-licensed city bottles, pre-sold at registration and engraved with each runner’s finish time. Pilot at Boston, Chicago and New York, about <b>142,000</b> finishers.</p></li>
-                        </ol>
-                        @Html.Raw(Foot("Particl (2024); Chowhound (2026); Circana via Modern Retail (2025); Consumer Edge via Modern Retail (2026); NYRR; Running USA", 2, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="Root causes" hidden>
-                        @Html.Raw(Top(owalaSections, 1, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">Owala’s demand is driven by <em>attention, not attachment</em>.</h4>
-                        <div class="mk-cards">
-                            <div><i>1</i><h5>One-and-done product</h5><p>A 40oz FreeSip lasts for years. Nobody needs a second one, so there’s no natural repurchase cycle.</p></div>
-                            <div><i>2</i><h5>Trend dependence</h5><p>Color drops sell out in under an hour, then demand resets until the next drop.</p></div>
-                            <div><i>3</i><h5>No ecosystem</h5><p>No collection, progression or community pulls customers back.</p></div>
-                            <div><i>4</i><h5>No identity</h5><p>Stylish and useful, but not tied to routine, achievement or meaning.</p></div>
-                        </div>
-                        <p class="mk-sowhat inline"><b>Key takeaway</b>Without a reason to come back, Owala risks becoming a trend rather than a brand.</p>
-                        @Html.Raw(Foot("Chowhound (2026); author analysis", 3, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="Market" hidden>
-                        @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">The drinkware boom is cooling, so the next win is <em>repeat buying, not reach</em>.</h4>
-                        <div class="ow-two">
-                            <figure class="mk-exhibit">
-                                <figcaption>Exhibit 1: Bottle sales growth at U.S. sporting-goods stores</figcaption>
-                                <ul class="ow-bars" role="img" aria-label="Growth was 38% in 2023, 14% in 2024, and below zero every month from September 2024 to February 2025">
-                                    <li style="--h: 38"><b>+38%</b><span>2023</span></li>
-                                    <li style="--h: 14"><b>+14%</b><span>2024</span></li>
-                                    <li class="neg" style="--h: 6"><b>below 0</b><span>Sep 2024 to Feb 2025, every month</span></li>
-                                </ul>
-                            </figure>
-                            <div class="mk-side">
-                                <p class="mk-exlabel">The leaders are slowing too</p>
-                                <ul class="ow-rivals">
-                                    <li><b>−20%</b><span><strong>Stanley</strong> U.S. direct sales, 2025, after 300%+ growth in 2022</span></li>
-                                    <li><b>−1%</b><span><strong>YETI</strong> drinkware, FY2025, flat at $1.09B</span></li>
-                                    <li><b>−8.1%</b><span><strong>Hydro Flask</strong>’s parent segment, FY2026, on softer drinkware demand</span></li>
-                                    <li class="hi"><b>+400%</b><span><strong>Owala</strong> online sales volume, Jan to Aug 2024: it won the last wave on newness</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="mk-sowhat inline"><b>Key takeaway</b>New colors won Owala the last wave. In a cooling market, it needs fans who buy again.</p>
-                        @Html.Raw(Foot("Circana via Modern Retail (2025); Consumer Edge via Modern Retail (2026); YETI FY2025 results; Helen of Troy FY2026 10-K; Particl (2024)", 4, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="The runner" hidden>
-                        @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">Marathoners already <em>collect races</em>; they just have nothing to buy for it.</h4>
-                        <ul class="mk-numbers">
-                            <li><b>59,226</b><span>finishers at the 2025 New York City Marathon, the largest marathon ever run</span></li>
-                            <li><b>240K+</b><span>people applied to run New York in 2026; about 1% got in</span></li>
-                            <li><b>20,000+</b><span>runners have finished all six World Marathon Majors to earn a Six Star medal</span></li>
-                            <li class="hi"><b>17.6%</b><span>of marathoners run more than one marathon a year, so the collection builds across years</span></li>
-                        </ul>
-                        <p class="mk-sowhat inline"><b>Key takeaway</b>Runners chase cities and keep medals. A bottle for each race turns that habit into a repeat purchase.</p>
-                        @Html.Raw(Foot("NYRR (2025, 2026); Abbott World Marathon Majors; RunRepeat", 5, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="Positioning" hidden>
-                        @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">Rivals win on function or identity; Owala sits <em>stuck in the middle</em>.</h4>
-                        <div class="mk-position">
-                            <figure class="mk-exhibit">
-                                <figcaption>Exhibit 2: Drinkware positioning map</figcaption>
-                                <svg viewBox="0 0 400 290" role="img" aria-label="Positioning map: Stanley and Hydro Flask lean toward identity, YETI and CamelBak toward function, and Owala moves from the middle to the high identity, emotional corner">
-                                    <defs><marker id="mk-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mk-arrowhead" /></marker></defs>
-                                    <rect x="200" y="20" width="186" height="125" class="mk-zone" />
-                                    <line x1="200" y1="20" x2="200" y2="270" class="mk-axis" />
-                                    <line x1="14" y1="145" x2="386" y2="145" class="mk-axis" />
-                                    <text x="200" y="12" class="mk-axis-label" text-anchor="middle">High identity &amp; loyalty</text>
-                                    <text x="200" y="284" class="mk-axis-label" text-anchor="middle">Low attachment</text>
-                                    <text x="16" y="138" class="mk-axis-label">Functional</text>
-                                    <text x="384" y="138" class="mk-axis-label" text-anchor="end">Emotional</text>
-                                    <circle cx="228" cy="62" r="6" class="mk-dot" /><text x="238" y="66" class="mk-brand">Stanley</text>
-                                    <circle cx="130" cy="90" r="6" class="mk-dot" /><text x="140" y="94" class="mk-brand">Hydro Flask</text>
-                                    <circle cx="96" cy="134" r="6" class="mk-dot" /><text x="106" y="128" class="mk-brand">YETI</text>
-                                    <circle cx="70" cy="220" r="6" class="mk-dot" /><text x="80" y="224" class="mk-brand">CamelBak</text>
-                                    <circle cx="222" cy="156" r="7" class="mk-dot owala-now" /><text x="232" y="174" class="mk-brand">Owala today</text>
-                                    <path d="M232,150 Q300,126 322,64" class="mk-move" marker-end="url(#mk-arrow)" />
-                                    <circle cx="330" cy="52" r="9" class="mk-dot owala" /><text x="330" y="36" class="mk-brand strong" text-anchor="middle">Owala + Race Series</text>
-                                </svg>
-                            </figure>
-                            <div class="mk-side">
-                                <p class="mk-exlabel">How rivals retain</p>
-                                <ul class="mk-kpis text">
-                                    <li><b>Stanley</b>collab drops and culture; 26% of U.S. drinkware dollars in 2024</li>
-                                    <li><b>Hydro Flask</b>personalization and daily wellness routines</li>
-                                    <li><b>YETI</b>durability and a broad ecosystem; 60% of sales are direct</li>
-                                    <li><b>CamelBak</b>functional necessity for athletes</li>
-                                </ul>
-                                <p class="mk-sowhat"><b>Key takeaway</b>The open space is high identity plus emotional value, and achievement can own it.</p>
-                            </div>
-                        </div>
-                        @Html.Raw(Foot("Circana (2025); YETI FY2025 results; author analysis", 6, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="The Race Series" hidden>
-                        @Html.Raw(Top(owalaSections, 3, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">The Race Series makes each bottle <em>a record of achievement</em> worth collecting.</h4>
-                        <div class="mk-proto">
-                            <ol class="mk-callouts">
-                                <li><b>City-exclusive design</b>Race-licensed art for every city, refreshed each year</li>
-                                <li><b>Engraved with your time</b>Name, finish time and date, using the engraving Owala already sells online</li>
-                                <li><b>Runners only</b>Sold with race registration, in limited numbers per city</li>
-                                <li><b>Collect the cities</b>“Which races have you run?” becomes the reason to come back</li>
-                            </ol>
-                            @* build your own race bottle: pick a city, type a name and a finish time, and it's engraved live *@
-                            <div class="ow-build">
-                                <figure class="ow-hero" aria-live="polite">
-                                    <img class="ow-hero-img" loading="lazy" src="/images/projects/owala/bottles/austin.webp" alt="The Austin Marathon race-edition Owala bottle">
-                                    <span class="ow-eng-time">4:12:36</span>
-                                    <svg class="ow-eng-name" viewBox="0 0 200 64" role="img" aria-label="Engraved name"><title>Tap to engrave your name</title><path id="owArc" d="M 10 56 Q 100 14 190 56" fill="none"/><text text-anchor="middle"><textPath href="#owArc" startOffset="50%">YOUR NAME</textPath></text></svg>
-                                </figure>
-                                <div class="ow-controls">
-                                    <label class="ow-label" for="owName">Engrave your name</label>
-                                    <input id="owName" class="ow-input ow-nudge" maxlength="12" placeholder="Type your name to engrave it" autocomplete="off">
-                                    <label class="ow-label" for="owTime">Your finish time</label>
-                                    <input id="owTime" class="ow-input" maxlength="8" placeholder="4:12:36" autocomplete="off" inputmode="numeric" pattern="[0-9:]*">
-                                    <p class="ow-label">Pick your race <span class="ow-count">1 of 8 collected</span></p>
-                                    <div class="ow-lineup" role="group" aria-label="Race city"><button type="button" data-city="austin" aria-pressed="true" aria-label="Austin"><img src="/images/projects/owala/bottles/austin.webp" alt="" loading="lazy"></button><button type="button" data-city="nyc" aria-pressed="false" aria-label="New York"><img src="/images/projects/owala/bottles/nyc.webp" alt="" loading="lazy"></button><button type="button" data-city="sf" aria-pressed="false" aria-label="San Francisco"><img src="/images/projects/owala/bottles/sf.webp" alt="" loading="lazy"></button><button type="button" data-city="neworleans" aria-pressed="false" aria-label="New Orleans"><img src="/images/projects/owala/bottles/neworleans.webp" alt="" loading="lazy"></button><button type="button" data-city="boston" aria-pressed="false" aria-label="Boston"><img src="/images/projects/owala/bottles/boston.webp" alt="" loading="lazy"></button><button type="button" data-city="seattle" aria-pressed="false" aria-label="Seattle"><img src="/images/projects/owala/bottles/seattle.webp" alt="" loading="lazy"></button><button type="button" data-city="miami" aria-pressed="false" aria-label="Miami"><img src="/images/projects/owala/bottles/miami.webp" alt="" loading="lazy"></button><button type="button" data-city="lasvegas" aria-pressed="false" aria-label="Las Vegas"><img src="/images/projects/owala/bottles/lasvegas.webp" alt="" loading="lazy"></button></div>
-                                </div>
-                            </div>
-                        </div>
-                        @Html.Raw(Foot("Owala custom shop; author concept and design", 7, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="4 P’s" hidden>
-                        @Html.Raw(Top(owalaSections, 3, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">A proven $10 premium and a runners-only channel turn the bottle into <em>a keepsake</em>.</h4>
-                        <div class="mk-ps">
-                            <div><h5>Product</h5><p>The 40oz FreeSip in race-licensed city art, engraved with name, finish time and date.</p><p class="mk-why-p">Limited Owala drops already sell out in under an hour</p></div>
-                            <div><h5>Price</h5><p><b class="mk-price">$39.99 → $49.99</b>List price plus the +$10 Owala already charges for custom bottles. YETI charges $15 for a licensed logo.</p><p class="mk-why-p">A premium shoppers already pay, so nothing new to test</p></div>
-                            <div><h5>Place</h5><p>An add-on at race registration, then pickup at the expo or a finish-line pop-up.</p><p class="mk-why-p">Only 7% of non-runners buy marathon merch: sell to the runner</p></div>
-                            <div><h5>Promotion</h5><p>Local run clubs and running micro-influencers before each race, then shared finish-line photos.</p><p class="mk-why-p">Run clubs on Strava grew 3.5x in 2025</p></div>
-                        </div>
-                        @Html.Raw(Foot("Owala; YETI custom FAQ; Chowhound (2026); Brand Finance (2025); Strava Year in Sport (2025)", 8, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="Business case" hidden>
-                        @Html.Raw(Top(owalaSections, 4, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">Three pilot races reach <em>~142,000 finishers</em>; a 5% take rate is worth about $354K.</h4>
-                        <div class="ow-two">
-                            <figure class="mk-exhibit">
-                                <figcaption>Exhibit 3: Pilot races, 2025 finishers</figcaption>
-                                <table class="ow-table">
-                                    <tbody>
-                                        <tr><th>Boston <small>April</small></th><td>~28,400</td></tr>
-                                        <tr><th>Chicago <small>October</small></th><td>54,000+</td></tr>
-                                        <tr><th>New York <small>November</small></th><td>59,226</td></tr>
-                                        <tr class="sum"><th>Pilot reach</th><td>~141,600</td></tr>
-                                    </tbody>
-                                </table>
-                                <p class="ow-note">At $49.99 a bottle. Race merch usually sells for $20 to $30, so this is a premium keepsake and I plan on a cautious take rate.</p>
-                            </figure>
-                            <div class="ow-calc" data-reach="141600" data-price="49.99">
-                                <label class="mk-exlabel" for="owRate">Share of finishers who pre-order: <output id="owRateOut">5%</output></label>
-                                <input id="owRate" type="range" min="1" max="10" step="1" value="5">
-                                <ul class="ow-out">
-                                    <li><b data-k="bottles">7,080</b><span>bottles sold</span></li>
-                                    <li class="hi"><b data-k="revenue">$354K</b><span>pilot revenue</span></li>
-                                    <li><b data-k="repeat">1,416</b><span>second-city buyers a year later, if 20% come back</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="mk-sowhat inline"><b>Key takeaway</b>Even at 3%, the pilot sells 4,200+ bottles. The real test is whether those buyers come back for a second city.</p>
-                        @Html.Raw(Foot("NYRR (2025); Bank of America (2025); Boston count approximate; athleteReg (2026); take rates are my assumptions", 9, 10))
-                    </div>
-
-                    <div class="mk-slide" data-title="Pilot &amp; KPIs" hidden>
-                        @Html.Raw(Top(owalaSections, 4, "Owala: The Marathon Series"))
-                        <h4 class="mk-h">A three-race pilot <em>tests demand</em> against clear targets before a year-round drop calendar.</h4>
-                        <ol class="mk-phases">
-                            <li><b>Pilot</b>Boston, Chicago and New York in 2027, licensed through the race organizers</li>
-                            <li><b>Expand</b>Add races like Austin and Los Angeles once two of three pilots hit their pre-order target</li>
-                            <li><b>Year-round drops</b>A race-calendar schedule, limited quantities per city</li>
-                        </ol>
-                        <figure class="mk-exhibit">
-                            <figcaption>Exhibit 4: Race-calendar drops</figcaption>
-                            <ol class="mk-timeline">
-                                <li><b>Apr 2027</b>Boston</li>
-                                <li><b>Oct 2027</b>Chicago</li>
-                                <li><b>Nov 2027</b>New York</li>
-                                <li><b>Feb 2028</b>Austin</li>
-                            </ol>
-                        </figure>
-                        <figure class="mk-exhibit">
-                            <figcaption>Exhibit 5: KPI targets</figcaption>
-                            <ul class="mk-metrics">
-                                <li><b>Sales</b>5%+ of finishers pre-order</li>
-                                <li><b>Sell-through</b>85%+ of race-weekend stock</li>
-                                <li><b>Repeat</b>20%+ buy a second city within a year</li>
-                                <li><b>Buzz</b>1 tagged post per 10 bottles sold</li>
-                            </ul>
-                        </figure>
-                        @Html.Raw(Foot("Targets are my own; the repeat target sits above the 17.6% of marathoners who run more than one marathon a year (RunRepeat)", 10, 10))
-                    </div>
-
-                    <style>
-                        /* cover: copy on the left, the podium fills the right; bottles drop onto the steps 3, 2, 1 */
-                        .mk-owala .ow-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 0 5cqw; background: radial-gradient(70% 90% at 72% 55%, #FFF8F4 0%, #FBEDE7 60%, #F5DFD6 100%); }
-                        .mk-owala .ow-copy { flex: 0 0 38%; display: flex; flex-direction: column; gap: 1.6cqw; padding-bottom: 4cqw; }
-                        .mk-owala .ow-title { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 6.4cqw, 76px); line-height: 0.98; letter-spacing: -0.02em; color: var(--choc); }
-                        .mk-owala .ow-title em { color: var(--acc); }
-                        .mk-owala .ow-lede { margin: 0; font-size: clamp(12px, 1.5cqw, 19px) !important; line-height: 1.45 !important; color: var(--ink); }
-                        .mk-owala .ow-podium { flex: 1; align-self: stretch; display: flex; align-items: flex-end; justify-content: center; gap: 0.6cqw; }
-                        .mk-owala .ow-step { flex: 0 0 13cqw; display: flex; flex-direction: column; align-items: center; }
-                        .mk-owala .ow-bottle { width: auto; height: 23cqw; margin-bottom: -0.4cqw; filter: drop-shadow(0 1.2cqw 1.2cqw rgba(80, 40, 30, 0.28)); opacity: 0; transform: translateY(-14cqw); }
-                        .mk-owala .ow-step.p1 .ow-bottle { height: 27cqw; }
-                        .mk-owala .ow-step.in .ow-bottle { opacity: 1; transform: none; transition: opacity 0.2s ease, transform 0.55s cubic-bezier(.3, 1.45, .5, 1); }
-                        .mk-owala .ow-step.out .ow-bottle { opacity: 0; transform: translateY(2cqw); transition: opacity 0.35s ease, transform 0.35s ease; }
-                        .mk-owala .ow-block { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.6cqw; padding-top: 1.2cqw; border-radius: 0.8cqw 0.8cqw 0 0; background: linear-gradient(180deg, #FFFFFF, #F4E6E0); box-shadow: inset 0 0 0 1px var(--line), 0 -0.4cqw 1.6cqw -1cqw rgba(80, 40, 30, 0.3); }
-                        .mk-owala .ow-step.p1 .ow-block { height: 12cqw; background: linear-gradient(180deg, #FFF6DD, #EFD9A0); }
-                        .mk-owala .ow-step.p2 .ow-block { height: 9.5cqw; }
-                        .mk-owala .ow-step.p3 .ow-block { height: 7.6cqw; }
-                        .mk-owala .ow-block b { font-family: var(--serif); font-weight: 400; font-size: clamp(18px, 3cqw, 38px); line-height: 1; color: var(--choc); }
-                        .mk-owala .ow-plaque { display: flex; flex-direction: column; align-items: center; font-size: clamp(8px, 0.95cqw, 12px); line-height: 1.25; color: var(--muted); }
-                        .mk-owala .ow-plaque i { font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--choc); }
-                        .mk-owala .ow-plaque em { font-style: normal; font-variant-numeric: tabular-nums; }
-                        /* the mean intro: one gray bottle alone, stamped and turned down, then the podium fills */
-                        .mk-owala .ow-podium { position: relative; }
-                        .mk-owala .ow-lede b { color: var(--acc); font-weight: 700; }
-                        .mk-owala .ow-lede { opacity: 0.35; transition: opacity 0.5s ease; }
-                        .mk-owala .ow-cover.earn .ow-lede { opacity: 1; }
-                        .mk-owala .ow-podium.lonely .ow-step.p1 .ow-bottle { filter: grayscale(1) brightness(1.05) drop-shadow(0 1.2cqw 1.2cqw rgba(80, 40, 30, 0.2)); }
-                        .mk-owala .ow-podium.lonely .ow-plaque { opacity: 0; }
-                        .mk-owala .ow-stamp { position: absolute; z-index: 3; left: 50%; top: 34%; padding: 0.6cqw 1.6cqw; border: 0.35cqw solid #C0392B; border-radius: 0.6cqw; color: #C0392B; background: rgba(255, 248, 244, 0.85);
-                            font: 900 clamp(16px, 3cqw, 38px)/1 system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; opacity: 0; transform: translate(-50%, -50%) rotate(-12deg) scale(2.2); pointer-events: none; }
-                        .mk-owala .ow-podium.stamped .ow-stamp { opacity: 1; transform: translate(-50%, -50%) rotate(-12deg) scale(1); transition: transform 0.22s cubic-bezier(.5, 0, .5, 1.4), opacity 0.1s; }
-                        .mk-owala .ow-cart { position: absolute; z-index: 3; right: 0; top: 4%; display: flex; align-items: center; gap: 1cqw; padding: 0.9cqw 1.2cqw; border-radius: 1cqw; background: #FFFFFF; box-shadow: 0 1cqw 2cqw -1cqw rgba(80, 40, 30, 0.45);
-                            font: 600 clamp(9px, 1.1cqw, 14px) system-ui, sans-serif; color: var(--choc); opacity: 0; transform: translateY(-1cqw); transition: opacity 0.3s, transform 0.3s; }
-                        .mk-owala .ow-cart i { font-style: normal; padding: 0.4cqw 0.9cqw; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); transition: background 0.15s, color 0.15s; }
-                        .mk-owala .ow-podium.lonely .ow-cart { opacity: 1; transform: none; }
-                        .mk-owala .ow-podium.nope .ow-cart i { background: var(--choc); border-color: var(--choc); color: #FFF; }
-                        .mk-owala .ow-podium.nope .ow-cart { animation: owShake 0.35s ease; }
-                        @@keyframes owShake { 25% { transform: translateX(-0.6cqw); } 75% { transform: translateX(0.6cqw); } }
-                        .mk-owala .ow-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 1; font-family: var(--serif); font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--mul); }
-
-                        /* market: growth bars and the rival scoreboard */
-                        .ow-two { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; align-items: center; min-height: 0; }
-                        .ow-bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; align-items: end; height: 20cqw; border-bottom: 1px solid var(--line); }
-                        .ow-bars li { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 0.5cqw; height: 100%; text-align: center; }
-                        .ow-bars li::before { content: ""; order: 1; width: 70%; height: calc(var(--h) * 0.4cqw); border-radius: 0.8cqw 0.8cqw 0 0; background: var(--acc); }
-                        .ow-bars li.neg::before { background: repeating-linear-gradient(135deg, var(--acc-soft) 0 0.6cqw, #F3CFC4 0.6cqw 1.2cqw); }
-                        .ow-bars b { order: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(16px, 2.4cqw, 30px); color: var(--choc); }
-                        .ow-bars span { order: 2; font-size: clamp(10px, 1cqw, 13px) !important; color: var(--muted); line-height: 1.3; margin-bottom: -4cqw; height: 3.6cqw; }
-                        .ow-bars { margin-bottom: 4cqw; }
-                        .ow-rivals { display: grid; gap: 0.8cqw; }
-                        .ow-rivals li { display: grid; grid-template-columns: 8cqw 1fr; gap: 1.2cqw; align-items: center; padding: 0.9cqw 1.2cqw; border-radius: 1.2cqw; background: rgba(255, 255, 255, 0.9); border: 1px solid var(--line); }
-                        .ow-rivals b { font-family: var(--serif); font-weight: 400; font-size: clamp(18px, 2.4cqw, 30px); color: var(--mul); }
-                        .ow-rivals strong { color: var(--choc); }
-                        .ow-rivals li.hi { background: var(--acc); border-color: var(--acc); }
-                        .ow-rivals li.hi b, .ow-rivals li.hi span, .ow-rivals li.hi strong { color: #FFF8F6; }
-
-                        /* business case: reach table and the take-rate slider */
-                        .ow-table { width: 100%; border-collapse: collapse; font-size: clamp(12px, 1.4cqw, 17px); }
-                        .ow-table th, .ow-table td { padding: 0.8cqw 0.4cqw; border-bottom: 1px solid var(--line); }
-                        .ow-table th { text-align: left; font-family: var(--serif); font-weight: 400; color: var(--choc); }
-                        .ow-table th small { margin-left: 0.6cqw; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 0.7em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-                        .ow-table td { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
-                        .ow-table tr.sum th, .ow-table tr.sum td { border-bottom: none; font-weight: 700; color: var(--acc); }
-                        .ow-note { font-size: clamp(10px, 1.05cqw, 13px) !important; color: var(--muted); }
-                        .ow-calc { display: flex; flex-direction: column; gap: 1.2cqw; padding: 1.8cqw; border-radius: 1.4cqw; background: rgba(255, 255, 255, 0.9); border: 1px solid var(--line); }
-                        .ow-calc output { color: var(--choc); font-size: 1.3em; letter-spacing: 0; }
-                        .ow-calc input[type=range] { width: 100%; accent-color: var(--acc); cursor: var(--cursor-hot, pointer); }
-                        .ow-out { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1cqw; }
-                        .ow-out li { padding: 1.2cqw; border-radius: 1.2cqw; background: var(--acc-soft); }
-                        .ow-out li.hi { background: var(--acc); }
-                        .ow-out li.hi b, .ow-out li.hi span { color: #FFF8F6; }
-                        .ow-out b { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(20px, 2.8cqw, 36px); line-height: 1.05; color: var(--choc); font-variant-numeric: tabular-nums; }
-                        .ow-out span { font-size: clamp(10px, 1.05cqw, 13px) !important; color: var(--ink); line-height: 1.3; }
-
-                        @@media (max-width: 800px) {
-                            .mk-owala .ow-cover { flex-direction: column; align-items: stretch; min-height: 0; padding: 28px 18px 0; gap: 18px; }
-                            .mk-owala .ow-copy { flex: none; padding-bottom: 0; gap: 10px; }
-                            .mk-owala .ow-podium { gap: 4px; }
-                            .mk-owala .ow-step { flex: 0 0 30%; }
-                            .mk-owala .ow-bottle { height: 170px; } .mk-owala .ow-step.p1 .ow-bottle { height: 195px; }
-                            .mk-owala .ow-step.p1 .ow-block { height: 84px; } .mk-owala .ow-step.p2 .ow-block { height: 62px; } .mk-owala .ow-step.p3 .ow-block { height: 46px; }
-                            .mk-owala .ow-block { padding-top: 8px; gap: 3px; }
-                            .mk-owala .ow-sig { display: none; }
-                            .ow-two, .ow-out { grid-template-columns: 1fr; gap: 14px; }
-                            .ow-bars { height: 160px; } .ow-bars li::before { height: calc(var(--h) * 3px); }
-                            .ow-bars span { margin-bottom: -36px; height: 32px; } .ow-bars { margin-bottom: 40px; }
-                            .ow-rivals li { grid-template-columns: 70px 1fr; }
-                        }
-                    </style>
-
-                </div>
-                @* ‹ › sit beside the slide menu, outside the slide, so they never cover what's on it *@
-                <div class="mk-nav-row">
-                    <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
-                    <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
-                    <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
-                </div>
-            </div>
-
-            <div class="mk-info">
-                <div>
-                    <h3 id="mk-title-owala">Owala: The Marathon Series</h3>
-                    <p class="mp-proof-sub">A marketing plan to turn a bottle people buy once into one they collect. Built solo over a semester for MKT 337.</p>
-                </div>
-                <ul class="mp-proof-list">
-                    <li>Diagnosed why Owala’s 400%+ online surge doesn’t bring buyers back: a one-and-done product, trend dependence, no ecosystem and no identity</li>
-                    <li>Sized the opportunity with verified data: a cooling category, rivals slowing, and runners who already collect races (20,000+ Six Star finishers)</li>
-                    <li>Priced the bottle at $49.99 on Owala’s existing +$10 custom fee, benchmarked against YETI’s $15 licensed-logo fee</li>
-                    <li>Built a pilot business case for Boston, Chicago and New York (~141,600 finishers) with a live take-rate model and KPI targets</li>
-                </ul>
-            </div>
-        </div>
 
     </div>
 
@@ -445,6 +104,7 @@
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-starbucks" data-arch="starbucks" tabindex="-1"><b>Starbucks</b><span>Product management</span></button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-wendys" data-arch="wendys" tabindex="-1"><b>Wendy’s</b><span>Competitive strategy</span></button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-crowdstrike" data-arch="crowdstrike" tabindex="-1"><b>CrowdStrike</b><span>Industry analysis</span></button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="mk-proj-owala" data-arch="owala" tabindex="-1"><b>Owala</b><span>Marketing strategy</span></button>
             </div>
             @* ===================== FuelFlow ===================== *@
             <div class="mp-proj mk-ff" id="mk-proj-fuelflow" role="tabpanel" aria-labelledby="mk-title-fuelflow" hidden>
@@ -978,6 +638,346 @@
     
             @* ===================== CrowdStrike ===================== *@
             <partial name="_CrowdStrikeDeck" />
+            @* ===================== Owala ===================== *@
+            <div class="mp-proj mk-owala" id="mk-proj-owala" role="tabpanel" aria-labelledby="mk-title-owala" hidden>
+                <div class="mk-deck" role="group" aria-roledescription="slideshow" aria-label="Owala slides">
+                    <div class="mk-stage">
+
+                        @* cover: a race podium. Three city bottles land on the steps, third, then second, then first, each over a
+                           finish-time plaque like the engraving; every loop brings a new trio of cities, because the point is collecting them *@
+                        <div class="mk-slide ow-cover" data-title="Cover">
+                            <div class="ow-copy">
+                                <h4 class="ow-title">Nobody needs <em>a second Owala.</em></h4>
+                                <p class="ow-lede"><b>So make them earn one.</b> City-exclusive, engraved with your finish time, only sold to runners.</p>
+                            </div>
+                            <div class="ow-podium" role="img" aria-label="One plain gray Owala sits alone on a three-step podium, stamped one and done, while a pop-up asking to add a second bottle is turned down. Then Race Series bottles from three marathon cities land on first, second and third place over finish-time plaques.">
+                                <span class="ow-stamp" aria-hidden="true">One and done.</span>
+                                <span class="ow-cart" aria-hidden="true">Add a second FreeSip? <i>No thanks</i></span>
+                                @foreach (var (place, cls) in new[] { (2, "p2"), (1, "p1"), (3, "p3") })
+                                {
+                                    <div class="ow-step @cls">
+                                        <img class="ow-bottle" src="/images/projects/owala/bottles/boston.webp" alt="" width="246" height="922">
+                                        <div class="ow-block"><b>@place</b><span class="ow-plaque"><i data-ow-city>Boston</i><em data-ow-time>3:21:08</em></span></div>
+                                    </div>
+                                }
+                            </div>
+                            <span class="ow-sig" aria-hidden="true">suhani</span>
+                        </div>
+
+                        <div class="mk-slide" data-title="Summary" hidden>
+                            @Html.Raw(Top(owalaSections, 0, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">Owala can turn one-time buyers into <em>collectors</em> by selling bottles runners earn at the finish line.</h4>
+                            <ol class="mk-scr">
+                                <li><span>the situation</span><p>Owala’s online sales volume rose <b>400%+</b> from January to August 2024 with no discounting, on color drops that sell out in under an hour. Nothing brings a buyer back for a second bottle.</p></li>
+                                <li><span>the catch</span><p>The boom is cooling: bottle sales growth at U.S. sporting-goods stores fell from <b>38%</b> to <b>14%</b>, then turned negative, and Stanley’s direct sales fell about <b>20%</b> in 2025.</p></li>
+                                <li><span>the fix</span><p>Launch the <b>Race Series</b>: race-licensed city bottles, pre-sold at registration and engraved with each runner’s finish time. Pilot at Boston, Chicago and New York, about <b>142,000</b> finishers.</p></li>
+                            </ol>
+                            @Html.Raw(Foot("Particl (2024); Chowhound (2026); Circana via Modern Retail (2025); Consumer Edge via Modern Retail (2026); NYRR; Running USA", 2, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="Root causes" hidden>
+                            @Html.Raw(Top(owalaSections, 1, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">Owala’s demand is driven by <em>attention, not attachment</em>.</h4>
+                            <div class="mk-cards">
+                                <div><i>1</i><h5>One-and-done product</h5><p>A 40oz FreeSip lasts for years. Nobody needs a second one, so there’s no natural repurchase cycle.</p></div>
+                                <div><i>2</i><h5>Trend dependence</h5><p>Color drops sell out in under an hour, then demand resets until the next drop.</p></div>
+                                <div><i>3</i><h5>No ecosystem</h5><p>No collection, progression or community pulls customers back.</p></div>
+                                <div><i>4</i><h5>No identity</h5><p>Stylish and useful, but not tied to routine, achievement or meaning.</p></div>
+                            </div>
+                            <p class="mk-sowhat inline"><b>Key takeaway</b>Without a reason to come back, Owala risks becoming a trend rather than a brand.</p>
+                            @Html.Raw(Foot("Chowhound (2026); author analysis", 3, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="Market" hidden>
+                            @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">The drinkware boom is cooling, so the next win is <em>repeat buying, not reach</em>.</h4>
+                            <div class="ow-two">
+                                <figure class="mk-exhibit">
+                                    <figcaption>Exhibit 1: Bottle sales growth at U.S. sporting-goods stores</figcaption>
+                                    <ul class="ow-bars" role="img" aria-label="Growth was 38% in 2023, 14% in 2024, and below zero every month from September 2024 to February 2025">
+                                        <li style="--h: 38"><b>+38%</b><span>2023</span></li>
+                                        <li style="--h: 14"><b>+14%</b><span>2024</span></li>
+                                        <li class="neg" style="--h: 6"><b>below 0</b><span>Sep 2024 to Feb 2025, every month</span></li>
+                                    </ul>
+                                </figure>
+                                <div class="mk-side">
+                                    <p class="mk-exlabel">The leaders are slowing too</p>
+                                    <ul class="ow-rivals">
+                                        <li><b>−20%</b><span><strong>Stanley</strong> U.S. direct sales, 2025, after 300%+ growth in 2022</span></li>
+                                        <li><b>−1%</b><span><strong>YETI</strong> drinkware, FY2025, flat at $1.09B</span></li>
+                                        <li><b>−8.1%</b><span><strong>Hydro Flask</strong>’s parent segment, FY2026, on softer drinkware demand</span></li>
+                                        <li class="hi"><b>+400%</b><span><strong>Owala</strong> online sales volume, Jan to Aug 2024: it won the last wave on newness</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="mk-sowhat inline"><b>Key takeaway</b>New colors won Owala the last wave. In a cooling market, it needs fans who buy again.</p>
+                            @Html.Raw(Foot("Circana via Modern Retail (2025); Consumer Edge via Modern Retail (2026); YETI FY2025 results; Helen of Troy FY2026 10-K; Particl (2024)", 4, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="The runner" hidden>
+                            @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">Marathoners already <em>collect races</em>; they just have nothing to buy for it.</h4>
+                            <ul class="mk-numbers">
+                                <li><b>59,226</b><span>finishers at the 2025 New York City Marathon, the largest marathon ever run</span></li>
+                                <li><b>240K+</b><span>people applied to run New York in 2026; about 1% got in</span></li>
+                                <li><b>20,000+</b><span>runners have finished all six World Marathon Majors to earn a Six Star medal</span></li>
+                                <li class="hi"><b>17.6%</b><span>of marathoners run more than one marathon a year, so the collection builds across years</span></li>
+                            </ul>
+                            <p class="mk-sowhat inline"><b>Key takeaway</b>Runners chase cities and keep medals. A bottle for each race turns that habit into a repeat purchase.</p>
+                            @Html.Raw(Foot("NYRR (2025, 2026); Abbott World Marathon Majors; RunRepeat", 5, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="Positioning" hidden>
+                            @Html.Raw(Top(owalaSections, 2, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">Rivals win on function or identity; Owala sits <em>stuck in the middle</em>.</h4>
+                            <div class="mk-position">
+                                <figure class="mk-exhibit">
+                                    <figcaption>Exhibit 2: Drinkware positioning map</figcaption>
+                                    <svg viewBox="0 0 400 290" role="img" aria-label="Positioning map: Stanley and Hydro Flask lean toward identity, YETI and CamelBak toward function, and Owala moves from the middle to the high identity, emotional corner">
+                                        <defs><marker id="mk-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="mk-arrowhead" /></marker></defs>
+                                        <rect x="200" y="20" width="186" height="125" class="mk-zone" />
+                                        <line x1="200" y1="20" x2="200" y2="270" class="mk-axis" />
+                                        <line x1="14" y1="145" x2="386" y2="145" class="mk-axis" />
+                                        <text x="200" y="12" class="mk-axis-label" text-anchor="middle">High identity &amp; loyalty</text>
+                                        <text x="200" y="284" class="mk-axis-label" text-anchor="middle">Low attachment</text>
+                                        <text x="16" y="138" class="mk-axis-label">Functional</text>
+                                        <text x="384" y="138" class="mk-axis-label" text-anchor="end">Emotional</text>
+                                        <circle cx="228" cy="62" r="6" class="mk-dot" /><text x="238" y="66" class="mk-brand">Stanley</text>
+                                        <circle cx="130" cy="90" r="6" class="mk-dot" /><text x="140" y="94" class="mk-brand">Hydro Flask</text>
+                                        <circle cx="96" cy="134" r="6" class="mk-dot" /><text x="106" y="128" class="mk-brand">YETI</text>
+                                        <circle cx="70" cy="220" r="6" class="mk-dot" /><text x="80" y="224" class="mk-brand">CamelBak</text>
+                                        <circle cx="222" cy="156" r="7" class="mk-dot owala-now" /><text x="232" y="174" class="mk-brand">Owala today</text>
+                                        <path d="M232,150 Q300,126 322,64" class="mk-move" marker-end="url(#mk-arrow)" />
+                                        <circle cx="330" cy="52" r="9" class="mk-dot owala" /><text x="330" y="36" class="mk-brand strong" text-anchor="middle">Owala + Race Series</text>
+                                    </svg>
+                                </figure>
+                                <div class="mk-side">
+                                    <p class="mk-exlabel">How rivals retain</p>
+                                    <ul class="mk-kpis text">
+                                        <li><b>Stanley</b>collab drops and culture; 26% of U.S. drinkware dollars in 2024</li>
+                                        <li><b>Hydro Flask</b>personalization and daily wellness routines</li>
+                                        <li><b>YETI</b>durability and a broad ecosystem; 60% of sales are direct</li>
+                                        <li><b>CamelBak</b>functional necessity for athletes</li>
+                                    </ul>
+                                    <p class="mk-sowhat"><b>Key takeaway</b>The open space is high identity plus emotional value, and achievement can own it.</p>
+                                </div>
+                            </div>
+                            @Html.Raw(Foot("Circana (2025); YETI FY2025 results; author analysis", 6, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="The Race Series" hidden>
+                            @Html.Raw(Top(owalaSections, 3, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">The Race Series makes each bottle <em>a record of achievement</em> worth collecting.</h4>
+                            <div class="mk-proto">
+                                <ol class="mk-callouts">
+                                    <li><b>City-exclusive design</b>Race-licensed art for every city, refreshed each year</li>
+                                    <li><b>Engraved with your time</b>Name, finish time and date, using the engraving Owala already sells online</li>
+                                    <li><b>Runners only</b>Sold with race registration, in limited numbers per city</li>
+                                    <li><b>Collect the cities</b>“Which races have you run?” becomes the reason to come back</li>
+                                </ol>
+                                @* build your own race bottle: pick a city, type a name and a finish time, and it's engraved live *@
+                                <div class="ow-build">
+                                    <figure class="ow-hero" aria-live="polite">
+                                        <img class="ow-hero-img" loading="lazy" src="/images/projects/owala/bottles/austin.webp" alt="The Austin Marathon race-edition Owala bottle">
+                                        <span class="ow-eng-time">4:12:36</span>
+                                        <svg class="ow-eng-name" viewBox="0 0 200 64" role="img" aria-label="Engraved name"><title>Tap to engrave your name</title><path id="owArc" d="M 10 56 Q 100 14 190 56" fill="none"/><text text-anchor="middle"><textPath href="#owArc" startOffset="50%">YOUR NAME</textPath></text></svg>
+                                    </figure>
+                                    <div class="ow-controls">
+                                        <label class="ow-label" for="owName">Engrave your name</label>
+                                        <input id="owName" class="ow-input ow-nudge" maxlength="12" placeholder="Type your name to engrave it" autocomplete="off">
+                                        <label class="ow-label" for="owTime">Your finish time</label>
+                                        <input id="owTime" class="ow-input" maxlength="8" placeholder="4:12:36" autocomplete="off" inputmode="numeric" pattern="[0-9:]*">
+                                        <p class="ow-label">Pick your race <span class="ow-count">1 of 8 collected</span></p>
+                                        <div class="ow-lineup" role="group" aria-label="Race city"><button type="button" data-city="austin" aria-pressed="true" aria-label="Austin"><img src="/images/projects/owala/bottles/austin.webp" alt="" loading="lazy"></button><button type="button" data-city="nyc" aria-pressed="false" aria-label="New York"><img src="/images/projects/owala/bottles/nyc.webp" alt="" loading="lazy"></button><button type="button" data-city="sf" aria-pressed="false" aria-label="San Francisco"><img src="/images/projects/owala/bottles/sf.webp" alt="" loading="lazy"></button><button type="button" data-city="neworleans" aria-pressed="false" aria-label="New Orleans"><img src="/images/projects/owala/bottles/neworleans.webp" alt="" loading="lazy"></button><button type="button" data-city="boston" aria-pressed="false" aria-label="Boston"><img src="/images/projects/owala/bottles/boston.webp" alt="" loading="lazy"></button><button type="button" data-city="seattle" aria-pressed="false" aria-label="Seattle"><img src="/images/projects/owala/bottles/seattle.webp" alt="" loading="lazy"></button><button type="button" data-city="miami" aria-pressed="false" aria-label="Miami"><img src="/images/projects/owala/bottles/miami.webp" alt="" loading="lazy"></button><button type="button" data-city="lasvegas" aria-pressed="false" aria-label="Las Vegas"><img src="/images/projects/owala/bottles/lasvegas.webp" alt="" loading="lazy"></button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.Raw(Foot("Owala custom shop; author concept and design", 7, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="4 P’s" hidden>
+                            @Html.Raw(Top(owalaSections, 3, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">A proven $10 premium and a runners-only channel turn the bottle into <em>a keepsake</em>.</h4>
+                            <div class="mk-ps">
+                                <div><h5>Product</h5><p>The 40oz FreeSip in race-licensed city art, engraved with name, finish time and date.</p><p class="mk-why-p">Limited Owala drops already sell out in under an hour</p></div>
+                                <div><h5>Price</h5><p><b class="mk-price">$39.99 → $49.99</b>List price plus the +$10 Owala already charges for custom bottles. YETI charges $15 for a licensed logo.</p><p class="mk-why-p">A premium shoppers already pay, so nothing new to test</p></div>
+                                <div><h5>Place</h5><p>An add-on at race registration, then pickup at the expo or a finish-line pop-up.</p><p class="mk-why-p">Only 7% of non-runners buy marathon merch: sell to the runner</p></div>
+                                <div><h5>Promotion</h5><p>Local run clubs and running micro-influencers before each race, then shared finish-line photos.</p><p class="mk-why-p">Run clubs on Strava grew 3.5x in 2025</p></div>
+                            </div>
+                            @Html.Raw(Foot("Owala; YETI custom FAQ; Chowhound (2026); Brand Finance (2025); Strava Year in Sport (2025)", 8, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="Business case" hidden>
+                            @Html.Raw(Top(owalaSections, 4, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">Three pilot races reach <em>~142,000 finishers</em>; a 5% take rate is worth about $354K.</h4>
+                            <div class="ow-two">
+                                <figure class="mk-exhibit">
+                                    <figcaption>Exhibit 3: Pilot races, 2025 finishers</figcaption>
+                                    <table class="ow-table">
+                                        <tbody>
+                                            <tr><th>Boston <small>April</small></th><td>~28,400</td></tr>
+                                            <tr><th>Chicago <small>October</small></th><td>54,000+</td></tr>
+                                            <tr><th>New York <small>November</small></th><td>59,226</td></tr>
+                                            <tr class="sum"><th>Pilot reach</th><td>~141,600</td></tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="ow-note">At $49.99 a bottle. Race merch usually sells for $20 to $30, so this is a premium keepsake and I plan on a cautious take rate.</p>
+                                </figure>
+                                <div class="ow-calc" data-reach="141600" data-price="49.99">
+                                    <label class="mk-exlabel" for="owRate">Share of finishers who pre-order: <output id="owRateOut">5%</output></label>
+                                    <input id="owRate" type="range" min="1" max="10" step="1" value="5">
+                                    <ul class="ow-out">
+                                        <li><b data-k="bottles">7,080</b><span>bottles sold</span></li>
+                                        <li class="hi"><b data-k="revenue">$354K</b><span>pilot revenue</span></li>
+                                        <li><b data-k="repeat">1,416</b><span>second-city buyers a year later, if 20% come back</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="mk-sowhat inline"><b>Key takeaway</b>Even at 3%, the pilot sells 4,200+ bottles. The real test is whether those buyers come back for a second city.</p>
+                            @Html.Raw(Foot("NYRR (2025); Bank of America (2025); Boston count approximate; athleteReg (2026); take rates are my assumptions", 9, 10))
+                        </div>
+
+                        <div class="mk-slide" data-title="Pilot &amp; KPIs" hidden>
+                            @Html.Raw(Top(owalaSections, 4, "Owala: The Marathon Series"))
+                            <h4 class="mk-h">A three-race pilot <em>tests demand</em> against clear targets before a year-round drop calendar.</h4>
+                            <ol class="mk-phases">
+                                <li><b>Pilot</b>Boston, Chicago and New York in 2027, licensed through the race organizers</li>
+                                <li><b>Expand</b>Add races like Austin and Los Angeles once two of three pilots hit their pre-order target</li>
+                                <li><b>Year-round drops</b>A race-calendar schedule, limited quantities per city</li>
+                            </ol>
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 4: Race-calendar drops</figcaption>
+                                <ol class="mk-timeline">
+                                    <li><b>Apr 2027</b>Boston</li>
+                                    <li><b>Oct 2027</b>Chicago</li>
+                                    <li><b>Nov 2027</b>New York</li>
+                                    <li><b>Feb 2028</b>Austin</li>
+                                </ol>
+                            </figure>
+                            <figure class="mk-exhibit">
+                                <figcaption>Exhibit 5: KPI targets</figcaption>
+                                <ul class="mk-metrics">
+                                    <li><b>Sales</b>5%+ of finishers pre-order</li>
+                                    <li><b>Sell-through</b>85%+ of race-weekend stock</li>
+                                    <li><b>Repeat</b>20%+ buy a second city within a year</li>
+                                    <li><b>Buzz</b>1 tagged post per 10 bottles sold</li>
+                                </ul>
+                            </figure>
+                            @Html.Raw(Foot("Targets are my own; the repeat target sits above the 17.6% of marathoners who run more than one marathon a year (RunRepeat)", 10, 10))
+                        </div>
+
+                        <style>
+                            /* cover: copy on the left, the podium fills the right; bottles drop onto the steps 3, 2, 1 */
+                            .mk-owala .ow-cover { flex-direction: row; align-items: center; gap: 3cqw; padding: 4cqw 4cqw 0 5cqw; background: radial-gradient(70% 90% at 72% 55%, #FFF8F4 0%, #FBEDE7 60%, #F5DFD6 100%); }
+                            .mk-owala .ow-copy { flex: 0 0 38%; display: flex; flex-direction: column; gap: 1.6cqw; padding-bottom: 4cqw; }
+                            .mk-owala .ow-title { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 6.4cqw, 76px); line-height: 0.98; letter-spacing: -0.02em; color: var(--choc); }
+                            .mk-owala .ow-title em { color: var(--acc); }
+                            .mk-owala .ow-lede { margin: 0; font-size: clamp(12px, 1.5cqw, 19px) !important; line-height: 1.45 !important; color: var(--ink); }
+                            .mk-owala .ow-podium { flex: 1; align-self: stretch; display: flex; align-items: flex-end; justify-content: center; gap: 0.6cqw; }
+                            .mk-owala .ow-step { flex: 0 0 13cqw; display: flex; flex-direction: column; align-items: center; }
+                            .mk-owala .ow-bottle { width: auto; height: 23cqw; margin-bottom: -0.4cqw; filter: drop-shadow(0 1.2cqw 1.2cqw rgba(80, 40, 30, 0.28)); opacity: 0; transform: translateY(-14cqw); }
+                            .mk-owala .ow-step.p1 .ow-bottle { height: 27cqw; }
+                            .mk-owala .ow-step.in .ow-bottle { opacity: 1; transform: none; transition: opacity 0.2s ease, transform 0.55s cubic-bezier(.3, 1.45, .5, 1); }
+                            .mk-owala .ow-step.out .ow-bottle { opacity: 0; transform: translateY(2cqw); transition: opacity 0.35s ease, transform 0.35s ease; }
+                            .mk-owala .ow-block { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.6cqw; padding-top: 1.2cqw; border-radius: 0.8cqw 0.8cqw 0 0; background: linear-gradient(180deg, #FFFFFF, #F4E6E0); box-shadow: inset 0 0 0 1px var(--line), 0 -0.4cqw 1.6cqw -1cqw rgba(80, 40, 30, 0.3); }
+                            .mk-owala .ow-step.p1 .ow-block { height: 12cqw; background: linear-gradient(180deg, #FFF6DD, #EFD9A0); }
+                            .mk-owala .ow-step.p2 .ow-block { height: 9.5cqw; }
+                            .mk-owala .ow-step.p3 .ow-block { height: 7.6cqw; }
+                            .mk-owala .ow-block b { font-family: var(--serif); font-weight: 400; font-size: clamp(18px, 3cqw, 38px); line-height: 1; color: var(--choc); }
+                            .mk-owala .ow-plaque { display: flex; flex-direction: column; align-items: center; font-size: clamp(8px, 0.95cqw, 12px); line-height: 1.25; color: var(--muted); }
+                            .mk-owala .ow-plaque i { font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--choc); }
+                            .mk-owala .ow-plaque em { font-style: normal; font-variant-numeric: tabular-nums; }
+                            /* the mean intro: one gray bottle alone, stamped and turned down, then the podium fills */
+                            .mk-owala .ow-podium { position: relative; }
+                            .mk-owala .ow-lede b { color: var(--acc); font-weight: 700; }
+                            .mk-owala .ow-lede { opacity: 0.35; transition: opacity 0.5s ease; }
+                            .mk-owala .ow-cover.earn .ow-lede { opacity: 1; }
+                            .mk-owala .ow-podium.lonely .ow-step.p1 .ow-bottle { filter: grayscale(1) brightness(1.05) drop-shadow(0 1.2cqw 1.2cqw rgba(80, 40, 30, 0.2)); }
+                            .mk-owala .ow-podium.lonely .ow-plaque { opacity: 0; }
+                            .mk-owala .ow-stamp { position: absolute; z-index: 3; left: 50%; top: 34%; padding: 0.6cqw 1.6cqw; border: 0.35cqw solid #C0392B; border-radius: 0.6cqw; color: #C0392B; background: rgba(255, 248, 244, 0.85);
+                                font: 900 clamp(16px, 3cqw, 38px)/1 system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; opacity: 0; transform: translate(-50%, -50%) rotate(-12deg) scale(2.2); pointer-events: none; }
+                            .mk-owala .ow-podium.stamped .ow-stamp { opacity: 1; transform: translate(-50%, -50%) rotate(-12deg) scale(1); transition: transform 0.22s cubic-bezier(.5, 0, .5, 1.4), opacity 0.1s; }
+                            .mk-owala .ow-cart { position: absolute; z-index: 3; right: 0; top: 4%; display: flex; align-items: center; gap: 1cqw; padding: 0.9cqw 1.2cqw; border-radius: 1cqw; background: #FFFFFF; box-shadow: 0 1cqw 2cqw -1cqw rgba(80, 40, 30, 0.45);
+                                font: 600 clamp(9px, 1.1cqw, 14px) system-ui, sans-serif; color: var(--choc); opacity: 0; transform: translateY(-1cqw); transition: opacity 0.3s, transform 0.3s; }
+                            .mk-owala .ow-cart i { font-style: normal; padding: 0.4cqw 0.9cqw; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); transition: background 0.15s, color 0.15s; }
+                            .mk-owala .ow-podium.lonely .ow-cart { opacity: 1; transform: none; }
+                            .mk-owala .ow-podium.nope .ow-cart i { background: var(--choc); border-color: var(--choc); color: #FFF; }
+                            .mk-owala .ow-podium.nope .ow-cart { animation: owShake 0.35s ease; }
+                            @@keyframes owShake { 25% { transform: translateX(-0.6cqw); } 75% { transform: translateX(0.6cqw); } }
+                            .mk-owala .ow-sig { position: absolute; right: 3cqw; bottom: 2.2cqw; z-index: 1; font-family: var(--serif); font-style: italic; font-size: clamp(10px, 1.1cqw, 13px); color: var(--mul); }
+
+                            /* market: growth bars and the rival scoreboard */
+                            .ow-two { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; align-items: center; min-height: 0; }
+                            .ow-bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2cqw; align-items: end; height: 20cqw; border-bottom: 1px solid var(--line); }
+                            .ow-bars li { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 0.5cqw; height: 100%; text-align: center; }
+                            .ow-bars li::before { content: ""; order: 1; width: 70%; height: calc(var(--h) * 0.4cqw); border-radius: 0.8cqw 0.8cqw 0 0; background: var(--acc); }
+                            .ow-bars li.neg::before { background: repeating-linear-gradient(135deg, var(--acc-soft) 0 0.6cqw, #F3CFC4 0.6cqw 1.2cqw); }
+                            .ow-bars b { order: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(16px, 2.4cqw, 30px); color: var(--choc); }
+                            .ow-bars span { order: 2; font-size: clamp(10px, 1cqw, 13px) !important; color: var(--muted); line-height: 1.3; margin-bottom: -4cqw; height: 3.6cqw; }
+                            .ow-bars { margin-bottom: 4cqw; }
+                            .ow-rivals { display: grid; gap: 0.8cqw; }
+                            .ow-rivals li { display: grid; grid-template-columns: 8cqw 1fr; gap: 1.2cqw; align-items: center; padding: 0.9cqw 1.2cqw; border-radius: 1.2cqw; background: rgba(255, 255, 255, 0.9); border: 1px solid var(--line); }
+                            .ow-rivals b { font-family: var(--serif); font-weight: 400; font-size: clamp(18px, 2.4cqw, 30px); color: var(--mul); }
+                            .ow-rivals strong { color: var(--choc); }
+                            .ow-rivals li.hi { background: var(--acc); border-color: var(--acc); }
+                            .ow-rivals li.hi b, .ow-rivals li.hi span, .ow-rivals li.hi strong { color: #FFF8F6; }
+
+                            /* business case: reach table and the take-rate slider */
+                            .ow-table { width: 100%; border-collapse: collapse; font-size: clamp(12px, 1.4cqw, 17px); }
+                            .ow-table th, .ow-table td { padding: 0.8cqw 0.4cqw; border-bottom: 1px solid var(--line); }
+                            .ow-table th { text-align: left; font-family: var(--serif); font-weight: 400; color: var(--choc); }
+                            .ow-table th small { margin-left: 0.6cqw; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 0.7em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+                            .ow-table td { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+                            .ow-table tr.sum th, .ow-table tr.sum td { border-bottom: none; font-weight: 700; color: var(--acc); }
+                            .ow-note { font-size: clamp(10px, 1.05cqw, 13px) !important; color: var(--muted); }
+                            .ow-calc { display: flex; flex-direction: column; gap: 1.2cqw; padding: 1.8cqw; border-radius: 1.4cqw; background: rgba(255, 255, 255, 0.9); border: 1px solid var(--line); }
+                            .ow-calc output { color: var(--choc); font-size: 1.3em; letter-spacing: 0; }
+                            .ow-calc input[type=range] { width: 100%; accent-color: var(--acc); cursor: var(--cursor-hot, pointer); }
+                            .ow-out { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1cqw; }
+                            .ow-out li { padding: 1.2cqw; border-radius: 1.2cqw; background: var(--acc-soft); }
+                            .ow-out li.hi { background: var(--acc); }
+                            .ow-out li.hi b, .ow-out li.hi span { color: #FFF8F6; }
+                            .ow-out b { display: block; font-family: var(--serif); font-weight: 400; font-size: clamp(20px, 2.8cqw, 36px); line-height: 1.05; color: var(--choc); font-variant-numeric: tabular-nums; }
+                            .ow-out span { font-size: clamp(10px, 1.05cqw, 13px) !important; color: var(--ink); line-height: 1.3; }
+
+                            @@media (max-width: 800px) {
+                                .mk-owala .ow-cover { flex-direction: column; align-items: stretch; min-height: 0; padding: 28px 18px 0; gap: 18px; }
+                                .mk-owala .ow-copy { flex: none; padding-bottom: 0; gap: 10px; }
+                                .mk-owala .ow-podium { gap: 4px; }
+                                .mk-owala .ow-step { flex: 0 0 30%; }
+                                .mk-owala .ow-bottle { height: 170px; } .mk-owala .ow-step.p1 .ow-bottle { height: 195px; }
+                                .mk-owala .ow-step.p1 .ow-block { height: 84px; } .mk-owala .ow-step.p2 .ow-block { height: 62px; } .mk-owala .ow-step.p3 .ow-block { height: 46px; }
+                                .mk-owala .ow-block { padding-top: 8px; gap: 3px; }
+                                .mk-owala .ow-sig { display: none; }
+                                .ow-two, .ow-out { grid-template-columns: 1fr; gap: 14px; }
+                                .ow-bars { height: 160px; } .ow-bars li::before { height: calc(var(--h) * 3px); }
+                                .ow-bars span { margin-bottom: -36px; height: 32px; } .ow-bars { margin-bottom: 40px; }
+                                .ow-rivals li { grid-template-columns: 70px 1fr; }
+                            }
+                        </style>
+
+                    </div>
+                    @* ‹ › sit beside the slide menu, outside the slide, so they never cover what's on it *@
+                    <div class="mk-nav-row">
+                        <button type="button" class="mk-step prev" data-go="-1" aria-label="Previous slide">‹</button>
+                        <div class="mk-chapters" role="group" aria-label="Jump to a slide"></div>
+                        <button type="button" class="mk-step next" data-go="1" aria-label="Next slide">›</button>
+                    </div>
+                </div>
+
+                <div class="mk-info">
+                    <div>
+                        <h3 id="mk-title-owala">Owala: The Marathon Series</h3>
+                        <p class="mp-proof-sub">A marketing plan to turn a bottle people buy once into one they collect. Built solo over a semester for MKT 337.</p>
+                    </div>
+                    <ul class="mp-proof-list">
+                        <li>Diagnosed why Owala’s 400%+ online surge doesn’t bring buyers back: a one-and-done product, trend dependence, no ecosystem and no identity</li>
+                        <li>Sized the opportunity with verified data: a cooling category, rivals slowing, and runners who already collect races (20,000+ Six Star finishers)</li>
+                        <li>Priced the bottle at $49.99 on Owala’s existing +$10 custom fee, benchmarked against YETI’s $15 licensed-logo fee</li>
+                        <li>Built a pilot business case for Boston, Chicago and New York (~141,600 finishers) with a live take-rate model and KPI targets</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
