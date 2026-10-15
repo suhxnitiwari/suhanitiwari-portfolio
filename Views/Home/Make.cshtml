@@ -537,15 +537,7 @@
             </ol>
         </div>
 
-        @* On the home page the four shelves start folded, so the page reaches Experience and the rest sooner.
-           The button opens them; a link to any shelf (the menu, the "what if" list) opens them too *@
-        @if (onHome)
-        {
-            <button type="button" class="make-open" aria-expanded="false" aria-controls="make-fold">
-                <span class="make-open-label">Explore my passions</span> <span class="make-open-sign" aria-hidden="true">+</span>
-            </button>
-        }
-        <div class="make-fold@(onHome ? "" : " open")" id="make-fold">
+        <div class="make-fold open" id="make-fold">
         @* Digital Art: one gallery wall that slides sideways; each piece opens large *@
         <div class="shelf art-shelf" id="art">
             <div class="shelf-head">
@@ -716,11 +708,6 @@
             </div>
             }
         </div>
-        @* the way out at the bottom of the shelves, so nobody has to scroll back up to fold them *@
-        @if (onHome)
-        {
-            <button type="button" class="make-open make-close" aria-controls="make-fold">Fold them away <span class="make-open-sign" aria-hidden="true">−</span></button>
-        }
         </div>
     </div>
 </section>
@@ -797,37 +784,4 @@
 
 <script src="~/js/shelves.js" asp-append-version="true"></script>
 <script src="~/js/trip-download.js" asp-append-version="true"></script>
-<script>
-    // Passions fold: the button opens and closes the shelves (a second one at the bottom folds them too); any link to a shelf opens them first, then lands on it
-    (() => {
-        const fold = document.getElementById('make-fold');
-        const btn = document.querySelector('.make-open');
-        if (!fold || !btn) return;
-        const shelves = ['art', 'writing', 'baking', 'traveling'];
-        const set = open => {
-            fold.classList.toggle('open', open);
-            btn.setAttribute('aria-expanded', open);
-            // once the shelves are open the top button steps aside; the one at the bottom folds them back up
-            btn.hidden = open;
-        };
-        btn.addEventListener('click', () => set(true));
-        // the bottom one only ever folds, then brings you back up to where Passions starts
-        document.querySelector('.make-close')?.addEventListener('click', () => { set(false); btn.scrollIntoView({ block: 'center' }); });
-        const openTo = id => {
-            if (!shelves.includes(id)) return false;
-            set(true);
-            requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }));
-            return true;
-        };
-        // links on this page or in the menu that point at a shelf
-        document.addEventListener('click', e => {
-            const a = e.target.closest('a[href*="#"]');
-            if (!a || a.pathname !== location.pathname) return;
-            if (openTo(a.hash.slice(1))) e.preventDefault();
-        });
-        // arriving at /#baking from another page, or the hash changing
-        openTo(location.hash.slice(1));
-        addEventListener('hashchange', () => openTo(location.hash.slice(1)));
-    })();
-</script>
 <script src="~/js/make-motion.js" asp-append-version="true"></script>
