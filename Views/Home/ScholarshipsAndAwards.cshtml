@@ -20,15 +20,15 @@
     // Notes on the scholarships are what each award recognizes, from its McCombs description
     var scholarships = new Honor[]
     {
-        new Honor("Gerald and Linda Ridgely Endowed Presidential Scholarship", From: "McCombs School of Business", Year: "2026–2027",
+        new Honor("Gerald and Linda Ridgely Endowed Presidential Scholarship", Year: "2026–2027",
                   Note: "For business students who exemplify student leadership on campus.", For: "Leadership"),
-        new Honor("Scott Hemsell Memorial Scholarship", From: "McCombs School of Business", Year: "2026–2027",
+        new Honor("Scott Hemsell Memorial Scholarship", Year: "2026–2027",
                   Note: "For students who show both interest and aptitude in Management Information Systems, in the classroom and beyond it.", For: "Information Systems")
     };
 
     var schoolAwards = new Honor[]
     {
-        new Honor("University Honors", From: "UT Austin", Year: "Spring 2025",
+        new Honor("University Honors", Year: "Spring 2025",
                   Note: "Recognized for distinguished academic achievement.", For: "Academics")
     };
 
@@ -131,10 +131,6 @@
     <div class="honors honors-@(only ?? "all")">
         <div>
             <p class="honors-label">@(only switch { "school" => "Scholarships & Honors", "service" => "Recognized for It", _ => "Scholarships & Awards" })</p>
-            @if (only == "school")
-            {
-                <p class="honors-sub">McCombs School of Business and UT Austin</p>
-            }
         </div>
         <ul class="honors-list">
             @foreach (var honor in shown)
