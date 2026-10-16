@@ -376,6 +376,20 @@
         color: #7A665F !important;
     }
 
+    /* on desktop the rankings fill the full height of the story beside them, so there's no white space under the tiles */
+    @@media (min-width: 901px) {
+        .mccombs-grid {
+            align-items: stretch;
+        }
+        .mccombs-stats {
+            height: 100%;
+            grid-auto-rows: 1fr;
+        }
+        .mccombs-stats li {
+            display: grid;
+        }
+    }
+
     @@media (max-width: 900px) {
         .mccombs-grid {
             grid-template-columns: 1fr;
