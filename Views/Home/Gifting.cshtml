@@ -1,0 +1,101 @@
+@* Gifting: what to get me. Stationery first, then the one bag I'd carry. Prices and stock from each brand's site, checked Oct 2026. *@
+@{
+    ViewData["Title"] = "Gifting";
+}
+<style>
+    @@font-face { font-family: 'Bodoni Moda'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(/fonts/bodoni-moda-latin-normal.woff2) format('woff2'); }
+    @@font-face { font-family: 'Bodoni Moda'; font-style: italic; font-weight: 400 700; font-display: swap; src: url(/fonts/bodoni-moda-latin-italic.woff2) format('woff2'); }
+
+    .gift-page { max-width: 1100px; margin: 0 auto; padding: 56px 24px 96px; color: #1E100A; }
+    .gift-kick { margin: 0 0 10px; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #76344E; }
+    .gift-title { margin: 0; font-family: 'Bodoni Moda', Georgia, serif; font-weight: 700; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; }
+    .gift-title em { color: #76344E; font-weight: 600; }
+    .gift-lede { max-width: 620px; margin: 18px 0 0; font-size: 1.05rem; line-height: 1.6; color: #5E4A44; }
+    .gift-h2 { margin: 56px 0 6px; font-family: 'Bodoni Moda', Georgia, serif; font-size: 1.7rem; font-weight: 700; }
+    .gift-sub { margin: 0 0 22px; color: #5E4A44; line-height: 1.55; }
+    .gift-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+    .gift-card { display: flex; flex-direction: column; gap: 8px; padding: 22px; border-radius: 14px; background: #FFF8F6; border: 1px solid #EBD6CF; box-shadow: 0 6px 18px -12px rgba(118, 52, 78, 0.35); }
+    .gift-brand { font-size: 0.7rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #8A6A62; }
+    .gift-name { margin: 0; font-family: 'Bodoni Moda', Georgia, serif; font-size: 1.2rem; font-weight: 700; line-height: 1.2; }
+    .gift-price { font-weight: 700; color: #76344E; }
+    .gift-why { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #5E4A44; }
+    .gift-tag { align-self: flex-start; margin-top: auto; padding: 4px 10px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; background: #F6E4E1; color: #76344E; }
+    .gift-tag.out { background: #EFEAEA; color: #7A6F6C; }
+    .gift-card a { color: inherit; }
+    .gift-note { margin-top: 18px; font-size: 0.85rem; color: #7A665F; line-height: 1.5; }
+    .gift-note a { color: #76344E; }
+</style>
+
+<main class="gift-page">
+    <p class="gift-kick">gifting</p>
+    <h1 class="gift-title">Things I’d actually <em>open.</em></h1>
+    <p class="gift-lede">People keep asking what to get me, so here’s the list. Stationery is the safe bet every time. If you want to go bigger, there’s one bag I keep coming back to.</p>
+
+    <h2 class="gift-h2">Stationery, for sure</h2>
+    <p class="gift-sub">I have enough journals. I will still buy another. These are the ones I’d pick off the shelf.</p>
+    <div class="gift-grid">
+        <article class="gift-card">
+            <span class="gift-brand">Rifle Paper Co.</span>
+            <h3 class="gift-name">Quilted Journal, Paisley</h3>
+            <span class="gift-price">$42</span>
+            <p class="gift-why">The one I’d grab first. Thick pages for the ideas I write down at 1am.</p>
+            <span class="gift-tag">Stationery</span>
+        </article>
+        <article class="gift-card">
+            <span class="gift-brand">Rifle Paper Co.</span>
+            <h3 class="gift-name">Embroidered Journal, Portico</h3>
+            <span class="gift-price">$34</span>
+            <p class="gift-why">Pretty enough to leave on the desk. Good for the journal I actually keep.</p>
+            <span class="gift-tag">Stationery</span>
+        </article>
+        <article class="gift-card">
+            <span class="gift-brand">Rifle Paper Co.</span>
+            <h3 class="gift-name">Letter Writing Set, Paisley</h3>
+            <span class="gift-price">$40</span>
+            <p class="gift-why">For the notes I write by hand and never send fast enough. Nobody gets enough real mail.</p>
+            <span class="gift-tag">Stationery</span>
+        </article>
+        <article class="gift-card">
+            <span class="gift-brand">Rifle Paper Co.</span>
+            <h3 class="gift-name">Gel Pen Set of 4, Paisley</h3>
+            <span class="gift-price">$19</span>
+            <p class="gift-why">Cheap, cute, and I will use all four. The small gift that still feels thought out.</p>
+            <span class="gift-tag">Stationery</span>
+        </article>
+        <article class="gift-card">
+            <span class="gift-brand">Rifle Paper Co.</span>
+            <h3 class="gift-name">Recipe Cards, Artichoke</h3>
+            <span class="gift-price">$15</span>
+            <p class="gift-why">For the baking. Every recipe I’ve ever kept got written on something like this.</p>
+            <span class="gift-tag">Stationery</span>
+        </article>
+        <article class="gift-card">
+            <span class="gift-brand">Rifle Paper Co.</span>
+            <h3 class="gift-name">Bookmark, Portico</h3>
+            <span class="gift-price">$10</span>
+            <p class="gift-why">The stocking stuffer. Goes in every book I’m reading at once.</p>
+            <span class="gift-tag">Stationery</span>
+        </article>
+    </div>
+
+    <h2 class="gift-h2">The one bag</h2>
+    <p class="gift-sub">Elizabeth Scarlett makes the bags I’d carry every day. Most of the bestsellers are sold out right now, but these two are in stock.</p>
+    <div class="gift-grid">
+        <article class="gift-card">
+            <span class="gift-brand">Elizabeth Scarlett</span>
+            <h3 class="gift-name">Safari Alphabet Open Flat Makeup Bag</h3>
+            <span class="gift-price">$74</span>
+            <p class="gift-why">Open flat so nothing gets lost at the bottom. The alphabet print is the one I’d pick.</p>
+            <span class="gift-tag">In stock</span>
+        </article>
+        <article class="gift-card">
+            <span class="gift-brand">Elizabeth Scarlett</span>
+            <h3 class="gift-name">Enchanted Alphabet Open Flat Makeup Bag</h3>
+            <span class="gift-price">$74</span>
+            <p class="gift-why">The same open-flat shape in a softer print. Pick whichever matches your bag.</p>
+            <span class="gift-tag">In stock</span>
+        </article>
+    </div>
+
+    <p class="gift-note">Prices and stock from <a href="https://riflepaperco.com/" target="_blank" rel="noopener">riflepaperco.com</a> and <a href="https://www.elizabethscarlett.com/en-us/collections/bestsellers" target="_blank" rel="noopener">Elizabeth Scarlett’s bestsellers</a>, checked October 2026. Check the links before you buy, since stock changes.</p>
+</main>

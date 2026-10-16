@@ -28,6 +28,10 @@ public class HomeController : Controller
     [Route("marketing")]
     public IActionResult Marketing() => View();
 
+    // Gifting: what to get me, stationery first
+    [Route("gifting")]
+    public IActionResult Gifting() => View();
+
     // one marketing study, shareable: suhanitiwari.com/marketing/glossier is the home page opened to the Glossier deck,
     // and its link preview shows that study's title, cover line and cover (the address bar shows the same link while you read it)
     [Route("marketing/{study}")]
