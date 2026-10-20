@@ -523,18 +523,6 @@
     <div class="listen-container shelf-container">
         <div class="shelf-intro">
             <h1 class="section-title">Passions</h1>
-            <p class="shelf-caption make-caption">These are the things I make when there is no assignment attached.</p>
-            @* the four shelves, each with what's on it; each one jumps to its shelf (and opens the fold) *@
-            <ol class="make-ifs" aria-label="On this page">
-                @foreach (var (num, shelf, holds, id) in new[] {
-                    ("01", "Digital Art", $"{artWall.Sum(c => c.Length)} pieces", "art"),
-                    ("02", "Writing", "4 pieces", "writing"),
-                    ("03", "Baking", "3 cakes, 6 recipes", "baking"),
-                    ("04", "Itineraries", "3 cities", "traveling") })
-                {
-                    <li><a href="#@id"><span class="make-if-num">@num</span><span class="make-if-shelf">@shelf <span aria-hidden="true">↓</span></span><span class="make-if-holds">@holds</span></a></li>
-                }
-            </ol>
         </div>
 
         <div class="make-fold open" id="make-fold">

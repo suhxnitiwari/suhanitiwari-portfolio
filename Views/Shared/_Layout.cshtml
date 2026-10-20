@@ -577,7 +577,7 @@
                         <div class="dropdown-menu-custom">
                             @for (var i = 0; i < work.Length; i++)
                             {
-                                <a href="@work[i].Url" class="dropdown-item-custom @(work[i].Page == currentPage ? "current" : "")"><span class="dropdown-num">@((i + 1).ToString("00"))</span>@work[i].Name</a>
+                                <a href="@work[i].Url" class="dropdown-item-custom @(work[i].Page == currentPage ? "current" : "")">@work[i].Name</a>
                             }
                         </div>
                     </li>
@@ -588,7 +588,7 @@
                         <div class="dropdown-menu-custom">
                             @for (var i = 0; i < study.Length; i++)
                             {
-                                <a href="@study[i].Url" class="dropdown-item-custom @(study[i].Page == currentPage ? "current" : "")"><span class="dropdown-num">@((i + 1).ToString("00"))</span>@study[i].Name</a>
+                                <a href="@study[i].Url" class="dropdown-item-custom @(study[i].Page == currentPage ? "current" : "")">@study[i].Name</a>
                             }
                         </div>
                     </li>
