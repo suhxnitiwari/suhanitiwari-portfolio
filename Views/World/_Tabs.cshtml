@@ -14,6 +14,7 @@
     };
 }
 <nav class="io-tabs" aria-label="Invite Only">
+    <a href="/" class="io-home">Take me home</a>
     @foreach (var t in tabs)
     {
         <a href="@t.Href" class="@(t.Key == Model ? "on" : null)" aria-current="@(t.Key == Model ? "page" : null)" id="@(t.Key == "family" ? "ioFamily" : null)" hidden="@(t.Key == "family")">@t.Label</a>
@@ -31,6 +32,10 @@
     })();
 </script>
 <style>
+    /* inside the locked rooms this bar is the only menu: the main navbar steps aside */
+    body:has(.io-tabs) nav.navbar { display: none !important; }
+    body:has(.io-tabs) .io-tabs { top: 0; }
+    .io-tabs .io-home { color: #8A4D57; }
     .io-tabs { position: sticky; top: 72px; z-index: 900; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 26px; padding: 12px 20px;
         background: rgba(250, 241, 239, 0.95); border-bottom: 1px solid #EBD5D0; backdrop-filter: blur(6px); }
     .io-tabs a, .io-tabs button { padding: 0; border: 0; background: none; font: 500 0.78rem system-ui, sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #2A1810; text-decoration: none; cursor: pointer; }
