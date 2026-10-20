@@ -15,11 +15,11 @@
 }
 <nav class="io-tabs" aria-label="Invite Only">
     <a href="/" class="io-home">Take me home</a>
+    <form method="post" action="/world/logout"><button type="submit">Lock up</button></form>
     @foreach (var t in tabs)
     {
         <a href="@t.Href" class="@(t.Key == Model ? "on" : null)" aria-current="@(t.Key == Model ? "page" : null)" id="@(t.Key == "family" ? "ioFamily" : null)" hidden="@(t.Key == "family")">@t.Label</a>
     }
-    <form method="post" action="/world/logout"><button type="submit">Lock up</button></form>
 </nav>
 <script>
     // sit just under the main menu, whatever its height; and family sees Just Tiwari Tales (the room checks again on the server)
