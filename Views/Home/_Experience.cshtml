@@ -1,5 +1,5 @@
-@* Experience: one open row per role, most recent first. Shared by the Work page and the home page,
-   so the roles only live here (same facts Sitara uses). *@
+@* Experience: a tab rail. Companies stack down the left with a thin divider beside them; the active one gets a bright bar and a lighter tile,
+   and its role opens on the right. Shared by the Work page and the home page, so the roles only live here (same facts Sitara uses). *@
 @{
     var jobs = new[]
     {
@@ -18,22 +18,72 @@
             "Learned to turn technical products into plain-language value: clients don’t buy “AI,” they buy outcomes they can measure. I brought the same instinct to discovery calls at Oracle."
         })
     };
+    // Each place this partial renders gets its own ids, so the Work page and the home page never clash.
+    var uid = Guid.NewGuid().ToString("N").Substring(0, 6);
 }
 <style>
-    /* Experience gets the most room on the page: one open row per role, the company set large,
-       a headline number, then the bullets. Rules between rows instead of cards. */
-    .job-list {
-        display: flex;
-        flex-direction: column;
-        border-top: 2px solid #1E100A;
+    .job-tabs {
+        display: grid;
+        grid-template-columns: minmax(0, 0.7fr) minmax(0, 2fr);
+        gap: 0;
+        align-items: start;
     }
 
-    .job {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-        gap: 48px;
-        padding: 34px 0;
-        border-bottom: 1px solid #E2C6C0;
+    /* the rail: companies stacked, a thin divider running down beside them */
+    .job-rail {
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid #E2C6C0;
+    }
+
+    .job-tab {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 14px 22px;
+        border: 0;
+        background: transparent;
+        text-align: left;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        color: #7A665F;
+        cursor: pointer;
+        transition: background-color .2s ease, color .2s ease;
+    }
+
+    .job-tab:hover {
+        color: #733642;
+    }
+
+    .job-tab:focus-visible {
+        outline: 2px solid #C9969E;
+        outline-offset: -2px;
+    }
+
+    /* the active company: a bright bar on the divider and a lighter tile behind it */
+    .job-tab[aria-selected="true"] {
+        color: #733642;
+        background: #F7EBE8;
+    }
+
+    .job-tab[aria-selected="true"]::before {
+        content: "";
+        position: absolute;
+        left: -1px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #733642;
+    }
+
+    .job-panel {
+        padding: 6px 0 6px 48px;
+    }
+
+    .job-panel[hidden] {
+        display: none;
     }
 
     .job-company {
@@ -44,7 +94,7 @@
         color: #733642;
     }
 
-    .job h3 {
+    .job-panel h3 {
         margin: 10px 0 0;
         font-family: Georgia, serif;
         font-size: 1.3em;
@@ -77,27 +127,54 @@
         color: #7A665F;
     }
 
-    .job ul {
-        margin: 0;
+    .job-panel ul {
+        margin: 26px 0 0;
         padding-left: 18px;
         font-size: 1.05em;
         line-height: 1.7;
         color: #1E100A;
     }
 
-    .job li + li {
+    .job-panel li + li {
         margin-top: 12px;
     }
 
-    .job li::marker {
+    .job-panel li::marker {
         color: #C9969E;
     }
 
     @@media (max-width: 800px) {
-        .job {
+        .job-tabs {
             grid-template-columns: 1fr;
-            gap: 18px;
-            padding: 26px 0;
+        }
+
+        /* on phones the rail becomes a row of tabs above the role */
+        .job-rail {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-left: 0;
+            margin-bottom: 18px;
+        }
+
+        .job-tab {
+            width: auto;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 1rem;
+        }
+
+        .job-tab[aria-selected="true"]::before {
+            display: none;
+        }
+
+        .job-tab[aria-selected="true"] {
+            background: #F7EBE8;
+            box-shadow: inset 0 0 0 1px #C9969E;
+        }
+
+        .job-panel {
+            padding: 0;
         }
 
         .job-company {
@@ -106,16 +183,25 @@
     }
 </style>
 
-<div class="job-list">
-    @foreach (var (when, title, company, place, stat, statLabel, points) in jobs)
+<div class="job-tabs" data-job-tabs="@uid">
+    <div class="job-rail" role="tablist" aria-label="Where I’ve worked">
+        @for (int i = 0; i < jobs.Length; i++)
+        {
+            var (_, _, company0, _, _, _, _) = jobs[i];
+            <button type="button" role="tab" class="job-tab" id="job-tab-@uid-@i"
+                    aria-controls="job-panel-@uid-@i" aria-selected="@(i == 0 ? "true" : "false")" tabindex="@(i == 0 ? "0" : "-1")"
+                    data-job-index="@i">@company0</button>
+        }
+    </div>
+
+    @for (int i = 0; i < jobs.Length; i++)
     {
-        <article class="job">
-            <div class="job-side">
-                <p class="job-company">@company</p>
-                <h3>@title</h3>
-                <p class="job-where">@when<br />@place</p>
-                <p class="job-stat"><b>@stat</b><span>@statLabel</span></p>
-            </div>
+        var (when, title, company, place, stat, statLabel, points) = jobs[i];
+        <article class="job-panel" role="tabpanel" id="job-panel-@uid-@i" aria-labelledby="job-tab-@uid-@i" hidden="@(i != 0)">
+            <p class="job-company">@company</p>
+            <h3>@title</h3>
+            <p class="job-where">@when<br />@place</p>
+            <p class="job-stat"><b>@stat</b><span>@statLabel</span></p>
             <ul>
                 @foreach (var point in points)
                 {
@@ -125,3 +211,30 @@
         </article>
     }
 </div>
+
+<script>
+    (function () {
+        var root = document.querySelector('[data-job-tabs="@uid"]');
+        if (!root) return;
+        var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+        function show(index) {
+            tabs.forEach(function (tab, i) {
+                var on = i === index;
+                tab.setAttribute('aria-selected', on ? 'true' : 'false');
+                tab.setAttribute('tabindex', on ? '0' : '-1');
+                var panel = document.getElementById(tab.getAttribute('aria-controls'));
+                if (panel) panel.hidden = !on;
+            });
+        }
+        tabs.forEach(function (tab, i) {
+            tab.addEventListener('click', function () { show(i); });
+            tab.addEventListener('keydown', function (e) {
+                if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+                e.preventDefault();
+                var next = (i + (e.key === 'ArrowDown' ? 1 : tabs.length - 1)) % tabs.length;
+                tabs[next].focus();
+                show(next);
+            });
+        });
+    })();
+</script>
