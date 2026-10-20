@@ -5,17 +5,15 @@
     {
         ("May ’26 – Aug ’26", "ERP Consultant Intern", "Oracle", "Austin, Texas", "$20M–$200M", "the size of the companies I prospected", new[]
         {
-            "Learned consultative selling and ERP by working directly with live accounts, seeing how finance, operations, and technology decisions connect inside a business.",
-            "Researched and prioritized organizations from $20M–$200M in revenue, then turned that research into outreach and conversations that contributed to the NetSuite pipeline.",
-            "Led discovery conversations to understand how prospects actually operated before determining where NetSuite could solve a problem.",
-            "Learned that good B2B selling is less about pitching a product and more about asking the right questions, understanding what matters to the person across the table, and translating technology into a reason to act."
+            "Prospected <b>$20M–$200M</b> companies and built outreach that fed the NetSuite pipeline.",
+            "Led discovery calls to map how prospects operate before pitching NetSuite.",
+            "Learned that good B2B selling starts with questions, not a pitch."
         }),
         ("May ’25 – Jan ’26", "Strategy Consulting Intern", "Acacia Advisors", "Denver, Colorado (remote)", "20%", "more website traffic from messaging I redesigned", new[]
         {
-            "Developed the go-to-market strategy for a $1M Microsoft Azure AI manufacturing product, using pricing and competitor analysis to decide how to position it.",
-            "Rewrote the messaging for Acacia’s AI and cloud services around what clients needed to hear, which grew website traffic by 20% and LinkedIn visits by 27%.",
-            "Supported client engagements, including Barry Manufacturing, with market research and competitive analysis that helped shape recommendations.",
-            "Learned to turn technical products into plain-language value: clients don’t buy “AI,” they buy outcomes they can measure. I brought the same instinct to discovery calls at Oracle."
+            "Built the go-to-market strategy for a <b>$1M</b> Microsoft Azure AI manufacturing product.",
+            "Rewrote AI and cloud messaging, growing website traffic <b>20%</b> and LinkedIn visits <b>27%</b>.",
+            "Learned clients buy measurable outcomes, not “AI.”"
         })
     };
     // Each place this partial renders gets its own ids, so the Work page and the home page never clash.
@@ -95,17 +93,24 @@
     }
 
     .job-panel h3 {
-        margin: 10px 0 0;
+        margin: 0;
         font-family: Georgia, serif;
-        font-size: 1.3em;
+        font-size: 1.9rem;
+        line-height: 1.2;
         color: #1E100A;
     }
 
+    .job-accent {
+        color: #733642;
+    }
+
     .job-where {
-        margin: 6px 0 0;
-        font-size: 0.9em;
-        line-height: 1.5;
-        color: #3F4A34;
+        margin: 8px 0 0;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: #7A665F;
     }
 
     .job-stat {
@@ -196,16 +201,14 @@
 
     @for (int i = 0; i < jobs.Length; i++)
     {
-        var (when, title, company, place, stat, statLabel, points) = jobs[i];
+        var (when, title, company, _, _, _, points) = jobs[i];
         <article class="job-panel" role="tabpanel" id="job-panel-@uid-@i" aria-labelledby="job-tab-@uid-@i" hidden="@(i != 0)">
-            <p class="job-company">@company</p>
-            <h3>@title</h3>
-            <p class="job-where">@when<br />@place</p>
-            <p class="job-stat"><b>@stat</b><span>@statLabel</span></p>
+            <h3>@title @@ <span class="job-accent">@company</span></h3>
+            <p class="job-where">@when</p>
             <ul>
                 @foreach (var point in points)
                 {
-                    <li>@point</li>
+                    <li>@((MarkupString)point)</li>
                 }
             </ul>
         </article>
