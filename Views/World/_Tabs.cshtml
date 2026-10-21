@@ -14,37 +14,52 @@
     };
 }
 <nav class="io-tabs" aria-label="Invite Only">
-    <a href="/" class="io-home">Take me home</a>
-    <form method="post" action="/world/logout"><button type="submit">Lock up</button></form>
-    @foreach (var t in tabs)
-    {
-        <a href="@t.Href" class="@(t.Key == Model ? "on" : null)" aria-current="@(t.Key == Model ? "page" : null)" id="@(t.Key == "family" ? "ioFamily" : null)" hidden="@(t.Key == "family")">@t.Label</a>
-    }
+    @* the way out on the left, a matching pair; the rooms after a hairline *@
+    <div class="io-out">
+        <a href="/" class="io-pill"><span aria-hidden="true">←</span> Take me home</a>
+        <form method="post" action="/world/logout"><button type="submit" class="io-pill"><svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="3" y="7.2" width="10" height="7.3" rx="1.8"/><path d="M5.4 7.2V5.1a2.6 2.6 0 0 1 5.2 0v2.1"/></svg> Lock up</button></form>
+    </div>
+    <div class="io-rooms">
+        @foreach (var t in tabs)
+        {
+            <a href="@t.Href" class="@(t.Key == Model ? "on" : null)" aria-current="@(t.Key == Model ? "page" : null)" id="@(t.Key == "family" ? "ioFamily" : null)" hidden="@(t.Key == "family")">@t.Label</a>
+        }
+    </div>
 </nav>
 <script>
-    // sit just under the main menu, whatever its height; and family sees Just Tiwari Tales (the room checks again on the server)
+    // family sees Just Tiwari Tales (the room checks again on the server). The bar is the only menu in here, so it sticks
+    // to the very top; it used to measure the main menu before that menu was hidden, which left a gap above it.
     (() => {
-        const bar = document.querySelector('.io-tabs'), nav = document.querySelector('nav.navbar');
-        const place = () => bar.style.top = `${nav ? nav.offsetHeight : 0}px`;
-        place(); addEventListener('resize', place);
         fetch('/world/me', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null)
             .then(me => { if (me?.role === 'family') document.getElementById('ioFamily').hidden = false; }).catch(() => {});
     })();
 </script>
 <style>
-    /* inside the locked rooms this bar is the only menu: the main navbar steps aside */
+    /* inside the locked rooms this bar is the only menu: the main navbar steps aside, and the bar sits at the very top */
     body:has(.io-tabs) nav.navbar { display: none !important; }
-    body:has(.io-tabs) .io-tabs { top: 0; }
-    .io-tabs .io-home { color: #8A4D57; }
-    .io-tabs { position: sticky; top: 72px; z-index: 900; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 26px; padding: 12px 20px;
-        background: rgba(250, 241, 239, 0.95); border-bottom: 1px solid #EBD5D0; backdrop-filter: blur(6px); }
-    .io-tabs a, .io-tabs button { padding: 0; border: 0; background: none; font: 500 0.78rem system-ui, sans-serif; letter-spacing: 0.4px; text-transform: uppercase; color: #2A1810; text-decoration: none; cursor: pointer; }
-    .io-tabs a:hover, .io-tabs button:hover { color: #8A4D57; }
-    .io-tabs .on { color: #8A4D57; box-shadow: 0 2px 0 #C9969E; }
-    .io-tabs a[hidden] { display: none; }
-    .io-tabs form { margin: 0; }
-    @@media (max-width: 760px) { .io-tabs { gap: 8px 16px; padding: 10px 14px; } .io-tabs a, .io-tabs button { font-size: 0.7rem; } }
+    .io-tabs { position: sticky; top: 0; z-index: 900; display: flex; align-items: center; justify-content: center; gap: 14px 28px; flex-wrap: wrap;
+        padding: 14px 24px; background: rgba(250, 241, 239, 0.96); border-bottom: 1px solid #EBD5D0; backdrop-filter: blur(6px); }
+    .io-out { display: flex; align-items: center; gap: 8px; padding-right: 28px; border-right: 1px solid #E2C6C0; }
+    .io-out form { margin: 0; }
+    .io-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; border: 1px solid #D9B8B3; background: #FFF8F6;
+        font: 600 0.72rem system-ui, sans-serif; letter-spacing: 0.6px; text-transform: uppercase; color: #733642; text-decoration: none; cursor: pointer;
+        transition: background .2s ease, color .2s ease, border-color .2s ease; }
+    .io-pill:hover, .io-pill:focus-visible { background: #733642; border-color: #733642; color: #FFF8F6; }
+    .io-rooms { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; }
+    .io-rooms a { padding: 4px 0; font: 500 0.78rem system-ui, sans-serif; letter-spacing: 0.5px; text-transform: uppercase; color: #2A1810; text-decoration: none;
+        border-bottom: 1.5px solid transparent; transition: color .2s ease, border-color .2s ease; }
+    .io-rooms a:hover { color: #8A4D57; }
+    .io-rooms a.on { color: #8A4D57; border-bottom-color: #C9969E; }
+    .io-rooms a[hidden] { display: none; }
+    /* phones: the way out on its own row, the rooms under it */
+    @@media (max-width: 760px) {
+        .io-tabs { gap: 10px; padding: 10px 14px; }
+        .io-out { padding-right: 0; border-right: 0; width: 100%; justify-content: center; }
+        .io-rooms { gap: 6px 16px; }
+        .io-rooms a { font-size: 0.7rem; }
+    }
 </style>
+
     <script>
     /* Lock up: a padlock drops in, its shackle clicks shut, then the sign-out goes through. */
     (() => {
