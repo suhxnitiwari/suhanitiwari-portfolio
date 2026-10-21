@@ -182,6 +182,22 @@
             new[] { "Macroeconomics", "Microeconomics", "Physical Geology", "Sustaining a Planet", "Studio Art Lab", "Speech Communication", "Intro Media/Entertainment", "Fundamentals of Nutrition", "Computer Fluency" })
     };
 
+    // Coursework intro: the nine subjects as books on a shelf. Theme = index into themes; Kind = up, flat or lean;
+    // Length and Thick in em; Spin = its tilt as it starts to fall; Order = when it falls (flat stacks fall bottom book first).
+    var shelf = new[]
+    {
+        new[] { (Theme: 0, Kind: "up", Length: "25em", Thick: "5.4em", Spin: "-3deg", Order: 0),
+                (Theme: 2, Kind: "up", Length: "22.5em", Thick: "4.8em", Spin: "2deg", Order: 1),
+                (Theme: 1, Kind: "up", Length: "24em", Thick: "5em", Spin: "-2deg", Order: 2) },
+        new[] { (Theme: 7, Kind: "flat", Length: "17em", Thick: "3.8em", Spin: "-6deg", Order: 5),
+                (Theme: 6, Kind: "flat", Length: "19.5em", Thick: "4.2em", Spin: "5deg", Order: 4),
+                (Theme: 8, Kind: "flat", Length: "22em", Thick: "4.6em", Spin: "-4deg", Order: 3) },
+        new[] { (Theme: 4, Kind: "up", Length: "24em", Thick: "5em", Spin: "3deg", Order: 6),
+                (Theme: 3, Kind: "up", Length: "21.5em", Thick: "4.6em", Spin: "-2deg", Order: 7),
+                (Theme: 5, Kind: "lean", Length: "25.5em", Thick: "5.2em", Spin: "4deg", Order: 8) }
+    };
+    var courseCount = themes.SelectMany(t => t.Courses).Distinct().Count();
+
     // Overview: six ways the subjects work together, in button order.
     // Theme indexes: 0 MIS · 1 Leadership · 2 Marketing · 3 Ed Psych · 4 Psychology · 5 Advertising · 6 Analytics & Ops · 7 Foundations · 8 Creation & Analysis
     var crossovers = new[]
@@ -247,6 +263,239 @@
     .coursework-hero p {
         font-size: 1.1em;
         color: #3F4A34;
+    }
+
+    /* Coursework intro, laid out like Education: the subjects on the left, the shelf on the right, half and half */
+    .cw-intro {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 48px;
+        align-items: end;
+        margin-top: 22px;
+        padding: 34px 0 30px;
+        border-top: 2px solid #1E100A;
+    }
+
+    /* .coursework-hero in front, so the hero's plain paragraph style doesn't win */
+    .coursework-hero .cw-intro-title {
+        margin: 0;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 2.6rem;
+        line-height: 1.05;
+        color: #733642;
+    }
+
+    .cw-intro-title em {
+        display: block;
+        font-style: italic;
+        color: #A0606C;
+    }
+
+    /* the nine subjects in two columns, each with its book's color and how many courses it holds */
+    .cw-intro-subjects {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 32px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+        font-size: 0.95em;
+        line-height: 1.35;
+        color: #3F4A34;
+    }
+
+    .cw-intro-subjects li {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #EBD5D0;
+    }
+
+    .cw-intro-subjects i {
+        display: inline-block;
+        width: 0.6em;
+        height: 0.95em;
+        margin-right: 10px;
+        border-radius: 2px;
+        vertical-align: -0.1em;
+    }
+
+    .cw-intro-count {
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-style: italic;
+        color: #733642;
+    }
+
+    @@media (max-width: 860px) {
+        .cw-intro {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 32px;
+            padding: 26px 0;
+        }
+
+        .coursework-hero .cw-intro-title { font-size: 2.1rem; }
+    }
+
+    @@media (max-width: 520px) {
+        .cw-intro-subjects { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    /* the nine subjects as books, falling onto the shelf one at a time:
+       three standing, three stacked flat, three standing with the last one leaning on its neighbor.
+       Everything is in em, so the whole shelf shrinks with its font size on a phone. */
+    .cw-shelf-wrap { container-type: inline-size; }
+
+    .cw-shelf {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 1.4em;
+        padding-bottom: 0.6em;
+        font-size: min(9.5px, 1.6cqi);   /* the shelf is about 60em wide, so it always fits its column */
+    }
+
+    /* the shelf: a rose hairline that fades out at both ends */
+    .cw-shelf::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        transform: translateX(-50%);
+        background: linear-gradient(90deg, transparent, #C9969E 18%, #C9969E 82%, transparent);
+    }
+
+    .cw-shelf-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.3em;
+    }
+
+    .cw-shelf-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* one book: cloth in the subject's color, rounded at the spine, gilt bands and a gilt title */
+    .cw-book {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--t);
+        height: var(--l);
+        border-radius: 0.35em 0.35em 0.2em 0.2em;
+        background-color: var(--c);
+        background-image:
+            repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.1) 28%, rgba(0, 0, 0, 0.04) 70%, rgba(0, 0, 0, 0.28));
+        box-shadow: 0 0.25em 0.5em rgba(42, 24, 16, 0.16);
+        transform-origin: 50% 100%;
+    }
+
+    .cw-book::before,
+    .cw-book::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 0.5em;
+        border-top: 1px solid rgba(228, 199, 126, 0.85);
+        border-bottom: 1px solid rgba(228, 199, 126, 0.85);
+    }
+
+    .cw-book::before { top: 1.5em; }
+    .cw-book::after { bottom: 1.5em; }
+
+    .cw-book span {
+        writing-mode: vertical-rl;
+        font-family: Georgia, serif;
+        font-size: 1.05em;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: #E4C77E;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    /* lying flat: the spine runs sideways, so the bands sit at the two ends */
+    .cw-book-flat {
+        width: var(--l);
+        height: var(--t);
+        border-radius: 0.2em;
+        background-image:
+            repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.04) 55%, rgba(0, 0, 0, 0.26));
+        box-shadow: 0 0.12em 0.3em rgba(42, 24, 16, 0.14);
+    }
+
+    .cw-book-flat::before,
+    .cw-book-flat::after {
+        top: 0;
+        bottom: 0;
+        left: auto;
+        right: auto;
+        width: 0.5em;
+        height: auto;
+        border: 0;
+        border-left: 1px solid rgba(228, 199, 126, 0.85);
+        border-right: 1px solid rgba(228, 199, 126, 0.85);
+    }
+
+    .cw-book-flat::before { left: 1.4em; }
+    .cw-book-flat::after { right: 1.4em; }
+    .cw-book-flat span { writing-mode: horizontal-tb; font-size: 0.95em; }
+
+    /* a flat stack is never perfectly square */
+    .cw-shelf-stack .cw-book:nth-child(1) { margin-left: 1.6em; }
+    .cw-shelf-stack .cw-book:nth-child(2) { margin-right: 1em; }
+
+    /* the last book tips over onto the one beside it, resting on its bottom corner;
+       the margin puts that corner right where its side meets its neighbor's top */
+    .cw-book-lean {
+        margin-left: 3.9em;
+        transform-origin: 0 100%;
+        transform: rotate(-11deg);
+    }
+
+    /* with the script on, the books wait out of sight until the shelf scrolls in, then fall in order */
+    .cw-shelf.armed:not(.drop) .cw-book { opacity: 0; }
+
+    .cw-shelf.drop .cw-book {
+        animation: cwBookDrop 1.05s both;
+        animation-delay: calc(var(--i) * 0.16s + 0.1s);
+    }
+
+    .cw-shelf.drop .cw-book-lean {
+        animation: cwBookLean 1.7s both;
+        animation-delay: calc(var(--i) * 0.16s + 0.1s);
+    }
+
+    /* falls (speeding up), squashes a little on landing, bounces twice and settles */
+    @@keyframes cwBookDrop {
+        0% { opacity: 0; transform: translateY(-28em) rotate(var(--spin)); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.45); }
+        12% { opacity: 1; }
+        55% { transform: translateY(0) rotate(0deg) scaleY(0.94); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+        70% { transform: translateY(-1em) scaleY(1.01); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.5); }
+        82% { transform: translateY(0) scaleY(0.98); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+        91% { transform: translateY(-0.2em); }
+        100% { opacity: 1; transform: none; }
+    }
+
+    /* the same fall, then it tips onto its neighbor */
+    @@keyframes cwBookLean {
+        0% { opacity: 0; transform: translateY(-28em) rotate(var(--spin)); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.45); }
+        8% { opacity: 1; }
+        36% { transform: translateY(0) rotate(0deg) scaleY(0.95); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
+        46% { transform: translateY(-0.7em) rotate(0deg); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.5); }
+        56% { transform: translateY(0) rotate(0deg); animation-timing-function: cubic-bezier(0.45, 0, 0.6, 1); }
+        92% { transform: rotate(-11.6deg); }
+        100% { opacity: 1; transform: rotate(-11deg); }
     }
 
     /* same grid as the six MIS cards: the 1100px column, three across, 22px gaps */
@@ -444,6 +693,32 @@
         @* HERO *@
         <div class="coursework-hero">
             <h1>@(marketingOnly ? "Marketing" : "Coursework")</h1>
+            @if (!marketingOnly)
+            {
+                @* laid out like Education on the home page: the subjects on the left, the books on the right *@
+                <div class="cw-intro">
+                    <div class="cw-intro-side">
+                        <p class="cw-intro-title">@courseCount courses <em>in nine subjects</em></p>
+                        <ul class="cw-intro-subjects">
+                            @foreach (var th in themes)
+                            {
+                                <li><span><i style="background: @th.Color"></i>@th.Name</span><span class="cw-intro-count">@th.Courses.Length</span></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="cw-shelf-wrap"><div class="cw-shelf" aria-hidden="true">
+                        @foreach (var row in shelf)
+                        {
+                            <div class="@(row.Any(b => b.Kind == "flat") ? "cw-shelf-stack" : "cw-shelf-row")">
+                                @foreach (var b in row)
+                                {
+                                    <div class="cw-book cw-book-@b.Kind" style="--c: @themes[b.Theme].Color; --l: @b.Length; --t: @b.Thick; --spin: @b.Spin; --i: @b.Order"><span>@themes[b.Theme].Short</span></div>
+                                }
+                            </div>
+                        }
+                    </div></div>
+                </div>
+            }
         </div>
 
         @* Overview (all nine themes), my MIS major, or my marketing projects *@
@@ -829,6 +1104,21 @@
     @@keyframes misMoreIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
+<script>
+    // Coursework intro: the books wait out of sight and fall onto the shelf once it scrolls into view
+    (() => {
+        const shelf = document.querySelector('.cw-shelf');
+        if (!shelf || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        shelf.classList.add('armed');
+        const io = new IntersectionObserver(entries => {
+            if (!entries.some(e => e.isIntersecting)) return;
+            shelf.classList.add('drop');
+            io.disconnect();
+        }, { threshold: 0.5 });
+        io.observe(shelf);
+    })();
+</script>
+
 <script>
     // What I can do: the panel follows the dot around the ring, switching to a stop the moment the dot touches its card.
     // Hovering the ring holds the dot still; hovering, focusing or clicking a stop shows it, and a click
