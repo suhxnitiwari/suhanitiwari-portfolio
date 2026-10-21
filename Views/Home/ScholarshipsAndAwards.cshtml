@@ -52,8 +52,22 @@
     /* Full-width accordion: one row per honor (its name, then what it's for and the year), opening to say why.
        The first one starts open. Built on <details>, so it works without the script and with a keyboard. */
     .honors {
+        position: relative;
         padding: 30px 0 26px;
-        border-bottom: 1px solid #E2C6C0;
+    }
+
+    /* a small star with a hairline on each side, between Education and the honors */
+    .honors-school::before {
+        content: "✦";
+        display: block;
+        margin: 4px 0 20px;
+        text-align: center;
+        font-size: 1.05rem;
+        line-height: 1;
+        color: #C9969E;
+        background:
+            linear-gradient(#E2C6C0, #E2C6C0) left center / calc(50% - 26px) 1px no-repeat,
+            linear-gradient(#E2C6C0, #E2C6C0) right center / calc(50% - 26px) 1px no-repeat;
     }
 
     .honors-label {
@@ -92,7 +106,7 @@
         font-size: 1.45rem;
         line-height: 1.2;
         color: #1E100A;
-        transition: color .2s ease;
+        transition: color .2s ease, text-decoration-color .2s ease;
     }
 
     .honor > summary:hover .honor-name,
@@ -111,32 +125,37 @@
     }
 
     .honor-meta b { color: #733642; }
+    .honor-meta i { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-style: italic; font-size: 1.35em; font-weight: 400; letter-spacing: 0; text-transform: none; color: #7A665F; }
 
-    /* a plus that turns into a minus */
+    /* a fine hairline chevron, like on engraved stationery, that turns down when the row opens */
     .honor-toggle {
-        position: relative;
-        width: 18px;
-        height: 18px;
+        width: 11px;
+        height: 11px;
         justify-self: end;
         align-self: center;
+        margin-right: 6px;
+        border-right: 1.25px solid #733642;
+        border-bottom: 1.25px solid #733642;
+        transform: rotate(-45deg);
+        opacity: 0.7;
+        transition: transform .35s ease, opacity .2s ease;
     }
 
-    .honor-toggle::before,
-    .honor-toggle::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        height: 2px;
-        margin-top: -1px;
-        border-radius: 2px;
-        background: #733642;
-        transition: transform .25s ease;
+    .honor > summary:hover .honor-toggle { opacity: 1; }
+    .honor[open] .honor-toggle { transform: rotate(45deg) translate(-2px, -2px); opacity: 1; }
+
+    /* the open one's name gets a soft rose underline */
+    .honor-name {
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 6px;
     }
 
-    .honor-toggle::after { transform: rotate(90deg); }
-    .honor[open] .honor-toggle::after { transform: rotate(0deg); }
+    .honor[open] .honor-name,
+    .honor > summary:hover .honor-name {
+        text-decoration-color: #D9A7B0;
+    }
 
     .honor-note {
         margin: 0;
@@ -157,7 +176,7 @@
     }
 
     @@media (prefers-reduced-motion: reduce) {
-        .honor-toggle::before, .honor-toggle::after, .honor-name { transition: none; }
+        .honor-toggle, .honor-name { transition: none; }
     }
 </style>
 
@@ -174,7 +193,7 @@
             <details class="honor" open="@(i == 0)">
                 <summary>
                     <span class="honor-name">@honor.Name</span>
-                    <span class="honor-meta">@if (!string.IsNullOrEmpty(honor.For)) {<b>@honor.For</b>@(meta.Length > 0 ? ", " : "")}@meta</span>
+                    <span class="honor-meta">@if (!string.IsNullOrEmpty(honor.For)) {<b>@honor.For</b>@(meta.Length > 0 ? " " : "")}@if (meta.Length > 0) {<i>@meta</i>}</span>
                     <span class="honor-toggle" aria-hidden="true"></span>
                 </summary>
                 @if (!string.IsNullOrEmpty(note))

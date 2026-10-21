@@ -554,9 +554,8 @@
         display: grid;
         grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
         gap: 48px;
-        padding: 34px 0;
+        padding: 34px 0 30px;
         border-top: 2px solid #1E100A;
-        border-bottom: 1px solid #E2C6C0;
     }
 
     .edu-school {
@@ -565,6 +564,12 @@
         font-size: 2.6rem;
         line-height: 1.05;
         color: #733642;
+    }
+
+    .edu-school em {
+        display: block;
+        font-style: italic;
+        color: #A0606C;
     }
 
     .edu-college {
@@ -598,11 +603,17 @@
 
     .edu-when {
         flex: none;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 1.3px;
-        text-transform: uppercase;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-style: italic;
+        font-size: 1.02rem;
         color: #76344E;
+    }
+
+    .edu-degrees b {
+        font-family: Georgia, serif;
+        font-variant: small-caps;
+        letter-spacing: 0.06em;
+        font-size: 1.08em;
     }
 
     .edu-degrees b {
@@ -617,29 +628,49 @@
     }
 
     .edu-facts div {
+        position: relative;
         display: flex;
         flex-direction: column;
-        gap: 4px;
-        padding: 16px 18px;
-        border-radius: var(--r-inset, 14px);
-        background: #FFF8F6;
-        border: 1px solid #EBD5D0;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 26px 18px 22px;
+        text-align: center;
+        border-radius: 4px;
+        background: #FFFBF9;
+        border: 1px solid #E4C9C3;
+        box-shadow: 0 18px 30px -26px rgba(115, 54, 66, 0.45);
+    }
+
+    /* the hairline inner frame */
+    .edu-facts div::before {
+        content: "";
+        position: absolute;
+        inset: 6px;
+        border: 1px solid #EFDCD7;
+        border-radius: 2px;
+        pointer-events: none;
     }
 
     /* lining numerals and one line height, so 3.5, May 2027, #4 and #6 share a baseline */
+    /* each number set like an engraved calling card: big plum Bodoni, a hairline inner frame, small caps under it */
     .edu-facts dt {
-        font-family: Georgia, serif;
-        font-size: 1.9em;
-        font-weight: 400;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 2.5em;
+        font-weight: 500;
         font-variant-numeric: lining-nums;
-        line-height: 1.1;
-        color: #1E100A;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        color: #733642;
     }
 
     .edu-facts dd {
         margin: 0;
-        font-size: 0.85em;
-        line-height: 1.35;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        line-height: 1.55;
+        text-transform: uppercase;
         color: #7A665F;
     }
 
@@ -1545,7 +1576,7 @@
         </div>
         <div class="edu">
             <div class="edu-side">
-                <p class="edu-school">The University of Texas at Austin</p>
+                <p class="edu-school">The University of Texas <em>at Austin</em></p>
                 <p class="edu-college">McCombs School of Business</p>
                 <ul class="edu-degrees">
                     <li><span><b>BBA</b>, Management Information Systems</span><span class="edu-when">May 2027</span></li>
