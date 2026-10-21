@@ -192,7 +192,7 @@
             <ul>
                 @foreach (var point in points)
                 {
-                    <li>@((MarkupString)point)</li>
+                    <li>@Html.Raw(point)</li>
                 }
             </ul>
         </article>
