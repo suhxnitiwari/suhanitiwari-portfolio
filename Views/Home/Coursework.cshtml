@@ -182,21 +182,21 @@
             new[] { "Macroeconomics", "Microeconomics", "Physical Geology", "Sustaining a Planet", "Studio Art Lab", "Speech Communication", "Intro Media/Entertainment", "Fundamentals of Nutrition", "Computer Fluency" })
     };
 
-    // Coursework intro: the nine subjects as books on a shelf. Theme = index into themes; Kind = up, flat or lean;
-    // Length and Thick in em; Spin = its tilt as it starts to fall; Order = when it falls (flat stacks fall bottom book first).
+    // Coursework header: the nine subjects as books that fall onto the title's rule. Theme = index into themes;
+    // Kind = up, flat or lean; Look = bands (gold rules), ribs (raised leather ribs) or label (a title label);
+    // Length and Thick in em; Spin = how far it's turned as it falls; Drop = the order they fall in (the vase falls last).
     var shelf = new[]
     {
-        new[] { (Theme: 0, Kind: "up", Length: "25em", Thick: "5.4em", Spin: "-3deg", Order: 0),
-                (Theme: 2, Kind: "up", Length: "22.5em", Thick: "4.8em", Spin: "2deg", Order: 1),
-                (Theme: 1, Kind: "up", Length: "24em", Thick: "5em", Spin: "-2deg", Order: 2) },
-        new[] { (Theme: 7, Kind: "flat", Length: "17em", Thick: "3.8em", Spin: "-6deg", Order: 5),
-                (Theme: 6, Kind: "flat", Length: "19.5em", Thick: "4.2em", Spin: "5deg", Order: 4),
-                (Theme: 8, Kind: "flat", Length: "22em", Thick: "4.6em", Spin: "-4deg", Order: 3) },
-        new[] { (Theme: 4, Kind: "up", Length: "24em", Thick: "5em", Spin: "3deg", Order: 6),
-                (Theme: 3, Kind: "up", Length: "21.5em", Thick: "4.6em", Spin: "-2deg", Order: 7),
-                (Theme: 5, Kind: "lean", Length: "25.5em", Thick: "5.2em", Spin: "4deg", Order: 8) }
+        new[] { (Theme: 0, Kind: "up", Look: "ribs", Length: "25em", Thick: "5.4em", Spin: -28, Drop: 0),
+                (Theme: 2, Kind: "up", Look: "bands", Length: "22.5em", Thick: "4.8em", Spin: 22, Drop: 3),
+                (Theme: 1, Kind: "up", Look: "label", Length: "24em", Thick: "5em", Spin: -18, Drop: 6) },
+        new[] { (Theme: 7, Kind: "flat", Look: "bands", Length: "17em", Thick: "3.8em", Spin: -14, Drop: 7),
+                (Theme: 6, Kind: "flat", Look: "bands", Length: "19.5em", Thick: "4.2em", Spin: 18, Drop: 4),
+                (Theme: 8, Kind: "flat", Look: "bands", Length: "22em", Thick: "4.6em", Spin: -10, Drop: 1) },
+        new[] { (Theme: 4, Kind: "up", Look: "bands", Length: "24em", Thick: "5em", Spin: 20, Drop: 2),
+                (Theme: 3, Kind: "up", Look: "ribs", Length: "21.5em", Thick: "4.6em", Spin: -24, Drop: 5),
+                (Theme: 5, Kind: "lean", Look: "label", Length: "25.5em", Thick: "5.2em", Spin: 30, Drop: 8) }
     };
-    var courseCount = themes.SelectMany(t => t.Courses).Distinct().Count();
 
     // Overview: six ways the subjects work together, in button order.
     // Theme indexes: 0 MIS · 1 Leadership · 2 Marketing · 3 Ed Psych · 4 Psychology · 5 Advertising · 6 Analytics & Ops · 7 Foundations · 8 Creation & Analysis
@@ -265,108 +265,29 @@
         color: #3F4A34;
     }
 
-    /* Coursework intro, laid out like Education: the subjects on the left, the shelf on the right, half and half */
-    .cw-intro {
+    /* Coursework header: the title on the left, the books on the right, all of them standing on the title's black rule */
+    .coursework-hero.cw-has-shelf {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 48px;
+        grid-template-columns: auto minmax(0, 1fr);
         align-items: end;
-        margin-top: 22px;
-        padding: 34px 0 30px;
-        border-top: 2px solid #1E100A;
+        column-gap: 40px;
+        border-bottom: 2px solid #1E100A;
     }
 
-    /* .coursework-hero in front, so the hero's plain paragraph style doesn't win */
-    .coursework-hero .cw-intro-title {
-        margin: 0;
-        font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-size: 2.6rem;
-        line-height: 1.05;
-        color: #733642;
-    }
+    .coursework-hero.cw-has-shelf h1 { margin: 0 0 20px; }
 
-    .cw-intro-title em {
-        display: block;
-        font-style: italic;
-        color: #A0606C;
-    }
-
-    /* the nine subjects in two columns, each with its book's color and how many courses it holds */
-    .cw-intro-subjects {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 32px;
-        margin: 18px 0 0;
-        padding: 0;
-        list-style: none;
-        font-size: 0.95em;
-        line-height: 1.35;
-        color: #3F4A34;
-    }
-
-    .cw-intro-subjects li {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 12px;
-        padding: 10px 0;
-        border-bottom: 1px solid #EBD5D0;
-    }
-
-    .cw-intro-subjects i {
-        display: inline-block;
-        width: 0.6em;
-        height: 0.95em;
-        margin-right: 10px;
-        border-radius: 2px;
-        vertical-align: -0.1em;
-    }
-
-    .cw-intro-count {
-        font-family: 'Bodoni Moda', Didot, Georgia, serif;
-        font-style: italic;
-        color: #733642;
-    }
-
-    @@media (max-width: 860px) {
-        .cw-intro {
-            grid-template-columns: minmax(0, 1fr);
-            gap: 32px;
-            padding: 26px 0;
-        }
-
-        .coursework-hero .cw-intro-title { font-size: 2.1rem; }
-    }
-
-    @@media (max-width: 520px) {
-        .cw-intro-subjects { grid-template-columns: minmax(0, 1fr); }
-    }
-
-    /* the nine subjects as books, falling onto the shelf one at a time:
-       three standing, three stacked flat, three standing with the last one leaning on its neighbor.
-       Everything is in em, so the whole shelf shrinks with its font size on a phone. */
     .cw-shelf-wrap { container-type: inline-size; }
 
+    /* about 62em wide, so its font size scales it to fit its column; tap it and the books fall again */
     .cw-shelf {
-        position: relative;
         display: flex;
         align-items: flex-end;
-        justify-content: center;
+        justify-content: flex-end;
         gap: 1.4em;
-        padding-bottom: 0.6em;
-        font-size: min(9.5px, 1.6cqi);   /* the shelf is about 60em wide, so it always fits its column */
-    }
-
-    /* the shelf: a rose hairline that fades out at both ends */
-    .cw-shelf::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        width: 100%;
-        height: 1px;
-        transform: translateX(-50%);
-        background: linear-gradient(90deg, transparent, #C9969E 18%, #C9969E 82%, transparent);
+        padding-top: 1.5em;
+        font-size: min(10px, 1.6cqi);
+        cursor: var(--cursor-hot, pointer);
+        user-select: none;
     }
 
     .cw-shelf-row {
@@ -381,7 +302,7 @@
         align-items: center;
     }
 
-    /* one book: cloth in the subject's color, rounded at the spine, gilt bands and a gilt title */
+    /* one book: cloth in the subject's color, shaded round at the spine, a gilt title */
     .cw-book {
         position: relative;
         display: flex;
@@ -389,49 +310,98 @@
         justify-content: center;
         width: var(--t);
         height: var(--l);
-        border-radius: 0.35em 0.35em 0.2em 0.2em;
+        border-radius: 0.3em 0.3em 0.15em 0.15em;
         background-color: var(--c);
         background-image:
-            repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
-            linear-gradient(90deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.1) 28%, rgba(0, 0, 0, 0.04) 70%, rgba(0, 0, 0, 0.28));
-        box-shadow: 0 0.25em 0.5em rgba(42, 24, 16, 0.16);
+            linear-gradient(90deg, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06) 9%, rgba(255, 255, 255, 0.17) 24%, rgba(255, 255, 255, 0.04) 42%, rgba(0, 0, 0, 0.06) 72%, rgba(0, 0, 0, 0.4)),
+            repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px);
+        box-shadow: inset 0 0.18em 0 rgba(255, 255, 255, 0.12), inset 0 -0.15em 0 rgba(0, 0, 0, 0.2), 0.15em 0.3em 0.7em rgba(42, 24, 16, 0.2);
         transform-origin: 50% 100%;
     }
 
-    .cw-book::before,
-    .cw-book::after {
+    .cw-book b {
+        writing-mode: vertical-rl;
+        font-family: 'Bodoni Moda', Didot, Georgia, serif;
+        font-size: 1.15em;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        background: linear-gradient(90deg, #FBEBB8, #E6C373 48%, #CDA552 62%, #F5DC98);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35)) drop-shadow(0 0 0.6em rgba(246, 222, 160, 0.18));
+    }
+
+    /* a small gilt diamond near the foot of each standing book */
+    .cw-book i {
+        position: absolute;
+        left: 50%;
+        bottom: 3.7em;
+        width: 0.55em;
+        height: 0.55em;
+        transform: translateX(-50%) rotate(45deg);
+        background: linear-gradient(135deg, #F6E3A8, #B88E3E);
+    }
+
+    /* bands: double gold rules at the head and the foot */
+    .cw-look-bands::before,
+    .cw-look-bands::after {
         content: "";
         position: absolute;
         left: 0;
         right: 0;
         height: 0.5em;
-        border-top: 1px solid rgba(228, 199, 126, 0.85);
-        border-bottom: 1px solid rgba(228, 199, 126, 0.85);
+        border-top: 1px solid rgba(228, 199, 126, 0.9);
+        border-bottom: 1px solid rgba(228, 199, 126, 0.9);
     }
 
-    .cw-book::before { top: 1.5em; }
-    .cw-book::after { bottom: 1.5em; }
+    .cw-look-bands::before { top: 1.6em; }
+    .cw-look-bands::after { bottom: 1.6em; }
 
-    .cw-book span {
-        writing-mode: vertical-rl;
-        font-family: Georgia, serif;
-        font-size: 1.05em;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        white-space: nowrap;
-        color: #E4C77E;
-        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    /* ribs: raised leather ribs, like an old bound book */
+    .cw-look-ribs::before,
+    .cw-look-ribs::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 0.8em;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.22) 45%, rgba(0, 0, 0, 0.32));
+        border-top: 1px solid rgba(228, 199, 126, 0.55);
+        border-bottom: 1px solid rgba(228, 199, 126, 0.55);
     }
 
-    /* lying flat: the spine runs sideways, so the bands sit at the two ends */
+    .cw-look-ribs::before { top: 2.2em; }
+    .cw-look-ribs::after { bottom: 2.2em; }
+
+    /* label: the title on a darker panel framed in gold */
+    .cw-look-label span {
+        padding: 0.9em 0.35em;
+        border: 1px solid rgba(228, 199, 126, 0.8);
+        border-radius: 0.15em;
+        background: rgba(20, 8, 4, 0.26);
+    }
+
+    .cw-look-label::before {
+        content: "";
+        position: absolute;
+        top: 1.6em;
+        left: 0;
+        right: 0;
+        border-top: 1px solid rgba(228, 199, 126, 0.9);
+    }
+
+    /* lying flat: the spine runs sideways, so the shading runs top to bottom and the rules sit at the two ends */
     .cw-book-flat {
         width: var(--l);
         height: var(--t);
-        border-radius: 0.2em;
+        border-radius: 0.15em;
         background-image:
-            repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
-            linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.04) 55%, rgba(0, 0, 0, 0.26));
-        box-shadow: 0 0.12em 0.3em rgba(42, 24, 16, 0.14);
+            linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.04) 45%, rgba(0, 0, 0, 0.36)),
+            repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px);
+        box-shadow: inset 0 0.12em 0 rgba(255, 255, 255, 0.12), 0 0.12em 0.35em rgba(42, 24, 16, 0.16);
     }
 
     .cw-book-flat::before,
@@ -443,17 +413,18 @@
         width: 0.5em;
         height: auto;
         border: 0;
-        border-left: 1px solid rgba(228, 199, 126, 0.85);
-        border-right: 1px solid rgba(228, 199, 126, 0.85);
+        border-left: 1px solid rgba(228, 199, 126, 0.9);
+        border-right: 1px solid rgba(228, 199, 126, 0.9);
     }
 
     .cw-book-flat::before { left: 1.4em; }
     .cw-book-flat::after { right: 1.4em; }
-    .cw-book-flat span { writing-mode: horizontal-tb; font-size: 0.95em; }
+    .cw-book-flat b { writing-mode: horizontal-tb; font-size: 1em; background-image: linear-gradient(180deg, #FBEBB8, #E6C373 48%, #CDA552 62%, #F5DC98); }
+    .cw-book-flat i { display: none; }
 
-    /* a flat stack is never perfectly square */
-    .cw-shelf-stack .cw-book:nth-child(1) { margin-left: 1.6em; }
-    .cw-shelf-stack .cw-book:nth-child(2) { margin-right: 1em; }
+    /* a flat stack is never perfectly square (child 1 is the vase) */
+    .cw-shelf-stack .cw-book:nth-child(2) { margin-left: 1.6em; }
+    .cw-shelf-stack .cw-book:nth-child(3) { margin-right: 1em; }
 
     /* the last book tips over onto the one beside it, resting on its bottom corner;
        the margin puts that corner right where its side meets its neighbor's top */
@@ -463,39 +434,23 @@
         transform: rotate(-11deg);
     }
 
-    /* with the script on, the books wait out of sight until the shelf scrolls in, then fall in order */
-    .cw-shelf.armed:not(.drop) .cw-book { opacity: 0; }
-
-    .cw-shelf.drop .cw-book {
-        animation: cwBookDrop 1.05s both;
-        animation-delay: calc(var(--i) * 0.16s + 0.1s);
+    /* a glass bud vase of blush flowers on top of the stack */
+    .cw-vase {
+        display: block;
+        width: 8.5em;
+        height: 12em;
+        margin: 0 0 -0.05em 6em;
+        transform-origin: 50% 100%;
     }
 
-    .cw-shelf.drop .cw-book-lean {
-        animation: cwBookLean 1.7s both;
-        animation-delay: calc(var(--i) * 0.16s + 0.1s);
-    }
+    /* with the script on, everything waits out of sight until the shelf scrolls in */
+    .cw-shelf.armed .cw-book,
+    .cw-shelf.armed .cw-vase { opacity: 0; }
 
-    /* falls (speeding up), squashes a little on landing, bounces twice and settles */
-    @@keyframes cwBookDrop {
-        0% { opacity: 0; transform: translateY(-28em) rotate(var(--spin)); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.45); }
-        12% { opacity: 1; }
-        55% { transform: translateY(0) rotate(0deg) scaleY(0.94); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
-        70% { transform: translateY(-1em) scaleY(1.01); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.5); }
-        82% { transform: translateY(0) scaleY(0.98); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
-        91% { transform: translateY(-0.2em); }
-        100% { opacity: 1; transform: none; }
-    }
-
-    /* the same fall, then it tips onto its neighbor */
-    @@keyframes cwBookLean {
-        0% { opacity: 0; transform: translateY(-28em) rotate(var(--spin)); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.45); }
-        8% { opacity: 1; }
-        36% { transform: translateY(0) rotate(0deg) scaleY(0.95); animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1); }
-        46% { transform: translateY(-0.7em) rotate(0deg); animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.5); }
-        56% { transform: translateY(0) rotate(0deg); animation-timing-function: cubic-bezier(0.45, 0, 0.6, 1); }
-        92% { transform: rotate(-11.6deg); }
-        100% { opacity: 1; transform: rotate(-11deg); }
+    @@media (max-width: 760px) {
+        .coursework-hero.cw-has-shelf { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+        .coursework-hero.cw-has-shelf h1 { margin: 0; }
+        .cw-shelf { justify-content: center; }
     }
 
     /* same grid as the six MIS cards: the 1100px column, three across, 22px gaps */
@@ -691,33 +646,49 @@
 <div class="coursework-section page-fill">
     <div class="coursework-container">
         @* HERO *@
-        <div class="coursework-hero">
+        <div class="coursework-hero@(marketingOnly ? "" : " cw-has-shelf")">
             <h1>@(marketingOnly ? "Marketing" : "Coursework")</h1>
             @if (!marketingOnly)
             {
-                @* laid out like Education on the home page: the subjects on the left, the books on the right *@
-                <div class="cw-intro">
-                    <div class="cw-intro-side">
-                        <p class="cw-intro-title">@courseCount courses <em>in nine subjects</em></p>
-                        <ul class="cw-intro-subjects">
-                            @foreach (var th in themes)
+                <div class="cw-shelf-wrap"><div class="cw-shelf" aria-hidden="true">
+                    @foreach (var row in shelf)
+                    {
+                        var stack = row.Any(b => b.Kind == "flat");
+                        <div class="@(stack ? "cw-shelf-stack" : "cw-shelf-row")">
+                            @if (stack)
                             {
-                                <li><span><i style="background: @th.Color"></i>@th.Name</span><span class="cw-intro-count">@th.Courses.Length</span></li>
+                                <svg class="cw-vase" viewBox="0 0 70 100" data-drop="9" data-spin="12">
+                                    <g fill="none" stroke="#6B7F5E" stroke-width="1.2" stroke-linecap="round">
+                                        <path d="M35 93 C34 72 30 52 21 31" />
+                                        <path d="M36 93 C37 68 41 47 49 25" />
+                                        <path d="M35 93 C35 70 35 48 35 14" />
+                                    </g>
+                                    <g fill="#7F9A6B">
+                                        <ellipse cx="27" cy="45" rx="5" ry="1.8" transform="rotate(-35 27 45)" />
+                                        <ellipse cx="43" cy="40" rx="5" ry="1.8" transform="rotate(35 43 40)" />
+                                        <ellipse cx="38" cy="30" rx="4" ry="1.5" transform="rotate(-50 38 30)" />
+                                    </g>
+                                    @foreach (var (x, y, petal) in new[] { (21, 31, "#E7B7BE"), (49, 25, "#F3DCD8"), (35, 14, "#E7B7BE") })
+                                    {
+                                        <g fill="@petal">
+                                            <circle cx="@(x - 3)" cy="@y" r="3.2" /><circle cx="@(x + 3)" cy="@y" r="3.2" />
+                                            <circle cx="@x" cy="@(y - 3)" r="3.2" /><circle cx="@x" cy="@(y + 3)" r="3.2" />
+                                        </g>
+                                        <circle cx="@x" cy="@y" r="2" fill="#C9969E" />
+                                    }
+                                    <path d="M18 82 C18 92 25 97 35 97 C45 97 52 92 52 82 Z" fill="rgba(186, 212, 205, 0.35)" />
+                                    <path d="M30 58 C30 54 31.5 52 31.5 48 L38.5 48 C38.5 52 40 54 40 58 C49 62 54 70 54 79 C54 92 46 99 35 99 C24 99 16 92 16 79 C16 70 21 62 30 58 Z"
+                                          fill="rgba(255, 255, 255, 0.4)" stroke="rgba(115, 54, 66, 0.45)" stroke-width="1" />
+                                    <path d="M22 72 C20 78 21 86 25 91" fill="none" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.6" stroke-linecap="round" />
+                                </svg>
                             }
-                        </ul>
-                    </div>
-                    <div class="cw-shelf-wrap"><div class="cw-shelf" aria-hidden="true">
-                        @foreach (var row in shelf)
-                        {
-                            <div class="@(row.Any(b => b.Kind == "flat") ? "cw-shelf-stack" : "cw-shelf-row")">
-                                @foreach (var b in row)
-                                {
-                                    <div class="cw-book cw-book-@b.Kind" style="--c: @themes[b.Theme].Color; --l: @b.Length; --t: @b.Thick; --spin: @b.Spin; --i: @b.Order"><span>@themes[b.Theme].Short</span></div>
-                                }
-                            </div>
-                        }
-                    </div></div>
-                </div>
+                            @foreach (var b in row)
+                            {
+                                <div class="cw-book cw-book-@b.Kind cw-look-@b.Look" data-drop="@b.Drop" data-spin="@b.Spin" style="--c: @themes[b.Theme].Color; --l: @b.Length; --t: @b.Thick"><span><b>@themes[b.Theme].Short</b></span><i></i></div>
+                            }
+                        </div>
+                    }
+                </div></div>
             }
         </div>
 
@@ -1105,17 +1076,72 @@
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
 <script>
-    // Coursework intro: the books wait out of sight and fall onto the shelf once it scrolls into view
+    // Coursework header: once the shelf scrolls into view, the books drop in from the top of the screen one at a time.
+    // Each falls faster and faster, turning as it goes, squashes when it lands, bounces and settles, and the books
+    // already standing jump a little at every landing. The last book tips onto its neighbor and the vase wobbles.
+    // Tap the shelf and they all fall again.
     (() => {
         const shelf = document.querySelector('.cw-shelf');
-        if (!shelf || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (!shelf || !('IntersectionObserver' in window) || !shelf.animate || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const items = [...shelf.querySelectorAll('[data-drop]')].sort((a, b) => a.dataset.drop - b.dataset.drop);
+        const T = (y, r, sx = 1, sy = 1) => `translateY(${y}px) rotate(${r}deg) scale(${sx}, ${sy})`;
+        const fallIn = 'cubic-bezier(0.5, 0, 1, 0.6)', bounceOut = 'cubic-bezier(0.2, 0.8, 0.3, 1)';
+        let running = false;
         shelf.classList.add('armed');
+
+        const drop = () => {
+            running = true;
+            shelf.classList.remove('armed');
+            const landed = [];
+            const done = items.map((el, k) => {
+                el.getAnimations().forEach(a => a.cancel());
+                const lean = el.classList.contains('cw-book-lean'), vase = el.classList.contains('cw-vase');
+                const rest = lean ? -11 : 0;
+                const box = el.getBoundingClientRect();
+                const fall = Math.max(box.bottom + 80, 420);            // starts fully above the top of the screen
+                const fallMs = Math.round(420 * Math.sqrt(fall / 600));   // a longer fall takes longer, like gravity
+                const settleMs = vase ? 900 : 420, tipMs = lean ? 760 : 0;
+                const total = fallMs + settleMs + tipMs, at = ms => (fallMs + ms) / total;
+                const spin = +el.dataset.spin, hop = Math.min(box.height * 0.09, 18);
+                const frames = [
+                    { offset: 0, transform: T(-fall, spin), easing: fallIn },
+                    { offset: at(0), transform: T(0, 0, 1.05, 0.9), easing: bounceOut },
+                    { offset: at(130), transform: T(-hop, -spin * 0.06, 0.98, 1.03), easing: fallIn },
+                    { offset: at(250), transform: T(0, 0, 1.02, 0.97), easing: bounceOut },
+                    { offset: at(330), transform: T(-hop * 0.2, 0), easing: fallIn },
+                ];
+                if (vase) {
+                    // a little wobble on top of the stack before it stands still
+                    [[480, 8], [600, -6], [710, 3.5], [810, -1.5]].forEach(([ms, r]) => frames.push({ offset: at(ms), transform: T(0, r), easing: 'ease-in-out' }));
+                }
+                frames.push({ offset: at(settleMs), transform: T(0, 0), easing: lean ? 'cubic-bezier(0.55, 0, 0.8, 0.4)' : 'linear' });
+                if (lean) {
+                    // stands for a beat, then tips over, overshoots a little and rocks back
+                    frames.push({ offset: at(settleMs + 520), transform: T(0, -12.6), easing: 'ease-out' });
+                    frames.push({ offset: at(settleMs + 650), transform: T(0, -10.4), easing: 'ease-in-out' });
+                }
+                frames.push({ offset: 1, transform: T(0, rest) });
+                const delay = 150 + k * 210;
+                const anim = el.animate(frames, { duration: total, delay, fill: 'backwards' });
+                // the thud: every book already standing jumps a little when this one lands
+                setTimeout(() => {
+                    landed.forEach(other => other.animate(
+                        [{ transform: 'translateY(0)' }, { transform: `translateY(-${2 + Math.random() * 2}px) rotate(${Math.random() * 1.6 - 0.8}deg)` }, { transform: 'translateY(0)' }],
+                        { duration: 240, easing: 'ease-out', composite: 'add' }));
+                    landed.push(el);
+                }, delay + fallMs);
+                return anim.finished.catch(() => {});
+            });
+            Promise.all(done).then(() => { running = false; });
+        };
+
         const io = new IntersectionObserver(entries => {
             if (!entries.some(e => e.isIntersecting)) return;
-            shelf.classList.add('drop');
             io.disconnect();
-        }, { threshold: 0.5 });
+            drop();
+        }, { threshold: 0.4 });
         io.observe(shelf);
+        shelf.addEventListener('click', () => { if (!running) drop(); });
     })();
 </script>
 
