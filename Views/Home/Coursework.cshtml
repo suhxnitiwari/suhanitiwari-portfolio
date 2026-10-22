@@ -182,7 +182,7 @@
             new[] { "Macroeconomics", "Microeconomics", "Physical Geology", "Sustaining a Planet", "Studio Art Lab", "Speech Communication", "Intro Media/Entertainment", "Fundamentals of Nutrition", "Computer Fluency" })
     };
 
-    // Coursework header: the nine subjects as books that fall onto the title's rule. Theme = index into themes;
+    // Overview header: the nine subjects as books that fall onto the header's rule. Theme = index into themes;
     // Kind = up, flat or lean; Look = bands (gold rules), ribs (raised leather ribs) or label (a title label);
     // Length and Thick in em; Spin = how far it's turned as it falls; Drop = the order they fall in (the vase falls last).
     var shelf = new[]
@@ -265,16 +265,34 @@
         color: #3F4A34;
     }
 
-    /* Coursework header: the title on the left, the books on the right, all of them standing on the title's black rule */
-    .coursework-hero.cw-has-shelf {
+    /* Overview header: the title and subtitle on the left, the books on the right, all standing on a black rule */
+    .mp-hero.cw-ov-head {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         align-items: end;
         column-gap: 40px;
+        margin-bottom: 48px;
         border-bottom: 2px solid #1E100A;
     }
 
-    .coursework-hero.cw-has-shelf h1 { margin: 0 0 20px; }
+    .mp-hero.cw-ov-head #ov-heading {
+        margin: 0 0 12px;
+        font-family: Georgia, serif;
+        font-size: clamp(2rem, 3.6vw, 2.9rem) !important;
+        font-weight: 800;
+        line-height: 1.1;
+        color: #1E100A;
+    }
+
+    .cw-ov-sub {
+        margin: 0 0 22px;
+        font-family: Georgia, serif;
+        font-size: 1.25em;
+        font-style: italic;
+        line-height: 1.4;
+        text-wrap: balance;
+        color: #733642;
+    }
 
     .cw-shelf-wrap { container-type: inline-size; }
 
@@ -448,8 +466,8 @@
     .cw-shelf.armed .cw-vase { opacity: 0; }
 
     @@media (max-width: 760px) {
-        .coursework-hero.cw-has-shelf { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
-        .coursework-hero.cw-has-shelf h1 { margin: 0; }
+        .cw-ov-head { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+        .cw-ov-sub { margin-bottom: 0; }
         .cw-shelf { justify-content: center; }
     }
 
@@ -646,50 +664,8 @@
 <div class="coursework-section page-fill">
     <div class="coursework-container">
         @* HERO *@
-        <div class="coursework-hero@(marketingOnly ? "" : " cw-has-shelf")">
+        <div class="coursework-hero">
             <h1>@(marketingOnly ? "Marketing" : "Coursework")</h1>
-            @if (!marketingOnly)
-            {
-                <div class="cw-shelf-wrap"><div class="cw-shelf" aria-hidden="true">
-                    @foreach (var row in shelf)
-                    {
-                        var stack = row.Any(b => b.Kind == "flat");
-                        <div class="@(stack ? "cw-shelf-stack" : "cw-shelf-row")">
-                            @if (stack)
-                            {
-                                <svg class="cw-vase" viewBox="0 0 70 100" data-drop="9" data-spin="12">
-                                    <g fill="none" stroke="#6B7F5E" stroke-width="1.2" stroke-linecap="round">
-                                        <path d="M35 93 C34 72 30 52 21 31" />
-                                        <path d="M36 93 C37 68 41 47 49 25" />
-                                        <path d="M35 93 C35 70 35 48 35 14" />
-                                    </g>
-                                    <g fill="#7F9A6B">
-                                        <ellipse cx="27" cy="45" rx="5" ry="1.8" transform="rotate(-35 27 45)" />
-                                        <ellipse cx="43" cy="40" rx="5" ry="1.8" transform="rotate(35 43 40)" />
-                                        <ellipse cx="38" cy="30" rx="4" ry="1.5" transform="rotate(-50 38 30)" />
-                                    </g>
-                                    @foreach (var (x, y, petal) in new[] { (21, 31, "#E7B7BE"), (49, 25, "#F3DCD8"), (35, 14, "#E7B7BE") })
-                                    {
-                                        <g fill="@petal">
-                                            <circle cx="@(x - 3)" cy="@y" r="3.2" /><circle cx="@(x + 3)" cy="@y" r="3.2" />
-                                            <circle cx="@x" cy="@(y - 3)" r="3.2" /><circle cx="@x" cy="@(y + 3)" r="3.2" />
-                                        </g>
-                                        <circle cx="@x" cy="@y" r="2" fill="#C9969E" />
-                                    }
-                                    <path d="M18 82 C18 92 25 97 35 97 C45 97 52 92 52 82 Z" fill="rgba(186, 212, 205, 0.35)" />
-                                    <path d="M30 58 C30 54 31.5 52 31.5 48 L38.5 48 C38.5 52 40 54 40 58 C49 62 54 70 54 79 C54 92 46 99 35 99 C24 99 16 92 16 79 C16 70 21 62 30 58 Z"
-                                          fill="rgba(255, 255, 255, 0.4)" stroke="rgba(115, 54, 66, 0.45)" stroke-width="1" />
-                                    <path d="M22 72 C20 78 21 86 25 91" fill="none" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.6" stroke-linecap="round" />
-                                </svg>
-                            }
-                            @foreach (var b in row)
-                            {
-                                <div class="cw-book cw-book-@b.Kind cw-look-@b.Look" data-drop="@b.Drop" data-spin="@b.Spin" style="--c: @themes[b.Theme].Color; --l: @b.Length; --t: @b.Thick"><span><b>@themes[b.Theme].Short</b></span><i></i></div>
-                            }
-                        </div>
-                    }
-                </div></div>
-            }
         </div>
 
         @* Overview (all nine themes), my MIS major, or my marketing projects *@
@@ -711,13 +687,53 @@
         <div class="cw-panel" id="cw-overview" role="tabpanel" aria-labelledby="cw-tab-overview" hidden>
         @* six ways the subjects work together: picking one lights up the cards that feed it *@
         <div class="cx">
-            @* the same intro as the MIS and Marketing tabs: a two-line heading, then one italic thesis *@
-            <header class="mp mp-hero">
-                <h2 id="ov-heading">One discipline was never going to answer all my questions.</h2>
-                <p class="mp-thesis">Nine subjects. Four schools. One obsession: understanding why people choose, trust, click, remember and come back.<br />Then figuring out what to build with the answer.</p>
+            @* the title and subtitle on the left, the nine subjects as books on the right, standing on the header's rule *@
+            <header class="mp mp-hero cw-ov-head">
+                <div>
+                    <h2 id="ov-heading">The Art of Connecting the Dots.</h2>
+                    <p class="cw-ov-sub">Nine disciplines. A perspective no single major could give me.</p>
+                </div>
+            <div class="cw-shelf-wrap"><div class="cw-shelf" aria-hidden="true">
+                @foreach (var row in shelf)
+                {
+                    var stack = row.Any(b => b.Kind == "flat");
+                    <div class="@(stack ? "cw-shelf-stack" : "cw-shelf-row")">
+                        @if (stack)
+                        {
+                            <svg class="cw-vase" viewBox="0 0 70 100" data-drop="9" data-spin="12">
+                                <g fill="none" stroke="#6B7F5E" stroke-width="1.2" stroke-linecap="round">
+                                    <path d="M35 93 C34 72 30 52 21 31" />
+                                    <path d="M36 93 C37 68 41 47 49 25" />
+                                    <path d="M35 93 C35 70 35 48 35 14" />
+                                </g>
+                                <g fill="#7F9A6B">
+                                    <ellipse cx="27" cy="45" rx="5" ry="1.8" transform="rotate(-35 27 45)" />
+                                    <ellipse cx="43" cy="40" rx="5" ry="1.8" transform="rotate(35 43 40)" />
+                                    <ellipse cx="38" cy="30" rx="4" ry="1.5" transform="rotate(-50 38 30)" />
+                                </g>
+                                @foreach (var (x, y, petal) in new[] { (21, 31, "#E7B7BE"), (49, 25, "#F3DCD8"), (35, 14, "#E7B7BE") })
+                                {
+                                    <g fill="@petal">
+                                        <circle cx="@(x - 3)" cy="@y" r="3.2" /><circle cx="@(x + 3)" cy="@y" r="3.2" />
+                                        <circle cx="@x" cy="@(y - 3)" r="3.2" /><circle cx="@x" cy="@(y + 3)" r="3.2" />
+                                    </g>
+                                    <circle cx="@x" cy="@y" r="2" fill="#C9969E" />
+                                }
+                                <path d="M18 82 C18 92 25 97 35 97 C45 97 52 92 52 82 Z" fill="rgba(186, 212, 205, 0.35)" />
+                                <path d="M30 58 C30 54 31.5 52 31.5 48 L38.5 48 C38.5 52 40 54 40 58 C49 62 54 70 54 79 C54 92 46 99 35 99 C24 99 16 92 16 79 C16 70 21 62 30 58 Z"
+                                      fill="rgba(255, 255, 255, 0.4)" stroke="rgba(115, 54, 66, 0.45)" stroke-width="1" />
+                                <path d="M22 72 C20 78 21 86 25 91" fill="none" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.6" stroke-linecap="round" />
+                            </svg>
+                        }
+                        @foreach (var b in row)
+                        {
+                            <div class="cw-book cw-book-@b.Kind cw-look-@b.Look" data-drop="@b.Drop" data-spin="@b.Spin" style="--c: @themes[b.Theme].Color; --l: @b.Length; --t: @b.Thick"><span><b>@themes[b.Theme].Short</b></span><i></i></div>
+                        }
+                    </div>
+                }
+            </div></div>
             </header>
-            <p class="cx-heading" id="cx-heading">Nine subjects. Six ways they work together.</p>
-            <div class="cx-pills" role="group" aria-labelledby="cx-heading">
+            <div class="cx-pills" role="group" aria-labelledby="ov-heading">
                 @for (var c = 0; c < crossovers.Length; c++)
                 {
                     <button type="button" class="cx-pill" data-x="@c" aria-pressed="false">@crossovers[c].Title</button>
@@ -1076,7 +1092,7 @@
     @@media (prefers-reduced-motion: reduce) { .mis-more:not([hidden]) { animation: none; } }
 </style>
 <script>
-    // Coursework header: once the shelf scrolls into view, the books drop in from the top of the screen one at a time.
+    // Overview header: once the shelf is on screen (its tab open and scrolled to), the books drop in from the top of the screen one at a time.
     // Each falls faster and faster, turning as it goes, squashes when it lands, bounces and settles, and the books
     // already standing jump a little at every landing. The last book tips onto its neighbor and the vase wobbles.
     // Tap the shelf and they all fall again.

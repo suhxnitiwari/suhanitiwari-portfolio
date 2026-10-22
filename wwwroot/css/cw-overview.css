@@ -1,4 +1,4 @@
-/* Coursework Overview: the intro paragraph and the six theme buttons above the grid.
+/* Coursework Overview: the six theme buttons above the grid.
    Picking a theme adds .has-pick to .courses-grid; cards that feed it get .lit and show their courses (.cx-lit). */
 
 /* in the same 1100px column as everything else, left-aligned */
@@ -6,22 +6,6 @@
     max-width: var(--page-width, 1100px);
     margin: -20px auto 36px;
     text-align: left;
-}
-
-.cx-intro {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.4em;
-    line-height: 1.7;
-    text-wrap: pretty;
-    color: #2A1810;
-    margin-bottom: 36px;
-}
-
-.cx-heading {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.6em;
-    color: #1E100A;
-    margin: 0 0 16px;
 }
 
 .cx-pills {
@@ -100,8 +84,6 @@
 
 @media (max-width: 768px) {
     .cx { margin-top: -10px; }
-    .cx-intro { font-size: 1.05em; text-align: left; }
-    .cx-heading { font-size: 1.3em; }
     .cx-pill { padding: 8px 16px; font-size: 0.85em; }
 }
 
