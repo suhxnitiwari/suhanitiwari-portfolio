@@ -1,0 +1,64 @@
+/* Home page rhythm: after the cover photo the sections alternate light, dark, light, dark, ending light above the dark footer.
+   Light: About, Experience, Why MIS, Marketing, Beyond, TL;DR (their own blush backgrounds).
+   Dark (midnight plum): Selected work, Education, Coursework, More projects, Passions.
+   Only loaded on the home page. In a dark band, text that sits straight on the background turns ivory, quiet text turns
+   soft ivory and plum accents turn rose; cards, photos and colored tiles keep their own colors. */
+
+:root {
+    --band-ink: #F9EDE9;
+    --band-soft: rgba(249, 237, 233, 0.66);
+    --band-rose: #E8A3B8;
+    --band-rose-soft: #F3C6D2;
+    --band-line: rgba(249, 237, 233, 0.16);
+}
+
+#selected-work, #education, #coursework, #projects, #playground {
+    background: radial-gradient(ellipse at 85% 0%, #3A1622 0%, #1A0F14 55%, #160C11 100%) !important;
+    color: var(--band-ink);
+}
+
+/* their own light wrappers step aside */
+#coursework .coursework-section,
+#playground > .listen-container { background: transparent !important; }
+
+/* ===== headings and plain text ===== */
+#selected-work h2, #projects h2, #education h2, #coursework h1, #coursework h2, #playground .section-title,
+:is(#selected-work, #projects) .best-title,
+#education :is(.edu-college, .edu-degrees b, .honor-name, .honor-note),
+#coursework :is(.loop-panel-h, .mp-h2, .mis-axis-label, .story-heading),
+#playground :is(.shelf-title, .shelf-arrow, .shelf-item-title, .cake-arrow) {
+    color: var(--band-ink) !important;
+}
+
+:is(#selected-work, #projects) :is(.best-line, .best-skill),
+#education :is(.edu-degrees span, .honor-meta i, .class-card-label, .class-card-close),
+#coursework :is(.mp-hero-line, .loop-line, .loop-stack, .loop-from, .story-sub),
+#playground :is(.shelf-caption, .shelf-caption strong, .shelf-item-meta) {
+    color: var(--band-soft) !important;
+}
+
+/* ===== plum accents become rose ===== */
+:is(#selected-work, #projects) :is(.selected-all, .selected-all span, .best-arrow, .best-kicker),
+#education :is(.edu-school, .edu-when, .honors-label, .honor-meta b),
+#coursework :is(.cw-ov-sub, .cx-pill, .loop-hub, .loop-panel-k, .mis-more-btn, .mp-eyebrow, .mis-question, .mp-hero strong),
+#playground :is(.make-q, .bake-group-label) {
+    color: var(--band-rose) !important;
+}
+
+#education .edu-school em { color: var(--band-rose-soft) !important; }
+
+/* ===== rules, borders and outlines ===== */
+#coursework .mp-hero.cw-ov-head { border-bottom-color: var(--band-ink) !important; }
+#education :is(.edu-degrees li, .honor, .honors-list) { border-color: var(--band-line) !important; }
+#coursework .cx-pill { border-color: rgba(232, 163, 184, 0.45) !important; background: transparent !important; }
+#coursework .cx-pill[aria-pressed="true"] { background: var(--band-rose) !important; color: #1A0F14 !important; }
+:is(#selected-work, #projects) .best-skill { background: transparent !important; border-color: var(--band-line) !important; }
+#education .honor-toggle { border-color: var(--band-rose) !important; }
+#coursework .mp-tri-fig svg text { fill: var(--band-rose) !important; }
+
+/* phones: the loop becomes a plain timeline (no white cards), so its names sit on the plum too */
+@media (max-width: 640px) {
+    #coursework .loop-proj { color: var(--band-ink) !important; }
+    #coursework :is(.loop-n, .loop-verb) { color: var(--band-rose) !important; }
+    #coursework .loop-stop::before { box-shadow: 0 0 0 4px #1A0F14 !important; background: var(--band-rose) !important; }
+}
