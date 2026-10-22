@@ -4,7 +4,9 @@
    The cover video is a motion graphic I made (tools/record/bollywood-cover.html): three dressing-room mirrors, each framing its founder's
    photo (Wikimedia Commons, CC BY 3.0, credited on the slide), whose lights tell each fate.
    Numbers checked Oct 2026: Nykaa FY26 annual report (Form AOC-1) and half-yearly related-party filings on NSE, CRISIL rating notes,
-   MCA filings for 82°E as reported by MediaNama and TechStory, brand stores for prices, Google Trends for search. *@
+   MCA filings for 82°E as reported by MediaNama and TechStory, brand stores for prices, Google Trends for search.
+   Updated 22 Oct 2026 with ownership databases (Tracxn, TheKredible), 82°E's use-before dates, Nykaa's NSE reply on 82°E,
+   Instagram grids, and the Goldilocks price check (each brand's price per 10 ml against the everyday brands its buyers already use). *@
 @{
     const string bsig = "<span class=\"b-sig\" aria-hidden=\"true\">suhani</span>";
     // audited revenue, ₹ crore (Kay: CRISIL for FY20 and FY21, Nykaa's annual report after that; 82°E: MCA filings)
@@ -16,10 +18,11 @@
     var mkt = new (string Name, double Pct, string Cls)[] {
         ("82°E, FY24", 92.6, "e82"), ("Sugar, FY25", 41, "peer"), ("Honasa (Mamaearth), FY25", 36, "peer"),
         ("Minimalist, FY25", 30, "peer"), ("82°E, FY25", 30.0, "e82"), ("Kay Beauty, FY25", 12.5, "kay") };
-    // face moisturiser, list price per 10 ml, 11 Oct 2026
-    var moist = new (string Name, int Price, string Cls)[] {
-        ("Clinique Moisture Surge", 710, "peer"), ("Kiehl’s Ultra Facial", 680, "peer"), ("82°E Ashwagandha Bounce", 540, "e82"),
-        ("Kay Hydrabase Water Crème", 260, "kay"), ("Minimalist Ceramides", 120, "peer"), ("Hyphen Barrier Repair", 90, "peer") };
+    // Goldilocks check: list price per 10 ml or g, divided by the median of the everyday brands its buyers already use (11 to 13 Oct 2026)
+    var gold = new (string Name, double Mult, string Cls)[] {
+        ("Anomaly shampoo, US", 0.9, "ano"), ("Anomaly shampoo, India", 1.6, "ano"), ("Kay makeup, median of 12", 2.0, "kay"),
+        ("Kay Skin moisturiser", 3.1, "kay"), ("82°E moisturiser", 6.5, "e82"), ("82°E sunscreen", 6.7, "e82") };
+    const double goldMax = 7.0, goldScale = 80.0;
     // Google search interest in India, yearly average 2019 to 2026, one scale for all three
     var tKay = new[] { 0.8, 2.2, 3.0, 4.0, 4.5, 7.3, 9.4, 11.4 };
     var tAno = new[] { 0.0, 0.0, 0.4, 1.0, 1.3, 1.0, 0.8, 0.9 };
@@ -108,6 +111,26 @@
     .mk-bw .mk-slide:not([hidden]) .b-hbars .t i { animation: bGrow 0.9s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--n) * 0.1s); }
     .mk-bw .b-hbars .t b { position: absolute; left: calc(var(--w) + 0.8cqw); top: 50%; transform: translateY(-50%); font-size: clamp(10px, 1.1cqw, 13px); white-space: nowrap; }
 
+    /* the Goldilocks band: 1.5 to 2.5 times what buyers already pay, shaded behind every bar */
+    .mk-bw .b-hbars .t s.gb { position: absolute; top: -0.45cqw; bottom: -0.45cqw; left: var(--l); width: var(--bw); background: rgba(169, 132, 74, 0.2); border-left: 1px dashed rgba(169, 132, 74, 0.7); border-right: 1px dashed rgba(169, 132, 74, 0.7); text-decoration: none; }
+    .mk-bw .b-gkey { display: flex; align-items: center; gap: 0.8cqw; font-size: clamp(9px, 1cqw, 12px); color: var(--b-mute); }
+    .mk-bw .b-gkey s { display: inline-block; width: 2.4cqw; min-width: 16px; height: 1.2cqw; min-height: 9px; background: rgba(169, 132, 74, 0.2); border-left: 1px dashed var(--b-gold); border-right: 1px dashed var(--b-gold); }
+
+    /* instagram: two grids as colour strips, with the facts under each */
+    .mk-bw .b-ig { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8cqw; flex: 1; align-content: center; }
+    .mk-bw .b-ig > div { padding: 1.5cqw 1.7cqw; display: grid; gap: 0.9cqw; align-content: start; border-top: 0.35cqw solid var(--c); }
+    .mk-bw .b-ig q { font-family: 'Bodoni Moda', Georgia, serif; font-style: italic; font-size: clamp(13px, 1.7cqw, 21px); line-height: 1.15; color: var(--b-ink); }
+    .mk-bw .b-sw { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.4cqw; }
+    .mk-bw .b-sw span { display: grid; gap: 0.3cqw; font-size: clamp(7px, 0.8cqw, 10px); color: var(--b-mute); text-align: center; }
+    .mk-bw .b-sw i { display: block; height: 3.4cqw; min-height: 20px; border-radius: 0.4cqw; background: var(--s); }
+    .mk-bw .b-ig ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5cqw; font-size: clamp(10px, 1.08cqw, 13px); color: var(--b-ink); }
+    .mk-bw .b-ig li b { color: var(--b-wine); }
+    .mk-bw .b-plan { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6cqw; flex: 1; align-content: center; }
+    .mk-bw .b-plan > div { padding: 2cqw 2.2cqw; border-top: 0.35cqw solid var(--b-wine); }
+    .mk-bw .b-plan b { display: block; font-family: 'Bodoni Moda', Georgia, serif; font-size: clamp(13px, 1.8cqw, 22px); line-height: 1.2; color: var(--b-ink); }
+    .mk-bw .b-plan span { display: block; margin-top: 0.8cqw; font-size: clamp(10px, 1.3cqw, 16px); line-height: 1.5; color: var(--b-mute); }
+    .mk-bw .b-plan span em { font-style: normal; color: var(--b-wine); font-weight: 600; }
+
     /* the name: each brand's name set big, with a verdict and a search sparkline */
     .mk-bw .b-names { flex: 1; align-content: center; }
     .mk-bw .b-names > div { border-top: 0.35cqw solid var(--c); padding: 1.4cqw 1.6cqw; display: grid; gap: 0.7cqw; align-content: start; }
@@ -162,7 +185,7 @@
 
     @@container (max-width: 640px) {
         .mk-bw .mk-stage::after { inset: 6px; }
-        .mk-bw .b-three, .mk-bw .b-two, .mk-bw .b-why, .mk-bw .b-more, .mk-bw .b-rules { grid-template-columns: 1fr; gap: 12px; }
+        .mk-bw .b-three, .mk-bw .b-two, .mk-bw .b-why, .mk-bw .b-more, .mk-bw .b-rules, .mk-bw .b-ig, .mk-bw .b-plan { grid-template-columns: 1fr; gap: 12px; }
         .mk-bw .b-cover { padding: 22px 18px 0; }
         .mk-bw .b-bg { position: relative; inset: auto; order: 9; width: calc(100% + 36px); margin: 6px -18px 0; height: auto; aspect-ratio: 4 / 3; object-position: 86% 50%; }
         .mk-bw .b-cols, .mk-bw .b-yrs { gap: 6px; padding: 0; }
@@ -200,7 +223,7 @@
                 <div class="b-three b-ans">
                     <div class="b-card b-anim" style="--n:0"><small class="b-lab">Same fame</small><b>Three A-listers, three launches</b><p>Katrina Kaif, Priyanka Chopra Jonas and Deepika Padukone were all at the top of Bollywood when their brands began.</p></div>
                     <div class="b-card b-anim" style="--n:1"><small class="b-lab">Different fates</small><b>A winner, an exit, a loser</b><p>Kay made ₹211.65 cr in FY26 at a profit. Anomaly was sold to Reliance. 82°E fell to ₹14.66 cr at a loss.</p></div>
-                    <div class="b-card b-anim" style="--n:2"><small class="b-lab">The difference</small><b>A partner, a price, a name, a story</b><p>Kay had all four. Anomaly had a story and a fair price. 82°E had none of them.</p></div>
+                    <div class="b-card b-anim" style="--n:2"><small class="b-lab">The difference</small><b>A partner, a price, a name, a story</b><p>Kay had all four. Anomaly had a story but priced like a drugstore brand. 82°E had none of them.</p></div>
                 </div>
                 <p class="b-src">Source: Nykaa FY26 annual report (Form AOC-1); 82°E MCA filings via MediaNama; Reliance Retail filing, 30 Apr 2026.</p>
             </div>
@@ -218,13 +241,13 @@
                     <div class="b-card b-anim" style="--c:var(--ano);--n:1"><h5>Anomaly</h5><dl>
                         <dt>Founder</dt><dd>Priyanka Chopra Jonas</dd><dt>Launched</dt><dd>Feb 2021, haircare</dd>
                         <dt>Partner</dt><dd>Maesa, a US brand incubator</dd><dt>Hero price</dt><dd>Shampoo $5.99</dd>
-                        <dt>Sold on</dt><dd>Target, Walmart, CVS, then Nykaa</dd><dt>Her stake</dt><dd>Never disclosed</dd><dt>Name owned by</dt><dd>Maesa, now Reliance</dd></dl></div>
+                        <dt>Sold on</dt><dd>Target, CVS, Amazon, Kroger, then Nykaa</dd><dt>Her stake</dt><dd>None found: Maesa owned it</dd><dt>Name owned by</dt><dd>Maesa, now Reliance</dd></dl></div>
                     <div class="b-card b-anim" style="--c:var(--e82);--n:2"><h5>82°E</h5><dl>
                         <dt>Founder</dt><dd>Deepika Padukone</dd><dt>Launched</dt><dd>Nov 2022, skincare</dd>
-                        <dt>Partner</dt><dd>None: a $7.5M seed round</dd><dt>Hero price</dt><dd>Moisturiser ₹2,700</dd>
-                        <dt>Sold on</dt><dd>Its own website only</dd><dt>Her stake</dt><dd>About 15%, with Ranveer</dd><dt>Name owned by</dt><dd>Her family office</dd></dl></div>
+                        <dt>Partner</dt><dd>None, just seed investors</dd><dt>Hero price</dt><dd>Moisturiser ₹2,700</dd>
+                        <dt>Sold on</dt><dd>Its own site, then Tira (2024)</dd><dt>Her stake</dt><dd>About 60%, via her family office</dd><dt>Name owned by</dt><dd>Her family office</dd></dl></div>
                 </div>
-                <p class="b-src">Source: launch announcements; company registry data (Mar 2026); Storyboard18 (Apr 2026); IP India; USPTO; Reliance Retail filing.</p>
+                <p class="b-src">Source: launch announcements; Nykaa annual reports; Tracxn and TheKredible (82°E cap table; one press report’s 15% is contested); IP India; USPTO; Reliance Retail filing.</p>
             </div>
 
             <div class="mk-slide" data-title="Revenue" hidden>
@@ -261,7 +284,7 @@
                 <div class="b-rule"></div>
                 <div class="b-three" style="margin-top:auto">
                     <div class="b-card b-stat b-anim" style="--c:var(--kay);--n:0"><b>₹55.6 cr</b><span>Kay’s total profit, FY20 to FY26: seven profitable years in a row</span></div>
-                    <div class="b-card b-stat b-anim" style="--c:var(--ano);--n:1"><b>Sold</b><span>Anomaly’s owner sold the brand to Reliance Retail in April 2026 without ever reporting its numbers</span></div>
+                    <div class="b-card b-stat b-anim" style="--c:var(--ano);--n:1"><b>Sold</b><span>Maesa, not Priyanka, owned Anomaly. It sold the name to Reliance Retail in April 2026, with no numbers and no price ever disclosed</span></div>
                     <div class="b-card b-stat b-anim" style="--c:var(--e82);--n:2"><b>₹35.7 cr</b><span>82°E’s losses in FY24 and FY25 alone, on ₹35.9 cr of revenue</span></div>
                 </div>
                 <p class="b-lede" style="margin-top:1cqw">Kay’s FY26 profit was ₹21.8 cr, about double FY25. 82°E spent ₹1.77 to earn every ₹1 in FY25, and its net worth turned negative.</p>
@@ -273,7 +296,7 @@
                 <p class="b-kick">structure 01, the partner</p>
                 <h4 class="b-h">85% of Kay’s sales go <em>to its own co-owner.</em></h4>
                 <div class="b-rule"></div>
-                <p class="b-lede">Nykaa owns 51% of Kay, stocks it on its app and in its stores, and collects an 8% royalty on every rupee. Kay never had to win a retailer. Anomaly rented shelf space at Target. 82°E sold only on its own website.</p>
+                <p class="b-lede">Nykaa owns 51% of Kay, stocks it on its app and in its stores, and collects an 8% royalty on every rupee. Kay never had to win a retailer. Anomaly rented shelf space at Target. 82°E sold only on its own website for 17 months. Same factory, different fates: Maxima Solutions in Pantnagar made products for both Kay and 82°E, so the gap wasn’t manufacturing.</p>
                 <div style="margin-top:auto;display:grid;gap:0.8cqw">
                     <p class="b-cap">Who bought Kay’s stock, FY26 revenue of ₹211.65 cr</p>
                     <div class="b-split" role="img" aria-label="Nykaa E-Retail 111.4 crore, FSN Brands Marketing 61.4 crore, FSN International 8.3 crore, all other buyers 30.6 crore.">
@@ -284,7 +307,7 @@
                     </div>
                     <p class="b-cap" style="text-transform:none;letter-spacing:0">The thin band is Nykaa’s international arm, ₹8.3 cr.</p>
                 </div>
-                <p class="b-src">Source: Nykaa half-yearly related-party transaction filings, H1 and H2 FY26 (NSE); the 85% share is my calculation from them.</p>
+                <p class="b-src">Source: Nykaa half-yearly related-party transaction filings, H1 and H2 FY26 (NSE); the 85% share is my calculation from them; maker details printed on Kay and 82°E product pages.</p>
             </div>
 
             <div class="mk-slide" data-title="Marketing" hidden>
@@ -306,25 +329,27 @@
             <div class="mk-slide" data-title="Price" hidden>
                 @Html.Raw(bsig)
                 <p class="b-kick">structure 03, the price</p>
-                <h4 class="b-h">82°E priced like Kiehl’s. <em>Kay priced like a treat.</em></h4>
+                <h4 class="b-h">Kay charged twice what its fans already paid. <em>82°E charged six times.</em></h4>
                 <div class="b-rule"></div>
                 <div class="b-two" style="grid-template-columns:1.3fr 1fr">
                     <div style="display:grid;gap:1cqw">
-                        <p class="b-cap">Face moisturiser, list price per 10 ml</p>
-                        <ul class="b-hbars" role="img" aria-label="Moisturiser price per 10 ml: Clinique 710 rupees, Kiehl's 680, 82°E 540, Kay 260, Minimalist 120, Hyphen 90.">
+                        <p class="b-cap">Price per 10 ml, as a multiple of the everyday brands its buyers already use</p>
+                        <ul class="b-hbars" role="img" aria-label="Price as a multiple of everyday brands: Anomaly shampoo US 0.9 times, Anomaly shampoo India 1.6, Kay makeup 2.0, Kay Skin moisturiser 3.1, 82°E moisturiser 6.5, 82°E sunscreen 6.7. The Goldilocks band, 1.5 to 2.5 times, is shaded.">
                             @{ var p = 0; }
-                            @foreach (var x in moist)
+                            @foreach (var x in gold)
                             {
-                                <li class="@(x.Cls == "peer" ? "" : "me")"><span>@x.Name</span><div class="t"><i style="--c:var(--@x.Cls);--w:@(F(Math.Round(x.Price / 710.0 * 78, 1)))%;--n:@(p++)"></i><b style="--w:@(F(Math.Round(x.Price / 710.0 * 78, 1)))%">₹@x.Price</b></div></li>
+                                var w = F(Math.Round(x.Mult / goldMax * goldScale, 1));
+                                <li class="me"><span>@x.Name</span><div class="t"><s class="gb" style="--l:@(F(Math.Round(1.5 / goldMax * goldScale, 2)))%;--bw:@(F(Math.Round(1.0 / goldMax * goldScale, 2)))%"></s><i style="--c:var(--@x.Cls);--w:@(w)%;--n:@(p++)"></i><b style="--w:@(w)%">@F(x.Mult)x</b></div></li>
                             }
                         </ul>
+                        <p class="b-gkey"><s></s>The Goldilocks band: 1.5 to 2.5 times what buyers already pay</p>
                     </div>
                     <div style="display:grid;gap:1cqw">
-                        <div class="b-card b-stat b-anim" style="--c:var(--e82);--n:0"><b>₹2,700</b><span>82°E’s moisturiser at launch in 2022, and still today. It discounts with Buy 1 Get 1, never by cutting the price.</span></div>
-                        <div class="b-card b-stat b-anim" style="--c:var(--ano);--n:1"><b>$5.99</b><span>every Anomaly product at Target. A bargain in the US, though the same bottle cost 1.3x more in India.</span></div>
+                        <div class="b-card b-stat b-anim" style="--c:var(--e82);--n:0"><b>₹2,700</b><span>82°E’s moisturiser, never cut, only Buy 1 Get 1. About ₹899 would have sat in the band.</span></div>
+                        <div class="b-card b-stat b-anim" style="--c:var(--ano);--n:1"><b>$5.99</b><span>Anomaly at Target, level with OGX. Kristin Ess, from the same maker, sold at $11.99 on the same shelf.</span></div>
                     </div>
                 </div>
-                <p class="b-src">Source: brand stores and retailer listings, 11 Oct 2026; launch prices via the Wayback Machine. Kay’s lipstick costs 1.3x Lakmé and 0.6x Sugar per gram.</p>
+                <p class="b-src">Source: brand stores and retailer listings, 11 to 13 Oct 2026; launch prices via the Wayback Machine. Everyday brands: Minimalist, Plum, Dot &amp; Key, The Derma Co and Hyphen for skincare; Lakmé, Maybelline, Sugar, Swiss Beauty and Nykaa for makeup; TRESemmé, Pantene, Plum, Love Beauty and Planet and OGX for haircare. Kay’s Matte Lipstick alone costs 1.3x Lakmé and 0.6x Sugar per gram.</p>
             </div>
 
             <div class="mk-slide" data-title="The name" hidden>
@@ -349,17 +374,43 @@
                 <p class="b-src">Source: Google Trends, India, yearly average of monthly data on one shared scale, pulled 11 Oct 2026. Searches for “82°E” fall to zero after 2024, partly because people stop typing the symbol.</p>
             </div>
 
-            <div class="mk-slide" data-title="The story" hidden>
+            <div class="mk-slide" data-title="Instagram" hidden>
                 @Html.Raw(bsig)
-                <p class="b-kick">structure 05, the story</p>
-                <h4 class="b-h">Kay and Anomaly told a story. <em>82°E told a coordinate.</em></h4>
+                <p class="b-kick">structure 05, the story on Instagram</p>
+                <h4 class="b-h">Kay changes the mood every season. <em>82°E never does.</em></h4>
                 <div class="b-rule"></div>
-                <div class="b-three b-story">
-                    <div class="b-card b-anim" style="--c:var(--kay);--n:0"><small class="b-lab">Kay Beauty</small><q>It’s Kay to Be You</q><p><b>The story:</b> an actress who spent years under film lights wanted glam makeup that was kind to her skin. “Kay” is “okay” and her initial at once.</p><p><b>The feeling:</b> permission to be yourself, in full glam</p></div>
-                    <div class="b-card b-anim" style="--c:var(--ano);--n:1"><small class="b-lab">Anomaly</small><q>All of us are anomalies</q><p><b>The story:</b> her hair was damaged by daily heat styling on set, and she grew up on her mother’s homemade hair masks. In India, “this brand was born here, and now it’s coming home.”</p><p><b>The feeling:</b> nobody gets to decide what’s standard</p></div>
-                    <div class="b-card b-anim" style="--c:var(--e82);--n:2"><small class="b-lab">82°E</small><q>Self-Care Simplified</q><p><b>The story:</b> the longitude line that sets India’s clock. A place on a map, not a person or a problem.</p><p><b>The feeling:</b> unclear. On launch day a critic asked if it was “beauty or self-care”.</p></div>
+                <div class="b-ig">
+                    <div class="b-card b-anim" style="--c:var(--kay);--n:0">
+                        <small class="b-lab">@@kaybykatrina</small>
+                        <q>It’s Kay to Be You</q>
+                        <div class="b-sw" role="img" aria-label="Kay's grid by season: Christmas red, popsicle pink, café coffee, monsoon peach, Kay Skin milk, Diwali sunset.">
+                            <span><i style="--s:#A3192C"></i>Christmas</span><span><i style="--s:#E9A3B2"></i>Popsicle</span><span><i style="--s:#8A5A3C"></i>Café blush</span>
+                            <span><i style="--s:#EDBFA0"></i>Monsoon</span><span><i style="--s:#F3E1D3"></i>Kay Skin</span><span><i style="--s:#D9572F"></i>Diwali</span>
+                        </div>
+                        <ul>
+                            <li><b>A new colour story</b> for every drop, timed to India’s calendar</li>
+                            <li><b>Real brides,</b> every body type, and men wearing the makeup</li>
+                            <li><b>Vicky Kaushal</b> as “Chief Approval Officer”: top comment, 2,682 likes</li>
+                            <li><b>Katrina</b> in almost every tile</li>
+                        </ul>
+                    </div>
+                    <div class="b-card b-anim" style="--c:var(--e82);--n:1">
+                        <small class="b-lab">@@82e.official</small>
+                        <q>Self-Care Simplified</q>
+                        <div class="b-sw" role="img" aria-label="82°E's grid: six recent tiles, minis, lip therapy, body care, cleansing, hydrating and Deepika, all in the same beige.">
+                            <span><i style="--s:#D8C2AD"></i>Minis</span><span><i style="--s:#CDB39B"></i>Lip therapy</span><span><i style="--s:#E2D1C0"></i>Body care</span>
+                            <span><i style="--s:#C7A88D"></i>Cleansing</span><span><i style="--s:#DBC5B1"></i>Hydrating</span><span><i style="--s:#D3B9A3"></i>Deepika</span>
+                        </div>
+                        <ul>
+                            <li><b>One beige grid,</b> the same hands-on-face pose</li>
+                            <li><b>Deepika</b> in about 5 of 24 tiles</li>
+                            <li><b>Follows 1 account;</b> “are you closing?” goes unanswered</li>
+                            <li><b>Three names:</b> you hear “eighty-two east”, see 82°E, type 82e.official</li>
+                        </ul>
+                    </div>
                 </div>
-                <p class="b-src">Source: afaqs (Oct 2019, Aug 2022); WWD and NewBeauty (2021); 82e.com; The Established (Nov 2022).</p>
+                <p class="b-lede" style="font-size:clamp(10px,1.1cqw,14px) !important">Anomaly’s account, “All of us are anomalies”, has been silent since 13 Jan 2025. Its own FAQ said it suits straight to wavy hair only, and its “born in India” story was written by a New York company.</p>
+                <p class="b-src">Source: the three brands’ Instagram profiles and grids, seen 13 Oct 2026; colours matched by eye to each grid; Anomaly’s story highlights; USPTO (Anomaly marks filed by Maesa, 2019).</p>
             </div>
 
             <div class="mk-slide" data-title="Why 82°E lost" hidden>
@@ -374,13 +425,13 @@
                 </div>
                 <ul class="b-more">
                     <li class="b-card b-anim" style="--n:3"><b>Two products</b> at launch, against Kay’s 48</li>
-                    <li class="b-card b-anim" style="--n:4"><b>Own website only:</b> no Nykaa, no Amazon, no stores</li>
-                    <li class="b-card b-anim" style="--n:5"><b>“Clinically tested”</b> meant surveys of 48 women</li>
+                    <li class="b-card b-anim" style="--n:4"><b>Late to a shelf:</b> own site for 17 months, Tira only from Apr 2024</li>
+                    <li class="b-card b-anim" style="--n:5"><b>“Clinically proven”</b> meant surveys of about 50 people</li>
                     <li class="b-card b-anim" style="--n:6"><b>Lost a court case:</b> “Lotus Splash” barred, Feb 2026</li>
-                    <li class="b-card b-anim" style="--n:7"><b>Co-founder</b> left his full-time role in 2025</li>
-                    <li class="b-card b-anim" style="--n:8"><b>Fans tired</b> of back-to-back promos on her feed</li>
+                    <li class="b-card b-anim" style="--n:7"><b>Stopped making:</b> no use-before date points to a batch after spring 2025</li>
+                    <li class="b-card b-anim" style="--n:8"><b>Sold out</b> sitewide since mid-2026, with no word to customers</li>
                 </ul>
-                <p class="b-src">Source: 82e.com; launch press kit (study footnotes); Business Today (Nov 2022); Storyboard18 (Apr 2026); LiveLaw (Feb 2026); IBTimes (Feb 2025).</p>
+                <p class="b-src">Source: 82e.com, live and via the Wayback Machine (claim banners, use-before dates, stock); launch press kit; Business Today (Nov 2022); LiveLaw (Feb 2026). Use-before dates assume a 24-month shelf life.</p>
             </div>
 
             <div class="mk-slide" data-title="Scorecard" hidden>
@@ -394,11 +445,11 @@
                         <tr><td>An A-list founder</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td></tr>
                         <tr><td>A name you can say and search</td><td class="y">Yes, “Kay”</td><td class="p">Partly, a common word</td><td>No, a degree sign</td></tr>
                         <tr><td>A story people can retell</td><td class="y">Yes, “It’s Kay to Be You”</td><td class="y">Yes, “all of us are anomalies”</td><td>No, a map line</td></tr>
-                        <tr><td>Price fits the promise</td><td class="y">Yes, mid-priced</td><td class="p">Partly, $5.99 in the US only</td><td>No, Kiehl’s prices</td></tr>
-                        <tr><td>A partner that also sells it</td><td class="y">Yes, Nykaa</td><td class="p">Partly, Maesa and Target</td><td>No, own site only</td></tr>
+                        <tr><td>Price fits the promise</td><td class="y">Yes, mid-priced</td><td class="p">Partly, too cheap in the US, right in India</td><td>No, Kiehl’s prices</td></tr>
+                        <tr><td>A partner that also sells it</td><td class="y">Yes, Nykaa</td><td class="p">Partly, Maesa and Target</td><td>No, own site, then Tira late</td></tr>
                         <tr><td>Cheap to reach customers</td><td class="y">Yes, 12.5% on marketing</td><td>Never disclosed</td><td>No, 93% in FY24</td></tr>
                         <tr><td>A category where faces sell</td><td class="y">Yes, makeup</td><td>No, haircare</td><td>No, skincare</td></tr>
-                        <tr class="out"><td>Result</td><td>₹211.65 cr revenue, ₹21.8 cr profit</td><td>Sold to Reliance, 2026</td><td>₹14.66 cr revenue, ₹12.26 cr loss</td></tr>
+                        <tr class="out"><td>Result</td><td>₹211.65 cr revenue, ₹21.8 cr profit</td><td>Sold to Reliance, 2026</td><td>₹14.66 cr revenue, ₹12.26 cr loss, sold out by mid-2026</td></tr>
                     </tbody>
                 </table>
                 <p class="b-src">Yes, Partly and No are my reading of the evidence on the slides before; every figure is sourced there.</p>
@@ -410,29 +461,24 @@
                 <h4 class="b-title">Fame gets a brand launched. <em>Structure and story decide if it lasts.</em></h4>
                 <ul class="b-rules">
                     <li class="b-anim" style="--n:0"><b>Partner with the shelf</b>Co-own the brand with whoever sells it</li>
-                    <li class="b-anim" style="--n:1"><b>Price for fans, not fame</b>A star’s name can’t carry a luxury price</li>
+                    <li class="b-anim" style="--n:1"><b>Price for fans, not fame</b>About twice what fans already pay, never luxury on day one</li>
                     <li class="b-anim" style="--n:2"><b>An easy name, a real story</b>One word anyone can say, one story anyone can retell</li>
                 </ul>
                 <p class="b-lede b-anim" style="--n:3"><b>The catch:</b> much of what Kay had came from Nykaa, not from Katrina. It sells 85% of its stock to Nykaa and pays Nykaa 8% of every rupee. The lesson for the next A-lister isn’t to be more famous. It’s to choose the right partner.</p>
+                <p class="b-lede b-anim" style="--n:4"><b>Epilogue:</b> 82°E made nothing new after about spring 2025 and sold out in mid-2026. In April 2026 Nykaa told the stock exchange it “remains in discussions” about 82°E. The winner’s partner may end up owning the loser.</p>
             </div>
             <div class="mk-slide" data-title="Action plan" hidden>
                 @Html.Raw(bsig)
                 <p class="b-kick">what each brand should do next</p>
                 <h4 class="b-h">Keep the winner’s playbook. <em>Fix the rest.</em></h4>
-                <div style="display:flex;flex-direction:column;gap:1.2cqw;margin-top:1cqw">
-                    <div style="padding:1.2cqw 1.5cqw;border:1px solid rgba(127,127,127,.35);border-radius:1cqw">
-                        <b style="display:block;font-size:clamp(12px,1.5cqw,17px);line-height:1.25">1. Kay: keep Nykaa as the front door</b>
-                        <span style="display:block;margin-top:.4cqw;font-size:clamp(10px,1.2cqw,14px);line-height:1.45;opacity:.85">Launch the next line through the same partner, and track repeat buyers, not just launch sales.</span>
-                    </div>
-                    <div style="padding:1.2cqw 1.5cqw;border:1px solid rgba(127,127,127,.35);border-radius:1cqw">
-                        <b style="display:block;font-size:clamp(12px,1.5cqw,17px);line-height:1.25">2. 82°E: get on one shelf</b>
-                        <span style="display:block;margin-top:.4cqw;font-size:clamp(10px,1.2cqw,14px);line-height:1.45;opacity:.85">Pick one retailer, like Nykaa or Amazon, and test it for 90 days before any new product. Measure: sales per store vs. own site.</span>
-                    </div>
-                    <div style="padding:1.2cqw 1.5cqw;border:1px solid rgba(127,127,127,.35);border-radius:1cqw">
-                        <b style="display:block;font-size:clamp(12px,1.5cqw,17px);line-height:1.25">3. 82°E: give the name a plain-English line</b>
-                        <span style="display:block;margin-top:.4cqw;font-size:clamp(10px,1.2cqw,14px);line-height:1.45;opacity:.85">Put what the brand does on the front of the box. Measure: branded search volume.</span>
-                    </div>
+                <div class="b-rule"></div>
+                <div class="b-plan">
+                    <div class="b-card b-anim" style="--n:0"><b>1. Kay: keep Nykaa as the front door, and Kay Skin at Kay’s price</b><span>Kay Skin sits at 3x everyday brands, against 2x for the makeup. Bring it back into the band. <em>Measure:</em> repeat buyers, not launch sales.</span></div>
+                    <div class="b-card b-anim" style="--n:1"><b>2. 82°E: one shelf, a Goldilocks price</b><span>Relaunch through Nykaa, already in talks, with the moisturiser at ₹899 and ₹299 minis every day. <em>Measure:</em> repeat rate after 90 days.</span></div>
+                    <div class="b-card b-anim" style="--n:2"><b>3. 82°E: give the name a plain-English line</b><span>Say what the brand does on the front of the box, and reply to customers. <em>Measure:</em> branded search volume.</span></div>
+                    <div class="b-card b-anim" style="--n:3"><b>4. Anomaly under Reliance: come home for real</b><span>Relaunch on Tira at ₹899 to ₹999, name the real makers instead of “born in India”, and post again. <em>Measure:</em> restock sell-through.</span></div>
                 </div>
+                <p class="b-src">Prices from the Goldilocks check on the price slide; Nykaa NSE reply, 6 Apr 2026.</p>
             </div>
         </div>
         <div class="mk-nav-row">
@@ -450,8 +496,8 @@
         <ul class="mp-proof-list">
             <li>Pulled Kay Beauty’s audited FY26 results (₹211.65 cr revenue, ₹21.8 cr profit) from Nykaa’s annual report before the press reported them</li>
             <li>Traced 85% of Kay’s sales to Nykaa companies through stock-exchange related-party filings</li>
-            <li>Priced 89 products per 10 ml, pulled eight years of Google search data, and debunked a viral $542.7M Anomaly revenue claim</li>
-            <li>Showed why 82°E lost: a name nobody can search, a luxury price and a brand with no story</li>
+            <li>Priced 407 products per 10 ml to show Kay charges about 2x what its buyers already pay and 82°E about 4.5x, and debunked a viral $542.7M Anomaly revenue claim</li>
+            <li>Read import records and product use-before dates to show 82°E stopped making products around spring 2025</li>
         </ul>
     </div>
 </div>
