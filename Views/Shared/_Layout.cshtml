@@ -520,6 +520,53 @@
                 font-size: 0.95em;
             }
         }
+
+        /* the Email dialog: a small midnight-plum card over a dimmed page */
+        .yap-pop {
+            width: min(520px, calc(100vw - 32px));
+            margin: auto;   /* the page's * { margin: 0 } reset would pin it to the top corner */
+            padding: 34px 30px 30px;
+            border: 0;
+            border-radius: 24px;
+            background: radial-gradient(ellipse at 15% 0%, #5A2635 0%, #2A1219 65%, #1A0F14 100%);
+            color: #F9EDE9;
+            box-shadow: 0 30px 80px rgba(26, 15, 20, 0.45);
+        }
+        .yap-pop::backdrop { background: rgba(26, 15, 20, 0.55); backdrop-filter: blur(3px); }
+        .yap-pop[open] { animation: yapIn 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
+        @@keyframes yapIn { from { opacity: 0; transform: translateY(14px) scale(0.98); } }
+        .yap-close {
+            position: absolute; top: 12px; right: 14px;
+            width: 34px; height: 34px; border: 0; border-radius: 50%;
+            background: none; color: rgba(249, 237, 233, 0.7); font-size: 1.5rem; line-height: 1; cursor: pointer;
+        }
+        .yap-close:hover { color: #F9EDE9; background: rgba(249, 237, 233, 0.08); }
+        .yap-mail {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            margin: 0 0 26px; padding: 0 0 18px; border-bottom: 1px solid rgba(249, 237, 233, 0.14);
+        }
+        .yap-mail a { font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 1.25rem; color: #F9EDE9; text-decoration: none; }
+        .yap-mail a:hover { color: #EFCFCD; }
+        .yap-copy {
+            padding: 6px 14px; border: 1px solid rgba(249, 237, 233, 0.3); border-radius: 999px;
+            background: none; color: #EFCFCD; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+        }
+        .yap-copy:hover { border-color: #EFCFCD; }
+        .yap-title { margin: 0 0 4px; font-family: 'Bodoni Moda', Didot, Georgia, serif; font-size: 1.6rem; font-weight: 400; color: #F9EDE9; }
+        .yap-sub { margin: 0 0 16px; font-size: 0.95rem; color: rgba(249, 237, 233, 0.6); }
+        .yap-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+        .yap-card {
+            display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 18px;
+            padding: 14px 18px; border: 1px solid rgba(249, 237, 233, 0.16); border-radius: 16px;
+            color: inherit; text-decoration: none;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .yap-card:hover, .yap-card:focus-visible { border-color: rgba(239, 207, 205, 0.55); background: rgba(249, 237, 233, 0.05); outline: none; }
+        .yap-icon { width: 24px; height: 24px; fill: none; stroke: #EFCFCD; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .yap-text { display: grid; gap: 2px; }
+        .yap-text b { font-size: 1rem; font-weight: 600; color: #F9EDE9; }
+        .yap-text span { font-size: 0.88rem; line-height: 1.45; color: rgba(249, 237, 233, 0.6); }
+        @@media (prefers-reduced-motion: reduce) { .yap-pop[open] { animation: none; } }
     </style>
     @* lets a diagram play itself while it's on screen (Study's cycle, triangle and zoom; Work's quotes) *@
     <script src="~/js/autoplay.js" asp-append-version="true"></script>
@@ -637,7 +684,7 @@
             </div>
             <div class="contact-links-wrapper">
                 <div class="contact-item" data-cue="boringly responsible">
-                    <a href="mailto:suhxnitiwari@gmail.com" class="contact-link">
+                    <a href="mailto:suhxnitiwari@gmail.com" class="contact-link" data-email-pop>
                         Email <span class="arrow">↗</span>
                     </a>
                 </div>
@@ -666,6 +713,43 @@
         <span class="contact-cue" aria-hidden="true"></span>
     </footer>
 
+    @* EMAIL: opens from the footer's Email link (without JavaScript the link is a plain mailto).
+       The address, then three things I'd happily talk about instead of work; each opens an email with its own subject. *@
+    @{
+        var yap = new (string Icon, string Title, string Line, string Subject)[]
+        {
+            ("film", "Rom-coms", "Send me the one you’d rewatch tonight.", "A rom-com you need to watch"),
+            ("fork", "New restaurants", "Austin or anywhere. Where should I eat next?", "Where you should eat next"),
+            ("cup", "The perfect vanilla latte", "Medici’s is the one to beat. Know a better one?", "A vanilla latte worth trying")
+        };
+        var yapIcons = new Dictionary<string, string>
+        {
+            ["film"] = "<rect x='3' y='5' width='18' height='14' rx='2'/><path d='M3 9h18M7 5v4M12 5v4M17 5v4'/><path d='M12 17.2s-3-1.9-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.9-3 3.8-3 3.8z'/>",
+            ["fork"] = "<path d='M7 3v7a2 2 0 0 0 2 2v9M11 3v7a2 2 0 0 1-2 2M9 3v6'/><path d='M17 21V3c-2 1.5-3 4-3 7v3h3'/>",
+            ["cup"] = "<path d='M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z'/><path d='M16 11h1.5a2.5 2.5 0 0 1 0 5H16'/><path d='M9 3.5c-.8 1 .8 2 0 3M12.5 3.5c-.8 1 .8 2 0 3'/>"
+        };
+    }
+    <dialog class="yap-pop" aria-labelledby="yap-title">
+        <button type="button" class="yap-close" aria-label="Close">×</button>
+        <div class="yap-mail">
+            <a href="mailto:suhxnitiwari@gmail.com">suhxnitiwari@gmail.com <span aria-hidden="true">↗</span></a>
+            <button type="button" class="yap-copy">Copy</button>
+        </div>
+        <h2 class="yap-title" id="yap-title">Don’t want to talk about work?</h2>
+        <p class="yap-sub">I’d happily talk about:</p>
+        <ul class="yap-list">
+            @foreach (var y in yap)
+            {
+                <li>
+                    <a class="yap-card" href="mailto:suhxnitiwari@gmail.com?subject=@Uri.EscapeDataString(y.Subject)">
+                        <svg class="yap-icon" viewBox="0 0 24 24" aria-hidden="true">@Html.Raw(yapIcons[y.Icon])</svg>
+                        <span class="yap-text"><b>@y.Title</b><span>@y.Line</span></span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </dialog>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @* Sitara ✦, my fairy guide: floating chat on every page *@
@@ -674,6 +758,22 @@
     <script src="~/js/sparkle.js" asp-append-version="true" defer></script>
     <script src="~/js/type-aside.js" asp-append-version="true" defer></script>
     <script>
+        // the footer's Email link opens the Email dialog; a tap on the dim page around it, the × or Esc closes it
+        (() => {
+            const pop = document.querySelector('.yap-pop');
+            const link = document.querySelector('[data-email-pop]');
+            if (!pop || !link || !pop.showModal) return;
+            link.addEventListener('click', e => { e.preventDefault(); pop.showModal(); });
+            pop.querySelector('.yap-close').addEventListener('click', () => pop.close());
+            pop.addEventListener('click', e => { if (e.target === pop) pop.close(); });
+            const copy = pop.querySelector('.yap-copy');
+            copy.addEventListener('click', async () => {
+                try { await navigator.clipboard.writeText('suhxnitiwari@gmail.com'); copy.textContent = 'Copied'; }
+                catch { copy.textContent = 'Press ⌘C'; getSelection().selectAllChildren(pop.querySelector('.yap-mail a')); }
+                setTimeout(() => { copy.textContent = 'Copy'; }, 1800);
+            });
+        })();
+
         // footer links: each caption rides along with the cursor, like the labels over the projects (mouse only)
         (() => {
             const footer = document.querySelector('.contact-footer');
