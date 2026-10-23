@@ -1325,12 +1325,14 @@
             </strong>
         </p>
         <div class="cover-actions">
-            <a class="cover-btn primary" href="#selected-work" aria-label="See my selected work">Work <span class="cover-arrow" aria-hidden="true">↓</span></a>
-            <a class="cover-btn" href="/#mis" aria-label="See my Management Information Systems skills">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
-            <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
+            <a class="cover-btn primary" href="#selected-work" aria-label="See my selected work" data-cue="skipping the small talk, i see">Work <span class="cover-arrow" aria-hidden="true">↓</span></a>
+            <a class="cover-btn" href="/#mis" aria-label="See my Management Information Systems skills" data-cue="modestly unstoppable">Skills <span class="cover-arrow" aria-hidden="true">→</span></a>
+            <a class="cover-btn" href="/resume" aria-label="View my résumé" target="_blank" rel="noopener" data-cue="humbly employable">Résumé <span class="cover-arrow" aria-hidden="true">↗</span></a>
         </div>
     </div>
     <a class="cover-scroll" href="#about">Scroll ↓</a>
+    @* the caption that follows your cursor over a button, like the footer's *@
+    <span class="contact-cue" aria-hidden="true"></span>
 </section>
 
 <script>
@@ -1354,6 +1356,23 @@
         window.addEventListener('scroll', update, { passive: true });
         window.addEventListener('resize', update);
         update();
+    })();
+
+    // the buttons' captions ride along with the cursor, like the footer's (mouse only)
+    (() => {
+        const hero = document.querySelector('.cover-hero');
+        const cue = hero?.querySelector('.contact-cue');
+        if (!cue || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        hero.querySelectorAll('.cover-btn[data-cue]').forEach(btn => {
+            const arrow = btn.querySelector('.cover-arrow').textContent;
+            btn.addEventListener('pointerenter', () => { cue.textContent = `${btn.dataset.cue} ${arrow}`; cue.classList.add('on'); });
+            btn.addEventListener('pointerleave', () => cue.classList.remove('on'));
+            btn.addEventListener('pointermove', e => {
+                const box = hero.getBoundingClientRect(), half = cue.offsetWidth / 2 + 12;
+                const x = Math.min(Math.max(e.clientX - box.left, half), box.width - half);
+                cue.style.translate = `${x}px ${e.clientY - box.top}px`;
+            });
+        });
     })();
 
     // The hero statement types itself out and rests with the cursor blinking at the end. With more than one
