@@ -525,7 +525,7 @@
         .yap-pop {
             width: min(520px, calc(100vw - 32px));
             margin: auto;   /* the page's * { margin: 0 } reset would pin it to the top corner */
-            padding: 34px 30px 30px;
+            padding: 64px 30px 30px;   /* room for the × above the address row, clear of Copy */
             border: 0;
             border-radius: 24px;
             background: radial-gradient(ellipse at 15% 0%, #5A2635 0%, #2A1219 65%, #1A0F14 100%);
@@ -536,7 +536,7 @@
         .yap-pop[open] { animation: yapIn 0.28s cubic-bezier(0.2, 0.8, 0.3, 1); }
         @@keyframes yapIn { from { opacity: 0; transform: translateY(14px) scale(0.98); } }
         .yap-close {
-            position: absolute; top: 12px; right: 14px;
+            position: absolute; top: 14px; right: 16px;
             width: 34px; height: 34px; border: 0; border-radius: 50%;
             background: none; color: rgba(249, 237, 233, 0.7); font-size: 1.5rem; line-height: 1; cursor: pointer;
         }
