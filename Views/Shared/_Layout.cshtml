@@ -400,13 +400,13 @@
             gap: 4px;
         }
 
-        /* with a mouse, each link's caption (its data-cue) rides the cursor (same pill as the projects, in cream) */
-
-        .contact-cue {
-            position: absolute;
+        /* with a mouse, the caption of anything with a data-tag (footer links, hero buttons, More projects) rides the cursor
+           (same pill as the projects, in cream) */
+        .cursor-cue {
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: 5;
+            z-index: 10000;   /* above the navbar and the Sitara pill */
             padding: 7px 14px;
             border-radius: 999px;
             background: #FAF1EF;
@@ -423,7 +423,7 @@
             transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .contact-cue.on {
+        .cursor-cue.on {
             opacity: 1;
             transform: translate(-50%, -150%) scale(1) rotate(0deg);
         }
@@ -683,22 +683,22 @@
                 <p class="contact-subline">Or you're nosy. Either way, say hi.</p>
             </div>
             <div class="contact-links-wrapper">
-                <div class="contact-item" data-cue="boringly responsible">
+                <div class="contact-item" data-tag="boringly responsible">
                     <a href="mailto:suhxnitiwari@gmail.com" class="contact-link" data-email-pop>
                         Email <span class="arrow">↗</span>
                     </a>
                 </div>
-                <div class="contact-item" data-cue="dangerously personal">
+                <div class="contact-item" data-tag="dangerously personal">
                     <a href="https://www.instagram.com/suhxnitiwari/" class="contact-link" target="_blank">
                         Instagram <span class="arrow">↗</span>
                     </a>
                 </div>
-                <div class="contact-item" data-cue="suspiciously professional">
+                <div class="contact-item" data-tag="suspiciously professional">
                     <a href="https://www.linkedin.com/in/suhxnitiwari/" class="contact-link" target="_blank">
                         LinkedIn <span class="arrow">↗</span>
                     </a>
                 </div>
-                <div class="contact-item" data-cue="unapologetically nerdy">
+                <div class="contact-item" data-tag="unapologetically nerdy">
                     <a href="https://github.com/suhxnitiwari" class="contact-link" target="_blank" rel="noopener">
                         GitHub <span class="arrow">↗</span>
                     </a>
@@ -709,9 +709,8 @@
                 <a href="#top" class="back-to-top">Scroll back up. I'll wait. ↑</a>
             </div>
         </div>
-        @* the caption that follows your cursor over a link *@
-        <span class="contact-cue" aria-hidden="true"></span>
     </footer>
+    <span class="cursor-cue" aria-hidden="true"></span>
 
     @* EMAIL: opens from the footer's Email link (without JavaScript the link is a plain mailto).
        The address, then three things I'd happily talk about instead of work; each opens an email with its own subject. *@
@@ -774,22 +773,18 @@
             });
         })();
 
-        // footer links: each caption rides along with the cursor, like the labels over the projects (mouse only)
+        // any element with a data-tag shows that caption riding along with the cursor (mouse only), its arrow at the end;
+        // kept on screen, so a caption near an edge never runs off it
         (() => {
-            const footer = document.querySelector('.contact-footer');
-            const cue = footer?.querySelector('.contact-cue');
+            const cue = document.querySelector('.cursor-cue');
             if (!cue || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-            footer.classList.add('cued');
-            footer.querySelectorAll('.contact-item').forEach(item => {
-                const tag = item.dataset.cue;
-                const arrow = item.querySelector('.arrow').textContent;
-                item.addEventListener('pointerenter', () => { cue.textContent = `${tag} ${arrow}`; cue.classList.add('on'); });
-                item.addEventListener('pointerleave', () => cue.classList.remove('on'));
-                item.addEventListener('pointermove', e => {
-                    // kept inside the footer, so the rightmost caption never runs off the screen
-                    const box = footer.getBoundingClientRect(), half = cue.offsetWidth / 2 + 12;
-                    const x = Math.min(Math.max(e.clientX - box.left, half), box.width - half);
-                    cue.style.translate = `${x}px ${e.clientY - box.top}px`;
+            document.querySelectorAll('[data-tag]').forEach(el => {
+                const arrow = el.querySelector('.arrow, .cover-arrow, [data-tag-arrow]')?.textContent.trim() ?? '';
+                el.addEventListener('pointerenter', () => { cue.textContent = `${el.dataset.tag} ${arrow}`.trim(); cue.classList.add('on'); });
+                el.addEventListener('pointerleave', () => cue.classList.remove('on'));
+                el.addEventListener('pointermove', e => {
+                    const half = cue.offsetWidth / 2 + 12;
+                    cue.style.translate = `${Math.min(Math.max(e.clientX, half), innerWidth - half)}px ${e.clientY}px`;
                 });
             });
         })();
