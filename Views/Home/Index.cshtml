@@ -1754,7 +1754,7 @@
         </ul>
         @* just the résumé here; email and LinkedIn are in the footer right below *@
         <div class="finale-actions">
-            <p class="finale-joke"><span class="fine">Fine.</span> I’ll compress 20 GB of personality into an 84 KB PDF.</p>
+            <p class="finale-joke">Fine. I’ll compress 20 GB of personality into an 84 KB PDF.</p>
             <a class="finale-btn solid" href="/resume/download" download="Tiwari_Suhani_Resume.pdf">Download résumé <span aria-hidden="true">↓</span></a>
         </div>
     </div>
@@ -1857,22 +1857,6 @@
         font-style: italic;
         color: #733642;
     }
-    /* "Fine." is the sigh: a little bigger and bolder, so it reads as a huff before the rest of the line */
-    .finale-joke .fine { display: inline-block; font-weight: 700; font-size: 1.18em; color: #76344E; transform-origin: 10% 85%; }
-    /* the typed version: every letter keeps its place (no jumping as it types), hidden until it's typed */
-    .finale-joke .ch { visibility: hidden; }
-    .finale-joke .ch.on { visibility: visible; }
-    .finale-joke .jc {
-        display: inline-block;
-        width: 2px;
-        height: 1em;
-        margin-right: -2px;
-        vertical-align: -0.12em;
-        background: #733642;
-        animation: finaleBlink 0.9s steps(1) infinite;
-    }
-    .finale-joke .jc.typing { animation: none; }
-    .finale-joke .jc.gone { opacity: 0; transition: opacity 0.6s ease; animation: none; }
     .finale-btn {
         display: inline-flex;
         align-items: center;
@@ -1939,58 +1923,9 @@
             el.classList.add('go');
             nums.forEach((b, i) => count(b, 300 + i * 100));
             setTimeout(rewrite, 2600);
-            setTimeout(sigh, 1700);
         }, { threshold: 0.3 });
         seen.observe(el);
 
-        // the résumé joke types itself out, ugh-fine style: "Fin", second thoughts (back to "F"), then a reluctant "ine",
-        // the period lands with a thud and the word huffs (a tilt and a bounce), then the rest is typed out briskly
-        const joke = el.querySelector('.finale-joke');
-        const sighText = joke.textContent;
-        const chars = [];
-        const split = node => [...node.childNodes].forEach(n => {
-            if (n.nodeType === 3) n.replaceWith(...[...n.textContent].map(c => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; chars.push(s); return s; }));
-            else split(n);
-        });
-        const shown = document.createElement('span');
-        shown.setAttribute('aria-hidden', 'true');
-        shown.append(...joke.childNodes);
-        split(shown);
-        const said = document.createElement('span');
-        said.className = 'visually-hidden';
-        said.textContent = sighText;
-        joke.append(said, shown);
-        const jc = document.createElement('span');
-        jc.className = 'jc';
-        shown.prepend(jc);
-        const fine = shown.querySelector('.fine');
-        async function sigh() {
-            const type = (c, ms) => { c.classList.add('on'); c.after(jc); return wait(ms); };
-            await wait(700);                       // the caret blinks a beat: thinking about it
-            jc.classList.add('typing');
-            const fineChars = [...fine.querySelectorAll('.ch')];
-            const [F, i, n, e, dot] = fineChars;
-            const untype = (c, ms) => { c.classList.remove('on'); c.before(jc); return wait(ms); };
-            await type(F, 260); await type(i, 220); await type(n, 520);          // "Fin"... second thoughts
-            await untype(n, 120); await untype(i, 700);                       // backs up to "F" and just sits there
-            await type(i, 300); await type(n, 360); await type(e, 520);       // ugh, fine
-            dot.style.display = 'inline-block';
-            dot.classList.add('on'); dot.after(jc);
-            dot.animate([{ transform: 'scale(2.2)', opacity: 0.3 }, { transform: 'scale(1)', opacity: 1 }], { duration: 240, easing: 'cubic-bezier(0.3, 1.7, 0.5, 1)' });
-            await wait(160);
-            fine.animate([
-                { transform: 'none' },
-                { transform: 'rotate(-11deg) translateY(3px) scale(1.1)', offset: 0.28 },
-                { transform: 'rotate(6deg) scale(1.02)', offset: 0.58 },
-                { transform: 'rotate(-2deg)', offset: 0.8 },
-                { transform: 'none' }
-            ], { duration: 820, easing: 'ease-out' });
-            await wait(900);
-            for (const c of chars.slice(fineChars.length)) await type(c, 24);
-            jc.classList.remove('typing');
-            await wait(1800);
-            jc.classList.add('gone');
-        }
         // the line's last word: hold it, delete it letter by letter, type the next one, and loop
         const word = el.querySelector('.finale-word'), caret = el.querySelector('.finale-caret');
         const words = word ? word.dataset.words.split('|') : [];
