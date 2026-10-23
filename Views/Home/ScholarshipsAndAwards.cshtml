@@ -50,7 +50,7 @@
 
 <style>
     /* Full-width accordion: one row per honor (its name, then what it's for and the year), opening to say why.
-       The first one starts open. Built on <details>, so it works without the script and with a keyboard. */
+       All start closed. Built on <details>, so it works without the script and with a keyboard. */
     .honors {
         position: relative;
         padding: 30px 0 26px;
@@ -190,7 +190,7 @@
             // what it's for, then who gave it and the year, joined with commas
             var meta = string.Join(", ", new[] { honor.From, honor.Year }.Where(part => !string.IsNullOrEmpty(part)));
             var note = string.IsNullOrEmpty(honor.Why) ? honor.Note : honor.Why;
-            <details class="honor" open="@(i == 0)">
+            <details class="honor">
                 <summary>
                     <span class="honor-name">@honor.Name</span>
                     <span class="honor-meta">@if (!string.IsNullOrEmpty(honor.For)) {<b>@honor.For</b>@(meta.Length > 0 ? " " : "")}@if (meta.Length > 0) {<i>@meta</i>}</span>
