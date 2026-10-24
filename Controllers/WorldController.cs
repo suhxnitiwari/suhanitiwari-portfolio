@@ -126,6 +126,16 @@ namespace Tiwari_Suhani_HW3.Controllers
             return View(Locked + "Sphere.cshtml");
         }
 
+        // Gifting Guide: what to get me, for friends and family only
+        [Authorize(AuthenticationSchemes = "World")]
+        [HttpGet("/world/gifts")]
+        public IActionResult Gifts()
+        {
+            Response.Headers.CacheControl = "private, no-store";
+            Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
+            return View(Locked + "Gifts.cshtml");
+        }
+
         // log out: forget the My World cookie and go back to the main site
         [HttpPost("/world/logout")]
         public async Task<IActionResult> Logout()
