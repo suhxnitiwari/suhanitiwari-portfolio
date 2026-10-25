@@ -106,15 +106,9 @@ namespace Tiwari_Suhani_HW3.Controllers
             return View(Locked + "Faces.cshtml");
         }
 
-        // Words: the handmade cards and letters, for friends and family only
-        [Authorize(AuthenticationSchemes = "World")]
+        // Words: The Little Things now sits on Who Has My Heart, under the photos; old links land there
         [HttpGet("/world/words")]
-        public IActionResult Words()
-        {
-            Response.Headers.CacheControl = "private, no-store";
-            Response.Headers["X-Robots-Tag"] = "noindex, nofollow";
-            return View(Locked + "Words.cshtml");
-        }
+        public IActionResult Words() => Redirect("/world/faces#little-things");
 
         // Suhani's Sphere: photos of me, my concerts and my favorites, for friends and family only
         [Authorize(AuthenticationSchemes = "World")]
