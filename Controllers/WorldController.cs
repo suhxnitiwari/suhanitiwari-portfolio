@@ -14,7 +14,7 @@ namespace Tiwari_Suhani_HW3.Controllers
     // Two passwords, two roles: friends see My World, family sees it plus the Family Room (/world/family/).
     public class WorldController : Controller
     {
-        // the locked pages (You Had to Be There, Who Has My Heart, The Words That Stayed, Suhani's Sphere) live in the private
+        // the locked pages (You Had to Be There, Who Has My Heart, The Little Things, Suhani's Sphere) live in the private
         // suhani-world repo, so their words stay out of this public one; they're compiled in (see the .csproj) and served only after login
         private const string Locked = "~/PrivateContent/world/portfolio-views/";
 
