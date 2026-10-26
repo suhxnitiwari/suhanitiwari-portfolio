@@ -26,9 +26,11 @@
             document.getElementById('recipeTitle').textContent = r.Title;
             document.getElementById('recipeLine').textContent = r.Line;
             document.getElementById('recipeMeta').textContent = [r.Time, r.Serves].filter(Boolean).join(', ');
-            const hasRecipe = r.Steps.length > 0;
+            // a recipe with only its ingredients so far shows them, without an empty Steps column
+            const hasRecipe = r.Steps.length > 0 || r.Ingredients.length > 0;
             document.getElementById('recipeSoon').hidden = hasRecipe;
             document.getElementById('recipeColumns').hidden = !hasRecipe;
+            document.getElementById('recipeSteps').parentElement.hidden = r.Steps.length === 0;
             fill('recipeIngredients', r.Ingredients);
             fill('recipeSteps', r.Steps);
             dialog.showModal();

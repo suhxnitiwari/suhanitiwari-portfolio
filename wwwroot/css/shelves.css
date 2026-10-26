@@ -902,6 +902,22 @@
     margin-top: 24px;
 }
 
+/* ingredients only (no steps yet): they take the whole width, in two columns on wider screens */
+.recipe-columns:has(> [hidden]) {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+    .recipe-columns:has(> [hidden]) ul {
+        columns: 2;
+        column-gap: 34px;
+    }
+
+    .recipe-columns:has(> [hidden]) li {
+        break-inside: avoid;
+    }
+}
+
 .recipe-columns h3 {
     margin: 0 0 10px;
     font-family: Georgia, serif;
