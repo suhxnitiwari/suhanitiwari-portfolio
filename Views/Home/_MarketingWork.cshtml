@@ -1000,11 +1000,11 @@
         const tabs = app.querySelector('.sb-tabs'), toast = app.querySelector('.sb-toast');
 
         const PEOPLE = [
-            { name: 'Dad', ask: 'Strong and serious?', usual: { n: 'Black Coffee, Strong', c: '#4A2C1D' }, color: '#3D6B5C' },
-            { name: 'Mom', ask: 'Your regular?', usual: { n: 'Cappuccino with Splenda', c: '#C9A27A' }, color: '#B5727E' },
-            { name: 'Suhani', ask: 'Something new?', usual: { n: 'Vanilla Latte', c: '#D8B894' }, color: '#76344E', gotos: [
+            { name: 'Alex', ask: 'Strong and serious?', usual: { n: 'Pike Place, Black', c: '#4A2C1D' }, color: '#3D6B5C' },
+            { name: 'Sam', ask: 'Your regular?', usual: { n: 'Oat Milk Cappuccino', c: '#C9A27A' }, color: '#B5727E' },
+            { name: 'Maya', ask: 'Something new?', usual: { n: 'Vanilla Latte', c: '#D8B894' }, color: '#76344E', gotos: [
                 { n: 'Vanilla Latte', c: '#D8B894' }, { n: 'Caramel Frappuccino', c: '#C9955C', iced: true }, { n: 'Hazelnut Latte', c: '#B98A5E' }] },
-            { name: 'Amaira', ask: 'Kids account?', usual: { n: 'Strawberry Chocolate Frappuccino', c: '#E8A0AE', iced: true }, color: '#D98A5B' }];
+            { name: 'Leo', ask: 'Kids account?', usual: { n: 'Strawberry Crème Frappuccino', c: '#E8A0AE', iced: true }, color: '#D98A5B' }];
         const NEXT = [{ n: 'Iced Caramel Macchiato', c: '#C9955C', iced: true }, { n: 'Iced Matcha Latte', c: '#9DBF7A', iced: true }, { n: 'Strawberry Peach Lemonade', c: '#F2A7B8', iced: true }];
         const POOL = [
             { n: 'Iced Brown Sugar Oatmilk Shaken Espresso', why: 'Smooth, strong, not too sweet', c: '#B98A5E', iced: true, t: ['energy', 'light'] },
@@ -1051,7 +1051,7 @@
         const SCREENS = {
             splash: () => `<button type="button" class="sb-splash" data-act="go" data-to="who">
                     <span class="sb-siren" aria-hidden="true">★</span>
-                    <b>You deserve a little moment, Suhani ♡</b>
+                    <b>You deserve a little moment ♡</b>
                     <span>Let’s make it exactly how you like it.</span>
                     <em>Tap to start</em>
                 </button>`,
@@ -1100,11 +1100,11 @@
                        <ul class="sb-routines">${state.routines.map((r, i) => `<li><b>${r.h}</b><em>${r.d}</em><span>${r.when}</span><button type="button" class="sb-switch" data-act="switch" data-i="${i}" aria-pressed="${r.on}" aria-label="${r.h} ${r.on ? 'on' : 'off'}"></button></li>`).join('')}</ul>
                        ${waroCard()}`
                     : `<p class="sb-sub">Plan your next pickup. Pick a time, we’ll have it ready.</p>
-                       <div class="sb-block sb-fields"><p><span>Time for pickup</span><b>6:15 PM</b></p><p><span>Day</span><b>Wednesday</b></p><p><span>Pickup location</span><b>504 W 24th St</b></p><p><span>Your order</span><b>Caramel Frappuccino</b></p></div>
+                       <div class="sb-block sb-fields"><p><span>Time for pickup</span><b>6:15 PM</b></p><p><span>Day</span><b>Wednesday</b></p><p><span>Pickup location</span><b>Your usual store</b></p><p><span>Your order</span><b>Caramel Frappuccino</b></p></div>
                        <button type="button" class="sb-apply" data-act="setpick">${state.onceSet ? 'Pickup set ✓' : 'Set my pickup'}</button>`}`,
             confirm: () => {
                 const d = find(state.last), already = state.routines.some(r => r.d === d.n && r.on);
-                return `<div class="sb-done">${sbCup(d)}<b>Order placed ✓</b><span>${d.n}</span><small>Ready in about 4 minutes at 504 W 24th St. +12 ★</small></div>
+                return `<div class="sb-done">${sbCup(d)}<b>Order placed ✓</b><span>${d.n}</span><small>Ready in about 4 minutes at your usual store. +12 ★</small></div>
                 ${already
                     ? `<div class="sb-block"><p class="sb-h">Already a ritual</p><p class="sb-sub">This one is on your schedule every week.</p></div>`
                     : `<div class="sb-block sb-nudge"><p class="sb-h">Make it a ritual?</p><p class="sb-sub">Schedule this every weekday morning so it’s ready before you are.</p><button type="button" class="sb-apply" data-act="ritualize">Schedule it weekly</button></div>`}
