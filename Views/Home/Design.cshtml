@@ -1,0 +1,92 @@
+@* Design: my product design portfolio. One card per case study; every fact comes from that project's README and build history. *@
+@{
+    ViewData["Title"] = "Design";
+
+    var studies = new[]
+    {
+        (Slug: "listening-galaxy", Video: "galaxy", Panel: "#2B1B33", Kind: "Data visualization and interaction design",
+            Title: "Listening Galaxy",
+            Line: "Four years of my Spotify listening as a 3D galaxy: every song a star, every artist a constellation, and the sky replays itself in 15 seconds.",
+            Moves: new[] { "A visual encoding where size, color, brightness and position each mean one thing", "Drag, zoom and click any star: the data is something to touch", "Every intro, replay and mode can be skipped or exited" },
+            Live: "https://suhxnitiwari.github.io/listening-galaxy/", LiveLabel: "Fly through it"),
+        (Slug: "search-history", Video: "search", Panel: "#E9E1D6", Kind: "Product design and information architecture",
+            Title: "Search History",
+            Line: "A year of my Google searches, inside my own browser. You type a question, and the data answers it.",
+            Moves: new[] { "The interface is the metaphor: tabs, address bar and bookmark bar are the navigation", "A search box that understands plain English and opens the exact answer", "Favicons carry the color, so the frame stays quiet" },
+            Live: "https://suhxnitiwari.github.io/search-history/", LiveLabel: "Ask about my year"),
+        (Slug: "suhani-house", Video: "dollhouse", Panel: "#56634A", Kind: "3D experience and spatial design",
+            Title: "The Suhani House",
+            Line: "Ten personality tests, built as a house you walk through: my people at the front, my ambition upstairs, my brain in the attic.",
+            Moves: new[] { "Three ways to visit: a guided tour, an open dollhouse, or just exploring", "Paced like a visit, not a game: no avatar, no jumping, nothing rushed", "Rebuilt from 3–5 to 60 frames per second so it feels calm on any phone" },
+            Live: "https://suhxnitiwari.github.io/suhani-personality/house/", LiveLabel: "Come on in")
+    };
+}
+<link rel="stylesheet" href="~/css/case-study.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/design.css" asp-append-version="true" />
+
+<main class="ds-index">
+    <canvas class="ds-sky" aria-hidden="true"></canvas>
+    <div class="ds-index-wrap">
+        <header class="ds-intro">
+            <span class="cs-label">Design portfolio</span>
+            <h1 class="cs-title">Product design</h1>
+            <p class="cs-dek">Three things I designed and built myself, from a raw data export to the version people use.</p>
+        </header>
+
+        <ul class="ds-ways" aria-label="How I design">
+            <li>
+                <h2>Start from what people already know</h2>
+                <p>A browser for browsing data, a house for a personality, a night sky for four years of songs. A familiar frame means nobody needs instructions.</p>
+            </li>
+            <li>
+                <h2>Let people ask and touch</h2>
+                <p>Nothing important plays on its own. Visitors drag the clock, open the rooms and click the stars, so every answer is one they went looking for.</p>
+            </li>
+            <li>
+                <h2>Cut what gets in the way</h2>
+                <p>Every intro can be skipped, every mode has a way out, and anything that looked busy without saying something was removed.</p>
+            </li>
+        </ul>
+
+        <ol class="ds-studies">
+            @for (var i = 0; i < studies.Length; i++)
+            {
+                var s = studies[i];
+                <li class="ds-study">
+                    <a class="ds-shot" href="/design/@s.Slug" style="--panel: @s.Panel" aria-label="Read the @s.Title case study">
+                        <video src="@Versions.AddFileVersionToPath(Context.Request.PathBase, $"/videos/projects/{s.Video}.mp4")" poster="@Versions.AddFileVersionToPath(Context.Request.PathBase, $"/videos/projects/{s.Video}.jpg")"
+                               muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+                    </a>
+                    <div>
+                        <span class="ds-num">0@(i + 1)</span>
+                        <h2><a href="/design/@s.Slug">@s.Title</a></h2>
+                        <span class="ds-kind">@s.Kind</span>
+                        <p>@s.Line</p>
+                        <ul class="ds-moves">
+                            @foreach (var m in s.Moves)
+                            {
+                                <li>@m</li>
+                            }
+                        </ul>
+                        <div class="ds-links">
+                            <a class="cs-cta" href="/design/@s.Slug">Read the case study <span aria-hidden="true">→</span></a>
+                            <a class="ds-live" href="@s.Live" target="_blank" rel="noopener">@s.LiveLabel <span aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ol>
+    </div>
+</main>
+
+<script>
+    // the project videos play only while they're on screen, and not at all for people who prefer less motion
+    (() => {
+        const vids = [...document.querySelectorAll('.ds-shot video')];
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { vids.forEach(v => { v.removeAttribute('autoplay'); v.pause(); }); return; }
+        if (!('IntersectionObserver' in window)) return;
+        const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause()), { threshold: 0.2 });
+        vids.forEach(v => io.observe(v));
+    })();
+</script>
+<script src="~/js/design.js" asp-append-version="true"></script>

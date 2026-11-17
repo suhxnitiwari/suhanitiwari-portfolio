@@ -1,0 +1,170 @@
+@* Design case study: Listening Galaxy (Heavy Rotation). Every number and decision comes from the project's README
+   (github.com/suhxnitiwari/listening-galaxy) and its build history. *@
+@{
+    ViewData["Title"] = "Listening Galaxy: a design case study";
+
+    var toc = new[]
+    {
+        ("overview", "Overview"), ("challenge", "Challenge"), ("principles", "Principles"), ("encoding", "Visual encoding"),
+        ("decisions", "Key decisions"), ("iterations", "What I changed"), ("craft", "Making it feel smooth")
+    };
+}
+<link rel="stylesheet" href="~/css/case-study.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/design.css" asp-append-version="true" />
+
+<main class="cs-page ds-case ds-galaxy">
+    <div class="cs-wrap">
+        <nav class="cs-toc" aria-label="On this page">
+            <a class="cs-back" href="/design">← Design</a>
+            <ol>
+                @foreach (var (id, name) in toc)
+                {
+                    <li><a href="#@id">@name</a></li>
+                }
+            </ol>
+        </nav>
+
+        <article>
+            <header>
+                <span class="cs-label">Listening Galaxy, data visualization and interaction design</span>
+                <h1 class="cs-title">Four years of my music, as a sky you can touch</h1>
+                <p class="cs-dek">Designing a data story people explore instead of read.</p>
+                <div class="cs-hero ds-hero" style="--panel: #2B1B33">
+                    <video src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/galaxy.mp4")" poster="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/galaxy.jpg")" width="960" height="538"
+                           muted loop playsinline autoplay aria-label="Flying at warp speed into a galaxy where every song I've played is a star"></video>
+                </div>
+                <dl class="cs-meta">
+                    <div><dt>Role</dt><dd>Design, data and front end, solo</dd></div>
+                    <div><dt>Timeline</dt><dd>October 2026</dd></div>
+                    <div><dt>Tools</dt><dd>Python, PostgreSQL, Canvas, Web Audio</dd></div>
+                    <div><dt>Live</dt><dd><a href="https://suhxnitiwari.github.io/listening-galaxy/" target="_blank" rel="noopener">Fly through it ↗</a></dd></div>
+                </dl>
+            </header>
+
+            <section class="cs-section" id="overview">
+                <span class="cs-label">Overview</span>
+                <h2 class="cs-h">Every song I’ve played is a star, and every artist is a constellation.</h2>
+                <ul class="cs-three">
+                    <li><span class="cs-tag">The data</span><p><b>182,293</b> raw Spotify records, cleaned into <b>91,160</b> real listens across four years.</p></li>
+                    <li><span class="cs-tag">The problem</span><p>A year-end recap shows a top five. It never lets you wander through your own taste or ask why.</p></li>
+                    <li><span class="cs-tag">The design</span><p>A 3D galaxy that grows from the center outward as the sky replays four years in <b>15 seconds</b>.</p></li>
+                </ul>
+                <ul class="cs-stats">
+                    <li><b>4,647</b>songs, each one a star</li>
+                    <li><b>1,230</b>artists, each one a constellation</li>
+                    <li><b>60 fps</b>with thousands of stars on one canvas</li>
+                </ul>
+            </section>
+
+            <section class="cs-section" id="challenge">
+                <span class="cs-label">Challenge</span>
+                <h2 class="cs-h">How do you make 91,160 listens feel personal instead of overwhelming?</h2>
+                <p class="cs-body">Most listening dashboards are charts of totals. They answer “how much,” but not “what does my music say about me.” I wanted a place where a visitor could follow their curiosity: find an artist, see when a song entered my life, notice which songs I always play back to back. The hard part was density. Thousands of points had to read as one calm picture first, and reveal detail only as you moved closer.</p>
+                <p class="cs-takeaway"><b>Design goal</b>Beautiful from far away, specific up close, and never in the way.</p>
+            </section>
+
+            <section class="cs-section" id="principles">
+                <span class="cs-label">Principles</span>
+                <h2 class="cs-h">Three rules every screen had to follow.</h2>
+                <ol class="ds-principles">
+                    <li><h3>Every mark means one thing</h3><p>Size, color, brightness and position each carry a single meaning, so the sky can be read like a map.</p></li>
+                    <li><h3>The data is something to touch</h3><p>Drag to spin, scroll to zoom, click any star. Stars lean toward your cursor, and constellations draw themselves as you come close.</p></li>
+                    <li><h3>Never trap anyone</h3><p>The opening, the replay, the guide and every mode can be skipped or exited at any moment.</p></li>
+                </ol>
+            </section>
+
+            <section class="cs-section" id="encoding">
+                <span class="cs-label">Visual encoding</span>
+                <h2 class="cs-h">A legend you can learn in one look.</h2>
+                <p class="cs-body">I designed the encoding before drawing anything, so that every visual choice is honest about the numbers underneath it.</p>
+                <table class="ds-encode">
+                    <tbody>
+                        <tr><th scope="row">A star</th><td>One song, counted when I played it for at least 30 seconds, Spotify’s threshold for a stream</td></tr>
+                        <tr><th scope="row">Size</th><td>How many times I played it. The radius grows with the square root, so the area a star covers tracks its listens</td></tr>
+                        <tr><th scope="row">Color</th><td>The year I first heard it, or, with one switch, its emotion</td></tr>
+                        <tr><th scope="row">Brightness</th><td>Whether I still play it: a star fades in the year after its last listen</td></tr>
+                        <tr><th scope="row">Position</th><td>Distance from the center is when an artist entered my life, so the galaxy literally grows outward over time</td></tr>
+                        <tr><th scope="row">Constellation</th><td>One artist. Its lines are the shortest set of connections through its songs, so no constellation turns into a tangle</td></tr>
+                        <tr><th scope="row">Gold arcs</th><td>Songs I play back to back in the same listening session</td></tr>
+                    </tbody>
+                </table>
+
+                <figure class="ds-try" id="dsGalaxy">
+                    <div class="ds-try-bar">
+                        <b>Try the encoding with my real top 700 songs</b>
+                        <div class="ds-seg" role="group" aria-label="Color the stars by">
+                            <button type="button" data-mode="year" aria-pressed="true">Year found</button>
+                            <button type="button" data-mode="mood" aria-pressed="false">Emotion</button>
+                        </div>
+                    </div>
+                    <div class="ds-try-stage">
+                        <canvas aria-label="A small galaxy of my 700 most-played songs. Hover a star to see the song, artist and listens."></canvas>
+                        <div class="ds-tip" role="status"></div>
+                    </div>
+                    <ul class="ds-key" data-for="year">
+                        <li><i style="background:#F4B6CC"></i>2022</li><li><i style="background:#C9A7F0"></i>2023</li><li><i style="background:#94B4F5"></i>2024</li><li><i style="background:#F6D27A"></i>2025</li><li><i style="background:#F49A86"></i>2026</li>
+                    </ul>
+                    <ul class="ds-key" data-for="mood" hidden>
+                        <li><i style="background:#F48FB1"></i>love</li><li><i style="background:#F7D774"></i>party</li><li><i style="background:#F4A261"></i>confident</li><li><i style="background:#C9A0F0"></i>bittersweet</li><li><i style="background:#D2486F"></i>heartbreak</li><li><i style="background:#8E63C9"></i>dark</li><li><i style="background:#8E86A0"></i>untagged</li>
+                    </ul>
+                    <div class="ds-try-foot">
+                        <button type="button" class="ds-seg-play" data-play>Replay four years</button>
+                        <input type="range" min="0" max="52" value="52" aria-label="Move through time">
+                        <output>Sep 2026</output>
+                    </div>
+                </figure>
+                <p class="cs-source">Hover any star for its song, artist and listens. Drag the timeline: stars ignite the month I first heard them and fade a year after my last listen.</p>
+            </section>
+
+            <section class="cs-section" id="decisions">
+                <span class="cs-label">Key decisions</span>
+                <h2 class="cs-h">The choices that make it feel like mine.</h2>
+                <ol class="ds-decisions">
+                    <li><h3>Time is one number</h3><p>The timeline, the replay and the guided tour all move a single “now.” Every star, line and label works out its own state from it, so they never fall out of sync.</p></li>
+                    <li><h3>An opening that sets the scene</h3><p>It starts over Dallas at night on the day my history begins, pulls out past Earth and the Milky Way, and dives into a new galaxy. I cut it down to six seconds and three lines of text.</p></li>
+                    <li><h3>A soundcheck before the show</h3><p>The first four seconds of my own concert recording of “7 rings” play two seconds in each ear, so visitors know their headphones are on before the music matters.</p></li>
+                    <li><h3>Color by emotion</h3><p>One switch recolors the sky by mood: pink for love, yellow for party, orange for confident, sour lilac for bittersweet, burgundy for heartbreak, deep purple for dark.</p></li>
+                    <li><h3>A tour told as an album</h3><p>The guided tour is a 16-track album with a Side A in Dallas, a Side B in Austin and three tracks from the vault. Each track is one finding, and every number in it comes from the data.</p></li>
+                    <li><h3>Every star opens a story</h3><p>Click any star for its first listen, peak month, usual hour, skip rate and the songs I play with it, plus a 30-second preview. Press <kbd>/</kbd> to search and the camera flies there.</p></li>
+                </ol>
+            </section>
+
+            <section class="cs-section" id="iterations">
+                <span class="cs-label">What I changed</span>
+                <h2 class="cs-h">After living with it, I removed what got in the way.</h2>
+                <p class="cs-body">Three weeks after launch, I went back through it and fixed every moment where it slowed me down. Each fix made it calmer, not busier.</p>
+                <ul class="ds-flips">
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>The intros and the replay had to play through.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Skip anywhere: the opening, the formation and the guide all end with one tap.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>The galaxy spun constantly, and names were hard to read while they moved.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>A stop-the-spin control, so the sky holds still while you read.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>My top ten artists looked like every other constellation.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>The top ten are larger and show their rank, so the hierarchy is visible at a glance.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>Artist names were labels only.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Click any name to open that artist’s profile and my top songs by them.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>A “gravity pairs” mode and mood lines could cover the sky in links with no way out.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Gravity pairs are gone, and every line mode has an obvious exit.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>The four-year replay shared the screen with panels and text.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>The replay is just the sky, with one line per month.<em>Tap to flip back</em></span></button></li>
+                </ul>
+                <button type="button" class="ds-flip-all">Flip every card</button>
+            </section>
+
+            <section class="cs-section" id="craft">
+                <span class="cs-label">Making it feel smooth</span>
+                <h2 class="cs-h">Calm motion depends on engineering.</h2>
+                <p class="cs-body">A galaxy that stutters feels broken, so performance was a design requirement, not an afterthought.</p>
+                <ul class="cs-did">
+                    <li>Built the 3D view on one canvas with no framework, projecting the disk by hand</li>
+                    <li>Drew every glow from cached sprites instead of a new gradient per star per frame, which holds 60 frames per second</li>
+                    <li>Linked songs only when they play back to back in a session, scored by cosine similarity so my top artist doesn’t connect to everything</li>
+                    <li>Colored 82% of my listening by mood from 389 songs I tagged by hand, letting untagged songs borrow the mood of their neighbors</li>
+                    <li>Fed it from a PostgreSQL star schema I designed, through a privacy-safe export that never includes the time of a single play</li>
+                </ul>
+                <a class="cs-cta" href="https://suhxnitiwari.github.io/listening-galaxy/" target="_blank" rel="noopener">Fly through the galaxy <span aria-hidden="true">↗</span></a>
+
+                <a class="ds-next" href="/design/search-history">
+                    <div><span>Next case study</span><strong>Search History</strong></div>
+                    <em aria-hidden="true">→</em>
+                </a>
+            </section>
+        </article>
+    </div>
+</main>
+
+<partial name="_DesignCaseScript" />
+<script src="~/js/design.js" asp-append-version="true"></script>

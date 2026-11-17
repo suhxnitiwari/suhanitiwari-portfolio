@@ -55,6 +55,19 @@ public class HomeController : Controller
     public IActionResult Pursue() => ToHome("experience");
 
     // Case studies: one editorial page per project, linked from the Projects board
+    // Design: my product design portfolio, and one case study per project (suhanitiwari.com/design/listening-galaxy)
+    [Route("design")]
+    public IActionResult Design() => View();
+
+    [Route("design/{study}")]
+    public IActionResult DesignStudy(string study) => study switch
+    {
+        "listening-galaxy" => View("DesignGalaxy"),
+        "search-history" => View("DesignSearch"),
+        "suhani-house" => View("DesignHouse"),
+        _ => Redirect("/design")
+    };
+
     [Route("work/starbucks")]
     public IActionResult Starbucks() => View("CaseStarbucks");
 

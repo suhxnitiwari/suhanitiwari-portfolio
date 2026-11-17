@@ -1,0 +1,141 @@
+@* Design case study: The Suhani House. Every number and decision comes from the project's README
+   (github.com/suhxnitiwari/suhani-personality, house/README.md) and its build history. *@
+@{
+    ViewData["Title"] = "The Suhani House: a design case study";
+
+    var toc = new[]
+    {
+        ("overview", "Overview"), ("challenge", "Challenge"), ("principles", "Principles"), ("ways", "Three ways to visit"),
+        ("decisions", "Key decisions"), ("iterations", "What I changed"), ("craft", "Built to feel calm")
+    };
+}
+<link rel="stylesheet" href="~/css/case-study.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/design.css" asp-append-version="true" />
+
+<main class="cs-page ds-case ds-house">
+    <div class="cs-wrap">
+        <nav class="cs-toc" aria-label="On this page">
+            <a class="cs-back" href="/design">← Design</a>
+            <ol>
+                @foreach (var (id, name) in toc)
+                {
+                    <li><a href="#@id">@name</a></li>
+                }
+            </ol>
+        </nav>
+
+        <article>
+            <header>
+                <span class="cs-label">The Suhani House, 3D experience and spatial design</span>
+                <h1 class="cs-title">A personality you can walk through</h1>
+                <p class="cs-dek">Designing a 3D space that feels like visiting someone, not playing a game.</p>
+                <div class="cs-hero ds-hero" style="--panel: #56634A">
+                    <video src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/dollhouse.mp4")" poster="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/dollhouse.jpg")" width="960" height="538"
+                           muted loop playsinline autoplay aria-label="Circling my 3D dollhouse with its front swung open, every room lit"></video>
+                </div>
+                <dl class="cs-meta">
+                    <div><dt>Role</dt><dd>Design, 3D modeling and front end, solo</dd></div>
+                    <div><dt>Timeline</dt><dd>October 2026</dd></div>
+                    <div><dt>Tools</dt><dd>Three.js, WebGL, Web Audio, Puppeteer</dd></div>
+                    <div><dt>Live</dt><dd><a href="https://suhxnitiwari.github.io/suhani-personality/house/" target="_blank" rel="noopener">Come on in ↗</a></dd></div>
+                </dl>
+            </header>
+
+            <section class="cs-section" id="overview">
+                <span class="cs-label">Overview</span>
+                <h2 class="cs-h">Ten personality tests, built as a house you walk through.</h2>
+                <ul class="cs-three">
+                    <li><span class="cs-tag">The input</span><p>Results from <b>ten</b> tests, including CliftonStrengths, the Enneagram, Big Five, HEXACO and Schwartz values.</p></li>
+                    <li><span class="cs-tag">The problem</span><p>Test results arrive as walls of text and percentages. Nobody wants to read ten reports about someone.</p></li>
+                    <li><span class="cs-tag">The design</span><p>A house: my people at the front, my ambition upstairs, my brain in the attic, and a secret garden behind.</p></li>
+                </ul>
+                <ul class="cs-stats">
+                    <li><b>22</b>stops, each one an object, not a poster</li>
+                    <li><b>3</b>ways to visit, all first-class</li>
+                    <li><b>60 fps</b>after a rebuild from 3–5 fps</li>
+                </ul>
+            </section>
+
+            <section class="cs-section" id="challenge">
+                <span class="cs-label">Challenge</span>
+                <h2 class="cs-h">How do you make personality data feel like meeting someone?</h2>
+                <p class="cs-body">The goal was for the house to feel like visiting a person, not like a dashboard or a video game. That meant turning a feeling into concrete interaction decisions: how you arrive, how fast you move, what you see first, and how you leave. Every claim inside also had to stay honest, with the score behind it one tap away.</p>
+                <p class="cs-takeaway"><b>Design goal</b>Calm enough to wander, specific enough to trust.</p>
+            </section>
+
+            <section class="cs-section" id="principles">
+                <span class="cs-label">Principles</span>
+                <h2 class="cs-h">A visit, not a game.</h2>
+                <ol class="ds-principles">
+                    <li><h3>You arrive like a guest</h3><p>You come down to the front walk at eye level, walk up the path past the flowers, and the front door swings open as you reach it.</p></li>
+                    <li><h3>No avatar</h3><p>A doll that doesn’t look like me would be worse than no doll, so visitors see the house through their own eyes.</p></li>
+                    <li><h3>Nothing is rushed</h3><p>Walking pace, turning speed and camera easing are all tuned slow. On the way to a stop, your eyes lead a little ahead, then turn gently to face it.</p></li>
+                </ol>
+            </section>
+
+            <section class="cs-section" id="ways">
+                <span class="cs-label">Three ways to visit</span>
+                <h2 class="cs-h">Not everyone wants the tour, so every way in is a real choice.</h2>
+                <table class="ds-encode">
+                    <tbody>
+                        <tr><th scope="row">Guided tour</th><td>Walk stop by stop through all 22 objects, from the photos on the built-ins to ten reports on a library shelf</td></tr>
+                        <tr><th scope="row">Dollhouse</th><td>Open the house to see every room at once. The side facing you opens up, and choosing a floor lifts the floors above it away</td></tr>
+                        <tr><th scope="row">Just explore</th><td>Nothing on screen but the house. Walk anywhere, up three spiral staircases, at your own pace</td></tr>
+                    </tbody>
+                </table>
+                <div class="ds-embed" data-src="https://suhxnitiwari.github.io/suhani-personality/house/" data-title="The Suhani House, live">
+                    <img src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/dollhouse.jpg")" alt="" loading="lazy">
+                    <button type="button">Step inside the house right here</button>
+                    <small>Loads the real 3D house inside this page. Drag to look around, tap a room to go there</small>
+                </div>
+            </section>
+
+            <section class="cs-section" id="decisions">
+                <span class="cs-label">Key decisions</span>
+                <h2 class="cs-h">Spatial choices that carry the story.</h2>
+                <ol class="ds-decisions">
+                    <li><h3>The floor plan is the personality</h3><p>Where a trait lives says how it shows up: the people I love at the front door, ambition upstairs, the mess of my brain in the attic.</p></li>
+                    <li><h3>Objects, not posters</h3><p>Each stop is something you would find in a home: an espresso machine, a rom-com shelf, a mirror with words tucked into its frame.</p></li>
+                    <li><h3>Tap a room, go straight there</h3><p>In dollhouse view, tapping any room takes you inside it, not back to the front door. A floor plan and floor buttons make every room a blink away.</p></li>
+                    <li><h3>Small, full rooms</h3><p>Big empty rooms felt like a showroom, so I split them into cozy real rooms with walls and doorways, each with its own windows, chandelier and flowers.</p></li>
+                    <li><h3>A palette from real life</h3><p>Wine, olive, cream and brass: the colors I actually live with, down to the flowers in the window boxes.</p></li>
+                    <li><h3>Every claim cites its score</h3><p>Each trait links back to the result behind it, along with how much research stands behind that test.</p></li>
+                </ol>
+            </section>
+
+            <section class="cs-section" id="iterations">
+                <span class="cs-label">What I changed</span>
+                <h2 class="cs-h">The first version felt like a game. I rebuilt it as a home.</h2>
+                <ul class="ds-flips">
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>A low-poly character walked you around, and you could jump.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>No avatar and no game mechanics: a dollhouse you tour yourself.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>About 3,400 HTML elements placed in 3D with CSS, running at 3–5 frames per second.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Rebuilt in WebGL with Three.js: 60 frames per second, loading in under a second.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>You could get stuck in a stairwell or bump into furniture.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Pathfinding routes around furniture with room to spare, and you can never be trapped on the stairs.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>Reaching an upstairs room meant walking there from the front door.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>A floor plan view, floor buttons and straight-to-room entry.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>The front said little about who lives inside.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>A front with personality: windows with character room by room, flowers and a wreath on the door.<em>Tap to flip back</em></span></button></li>
+                </ul>
+                <button type="button" class="ds-flip-all">Flip every card</button>
+            </section>
+
+            <section class="cs-section" id="craft">
+                <span class="cs-label">Built to feel calm</span>
+                <h2 class="cs-h">Smooth on any device, and tested on every stop.</h2>
+                <ul class="cs-did">
+                    <li>Modeled every room by hand in about 3,000 lines of JavaScript, merging each floor into a handful of meshes so a whole storey costs about one draw call</li>
+                    <li>Made the plan pure data: rooms, doors, windows and stairs are arrays, and walls, collisions and walking paths are generated from them</li>
+                    <li>Routed tap-to-go walks with two levels of pathfinding: Dijkstra’s algorithm through rooms and doorways, then A* around the furniture</li>
+                    <li>Wrote an automated test that walks a headless browser to all 22 stops in order, and fails if any stop can’t be reached</li>
+                    <li>Supported keyboards, a touch thumbstick and reduced-motion settings, with sound synthesized in the browser so there are no audio files</li>
+                </ul>
+                <a class="cs-cta" href="https://suhxnitiwari.github.io/suhani-personality/house/" target="_blank" rel="noopener">Come on in <span aria-hidden="true">↗</span></a>
+
+                <a class="ds-next" href="/design/listening-galaxy">
+                    <div><span>Next case study</span><strong>Listening Galaxy</strong></div>
+                    <em aria-hidden="true">→</em>
+                </a>
+            </section>
+        </article>
+    </div>
+</main>
+
+<partial name="_DesignCaseScript" />
+<script src="~/js/design.js" asp-append-version="true"></script>

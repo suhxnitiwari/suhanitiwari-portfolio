@@ -1,0 +1,915 @@
+/* DESIGN: my product design portfolio (/design) and its case studies (/design/{study}).
+   The case studies sit on the same editorial frame as every other case study (case-study.css);
+   this file adds the pieces a design story needs: the index of studies, design principles,
+   numbered decisions, before-and-after iterations, a visual encoding table and screens with captions. */
+
+/* ---------- the index: /design ---------- */
+
+/* the index is a midnight plum band, like Selected Work on the home page, so the project videos glow against it */
+.ds-index {
+    --ink: #F9EDE9;
+    --soft: rgba(249, 237, 233, 0.68);
+    --rose: #E8A3B8;
+    --line: rgba(249, 237, 233, 0.16);
+    padding: 88px 40px 120px;
+    background: radial-gradient(ellipse at 85% 0%, #3A1622 0%, #1A0F14 55%, #160C11 100%);
+    color: var(--ink);
+}
+
+.ds-index .cs-label { color: var(--rose); }
+.ds-index .cs-title { color: var(--ink) !important; font-size: clamp(2.6rem, 5vw, 3.8rem) !important; letter-spacing: -0.5px !important; }
+.ds-index .cs-dek { color: var(--soft); font-size: 1.3rem; }
+.ds-index .ds-ways li { border-top-color: var(--line); }
+.ds-index .ds-ways h2 { color: var(--ink); }
+.ds-index .ds-ways p,
+.ds-index .ds-study p { color: var(--soft); }
+.ds-index .ds-num { color: var(--soft); }
+.ds-index .ds-study h2,
+.ds-index .ds-study h2 a { color: var(--ink); }
+.ds-index .ds-study h2 a:hover { color: var(--rose); }
+.ds-index .ds-study .ds-kind { color: var(--rose); }
+.ds-index .ds-moves li { border-color: var(--line); color: var(--ink); }
+.ds-index .ds-live { color: var(--rose); border-bottom-color: rgba(232, 163, 184, 0.4); }
+.ds-index .ds-live:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.ds-index .cs-cta { background: var(--rose); color: #1A0F14; }
+.ds-index .cs-cta:hover { background: #F3C6D2; color: #1A0F14; }
+.ds-index .ds-shot { box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(249, 237, 233, 0.08); }
+.ds-index .ds-shot:hover { box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(232, 163, 184, 0.35); }
+
+.ds-index-wrap {
+    max-width: var(--page-width);
+    margin: 0 auto;
+}
+
+.ds-intro {
+    max-width: 760px;
+}
+
+.ds-intro .cs-dek {
+    max-width: 640px;
+}
+
+/* how I design, in three lines */
+.ds-ways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin: 44px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ds-ways li {
+    padding-top: 16px;
+    border-top: 2px solid #1E100A;
+}
+
+.ds-ways h2 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1E100A;
+}
+
+.ds-ways p {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.6;
+    color: #4A3530;
+}
+
+/* one large card per study: the project playing on the left, the story on the right */
+.ds-studies {
+    display: grid;
+    gap: 72px;
+    margin: 80px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ds-study {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+}
+
+.ds-study:nth-child(even) .ds-shot {
+    order: 2;
+}
+
+.ds-shot {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--r-card);
+    background: var(--panel, #2B1B33);
+    box-shadow: 0 18px 50px rgba(42, 24, 16, 0.16);
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.5s ease;
+}
+
+.ds-shot video,
+.ds-shot img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ds-shot:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 60px rgba(42, 24, 16, 0.22);
+}
+
+.ds-num {
+    display: block;
+    margin-bottom: 12px;
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #7A665F;
+}
+
+.ds-study h2 {
+    margin: 0 0 6px;
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #1E100A;
+}
+
+.ds-study h2 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.ds-study h2 a:hover {
+    color: #7E3F4A;
+}
+
+.ds-study .ds-kind {
+    display: block;
+    margin-bottom: 18px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #7E3F4A;
+}
+
+.ds-study p {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: #4A3530;
+}
+
+/* the design moves in each study, as a short ruled list */
+.ds-moves {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ds-moves li {
+    padding: 10px 0;
+    border-top: 1px solid #E2C6C0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #1E100A;
+}
+
+.ds-moves li:last-child {
+    border-bottom: 1px solid #E2C6C0;
+}
+
+.ds-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+    margin: 24px 0 0;
+}
+
+.ds-links .cs-cta {
+    margin: 0;
+}
+
+.ds-live {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #7E3F4A;
+    text-decoration: none;
+    border-bottom: 1px solid #E2C6C0;
+}
+
+.ds-live:hover {
+    color: #1E100A;
+    border-bottom-color: #1E100A;
+}
+
+/* ---------- inside a case study ---------- */
+
+/* the hero video fills its panel edge to edge */
+.cs-hero.ds-hero video {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* design principles: a numbered row of three */
+.ds-principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: principle;
+}
+
+.ds-principles li {
+    padding: 22px 22px 24px;
+    border-radius: var(--r-card);
+    background: #FFFFFF;
+    box-shadow: 0 1px 0 #E2C6C0, 0 10px 30px rgba(42, 24, 16, 0.05);
+    counter-increment: principle;
+}
+
+.ds-principles li::before {
+    content: "0" counter(principle);
+    display: block;
+    margin-bottom: 14px;
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #C27B8A;
+}
+
+.ds-principles h3 {
+    margin: 0 0 8px;
+    font-family: Georgia, serif;
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1E100A;
+}
+
+.ds-principles p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4A3530;
+}
+
+/* decisions: what I chose, and why, two to a row */
+.ds-decisions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 40px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: decision;
+}
+
+.ds-decisions li {
+    position: relative;
+    padding: 22px 0 22px 44px;
+    border-top: 1px solid #E2C6C0;
+    counter-increment: decision;
+}
+
+.ds-decisions li::before {
+    content: counter(decision);
+    position: absolute;
+    left: 0;
+    top: 22px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #7E3F4A;
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 28px;
+    text-align: center;
+}
+
+.ds-decisions h3 {
+    margin: 2px 0 6px;
+    font-family: Georgia, serif;
+    font-size: 1.08rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #1E100A;
+}
+
+.ds-decisions p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4A3530;
+}
+
+/* iterations: what the first version did, and what replaced it */
+.ds-iter {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ds-iter li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 18px 0;
+    border-top: 1px solid #E2C6C0;
+}
+
+.ds-iter li:last-child {
+    border-bottom: 1px solid #E2C6C0;
+}
+
+.ds-iter .was,
+.ds-iter .now {
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.ds-iter .was {
+    color: #7A665F;
+}
+
+.ds-iter .now {
+    color: #1E100A;
+}
+
+.ds-iter .was b,
+.ds-iter .now b {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.ds-iter .was b {
+    color: #A8928B;
+}
+
+.ds-iter .now b {
+    color: #7E3F4A;
+}
+
+.ds-iter i {
+    padding-top: 18px;
+    font-style: normal;
+    font-size: 1.1rem;
+    color: #C27B8A;
+    text-align: center;
+}
+
+/* a visual encoding table: what each mark means */
+.ds-encode {
+    width: 100%;
+    margin: 20px 0 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.ds-encode th,
+.ds-encode td {
+    padding: 12px 14px 12px 0;
+    border-top: 1px solid #E2C6C0;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.55;
+}
+
+.ds-encode th {
+    width: 26%;
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: #1E100A;
+}
+
+.ds-encode td {
+    color: #4A3530;
+}
+
+.ds-encode tr:last-child th,
+.ds-encode tr:last-child td {
+    border-bottom: 1px solid #E2C6C0;
+}
+
+/* a screen from the live project, with a caption */
+.ds-screen {
+    margin: 28px 0 0;
+}
+
+.ds-screen img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--r-card);
+    box-shadow: 0 14px 40px rgba(42, 24, 16, 0.16);
+}
+
+.ds-screen figcaption {
+    margin: 12px 0 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #7A665F;
+}
+
+.ds-screen-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* the next study, at the bottom of every case study */
+.ds-next {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: center;
+    margin: 72px 0 0;
+    padding: 28px 30px;
+    border-radius: var(--r-card);
+    background: #1E100A;
+    color: #FAF1EF;
+    text-decoration: none;
+    transition: transform 0.35s ease, background 0.35s ease;
+}
+
+.ds-next:hover {
+    background: #3A1F28;
+    color: #FAF1EF;
+    transform: translateY(-3px);
+}
+
+.ds-next span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #E3A9B5;
+}
+
+.ds-next strong {
+    font-family: Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ds-next em {
+    font-style: normal;
+    font-size: 1.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ds-shot, .ds-next { transition: none; }
+    .ds-shot:hover, .ds-next:hover { transform: none; }
+}
+
+/* tablets and phones: everything stacks */
+@media (max-width: 900px) {
+    .ds-index { padding: 40px 20px 72px; }
+    .ds-ways, .ds-principles, .ds-decisions, .ds-screen-pair { grid-template-columns: 1fr; }
+    .ds-studies { gap: 56px; margin-top: 56px; }
+    .ds-study { grid-template-columns: 1fr; gap: 22px; }
+    .ds-study:nth-child(even) .ds-shot { order: 0; }
+    .ds-study h2 { font-size: 1.6rem; }
+    .ds-iter li { grid-template-columns: 1fr; gap: 6px; }
+    .ds-iter i { display: none; }
+    .ds-encode th { width: 34%; }
+    .ds-next { grid-template-columns: 1fr; }
+}
+
+/* =====================================================================
+   TYPE, COLOR AND INTERACTION
+   ===================================================================== */
+
+/* Bodoni Moda for display type on the design pages: high contrast, editorial, the same face as my footer */
+@font-face {
+    font-family: 'Bodoni Moda';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url(/fonts/bodoni-moda-latin-normal.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Bodoni Moda';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url(/fonts/bodoni-moda-latin-italic.woff2) format('woff2');
+}
+
+.ds-index .cs-title,
+.ds-case .cs-title {
+    font-family: 'Bodoni Moda', Didot, Georgia, serif !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.5px !important;
+}
+
+.ds-case .cs-h,
+.ds-study h2,
+.ds-principles h3,
+.ds-next strong,
+.ds-case .cs-stats b {
+    font-family: 'Bodoni Moda', Didot, Georgia, serif !important;
+}
+
+.ds-index .cs-dek,
+.ds-case .cs-dek,
+.ds-num {
+    font-family: 'Bodoni Moda', Didot, Georgia, serif;
+    font-style: italic;
+}
+
+/* ---------- one palette per study, taken from the project itself ---------- */
+
+.ds-case {
+    --paper-a: #F7EAE6; --paper-b: #FAF1EF;
+    --ink: #1E100A; --muted: #4A3530; --quiet: #7A665F;
+    --accent: #7E3F4A; --accent-ink: #FFFFFF; --soft: #F3E3E0; --line: #E2C6C0; --spark: #C27B8A;
+    background: linear-gradient(135deg, var(--paper-a) 0%, var(--paper-b) 100%);
+    color: var(--ink);
+}
+
+/* Listening Galaxy: night lilac and plum */
+.ds-galaxy { --paper-a: #EFE8F4; --paper-b: #FAF7FC; --ink: #1D1426; --muted: #463A52; --quiet: #786A85; --accent: #5E3B7E; --soft: #E8DDF1; --line: #DACBE6; --spark: #B48CD6; }
+/* Search History: ivory and walnut, with favicon color only as a spark */
+.ds-search { --paper-a: #F3EDE4; --paper-b: #FBF8F3; --ink: #231A13; --muted: #4D3F33; --quiet: #85745F; --accent: #6B4A33; --soft: #EDE3D6; --line: #E0D3C2; --spark: #C9853D; }
+/* The Suhani House: wine, olive, cream and brass */
+.ds-house { --paper-a: #F1EEE3; --paper-b: #FAF8F1; --ink: #1F1A14; --muted: #48402F; --quiet: #7E7461; --accent: #7A2E3B; --soft: #ECE6D6; --line: #DDD5C2; --spark: #B08D57; }
+
+.ds-case .cs-title,
+.ds-case .cs-h { color: var(--ink) !important; }
+.ds-case .cs-label,
+.ds-case .cs-back,
+.ds-case .cs-meta dd a { color: var(--accent); }
+.ds-case .cs-dek,
+.ds-case .cs-body,
+.ds-case .cs-three p,
+.ds-case .cs-stats li,
+.ds-principles p,
+.ds-decisions p { color: var(--muted); }
+.ds-case .cs-meta dt,
+.ds-case .cs-toc a { color: var(--quiet); }
+.ds-case .cs-toc a:hover,
+.ds-case .cs-toc a.on { color: var(--ink); border-left-color: var(--accent); }
+.ds-case .cs-toc ol,
+.ds-case .cs-meta,
+.ds-case .cs-did li,
+.ds-encode th, .ds-encode td,
+.ds-decisions li,
+.ds-iter li { border-color: var(--line) !important; }
+.ds-case .cs-stats li { border-top-color: var(--ink); }
+.ds-case .cs-stats b,
+.ds-principles h3,
+.ds-decisions h3,
+.ds-encode th { color: var(--ink); }
+.ds-case .cs-takeaway { background: var(--soft); border-left-color: var(--accent); color: var(--ink); }
+.ds-case .cs-takeaway b { color: var(--accent); }
+.ds-case .cs-did li::before { content: ""; top: 21px; width: 8px; height: 8px; border-radius: 50%; background: var(--spark); }
+.ds-case .cs-cta { background: var(--accent); color: var(--accent-ink); }
+.ds-case .cs-cta:hover { background: var(--ink); color: #FFFFFF; }
+.ds-decisions li::before { background: var(--accent); }
+.ds-principles li::before { color: var(--spark); }
+.ds-case kbd { padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; background: #FFFFFF; font-size: 0.85em; color: var(--ink); }
+
+/* principles lift a little under the cursor */
+.ds-principles li { transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease; }
+.ds-principles li:hover { transform: translateY(-4px); box-shadow: 0 1px 0 var(--line), 0 18px 40px rgba(42, 24, 16, 0.1); }
+
+/* ---------- the index hero: a field of stars that leans toward the cursor ---------- */
+.ds-index { position: relative; overflow: hidden; }
+.ds-sky {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.ds-index-wrap { position: relative; z-index: 1; }
+
+/* each project card tilts toward the cursor and shows its way in */
+.ds-shot { transform-style: preserve-3d; will-change: transform; }
+.ds-shot::after {
+    content: "Read the case study  →";
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    padding: 10px 18px;
+    border-radius: var(--r-pill);
+    background: rgba(26, 15, 20, 0.78);
+    color: #F9EDE9;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+.ds-shot:hover::after,
+.ds-shot:focus-visible::after { opacity: 1; transform: none; }
+
+/* ---------- try it: the mini galaxy, the ask box and live embeds ---------- */
+.ds-try {
+    margin: 28px 0 0;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    background: #140D1A;
+    color: #F3ECF8;
+    box-shadow: 0 18px 50px rgba(29, 20, 38, 0.25);
+}
+
+.ds-try-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 18px;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(243, 236, 248, 0.12);
+    font-size: 0.8rem;
+}
+
+.ds-try-bar b {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #CDB4E6;
+}
+
+.ds-seg {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: var(--r-pill);
+    background: rgba(243, 236, 248, 0.08);
+}
+
+.ds-seg button {
+    padding: 6px 14px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: #E6DAF0;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ds-seg button[aria-pressed="true"] { background: #F3ECF8; color: #1D1426; }
+
+.ds-try-stage { position: relative; aspect-ratio: 16 / 9; }
+.ds-try-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+
+.ds-tip {
+    position: absolute;
+    z-index: 2;
+    max-width: 240px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(20, 13, 26, 0.92);
+    border: 1px solid rgba(243, 236, 248, 0.18);
+    font-size: 0.8rem;
+    line-height: 1.45;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.ds-tip.on { opacity: 1; }
+.ds-tip strong { display: block; font-family: 'Bodoni Moda', Georgia, serif; font-size: 0.98rem; color: #FFFFFF; }
+
+.ds-try-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 18px;
+    padding: 12px 18px 16px;
+    font-size: 0.8rem;
+    color: #CDBFDA;
+}
+
+.ds-try-foot input[type="range"] { flex: 1 1 220px; accent-color: #CDB4E6; }
+.ds-try-foot output { min-width: 84px; font-variant-numeric: tabular-nums; color: #FFFFFF; font-weight: 600; }
+
+.ds-key { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0 18px 16px; list-style: none; font-size: 0.75rem; color: #CDBFDA; }
+.ds-key li { display: inline-flex; align-items: center; gap: 6px; }
+.ds-key i { width: 9px; height: 9px; border-radius: 50%; }
+
+/* the ask box: a tiny browser that answers real questions about my year */
+.ds-ask {
+    margin: 28px 0 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    background: #FFFFFF;
+    box-shadow: 0 18px 50px rgba(35, 26, 19, 0.1);
+}
+
+.ds-ask-chrome {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--soft);
+    border-bottom: 1px solid var(--line);
+}
+
+.ds-ask-chrome i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+
+.ds-ask-field {
+    flex: 1;
+    margin-left: 8px;
+    padding: 7px 14px;
+    border-radius: var(--r-pill);
+    background: #FFFFFF;
+    font-size: 0.9rem;
+    color: var(--ink);
+    min-height: 34px;
+}
+
+.ds-ask-field .caret { display: inline-block; width: 1px; height: 1em; margin-left: 1px; background: var(--ink); vertical-align: -2px; animation: ds-blink 1s steps(1) infinite; }
+@keyframes ds-blink { 50% { opacity: 0; } }
+
+.ds-ask-body { padding: 22px 24px 24px; }
+
+.ds-ask-qs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+
+.ds-ask-qs button {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: #FFFFFF;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ds-ask-qs button:hover,
+.ds-ask-qs button[aria-pressed="true"] { background: var(--soft); border-color: var(--accent); }
+
+.ds-ask-answer {
+    min-height: 108px;
+    padding: 18px 20px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--r-inset) var(--r-inset) 0;
+    background: var(--paper-b);
+}
+
+.ds-ask-answer b { display: block; font-family: 'Bodoni Moda', Georgia, serif; font-size: 2.2rem; line-height: 1.1; color: var(--ink); }
+.ds-ask-answer p { margin: 6px 0 0; font-size: 0.95rem; line-height: 1.55; color: var(--muted); }
+.ds-ask-answer.fresh { animation: ds-rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes ds-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* a live embed that loads only when asked */
+.ds-embed {
+    position: relative;
+    margin: 28px 0 0;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--r-card);
+    background: #1F1A14;
+    box-shadow: 0 18px 50px rgba(31, 26, 20, 0.2);
+}
+
+.ds-embed img,
+.ds-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.ds-embed img { filter: brightness(0.62); transition: filter 0.4s ease, transform 0.8s ease; }
+.ds-embed:hover img { filter: brightness(0.5); transform: scale(1.02); }
+
+.ds-embed button {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 14px 26px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: #FAF8F1;
+    color: #1F1A14;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ds-embed button:hover { background: #FFFFFF; }
+.ds-embed small { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font-size: 0.78rem; color: rgba(250, 248, 241, 0.8); }
+
+/* before and after: cards that flip to show the fix */
+.ds-flips {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ds-flip { perspective: 1200px; }
+
+.ds-flip button {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 190px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ds-flip button[aria-pressed="true"] { transform: rotateY(180deg); }
+
+.ds-flip .side {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 18px 16px;
+    border-radius: var(--r-card);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    font-size: 0.93rem;
+    line-height: 1.5;
+}
+
+.ds-flip .was { background: #FFFFFF; border: 1px solid var(--line); color: var(--muted); }
+.ds-flip .now { background: var(--accent); color: #FFFFFF; transform: rotateY(180deg); }
+.ds-flip .side b { margin-bottom: 8px; font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.ds-flip .was b { color: var(--quiet); }
+.ds-flip .now b { color: rgba(255, 255, 255, 0.75); }
+.ds-flip .side em { margin-top: auto; padding-top: 12px; font-style: normal; font-size: 0.78rem; font-weight: 600; }
+.ds-flip .was em { color: var(--accent); }
+.ds-flip .now em { color: rgba(255, 255, 255, 0.8); }
+
+.ds-flip-all {
+    margin: 14px 0 0;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ds-flip-all:hover { border-color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+    .ds-flip button { transition: none; }
+    .ds-principles li, .ds-embed img { transition: none; }
+    .ds-ask-answer.fresh { animation: none; }
+}
+
+@media (max-width: 900px) {
+    .ds-flips { grid-template-columns: 1fr; }
+    .ds-flip button { min-height: 150px; }
+    .ds-try-stage { aspect-ratio: 4 / 3; }
+    .ds-shot::after { opacity: 1; transform: none; font-size: 0.78rem; }
+}
+
+.ds-seg-play {
+    padding: 7px 14px;
+    border: 1px solid rgba(243, 236, 248, 0.3);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: #F3ECF8;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+.ds-seg-play:hover { background: rgba(243, 236, 248, 0.1); }
+.ds-key[hidden] { display: none; }

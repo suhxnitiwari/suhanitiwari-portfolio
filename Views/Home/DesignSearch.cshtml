@@ -1,0 +1,160 @@
+@* Design case study: Search History. Every number and decision comes from the project's README
+   (github.com/suhxnitiwari/search-history) and its build history. *@
+@{
+    ViewData["Title"] = "Search History: a design case study";
+
+    var toc = new[]
+    {
+        ("overview", "Overview"), ("challenge", "Challenge"), ("principles", "Principles"), ("structure", "Structure"),
+        ("decisions", "Key decisions"), ("iterations", "What I changed"), ("trust", "Designing for trust")
+    };
+}
+<link rel="stylesheet" href="~/css/case-study.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/design.css" asp-append-version="true" />
+
+<main class="cs-page ds-case ds-search">
+    <div class="cs-wrap">
+        <nav class="cs-toc" aria-label="On this page">
+            <a class="cs-back" href="/design">← Design</a>
+            <ol>
+                @foreach (var (id, name) in toc)
+                {
+                    <li><a href="#@id">@name</a></li>
+                }
+            </ol>
+        </nav>
+
+        <article>
+            <header>
+                <span class="cs-label">Search History, product design and information architecture</span>
+                <h1 class="cs-title">A year of my searches, inside my own browser</h1>
+                <p class="cs-dek">Designing an interface where the visitor asks and the data answers.</p>
+                <div class="cs-hero ds-hero" style="--panel: #E9E1D6">
+                    <video src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/search.mp4")" poster="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/search.jpg")" width="960" height="538"
+                           muted loop playsinline autoplay aria-label="My name drawn from my searches, a question typed and answered, then the clock playing my day hour by hour"></video>
+                </div>
+                <dl class="cs-meta">
+                    <div><dt>Role</dt><dd>Design, data pipeline and front end, solo</dd></div>
+                    <div><dt>Timeline</dt><dd>October 2026</dd></div>
+                    <div><dt>Tools</dt><dd>Python, SQLite, SVG, Canvas, JavaScript</dd></div>
+                    <div><dt>Live</dt><dd><a href="https://suhxnitiwari.github.io/search-history/" target="_blank" rel="noopener">Ask about my year ↗</a></dd></div>
+                </dl>
+            </header>
+
+            <section class="cs-section" id="overview">
+                <span class="cs-label">Overview</span>
+                <h2 class="cs-h">The page is my Chrome window. You type the questions, and the data answers them.</h2>
+                <ul class="cs-three">
+                    <li><span class="cs-tag">The data</span><p><b>12,460</b> searches, <b>85,443</b> pages and <b>2,047</b> videos from a year of my Google accounts.</p></li>
+                    <li><span class="cs-tag">The problem</span><p>A year of searches is noise until you can ask it something. A list of totals tells you nothing about a person.</p></li>
+                    <li><span class="cs-tag">The design</span><p>A browser that answers questions about me, with nine chapters reached from its bookmark bar.</p></li>
+                </ul>
+                <ul class="cs-stats">
+                    <li><b>166</b>suggested questions, each checked to land on a real answer</li>
+                    <li><b>9</b>chapters, from a 24-hour clock to a world map</li>
+                    <li><b>25 KB</b>of data powers the whole page</li>
+                </ul>
+            </section>
+
+            <section class="cs-section" id="challenge">
+                <span class="cs-label">Challenge</span>
+                <h2 class="cs-h">How do you let a stranger explore 12,460 searches without a manual?</h2>
+                <p class="cs-body">Search data is the most personal data most of us have, and the hardest to read. I needed an interface people would understand instantly, that rewarded curiosity, and that only ever showed what I chose to share.</p>
+                <p class="cs-takeaway"><b>Design goal</b>Zero learning curve: if you can use a browser, you can explore my year.</p>
+            </section>
+
+            <section class="cs-section" id="principles">
+                <span class="cs-label">Principles</span>
+                <h2 class="cs-h">Three choices shaped every screen.</h2>
+                <ol class="ds-principles">
+                    <li><h3>The interface is the metaphor</h3><p>The data came from my browser, so the site is my browser: tab strip, address bar, bookmark bar and new-tab page.</p></li>
+                    <li><h3>Favicons are the color</h3><p>The frame stays quiet ivory and walnut. The real favicons of the sites I use bring the color, and they double as labels.</p></li>
+                    <li><h3>The visitor asks</h3><p>Nothing plays on its own. Every chapter is something to drag, step through or click.</p></li>
+                </ol>
+            </section>
+
+            <section class="cs-section" id="structure">
+                <span class="cs-label">Structure</span>
+                <h2 class="cs-h">Nine chapters, each one a bookmark.</h2>
+                <p class="cs-body">Each bookmark wears the favicon of the site whose data drives that chapter, so the navigation itself previews what is inside.</p>
+                <table class="ds-encode">
+                    <tbody>
+                        <tr><th scope="row">Hours</th><td>Every search on one clock you drag: what I search at each hour, and when my last search of the night comes</td></tr>
+                        <tr><th scope="row">Days</th><td>365 days, one favicon each, for the site that owned the day</td></tr>
+                        <tr><th scope="row">Most visited</th><td>Sites sized by how many days I opened them</td></tr>
+                        <tr><th scope="row">Travel</th><td>A world map of 107 places I searched, with the trips found from airport and “near me” searches</td></tr>
+                        <tr><th scope="row">Watchlist</th><td>37 shows, movies and books I looked up</td></tr>
+                        <tr><th scope="row">Rabbit hole</th><td>Two sittings where one search led somewhere else, replayed step by step</td></tr>
+                        <tr><th scope="row">Mind, Learning, Career</th><td>What I read about, what I built for class, and how a search for internships became one</td></tr>
+                    </tbody>
+                </table>
+                <div class="ds-embed" data-src="https://suhxnitiwari.github.io/search-history/" data-title="Search History, live">
+                    <img src="@Versions.AddFileVersionToPath(Context.Request.PathBase, "/videos/projects/search.jpg")" alt="" loading="lazy">
+                    <button type="button">Open the live site right here</button>
+                    <small>Loads the real Search History inside this page</small>
+                </div>
+            </section>
+
+            <section class="cs-section" id="decisions">
+                <span class="cs-label">Key decisions</span>
+                <h2 class="cs-h">Designing a search box that answers.</h2>
+                <ol class="ds-decisions">
+                    <li><h3>It reads plain English</h3><p>Type “3 AM,” “Oct 26,” a city or a site name. A featured answer card opens the chapter at that exact point: the clock hand on 3 AM, Oct 26 lit up in the Days grid.</p></li>
+                    <li><h3>It guides, it never types for you</h3><p>Suggestions filter as you type, Tab accepts an inline completion, and “People also ask” offers the next question.</p></li>
+                    <li><h3>It forgives typos</h3><p>When nothing matches, every word is compared to the vocabulary by edit distance, so “chikago” still finds Chicago.</p></li>
+                    <li><h3>Every answer leads somewhere</h3><p>Each answer suggests a next question, so one curious click becomes a path through the year.</p></li>
+                    <li><h3>A clock you can hold</h3><p>Every search sits on a spiral with midnight at the top and the year growing outward, and the rim shows the site most typical of each hour.</p></li>
+                    <li><h3>A browser that behaves like one</h3><p>Back, forward and reload work inside the page, chapters you’ve opened turn grey, keys 1 to 9 jump between chapters and <kbd>/</kbd> focuses the address bar.</p></li>
+                </ol>
+                <div class="ds-ask" id="dsAsk">
+                    <div class="ds-ask-chrome"><i></i><i></i><i></i><div class="ds-ask-field"><span>Ask about Suhani</span><span class="caret" aria-hidden="true"></span></div></div>
+                    <div class="ds-ask-body">
+                        <ul class="ds-ask-qs">
+                            <li><button type="button" data-q="When does Suhani search the most?" data-a="9 PM" data-more="Her busiest hour for searching, across the whole year." aria-pressed="false">When does Suhani search the most?</button></li>
+                            <li><button type="button" data-q="How many of her searches were real?" data-a="12,460" data-more="After removing 7,138 page loads where Chrome re-logged a results page instead of a new search." aria-pressed="false">How many of her searches were real?</button></li>
+                            <li><button type="button" data-q="How many places did she search?" data-a="107" data-more="Places on her travel map: home, the trips she took, where she might study abroad and everywhere else." aria-pressed="false">How many places did she search?</button></li>
+                            <li><button type="button" data-q="What did she look up to watch?" data-a="37" data-more="Shows, movies and books she searched, from her searches and streaming history." aria-pressed="false">What did she look up to watch?</button></li>
+                            <li><button type="button" data-q="How many videos did she watch?" data-a="2,047" data-more="Videos in a year of her YouTube history, counted alongside 85,443 pages." aria-pressed="false">How many videos did she watch?</button></li>
+                            <li><button type="button" data-q="How many questions can I ask?" data-a="166" data-more="Suggested questions on the live site, each checked to land on a real answer." aria-pressed="false">How many questions can I ask?</button></li>
+                        </ul>
+                        <div class="ds-ask-answer" aria-live="polite"><p>Pick a question. Every answer here comes from the real data, the same way the live site answers.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cs-section" id="iterations">
+                <span class="cs-label">What I changed</span>
+                <h2 class="cs-h">Four versions in four days, each one simpler.</h2>
+                <ul class="ds-flips">
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>The whole page wore Chrome’s pink theme, and the color drowned the data.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>The frame went quiet ivory and walnut, and real favicons became the only color.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>Asking was one feature among many.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Ask comes first: a larger search box on the home tab, starter questions, and an Ask box at the end of every chapter.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>A clock for my school account showed an empty dial.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Deleted. No visual stays on the page unless it shows a real result.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>A chapter charted visits to my own sites, and its story was one spike on a flat line.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>Removed, because a chart should earn its space.<em>Tap to flip back</em></span></button></li>
+                    <li class="ds-flip"><button type="button" aria-pressed="false"><span class="side was"><b>Before</b>The tab strip ran off the edge of a phone screen.<em>Tap to see the fix →</em></span><span class="side now"><b>After</b>The whole window fits the width of a phone, tabs included.<em>Tap to flip back</em></span></button></li>
+                </ul>
+                <button type="button" class="ds-flip-all">Flip every card</button>
+            </section>
+
+            <section class="cs-section" id="trust">
+                <span class="cs-label">Designing for trust</span>
+                <h2 class="cs-h">Privacy was part of the design, not a filter at the end.</h2>
+                <ul class="cs-did">
+                    <li>Built a Python pipeline that cleans two Google exports into a SQLite star schema on my laptop, and publishes only a 25 KB summary</li>
+                    <li>Found that 7,138 of 19,598 search page loads were Chrome re-logging a results page, and removed them so every count is a real search</li>
+                    <li>Showed only searches I approved by hand: no names of real people, nothing about health, religion, politics, relationships or money</li>
+                    <li>Added a guardrail that stops the export if any quoted search isn’t word for word in my data</li>
+                    <li>Embedded every favicon in the data, so the page makes no third-party requests</li>
+                </ul>
+                <a class="cs-cta" href="https://suhxnitiwari.github.io/search-history/" target="_blank" rel="noopener">Ask about my year <span aria-hidden="true">↗</span></a>
+
+                <a class="ds-next" href="/design/suhani-house">
+                    <div><span>Next case study</span><strong>The Suhani House</strong></div>
+                    <em aria-hidden="true">→</em>
+                </a>
+            </section>
+        </article>
+    </div>
+</main>
+
+<partial name="_DesignCaseScript" />
+<script src="~/js/design.js" asp-append-version="true"></script>
