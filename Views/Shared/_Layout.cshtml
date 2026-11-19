@@ -309,8 +309,18 @@
             text-align: center;
         }
 
+        .contact-hello {
+            display: grid;
+            place-items: center;
+            margin-bottom: 30px;
+        }
+
+        .contact-hello > * {
+            grid-area: 1 / 1;
+        }
+
         .contact-mark {
-            margin: 0 0 4px;
+            margin: 0;
             font-family: Georgia, serif;
             font-size: clamp(4.2rem, 13vw, 9rem);
             font-weight: 800;
@@ -321,7 +331,7 @@
         }
 
         .contact-lead {
-            margin-bottom: 30px;
+            position: relative;
         }
 
         .contact-headline {
@@ -341,58 +351,60 @@
             opacity: 0.85;
         }
 
+        /* every way to reach me on one line, between two hairlines */
         .contact-list {
             list-style: none;
             margin: 0;
-            padding: 0;
-            text-align: left;
+            padding: 16px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px 36px;
             border-top: 1px solid rgba(250, 241, 239, 0.22);
-        }
-
-        .contact-item {
             border-bottom: 1px solid rgba(250, 241, 239, 0.22);
         }
 
-        /* the name on the left, the handle on the right; on hover the row leans in */
         .contact-link {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 16px;
-            padding: 14px 4px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             color: #EFCFCD;
             text-decoration: none;
-            transition: color 0.3s ease, padding 0.3s ease;
-        }
-
-        .contact-link b {
-            font-size: 0.85em;
+            font-size: 0.88em;
             font-weight: 600;
             letter-spacing: 1.6px;
             text-transform: uppercase;
-        }
-
-        .contact-handle {
-            font-family: Georgia, serif;
-            font-style: italic;
-            text-align: right;
-            overflow-wrap: anywhere;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .contact-link:hover, .contact-link:focus-visible {
             color: #FAF1EF;
-            padding: 14px 14px;
+            transform: translateY(-2px);
+        }
+
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #EFCFCD;
+            transition: width 0.4s ease;
+        }
+
+        .contact-link:hover::after, .contact-link:focus-visible::after {
+            width: 100%;
         }
 
         .arrow {
             display: inline-block;
-            margin-left: 6px;
-            font-style: normal;
             transition: transform 0.3s ease;
         }
 
         .contact-link:hover .arrow, .contact-link:focus-visible .arrow {
-            transform: translate(3px, -3px);
+            transform: translate(2px, -3px);
         }
 
         /* the small print runs the page's full width; the floating Ask Sitara pill (bottom right) never sits on it */
@@ -679,23 +691,26 @@
     @* Footer on every page *@
     <footer class="contact-footer">
         <div class="contact-container">
-            <p class="contact-mark" aria-hidden="true">Suhani</p>
-            <div class="contact-lead">
-                <h2 class="contact-headline">Still here? You must like me.</h2>
-                <p class="contact-subline">Or you're nosy. Either way, say hi.</p>
+            @* the hello sits right on top of the big faded wordmark *@
+            <div class="contact-hello">
+                <p class="contact-mark" aria-hidden="true">Suhani</p>
+                <div class="contact-lead">
+                    <h2 class="contact-headline">Still here? You must like me.</h2>
+                    <p class="contact-subline">Or you're nosy. Either way, say hi.</p>
+                </div>
             </div>
             <ul class="contact-list">
                 <li class="contact-item" data-tag="boringly responsible">
-                    <a href="mailto:suhxnitiwari@gmail.com" class="contact-link" data-email-pop><b>Email</b><span class="contact-handle">suhxnitiwari@gmail.com<span class="arrow">↗</span></span></a>
+                    <a href="mailto:suhxnitiwari@gmail.com" class="contact-link" data-email-pop>Email <span class="arrow">↗</span></a>
                 </li>
                 <li class="contact-item" data-tag="dangerously personal">
-                    <a href="https://www.instagram.com/suhxnitiwari/" class="contact-link" target="_blank" rel="noopener"><b>Instagram</b><span class="contact-handle">@@suhxnitiwari<span class="arrow">↗</span></span></a>
+                    <a href="https://www.instagram.com/suhxnitiwari/" class="contact-link" target="_blank" rel="noopener">Instagram <span class="arrow">↗</span></a>
                 </li>
                 <li class="contact-item" data-tag="suspiciously professional">
-                    <a href="https://www.linkedin.com/in/suhxnitiwari/" class="contact-link" target="_blank" rel="noopener"><b>LinkedIn</b><span class="contact-handle">in/suhxnitiwari<span class="arrow">↗</span></span></a>
+                    <a href="https://www.linkedin.com/in/suhxnitiwari/" class="contact-link" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
                 </li>
                 <li class="contact-item" data-tag="unapologetically nerdy">
-                    <a href="https://github.com/suhxnitiwari" class="contact-link" target="_blank" rel="noopener"><b>GitHub</b><span class="contact-handle">github.com/suhxnitiwari<span class="arrow">↗</span></span></a>
+                    <a href="https://github.com/suhxnitiwari" class="contact-link" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
                 </li>
             </ul>
         </div>
